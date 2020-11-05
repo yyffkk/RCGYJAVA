@@ -11,8 +11,12 @@ spring:
         driver-class-name: com.mysql.jdbc.Driver
 #mybatis
 mybatis:
-    mapper-locations: classpath:mapper/*.xml
-    type-aliases-package: com.aku.model
+    mapper-locations: classpath:mapper/system/*.xml
+#    type-aliases-package: com.aku.model
 
-swagger:
-    enable: true
+#logging debug
+logging:
+    level:
+        com:
+            aku:
+                dao: debug
