@@ -10,6 +10,28 @@ import java.util.Map;
 public interface SysUserService {
     /**
      * 系统用户注册
+     * @param sysUser 系统用户model
+     * @return map {message 消息, status 状态}
      */
-    Map registerSysUser(SysUser sysUser);
+    Map<String,Object> registerSysUser(SysUser sysUser);
+    /**
+     * 系统用户登录
+     * @param sysUser 系统用户model
+     * @return map {message 消息, status 状态}
+     */
+    Map<String,Object> loginSysUser(SysUser sysUser);
+
+    /**
+     * 系统用户短信登录
+     * @param sysUser 系统用户model
+     * @return map {message 消息, status 状态}
+     */
+    Map<String, Object> loginSMSSysUser(SysUser sysUser);
+
+    /**
+     * 发送短信验证码
+     * @param sysUser 系统用户model
+     * @return map {message 消息, status 状态}
+     */
+    Map<String, Object> sendMMSLogin(SysUser sysUser);
 }

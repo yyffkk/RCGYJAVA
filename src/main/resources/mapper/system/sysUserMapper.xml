@@ -5,13 +5,16 @@
 <mapper namespace="com.aku.dao.system.SysUserDao">
     <sql id="field">
         id,user_name,pwd,actual_name,tel,sex,user_code,birthday,
-        email,id_card,organization,position_id,role_id,status,is_delete,
+        email,id_card,organization_id,position_id,role_id,status,is_delete,
         create_id,create_date,modify_date,last_login_ip,last_login_date
     </sql>
 
-<!--    <select id="findSysUserToUserName" resultType="com.aku.model.system.SysUser">-->
-<!--        select user_name from IntelligentCommunity-->
-<!--    </select>-->
+    <select id="loginSysUser" resultType="com.aku.model.system.SysUser">
+        select
+        <include refid="field"/>
+        from sys_user
+        where user_name = #{userName}
+    </select>
 
     <insert id="registerSysUser" parameterType="com.aku.model.system.SysUser">
         insert into
@@ -84,6 +87,5 @@
                 #{lastLoginDate},
             </if>
         </trim>
-
     </insert>
 </mapper>
