@@ -1,8 +1,11 @@
 package com.aku.service.system.impl;
 
 import com.aku.dao.system.SysUserDao;
+import com.aku.dao.system.TestDao;
 import com.aku.model.system.SysUser;
+import com.aku.model.system.TestUser;
 import com.aku.service.system.SysUserService;
+import com.aku.service.system.TestUserService;
 import com.aku.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,40 +17,27 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class SysUserServiceImpl implements SysUserService {
+public class TestUserServiceImpl implements TestUserService {
     @Autowired
-    SysUserDao sysUserDao;
+    TestDao testDao;
 
     @Autowired
     private RedisUtil redisUtil;
 
     /**
      * 系统用户注册
-     * @param sysUser 系统用户model
+     * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
     @Override
-    public Map<String,Object> registerSysUser(SysUser sysUser) {
-        Map<String,Object> map = new HashMap<String,Object>();
-        //初始化非删
-        sysUser.setIsDelete(1);
-        //初始化状态
-        sysUser.setStatus(1);
-        //初始化创建时间
-        sysUser.setCreateDate(new Date());
-        //判断注册参数是否可用
-        boolean registerParam = isRegisterParam(sysUser);
-        if (registerParam){
-            int integer = sysUserDao.registerSysUser(sysUser);
-            if (integer >0){
-                map.put("message","注册成功");
-                map.put("status",true);
-            }else {
-                map.put("message","注册失败");
-                map.put("status",false);
-            }
+    public Map<String,Object> registerSysUser(TestUser testUser) {
+        Map<String,Object> map = new HashMap<>();
+        int integer = testDao.registerSysUser(testUser);
+        if (integer >0){
+            map.put("message","注册成功");
+            map.put("status",true);
         }else {
-            map.put("message","输入参数有误");
+            map.put("message","注册失败");
             map.put("status",false);
         }
         return map;
@@ -55,15 +45,15 @@ public class SysUserServiceImpl implements SysUserService {
 
     /**
      * 系统用户登录
-     * @param sysUser 系统用户model
+     * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
     @Override
-    public Map<String,Object> loginSysUser(SysUser sysUser){
+    public Map<String,Object> loginSysUser(TestUser testUser){
         Map<String,Object> map = new HashMap<>();
-        SysUser sysUser1 = sysUserDao.loginSysUser(sysUser);
-        if (sysUser1 != null){
-            if (sysUser1.getPwd().equals(sysUser.getPwd())){
+        TestUser testUser1 = testDao.loginSysUser(testUser);
+        if (testUser1 != null){
+            if (testUser1.getPwd().equals(testUser.getPwd())){
                 map.put("message","登录成功");
                 map.put("status",true);
             }else {
@@ -78,16 +68,16 @@ public class SysUserServiceImpl implements SysUserService {
     }
     /**
      * 系统用户短信登录
-     * @param sysUser 系统用户model
+     * @param testUser 系统用户model
      * @param captcha
      * @return map {message 消息, status 状态}
      */
     @Override
-    public Map<String, Object> loginSMSSysUser(SysUser sysUser, String captcha) {
+    public Map<String, Object> loginSMSSysUser(TestUser testUser, String captcha) {
         Map<String, Object> map = new HashMap<>();
         // 此验证码和手机号均为前端传入
         String CAPTCHA = captcha;
-        String MOBILE = sysUser.getTel();
+        String MOBILE = testUser.getTel();
 
         // 校验验证码是否存在Redis中
         if (!redisUtil.exists(MOBILE)) {
@@ -114,16 +104,16 @@ public class SysUserServiceImpl implements SysUserService {
     }
     /**
      * 发送短信验证码
-     * @param sysUser 系统用户model
+     * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
     @Override
-    public Map<String, Object> sendMMSLogin(SysUser sysUser) {
+    public Map<String, Object> sendMMSLogin(TestUser testUser) {
         Map<String, Object> map = new HashMap<>();
         // 验证码为后台随机生成
         final String CAPTCHA = "666666";
         // 手机号为前端传入
-        final String MOBILE = sysUser.getTel();
+        final String MOBILE = testUser.getTel();
 
         //验证手机号格式
         Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
@@ -145,20 +135,5 @@ public class SysUserServiceImpl implements SysUserService {
         map.put("message","验证码发送成功");
         map.put("status",true);
         return map;
-    }
-
-    /**
-     * 判断注册参数是否可用
-     * @param sysUser 系统用户model
-     */
-    private boolean isRegisterParam(SysUser sysUser) {
-        boolean b = true;
-        if (sysUser.getUserName() == null || sysUser.getPwd() == null || sysUser.getActualName() ==null
-        || sysUser.getTel() == null || sysUser.getSex() == null || sysUser.getUserCode() == null
-        || sysUser.getIdCard() == null || sysUser.getOrganizationId() == null || sysUser.getPositionId() == null
-        || sysUser.getRoleId() == null || sysUser.getStatus() == null || sysUser.getCreateId() == null){
-            b=false;
-        }
-        return b;
     }
 }

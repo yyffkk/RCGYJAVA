@@ -1,7 +1,7 @@
 package com.aku.controller.system;
 
-import com.aku.model.system.SysUser;
-import com.aku.service.system.SysUserService;
+import com.aku.model.system.TestUser;
+import com.aku.service.system.TestUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,49 +10,49 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("sysUser")
-public class SysUserController {
+@RequestMapping("testUser")
+public class TestUserController {
     @Autowired
-    SysUserService sysUserService;
+    TestUserService testUserService;
 
     /**
      * 系统用户注册
-     * @param sysUser 系统用户model
+     * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/registerSysUser")
-    public Map<String,Object> registerSysUser(SysUser sysUser){
-        return sysUserService.registerSysUser(sysUser);
+    public Map<String,Object> registerSysUser(TestUser testUser){
+        return testUserService.registerSysUser(testUser);
     }
 
     /**
      * 系统用户登录
-     * @param sysUser 系统用户model
+     * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/loginSysUser")
-    public Map<String,Object> loginSysUser(SysUser sysUser){
-        return sysUserService.loginSysUser(sysUser);
+    public Map<String,Object> loginSysUser(TestUser testUser){
+        return testUserService.loginSysUser(testUser);
     }
 
     /**
      * 发送短信验证码
-     * @param sysUser 系统用户model
+     * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/sendMMSLogin")
-    public Map<String,Object> sendMMSLogin (SysUser sysUser){
-        return sysUserService.sendMMSLogin (sysUser);
+    public Map<String,Object> sendMMSLogin (TestUser testUser){
+        return testUserService.sendMMSLogin (testUser);
     }
 
     /**
      * 系统用户短信登录
-     * @param sysUser 系统用户model
+     * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/loginSMSSysUser")
-    public Map<String,Object> loginSMSSysUser(SysUser sysUser,String captcha){
-        return sysUserService.loginSMSSysUser(sysUser,captcha);
+    public Map<String,Object> loginSMSSysUser(TestUser testUser,String captcha){
+        return testUserService.loginSMSSysUser(testUser,captcha);
     }
 
 
