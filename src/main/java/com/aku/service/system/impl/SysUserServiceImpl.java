@@ -4,6 +4,11 @@ import com.aku.dao.system.SysUserDao;
 import com.aku.model.system.SysUser;
 import com.aku.service.system.SysUserService;
 import com.aku.util.RedisUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,17 +66,20 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Map<String,Object> loginSysUser(SysUser sysUser){
         Map<String,Object> map = new HashMap<>();
-        SysUser sysUser1 = sysUserDao.loginSysUser(sysUser);
-        if (sysUser1 != null){
-            if (sysUser1.getPwd().equals(sysUser.getPwd())){
-                map.put("message","登录成功");
-                map.put("status",true);
-            }else {
-                map.put("message","登录失败，用户名或密码不正确");
-                map.put("status",false);
-            }
-        }else {
-            map.put("message","登录失败，用户名不存在");
+        //将用户封装成token
+        AuthenticationToken token = new UsernamePasswordToken(sysUser.getUserName(), sysUser.getPwd());
+        //获取当前的Subject
+        Subject subject = SecurityUtils.getSubject();
+        try {
+            //登录并存入该用户信息
+            subject.login(token);
+            //认证成功
+            map.put("message","登录成功");
+            map.put("status",true);
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+            //认证失败
+            map.put("message","登录失败，用户名或密码不正确");
             map.put("status",false);
         }
         return map;
@@ -145,6 +153,16 @@ public class SysUserServiceImpl implements SysUserService {
         map.put("message","验证码发送成功");
         map.put("status",true);
         return map;
+    }
+
+    /**
+     * 根据userName查找用户信息
+     * @param userName 系统用户名称
+     * @return sysUser 系统用户model
+     */
+    @Override
+    public SysUser findByUserName(String userName) {
+        return sysUserDao.findByUserName(userName);
     }
 
     /**

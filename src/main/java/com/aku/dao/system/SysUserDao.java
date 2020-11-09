@@ -18,4 +18,6 @@ public interface SysUserDao {
      * 系统用户登录
      */
     SysUser loginSysUser(SysUser sysUser);
+
+    SysUser findByUserName(String userName);
 }

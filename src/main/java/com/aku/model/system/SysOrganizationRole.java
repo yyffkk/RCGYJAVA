@@ -11,7 +11,7 @@ public class SysOrganizationRole {
     /**
      * 组织id
      */
-    private Integer organization;
+    private Integer organizationId;
     /**
      * 角色id
      */
@@ -21,7 +21,7 @@ public class SysOrganizationRole {
     public String toString() {
         return "SysOrganizationRole{" +
                 "id=" + id +
-                ", organization=" + organization +
+                ", organizationId=" + organizationId +
                 ", roleId=" + roleId +
                 '}';
     }
@@ -34,12 +34,12 @@ public class SysOrganizationRole {
         this.id = id;
     }
 
-    public Integer getOrganization() {
-        return organization;
+    public Integer getOrganizationId() {
+        return organizationId;
     }
 
-    public void setOrganization(Integer organization) {
-        this.organization = organization;
+    public void setOrganizationId(Integer organizationId) {
+        this.organizationId = organizationId;
     }
 
     public Integer getRoleId() {
@@ -53,9 +53,9 @@ public class SysOrganizationRole {
     public SysOrganizationRole() {
     }
 
-    public SysOrganizationRole(Integer id, Integer organization, Integer roleId) {
+    public SysOrganizationRole(Integer id, Integer organizationId, Integer roleId) {
         this.id = id;
-        this.organization = organization;
+        this.organizationId = organizationId;
         this.roleId = roleId;
     }
 }

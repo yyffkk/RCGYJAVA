@@ -37,6 +37,8 @@ spring:
 #mybatis
 mybatis:
     mapper-locations: classpath:mapper/system/*.xml
+    configuration:
+        map-underscore-to-camel-case: true
 #    type-aliases-package: com.aku.model
 
 #logging debug

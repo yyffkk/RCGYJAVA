@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.system.SysRoleDao">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.system.SysRole">
+        select * from sys_role where id = #{id}
+    </select>
+
+    <select id="findByOrganizationId" parameterType="java.lang.Integer" resultType="com.aku.model.system.SysRole">
+        SELECT r.* from sys_organization as o,sys_organization_role as sor,sys_role r
+        WHERE o.id = sor.organization_id AND r.id = sor.role_id AND o.id = #{organizationId}
+    </select>
+
+</mapper>

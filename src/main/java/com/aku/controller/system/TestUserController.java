@@ -2,6 +2,7 @@ package com.aku.controller.system;
 
 import com.aku.model.system.TestUser;
 import com.aku.service.system.TestUserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class TestUserController {
      * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
+    @RequiresPermissions("insert")
     @PostMapping("/loginSysUser")
     public Map<String,Object> loginSysUser(TestUser testUser){
         return testUserService.loginSysUser(testUser);
@@ -54,6 +56,7 @@ public class TestUserController {
     public Map<String,Object> loginSMSSysUser(TestUser testUser,String captcha){
         return testUserService.loginSMSSysUser(testUser,captcha);
     }
+
 
 
 }
