@@ -16,7 +16,11 @@ public class SysJurisdictionServiceImpl implements SysJurisdictionService {
 
     @Autowired
     SysJurisdictionDao sysJurisdictionDao;
-
+    /**
+     * 根据角色ID查找权限信息
+     * @param roleId 角色ID
+     * @return 权限信息
+     */
     @Override
     public List<SysJurisdiction> findByRoleId(Integer roleId) {
         return sysJurisdictionDao.findByRoleId(roleId);

@@ -164,6 +164,26 @@ public class SysUserServiceImpl implements SysUserService {
     public SysUser findByUserName(String userName) {
         return sysUserDao.findByUserName(userName);
     }
+    /**
+     * 系统用户登出
+     * @return map {message 消息, status 状态}
+     */
+    @Override
+    public Map<String, Object> logout() {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            //获得当前的Subject
+            Subject subject = SecurityUtils.getSubject();
+            subject.logout();
+            map.put("message","登出成功");
+            map.put("status",true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("message","登出失败");
+            map.put("status",false);
+        }
+        return map;
+    }
 
     /**
      * 判断注册参数是否可用

@@ -33,4 +33,14 @@ public class SysRoleServiceImpl implements SysRoleService {
     public SysRole findByOrganizationId(Integer organizationId) {
         return sysRoleDao.findByOrganizationId(organizationId);
     }
+
+    /**
+     * 根据身份ID查找角色信息
+     * @param positionId 身份ID
+     * @return 角色信息
+     */
+    @Override
+    public SysRole findByIdentityId(Integer positionId) {
+        return sysRoleDao.findByIdentityId(positionId);
+    }
 }

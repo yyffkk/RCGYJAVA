@@ -12,4 +12,9 @@
         WHERE o.id = sor.organization_id AND r.id = sor.role_id AND o.id = #{organizationId}
     </select>
 
+    <select id="findByIdentityId" parameterType="java.lang.Integer" resultType="com.aku.model.system.SysRole">
+        select r.* FROM sys_identity as i,sys_identity_role as ir,sys_role as r
+        WHERE i.id = ir.identity_id AND r.id = ir.role_id and i.id = #{positionId}
+    </select>
+
 </mapper>

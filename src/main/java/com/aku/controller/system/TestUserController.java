@@ -2,6 +2,8 @@ package com.aku.controller.system;
 
 import com.aku.model.system.TestUser;
 import com.aku.service.system.TestUserService;
+import com.aku.shiro.ShiroExceptions;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("testUser")
-public class TestUserController {
+public class TestUserController extends ShiroExceptions {
     @Autowired
     TestUserService testUserService;
 
@@ -21,6 +23,7 @@ public class TestUserController {
      * @param testUser 系统用户model
      * @return map {message 消息, status 状态}
      */
+    @RequiresPermissions(value = {"insert2","insert"},logical = Logical.AND)
     @PostMapping("/registerSysUser")
     public Map<String,Object> registerSysUser(TestUser testUser){
         return testUserService.registerSysUser(testUser);

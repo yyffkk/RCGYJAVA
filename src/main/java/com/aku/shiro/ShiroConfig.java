@@ -61,24 +61,24 @@ public class ShiroConfig {
 //        shiroFilterFactoryBean.setUnauthorizedUrl("https://www.baidu.com/");
 
         //配置自定义过滤器 多角色 认证
-        LinkedHashMap<String, Filter> filterMap = new LinkedHashMap<>();
-        filterMap.put("roleOrFilter", new RoleOrFilter());
-        shiroFilterFactoryBean.setFilters(filterMap);
+//        LinkedHashMap<String, Filter> filterMap = new LinkedHashMap<>();
+//        filterMap.put("roleOrFilter", new RoleOrFilter());
+//        shiroFilterFactoryBean.setFilters(filterMap);
 
 
         //new HashMap<String, String>() 会有12条put的限制 ，超过12条put就会出错，所以改为用LinkedHashMap<String, String>()
         //Map<String, String> filterChainDefinitionMap = new HashMap<String, String>();  ×
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+//        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
         // 登出
-        filterChainDefinitionMap.put("/logout", "logout");
+//        filterChainDefinitionMap.put("/logout", "logout");
 
 
         // 对所有用户认证
 //        filterChainDefinitionMap.put("/**", "authc");
 
 
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+//        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
@@ -108,16 +108,16 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
-    /**
-     * 捕获注解的权限不足异常，跳转到指定页面
-     * @return SimpleMappingExceptionResolver
-     */
-    @Bean
-    public SimpleMappingExceptionResolver getSimpleMappingExceptionResolver(){
-        SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
-        Properties properties = new Properties();
-        properties.put("org.apache.shiro.authz.UnauthorizedException","https://www.baidu.com/");
-        simpleMappingExceptionResolver.setExceptionMappings(properties);
-        return simpleMappingExceptionResolver;
-    }
+//    /**
+//     * 捕获注解的权限不足异常，跳转到指定页面
+//     * @return SimpleMappingExceptionResolver
+//     */
+//    @Bean
+//    public SimpleMappingExceptionResolver getSimpleMappingExceptionResolver(){
+//        SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
+//        Properties properties = new Properties();
+//        properties.put("org.apache.shiro.authz.UnauthorizedException","https://www.baidu.com/");
+//        simpleMappingExceptionResolver.setExceptionMappings(properties);
+//        return simpleMappingExceptionResolver;
+//    }
 }

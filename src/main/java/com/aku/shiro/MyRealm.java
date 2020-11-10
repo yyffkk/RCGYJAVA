@@ -15,7 +15,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MyRealm extends AuthorizingRealm {
     @Autowired
@@ -67,21 +69,28 @@ public class MyRealm extends AuthorizingRealm {
         SysRole role1 = sysRoleService.findByOrganizationId(sysUser.getOrganizationId());
 
         //根据身份ID查找角色信息
-
-        //根据用户组查找角色信息
+        SysRole role2 = sysRoleService.findByIdentityId(sysUser.getPositionId());
 
         //根据角色ID查找角色信息
-        SysRole role = sysRoleService.findById(sysUser.getRoleId());
+        SysRole role3 = sysRoleService.findById(sysUser.getRoleId());
         //-2-授权角色
-        authorizationInfo.addRole(role.getName());
         authorizationInfo.addRole(role1.getName());
-
+        authorizationInfo.addRole(role2.getName());
+        authorizationInfo.addRole(role3.getName());
 
         //授权权限
         //-1-查后台数据
         //根据角色ID查找权限拥有的信息
-        List<SysJurisdiction> sysJurisdictionList = sysJurisdictionService.findByRoleId(role.getId());
-        for (SysJurisdiction sysJurisdiction : sysJurisdictionList) {
+        List<SysJurisdiction> sysJurisdictionList1 = sysJurisdictionService.findByRoleId(role1.getId());
+        List<SysJurisdiction> sysJurisdictionList2 = sysJurisdictionService.findByRoleId(role2.getId());
+        List<SysJurisdiction> sysJurisdictionList3 = sysJurisdictionService.findByRoleId(role3.getId());
+        //添加到Set集合中，去掉重复权限数据
+        Set<SysJurisdiction> sysJurisdictionLists = new HashSet<>();
+        sysJurisdictionLists.addAll(sysJurisdictionList1);
+        sysJurisdictionLists.addAll(sysJurisdictionList2);
+        sysJurisdictionLists.addAll(sysJurisdictionList3);
+
+        for (SysJurisdiction sysJurisdiction : sysJurisdictionLists) {
             //-2-如果存在就授权权限
             if (sysJurisdiction.getName()!=null && !"".equals(sysJurisdiction.getName().trim())){
                 //授权

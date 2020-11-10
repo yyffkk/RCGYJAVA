@@ -42,4 +42,10 @@ public interface SysUserService {
      * @return sysUser 系统用户model
      */
     SysUser findByUserName(String userName);
+
+    /**
+     * 系统用户登出
+     * @return map {message 消息, status 状态}
+     */
+    Map<String, Object> logout();
 }

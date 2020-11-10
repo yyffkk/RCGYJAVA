@@ -65,19 +65,7 @@ public class SysUserController {
      */
     @RequestMapping("/logout")
     public Map<String,Object> logout(){
-        Map<String, Object> map = new HashMap<>();
-        try {
-            //获得当前的Subject
-            Subject subject = SecurityUtils.getSubject();
-            subject.logout();
-            map.put("message","登出成功");
-            map.put("status",true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("message","登出失败");
-            map.put("status",false);
-        }
-        return map;
+        return sysUserService.logout();
     }
 
 
