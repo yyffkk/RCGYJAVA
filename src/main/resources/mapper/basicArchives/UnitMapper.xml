@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.basicArchives.UnitDao">
+    <sql id="field">
+        id,floors,unit_number,is_elevator,building_id
+    </sql>
+
+    <select id="list" parameterType="com.aku.model.vo.VoUnit" resultType="com.aku.model.vo.VoUnit">
+        select tu.*,tb.`name` as buildingName
+        from test_unit tu,test_building tb
+        <where>
+            and tu.building_id = tb.id
+            <if test="unitNumber != null">
+                and tu.unit_number = #{unitNumber}
+            </if>
+            <if test="buildingName != null and buildingName != ''">
+                and tb.name = #{buildingName}
+            </if>
+        </where>
+    </select>
+    <insert id="insert" parameterType="com.aku.model.basicArchives.TestUnit">
+        insert into
+        test_unit(floors,unit_number,is_elevator,building_id)
+        values (#{floors},#{unitNumber},#{isElevator},#{buildingId})
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.TestUnit">
+        select
+        <include refid="field"/>
+        from test_unit
+        where id =#{id}
+    </select>
+</mapper>
