@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.basicArchives.UserResidentDao">
+    <sql id="field">
+        id,building_unit_estate_id,name,type,tel,id_type.id_number,
+        pwd,confuse,email,create_id,create_date,effective_time_start,
+        effective_time_end
+    </sql>
+
+    <select id="list" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.model.basicArchives.UserResident">
+        select id,name,tel,id_type,id_number
+        from user_resident
+        <where>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+            <if test="idNumber != null and idNumber != ''">
+                and id_number = #{idNumber}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.aku.model.basicArchives.UserResident">
+        insert into
+        <trim prefix="user_resident(" suffix=")" suffixOverrides=",">
+            building_unit_estate_id,
+            name,
+            type,
+            tel,
+            id_type,
+            id_number,
+            <if test="pwd != null and pwd != ''">
+                pwd,
+            </if>
+            <if test="confuse != null and confuse != ''">
+                confuse,
+            </if>
+            <if test="email != null and email != ''">
+                email,
+            </if>
+            create_id,
+            create_date,
+            <if test="effectiveTimeStart != null">
+                effective_time_start,
+            </if>
+            <if test="effectiveTimeEnd != null">
+                effective_time_end,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{buildingUnitEstateId},
+            #{name},
+            #{type},
+            #{tel},
+            #{idType},
+            #{idNumber},
+            <if test="pwd != null and pwd != ''">
+                #{pwd},
+            </if>
+            <if test="confuse != null and confuse != ''">
+                #{confuse},
+            </if>
+            <if test="email != null and email != ''">
+                #{email},
+            </if>
+            #{createId},
+            #{createDate},
+            <if test="effectiveTimeStart != null">
+                #{effectiveTimeStart,jdbcType=DATE},
+            </if>
+            <if test="effectiveTimeEnd != null">
+                #{effectiveTimeEnd},
+            </if>
+        </trim>
+    </insert>
+</mapper>
