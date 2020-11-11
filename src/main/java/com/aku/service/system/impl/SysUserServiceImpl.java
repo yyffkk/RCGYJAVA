@@ -9,9 +9,9 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,10 +20,10 @@ import java.util.regex.Pattern;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {
-    @Autowired
+    @Resource
     SysUserDao sysUserDao;
 
-    @Autowired
+    @Resource
     private RedisUtil redisUtil;
 
     /**
@@ -33,7 +33,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public Map<String,Object> registerSysUser(SysUser sysUser) {
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String,Object> map = new HashMap<>();
         //初始化非删
         sysUser.setIsDelete(1);
         //初始化状态
@@ -87,14 +87,13 @@ public class SysUserServiceImpl implements SysUserService {
     /**
      * 系统用户短信登录
      * @param sysUser 系统用户model
-     * @param captcha
+     * @param captcha 验证码
      * @return map {message 消息, status 状态}
      */
     @Override
     public Map<String, Object> loginSMSSysUser(SysUser sysUser, String captcha) {
         Map<String, Object> map = new HashMap<>();
         // 此验证码和手机号均为前端传入
-        String CAPTCHA = captcha;
         String MOBILE = sysUser.getTel();
 
         // 校验验证码是否存在Redis中
@@ -108,7 +107,7 @@ public class SysUserServiceImpl implements SysUserService {
         String tempCaptcha = redisUtil.get(MOBILE);
 
         // 校验验证码
-        if (!CAPTCHA.equals(tempCaptcha)) {
+        if (!captcha.equals(tempCaptcha)) {
             map.put("message","验证码错误");
             map.put("status",false);
             return map;

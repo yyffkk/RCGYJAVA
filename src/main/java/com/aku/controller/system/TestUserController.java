@@ -5,17 +5,17 @@ import com.aku.service.system.TestUserService;
 import com.aku.shiro.ShiroExceptions;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 @RestController
 @RequestMapping("testUser")
 public class TestUserController extends ShiroExceptions {
-    @Autowired
+    @Resource
     TestUserService testUserService;
 
     /**

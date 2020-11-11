@@ -3,8 +3,9 @@ package com.aku.service.system.impl;
 import com.aku.dao.system.SysRoleDao;
 import com.aku.model.system.SysRole;
 import com.aku.service.system.SysRoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 角色service实现
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
 
-    @Autowired
+    @Resource
     SysRoleDao sysRoleDao;
 
     /**

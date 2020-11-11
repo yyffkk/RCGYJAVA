@@ -32,4 +32,27 @@
         from test_unit
         where id =#{id}
     </select>
+
+    <update id="update" parameterType="com.aku.model.basicArchives.TestUnit">
+        update test_unit
+        <set>
+            <if test="floors != null">
+                floors = #{floors},
+            </if>
+            <if test="unitNumber != null">
+                unit_number = #{unitNumber},
+            </if>
+            <if test="isElevator != null">
+                is_elevator = #{isElevator},
+            </if>
+            <if test="buildingId != null and buildingId != ''">
+                building_id = #{buildingId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from test_unit where id = #{id}
+    </delete>
 </mapper>

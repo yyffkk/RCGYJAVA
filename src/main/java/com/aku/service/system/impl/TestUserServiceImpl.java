@@ -1,16 +1,12 @@
 package com.aku.service.system.impl;
 
-import com.aku.dao.system.SysUserDao;
 import com.aku.dao.system.TestDao;
-import com.aku.model.system.SysUser;
 import com.aku.model.system.TestUser;
-import com.aku.service.system.SysUserService;
 import com.aku.service.system.TestUserService;
 import com.aku.util.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -18,10 +14,12 @@ import java.util.regex.Pattern;
 
 @Service
 public class TestUserServiceImpl implements TestUserService {
-    @Autowired
+    private final Map<String, Object> map = new HashMap<>();
+
+    @Resource
     TestDao testDao;
 
-    @Autowired
+    @Resource
     private RedisUtil redisUtil;
 
     /**
@@ -69,35 +67,33 @@ public class TestUserServiceImpl implements TestUserService {
     /**
      * 系统用户短信登录
      * @param testUser 系统用户model
-     * @param captcha
+     * @param captcha 验证码
      * @return map {message 消息, status 状态}
      */
     @Override
     public Map<String, Object> loginSMSSysUser(TestUser testUser, String captcha) {
-        Map<String, Object> map = new HashMap<>();
         // 此验证码和手机号均为前端传入
-        String CAPTCHA = captcha;
-        String MOBILE = testUser.getTel();
+//        String MOBILE = testUser.getTel();
 
         // 校验验证码是否存在Redis中
-        if (!redisUtil.exists(MOBILE)) {
+        if (!redisUtil.exists(testUser.getTel())) {
             map.put("message","验证码已过期");
             map.put("status",false);
             return map;
         }
 
         // 获取Redis中的验证码
-        String tempCaptcha = redisUtil.get(MOBILE);
+        String tempCaptcha = redisUtil.get(testUser.getTel());
 
         // 校验验证码
-        if (!CAPTCHA.equals(tempCaptcha)) {
+        if (!captcha.equals(tempCaptcha)) {
             map.put("message","验证码错误");
             map.put("status",false);
             return map;
         }
 
         // 删除Redis中的验证码
-        redisUtil.delete(MOBILE);
+        redisUtil.delete(testUser.getTel());
         map.put("message","验证码正确");
         map.put("status",true);
         return map;
@@ -109,28 +105,28 @@ public class TestUserServiceImpl implements TestUserService {
      */
     @Override
     public Map<String, Object> sendMMSLogin(TestUser testUser) {
-        Map<String, Object> map = new HashMap<>();
         // 验证码为后台随机生成
-        final String CAPTCHA = "666666";
+        String CAPTCHA = "666666";
         // 手机号为前端传入
-        final String MOBILE = testUser.getTel();
+//        final String MOBILE = testUser.getTel();
 
         //验证手机号格式
         Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-        Matcher m=p.matcher(MOBILE);
+        Matcher m=p.matcher(testUser.getTel());
         boolean matches = m.matches();
         if (!matches){
             map.put("message","手机号格式有误");
             map.put("status",false);
             return map;
         }
+
         // 发送短信工具类
 //        SmsSendUtil.send(CAPTCHA, MOBILE);
 
         // 将验证码存入Redis
-        redisUtil.set(MOBILE, CAPTCHA);
+        redisUtil.set(testUser.getTel(), CAPTCHA);
         // 设置验证码过期时间为2分钟
-        redisUtil.expire(MOBILE, 60*2);
+        redisUtil.expire(testUser.getTel(), 60*2);
 
         map.put("message","验证码发送成功");
         map.put("status",true);

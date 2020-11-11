@@ -2,20 +2,17 @@ package com.aku.controller.system;
 
 import com.aku.model.system.SysUser;
 import com.aku.service.system.SysUserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
+import javax.annotation.Resource;
 import java.util.Map;
 
 @RestController
 @RequestMapping("sysUser")
 public class SysUserController {
-    @Autowired
+    @Resource
     SysUserService sysUserService;
 
 

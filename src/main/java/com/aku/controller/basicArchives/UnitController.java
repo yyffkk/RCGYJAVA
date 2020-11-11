@@ -1,17 +1,16 @@
 package com.aku.controller.basicArchives;
 
-import com.aku.model.basicArchives.TestBuilding;
 import com.aku.model.basicArchives.TestUnit;
 import com.aku.model.vo.VoUnit;
 import com.aku.service.basicArchives.UnitService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,7 @@ import java.util.Map;
 @RequestMapping("unit")
 @RestController
 public class UnitController {
-    @Autowired
+    @Resource
     UnitService unitService;
 
     /**
@@ -60,4 +59,25 @@ public class UnitController {
     public TestUnit findById(Integer id){
         return unitService.findById(id);
     }
+
+    /**
+     * 修改单元信息
+     * @param testUnit 单元信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(TestUnit testUnit){
+        return unitService.update(testUnit);
+    }
+
+    /**
+     * 删除单元信息
+     * @param id 单元ID
+     * @return map
+     */
+    @GetMapping("/delete")
+    public Map<String,Object> delete(Integer id){
+        return unitService.delete(id);
+    }
+
 }

@@ -3,9 +3,9 @@ package com.aku.service.system.impl;
 import com.aku.dao.system.SysJurisdictionDao;
 import com.aku.model.system.SysJurisdiction;
 import com.aku.service.system.SysJurisdictionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class SysJurisdictionServiceImpl implements SysJurisdictionService {
 
-    @Autowired
+    @Resource
     SysJurisdictionDao sysJurisdictionDao;
     /**
      * 根据角色ID查找权限信息

@@ -12,4 +12,8 @@ public interface UnitService {
     Map<String, Object> insert(TestUnit testUnit);
 
     TestUnit findById(Integer id);
+
+    Map<String, Object> update(TestUnit testUnit);
+
+    Map<String, Object> delete(Integer id);
 }

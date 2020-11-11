@@ -3,9 +3,9 @@ package com.aku.service.basicArchives.impl;
 import com.aku.dao.basicArchives.BuildingDao;
 import com.aku.model.basicArchives.TestBuilding;
 import com.aku.service.basicArchives.BuildingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
-    @Autowired
+    @Resource
     BuildingDao buildingDao;
 
     private final Map<String,Object> map = new HashMap<>();
