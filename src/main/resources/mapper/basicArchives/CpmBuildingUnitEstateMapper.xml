@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.basicArchives.CpmBuildingUnitEstateDao">
+    <select id="list" parameterType="com.aku.model.vo.VoCpmBuildingUnitEstate" resultType="com.aku.model.vo.VoCpmBuildingUnitEstate">
+        select a.*,ur.name as user_resident_name,ur.tel as user_resident_tel from (
+        select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name
+        from cpm_building_unit_estate cbue,cpm_building cb,cpm_building_unit cbu
+        where cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+        ) as a LEFT JOIN user_resident ur
+        on a.cbu_id = ur.building_unit_estate_id
+        <where>
+            <if test="buildingName != null and buildingName != ''">
+                and a.building_name like concat('%',#{buildingName},'%')
+            </if>
+            <if test="buildingUnitNo != null">
+                and a.building_unit_no like concat('%',#{buildingUnitNo},'%')
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                and a.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="userResidentName != null and userResidentName != ''">
+                and ur.name like concat('%',#{userResidentName},'%')
+            </if>
+            <if test="userResidentTel != null and userResidentTel != ''">
+                and ur.tel = #{userResidentTel}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+        insert into
+            cpm_building_unit_estate(
+            building_unit_id,
+            room_number,
+            status,
+            type,
+            construction_area,
+            indoor_area,
+            create_id,
+            create_date,
+            is_delete
+        )
+        values (
+            #{buildingUnitId},
+            #{roomNumber},
+            #{status},
+            #{type},
+            #{constructionArea},
+            #{indoorArea},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+</mapper>

@@ -1,7 +1,6 @@
 package com.aku.controller.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
-import com.aku.model.basicArchives.TestBuilding;
 import com.aku.model.basicArchives.UserResident;
 import com.aku.service.basicArchives.UserResidentService;
 import com.github.pagehelper.PageHelper;
@@ -43,6 +42,8 @@ public class UserResidentController {
 
     /**
      * 添加住户信息
+     * @param userResident 业主信息
+     * @param cpmBuildingUnitEstate 楼栋单元房产信息
      * @return map
      */
     @PostMapping("/insert")
