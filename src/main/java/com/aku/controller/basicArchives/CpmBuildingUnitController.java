@@ -1,0 +1,83 @@
+package com.aku.controller.basicArchives;
+
+import com.aku.model.basicArchives.CpmBuildingUnit;
+import com.aku.model.vo.VoCpmBuildingUnit;
+import com.aku.service.basicArchives.CpmBuildingUnitService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RequestMapping("cpmBuildingUnit")
+@RestController
+public class CpmBuildingUnitController {
+    @Resource
+    CpmBuildingUnitService cpmBuildingUnitService;
+
+    /**
+     * 查询楼栋单元信息（包含条件搜索）
+     * @param voCpmBuildingUnit 搜索条件
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/list")
+    public Map<String,Object> list(VoCpmBuildingUnit voCpmBuildingUnit, int pageNum, int size){
+        PageHelper.startPage(pageNum,size);
+        List<VoCpmBuildingUnit> voCpmBuildingUnitList =cpmBuildingUnitService.list(voCpmBuildingUnit);
+        PageInfo<VoCpmBuildingUnit> pageInfo = new PageInfo<>(voCpmBuildingUnitList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("voCpmBuildingUnitList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 添加楼栋单元信息
+     * @param cpmBuildingUnit 楼栋单元信息
+     * @return map
+     */
+    @PostMapping("/insert")
+    public Map<String,Object> insert(CpmBuildingUnit cpmBuildingUnit){
+        return cpmBuildingUnitService.insert(cpmBuildingUnit);
+    }
+
+    /**
+     * 根据id查询楼栋单元信息
+     * @param id id
+     * @return 楼栋单元信息
+     */
+    @GetMapping("/findById")
+    public CpmBuildingUnit findById(Integer id){
+        return cpmBuildingUnitService.findById(id);
+    }
+
+    /**
+     * 修改楼栋单元信息
+     * @param cpmBuildingUnit 修改信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(CpmBuildingUnit cpmBuildingUnit){
+        return cpmBuildingUnitService.update(cpmBuildingUnit);
+    }
+
+    /**
+     * 删除楼栋单元信息
+     * @param id id
+     * @return map
+     */
+    @GetMapping("/delete")
+    public Map<String,Object> delete(Integer id){
+        return cpmBuildingUnitService.delete(id);
+    }
+
+}

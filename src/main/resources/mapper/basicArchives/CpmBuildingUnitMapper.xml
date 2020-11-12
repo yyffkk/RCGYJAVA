@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.basicArchives.CpmBuildingUnitDao">
+    <select id="list" parameterType="com.aku.model.vo.VoCpmBuildingUnit" resultType="com.aku.model.vo.VoCpmBuildingUnit">
+        select cnu.id,cnu.building_id,cnu.no,cnu.total_floor,cnu.is_elevator,cb.name as buildingName
+        from cpm_building cb,cpm_building_unit cnu
+        <where>
+            and cb.id = cnu.building_id
+            <if test="buildingName != null and buildingName != ''">
+                and cb.name like concat('%',#{buildingName},'%')
+            </if>
+            <if test="no != null">
+                and cnu.no = #{no}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.aku.model.basicArchives.CpmBuildingUnit">
+        insert into
+        cpm_building_unit(building_id,no,total_floor,is_elevator,create_id,create_date)
+        values
+        (#{buildingId},#{no},#{totalFloor},#{isElevator},#{createId},#{createDate})
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnit">
+        select id,building_id,no,total_floor,is_elevator
+        from cpm_building_unit
+        where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.aku.model.basicArchives.CpmBuildingUnit">
+        update cpm_building_unit
+        <set>
+            <if test="buildingId != null">
+                building_id = #{buildingId},
+            </if>
+            <if test="no != null">
+                no = #{no},
+            </if>
+            <if test="totalFloor != null">
+                total_floor = #{totalFloor},
+            </if>
+            <if test="isElevator != null">
+                is_elevator = #{isElevator},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from cpm_building_unit where id = #{id}
+    </delete>
+</mapper>

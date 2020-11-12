@@ -8,4 +8,12 @@ import java.util.List;
 @Component
 public interface CpmBuildingDao {
     List<CpmBuilding> list(CpmBuilding cpmBuilding);
+
+    int insert(CpmBuilding cpmBuilding);
+
+    CpmBuilding findById(Integer id);
+
+    int update(CpmBuilding cpmBuilding);
+
+    int delete(Integer id);
 }
