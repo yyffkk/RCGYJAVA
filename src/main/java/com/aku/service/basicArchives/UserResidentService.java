@@ -10,4 +10,7 @@ public interface UserResidentService {
     List<UserResident> list(UserResident userResident);
 
     Map<String, Object> insert(UserResident userResident, CpmBuildingUnitEstate cpmBuildingUnitEstate);
+
+    UserResident findByBuildingUnitEstateId(Integer buildingUnitEstateId);
+
 }

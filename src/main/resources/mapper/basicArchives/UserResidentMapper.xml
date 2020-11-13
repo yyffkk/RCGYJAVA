@@ -79,4 +79,39 @@
             </if>
         </trim>
     </insert>
+
+    <select id="findByBuildingUnitEstateId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
+        select * from user_resident where building_unit_estate_id = #{buildingUnitEstateId}
+    </select>
+
+    <update id="update" parameterType="com.aku.model.basicArchives.UserResident">
+        update user_resident
+        <set>
+            <if test="buildingUnitEstateId != null">
+                building_unit_estate_id = #{buildingUnitEstateId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel =#{tel},
+            </if>
+            <if test="idType != null">
+                id_type = #{idType},
+            </if>
+            <if test="idNumber != null and idNumber != ''">
+                id_number = #{idNumber},
+            </if>
+            <if test="pwd != null and pwd != ''">
+                pwd = #{pwd},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

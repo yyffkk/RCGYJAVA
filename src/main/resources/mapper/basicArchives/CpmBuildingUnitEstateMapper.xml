@@ -35,7 +35,7 @@
 
     <insert id="insert" parameterType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
         insert into
-            cpm_building_unit_estate(
+        cpm_building_unit_estate(
             building_unit_id,
             room_number,
             status,
@@ -61,4 +61,49 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+        select * from cpm_building_unit_estate where id =#{id}
+    </select>
+
+    <update id="update" parameterType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+        update cpm_building_unit_estate
+        <set>
+            <if test="buildingUnitId != null">
+                building_unit_id = #{buildingUnitId},
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                room_number = #{roomNumber},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="constructionArea != null">
+                construction_area = #{constructionArea},
+            </if>
+            <if test="indoorArea != null">
+                indoor_area = #{indoorArea},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="modifyId != null">
+                modify_id = #{modifyId},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate},
+            </if>
+        </set>
+        where id =#{id}
+    </update>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        update cpm_building_unit_estate set is_delete = 0 where id = #{id}
+    </update>
 </mapper>

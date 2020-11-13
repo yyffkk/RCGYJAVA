@@ -11,4 +11,8 @@ public interface UserResidentDao {
     List<UserResident> list(UserResident userResident);
 
     int insert(UserResident userResident);
+
+    UserResident findByBuildingUnitEstateId(Integer buildingUnitEstateId);
+
+    int update(UserResident userResident);
 }

@@ -63,4 +63,9 @@ public class UserResidentServiceImpl implements UserResidentService {
         }
         return map;
     }
+
+    @Override
+    public UserResident findByBuildingUnitEstateId(Integer buildingUnitEstateId) {
+        return userResidentDao.findByBuildingUnitEstateId(buildingUnitEstateId);
+    }
 }

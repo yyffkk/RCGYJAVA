@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.basicArchives.CpmParkingSpaceDao">
+    <select id="list" parameterType="com.aku.model.vo.VoCpmParkingSpace" resultType="com.aku.model.vo.VoCpmParkingSpace">
+        SELECT cps.id,cps.code,cps.coordinate,cps.status,cps.type,ur.name as resident_name,ur2.name as user_name
+        from cpm_parking_space cps,user_resident ur,user_resident ur2
+        <where>
+            cps.resident_id = ur.id
+            and cps.user_id = ur2.id
+            <if test="code != null and code != ''">
+                and cps.code like concat('%',#{code},'%')
+            </if>
+            <if test="status != null">
+                and cps.status = #{status}
+            </if>
+            <if test="residentName != null and residentName != ''">
+                and ur.name like concat('%',#{residentName},'%')
+            </if>
+            <if test="userName != null and userName != ''">
+                and ur2.name like concat('%',#{userName},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.aku.model.basicArchives.CpmParkingSpace">
+        insert into
+        cpm_parking_space(
+            code,
+            coordinate,
+            status,
+            type,
+            resident_id,
+            user_id,
+            create_id,
+            create_date
+        )
+        values (
+            #{code},
+            #{coordinate},
+            #{status},
+            #{type},
+            #{residentId},
+            #{userId},
+            #{createId},
+            #{createDate}
+            )
+    </insert>
+</mapper>

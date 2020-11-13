@@ -11,4 +11,10 @@ public interface CpmBuildingUnitEstateDao {
     List<VoCpmBuildingUnitEstate> list(VoCpmBuildingUnitEstate voCpmBuildingUnitEstate);
 
     int insert(CpmBuildingUnitEstate cpmBuildingUnitEstate);
+
+    CpmBuildingUnitEstate findById(Integer id);
+
+    int update(CpmBuildingUnitEstate cpmBuildingUnitEstate);
+
+    int delete(Integer id);
 }
