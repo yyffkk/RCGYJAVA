@@ -61,5 +61,10 @@ public class UserResidentController {
     }
 
 
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody UserResident userResident,@RequestBody Integer cpmParkingSpaceId){
+        return null;
+    }
+
 
 }

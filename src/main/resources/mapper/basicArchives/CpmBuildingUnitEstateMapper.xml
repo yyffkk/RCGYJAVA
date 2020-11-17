@@ -106,4 +106,9 @@
     <update id="delete" parameterType="java.lang.Integer">
         update cpm_building_unit_estate set is_delete = 0 where id = #{id}
     </update>
+
+    <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+        select cbue.id,cbue.building_unit_id,cbue.room_number from user_resident as ur,cpm_resident_estate as cre,cpm_building_unit_estate as cbue
+		where ur.id = cre.resident_id and cbue.id =cre.building_unit_estate_id and ur.id =#{id}
+    </select>
 </mapper>

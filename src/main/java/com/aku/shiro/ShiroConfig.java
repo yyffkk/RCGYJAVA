@@ -1,6 +1,8 @@
 package com.aku.shiro;
 
+import com.aku.filter.CrosFilter;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -8,12 +10,10 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 
 @Configuration
 public class ShiroConfig {
@@ -27,6 +27,20 @@ public class ShiroConfig {
     public MyRealm myRealm() {
         return new MyRealm();
     }
+    @Bean
+    public SessionManager sessionManager() {
+        return new MySessionManager();
+    }
+    @Bean
+    public CrosFilter crosFilter(){
+        CrosFilter crosFilter = new CrosFilter();
+        return crosFilter;
+    }
+    @Bean
+    public LogInterceptor logInterceptor(){
+        LogInterceptor logInterceptor = new LogInterceptor();
+        return logInterceptor;
+    }
 
     /**
      * 权限安全管理器，配置主要是Realm的管理认证
@@ -39,8 +53,12 @@ public class ShiroConfig {
     public SecurityManager securityManager(MyRealm myRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myRealm);
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
+
+
+
 
     /**
      * shiro 过滤器工厂，设置对应的过滤条件和跳转条件
@@ -53,6 +71,12 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
+        Map<String, Filter> filtersMap = new LinkedHashMap<>();
+        //自定义过滤器
+        filtersMap.put("authc",  logInterceptor());
+        filtersMap.put("authc",  crosFilter());
+
+        shiroFilterFactoryBean.setFilters(filtersMap);
 //        // 登录
 //        shiroFilterFactoryBean.setLoginUrl("https://www.baidu.com/");
 //        // 首页
@@ -79,6 +103,7 @@ public class ShiroConfig {
 
 
 //        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
         return shiroFilterFactoryBean;
     }
 

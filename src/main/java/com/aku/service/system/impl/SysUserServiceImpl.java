@@ -73,7 +73,9 @@ public class SysUserServiceImpl implements SysUserService {
         try {
             //登录并存入该用户信息
             subject.login(token);
+
             //认证成功
+            map.put("token",subject.getSession().getId());
             map.put("message","登录成功");
             map.put("status",true);
         } catch (AuthenticationException e) {

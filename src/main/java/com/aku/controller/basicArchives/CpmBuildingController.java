@@ -5,6 +5,8 @@ import com.aku.model.basicArchives.UserResident;
 import com.aku.service.basicArchives.CpmBuildingService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

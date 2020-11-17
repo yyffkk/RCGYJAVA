@@ -17,4 +17,6 @@ public interface CpmBuildingUnitEstateDao {
     int update(CpmBuildingUnitEstate cpmBuildingUnitEstate);
 
     int delete(Integer id);
+
+    List<CpmBuildingUnitEstate> findByResidentId(Integer id);
 }

@@ -121,7 +121,7 @@
     </update>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
-        select id,building_unit_estate_id,name,tel,id_type,id_number
+        select id,name,tel,id_type,id_number
         from user_resident where id = #{id}
     </select>
 </mapper>

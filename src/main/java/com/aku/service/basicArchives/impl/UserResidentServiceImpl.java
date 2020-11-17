@@ -1,13 +1,8 @@
 package com.aku.service.basicArchives.impl;
 
-import com.aku.dao.basicArchives.CpmBuildingUnitEstateDao;
-import com.aku.dao.basicArchives.CpmParkingSpaceDao;
-import com.aku.dao.basicArchives.UserResidentDao;
-import com.aku.model.basicArchives.CpmBuildingUnitEstate;
-import com.aku.model.basicArchives.CpmParkingSpace;
-import com.aku.model.basicArchives.UserResident;
+import com.aku.dao.basicArchives.*;
+import com.aku.model.basicArchives.*;
 import com.aku.model.system.SysUser;
-import com.aku.service.basicArchives.CpmParkingSpaceService;
 import com.aku.service.basicArchives.UserResidentService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -15,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserResidentServiceImpl implements UserResidentService {
@@ -31,6 +23,10 @@ public class UserResidentServiceImpl implements UserResidentService {
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
     @Resource
     CpmParkingSpaceDao cpmParkingSpaceDao;
+    @Resource
+    CpmBuildingDao cpmBuildingDao;
+    @Resource
+    CpmBuildingUnitDao cpmBuildingUnitDao;
 
     @Override
     public List<UserResident> list(UserResident userResident) {
@@ -81,16 +77,32 @@ public class UserResidentServiceImpl implements UserResidentService {
 
     @Override
     public Map<String, Object> findById(Integer id) {
+        //根据id查询住户信息
         UserResident userResident = userResidentDao.findById(id);
-//        CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(userResident.getBuildingUnitEstateId());
+        //查询住户所拥有的房产
+        List<CpmBuildingUnitEstate> cpmBuildingUnitEstateList = cpmBuildingUnitEstateDao.findByResidentId(id);
+        cpmBuildingUnitEstateDao.findById(id);
+        ArrayList<Object> objects = new ArrayList<>();
+        //遍历查询出房产对应的单元和楼栋
+        for (CpmBuildingUnitEstate cpmBuildingUnitEstate : cpmBuildingUnitEstateList) {
+            //根据房产主键id查询对应的单元号
+            CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
+            //根据单元主键id查询对应的楼栋号
+            CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
+            //楼栋，单元，房产（房间）
+            objects.add(cpmBuilding.getId()+","+cpmBuildingUnit.getId()+","+cpmBuildingUnitEstate.getId());
+        }
+        //查询业主所有的车位，判断是否有车位
         List<CpmParkingSpace> cpmParkingSpaceList = cpmParkingSpaceDao.findByResidentId(id);
+        ArrayList<Object> objects1 = new ArrayList<>();
+        //遍历查询所有的车位id
+        for (CpmParkingSpace cpmParkingSpace : cpmParkingSpaceList) {
+            objects1.add(cpmParkingSpace.getId());
+        }
 
-
-//        map.put("userResident",userResident);
-//        map.put("cpmBuildingUnitEstate",cpmBuildingUnitEstate);
-//        if (cpmParkingSpace != null){
-//            map.put("cpmParkingSpaceId",cpmParkingSpace.getId());
-//        }
+        map.put("cpmParkingSpaceIdList",objects1);
+        map.put("userResident",userResident);
+        map.put("cpmBuildingUnitEstateIdList",objects);
         return map;
     }
 }

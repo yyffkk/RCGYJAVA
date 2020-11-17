@@ -3,6 +3,7 @@ package com.aku.controller.system;
 import com.aku.model.system.SysUser;
 import com.aku.service.system.SysUserService;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
