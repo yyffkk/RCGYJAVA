@@ -3,6 +3,8 @@ package com.aku.service.basicArchives.impl;
 import com.aku.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.aku.dao.basicArchives.UserResidentDao;
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
+import com.aku.model.basicArchives.CpmParkingSpace;
+import com.aku.model.basicArchives.CpmResidentEstate;
 import com.aku.model.basicArchives.UserResident;
 import com.aku.model.system.SysUser;
 import com.aku.model.vo.VoCpmBuildingUnitEstate;
@@ -21,7 +23,8 @@ import java.util.Map;
 @Service
 public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateService {
     private final Map<String,Object> map = new HashMap<>();
-
+    //设置业主类型，1业主
+    private static final int RESIDENT_TYPE = 1;
     @Resource
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
     @Resource
@@ -53,6 +56,46 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
 
     }
 
+    @Transactional
+    @Override
+    public Map<String, Object> insert(UserResident userResident, CpmBuildingUnitEstate cpmBuildingUnitEstate) {
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        cpmBuildingUnitEstate.setCreateId(sysUser.getId());
+        cpmBuildingUnitEstate.setCreateDate(new Date());
+        cpmBuildingUnitEstate.setIsDelete(1);
+
+        //添加楼宇单元房产信息
+        int insert1 = cpmBuildingUnitEstateDao.insert(cpmBuildingUnitEstate);
+        if (insert1>0){
+            userResident.setCreateId(sysUser.getId());
+            userResident.setCreateDate(new Date());
+            userResident.setType(RESIDENT_TYPE);
+            //添加业主信息
+            int insert = userResidentDao.insert(userResident);
+            if (insert >0 ){
+                //添加业主房产关联数据
+                CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
+                cpmResidentEstate.setResidentId(userResident.getId());
+                cpmResidentEstate.setBuildingUnitEstateId(cpmBuildingUnitEstate.getId());
+                int insert2 = userResidentDao.insertResidentEstate(cpmResidentEstate);
+                if (insert2>0){
+                    map.put("message","添加楼栋单元房产信息成功,已关联添加成功业主信息");
+                    map.put("status",true);
+                }else {
+                    throw new RuntimeException("添加业主房产关联表失败");
+                }
+            }else {
+                throw new RuntimeException("添加业主信息失败");
+            }
+        }else {
+            map.put("message","添加楼栋单元房产信息失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
     @Override
     public CpmBuildingUnitEstate findById(Integer id) {
         return cpmBuildingUnitEstateDao.findById(id);
@@ -73,7 +116,7 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
             //添加关联业主信息
             userResident.setCreateId(sysUser.getId());
             userResident.setCreateDate(new Date());
-            userResident.setBuildingUnitEstateId(cpmBuildingUnitEstate.getId());
+//            userResident.setBuildingUnitEstateId(cpmBuildingUnitEstate.getId());
 
             int insert = userResidentDao.insert(userResident);
             if (insert>0){

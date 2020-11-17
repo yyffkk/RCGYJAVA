@@ -11,10 +11,6 @@ public class UserResident {
      */
     private Integer id;
     /**
-     * 楼宇单元房产id
-     */
-    private Integer buildingUnitEstateId;
-    /**
      * 业主名称
      */
     private String name;
@@ -67,7 +63,6 @@ public class UserResident {
     public String toString() {
         return "UserResident{" +
                 "id=" + id +
-                ", buildingUnitEstateId=" + buildingUnitEstateId +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", tel='" + tel + '\'' +
@@ -89,14 +84,6 @@ public class UserResident {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getBuildingUnitEstateId() {
-        return buildingUnitEstateId;
-    }
-
-    public void setBuildingUnitEstateId(Integer buildingUnitEstateId) {
-        this.buildingUnitEstateId = buildingUnitEstateId;
     }
 
     public String getName() {
@@ -198,9 +185,8 @@ public class UserResident {
     public UserResident() {
     }
 
-    public UserResident(Integer id, Integer buildingUnitEstateId, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
-        this.buildingUnitEstateId = buildingUnitEstateId;
         this.name = name;
         this.type = type;
         this.tel = tel;

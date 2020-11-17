@@ -9,8 +9,9 @@ import java.util.Map;
 public interface UserResidentService {
     List<UserResident> list(UserResident userResident);
 
-    Map<String, Object> insert(UserResident userResident, CpmBuildingUnitEstate cpmBuildingUnitEstate);
+    Map<String, Object> insert(UserResident userResident,Integer cpmParkingSpaceId);
 
     UserResident findByBuildingUnitEstateId(Integer buildingUnitEstateId);
 
+    Map<String, Object> findById(Integer id);
 }

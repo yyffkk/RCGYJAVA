@@ -11,4 +11,12 @@ public interface CpmParkingSpaceDao {
     List<VoCpmParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace);
 
     int insert(CpmParkingSpace cpmParkingSpace);
+
+    CpmParkingSpace findById(Integer id);
+
+    int update(CpmParkingSpace cpmParkingSpace);
+
+    int delete(Integer id);
+
+    List<CpmParkingSpace>  findByResidentId(Integer id);
 }

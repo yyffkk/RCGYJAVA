@@ -12,6 +12,8 @@ public interface CpmBuildingUnitEstateService {
 
     Map<String, Object> insert(CpmBuildingUnitEstate cpmBuildingUnitEstate);
 
+    Map<String, Object> insert(UserResident userResident, CpmBuildingUnitEstate cpmBuildingUnitEstate);
+
     CpmBuildingUnitEstate findById(Integer id);
 
     Map<String,Object> updateOne(CpmBuildingUnitEstate cpmBuildingUnitEstate, UserResident userResident);
@@ -21,4 +23,5 @@ public interface CpmBuildingUnitEstateService {
     Map<String,Object> updateTwo(CpmBuildingUnitEstate cpmBuildingUnitEstate, UserResident userResident);
 
     Map<String, Object> delete(Integer id);
+
 }

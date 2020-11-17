@@ -35,6 +35,9 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
         cpmParkingSpace.setCreateDate(new Date());
         //添加车位坐标
         cpmParkingSpace.setCoordinate("0,0");
+        if (cpmParkingSpace.getResidentId() != null){
+            cpmParkingSpace.setUserId(cpmParkingSpace.getResidentId());
+        }
 
         int insert = cpmParkingSpaceDao.insert(cpmParkingSpace);
         if (insert >0){
@@ -42,6 +45,37 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
             map.put("status",true);
         }else {
             map.put("message","添加车位信息失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public CpmParkingSpace findById(Integer id) {
+        return cpmParkingSpaceDao.findById(id);
+    }
+
+    @Override
+    public Map<String, Object> update(CpmParkingSpace cpmParkingSpace) {
+        int update = cpmParkingSpaceDao.update(cpmParkingSpace);
+        if (update >0){
+            map.put("message","修改车位信息成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改车位信息失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> delete(Integer id) {
+        int delete = cpmParkingSpaceDao.delete(id);
+        if (delete >0){
+            map.put("message","删除车位信息成功");
+            map.put("status",true);
+        }else {
+            map.put("message","删除车位信息失败");
             map.put("status",false);
         }
         return map;

@@ -6,6 +6,7 @@ import com.aku.shiro.ShiroExceptions;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class TestUserController extends ShiroExceptions {
      */
     @RequiresPermissions(value = {"insert2","insert"},logical = Logical.AND)
     @PostMapping("/registerSysUser")
-    public Map<String,Object> registerSysUser(TestUser testUser){
+    public Map<String,Object> registerSysUser(@RequestBody TestUser testUser){
         return testUserService.registerSysUser(testUser);
     }
 
@@ -36,7 +37,7 @@ public class TestUserController extends ShiroExceptions {
      */
     @RequiresPermissions("insert")
     @PostMapping("/loginSysUser")
-    public Map<String,Object> loginSysUser(TestUser testUser){
+    public Map<String,Object> loginSysUser(@RequestBody TestUser testUser){
         return testUserService.loginSysUser(testUser);
     }
 
@@ -46,7 +47,7 @@ public class TestUserController extends ShiroExceptions {
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/sendMMSLogin")
-    public Map<String,Object> sendMMSLogin (TestUser testUser){
+    public Map<String,Object> sendMMSLogin (@RequestBody TestUser testUser){
         return testUserService.sendMMSLogin (testUser);
     }
 
@@ -56,7 +57,7 @@ public class TestUserController extends ShiroExceptions {
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/loginSMSSysUser")
-    public Map<String,Object> loginSMSSysUser(TestUser testUser,String captcha){
+    public Map<String,Object> loginSMSSysUser(@RequestBody TestUser testUser,@RequestBody String captcha){
         return testUserService.loginSMSSysUser(testUser,captcha);
     }
 

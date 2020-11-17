@@ -2,9 +2,8 @@ package com.aku.controller.system;
 
 import com.aku.model.system.SysUser;
 import com.aku.service.system.SysUserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -22,7 +21,8 @@ public class SysUserController {
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/registerSysUser")
-    public Map<String,Object> registerSysUser(SysUser sysUser){
+    public Map<String,Object> registerSysUser(@RequestBody SysUser sysUser){
+
         return sysUserService.registerSysUser(sysUser);
     }
 
@@ -32,7 +32,9 @@ public class SysUserController {
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/loginSysUser")
-    public Map<String,Object> loginSysUser(SysUser sysUser){
+    public Map<String,Object> loginSysUser(@RequestBody SysUser sysUser){
+        System.out.println(sysUser.getPwd());
+        System.out.println(sysUser.getUserName());
         return sysUserService.loginSysUser(sysUser);
     }
 
@@ -42,7 +44,7 @@ public class SysUserController {
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/sendMMSLogin")
-    public Map<String,Object> sendMMSLogin (SysUser sysUser){
+    public Map<String,Object> sendMMSLogin (@RequestBody SysUser sysUser){
         return sysUserService.sendMMSLogin (sysUser);
     }
 
@@ -52,7 +54,7 @@ public class SysUserController {
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/loginSMSSysUser")
-    public Map<String,Object> loginSMSSysUser(SysUser sysUser,String captcha){
+    public Map<String,Object> loginSMSSysUser(@RequestBody SysUser sysUser,@RequestBody String captcha){
         return sysUserService.loginSMSSysUser(sysUser,captcha);
     }
 
@@ -60,7 +62,7 @@ public class SysUserController {
      * 系统用户登出
      * @return map {message 消息, status 状态}
      */
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public Map<String,Object> logout(){
         return sysUserService.logout();
     }

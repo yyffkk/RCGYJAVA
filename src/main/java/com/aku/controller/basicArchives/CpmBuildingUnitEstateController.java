@@ -12,10 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -59,14 +56,14 @@ public class CpmBuildingUnitEstateController {
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(CpmBuildingUnitEstate cpmBuildingUnitEstate, UserResident userResident){
+    public Map<String,Object> insert(@RequestBody CpmBuildingUnitEstate cpmBuildingUnitEstate,@RequestBody UserResident userResident){
         //判断是否有业主需要关联
         if (cpmBuildingUnitEstate.getStatus() == ESTATE_STATUS){
             //不关联业主
             return cpmBuildingUnitEstateService.insert(cpmBuildingUnitEstate);
         } else {
             //关联业主
-            return userResidentService.insert(userResident, cpmBuildingUnitEstate);
+            return cpmBuildingUnitEstateService.insert(userResident, cpmBuildingUnitEstate);
         }
     }
 
@@ -97,10 +94,16 @@ public class CpmBuildingUnitEstateController {
      * @return map
      */
     @PostMapping("/update")
-    public Map<String,Object> update(VoEstateAndResident voEstateAndResident){
+    public Map<String,Object> update(@RequestBody VoEstateAndResident voEstateAndResident){
+        Map<String,Object> map = new HashMap<>();
         //根据楼栋单元房产Id查询楼栋单元房产信息
         CpmBuildingUnitEstate cpmBuildingUnitEstate2 = cpmBuildingUnitEstateService.findById(voEstateAndResident.getEstate().getId());
 
+        if (cpmBuildingUnitEstate2 == null){
+            map.put("message","ID不存在");
+            map.put("status",false);
+            return map;
+        }
         //判断旧数据是否有业主关联
         if (cpmBuildingUnitEstate2.getStatus() == ESTATE_STATUS){
             //无关联业主
@@ -120,7 +123,6 @@ public class CpmBuildingUnitEstateController {
                 return cpmBuildingUnitEstateService.updateTwo(voEstateAndResident.getEstate(),voEstateAndResident.getResident());
             }else {
                 //已有关联业主，不可选择未售状态
-                Map<String,Object> map = new HashMap<>();
                 map.put("message","已有关联业主，不可选择未售状态");
                 map.put("status",false);
                 return map;

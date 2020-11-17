@@ -31,8 +31,12 @@
             coordinate,
             status,
             type,
-            resident_id,
-            user_id,
+            <if test="residentId != null">
+                resident_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
             create_id,
             create_date
         )
@@ -41,10 +45,51 @@
             #{coordinate},
             #{status},
             #{type},
-            #{residentId},
-            #{userId},
+            <if test="residentId != null">
+                #{residentId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
             #{createId},
             #{createDate}
             )
     </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmParkingSpace">
+        select id,code,coordinate,status,type,resident_id
+        from cpm_parking_space where id =#{id}
+    </select>
+
+    <update id="update" parameterType="com.aku.model.basicArchives.CpmParkingSpace">
+        update cpm_parking_space
+        <set>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="residentId != null">
+                resident_id = #{residentId},
+            </if>
+            <if test="coordinate != null and coordinate != ''">
+                coordinate = #{coordinate},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate},
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from cpm_parking_space where id = #{id}
+    </delete>
+
+    <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmParkingSpace">
+        select id from cpm_parking_space where resident_id = #{residentId}
+    </select>
 </mapper>

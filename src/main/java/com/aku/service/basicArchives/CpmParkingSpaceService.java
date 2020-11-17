@@ -10,4 +10,10 @@ public interface CpmParkingSpaceService {
     List<VoCpmParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace);
 
     Map<String, Object> insert(CpmParkingSpace cpmParkingSpace);
+
+    CpmParkingSpace findById(Integer id);
+
+    Map<String, Object> update(CpmParkingSpace cpmParkingSpace);
+
+    Map<String, Object> delete(Integer id);
 }

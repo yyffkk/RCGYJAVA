@@ -5,10 +5,7 @@ import com.aku.model.vo.VoCpmBuildingUnit;
 import com.aku.service.basicArchives.CpmBuildingUnitService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -46,7 +43,7 @@ public class CpmBuildingUnitController {
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(CpmBuildingUnit cpmBuildingUnit){
+    public Map<String,Object> insert(@RequestBody CpmBuildingUnit cpmBuildingUnit){
         return cpmBuildingUnitService.insert(cpmBuildingUnit);
     }
 
@@ -66,7 +63,7 @@ public class CpmBuildingUnitController {
      * @return map
      */
     @PostMapping("/update")
-    public Map<String,Object> update(CpmBuildingUnit cpmBuildingUnit){
+    public Map<String,Object> update(@RequestBody CpmBuildingUnit cpmBuildingUnit){
         return cpmBuildingUnitService.update(cpmBuildingUnit);
     }
 

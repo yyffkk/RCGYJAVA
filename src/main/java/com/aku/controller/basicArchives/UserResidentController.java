@@ -5,10 +5,7 @@ import com.aku.model.basicArchives.UserResident;
 import com.aku.service.basicArchives.UserResidentService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -29,7 +26,9 @@ public class UserResidentController {
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(UserResident userResident,int pageNum,int size){
+    public Map<String,Object> list(UserResident userResident,Integer pageNum,Integer size){
+        System.out.println(pageNum);
+        System.out.println(size);
         PageHelper.startPage(pageNum,size);
         List<UserResident> userResidentList = userResidentService.list(userResident);
         PageInfo<UserResident> pageInfo = new PageInfo<>(userResidentList);
@@ -41,14 +40,26 @@ public class UserResidentController {
     }
 
     /**
-     * 添加住户信息
+     * 添加业主信息
      * @param userResident 业主信息
-     * @param cpmBuildingUnitEstate 楼栋单元房产信息
-     * @return map
+     * @param cpmParkingSpaceId 关联车位主键id
+     * @return
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(UserResident userResident, CpmBuildingUnitEstate cpmBuildingUnitEstate){
-        return userResidentService.insert(userResident,cpmBuildingUnitEstate);
+    public Map<String,Object> insert(@RequestBody UserResident userResident,@RequestBody Integer cpmParkingSpaceId){
+        return userResidentService.insert(userResident,cpmParkingSpaceId);
     }
+
+    /**
+     * 根据业主主键id查询业主信息（及其关联的房屋信息和车位信息）
+     * @param id 业主主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer id){
+        return userResidentService.findById(id);
+    }
+
+
 
 }

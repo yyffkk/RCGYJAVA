@@ -14,13 +14,13 @@
         from user_resident
         <where>
             <if test="name != null and name != ''">
-                and name = #{name}
+                and name like concat('%',#{name},'%')
             </if>
             <if test="tel != null and tel != ''">
-                and tel = #{tel}
+                and tel like concat('%',#{tel},'%')
             </if>
             <if test="idNumber != null and idNumber != ''">
-                and id_number = #{idNumber}
+                and id_number like concat('%',#{idNumber},'%')
             </if>
         </where>
     </select>
@@ -28,7 +28,6 @@
     <insert id="insert" parameterType="com.aku.model.basicArchives.UserResident">
         insert into
         <trim prefix="user_resident(" suffix=")" suffixOverrides=",">
-            building_unit_estate_id,
             name,
             type,
             tel,
@@ -54,7 +53,6 @@
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{buildingUnitEstateId},
             #{name},
             #{type},
             #{tel},
@@ -78,18 +76,25 @@
                 #{effectiveTimeEnd},
             </if>
         </trim>
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertResidentEstate" parameterType="com.aku.model.basicArchives.CpmResidentEstate">
+        insert into cpm_resident_estate(building_unit_estate_id,resident_id)
+        values (#{buildingUnitEstateId},#{residentId})
     </insert>
 
     <select id="findByBuildingUnitEstateId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
-        select * from user_resident where building_unit_estate_id = #{buildingUnitEstateId}
+        select ur.* from user_resident as ur,cpm_resident_estate as cre
+        where ur.id = cre.resident_id and
+        cre.building_unit_estate_id = #{buildingUnitEstateId}
     </select>
 
     <update id="update" parameterType="com.aku.model.basicArchives.UserResident">
         update user_resident
         <set>
-            <if test="buildingUnitEstateId != null">
-                building_unit_estate_id = #{buildingUnitEstateId},
-            </if>
             <if test="name != null and name != ''">
                 name = #{name},
             </if>
@@ -114,4 +119,9 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
+        select id,building_unit_estate_id,name,tel,id_type,id_number
+        from user_resident where id = #{id}
+    </select>
 </mapper>

@@ -1,10 +1,13 @@
 package com.aku.service.basicArchives.impl;
 
 import com.aku.dao.basicArchives.CpmBuildingUnitEstateDao;
+import com.aku.dao.basicArchives.CpmParkingSpaceDao;
 import com.aku.dao.basicArchives.UserResidentDao;
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
+import com.aku.model.basicArchives.CpmParkingSpace;
 import com.aku.model.basicArchives.UserResident;
 import com.aku.model.system.SysUser;
+import com.aku.service.basicArchives.CpmParkingSpaceService;
 import com.aku.service.basicArchives.UserResidentService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -26,6 +29,8 @@ public class UserResidentServiceImpl implements UserResidentService {
     UserResidentDao userResidentDao;
     @Resource
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
+    @Resource
+    CpmParkingSpaceDao cpmParkingSpaceDao;
 
     @Override
     public List<UserResident> list(UserResident userResident) {
@@ -34,31 +39,36 @@ public class UserResidentServiceImpl implements UserResidentService {
 
     @Transactional
     @Override
-    public Map<String, Object> insert(UserResident userResident, CpmBuildingUnitEstate cpmBuildingUnitEstate) {
+    public Map<String, Object> insert(UserResident userResident,Integer cpmParkingSpaceId) {
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        cpmBuildingUnitEstate.setCreateId(sysUser.getId());
-        cpmBuildingUnitEstate.setCreateDate(new Date());
-        cpmBuildingUnitEstate.setIsDelete(1);
-
-        //添加楼宇单元房产信息
-        int insert1 = cpmBuildingUnitEstateDao.insert(cpmBuildingUnitEstate);
-        if (insert1>0){
-            userResident.setBuildingUnitEstateId(cpmBuildingUnitEstate.getId());
-            userResident.setCreateId(sysUser.getId());
-            userResident.setCreateDate(new Date());
-            userResident.setType(RESIDENT_TYPE);
-            //添加业主信息
-            int insert = userResidentDao.insert(userResident);
-            if (insert >0 ){
-                map.put("message","添加楼栋单元房产信息成功,已关联添加成功业主信息");
-                map.put("status",true);
+        userResident.setCreateId(sysUser.getId());
+        userResident.setCreateDate(new Date());
+        userResident.setType(RESIDENT_TYPE);
+        //添加业主信息(及其关联楼栋单元房产)
+        int insert = userResidentDao.insert(userResident);
+        if (insert >0 ){
+            //添加车位信息
+            if (cpmParkingSpaceId != null){
+                CpmParkingSpace cpmParkingSpace = new CpmParkingSpace();
+                cpmParkingSpace.setId(cpmParkingSpaceId);
+                cpmParkingSpace.setResidentId(userResident.getId());
+                cpmParkingSpace.setModifyId(sysUser.getId());
+                cpmParkingSpace.setModifyDate(new Date());
+                int update = cpmParkingSpaceDao.update(cpmParkingSpace);
+                if (update>0){
+                    map.put("message","添加业主信息成功，已关联楼栋单元房产信息,及其成功关联车位");
+                    map.put("status",true);
+                }else {
+                    throw new RuntimeException("关联车位信息失败");
+                }
             }else {
-                throw new RuntimeException("添加业主信息失败");
+                map.put("message","添加业主信息成功，已关联楼栋单元房产信息");
+                map.put("status",true);
             }
         }else {
-            map.put("message","添加楼栋单元房产信息失败");
+            map.put("message","添加业主信息失败");
             map.put("status",false);
         }
         return map;
@@ -67,5 +77,20 @@ public class UserResidentServiceImpl implements UserResidentService {
     @Override
     public UserResident findByBuildingUnitEstateId(Integer buildingUnitEstateId) {
         return userResidentDao.findByBuildingUnitEstateId(buildingUnitEstateId);
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        UserResident userResident = userResidentDao.findById(id);
+//        CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(userResident.getBuildingUnitEstateId());
+        List<CpmParkingSpace> cpmParkingSpaceList = cpmParkingSpaceDao.findByResidentId(id);
+
+
+//        map.put("userResident",userResident);
+//        map.put("cpmBuildingUnitEstate",cpmBuildingUnitEstate);
+//        if (cpmParkingSpace != null){
+//            map.put("cpmParkingSpaceId",cpmParkingSpace.getId());
+//        }
+        return map;
     }
 }

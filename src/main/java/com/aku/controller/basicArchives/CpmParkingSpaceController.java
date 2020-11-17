@@ -6,10 +6,7 @@ import com.aku.model.vo.VoCpmParkingSpace;
 import com.aku.service.basicArchives.CpmParkingSpaceService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -47,10 +44,38 @@ public class CpmParkingSpaceController {
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(CpmParkingSpace cpmParkingSpace){
+    public Map<String,Object> insert(@RequestBody CpmParkingSpace cpmParkingSpace){
         return cpmParkingSpaceService.insert(cpmParkingSpace);
     }
 
+    /**
+     * 根据车位主键ID查询车位信息
+     * @param id 车位主键id
+     * @return 车位信息
+     */
+    @GetMapping("/findById")
+    public CpmParkingSpace findById(Integer id){
+        return cpmParkingSpaceService.findById(id);
+    }
 
+    /**
+     * 修改车位信息
+     * @param cpmParkingSpace 车位信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody CpmParkingSpace cpmParkingSpace){
+        return cpmParkingSpaceService.update(cpmParkingSpace);
+    }
+
+    /**
+     * 删除车位信息
+     * @param id 车位主键id
+     * @return map
+     */
+    @GetMapping("/delete")
+    public Map<String,Object> delete(Integer id){
+        return cpmParkingSpaceService.delete(id);
+    }
 
 }

@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.basicArchives.CpmBuildingUnitEstateDao">
     <select id="list" parameterType="com.aku.model.vo.VoCpmBuildingUnitEstate" resultType="com.aku.model.vo.VoCpmBuildingUnitEstate">
-        select a.*,ur.name as user_resident_name,ur.tel as user_resident_tel from (
-        select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name
-        from cpm_building_unit_estate cbue,cpm_building cb,cpm_building_unit cbu
-        where cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+        select a.id,a.building_name,a.building_unit_no,a.building_name,a.status,a.type,a.construction_area,a.indoor_area,ur.name as user_resident_name,ur.tel as user_resident_tel from (
+        select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name,cre.resident_id as resident_id
+        from cpm_building_unit_estate cbue,cpm_building cb,cpm_building_unit cbu,cpm_resident_estate cre
+        where cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cbue.id = cre.building_unit_estate_id
         ) as a LEFT JOIN user_resident ur
-        on a.cbu_id = ur.building_unit_estate_id
+        on a.resident_id = ur.id
         <where>
             <if test="buildingName != null and buildingName != ''">
                 and a.building_name like concat('%',#{buildingName},'%')
