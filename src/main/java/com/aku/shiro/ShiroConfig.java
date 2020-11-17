@@ -1,6 +1,5 @@
 package com.aku.shiro;
 
-import com.aku.filter.CrosFilter;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -11,9 +10,6 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.Filter;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
@@ -30,16 +26,6 @@ public class ShiroConfig {
     @Bean
     public SessionManager sessionManager() {
         return new MySessionManager();
-    }
-    @Bean
-    public CrosFilter crosFilter(){
-        CrosFilter crosFilter = new CrosFilter();
-        return crosFilter;
-    }
-    @Bean
-    public LogInterceptor logInterceptor(){
-        LogInterceptor logInterceptor = new LogInterceptor();
-        return logInterceptor;
     }
 
     /**
@@ -71,12 +57,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        Map<String, Filter> filtersMap = new LinkedHashMap<>();
-        //自定义过滤器
-        filtersMap.put("authc",  logInterceptor());
-        filtersMap.put("authc",  crosFilter());
 
-        shiroFilterFactoryBean.setFilters(filtersMap);
 //        // 登录
 //        shiroFilterFactoryBean.setLoginUrl("https://www.baidu.com/");
 //        // 首页
