@@ -1,7 +1,8 @@
 package com.aku.controller.basicArchives;
 
-import com.aku.model.basicArchives.CpmBuildingUnitEstate;
 import com.aku.model.basicArchives.UserResident;
+import com.aku.vo.basicArchives.VoRelatives;
+import com.aku.vo.basicArchives.VoUpdateResident;
 import com.aku.service.basicArchives.UserResidentService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,14 +41,22 @@ public class UserResidentController {
     }
 
     /**
-     * 添加业主信息
+     *
      * @param userResident 业主信息
      * @param cpmParkingSpaceId 关联车位主键id
+     * @return map
+     */
+    /**
+     * 添加业主信息
+     * @param userResident 业主信息
+     * @param voRelativesList 亲属信息集合
+     * @param buildingUnitEstateIds 关联房产主键id集合
+     * @param cpmParkingSpaceIds 关联车位主键id集合
      * @return
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody UserResident userResident,@RequestBody Integer cpmParkingSpaceId){
-        return userResidentService.insert(userResident,cpmParkingSpaceId);
+    public Map<String,Object> insert(@RequestBody UserResident userResident, @RequestBody List<VoRelatives> voRelativesList,@RequestBody List<Integer> buildingUnitEstateIds, @RequestBody List<Integer> cpmParkingSpaceIds){
+        return userResidentService.insert(userResident,voRelativesList,cpmParkingSpaceIds,buildingUnitEstateIds);
     }
 
     /**
@@ -61,10 +70,26 @@ public class UserResidentController {
     }
 
 
+    /**
+     * 修改业主信息
+     * @param voUpdateResident 修改业主信息Vo，关联亲属
+     * @return map
+     */
     @PostMapping("/update")
-    public Map<String,Object> update(@RequestBody UserResident userResident,@RequestBody Integer cpmParkingSpaceId){
-        return null;
+    public Map<String,Object> update(@RequestBody VoUpdateResident voUpdateResident){
+        return userResidentService.update(voUpdateResident);
     }
+
+    /**
+     * 删除业主信息
+     * @param id 业主主键id
+     * @return map
+     */
+    @GetMapping("/delete")
+    public Map<String,Object> delete(int id){
+        return userResidentService.delete(id);
+    }
+
 
 
 }

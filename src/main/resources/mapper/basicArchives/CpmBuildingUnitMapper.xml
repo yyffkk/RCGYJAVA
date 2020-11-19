@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.basicArchives.CpmBuildingUnitDao">
-    <select id="list" parameterType="com.aku.model.vo.VoCpmBuildingUnit" resultType="com.aku.model.vo.VoCpmBuildingUnit">
+    <select id="list" parameterType="com.aku.vo.basicArchives.VoCpmBuildingUnit" resultType="com.aku.vo.basicArchives.VoCpmBuildingUnit">
         select cnu.id,cnu.building_id,cnu.no,cnu.total_floor,cnu.is_elevator,cb.name as buildingName
         from cpm_building cb,cpm_building_unit cnu
         <where>
@@ -52,4 +52,8 @@
     <delete id="delete" parameterType="java.lang.Integer">
         delete from cpm_building_unit where id = #{id}
     </delete>
+
+    <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+        select id as value,no as label from cpm_building_unit
+    </select>
 </mapper>

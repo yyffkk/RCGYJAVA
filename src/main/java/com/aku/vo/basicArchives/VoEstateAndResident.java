@@ -1,4 +1,4 @@
-package com.aku.model.vo;
+package com.aku.vo.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
 import com.aku.model.basicArchives.UserResident;

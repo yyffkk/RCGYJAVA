@@ -1,7 +1,7 @@
 package com.aku.dao.basicArchives;
 
 import com.aku.model.basicArchives.CpmParkingSpace;
-import com.aku.model.vo.VoCpmParkingSpace;
+import com.aku.vo.basicArchives.VoCpmParkingSpace;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

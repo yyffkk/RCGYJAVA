@@ -12,10 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 public class CorsInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        response.setHeader("Access-Control-Allow-Origin",  request.getHeader("Origin"));
+//        response.setHeader("Access-Control-Allow-Origin",  request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Origin",  "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "86400");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type,X-Admin-Token");//这里“Access-Token”是我要传到后台的内容key
+        response.setHeader("Access-Control-Expose-Headers", "*");
         System.out.println(request.getRequestURL());
         // 如果是OPTIONS则结束请求
         if (HttpMethod.OPTIONS.toString().equals(request.getMethod())) {

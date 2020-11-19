@@ -9,10 +9,12 @@
         effective_time_end
     </sql>
 
+<!--    查询业主信息list-->
     <select id="list" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident
         <where>
+            and type = 1
             <if test="name != null and name != ''">
                 and name like concat('%',#{name},'%')
             </if>
@@ -25,6 +27,7 @@
         </where>
     </select>
 
+    <!-- 添加业主信息-->
     <insert id="insert" parameterType="com.aku.model.basicArchives.UserResident">
         insert into
         <trim prefix="user_resident(" suffix=")" suffixOverrides=",">
@@ -80,18 +83,81 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
-
+    <!--    添加业主亲属关联-->
+    <insert id="insertResidentRelatives" parameterType="com.aku.model.basicArchives.UserResidentRelatives">
+        insert into user_resident_relatives(resident_id,relatives_id,identity)
+        values (#{resident_id},#{relatives_id},#{identity})
+    </insert>
+    <!--添加亲属信息-->
+    <insert id="insertRelatives" parameterType="com.aku.vo.basicArchives.VoRelatives">
+        insert into
+        <trim prefix="user_resident(" suffix=")" suffixOverrides=",">
+            name,
+            type,
+            tel,
+            id_type,
+            id_number,
+            <if test="pwd != null and pwd != ''">
+                pwd,
+            </if>
+            <if test="confuse != null and confuse != ''">
+                confuse,
+            </if>
+            <if test="email != null and email != ''">
+                email,
+            </if>
+            create_id,
+            create_date,
+            <if test="effectiveTimeStart != null">
+                effective_time_start,
+            </if>
+            <if test="effectiveTimeEnd != null">
+                effective_time_end,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{name},
+            #{type},
+            #{tel},
+            #{idType},
+            #{idNumber},
+            <if test="pwd != null and pwd != ''">
+                #{pwd},
+            </if>
+            <if test="confuse != null and confuse != ''">
+                #{confuse},
+            </if>
+            <if test="email != null and email != ''">
+                #{email},
+            </if>
+            #{createId},
+            #{createDate},
+            <if test="effectiveTimeStart != null">
+                #{effectiveTimeStart,jdbcType=DATE},
+            </if>
+            <if test="effectiveTimeEnd != null">
+                #{effectiveTimeEnd},
+            </if>
+        </trim>
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+    <!--添加业主房产关联-->
     <insert id="insertResidentEstate" parameterType="com.aku.model.basicArchives.CpmResidentEstate">
         insert into cpm_resident_estate(building_unit_estate_id,resident_id)
         values (#{buildingUnitEstateId},#{residentId})
     </insert>
 
+<!--    根据房产id查询业主信息-->
     <select id="findByBuildingUnitEstateId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
         select ur.* from user_resident as ur,cpm_resident_estate as cre
         where ur.id = cre.resident_id and
         cre.building_unit_estate_id = #{buildingUnitEstateId}
     </select>
 
+<!--    修改住户信息-->
     <update id="update" parameterType="com.aku.model.basicArchives.UserResident">
         update user_resident
         <set>
@@ -120,8 +186,30 @@
         where id = #{id}
     </update>
 
+<!--    根据住户id查询住户信息-->
     <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident where id = #{id}
     </select>
+<!--根据业主ID查询亲属信息-->
+    <select id="findRelativesById" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoRelatives">
+        select ur2.name,ur2.tel,urr.identity,ur2.id_type,ur2.id_number
+        from user_resident as ur1,user_resident_relatives as urr,user_resident as ur2
+		where ur1.id = urr.resident_id and ur2.id = urr.relatives_id and ur1.id =#{id}
+    </select>
+<!--根据业主亲属关联主键id删除业主亲属关联信息-->
+    <delete id="deleteRelativesId" parameterType="java.lang.Integer">
+        delete from user_resident_relatives where id =#{id}
+    </delete>
+<!--根据业主id和亲属id修改业主亲属关联中的身份信息-->
+    <update id="updateResidentRelatives" parameterType="com.aku.model.basicArchives.UserResidentRelatives">
+        update user_resident_relatives
+        set identity = #{identity}
+        where resident_id = #{residentId} and relatives_id = #{relativesId}
+    </update>
+<!--根据id删除业主-->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from user_resident where id =#{id}
+    </delete>
+
 </mapper>

@@ -2,20 +2,16 @@ package com.aku.controller.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
 import com.aku.model.basicArchives.UserResident;
-import com.aku.model.system.SysUser;
-import com.aku.model.vo.VoCpmBuildingUnitEstate;
-import com.aku.model.vo.VoEstateAndResident;
+import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
+import com.aku.vo.basicArchives.VoEstateAndResident;
 import com.aku.service.basicArchives.CpmBuildingUnitEstateService;
 import com.aku.service.basicArchives.UserResidentService;
+import com.aku.vo.basicArchives.VoFindAll;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,5 +136,13 @@ public class CpmBuildingUnitEstateController {
         return cpmBuildingUnitEstateService.delete(id);
     }
 
+    /**
+     * 查询所有楼栋单元房产id和name
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findAll")
+    public List<VoFindAll> findAll(){
+        return cpmBuildingUnitEstateService.findAll();
+    }
 
 }

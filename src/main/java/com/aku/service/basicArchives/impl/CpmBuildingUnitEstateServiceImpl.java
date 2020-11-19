@@ -3,12 +3,12 @@ package com.aku.service.basicArchives.impl;
 import com.aku.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.aku.dao.basicArchives.UserResidentDao;
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
-import com.aku.model.basicArchives.CpmParkingSpace;
 import com.aku.model.basicArchives.CpmResidentEstate;
 import com.aku.model.basicArchives.UserResident;
 import com.aku.model.system.SysUser;
-import com.aku.model.vo.VoCpmBuildingUnitEstate;
+import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.aku.service.basicArchives.CpmBuildingUnitEstateService;
+import com.aku.vo.basicArchives.VoFindAll;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -198,5 +198,10 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
             map.put("status",false);
         }
         return map;
+    }
+
+    @Override
+    public List<VoFindAll> findAll() {
+        return cpmBuildingUnitEstateDao.findAll();
     }
 }

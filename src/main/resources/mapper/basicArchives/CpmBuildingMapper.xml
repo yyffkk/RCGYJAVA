@@ -27,7 +27,9 @@
             <if test="coordinate != null and coordinate != ''">
                 coordinate,
             </if>
-            total_floor,
+            <if test="totalFloor != null">
+                total_floor,
+            </if>
             create_id,
             create_date,
             <if test="modifyId != null">
@@ -45,7 +47,9 @@
             <if test="coordinate != null and coordinate != ''">
                 #{coordinate},
             </if>
-            #{totalFloor},
+            <if test="totalFloor != null">
+                #{totalFloor},
+            </if>
             #{createId},
             #{createDate},
             <if test="modifyId != null">
@@ -85,4 +89,8 @@
     <delete id="delete" parameterType="java.lang.Integer">
         delete from cpm_building where id = #{id}
     </delete>
+
+    <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+        select id as `value`,name as label from cpm_building
+    </select>
 </mapper>

@@ -3,7 +3,7 @@ package com.aku.service.basicArchives.impl;
 import com.aku.dao.basicArchives.CpmParkingSpaceDao;
 import com.aku.model.basicArchives.CpmParkingSpace;
 import com.aku.model.system.SysUser;
-import com.aku.model.vo.VoCpmParkingSpace;
+import com.aku.vo.basicArchives.VoCpmParkingSpace;
 import com.aku.service.basicArchives.CpmParkingSpaceService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;

@@ -2,7 +2,8 @@ package com.aku.service.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
 import com.aku.model.basicArchives.UserResident;
-import com.aku.model.vo.VoCpmBuildingUnitEstate;
+import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
+import com.aku.vo.basicArchives.VoFindAll;
 
 import java.util.List;
 import java.util.Map;
@@ -24,4 +25,5 @@ public interface CpmBuildingUnitEstateService {
 
     Map<String, Object> delete(Integer id);
 
+    List<VoFindAll> findAll();
 }

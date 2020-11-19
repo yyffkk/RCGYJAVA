@@ -1,6 +1,7 @@
 package com.aku.dao.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuilding;
+import com.aku.vo.basicArchives.VoFindAll;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface CpmBuildingDao {
     int update(CpmBuilding cpmBuilding);
 
     int delete(Integer id);
+
+    List<VoFindAll> findAll();
 }

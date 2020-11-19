@@ -1,8 +1,7 @@
 package com.aku.controller.basicArchives;
 
 import com.aku.model.basicArchives.CpmParkingSpace;
-import com.aku.model.vo.VoCpmBuildingUnitEstate;
-import com.aku.model.vo.VoCpmParkingSpace;
+import com.aku.vo.basicArchives.VoCpmParkingSpace;
 import com.aku.service.basicArchives.CpmParkingSpaceService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

@@ -1,7 +1,9 @@
 package com.aku.controller.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnit;
-import com.aku.model.vo.VoCpmBuildingUnit;
+import com.aku.vo.basicArchives.VoCpmBuildingUnit;
+import com.aku.vo.basicArchives.VoFindAll;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.service.basicArchives.CpmBuildingUnitService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -69,12 +71,20 @@ public class CpmBuildingUnitController {
 
     /**
      * 删除楼栋单元信息
-     * @param id id
+     * @param ids id集合
      * @return map
      */
-    @GetMapping("/delete")
-    public Map<String,Object> delete(Integer id){
-        return cpmBuildingUnitService.delete(id);
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return cpmBuildingUnitService.delete(ids.getIds());
     }
 
+    /**
+     * 查询所有楼栋单元id和name
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findAll")
+    public List<VoFindAll> findAll(){
+        return cpmBuildingUnitService.findAll();
+    }
 }

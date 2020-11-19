@@ -3,8 +3,9 @@ package com.aku.service.basicArchives.impl;
 import com.aku.dao.basicArchives.CpmBuildingUnitDao;
 import com.aku.model.basicArchives.CpmBuildingUnit;
 import com.aku.model.system.SysUser;
-import com.aku.model.vo.VoCpmBuildingUnit;
+import com.aku.vo.basicArchives.VoCpmBuildingUnit;
 import com.aku.service.basicArchives.CpmBuildingUnitService;
+import com.aku.vo.basicArchives.VoFindAll;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -65,9 +66,15 @@ public class CpmBuildingUnitServiceImpl implements CpmBuildingUnitService {
     }
 
     @Override
-    public Map<String, Object> delete(Integer id) {
-        int delete = cpmBuildingUnitDao.delete(id);
-        if (delete>0){
+    public Map<String, Object> delete(int[] ids) {
+        boolean flag = true;
+        for (int id : ids) {
+            int delete = cpmBuildingUnitDao.delete(id);
+            if (delete<=0){
+                flag = false;
+            }
+        }
+        if (flag){
             map.put("message","删除楼栋单元信息成功");
             map.put("status",true);
         }else {
@@ -75,5 +82,10 @@ public class CpmBuildingUnitServiceImpl implements CpmBuildingUnitService {
             map.put("status",false);
         }
         return map;
+    }
+
+    @Override
+    public List<VoFindAll> findAll() {
+        return cpmBuildingUnitDao.findAll();
     }
 }

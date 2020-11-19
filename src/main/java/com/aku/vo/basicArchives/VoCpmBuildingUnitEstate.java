@@ -1,4 +1,4 @@
-package com.aku.model.vo;
+package com.aku.vo.basicArchives;
 
 import java.math.BigDecimal;
 import java.util.Date;

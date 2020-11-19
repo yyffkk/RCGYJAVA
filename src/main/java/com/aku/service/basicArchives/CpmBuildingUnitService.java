@@ -1,7 +1,8 @@
 package com.aku.service.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnit;
-import com.aku.model.vo.VoCpmBuildingUnit;
+import com.aku.vo.basicArchives.VoCpmBuildingUnit;
+import com.aku.vo.basicArchives.VoFindAll;
 
 import java.util.List;
 import java.util.Map;
@@ -15,5 +16,7 @@ public interface CpmBuildingUnitService {
 
     Map<String, Object> update(CpmBuildingUnit cpmBuildingUnit);
 
-    Map<String, Object> delete(Integer id);
+    Map<String, Object> delete(int[] ids);
+
+    List<VoFindAll> findAll();
 }

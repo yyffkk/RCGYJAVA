@@ -1,12 +1,11 @@
 package com.aku.controller.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuilding;
-import com.aku.model.basicArchives.UserResident;
+import com.aku.vo.basicArchives.VoFindAll;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.service.basicArchives.CpmBuildingService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -79,12 +78,22 @@ public class CpmBuildingController {
 
     /**
      * 删除楼栋信息
-     * @param id id
+     * @param ids id集合
      * @return map
      */
-    @GetMapping("/delete")
-    public Map<String,Object> delete(Integer id){
-        return cpmBuildingService.delete(id);
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        System.out.println("---------ids  "+ids);
+        return cpmBuildingService.delete(ids.getIds());
+    }
+
+    /**
+     * 查询所有楼栋id和name
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findAll")
+    public List<VoFindAll> findAll(){
+        return cpmBuildingService.findAll();
     }
 
 }

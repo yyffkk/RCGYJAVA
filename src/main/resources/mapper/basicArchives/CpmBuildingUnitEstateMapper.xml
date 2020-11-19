@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.basicArchives.CpmBuildingUnitEstateDao">
-    <select id="list" parameterType="com.aku.model.vo.VoCpmBuildingUnitEstate" resultType="com.aku.model.vo.VoCpmBuildingUnitEstate">
+    <select id="list" parameterType="com.aku.vo.basicArchives.VoCpmBuildingUnitEstate" resultType="com.aku.vo.basicArchives.VoCpmBuildingUnitEstate">
         select a.id,a.building_name,a.building_unit_no,a.building_name,a.status,a.type,a.construction_area,a.indoor_area,ur.name as user_resident_name,ur.tel as user_resident_tel from (
         select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name,cre.resident_id as resident_id
         from cpm_building_unit_estate cbue,cpm_building cb,cpm_building_unit cbu,cpm_resident_estate cre
@@ -107,8 +107,13 @@
         update cpm_building_unit_estate set is_delete = 0 where id = #{id}
     </update>
 
+<!--    根据业主id查询房产信息-->
     <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
         select cbue.id,cbue.building_unit_id,cbue.room_number from user_resident as ur,cpm_resident_estate as cre,cpm_building_unit_estate as cbue
-		where ur.id = cre.resident_id and cbue.id =cre.building_unit_estate_id and ur.id =#{id}
+		where ur.id = cre.resident_id and cbue.id =cre.building_unit_estate_id and ur.id =#{id} and ur.type =1
+    </select>
+
+    <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+        select id as value,room_number as label from cpm_building_unit_estate
     </select>
 </mapper>

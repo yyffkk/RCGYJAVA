@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.basicArchives.CpmParkingSpaceDao">
-    <select id="list" parameterType="com.aku.model.vo.VoCpmParkingSpace" resultType="com.aku.model.vo.VoCpmParkingSpace">
+    <select id="list" parameterType="com.aku.vo.basicArchives.VoCpmParkingSpace" resultType="com.aku.vo.basicArchives.VoCpmParkingSpace">
         SELECT cps.id,cps.code,cps.coordinate,cps.status,cps.type,ur.name as resident_name,ur2.name as user_name
         from cpm_parking_space cps,user_resident ur,user_resident ur2
         <where>
