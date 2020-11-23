@@ -5,6 +5,7 @@ import com.aku.model.basicArchives.CpmParkingSpace;
 import com.aku.model.system.SysUser;
 import com.aku.vo.basicArchives.VoCpmParkingSpace;
 import com.aku.service.basicArchives.CpmParkingSpaceService;
+import com.aku.vo.basicArchives.VoParkingSpace;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
     CpmParkingSpaceDao cpmParkingSpaceDao;
 
     @Override
-    public List<VoCpmParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace) {
+    public List<VoParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace) {
         return cpmParkingSpaceDao.list(voCpmParkingSpace);
     }
 
@@ -35,7 +36,7 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
         cpmParkingSpace.setCreateDate(new Date());
         //添加车位坐标
         cpmParkingSpace.setCoordinate("0,0");
-        if (cpmParkingSpace.getResidentId() != null){
+        if (cpmParkingSpace.getUserId() == null){
             cpmParkingSpace.setUserId(cpmParkingSpace.getResidentId());
         }
 

@@ -2,13 +2,14 @@ package com.aku.dao.basicArchives;
 
 import com.aku.model.basicArchives.CpmParkingSpace;
 import com.aku.vo.basicArchives.VoCpmParkingSpace;
+import com.aku.vo.basicArchives.VoParkingSpace;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public interface CpmParkingSpaceDao {
-    List<VoCpmParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace);
+    List<VoParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace);
 
     int insert(CpmParkingSpace cpmParkingSpace);
 
@@ -19,4 +20,6 @@ public interface CpmParkingSpaceDao {
     int delete(Integer id);
 
     List<CpmParkingSpace>  findByResidentId(Integer id);
+
+    List<CpmParkingSpace> findByUserId(Integer tenantId);
 }

@@ -4,6 +4,7 @@ import com.aku.model.basicArchives.ResidentAndEstateIds;
 import com.aku.model.basicArchives.ResidentAndParkingSpaceIds;
 import com.aku.model.basicArchives.ResidentAndRelativesList;
 import com.aku.model.basicArchives.UserResident;
+import com.aku.vo.basicArchives.VoFindAll;
 import com.aku.vo.basicArchives.VoRelatives;
 import com.aku.service.basicArchives.UserResidentService;
 import com.aku.vo.basicArchives.VoUserResident;
@@ -133,6 +134,25 @@ public class UserResidentController {
     public Map<String,Object> delete(Integer id){
         return userResidentService.delete(id);
     }
+
+    /**
+     * 查询所有业主的id和name
+     * @return VoFindAll
+     */
+    @GetMapping("/findResidentAll")
+    public List<VoFindAll> findResidentAll(){
+        return userResidentService.findResidentAll();
+    }
+
+    /**
+     * 查询所有住户的id和name
+     * @return VoFindAll
+     */
+    @GetMapping("/findAll")
+    public List<VoFindAll> findAll(){
+        return userResidentService.findAll();
+    }
+
 
 
 }

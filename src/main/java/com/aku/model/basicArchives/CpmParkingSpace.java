@@ -50,6 +50,18 @@ public class CpmParkingSpace {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 是否公有 0非公 1公有
+     */
+    private Integer isPublic;
+    /**
+     * 有效时间开始（仅出租）
+     */
+    private Date effectiveTimeStart;
+    /**
+     * 有效时间结束（仅出租）
+     */
+    private Date effectiveTimeEnd;
 
     @Override
     public String toString() {
@@ -65,6 +77,9 @@ public class CpmParkingSpace {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", isPublic=" + isPublic +
+                ", effectiveTimeStart=" + effectiveTimeStart +
+                ", effectiveTimeEnd=" + effectiveTimeEnd +
                 '}';
     }
 
@@ -156,10 +171,34 @@ public class CpmParkingSpace {
         this.modifyDate = modifyDate;
     }
 
+    public Integer getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(Integer isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public Date getEffectiveTimeStart() {
+        return effectiveTimeStart;
+    }
+
+    public void setEffectiveTimeStart(Date effectiveTimeStart) {
+        this.effectiveTimeStart = effectiveTimeStart;
+    }
+
+    public Date getEffectiveTimeEnd() {
+        return effectiveTimeEnd;
+    }
+
+    public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
+        this.effectiveTimeEnd = effectiveTimeEnd;
+    }
+
     public CpmParkingSpace() {
     }
 
-    public CpmParkingSpace(Integer id, String code, String coordinate, Integer status, Integer type, Integer residentId, Integer userId, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public CpmParkingSpace(Integer id, String code, String coordinate, Integer status, Integer type, Integer residentId, Integer userId, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isPublic, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.code = code;
         this.coordinate = coordinate;
@@ -171,5 +210,8 @@ public class CpmParkingSpace {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.isPublic = isPublic;
+        this.effectiveTimeStart = effectiveTimeStart;
+        this.effectiveTimeEnd = effectiveTimeEnd;
     }
 }

@@ -5,7 +5,7 @@
 <mapper namespace="com.aku.dao.basicArchives.UserTenantDao">
     <select id="list" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.vo.basicArchives.VoUserTenant">
         SELECT a.*, uc.code as car_code
-		from (select ur.id,ur.name,ur.tel,ur.id_type,ur.id_number,ur.effective_time_start,ur.effective_time_end,cbue.id as room_id,cbue.status as room_status
+		from (select ur.id,ur.name,ur.tel,ur.id_type,ur.id_number,cre.effective_time_start,cre.effective_time_end,cbue.id as room_id
 		from user_resident as ur,cpm_building_unit_estate as cbue,cpm_resident_estate as cre
 		where ur.id = cre.resident_id and cbue.id = cre.building_unit_estate_id  and  ur.type = 3) as a LEFT JOIN user_car as uc
 		on a.id = uc. resident_id

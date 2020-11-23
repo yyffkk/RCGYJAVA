@@ -51,14 +51,6 @@ public class VoRelatives {
      */
     private Date createDate;
     /**
-     * 有效时间开始（只限租客）
-     */
-    private Date effectiveTimeStart;
-    /**
-     * 有效时间结束（只限租客）
-     */
-    private Date effectiveTimeEnd;
-    /**
      * 亲属身份
      */
     private Integer identity;
@@ -77,8 +69,6 @@ public class VoRelatives {
                 ", email='" + email + '\'' +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
-                ", effectiveTimeStart=" + effectiveTimeStart +
-                ", effectiveTimeEnd=" + effectiveTimeEnd +
                 ", identity=" + identity +
                 '}';
     }
@@ -171,22 +161,6 @@ public class VoRelatives {
         this.createDate = createDate;
     }
 
-    public Date getEffectiveTimeStart() {
-        return effectiveTimeStart;
-    }
-
-    public void setEffectiveTimeStart(Date effectiveTimeStart) {
-        this.effectiveTimeStart = effectiveTimeStart;
-    }
-
-    public Date getEffectiveTimeEnd() {
-        return effectiveTimeEnd;
-    }
-
-    public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
-        this.effectiveTimeEnd = effectiveTimeEnd;
-    }
-
     public Integer getIdentity() {
         return identity;
     }
@@ -198,7 +172,7 @@ public class VoRelatives {
     public VoRelatives() {
     }
 
-    public VoRelatives(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Date effectiveTimeStart, Date effectiveTimeEnd, Integer identity) {
+    public VoRelatives(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -210,8 +184,6 @@ public class VoRelatives {
         this.email = email;
         this.createId = createId;
         this.createDate = createDate;
-        this.effectiveTimeStart = effectiveTimeStart;
-        this.effectiveTimeEnd = effectiveTimeEnd;
         this.identity = identity;
     }
 }

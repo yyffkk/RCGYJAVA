@@ -7,6 +7,10 @@ import java.util.Date;
  */
 public class VoUserTenant {
     /**
+     * 租户主键id
+     */
+    private Integer id;
+    /**
      * 租户姓名
      */
     private String name;
@@ -14,6 +18,18 @@ public class VoUserTenant {
      * 租户手机号
      */
     private Integer tel;
+    /**
+     * 租户车牌号
+     */
+    private String carCode;
+    /**
+     * 租房屋
+     */
+    private String roomName;
+    /**
+     * 租房状态（租客房屋关联表属性字段）
+     */
+    private Integer roomStatus;
     /**
      * 起始时间
      */
@@ -23,34 +39,31 @@ public class VoUserTenant {
      */
     private Date effectiveTimeEnd;
     /**
-     * 租户车牌号
-     */
-    private String carCode;
-    /**
-     * 房屋id
+     * 楼栋单元房产主键id
      */
     private Integer roomId;
-    /**
-     * 租房屋
-     */
-    private String roomName;
-    /**
-     * 房屋状态
-     */
-    private Integer roomStatus;
 
     @Override
     public String toString() {
-        return "VoUserTenantList{" +
-                "name='" + name + '\'' +
+        return "VoUserTenant{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", tel=" + tel +
-                ", effectiveTimeStart=" + effectiveTimeStart +
-                ", effectiveTimeEnd=" + effectiveTimeEnd +
                 ", carCode='" + carCode + '\'' +
-                ", roomId=" + roomId +
                 ", roomName='" + roomName + '\'' +
                 ", roomStatus=" + roomStatus +
+                ", effectiveTimeStart=" + effectiveTimeStart +
+                ", effectiveTimeEnd=" + effectiveTimeEnd +
+                ", roomId=" + roomId +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -69,36 +82,12 @@ public class VoUserTenant {
         this.tel = tel;
     }
 
-    public Date getEffectiveTimeStart() {
-        return effectiveTimeStart;
-    }
-
-    public void setEffectiveTimeStart(Date effectiveTimeStart) {
-        this.effectiveTimeStart = effectiveTimeStart;
-    }
-
-    public Date getEffectiveTimeEnd() {
-        return effectiveTimeEnd;
-    }
-
-    public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
-        this.effectiveTimeEnd = effectiveTimeEnd;
-    }
-
     public String getCarCode() {
         return carCode;
     }
 
     public void setCarCode(String carCode) {
         this.carCode = carCode;
-    }
-
-    public Integer getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
     }
 
     public String getRoomName() {
@@ -117,17 +106,42 @@ public class VoUserTenant {
         this.roomStatus = roomStatus;
     }
 
+    public Date getEffectiveTimeStart() {
+        return effectiveTimeStart;
+    }
+
+    public void setEffectiveTimeStart(Date effectiveTimeStart) {
+        this.effectiveTimeStart = effectiveTimeStart;
+    }
+
+    public Date getEffectiveTimeEnd() {
+        return effectiveTimeEnd;
+    }
+
+    public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
+        this.effectiveTimeEnd = effectiveTimeEnd;
+    }
+
+    public Integer getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
     public VoUserTenant() {
     }
 
-    public VoUserTenant(String name, Integer tel, Date effectiveTimeStart, Date effectiveTimeEnd, String carCode, Integer roomId, String roomName, Integer roomStatus) {
+    public VoUserTenant(Integer id, String name, Integer tel, String carCode, String roomName, Integer roomStatus, Date effectiveTimeStart, Date effectiveTimeEnd, Integer roomId) {
+        this.id = id;
         this.name = name;
         this.tel = tel;
-        this.effectiveTimeStart = effectiveTimeStart;
-        this.effectiveTimeEnd = effectiveTimeEnd;
         this.carCode = carCode;
-        this.roomId = roomId;
         this.roomName = roomName;
         this.roomStatus = roomStatus;
+        this.effectiveTimeStart = effectiveTimeStart;
+        this.effectiveTimeEnd = effectiveTimeEnd;
+        this.roomId = roomId;
     }
 }

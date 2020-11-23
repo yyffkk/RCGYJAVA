@@ -3,6 +3,7 @@ package com.aku.service.basicArchives.impl;
 import com.aku.dao.basicArchives.*;
 import com.aku.model.basicArchives.*;
 import com.aku.model.system.SysUser;
+import com.aku.vo.basicArchives.VoFindAll;
 import com.aku.vo.basicArchives.VoRelatives;
 import com.aku.service.basicArchives.UserResidentService;
 import com.aku.vo.basicArchives.VoUserResident;
@@ -274,6 +275,7 @@ public class UserResidentServiceImpl implements UserResidentService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> updateEstate(ResidentAndEstateIds residentAndEstateIds) {
         boolean flag = true;
         //先删除业主的关联房产
@@ -310,6 +312,7 @@ public class UserResidentServiceImpl implements UserResidentService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> updateParkingSpace(ResidentAndParkingSpaceIds residentAndParkingSpaceIds) {
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
@@ -319,6 +322,7 @@ public class UserResidentServiceImpl implements UserResidentService {
         List<CpmParkingSpace> byResidentId = cpmParkingSpaceDao.findByResidentId(residentAndParkingSpaceIds.getUserResident().getId());
         if (byResidentId != null){
             for (CpmParkingSpace cpmParkingSpace : byResidentId) {
+                //将使用者这栏置为空（将车位变为空置状态）
                 cpmParkingSpace.setResidentId(null);
                 int update = cpmParkingSpaceDao.update(cpmParkingSpace);
                 if (update <= 0){
@@ -346,7 +350,15 @@ public class UserResidentServiceImpl implements UserResidentService {
         return map;
     }
 
+    @Override
+    public List<VoFindAll> findResidentAll() {
+        return userResidentDao.findResidentAll();
+    }
 
+    @Override
+    public List<VoFindAll> findAll() {
+        return userResidentDao.findAll();
+    }
 
 
 }

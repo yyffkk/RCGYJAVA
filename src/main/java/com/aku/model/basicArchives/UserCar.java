@@ -6,22 +6,78 @@ import java.util.Date;
  * 车辆信息表
  */
 public class UserCar {
+    /**
+     * 主键id
+     */
     private Integer id;
+    /**
+     * 所属房产id
+     */
     private Integer buildingUnitEstateId;
+    /**
+     * 车辆类型
+     */
     private Integer type;
+    /**
+     * 车牌号
+     */
     private String code;
+    /**
+     * 车辆状态
+     */
     private Integer status;
+    /**
+     * 车主
+     */
     private String owner;
+    /**
+     * 证件类型
+     */
     private Integer idType;
+    /**
+     * 证件号码
+     */
     private String idNumber;
+    /**
+     * 手机号
+     */
     private String tel;
+    /**
+     * 业主，租户id
+     */
     private Integer residentId;
+    /**
+     * 物业人员id
+     */
     private Integer userId;
+    /**
+     * 车位id
+     */
     private Integer parkingSpaceId;
+    /**
+     * 创建人
+     */
     private Integer createId;
+    /**
+     * 创建时间
+     */
     private Date createDate;
+    /**
+     * 修改人
+     */
     private Integer modifyId;
+    /**
+     * 修改时间
+     */
     private Date modifyDate;
+    /**
+     * 有效时间开始（仅限包年，包月）
+     */
+    private Date effectiveTimeStart;
+    /**
+     * 有效时间结束（仅限包年，包月）
+     */
+    private Date effectiveTimeEnd;
 
     @Override
     public String toString() {
@@ -42,6 +98,8 @@ public class UserCar {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", effectiveTimeStart=" + effectiveTimeStart +
+                ", effectiveTimeEnd=" + effectiveTimeEnd +
                 '}';
     }
 
@@ -173,10 +231,26 @@ public class UserCar {
         this.modifyDate = modifyDate;
     }
 
+    public Date getEffectiveTimeStart() {
+        return effectiveTimeStart;
+    }
+
+    public void setEffectiveTimeStart(Date effectiveTimeStart) {
+        this.effectiveTimeStart = effectiveTimeStart;
+    }
+
+    public Date getEffectiveTimeEnd() {
+        return effectiveTimeEnd;
+    }
+
+    public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
+        this.effectiveTimeEnd = effectiveTimeEnd;
+    }
+
     public UserCar() {
     }
 
-    public UserCar(Integer id, Integer buildingUnitEstateId, Integer type, String code, Integer status, String owner, Integer idType, String idNumber, String tel, Integer residentId, Integer userId, Integer parkingSpaceId, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public UserCar(Integer id, Integer buildingUnitEstateId, Integer type, String code, Integer status, String owner, Integer idType, String idNumber, String tel, Integer residentId, Integer userId, Integer parkingSpaceId, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.type = type;
@@ -193,5 +267,7 @@ public class UserCar {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.effectiveTimeStart = effectiveTimeStart;
+        this.effectiveTimeEnd = effectiveTimeEnd;
     }
 }

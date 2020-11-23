@@ -1,9 +1,7 @@
 package com.aku.controller.basicArchives;
 
-import com.aku.model.basicArchives.UserResident;
+import com.aku.model.basicArchives.*;
 import com.aku.service.basicArchives.UserTenantService;
-import com.aku.vo.basicArchives.VoRelatives;
-import com.aku.vo.basicArchives.VoUpdateTenant;
 import com.aku.vo.basicArchives.VoUserTenant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,7 +35,7 @@ public class UserTenantController {
         List<VoUserTenant> voUserTenantLists = userTenantService.list(userTenant);
         PageInfo<VoUserTenant> pageInfo = new PageInfo<>(voUserTenantLists);
         Map<String,Object> map = new HashMap<>();
-        map.put("cpmBuildingList",pageInfo.getList());
+        map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
@@ -45,14 +43,12 @@ public class UserTenantController {
 
     /**
      * 添加租户信息
-     * @param userResident  租户信息
-     * @param voRelativesList  亲属信息集合
-     * @param buildingUnitEstateIds 房产集合
-     * @return
+     * @param userTenantInsert  租户添加信息(租户信息,租户亲属信息集合,业主房屋关联信息集合)
+     * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody UserResident userResident, @RequestBody List<VoRelatives> voRelativesList, @RequestBody List<Integer> buildingUnitEstateIds){
-        return userTenantService.insert(userResident,voRelativesList,buildingUnitEstateIds);
+    public Map<String,Object> insert(UserTenantInsert userTenantInsert){
+        return userTenantService.insert(userTenantInsert);
     }
 
     /**
@@ -66,12 +62,38 @@ public class UserTenantController {
     }
 
     /**
-     * 修改租客信息
-     * @param voUpdateTenant 修改租户信息Vo，关联租房屋
+     * 修改租客和亲属信息
+     * @param residentAndRelativesList 租户信息 和 亲属信息集合
      * @return map
      */
-    @PostMapping("/update")
-    public Map<String,Object> update(@RequestBody VoUpdateTenant voUpdateTenant){
-        return userTenantService.update(voUpdateTenant);
+    @PostMapping("/updateRelatives")
+    public Map<String,Object> updateRelatives(@RequestBody ResidentAndRelativesList residentAndRelativesList){
+        return userTenantService.updateRelatives(residentAndRelativesList);
     }
+
+    /**
+     * 修改租客租房信息
+     * @param cpmResidentEstateList 租户房产关联信息集合
+     * @param tenantId 租户id
+     * @return map
+     */
+    @PostMapping("/updateEstate")
+    public Map<String,Object> updateEstate(@RequestBody List<CpmResidentEstate> cpmResidentEstateList,@RequestBody Integer tenantId){
+        return userTenantService.updateEstate(cpmResidentEstateList,tenantId);
+    }
+
+    /**
+     * 修改租户车位信息
+     * @param cpmParkingSpaceList 车位信息集合
+     * @param tenantId 租户id
+     * @return map
+     */
+    @PostMapping("/updateParkingSpace")
+    public Map<String,Object> updateParkingSpace(@RequestBody List<CpmParkingSpace> cpmParkingSpaceList,@RequestBody Integer tenantId){
+        return userTenantService.updateParkingSpace(cpmParkingSpaceList,tenantId);
+    }
+
+
+
+
 }

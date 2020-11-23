@@ -4,6 +4,7 @@ import com.aku.model.basicArchives.ResidentAndEstateIds;
 import com.aku.model.basicArchives.ResidentAndParkingSpaceIds;
 import com.aku.model.basicArchives.ResidentAndRelativesList;
 import com.aku.model.basicArchives.UserResident;
+import com.aku.vo.basicArchives.VoFindAll;
 import com.aku.vo.basicArchives.VoRelatives;
 import com.aku.vo.basicArchives.VoUserResident;
 
@@ -33,4 +34,7 @@ public interface UserResidentService {
 
     Map<String, Object> updateParkingSpace(ResidentAndParkingSpaceIds residentAndParkingSpaceList);
 
+    List<VoFindAll> findResidentAll();
+
+    List<VoFindAll> findAll();
 }

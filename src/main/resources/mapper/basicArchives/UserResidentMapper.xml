@@ -27,7 +27,7 @@
         </where>
     </select>
 
-    <!-- 添加业主信息-->
+    <!-- 添加住户信息-->
     <insert id="insert" parameterType="com.aku.model.basicArchives.UserResident">
         insert into
         <trim prefix="user_resident(" suffix=")" suffixOverrides=",">
@@ -170,7 +170,7 @@
     </select>
 <!--根据业主ID查询亲属信息-->
     <select id="findRelativesById" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoRelatives">
-        select ur2.name,ur2.tel,urr.identity,ur2.id_type,ur2.id_number
+        select urr.id,ur2.name,ur2.tel,urr.identity,ur2.id_type,ur2.id_number
         from user_resident as ur1,user_resident_relatives as urr,user_resident as ur2
 		where ur1.id = urr.resident_id and ur2.id = urr.relatives_id and ur1.id =#{id}
     </select>
@@ -198,5 +198,14 @@
         delete from user_resident_relatives
         where resident_id = #{ResidentId} and relatives_id = #{RelativesId}
     </delete>
+
+    <select id="findResidentAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+        select id as value,name as label from user_resident where type = 1
+    </select>
+
+    <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+        select id as value,name as label from user_resident
+    </select>
+
 
 </mapper>

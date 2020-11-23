@@ -3,6 +3,7 @@ package com.aku.controller.basicArchives;
 import com.aku.model.basicArchives.CpmParkingSpace;
 import com.aku.vo.basicArchives.VoCpmParkingSpace;
 import com.aku.service.basicArchives.CpmParkingSpaceService;
+import com.aku.vo.basicArchives.VoParkingSpace;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +29,10 @@ public class CpmParkingSpaceController {
     @GetMapping("/list")
     public Map<String,Object> list(VoCpmParkingSpace voCpmParkingSpace, int pageNum, int size){
         PageHelper.startPage(pageNum,size);
-        List<VoCpmParkingSpace> voCpmParkingSpaceList =cpmParkingSpaceService.list(voCpmParkingSpace);
-        PageInfo<VoCpmParkingSpace> pageInfo = new PageInfo<>(voCpmParkingSpaceList);
+        List<VoParkingSpace> voParkingSpaceList =cpmParkingSpaceService.list(voCpmParkingSpace);
+        PageInfo<VoParkingSpace> pageInfo = new PageInfo<>(voParkingSpaceList);
         Map<String,Object> map = new HashMap<>();
-        map.put("voCpmParkingSpaceList",pageInfo.getList());
+        map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;

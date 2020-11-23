@@ -1,6 +1,7 @@
 package com.aku.dao.basicArchives;
 
 import com.aku.model.basicArchives.*;
+import com.aku.vo.basicArchives.VoFindAll;
 import com.aku.vo.basicArchives.VoRelatives;
 import com.aku.vo.basicArchives.VoUserResident;
 import org.springframework.stereotype.Component;
@@ -37,4 +38,8 @@ public interface UserResidentDao {
     int deleteByResidentIdAndEstateId(ResidentIdAndEstateId residentIdAndEstateId);
 
     int deleteByResidentIdAndRelativesId(ResidentIdAndRelativesId residentIdAndRelativesId);
+
+    List<VoFindAll> findResidentAll();
+
+    List<VoFindAll> findAll();
 }
