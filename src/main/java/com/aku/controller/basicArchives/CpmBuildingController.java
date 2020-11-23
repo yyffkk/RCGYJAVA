@@ -33,13 +33,11 @@ public class CpmBuildingController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(CpmBuilding cpmBuilding,Integer pageNum,Integer size){
-        System.out.println(pageNum);
-        System.out.println(size);
         PageHelper.startPage(pageNum,size);
         List<CpmBuilding> cpmBuildingList =cpmBuildingService.list(cpmBuilding);
         PageInfo<CpmBuilding> pageInfo = new PageInfo<>(cpmBuildingList);
         Map<String,Object> map = new HashMap<>();
-        map.put("cpmBuildingList",pageInfo.getList());
+        map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
@@ -95,5 +93,6 @@ public class CpmBuildingController {
     public List<VoFindAll> findAll(){
         return cpmBuildingService.findAll();
     }
+
 
 }

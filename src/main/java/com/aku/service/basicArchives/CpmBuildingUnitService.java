@@ -19,4 +19,6 @@ public interface CpmBuildingUnitService {
     Map<String, Object> delete(int[] ids);
 
     List<VoFindAll> findAll();
+
+    List<VoFindAll> findByBuildingId(Integer id);
 }

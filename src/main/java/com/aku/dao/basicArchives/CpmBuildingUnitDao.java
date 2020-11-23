@@ -20,4 +20,6 @@ public interface CpmBuildingUnitDao {
     int delete(Integer id);
 
     List<VoFindAll> findAll();
+
+    List<VoFindAll> findByBuildingId(Integer id);
 }

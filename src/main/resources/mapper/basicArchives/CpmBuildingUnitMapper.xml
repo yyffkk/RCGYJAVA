@@ -56,4 +56,9 @@
     <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
         select id as value,no as label from cpm_building_unit
     </select>
+
+    <select id="findByBuildingId" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoFindAll">
+        select id as value,no as label from cpm_building_unit
+        where building_id = #{id}
+    </select>
 </mapper>

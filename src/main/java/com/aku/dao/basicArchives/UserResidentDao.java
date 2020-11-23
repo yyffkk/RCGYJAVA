@@ -1,16 +1,15 @@
 package com.aku.dao.basicArchives;
 
-import com.aku.model.basicArchives.CpmResidentEstate;
-import com.aku.model.basicArchives.UserResident;
-import com.aku.model.basicArchives.UserResidentRelatives;
+import com.aku.model.basicArchives.*;
 import com.aku.vo.basicArchives.VoRelatives;
+import com.aku.vo.basicArchives.VoUserResident;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public interface UserResidentDao {
-    List<UserResident> list(UserResident userResident);
+    List<VoUserResident> list(UserResident userResident);
 
     int insert(UserResident userResident);
 
@@ -20,7 +19,7 @@ public interface UserResidentDao {
 
     int insertResidentEstate(CpmResidentEstate cpmResidentEstate);
 
-    UserResident findByBuildingUnitEstateId(Integer buildingUnitEstateId);
+    List<UserResident> findByBuildingUnitEstateId(Integer buildingUnitEstateId);
 
     int update(UserResident userResident);
 
@@ -33,5 +32,9 @@ public interface UserResidentDao {
 
     int updateResidentRelatives(UserResidentRelatives userResidentRelatives);
 
-    int delete();
+    int delete(Integer id);
+
+    int deleteByResidentIdAndEstateId(ResidentIdAndEstateId residentIdAndEstateId);
+
+    int deleteByResidentIdAndRelativesId(ResidentIdAndRelativesId residentIdAndRelativesId);
 }

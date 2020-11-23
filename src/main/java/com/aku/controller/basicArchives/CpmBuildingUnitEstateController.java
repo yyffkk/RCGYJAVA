@@ -2,8 +2,8 @@ package com.aku.controller.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
 import com.aku.model.basicArchives.UserResident;
+import com.aku.model.basicArchives.EstateAndResidentList;
 import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
-import com.aku.vo.basicArchives.VoEstateAndResident;
 import com.aku.service.basicArchives.CpmBuildingUnitEstateService;
 import com.aku.service.basicArchives.UserResidentService;
 import com.aku.vo.basicArchives.VoFindAll;
@@ -39,7 +39,7 @@ public class CpmBuildingUnitEstateController {
         List<VoCpmBuildingUnitEstate> voCpmBuildingUnitEstateList =cpmBuildingUnitEstateService.list(voCpmBuildingUnitEstate);
         PageInfo<VoCpmBuildingUnitEstate> pageInfo = new PageInfo<>(voCpmBuildingUnitEstateList);
         Map<String,Object> map = new HashMap<>();
-        map.put("voCpmBuildingUnitEstateList",pageInfo.getList());
+        map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
@@ -48,18 +48,18 @@ public class CpmBuildingUnitEstateController {
     /**
      * 添加楼栋单元房产信息(或关联业主信息)
      * @param cpmBuildingUnitEstate 楼栋单元房产信息
-     * @param userResident 关联业主
+     * @param userResidentList 关联业主信息集合
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody CpmBuildingUnitEstate cpmBuildingUnitEstate,@RequestBody UserResident userResident){
+    public Map<String,Object> insert(@RequestBody CpmBuildingUnitEstate cpmBuildingUnitEstate,@RequestBody List<UserResident> userResidentList){
         //判断是否有业主需要关联
         if (cpmBuildingUnitEstate.getStatus() == ESTATE_STATUS){
             //不关联业主
             return cpmBuildingUnitEstateService.insert(cpmBuildingUnitEstate);
         } else {
             //关联业主
-            return cpmBuildingUnitEstateService.insert(userResident, cpmBuildingUnitEstate);
+            return cpmBuildingUnitEstateService.insert(userResidentList, cpmBuildingUnitEstate);
         }
     }
 
@@ -76,8 +76,8 @@ public class CpmBuildingUnitEstateController {
         //判断楼栋单元房产是否是未售状态（即无业主）
         if (cpmBuildingUnitEstate != null && cpmBuildingUnitEstate.getStatus() != ESTATE_STATUS){
             //如果有业主，则根据楼栋单元房产ID查询业主信息
-            UserResident userResident = userResidentService.findByBuildingUnitEstateId(cpmBuildingUnitEstate.getId());
-            map.put("userResident",userResident);
+            List<UserResident> userResidentList = userResidentService.findByBuildingUnitEstateId(cpmBuildingUnitEstate.getId());
+            map.put("userResidentList",userResidentList);
         }else {
             map.put("userResident",null);
         }
@@ -86,44 +86,18 @@ public class CpmBuildingUnitEstateController {
     }
     /**
      * 修改楼栋单元房产信息(或关联业主信息)
-     * @param voEstateAndResident 楼栋单元房产信息 和 业主信息
+     * @param estateAndResident 楼栋单元房产信息 和 业主信息集合
      * @return map
      */
     @PostMapping("/update")
-    public Map<String,Object> update(@RequestBody VoEstateAndResident voEstateAndResident){
+    public Map<String,Object> update(@RequestBody EstateAndResidentList estateAndResident){
         Map<String,Object> map = new HashMap<>();
-        //根据楼栋单元房产Id查询楼栋单元房产信息
-        CpmBuildingUnitEstate cpmBuildingUnitEstate2 = cpmBuildingUnitEstateService.findById(voEstateAndResident.getEstate().getId());
-
-        if (cpmBuildingUnitEstate2 == null){
+        if (estateAndResident.getEstate().getId() == null){
             map.put("message","ID不存在");
             map.put("status",false);
             return map;
         }
-        //判断旧数据是否有业主关联
-        if (cpmBuildingUnitEstate2.getStatus() == ESTATE_STATUS){
-            //无关联业主
-            //判断新数据是否 需要 添加 关联业主
-            if (voEstateAndResident.getEstate().getStatus() != ESTATE_STATUS){
-                //更新楼栋单元房产信息及添加业主信息
-                return cpmBuildingUnitEstateService.updateOne(voEstateAndResident.getEstate(), voEstateAndResident.getResident());
-            }else {
-                //更新楼栋单元房产信息，不添加业主信息
-                return cpmBuildingUnitEstateService.updateOne(voEstateAndResident.getEstate());
-            }
-        } else {
-            //有关联业主
-            //判断新数据 房间状态是否正确（不可为未售状态）
-            if (voEstateAndResident.getEstate().getStatus() != ESTATE_STATUS) {
-                //更新楼栋单元房产信息及更新业主信息
-                return cpmBuildingUnitEstateService.updateTwo(voEstateAndResident.getEstate(),voEstateAndResident.getResident());
-            }else {
-                //已有关联业主，不可选择未售状态
-                map.put("message","已有关联业主，不可选择未售状态");
-                map.put("status",false);
-                return map;
-            }
-        }
+        return cpmBuildingUnitEstateService.update(estateAndResident);
     }
 
     /**
@@ -145,4 +119,13 @@ public class CpmBuildingUnitEstateController {
         return cpmBuildingUnitEstateService.findAll();
     }
 
+    /**
+     * 根据楼栋单元id查询对应的楼栋单元房产id和name
+     * @param id 楼栋单元id
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findByBuildingUnitId")
+    public List<VoFindAll> findByBuildingUnitId(Integer id){
+        return cpmBuildingUnitEstateService.findByBuildingUnitId(id);
+    }
 }

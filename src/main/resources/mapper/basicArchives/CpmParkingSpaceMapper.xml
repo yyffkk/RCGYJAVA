@@ -90,6 +90,6 @@
     </delete>
 
     <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmParkingSpace">
-        select id from cpm_parking_space where resident_id = #{residentId}
+        select * from cpm_parking_space where resident_id = #{residentId}
     </select>
 </mapper>

@@ -1,9 +1,12 @@
 package com.aku.controller.basicArchives;
 
+import com.aku.model.basicArchives.ResidentAndEstateIds;
+import com.aku.model.basicArchives.ResidentAndParkingSpaceIds;
+import com.aku.model.basicArchives.ResidentAndRelativesList;
 import com.aku.model.basicArchives.UserResident;
 import com.aku.vo.basicArchives.VoRelatives;
-import com.aku.vo.basicArchives.VoUpdateResident;
 import com.aku.service.basicArchives.UserResidentService;
+import com.aku.vo.basicArchives.VoUserResident;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -28,31 +31,22 @@ public class UserResidentController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(UserResident userResident,Integer pageNum,Integer size){
-        System.out.println(pageNum);
-        System.out.println(size);
         PageHelper.startPage(pageNum,size);
-        List<UserResident> userResidentList = userResidentService.list(userResident);
-        PageInfo<UserResident> pageInfo = new PageInfo<>(userResidentList);
+        List<VoUserResident> voUserResidentList = userResidentService.list(userResident);
+        PageInfo<VoUserResident> pageInfo = new PageInfo<>(voUserResidentList);
         Map<String,Object> map = new HashMap<>();
-        map.put("userResidentList",pageInfo.getList());
+        map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
-
-    /**
-     *
-     * @param userResident 业主信息
-     * @param cpmParkingSpaceId 关联车位主键id
-     * @return map
-     */
     /**
      * 添加业主信息
      * @param userResident 业主信息
      * @param voRelativesList 亲属信息集合
      * @param buildingUnitEstateIds 关联房产主键id集合
      * @param cpmParkingSpaceIds 关联车位主键id集合
-     * @return
+     * @return map
      */
     @PostMapping("/insert")
     public Map<String,Object> insert(@RequestBody UserResident userResident, @RequestBody List<VoRelatives> voRelativesList,@RequestBody List<Integer> buildingUnitEstateIds, @RequestBody List<Integer> cpmParkingSpaceIds){
@@ -69,16 +63,66 @@ public class UserResidentController {
         return userResidentService.findById(id);
     }
 
-
     /**
-     * 修改业主信息
-     * @param voUpdateResident 修改业主信息Vo，关联亲属
+     * 根据业主主键id 查询业主及其亲属信息
      * @return map
      */
-    @PostMapping("/update")
-    public Map<String,Object> update(@RequestBody VoUpdateResident voUpdateResident){
-        return userResidentService.update(voUpdateResident);
+    @GetMapping("/findRelativesById")
+    public Map<String,Object> findRelativesById(Integer id){
+        return userResidentService.findRelativesById(id);
     }
+
+    /**
+     * 根据业主主键id 查询业主及其房产信息
+     * @return map
+     */
+    @GetMapping("/findEstateById")
+    public Map<String,Object> findEstateById(Integer id){
+        return userResidentService.findEstateById(id);
+    }
+
+    /**
+     * 根据业主主键id 查询业主及其车位信息
+     * @return map
+     */
+    @GetMapping("/findParkingSpaceById")
+    public Map<String,Object> findParkingSpaceById(Integer id){
+        return userResidentService.findParkingSpaceById(id);
+    }
+
+
+
+    /**
+     * 修改业主亲属信息
+     * @param residentAndRelatives 业主 和 亲属集合
+     * @return map
+     */
+    @PostMapping("/updateRelatives")
+    public Map<String,Object> updateRelatives(@RequestBody ResidentAndRelativesList residentAndRelatives){
+        return userResidentService.updateRelatives(residentAndRelatives);
+    }
+
+    /**
+     * 修改业主房产信息
+     * @param residentAndEstateList 业主 和 房产集合
+     * @return map
+     */
+    @PostMapping("/updateEstate")
+    public Map<String,Object> updateEstate(@RequestBody ResidentAndEstateIds residentAndEstateList){
+        return userResidentService.updateEstate(residentAndEstateList);
+    }
+
+    /**
+     * 修改业主车位信息
+     * @param residentAndParkingSpaceList 业主 和 车位信息集合
+     * @return map
+     */
+    @PostMapping("/updateParkingSpace")
+    public Map<String,Object> updateParkingSpace(@RequestBody ResidentAndParkingSpaceIds residentAndParkingSpaceList){
+        return userResidentService.updateParkingSpace(residentAndParkingSpaceList);
+    }
+
+
 
     /**
      * 删除业主信息
@@ -86,10 +130,9 @@ public class UserResidentController {
      * @return map
      */
     @GetMapping("/delete")
-    public Map<String,Object> delete(int id){
+    public Map<String,Object> delete(Integer id){
         return userResidentService.delete(id);
     }
-
 
 
 }

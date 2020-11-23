@@ -88,4 +88,9 @@ public class CpmBuildingUnitServiceImpl implements CpmBuildingUnitService {
     public List<VoFindAll> findAll() {
         return cpmBuildingUnitDao.findAll();
     }
+
+    @Override
+    public List<VoFindAll> findByBuildingId(Integer id) {
+        return cpmBuildingUnitDao.findByBuildingId(id);
+    }
 }

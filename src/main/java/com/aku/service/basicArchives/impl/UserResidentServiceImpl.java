@@ -4,8 +4,8 @@ import com.aku.dao.basicArchives.*;
 import com.aku.model.basicArchives.*;
 import com.aku.model.system.SysUser;
 import com.aku.vo.basicArchives.VoRelatives;
-import com.aku.vo.basicArchives.VoUpdateResident;
 import com.aku.service.basicArchives.UserResidentService;
+import com.aku.vo.basicArchives.VoUserResident;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class UserResidentServiceImpl implements UserResidentService {
     CpmBuildingUnitDao cpmBuildingUnitDao;
 
     @Override
-    public List<UserResident> list(UserResident userResident) {
+    public List<VoUserResident> list(UserResident userResident) {
         return userResidentDao.list(userResident);
     }
 
@@ -63,7 +63,12 @@ public class UserResidentServiceImpl implements UserResidentService {
             cpmResidentEstate.setResidentId(userResident.getId());
             //添加业主房产关联信息
             int i = userResidentDao.insertResidentEstate(cpmResidentEstate);
-            if (i <= 0){
+            //更新房产状态 1.入住
+            CpmBuildingUnitEstate cpmBuildingUnitEstate = new CpmBuildingUnitEstate();
+            cpmBuildingUnitEstate.setId(buildingUnitEstateId);
+            cpmBuildingUnitEstate.setStatus(1);
+            int j = cpmBuildingUnitEstateDao.update(cpmBuildingUnitEstate);
+            if (i <= 0 || j<=0){
                 throw new RuntimeException("关联业主房产信息失败");
             }
         }
@@ -83,17 +88,6 @@ public class UserResidentServiceImpl implements UserResidentService {
             int insertResidentRelatives = userResidentDao.insertResidentRelatives(userResidentRelatives);
             if (insertRelatives <=0 || insertResidentRelatives <= 0){
                 throw new RuntimeException("关联亲属信息失败");
-            }
-            //关联亲属房产信息
-            for (Integer buildingUnitEstateId : buildingUnitEstateIds) {
-                CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
-                cpmResidentEstate.setBuildingUnitEstateId(buildingUnitEstateId);
-                cpmResidentEstate.setResidentId(voRelatives.getId());
-                //添加亲属房产关联信息
-                int i = userResidentDao.insertResidentEstate(cpmResidentEstate);
-                if (i <= 0){
-                    throw new RuntimeException("关联亲属房产信息失败");
-                }
             }
         }
 
@@ -119,96 +113,10 @@ public class UserResidentServiceImpl implements UserResidentService {
         return map;
     }
 
-    @Override
-    @Transactional
-    public Map<String, Object> update(VoUpdateResident voUpdateResident) {
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-        //修改业主信息
-        int update = userResidentDao.update(voUpdateResident.getUserResident());
-        if (update<=0){
-            map.put("message","修改业主信息失败");
-            map.put("status",false);
-            return map;
-        }
-        //删除亲属信息
-        int[] deleteRelativesId = voUpdateResident.getDeleteRelativesId();
-        if ( deleteRelativesId != null){
-            for (int id : deleteRelativesId) {
-                int delete = userResidentDao.deleteRelativesId(id);
-                if (delete <= 0){
-                    throw new RuntimeException("删除亲属失败");
-                }
-            }
-        }
-
-        //修改家属信息
-        List<VoRelatives> voRelativesList = voUpdateResident.getUpdateRelatives();
-        if (voRelativesList!=null){
-            for (VoRelatives voRelatives : voRelativesList) {
-                UserResident userResident = new UserResident();
-                userResident.setId(voRelatives.getId());
-                userResident.setTel(voRelatives.getTel());
-                userResident.setIdType(voRelatives.getIdType());
-                userResident.setIdNumber(voRelatives.getIdNumber());
-                //修改家属基础信息
-                int update2 = userResidentDao.update(userResident);
-                //修改家属关联身份信息
-                UserResidentRelatives userResidentRelatives = new UserResidentRelatives();
-                userResidentRelatives.setIdentity(voRelatives.getIdentity());
-                userResidentRelatives.setRelativesId(voRelatives.getId());
-                userResidentRelatives.setResidentId(voUpdateResident.getUserResident().getId());
-                int update3 = userResidentDao.updateResidentRelatives(userResidentRelatives);
-                if (update2<=0 || update3<=0){
-                    throw new RuntimeException("修改家属信息失败");
-                }
-            }
-        }
-
-
-        //添加家属信息
-        List<VoRelatives> insertRelatives = voUpdateResident.getInsertRelatives();
-        if (insertRelatives!=null){
-            for (VoRelatives voRelatives : insertRelatives) {
-                //添加亲属信息
-                voRelatives.setType(2);
-                voRelatives.setCreateId(sysUser.getId());
-                voRelatives.setCreateDate(new Date());
-                int insertRelatives2 = userResidentDao.insertRelatives(voRelatives);
-                //添加业主亲属关联表
-                UserResidentRelatives userResidentRelatives = new UserResidentRelatives();
-                userResidentRelatives.setIdentity(voRelatives.getIdentity());
-                userResidentRelatives.setRelativesId(voRelatives.getId());
-                userResidentRelatives.setResidentId(voUpdateResident.getUserResident().getId());
-                int insertResidentRelatives = userResidentDao.insertResidentRelatives(userResidentRelatives);
-                if (insertRelatives2 <=0 || insertResidentRelatives <= 0){
-                    throw new RuntimeException("关联亲属信息失败");
-                }
-                //关联亲属房产信息
-                List<CpmBuildingUnitEstate> byResidentId = cpmBuildingUnitEstateDao.findByResidentId(voUpdateResident.getUserResident().getId());
-                for (CpmBuildingUnitEstate cpmBuildingUnitEstate : byResidentId) {
-                    CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
-                    cpmResidentEstate.setBuildingUnitEstateId(cpmBuildingUnitEstate.getId());
-                    cpmResidentEstate.setResidentId(voRelatives.getId());
-                    //添加亲属房产关联信息
-                    int i = userResidentDao.insertResidentEstate(cpmResidentEstate);
-                    if (i <= 0){
-                        throw new RuntimeException("关联亲属房产信息失败");
-                    }
-                }
-
-            }
-        }
-        map.put("message","修改业主信息成功");
-        map.put("status",true);
-        return map;
-    }
-
 
 
     @Override
-    public UserResident findByBuildingUnitEstateId(Integer buildingUnitEstateId) {
+    public List<UserResident> findByBuildingUnitEstateId(Integer buildingUnitEstateId) {
         return userResidentDao.findByBuildingUnitEstateId(buildingUnitEstateId);
     }
 
@@ -218,8 +126,7 @@ public class UserResidentServiceImpl implements UserResidentService {
         UserResident userResident = userResidentDao.findById(id);
         //查询住户所拥有的房产
         List<CpmBuildingUnitEstate> cpmBuildingUnitEstateList = cpmBuildingUnitEstateDao.findByResidentId(id);
-        cpmBuildingUnitEstateDao.findById(id);
-        ArrayList<Object> objects = new ArrayList<>();
+        ArrayList<Object> cpmBuildingUnitEstateIdList = new ArrayList<>();
         //遍历查询出房产对应的单元和楼栋
         for (CpmBuildingUnitEstate cpmBuildingUnitEstate : cpmBuildingUnitEstateList) {
             //根据房产主键id查询对应的单元号
@@ -227,28 +134,76 @@ public class UserResidentServiceImpl implements UserResidentService {
             //根据单元主键id查询对应的楼栋号
             CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
             //楼栋，单元，房产（房间）
-            objects.add(cpmBuilding.getId()+","+cpmBuildingUnit.getId()+","+cpmBuildingUnitEstate.getId());
+            cpmBuildingUnitEstateIdList.add(cpmBuilding.getId()+"-"+cpmBuildingUnit.getId()+"-"+cpmBuildingUnitEstate.getId());
         }
         //查询业主所有的车位，判断是否有车位
         List<CpmParkingSpace> cpmParkingSpaceList = cpmParkingSpaceDao.findByResidentId(id);
-        ArrayList<Object> objects1 = new ArrayList<>();
+        ArrayList<Object> cpmParkingSpaceIdList = new ArrayList<>();
         //遍历查询所有的车位id
         for (CpmParkingSpace cpmParkingSpace : cpmParkingSpaceList) {
-            objects1.add(cpmParkingSpace.getId());
+            cpmParkingSpaceIdList.add(cpmParkingSpace.getId());
         }
 
         //查询业主关联亲属信息
         List<VoRelatives> voRelativesList = userResidentDao.findRelativesById(id);
 
         map.put("voRelativesList",voRelativesList);
-        map.put("cpmParkingSpaceIdList",objects1);
+        map.put("cpmParkingSpaceIdList",cpmParkingSpaceIdList);
         map.put("userResident",userResident);
-        map.put("cpmBuildingUnitEstateIdList",objects);
+        map.put("cpmBuildingUnitEstateIdList",cpmBuildingUnitEstateIdList);
         return map;
     }
 
     @Override
-    public Map<String, Object> delete(int id) {
+    public Map<String, Object> findRelativesById(Integer id) {
+        //根据id查询住户信息
+        UserResident userResident = userResidentDao.findById(id);
+        //查询业主关联亲属信息
+        List<VoRelatives> voRelativesList = userResidentDao.findRelativesById(id);
+        map.put("userResident",userResident);
+        map.put("voRelativesList",voRelativesList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findEstateById(Integer id) {
+        //根据id查询住户信息
+        UserResident userResident = userResidentDao.findById(id);
+        //查询住户所拥有的房产
+        List<CpmBuildingUnitEstate> cpmBuildingUnitEstateList = cpmBuildingUnitEstateDao.findByResidentId(id);
+        ArrayList<Object> cpmBuildingUnitEstateIdList = new ArrayList<>();
+        //遍历查询出房产对应的单元和楼栋
+        for (CpmBuildingUnitEstate cpmBuildingUnitEstate : cpmBuildingUnitEstateList) {
+            //根据房产主键id查询对应的单元号
+            CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
+            //根据单元主键id查询对应的楼栋号
+            CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
+            //楼栋，单元，房产（房间）
+            cpmBuildingUnitEstateIdList.add(cpmBuilding.getId()+"-"+cpmBuildingUnit.getId()+"-"+cpmBuildingUnitEstate.getId());
+        }
+        map.put("userResident",userResident);
+        map.put("cpmBuildingUnitEstateIdList",cpmBuildingUnitEstateIdList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findParkingSpaceById(Integer id) {
+        //根据id查询住户信息
+        UserResident userResident = userResidentDao.findById(id);
+        //查询业主所有的车位，判断是否有车位
+        List<CpmParkingSpace> cpmParkingSpaceList = cpmParkingSpaceDao.findByResidentId(id);
+        ArrayList<Object> cpmParkingSpaceIdList = new ArrayList<>();
+        //遍历查询所有的车位id
+        for (CpmParkingSpace cpmParkingSpace : cpmParkingSpaceList) {
+            cpmParkingSpaceIdList.add(cpmParkingSpace.getId());
+        }
+        map.put("cpmParkingSpaceIdList",cpmParkingSpaceIdList);
+        map.put("userResident",userResident);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> delete(Integer id) {
         List<CpmBuildingUnitEstate> byResidentId = cpmBuildingUnitEstateDao.findByResidentId(id);
         if (byResidentId != null && byResidentId.size()>0){
             map.put("message","该业主有房产，无法删除");
@@ -261,7 +216,7 @@ public class UserResidentServiceImpl implements UserResidentService {
             map.put("status",false);
             return map;
         }
-        int delete = userResidentDao.delete();
+        int delete = userResidentDao.delete(id);
         if (delete > 0){
             map.put("message","删除业主成功");
             map.put("status",true);
@@ -271,5 +226,127 @@ public class UserResidentServiceImpl implements UserResidentService {
         }
         return map;
     }
+
+
+    @Override
+    @Transactional
+    public Map<String, Object> updateRelatives(ResidentAndRelativesList residentAndRelatives) {
+        boolean flag = true;
+        //修改业主信息
+        int update = userResidentDao.update(residentAndRelatives.getUserResident());
+        if (update <= 0){
+            flag =false;
+        }
+
+        //先删除业主的关联亲属
+        List<VoRelatives> relativesById = userResidentDao.findRelativesById(residentAndRelatives.getUserResident().getId());
+        if (relativesById != null){
+            for (VoRelatives voRelatives : relativesById) {
+                int delete = userResidentDao.deleteByResidentIdAndRelativesId(new ResidentIdAndRelativesId(residentAndRelatives.getUserResident().getId(),voRelatives.getId()));
+                if (delete <= 0){
+                    flag = false;
+                }
+            }
+        }
+//        再添加业主的关联亲属
+        if (residentAndRelatives.getUserRelatives() != null){
+            for (UserResident userRelative : residentAndRelatives.getUserRelatives()) {
+                //添加亲属信息
+                userResidentDao.insert(userRelative);
+                //添加业主亲属关联信息
+                UserResidentRelatives userResidentRelatives = new UserResidentRelatives();
+                userResidentRelatives.setRelativesId(userRelative.getId());
+                userResidentRelatives.setResidentId(residentAndRelatives.getUserResident().getId());
+                userResidentRelatives.setIdentity(userRelative.getIdentity());
+                int insertResidentRelatives = userResidentDao.insertResidentRelatives(userResidentRelatives);
+                if (insertResidentRelatives <=0){
+                    flag = false;
+                }
+            }
+        }
+        if (flag){
+            map.put("message","修改业主亲属关联信息成功");
+            map.put("status",true);
+        }else {
+            throw new RuntimeException("修改业主亲属关联信息失败");
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updateEstate(ResidentAndEstateIds residentAndEstateIds) {
+        boolean flag = true;
+        //先删除业主的关联房产
+        List<CpmBuildingUnitEstate> byResidentId = cpmBuildingUnitEstateDao.findByResidentId(residentAndEstateIds.getUserResident().getId());
+        if (byResidentId != null){
+            for (CpmBuildingUnitEstate cpmBuildingUnitEstate : byResidentId) {
+                int delete = userResidentDao.deleteByResidentIdAndEstateId(new ResidentIdAndEstateId(residentAndEstateIds.getUserResident().getId(), cpmBuildingUnitEstate.getId()));
+                if (delete <=0){
+                    flag = false;
+                }
+            }
+        }
+
+        //再添加业主的关联房产
+        if (residentAndEstateIds.getEstateIds() != null){
+            for (Integer estateId : residentAndEstateIds.getEstateIds()) {
+                CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
+                cpmResidentEstate.setResidentId(residentAndEstateIds.getUserResident().getId());
+                cpmResidentEstate.setBuildingUnitEstateId(estateId);
+                int i = userResidentDao.insertResidentEstate(cpmResidentEstate);
+                if (i<=0){
+                    flag = false;
+                }
+            }
+        }
+
+        if (flag){
+            map.put("message","修改业主房产关联信息成功");
+            map.put("status",true);
+        }else {
+            throw new RuntimeException("修改业主房产关联信息失败");
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updateParkingSpace(ResidentAndParkingSpaceIds residentAndParkingSpaceIds) {
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        boolean flag = true;
+        //先删除业主的关联车位
+        List<CpmParkingSpace> byResidentId = cpmParkingSpaceDao.findByResidentId(residentAndParkingSpaceIds.getUserResident().getId());
+        if (byResidentId != null){
+            for (CpmParkingSpace cpmParkingSpace : byResidentId) {
+                cpmParkingSpace.setResidentId(null);
+                int update = cpmParkingSpaceDao.update(cpmParkingSpace);
+                if (update <= 0){
+                    flag =false;
+                }
+            }
+        }
+        //再添加业主的关联车位
+        if (residentAndParkingSpaceIds.getCpmParkingSpaceIds() != null){
+            for (Integer cpmParkingSpaceId : residentAndParkingSpaceIds.getCpmParkingSpaceIds()) {
+                CpmParkingSpace cpmParkingSpace = cpmParkingSpaceDao.findById(cpmParkingSpaceId);
+                cpmParkingSpace.setModifyDate(new Date());
+                cpmParkingSpace.setModifyId(sysUser.getId());
+                cpmParkingSpace.setResidentId(residentAndParkingSpaceIds.getUserResident().getId());
+                cpmParkingSpaceDao.update(cpmParkingSpace);
+            }
+        }
+
+        if (flag){
+            map.put("message","修改业主车位关联信息成功");
+            map.put("status",true);
+        }else {
+            throw new RuntimeException("修改业主车位关联信息失败");
+        }
+        return map;
+    }
+
+
+
 
 }

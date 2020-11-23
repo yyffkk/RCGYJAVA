@@ -33,7 +33,7 @@ public class CpmBuildingUnitController {
         List<VoCpmBuildingUnit> voCpmBuildingUnitList =cpmBuildingUnitService.list(voCpmBuildingUnit);
         PageInfo<VoCpmBuildingUnit> pageInfo = new PageInfo<>(voCpmBuildingUnitList);
         Map<String,Object> map = new HashMap<>();
-        map.put("voCpmBuildingUnitList",pageInfo.getList());
+        map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
@@ -86,5 +86,15 @@ public class CpmBuildingUnitController {
     @GetMapping("/findAll")
     public List<VoFindAll> findAll(){
         return cpmBuildingUnitService.findAll();
+    }
+
+    /**
+     * 根据楼栋id查询对应的楼栋单元id和name
+     * @param id 楼栋id
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findByBuildingId")
+    public List<VoFindAll> findByBuildingId(Integer id){
+        return cpmBuildingUnitService.findByBuildingId(id);
     }
 }

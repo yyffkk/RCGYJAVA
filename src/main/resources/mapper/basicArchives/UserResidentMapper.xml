@@ -10,7 +10,7 @@
     </sql>
 
 <!--    查询业主信息list-->
-    <select id="list" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.model.basicArchives.UserResident">
+    <select id="list" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.vo.basicArchives.VoUserResident">
         select id,name,tel,id_type,id_number
         from user_resident
         <where>
@@ -47,12 +47,6 @@
             </if>
             create_id,
             create_date,
-            <if test="effectiveTimeStart != null">
-                effective_time_start,
-            </if>
-            <if test="effectiveTimeEnd != null">
-                effective_time_end,
-            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -72,12 +66,6 @@
             </if>
             #{createId},
             #{createDate},
-            <if test="effectiveTimeStart != null">
-                #{effectiveTimeStart,jdbcType=DATE},
-            </if>
-            <if test="effectiveTimeEnd != null">
-                #{effectiveTimeEnd},
-            </if>
         </trim>
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id
@@ -108,12 +96,6 @@
             </if>
             create_id,
             create_date,
-            <if test="effectiveTimeStart != null">
-                effective_time_start,
-            </if>
-            <if test="effectiveTimeEnd != null">
-                effective_time_end,
-            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -133,12 +115,6 @@
             </if>
             #{createId},
             #{createDate},
-            <if test="effectiveTimeStart != null">
-                #{effectiveTimeStart,jdbcType=DATE},
-            </if>
-            <if test="effectiveTimeEnd != null">
-                #{effectiveTimeEnd},
-            </if>
         </trim>
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id
@@ -153,8 +129,9 @@
 <!--    根据房产id查询业主信息-->
     <select id="findByBuildingUnitEstateId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
         select ur.* from user_resident as ur,cpm_resident_estate as cre
-        where ur.id = cre.resident_id and
-        cre.building_unit_estate_id = #{buildingUnitEstateId}
+        where ur.id = cre.resident_id
+        and cre.building_unit_estate_id = #{buildingUnitEstateId}
+        and cre.is_delete = 1
     </select>
 
 <!--    修改住户信息-->
@@ -210,6 +187,16 @@
 <!--根据id删除业主-->
     <delete id="delete" parameterType="java.lang.Integer">
         delete from user_resident where id =#{id}
+    </delete>
+
+    <delete id="deleteByResidentIdAndEstateId" parameterType="com.aku.model.basicArchives.ResidentIdAndEstateId">
+        delete from cpm_resident_estate
+        where building_unit_estate_id = #{estateId} and resident_id = #{residentId}
+    </delete>
+
+    <delete id="deleteByResidentIdAndRelativesId" parameterType="com.aku.model.basicArchives.ResidentIdAndRelativesId">
+        delete from user_resident_relatives
+        where resident_id = #{ResidentId} and relatives_id = #{RelativesId}
     </delete>
 
 </mapper>

@@ -51,13 +51,13 @@ public class UserResident {
      */
     private Date createDate;
     /**
-     * 有效时间开始（只限租客）
+     * 亲属身份（只限亲属）
      */
-    private Date effectiveTimeStart;
+    private Integer identity;
     /**
-     * 有效时间结束（只限租客）
+     * 房屋状态（只限租客）
      */
-    private Date effectiveTimeEnd;
+    private Integer roomStatus;
 
     @Override
     public String toString() {
@@ -73,8 +73,8 @@ public class UserResident {
                 ", email='" + email + '\'' +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
-                ", effectiveTimeStart=" + effectiveTimeStart +
-                ", effectiveTimeEnd=" + effectiveTimeEnd +
+                ", identity=" + identity +
+                ", roomStatus=" + roomStatus +
                 '}';
     }
 
@@ -166,26 +166,26 @@ public class UserResident {
         this.createDate = createDate;
     }
 
-    public Date getEffectiveTimeStart() {
-        return effectiveTimeStart;
+    public Integer getIdentity() {
+        return identity;
     }
 
-    public void setEffectiveTimeStart(Date effectiveTimeStart) {
-        this.effectiveTimeStart = effectiveTimeStart;
+    public void setIdentity(Integer identity) {
+        this.identity = identity;
     }
 
-    public Date getEffectiveTimeEnd() {
-        return effectiveTimeEnd;
+    public Integer getRoomStatus() {
+        return roomStatus;
     }
 
-    public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
-        this.effectiveTimeEnd = effectiveTimeEnd;
+    public void setRoomStatus(Integer roomStatus) {
+        this.roomStatus = roomStatus;
     }
 
     public UserResident() {
     }
 
-    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -197,7 +197,7 @@ public class UserResident {
         this.email = email;
         this.createId = createId;
         this.createDate = createDate;
-        this.effectiveTimeStart = effectiveTimeStart;
-        this.effectiveTimeEnd = effectiveTimeEnd;
+        this.identity = identity;
+        this.roomStatus = roomStatus;
     }
 }
