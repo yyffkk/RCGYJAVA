@@ -17,5 +17,5 @@ public interface UserCarService {
 
     Map<String, Object> update(UserCar userCar);
 
-    Map<String, Object> delete(Integer id);
+    Map<String, Object> delete(int[] id);
 }

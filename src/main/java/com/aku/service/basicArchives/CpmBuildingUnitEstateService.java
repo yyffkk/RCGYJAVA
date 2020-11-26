@@ -5,6 +5,7 @@ import com.aku.model.basicArchives.EstateAndResidentList;
 import com.aku.model.basicArchives.UserResident;
 import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.aku.vo.basicArchives.VoFindAll;
+import com.aku.vo.basicArchives.VoIds;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface CpmBuildingUnitEstateService {
 
     CpmBuildingUnitEstate findById(Integer id);
 
-    Map<String, Object> delete(Integer id);
+    Map<String, Object> delete(int[] ids);
 
     List<VoFindAll> findAll();
 

@@ -1,6 +1,7 @@
 package com.aku.service.basicArchives;
 
 import com.aku.model.basicArchives.*;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.basicArchives.VoRelatives;
 import com.aku.vo.basicArchives.VoUpdateTenant;
 import com.aku.vo.basicArchives.VoUserTenant;
@@ -20,4 +21,6 @@ public interface UserTenantService {
     Map<String, Object> updateEstate(List<CpmResidentEstate> cpmResidentEstateList,Integer tenantId);
 
     Map<String, Object> updateParkingSpace(List<CpmParkingSpace> cpmParkingSpaceList,Integer tenantId);
+
+    Map<String, Object> delete(int[] ids);
 }

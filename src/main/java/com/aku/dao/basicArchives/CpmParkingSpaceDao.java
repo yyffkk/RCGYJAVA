@@ -22,4 +22,6 @@ public interface CpmParkingSpaceDao {
     List<CpmParkingSpace>  findByResidentId(Integer id);
 
     List<CpmParkingSpace> findByUserId(Integer tenantId);
+
+    CpmParkingSpace findByCode(String code);
 }

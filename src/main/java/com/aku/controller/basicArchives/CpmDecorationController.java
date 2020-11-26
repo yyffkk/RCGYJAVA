@@ -7,6 +7,7 @@ import com.aku.model.basicArchives.SearchDecoration;
 import com.aku.service.basicArchives.CpmDecorationService;
 import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.aku.vo.basicArchives.VoDecoration;
+import com.aku.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -73,12 +74,12 @@ public class CpmDecorationController {
 
     /**
      * 根据主键id删除装修信息
-     * @param id 装修主键id
+     * @param ids 装修主键id数组
      * @return map
      */
-    @GetMapping("/delete")
-    public Map<String,Object> delete(Integer id){
-        return cpmDecorationService.delete(id);
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return cpmDecorationService.delete(ids.getIds());
     }
     /**
      * 根据主键id删除关联成员信息

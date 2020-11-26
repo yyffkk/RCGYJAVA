@@ -131,7 +131,6 @@
         select ur.* from user_resident as ur,cpm_resident_estate as cre
         where ur.id = cre.resident_id
         and cre.building_unit_estate_id = #{buildingUnitEstateId}
-        and cre.is_delete = 1
     </select>
 
 <!--    修改住户信息-->
@@ -170,41 +169,41 @@
     </select>
 <!--根据业主ID查询亲属信息-->
     <select id="findRelativesById" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoRelatives">
-        select urr.id,ur2.name,ur2.tel,urr.identity,ur2.id_type,ur2.id_number
+        select ur2.id,ur2.name,ur2.tel,urr.identity,ur2.id_type,ur2.id_number
         from user_resident as ur1,user_resident_relatives as urr,user_resident as ur2
 		where ur1.id = urr.resident_id and ur2.id = urr.relatives_id and ur1.id =#{id}
     </select>
-<!--根据业主亲属关联主键id删除业主亲属关联信息-->
-    <delete id="deleteRelativesId" parameterType="java.lang.Integer">
-        delete from user_resident_relatives where id =#{id}
-    </delete>
 <!--根据业主id和亲属id修改业主亲属关联中的身份信息-->
     <update id="updateResidentRelatives" parameterType="com.aku.model.basicArchives.UserResidentRelatives">
         update user_resident_relatives
         set identity = #{identity}
         where resident_id = #{residentId} and relatives_id = #{relativesId}
     </update>
-<!--根据id删除业主-->
+    <!--根据id删除住户表信息-->
     <delete id="delete" parameterType="java.lang.Integer">
         delete from user_resident where id =#{id}
     </delete>
 
+    <!--  根据业主（租户）id和房产id删除业主房产关联表信息  -->
     <delete id="deleteByResidentIdAndEstateId" parameterType="com.aku.model.basicArchives.ResidentIdAndEstateId">
         delete from cpm_resident_estate
         where building_unit_estate_id = #{estateId} and resident_id = #{residentId}
     </delete>
 
+    <!--  根据业主（租户）id和房产id删除业主亲属关联表信息  -->
     <delete id="deleteByResidentIdAndRelativesId" parameterType="com.aku.model.basicArchives.ResidentIdAndRelativesId">
         delete from user_resident_relatives
         where resident_id = #{ResidentId} and relatives_id = #{RelativesId}
     </delete>
 
+    <!--  查询所有的业主信息  -->
     <select id="findResidentAll" resultType="com.aku.vo.basicArchives.VoFindAll">
         select id as value,name as label from user_resident where type = 1
     </select>
 
+    <!--  查询所有的住户信息  -->
     <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
-        select id as value,name as label from user_resident
+        select id as value,name as label from user_resident where type = 1 or type = 2
     </select>
 
     <!--   根据业主手机号查询业主信息-->

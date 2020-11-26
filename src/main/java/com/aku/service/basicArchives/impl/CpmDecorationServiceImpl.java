@@ -7,6 +7,7 @@ import com.aku.service.basicArchives.CpmDecorationService;
 import com.aku.vo.basicArchives.VoDecoration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -144,24 +145,33 @@ public class CpmDecorationServiceImpl implements CpmDecorationService {
     }
 
     @Override
-    public Map<String, Object> delete(Integer id) {
-        //查询是否有关联附属员工信息
-        List<UserStaff> userStaffList = userStaffDao.findByDecorationId(id);
-        if (userStaffList != null && userStaffList.size()>0){
-            map.put("message","请先删除成员关联信息");
+    public Map<String, Object> delete(int[] ids) {
+        try {
+            for (int id : ids) {
+                //查询是否有关联附属员工信息
+                List<UserStaff> userStaffList = userStaffDao.findByDecorationId(id);
+                if (userStaffList != null && userStaffList.size()>0){
+                    throw new RuntimeException("批量删除失败，请先删除对应的成员关联信息");
+                }
+                //删除装修信息
+                int delete = cpmDecorationDao.deleteById(id);
+                if (delete<=0){
+                    throw new RuntimeException("批量删除楼栋单元信息失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
             return map;
         }
-
-        //删除装修信息
-        int delete = cpmDecorationDao.deleteById(id);
-        if (delete >0){
-            map.put("message","删除装修信息成功");
-            map.put("status",true);
-        }else {
-            map.put("message","删除装修信息失败");
-            map.put("status",false);
-        }
+        map.put("message","删除装修信息成功");
+        map.put("status",true);
         return map;
     }
 

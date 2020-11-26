@@ -5,6 +5,7 @@ import com.aku.model.basicArchives.ResidentAndParkingSpaceIds;
 import com.aku.model.basicArchives.ResidentAndRelativesList;
 import com.aku.model.basicArchives.UserResident;
 import com.aku.vo.basicArchives.VoFindAll;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.basicArchives.VoRelatives;
 import com.aku.service.basicArchives.UserResidentService;
 import com.aku.vo.basicArchives.VoUserResident;
@@ -127,12 +128,12 @@ public class UserResidentController {
 
     /**
      * 删除业主信息
-     * @param id 业主主键id
+     * @param ids 业主主键id数组
      * @return map
      */
-    @GetMapping("/delete")
-    public Map<String,Object> delete(Integer id){
-        return userResidentService.delete(id);
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return userResidentService.delete(ids.getIds());
     }
 
     /**

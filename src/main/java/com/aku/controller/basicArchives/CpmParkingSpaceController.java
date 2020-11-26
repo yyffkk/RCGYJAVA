@@ -3,6 +3,7 @@ package com.aku.controller.basicArchives;
 import com.aku.model.basicArchives.CpmParkingSpace;
 import com.aku.vo.basicArchives.VoCpmParkingSpace;
 import com.aku.service.basicArchives.CpmParkingSpaceService;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.basicArchives.VoParkingSpace;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -70,12 +71,12 @@ public class CpmParkingSpaceController {
 
     /**
      * 删除车位信息
-     * @param id 车位主键id
+     * @param ids 车位主键id数组
      * @return map
      */
-    @GetMapping("/delete")
-    public Map<String,Object> delete(Integer id){
-        return cpmParkingSpaceService.delete(id);
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return cpmParkingSpaceService.delete(ids.getIds());
     }
 
 }

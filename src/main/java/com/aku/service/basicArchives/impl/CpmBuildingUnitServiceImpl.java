@@ -9,6 +9,8 @@ import com.aku.vo.basicArchives.VoFindAll;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -88,21 +90,28 @@ public class CpmBuildingUnitServiceImpl implements CpmBuildingUnitService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> delete(int[] ids) {
-        boolean flag = true;
-        for (int id : ids) {
-            int delete = cpmBuildingUnitDao.delete(id);
-            if (delete<=0){
-                flag = false;
+        try {
+            for (int id : ids) {
+                int delete = cpmBuildingUnitDao.delete(id);
+                if (delete<=0){
+                    throw new RuntimeException("批量删除楼栋单元信息失败");
+                }
             }
-        }
-        if (flag){
-            map.put("message","删除楼栋单元信息成功");
-            map.put("status",true);
-        }else {
-            map.put("message","删除楼栋单元信息失败");
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","批量删除楼栋单元信息成功");
+        map.put("status",true);
         return map;
     }
 

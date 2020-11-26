@@ -7,6 +7,7 @@ import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.aku.service.basicArchives.CpmBuildingUnitEstateService;
 import com.aku.service.basicArchives.UserResidentService;
 import com.aku.vo.basicArchives.VoFindAll;
+import com.aku.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -102,12 +103,12 @@ public class CpmBuildingUnitEstateController {
 
     /**
      * 假删除，修改楼栋单元房产的is_delete字段  0删除 1非删
-     * @param id 楼栋单元房产ID
+     * @param ids 楼栋单元房产ID数组
      * @return map
      */
-    @GetMapping("/delete")
-    public Map<String,Object> delete(Integer id){
-        return cpmBuildingUnitEstateService.delete(id);
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return cpmBuildingUnitEstateService.delete(ids.getIds());
     }
 
     /**

@@ -2,6 +2,7 @@ package com.aku.controller.basicArchives;
 
 import com.aku.model.basicArchives.*;
 import com.aku.service.basicArchives.UserTenantService;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.basicArchives.VoUserTenant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -91,6 +92,16 @@ public class UserTenantController {
     @PostMapping("/updateParkingSpace")
     public Map<String,Object> updateParkingSpace(@RequestBody List<CpmParkingSpace> cpmParkingSpaceList,@RequestBody Integer tenantId){
         return userTenantService.updateParkingSpace(cpmParkingSpaceList,tenantId);
+    }
+
+    /**
+     * 删除租户信息
+     * @param ids 租户主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return userTenantService.delete(ids.getIds());
     }
 
 

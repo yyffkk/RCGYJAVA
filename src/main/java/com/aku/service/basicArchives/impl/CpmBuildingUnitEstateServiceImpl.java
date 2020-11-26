@@ -7,6 +7,7 @@ import com.aku.model.system.SysUser;
 import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.aku.service.basicArchives.CpmBuildingUnitEstateService;
 import com.aku.vo.basicArchives.VoFindAll;
+import com.aku.vo.basicArchives.VoIds;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -16,6 +17,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -96,8 +98,20 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
         if (insert1>0){
             //判断是否有业主信息需要添加
             if (userResidentList!=null){
-                //添加业主信息
-                insertUserResident(new EstateAndResidentList(cpmBuildingUnitEstate,userResidentList));
+                try {
+                    //添加业主信息
+                    insertUserResident(new EstateAndResidentList(cpmBuildingUnitEstate,userResidentList));
+                } catch (Exception e) {
+                    //获取抛出的信息
+                    String message = e.getMessage();
+                    e.printStackTrace();
+                    //设置手动回滚
+                    TransactionAspectSupport.currentTransactionStatus()
+                            .setRollbackOnly();
+                    map.put("message",message);
+                    map.put("status",false);
+                    return map;
+                }
             }
         }else {
             map.put("message","添加楼栋单元房产信息失败");
@@ -172,24 +186,37 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
     }
 
     @Override
-    public Map<String, Object> delete(Integer id) {
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        //捕获异常，用于回滚
+        try {
+            for (int id : ids) {
+                //先查询是否有关联业主信息
+                List<UserResident> byBuildingUnitEstateId = userResidentDao.findByBuildingUnitEstateId(id);
+                if (byBuildingUnitEstateId != null && byBuildingUnitEstateId.size()>0){
+                    throw new RuntimeException("批量删除失败，请先解除关联业主信息");
+                }
 
-        //查询是否有关联业主信息
-        List<UserResident> byBuildingUnitEstateId = userResidentDao.findByBuildingUnitEstateId(id);
-        if (byBuildingUnitEstateId != null && byBuildingUnitEstateId.size()>0){
-            map.put("message","删除失败，请先解除关联业主信息");
+                //再假删除房产信息
+                int delete = cpmBuildingUnitEstateDao.delete(id);
+                if (delete<=0){
+                    //如果，delete为0抛出异常
+                    throw new RuntimeException("批量删除楼栋单元房产信息失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
             return map;
         }
-        //假删除房产信息
-        int delete = cpmBuildingUnitEstateDao.delete(id);
-        if (delete >0){
-            map.put("message","删除楼栋单元房产信息成功");
-            map.put("status",true);
-        }else {
-            map.put("message","删除楼栋单元房产信息失败");
-            map.put("status",false);
-        }
+        map.put("message","批量删除楼栋单元房产信息成功");
+        map.put("status",true);
         return map;
     }
 
@@ -214,37 +241,41 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
             }
         }
 
-        boolean flag =true;
-        //修改房屋信息
-        int update = cpmBuildingUnitEstateDao.update(estateAndResident.getEstate());
-        if (update <= 0){
-            flag = false;
-        }
-
-        //---修改关联业主信息---
-        //根据楼栋单元房产Id查询楼栋单元房产信息
-        List<UserResident> byBuildingUnitEstateId = userResidentDao.findByBuildingUnitEstateId(estateAndResident.getEstate().getId());
-        if (byBuildingUnitEstateId != null){
-            for (UserResident userResident : byBuildingUnitEstateId) {
-                //先删除所有该房产的业主关联信息
-                int delete = userResidentDao.deleteByResidentIdAndEstateId(new ResidentIdAndEstateId(userResident.getId(), estateAndResident.getEstate().getId()));
-                if (delete<=0){
-                    flag = false;
-                }
+        try {
+            //修改房屋信息
+            int update = cpmBuildingUnitEstateDao.update(estateAndResident.getEstate());
+            if (update <= 0){
+                throw new RuntimeException("修改房屋信息失败");
             }
-        }
-//        再添加业主关联信息
-        if (estateAndResident.getResidentList()!=null){
-            //添加业主信息
-            insertUserResident(estateAndResident);
-        }
 
-//        //最后查询出没有房产的业主,改为旧业主
+            //---修改关联业主信息---
+            try {
+                //根据楼栋单元房产Id查询楼栋单元房产信息
+                List<UserResident> byBuildingUnitEstateId = userResidentDao.findByBuildingUnitEstateId(estateAndResident.getEstate().getId());
+                if (byBuildingUnitEstateId != null){
+                    for (UserResident userResident : byBuildingUnitEstateId) {
+                        //先删除所有该房产的业主关联信息
+                        int delete = userResidentDao.deleteByResidentIdAndEstateId(new ResidentIdAndEstateId(userResident.getId(), estateAndResident.getEstate().getId()));
+                        if (delete<=0){
+                            throw new RuntimeException("存在业主房产关联信息删除失败");
+                        }
+                    }
+                }
+                //再添加业主关联信息
+                if (estateAndResident.getResidentList()!=null){
+                    //添加业主信息
+                    insertUserResident(estateAndResident);
+                }
+            } catch (RuntimeException e) {
+                throw new RuntimeException("修改关联业主信息失败");
+            }
+
+//        //最后查询出没有房产的业主,改为非小区人员
 //        if (byBuildingUnitEstateId != null){
 //            for (UserResident userResident : byBuildingUnitEstateId) {
 //                List<CpmBuildingUnitEstate> byResidentId = cpmBuildingUnitEstateDao.findByResidentId(userResident.getId());
 //                if (byResidentId == null || byResidentId.size()==0){
-//                    //业主类型改为旧业主
+//                    //业主类型改为非小区人员
 //                    UserResident userResident1 = new UserResident();
 //                    userResident1.setId(userResident.getId());
 //                    userResident1.setType(4);
@@ -255,14 +286,23 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
 //                }
 //            }
 //        }
-
-
-        if (flag){
-            map.put("message","修改房产信息成功");
-            map.put("status",true);
-        }else {
-            throw new RuntimeException("修改房产信息失败");
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
         }
+
+
+
+
+        map.put("message","修改房产信息成功");
+        map.put("status",true);
         return map;
     }
 

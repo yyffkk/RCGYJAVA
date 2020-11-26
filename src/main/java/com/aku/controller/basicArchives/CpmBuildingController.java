@@ -81,7 +81,6 @@ public class CpmBuildingController {
      */
     @PostMapping("/delete")
     public Map<String,Object> delete(@RequestBody VoIds ids){
-        System.out.println("---------ids  "+ids);
         return cpmBuildingService.delete(ids.getIds());
     }
 

@@ -3,6 +3,7 @@ package com.aku.controller.basicArchives;
 import com.aku.model.basicArchives.SearchUserCar;
 import com.aku.model.basicArchives.UserCar;
 import com.aku.service.basicArchives.UserCarService;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.basicArchives.VoParkingSpace;
 import com.aku.vo.basicArchives.VoUserCar;
 import com.aku.vo.basicArchives.VoUserCarFindById;
@@ -73,12 +74,12 @@ public class UserCarController {
 
     /**
      * 删除车辆信息
-     * @param id 车辆主键id
+     * @param ids 车辆主键id数组
      * @return map
      */
-    @GetMapping("/delete")
-    public Map<String,Object> delete(Integer id){
-        return userCarService.delete(id);
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return userCarService.delete(ids.getIds());
     }
 
 

@@ -29,8 +29,6 @@ public interface UserResidentDao {
 
     List<VoRelatives> findRelativesById(Integer id);
 
-    int deleteRelativesId(int id);
-
     int updateResidentRelatives(UserResidentRelatives userResidentRelatives);
 
     int delete(Integer id);

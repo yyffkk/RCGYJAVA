@@ -2,6 +2,7 @@ package com.aku.service.basicArchives.impl;
 
 import com.aku.dao.basicArchives.CpmParkingSpaceDao;
 import com.aku.model.basicArchives.CpmParkingSpace;
+import com.aku.model.basicArchives.ParkingSpaceAndResident;
 import com.aku.model.system.SysUser;
 import com.aku.vo.basicArchives.VoCpmParkingSpace;
 import com.aku.service.basicArchives.CpmParkingSpaceService;
@@ -9,6 +10,8 @@ import com.aku.vo.basicArchives.VoParkingSpace;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -29,6 +32,18 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
 
     @Override
     public Map<String, Object> insert(CpmParkingSpace cpmParkingSpace) {
+//        //是否有业主信息填入
+//        CpmParkingSpace cpmParkingSpace = parkingSpaceAndResident.getCpmParkingSpace();
+
+        //校验查重
+        //根据车位编号查询是否存在车位信息
+        CpmParkingSpace cpmParkingSpace1 = cpmParkingSpaceDao.findByCode(cpmParkingSpace.getCode());
+        if (cpmParkingSpace1 != null){
+            map.put("message","车位编号已存在");
+            map.put("status",false);
+            return map;
+        }
+
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
@@ -70,15 +85,28 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
     }
 
     @Override
-    public Map<String, Object> delete(Integer id) {
-        int delete = cpmParkingSpaceDao.delete(id);
-        if (delete >0){
-            map.put("message","删除车位信息成功");
-            map.put("status",true);
-        }else {
-            map.put("message","删除车位信息失败");
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        try {
+            for (int id : ids) {
+                int delete = cpmParkingSpaceDao.delete(id);
+                if (delete<=0){
+                    throw new RuntimeException("批量删除车位信息失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","批量删除车位信息成功");
+        map.put("status",true);
         return map;
     }
 }

@@ -26,7 +26,7 @@ public interface UserResidentService {
 
     Map<String, Object> insert(UserResident userResident, List<VoRelatives>  voRelativesList, List<Integer> cpmParkingSpaceIds, List<Integer> buildingUnitEstateIds);
 
-    Map<String, Object> delete(Integer id);
+    Map<String, Object> delete(int[] id);
 
     Map<String, Object> updateRelatives(ResidentAndRelativesList residentAndRelatives);
 

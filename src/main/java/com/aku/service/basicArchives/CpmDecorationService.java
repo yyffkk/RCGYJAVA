@@ -17,7 +17,7 @@ public interface CpmDecorationService {
 
     DecorationAndStaff findById(Integer id);
 
-    Map<String, Object> delete(Integer id);
+    Map<String, Object> delete(int[] id);
 
     Map<String, Object> deleteStaff(DecorationIdAndStaffId decorationIdAndStaffId);
 }

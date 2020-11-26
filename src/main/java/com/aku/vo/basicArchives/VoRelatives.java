@@ -11,11 +11,11 @@ public class VoRelatives {
      */
     private Integer id;
     /**
-     * 业主名称
+     * 亲属名称
      */
     private String name;
     /**
-     * 业主类型（1业主，2亲属，3租客）
+     * 住户类型（1业主，2亲属，3租客）
      */
     private Integer type;
     /**

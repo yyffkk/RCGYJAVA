@@ -16,5 +16,5 @@ public interface CpmParkingSpaceService {
 
     Map<String, Object> update(CpmParkingSpace cpmParkingSpace);
 
-    Map<String, Object> delete(Integer id);
+    Map<String, Object> delete(int[] id);
 }
