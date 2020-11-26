@@ -34,6 +34,15 @@ public class CpmBuildingUnitServiceImpl implements CpmBuildingUnitService {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
 
+        //校验重复
+        //根据楼栋单元号查询是否已有单元信息
+        CpmBuildingUnit cpmBuildingUnit1 = cpmBuildingUnitDao.findByNo(cpmBuildingUnit.getNo());
+        if (cpmBuildingUnit1 != null){
+            map.put("message","楼栋单元号信息已存在");
+            map.put("status",false);
+            return map;
+        }
+
         cpmBuildingUnit.setCreateId(sysUser.getId());
         cpmBuildingUnit.setCreateDate(new Date());
         int insert = cpmBuildingUnitDao.insert(cpmBuildingUnit);
@@ -54,6 +63,19 @@ public class CpmBuildingUnitServiceImpl implements CpmBuildingUnitService {
 
     @Override
     public Map<String, Object> update(CpmBuildingUnit cpmBuildingUnit) {
+        //校验重复
+        //根据楼栋单元号查询是否已有单元信息
+        CpmBuildingUnit cpmBuildingUnit1 = cpmBuildingUnitDao.findByNo(cpmBuildingUnit.getNo());
+        if (cpmBuildingUnit1 != null){
+            //如果输入id与查询到的id不一致，则修改了单元号信息，并且单元号重复
+            if (!cpmBuildingUnit1.getId().equals(cpmBuildingUnit.getId())){
+                map.put("message","楼栋单元号信息已存在");
+                map.put("status",false);
+                return map;
+            }
+        }
+
+
         int update = cpmBuildingUnitDao.update(cpmBuildingUnit);
         if (update>0){
             map.put("message","修改楼栋单元信息成功");

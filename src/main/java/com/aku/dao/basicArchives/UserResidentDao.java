@@ -42,4 +42,10 @@ public interface UserResidentDao {
     List<VoFindAll> findResidentAll();
 
     List<VoFindAll> findAll();
+
+    UserResident findByTelAndIdNumber(UserResident userResident);
+
+    UserResident findByTel(String tel);
+
+    UserResident findByIdNumber(String idNumber);
 }

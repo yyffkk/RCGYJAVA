@@ -137,4 +137,9 @@
         from cpm_building_unit_estate
         where is_delete =1 and building_unit_id = #{id}
     </select>
+
+    <select id="findByRoomNumber" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+        select * from cpm_building_unit_estate
+        where room_number =#{roomNumber}
+    </select>
 </mapper>

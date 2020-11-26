@@ -19,4 +19,8 @@ public interface CpmBuildingDao {
     int delete(Integer id);
 
     List<VoFindAll> findAll();
+
+    CpmBuilding findByNo(Integer no);
+
+    CpmBuilding findByName(String name);
 }

@@ -10,6 +10,7 @@ import com.aku.vo.basicArchives.VoFindAll;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -47,19 +48,18 @@ public class CpmBuildingUnitEstateController {
 
     /**
      * 添加楼栋单元房产信息(或关联业主信息)
-     * @param cpmBuildingUnitEstate 楼栋单元房产信息
-     * @param userResidentList 关联业主信息集合
+     * @param estateAndResidentList 楼栋单元房产信息 和 关联业主信息集合
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody CpmBuildingUnitEstate cpmBuildingUnitEstate,@RequestBody List<UserResident> userResidentList){
+    public Map<String,Object> insert(@RequestBody EstateAndResidentList estateAndResidentList){
         //判断是否有业主需要关联
-        if (cpmBuildingUnitEstate.getStatus() == ESTATE_STATUS){
+        if (estateAndResidentList.getEstate().getStatus() == ESTATE_STATUS){
             //不关联业主
-            return cpmBuildingUnitEstateService.insert(cpmBuildingUnitEstate);
+            return cpmBuildingUnitEstateService.insert(estateAndResidentList.getEstate());
         } else {
             //关联业主
-            return cpmBuildingUnitEstateService.insert(userResidentList, cpmBuildingUnitEstate);
+            return cpmBuildingUnitEstateService.insert(estateAndResidentList.getResidentList(),estateAndResidentList.getEstate());
         }
     }
 
@@ -128,4 +128,11 @@ public class CpmBuildingUnitEstateController {
     public List<VoFindAll> findByBuildingUnitId(Integer id){
         return cpmBuildingUnitEstateService.findByBuildingUnitId(id);
     }
+
+    @PostMapping("/importBuildingUnitEstate")
+    public Map<String,Object> importBuildingUnitEstate(MultipartFile file){
+        return cpmBuildingUnitEstateService.importBuildingUnitEstate(file);
+    }
+
+
 }

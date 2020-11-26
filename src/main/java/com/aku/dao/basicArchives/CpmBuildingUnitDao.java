@@ -22,4 +22,6 @@ public interface CpmBuildingUnitDao {
     List<VoFindAll> findAll();
 
     List<VoFindAll> findByBuildingId(Integer id);
+
+    CpmBuildingUnit findByNo(Integer no);
 }

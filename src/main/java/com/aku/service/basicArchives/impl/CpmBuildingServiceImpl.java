@@ -30,6 +30,22 @@ public class CpmBuildingServiceImpl implements CpmBuildingService {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
 
+        //校验重复
+        //根据楼栋编号查询是否已有楼栋信息
+        CpmBuilding byNo = cpmBuildingDao.findByNo(cpmBuilding.getNo());
+        if (byNo != null){
+            map.put("message","楼栋编号已存在");
+            map.put("status",false);
+            return map;
+        }
+        //根据楼栋名称查询是否已有楼栋信息
+        CpmBuilding byName = cpmBuildingDao.findByName(cpmBuilding.getName());
+        if (byName != null){
+            map.put("message","楼栋名称已存在");
+            map.put("status",false);
+            return map;
+        }
+
         cpmBuilding.setCreateId(sysUser.getId());
         cpmBuilding.setCreateDate(new Date());
         cpmBuilding.setCode(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16));
@@ -54,6 +70,28 @@ public class CpmBuildingServiceImpl implements CpmBuildingService {
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        //校验重复
+        //根据楼栋编号查询是否已有楼栋信息
+        CpmBuilding byNo = cpmBuildingDao.findByNo(cpmBuilding.getNo());
+        if (byNo != null){
+            //如果输入id与查询到的id不一致，则修改了楼栋编号信息，并且楼栋编号重复
+            if (!byNo.getId().equals(cpmBuilding.getId())){
+                map.put("message","楼栋编号已存在");
+                map.put("status",false);
+                return map;
+            }
+        }
+        //根据楼栋名称查询是否已有楼栋信息
+        CpmBuilding byName = cpmBuildingDao.findByName(cpmBuilding.getName());
+        if (byName != null){
+            //如果输入id与查询到的id不一致，则修改了楼栋名称信息，并且楼栋名称重复
+            if (!byName.getId().equals(cpmBuilding.getId())){
+                map.put("message","楼栋名称已存在");
+                map.put("status",false);
+                return map;
+            }
+        }
 
         cpmBuilding.setModifyId(sysUser.getId());
         cpmBuilding.setModifyDate(new Date());

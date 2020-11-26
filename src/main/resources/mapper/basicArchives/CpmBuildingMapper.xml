@@ -93,4 +93,16 @@
     <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
         select id as `value`,name as label from cpm_building
     </select>
+
+    <select id="findByNo" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuilding">
+        select id,no,name,code
+        from cpm_building
+        where no = #{no}
+    </select>
+
+    <select id="findByName" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.CpmBuilding">
+        select id,no,name,code
+        from cpm_building
+        where name = #{name}
+    </select>
 </mapper>

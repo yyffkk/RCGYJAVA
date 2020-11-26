@@ -27,4 +27,6 @@ public interface CpmBuildingUnitEstateDao {
     List<VoTenantCpmBuildingUnitEstate> findByTenantId(Integer id);
 
     List<VoFindAll> findByBuildingUnitId(Integer id);
+
+    CpmBuildingUnitEstate findByRoomNumber(String roomNumber);
 }

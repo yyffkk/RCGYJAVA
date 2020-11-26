@@ -3,8 +3,17 @@ package com.aku.model.basicArchives;
 
 import java.util.List;
 
+/**
+ * 楼栋单元房产信息 和 关联业主信息集合
+ */
 public class EstateAndResidentList {
+    /**
+     * 楼栋单元房产信息
+     */
     private CpmBuildingUnitEstate Estate;
+    /**
+     * 关联业主信息集合
+     */
     private List<UserResident> ResidentList;
 
     @Override

@@ -48,6 +48,24 @@ public class UserResidentServiceImpl implements UserResidentService {
             map.put("status",false);
             return map;
         }
+
+        //校验重复
+        //根据业主手机号查询是否已有业主信息
+        UserResident userResident1 = userResidentDao.findByTel(userResident.getTel());
+        if (userResident1 != null){
+            map.put("message","业主手机号已存在");
+            map.put("status",false);
+            return map;
+        }
+
+        //根据业主证件号码查询是否已有业主信息
+        UserResident userResident2 = userResidentDao.findByIdNumber(userResident.getIdNumber());
+        if (userResident2 != null){
+            map.put("message","业主证件号码已存在");
+            map.put("status",false);
+            return map;
+        }
+
         //添加业主信息
         userResident.setCreateId(sysUser.getId());
         userResident.setCreateDate(new Date());
@@ -232,6 +250,29 @@ public class UserResidentServiceImpl implements UserResidentService {
     @Override
     @Transactional
     public Map<String, Object> updateRelatives(ResidentAndRelativesList residentAndRelatives) {
+        //校验重复
+        //根据业主手机号查询是否已有业主信息
+        UserResident userResident1 = userResidentDao.findByTel(residentAndRelatives.getUserResident().getTel());
+        if (userResident1 != null){
+            //如果输入id与查询到的id不一致，则修改了业主手机号信息，并且业主手机号重复
+            if (!userResident1.getId().equals(residentAndRelatives.getUserResident().getId())){
+                map.put("message","业主手机号已存在");
+                map.put("status",false);
+                return map;
+            }
+        }
+
+        //根据业主证件号码查询是否已有业主信息
+        UserResident userResident2 = userResidentDao.findByIdNumber(residentAndRelatives.getUserResident().getIdNumber());
+        if (userResident2 != null){
+            //如果输入id与查询到的id不一致，则修改了业主手机号信息，并且业主手机号重复
+            if (!userResident2.getId().equals(residentAndRelatives.getUserResident().getId())){
+                map.put("message","业主证件号码已存在");
+                map.put("status",false);
+                return map;
+            }
+        }
+
         boolean flag = true;
         //修改业主信息
         int update = userResidentDao.update(residentAndRelatives.getUserResident());

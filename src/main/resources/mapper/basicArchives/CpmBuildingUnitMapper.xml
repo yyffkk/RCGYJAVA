@@ -61,4 +61,10 @@
         select id as value,no as label from cpm_building_unit
         where building_id = #{id}
     </select>
+
+    <select id="findByNo" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnit">
+        select id,building_id,no,total_floor,is_elevator
+        from cpm_building_unit
+        where no = #{no}
+    </select>
 </mapper>
