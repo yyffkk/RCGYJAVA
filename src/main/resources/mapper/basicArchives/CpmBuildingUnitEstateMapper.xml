@@ -3,23 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.basicArchives.CpmBuildingUnitEstateDao">
-    <select id="list" parameterType="com.aku.vo.basicArchives.VoCpmBuildingUnitEstate" resultType="com.aku.vo.basicArchives.VoCpmBuildingUnitEstate">
-        select b.id,b.building_name,b.building_unit_no,b.room_number,b.status,b.type,b.construction_area,b.indoor_area,group_concat(b.user_resident_name) as user_resident_name,group_concat(b.user_resident_tel) as user_resident_tel
+    <select id="list" parameterType="com.aku.model.basicArchives.SearchCpmBuildingUnitEstate" resultType="com.aku.vo.basicArchives.VoCpmBuildingUnitEstate">
+        select b.id,b.building_name,b.building_no,b.building_unit_no,b.room_number,b.status,b.type,b.construction_area,b.indoor_area,group_concat(b.user_resident_name) as user_resident_name,group_concat(b.user_resident_tel) as user_resident_tel
         from (
-        select a.id,a.building_name,a.building_unit_no,a.room_number,a.status,a.type,a.construction_area,a.indoor_area,ur.name as user_resident_name,ur.tel as user_resident_tel
+        select a.id,a.building_name,a.building_no,a.building_unit_no,a.room_number,a.status,a.type,a.construction_area,a.indoor_area,ur.name as user_resident_name,ur.tel as user_resident_tel
         from (
-        select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name,cre.resident_id as resident_id
+        select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name,cb.no as building_no,cre.resident_id as resident_id
         from cpm_building_unit_estate cbue,cpm_building cb,cpm_building_unit cbu,cpm_resident_estate cre
         where cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cbue.id = cre.building_unit_estate_id
         ) as a LEFT JOIN user_resident ur
         on a.resident_id = ur.id
         ) as b
         <where>
-            <if test="buildingName != null and buildingName != ''">
-                and b.building_name like concat('%',#{buildingName},'%')
+            <if test="buildingNo != null and buildingNo != ''">
+                and b.building_no like concat('%',#{buildingNo},'%')
             </if>
-            <if test="buildingUnitNo != null">
-                and b.building_unit_no like concat('%',#{buildingUnitNo},'%')
+            <if test="unitNo != null">
+                and b.building_unit_no like concat('%',#{unitNo},'%')
             </if>
             <if test="roomNumber != null and roomNumber != ''">
                 and b.room_number like concat('%',#{roomNumber},'%')
@@ -27,11 +27,11 @@
             <if test="status != null">
                 and b.status = #{status}
             </if>
-            <if test="userResidentName != null and userResidentName != ''">
-                and b.user_resident_name like concat('%',#{userResidentName},'%')
+            <if test="residentName != null and residentName != ''">
+                and b.user_resident_name like concat('%',#{residentName},'%')
             </if>
-            <if test="userResidentTel != null and userResidentTel != ''">
-                and b.user_resident_tel = #{userResidentTel}
+            <if test="residentTel != null and residentTel != ''">
+                and b.user_resident_tel = #{residentTel}
             </if>
         </where>
         GROUP BY b.id
@@ -138,7 +138,7 @@
         where is_delete =1 and building_unit_id = #{id}
     </select>
 
-    <select id="findByRoomNumber" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+    <select id="findByRoomNumber" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
         select * from cpm_building_unit_estate
         where room_number =#{roomNumber}
     </select>

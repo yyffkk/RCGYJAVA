@@ -1,6 +1,7 @@
 package com.aku.dao.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
+import com.aku.model.basicArchives.SearchCpmBuildingUnitEstate;
 import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.aku.vo.basicArchives.VoFindAll;
 import com.aku.vo.basicArchives.VoTenantCpmBuildingUnitEstate;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Component
 public interface CpmBuildingUnitEstateDao {
-    List<VoCpmBuildingUnitEstate> list(VoCpmBuildingUnitEstate voCpmBuildingUnitEstate);
+    List<VoCpmBuildingUnitEstate> list(SearchCpmBuildingUnitEstate searchCpmBuildingUnitEstate);
 
     int insert(CpmBuildingUnitEstate cpmBuildingUnitEstate);
 

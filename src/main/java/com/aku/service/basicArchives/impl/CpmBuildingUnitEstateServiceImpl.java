@@ -8,6 +8,7 @@ import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.aku.service.basicArchives.CpmBuildingUnitEstateService;
 import com.aku.vo.basicArchives.VoFindAll;
 import com.aku.vo.basicArchives.VoIds;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -38,8 +39,34 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
     UserResidentDao userResidentDao;
 
     @Override
-    public List<VoCpmBuildingUnitEstate> list(VoCpmBuildingUnitEstate voCpmBuildingUnitEstate) {
-        return cpmBuildingUnitEstateDao.list(voCpmBuildingUnitEstate);
+    public List<VoCpmBuildingUnitEstate> list(SearchCpmBuildingUnitEstate searchCpmBuildingUnitEstate) {
+        //初始化数组参数，长度为3，值都为null
+        String[] split = {null,null,null};
+        if (searchCpmBuildingUnitEstate.getRoomName()!=null){
+            //用'-'截取字符串 获取数组
+            String[] split2 = searchCpmBuildingUnitEstate.getRoomName().replace(" ", "").split("-");
+            //如果数组长度超过3，超出部分不要
+            for (int i =0;i<split2.length;i++) {
+                //防止下标越界异常
+                if (i<3){
+                    split[i] = split2[i];
+                }
+            }
+            //添加楼栋模糊查询信息,StringUtils.isNotBlank()【null，''】为true【' ','a',' a '】为false
+            if (StringUtils.isNotBlank(split[0])){
+                searchCpmBuildingUnitEstate.setBuildingNo(Integer.valueOf(split[0]));
+            }
+            //添加单元模糊查询信息
+            if (StringUtils.isNotBlank(split[1])) {
+                searchCpmBuildingUnitEstate.setUnitNo(Integer.valueOf(split[1]));
+            }
+            //添加房产模糊查询信息
+            if (StringUtils.isNotBlank(split[2])) {
+                searchCpmBuildingUnitEstate.setRoomNumber(split[2]);
+            }
+        }
+
+        return cpmBuildingUnitEstateDao.list(searchCpmBuildingUnitEstate);
     }
 
     @Override

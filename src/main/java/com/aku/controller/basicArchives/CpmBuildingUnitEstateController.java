@@ -1,6 +1,7 @@
 package com.aku.controller.basicArchives;
 
 import com.aku.model.basicArchives.CpmBuildingUnitEstate;
+import com.aku.model.basicArchives.SearchCpmBuildingUnitEstate;
 import com.aku.model.basicArchives.UserResident;
 import com.aku.model.basicArchives.EstateAndResidentList;
 import com.aku.vo.basicArchives.VoCpmBuildingUnitEstate;
@@ -30,15 +31,13 @@ public class CpmBuildingUnitEstateController {
 
     /**
      * 查询楼栋单元房产信息（包含条件搜索）
-     * @param voCpmBuildingUnitEstate 搜索条件
-     * @param pageNum 当前页数
-     * @param size 每页记录数
+     * @param searchCpmBuildingUnitEstate 房产信息搜索条件
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(VoCpmBuildingUnitEstate voCpmBuildingUnitEstate,int pageNum,int size){
-        PageHelper.startPage(pageNum,size);
-        List<VoCpmBuildingUnitEstate> voCpmBuildingUnitEstateList =cpmBuildingUnitEstateService.list(voCpmBuildingUnitEstate);
+    public Map<String,Object> list(SearchCpmBuildingUnitEstate searchCpmBuildingUnitEstate){
+        PageHelper.startPage(searchCpmBuildingUnitEstate.getPageNum(),searchCpmBuildingUnitEstate.getSize());
+        List<VoCpmBuildingUnitEstate> voCpmBuildingUnitEstateList =cpmBuildingUnitEstateService.list(searchCpmBuildingUnitEstate);
         PageInfo<VoCpmBuildingUnitEstate> pageInfo = new PageInfo<>(voCpmBuildingUnitEstateList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
@@ -80,7 +79,7 @@ public class CpmBuildingUnitEstateController {
             List<UserResident> userResidentList = userResidentService.findByBuildingUnitEstateId(cpmBuildingUnitEstate.getId());
             map.put("userResidentList",userResidentList);
         }else {
-            map.put("userResident",null);
+            map.put("userResidentList",null);
         }
         map.put("cpmBuildingUnitEstate",cpmBuildingUnitEstate);
         return map;

@@ -5,6 +5,7 @@ import com.aku.dao.basicArchives.UserStaffDao;
 import com.aku.model.basicArchives.*;
 import com.aku.service.basicArchives.CpmDecorationService;
 import com.aku.vo.basicArchives.VoDecoration;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -29,7 +30,7 @@ public class CpmDecorationServiceImpl implements CpmDecorationService {
         String[] split = {null,null,null};
         if (searchDecoration.getRoomName()!=null){
             //用'-'截取字符串 获取数组
-            String[] split2 = searchDecoration.getRoomName().split("-");
+            String[] split2 = searchDecoration.getRoomName().replace(" ", "").split("-");
             //如果数组长度超过3，超出部分不要
             for (int i =0;i<split2.length;i++) {
                 //防止下标越界异常
@@ -37,16 +38,16 @@ public class CpmDecorationServiceImpl implements CpmDecorationService {
                     split[i] = split2[i];
                 }
             }
-            //添加楼栋模糊查询信息
-            if (split[0]!=null){
+            //添加楼栋模糊查询信息,StringUtils.isNotBlank()【null，''】为true【' ','a',' a '】为false
+            if (StringUtils.isNotBlank(split[0])){
                 searchDecoration.setEstateNo(Integer.valueOf(split[0]));
             }
             //添加单元模糊查询信息
-            if (split[1]!=null) {
+            if (StringUtils.isNotBlank(split[1])) {
                 searchDecoration.setUnitNo(Integer.valueOf(split[1]));
             }
             //添加房产模糊查询信息
-            if (split[2]!=null) {
+            if (StringUtils.isNotBlank(split[2])) {
                 searchDecoration.setRoomNumber(split[2]);
             }
         }
