@@ -4,6 +4,7 @@ server:
         context-path: /
 
 spring:
+    resources: classpath:/static/
     datasource:
         url: jdbc:mysql://localhost:3306/IntelligentCommunity?characterEncoding=utf8&useSSL=false
         username: root
