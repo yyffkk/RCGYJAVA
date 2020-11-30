@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.basicArchives.CpmParkingSpaceDao">
     <select id="list" parameterType="com.aku.vo.basicArchives.VoCpmParkingSpace" resultType="com.aku.vo.basicArchives.VoParkingSpace">
-        SELECT cps.id,cps.code,cps.status,cps.type,ur.name as resident_name,ur2.name as user_name,u2.tel
-        from cpm_parking_space cps,user_resident ur,user_resident ur2
+        SELECT cps.id,cps.code,cps.status,cps.type,ur.name as resident_name,ur2.name as user_name,ur2.tel
+        from cpm_parking_space as cps,user_resident as ur,user_resident as ur2
         <where>
             cps.resident_id = ur.id
             and cps.user_id = ur2.id

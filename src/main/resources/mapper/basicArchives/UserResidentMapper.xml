@@ -74,7 +74,7 @@
     <!--    添加业主亲属关联-->
     <insert id="insertResidentRelatives" parameterType="com.aku.model.basicArchives.UserResidentRelatives">
         insert into user_resident_relatives(resident_id,relatives_id,identity)
-        values (#{resident_id},#{relatives_id},#{identity})
+        values (#{residentId},#{relativesId},#{identity})
     </insert>
     <!--添加亲属信息-->
     <insert id="insertRelatives" parameterType="com.aku.vo.basicArchives.VoRelatives">
@@ -167,7 +167,7 @@
         select id,name,tel,id_type,id_number
         from user_resident where id = #{id}
     </select>
-<!--根据业主ID查询亲属信息-->
+<!--根据住户ID查询亲属信息-->
     <select id="findRelativesById" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoRelatives">
         select ur2.id,ur2.name,ur2.tel,urr.identity,ur2.id_type,ur2.id_number
         from user_resident as ur1,user_resident_relatives as urr,user_resident as ur2
@@ -190,7 +190,7 @@
         where building_unit_estate_id = #{estateId} and resident_id = #{residentId}
     </delete>
 
-    <!--  根据业主（租户）id和房产id删除业主亲属关联表信息  -->
+    <!--  根据业主（租户）id和亲属id删除业主亲属关联表信息  -->
     <delete id="deleteByResidentIdAndRelativesId" parameterType="com.aku.model.basicArchives.ResidentIdAndRelativesId">
         delete from user_resident_relatives
         where resident_id = #{ResidentId} and relatives_id = #{RelativesId}
@@ -207,13 +207,13 @@
     </select>
 
     <!--   根据业主手机号查询业主信息-->
-    <select id="findByTel" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
+    <select id="findByTel" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident where tel = #{tel} and type = 1
     </select>
 
     <!--   根据业主证件号码查询业主信息-->
-    <select id="findByIdNumber" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
+    <select id="findByIdNumber" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident where id_number = #{idNumber} and type = 1
     </select>
@@ -222,5 +222,12 @@
     <select id="findByTelAndIdNumber" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident where tel = #{tel} and id_number = #{idNumber} and type = 1
+    </select>
+
+    <!--  根据住户id和房产id查询住户房产关联表  -->
+    <select id="findByEstateIdAndResidentId" parameterType="com.aku.model.basicArchives.ResidentIdAndEstateId" resultType="com.aku.model.basicArchives.CpmResidentEstate">
+        select * from cpm_resident_estate
+        where building_unit_estate_id = #{estateId}
+        and resident_id = #{residentId}
     </select>
 </mapper>

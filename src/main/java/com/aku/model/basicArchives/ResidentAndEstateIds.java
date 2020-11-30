@@ -1,5 +1,6 @@
 package com.aku.model.basicArchives;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,13 +14,13 @@ public class ResidentAndEstateIds {
     /**
      * 房产信息集合
      */
-    private List<Integer> estateIds;
+    private int[] estateIds;
 
     @Override
     public String toString() {
-        return "ResidentAndEstateList{" +
+        return "ResidentAndEstateIds{" +
                 "userResident=" + userResident +
-                ", estateIds=" + estateIds +
+                ", estateIds=" + Arrays.toString(estateIds) +
                 '}';
     }
 
@@ -31,18 +32,18 @@ public class ResidentAndEstateIds {
         this.userResident = userResident;
     }
 
-    public List<Integer> getEstateIds() {
+    public int[] getEstateIds() {
         return estateIds;
     }
 
-    public void setEstateIds(List<Integer> estateIds) {
+    public void setEstateIds(int[] estateIds) {
         this.estateIds = estateIds;
     }
 
     public ResidentAndEstateIds() {
     }
 
-    public ResidentAndEstateIds(UserResident userResident, List<Integer> estateIds) {
+    public ResidentAndEstateIds(UserResident userResident, int[] estateIds) {
         this.userResident = userResident;
         this.estateIds = estateIds;
     }

@@ -1,5 +1,8 @@
 package com.aku.model.basicArchives;
 
+/**
+ * 住户亲属关联表信息model
+ */
 public class UserResidentRelatives {
     private Integer id;
     private Integer residentId;

@@ -1,5 +1,6 @@
 package com.aku.model.basicArchives;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,13 +14,13 @@ public class ResidentAndParkingSpaceIds {
     /**
      * 车位信息集合
      */
-    private List<Integer> cpmParkingSpaceIds;
+    private int[] cpmParkingSpaceIds;
 
     @Override
     public String toString() {
-        return "ResidentAndParkingSpaceList{" +
+        return "ResidentAndParkingSpaceIds{" +
                 "userResident=" + userResident +
-                ", cpmParkingSpaceIds=" + cpmParkingSpaceIds +
+                ", cpmParkingSpaceIds=" + Arrays.toString(cpmParkingSpaceIds) +
                 '}';
     }
 
@@ -31,18 +32,18 @@ public class ResidentAndParkingSpaceIds {
         this.userResident = userResident;
     }
 
-    public List<Integer> getCpmParkingSpaceIds() {
+    public int[] getCpmParkingSpaceIds() {
         return cpmParkingSpaceIds;
     }
 
-    public void setCpmParkingSpaceIds(List<Integer> cpmParkingSpaceIds) {
+    public void setCpmParkingSpaceIds(int[] cpmParkingSpaceIds) {
         this.cpmParkingSpaceIds = cpmParkingSpaceIds;
     }
 
     public ResidentAndParkingSpaceIds() {
     }
 
-    public ResidentAndParkingSpaceIds(UserResident userResident, List<Integer> cpmParkingSpaceIds) {
+    public ResidentAndParkingSpaceIds(UserResident userResident, int[] cpmParkingSpaceIds) {
         this.userResident = userResident;
         this.cpmParkingSpaceIds = cpmParkingSpaceIds;
     }

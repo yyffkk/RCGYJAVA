@@ -73,7 +73,7 @@ public class UserTenantServiceImpl implements UserTenantService {
                 throw new RuntimeException("添加租客信息失败");
             }
 
-            //关联组客房产信息
+            //关联租户房产信息
             for (CpmResidentEstate cpmResidentEstate : userTenantInsert.getCpmResidentEstateList()) {
                 cpmResidentEstate.setResidentId(userResident.getId());
                 //添加业主房产关联信息

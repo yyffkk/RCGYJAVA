@@ -17,7 +17,7 @@ public class VoUserTenant {
     /**
      * 租户手机号
      */
-    private Integer tel;
+    private String tel;
     /**
      * 租户车牌号
      */
@@ -48,7 +48,7 @@ public class VoUserTenant {
         return "VoUserTenant{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", tel=" + tel +
+                ", tel='" + tel + '\'' +
                 ", carCode='" + carCode + '\'' +
                 ", roomName='" + roomName + '\'' +
                 ", roomStatus=" + roomStatus +
@@ -74,11 +74,11 @@ public class VoUserTenant {
         this.name = name;
     }
 
-    public Integer getTel() {
+    public String getTel() {
         return tel;
     }
 
-    public void setTel(Integer tel) {
+    public void setTel(String tel) {
         this.tel = tel;
     }
 
@@ -133,7 +133,7 @@ public class VoUserTenant {
     public VoUserTenant() {
     }
 
-    public VoUserTenant(Integer id, String name, Integer tel, String carCode, String roomName, Integer roomStatus, Date effectiveTimeStart, Date effectiveTimeEnd, Integer roomId) {
+    public VoUserTenant(Integer id, String name, String tel, String carCode, String roomName, Integer roomStatus, Date effectiveTimeStart, Date effectiveTimeEnd, Integer roomId) {
         this.id = id;
         this.name = name;
         this.tel = tel;

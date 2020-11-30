@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 public class UserResidentServiceImpl implements UserResidentService {
-    private final Map<String,Object> map = new HashMap<>();
+    private static Map<String,Object> map = null;
     //设置业主类型，1业主
     private static final int RESIDENT_TYPE = 1;
     @Resource
@@ -39,12 +39,13 @@ public class UserResidentServiceImpl implements UserResidentService {
 
     @Transactional
     @Override
-    public Map<String, Object> insert(UserResident userResident, List<VoRelatives>  voRelativesList, List<Integer> cpmParkingSpaceIds, List<Integer> buildingUnitEstateIds) {
+    public Map<String, Object> insert(UserResident userResident, List<VoRelatives>  voRelativesList, int[] cpmParkingSpaceIds, int[] buildingUnitEstateIds) {
+        map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         //判断是否关联房产（房产一定要关联）
-        if (buildingUnitEstateIds ==null || buildingUnitEstateIds.size()<=0){
+        if (buildingUnitEstateIds ==null || buildingUnitEstateIds.length<=0){
             map.put("message","添加业主信息失败，请关联至少一栋楼栋单元房产信息");
             map.put("status",false);
             return map;
@@ -151,6 +152,7 @@ public class UserResidentServiceImpl implements UserResidentService {
 
     @Override
     public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
         //根据id查询住户信息
         UserResident userResident = userResidentDao.findById(id);
         //查询住户所拥有的房产
@@ -185,6 +187,7 @@ public class UserResidentServiceImpl implements UserResidentService {
 
     @Override
     public Map<String, Object> findRelativesById(Integer id) {
+        map = new HashMap<>();
         //根据id查询住户信息
         UserResident userResident = userResidentDao.findById(id);
         //查询业主关联亲属信息
@@ -196,6 +199,7 @@ public class UserResidentServiceImpl implements UserResidentService {
 
     @Override
     public Map<String, Object> findEstateById(Integer id) {
+        map = new HashMap<>();
         //根据id查询住户信息
         UserResident userResident = userResidentDao.findById(id);
         //查询住户所拥有的房产
@@ -217,6 +221,7 @@ public class UserResidentServiceImpl implements UserResidentService {
 
     @Override
     public Map<String, Object> findParkingSpaceById(Integer id) {
+        map = new HashMap<>();
         //根据id查询住户信息
         UserResident userResident = userResidentDao.findById(id);
         //查询业主所有的车位，判断是否有车位
@@ -234,6 +239,7 @@ public class UserResidentServiceImpl implements UserResidentService {
     @Override
     @Transactional
     public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
         try {
             for (int id : ids) {
                 List<CpmBuildingUnitEstate> byResidentId = cpmBuildingUnitEstateDao.findByResidentId(id);
@@ -290,6 +296,7 @@ public class UserResidentServiceImpl implements UserResidentService {
     @Override
     @Transactional
     public Map<String, Object> updateRelatives(ResidentAndRelativesList residentAndRelatives) {
+        map = new HashMap<>();
         //校验重复
         //根据业主手机号查询是否已有业主信息
         UserResident userResident1 = userResidentDao.findByTel(residentAndRelatives.getUserResident().getTel());
@@ -367,6 +374,7 @@ public class UserResidentServiceImpl implements UserResidentService {
     @Transactional
     public Map<String, Object> updateEstate(ResidentAndEstateIds residentAndEstateIds) {
 
+        map = new HashMap<>();
         try {
             //先删除业主的关联房产
             List<CpmBuildingUnitEstate> byResidentId = cpmBuildingUnitEstateDao.findByResidentId(residentAndEstateIds.getUserResident().getId());
@@ -411,6 +419,7 @@ public class UserResidentServiceImpl implements UserResidentService {
     @Override
     @Transactional
     public Map<String, Object> updateParkingSpace(ResidentAndParkingSpaceIds residentAndParkingSpaceIds) {
+        map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();

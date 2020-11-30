@@ -11,10 +11,10 @@
 		on a.id = uc. resident_id
 		<where>
             <if test="name != null and name != ''">
-                and name = #{name}
+                and a.name = #{name}
             </if>
             <if test="tel != null and tel != ''">
-                and tel = #{tel}
+                and a.tel = #{tel}
             </if>
         </where>
     </select>

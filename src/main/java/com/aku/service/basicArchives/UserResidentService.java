@@ -24,7 +24,7 @@ public interface UserResidentService {
 
     Map<String, Object> findParkingSpaceById(Integer id);
 
-    Map<String, Object> insert(UserResident userResident, List<VoRelatives>  voRelativesList, List<Integer> cpmParkingSpaceIds, List<Integer> buildingUnitEstateIds);
+    Map<String, Object> insert(UserResident userResident, List<VoRelatives>  voRelativesList, int[] cpmParkingSpaceIds, int[] buildingUnitEstateIds);
 
     Map<String, Object> delete(int[] id);
 

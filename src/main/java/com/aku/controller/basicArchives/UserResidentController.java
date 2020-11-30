@@ -1,9 +1,6 @@
 package com.aku.controller.basicArchives;
 
-import com.aku.model.basicArchives.ResidentAndEstateIds;
-import com.aku.model.basicArchives.ResidentAndParkingSpaceIds;
-import com.aku.model.basicArchives.ResidentAndRelativesList;
-import com.aku.model.basicArchives.UserResident;
+import com.aku.model.basicArchives.*;
 import com.aku.vo.basicArchives.VoFindAll;
 import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.basicArchives.VoRelatives;
@@ -44,15 +41,12 @@ public class UserResidentController {
     }
     /**
      * 添加业主信息
-     * @param userResident 业主信息
-     * @param voRelativesList 亲属信息集合
-     * @param buildingUnitEstateIds 关联房产主键id集合
-     * @param cpmParkingSpaceIds 关联车位主键id集合
+     * @param residentInsert 业主的添加信息
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody UserResident userResident, @RequestBody List<VoRelatives> voRelativesList,@RequestBody List<Integer> buildingUnitEstateIds, @RequestBody List<Integer> cpmParkingSpaceIds){
-        return userResidentService.insert(userResident,voRelativesList,cpmParkingSpaceIds,buildingUnitEstateIds);
+    public Map<String,Object> insert(@RequestBody ResidentInsert residentInsert){
+        return userResidentService.insert(residentInsert.getUserResident(),residentInsert.getVoRelativesList(),residentInsert.getCpmParkingSpaceIds(),residentInsert.getBuildingUnitEstateIds());
     }
 
     /**

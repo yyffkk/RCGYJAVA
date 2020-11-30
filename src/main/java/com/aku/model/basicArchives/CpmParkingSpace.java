@@ -23,7 +23,7 @@ public class CpmParkingSpace {
      */
     private Integer status;
     /**
-     * 这位类型
+     * 车位类型
      */
     private Integer type;
     /**
