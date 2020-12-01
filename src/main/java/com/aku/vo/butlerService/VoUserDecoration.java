@@ -8,6 +8,10 @@ import java.util.Date;
  */
 public class VoUserDecoration {
     /**
+     * 装修主键id
+     */
+    private Integer id;
+    /**
      * 房屋信息
      */
     private String roomName;
@@ -82,7 +86,7 @@ public class VoUserDecoration {
     /**
      * 是否退还门禁卡
      */
-    private Integer isReturnAccess;
+    private Integer isReturnAccessCard;
     /**
      * 状态
      */
@@ -123,7 +127,8 @@ public class VoUserDecoration {
     @Override
     public String toString() {
         return "VoUserDecoration{" +
-                "roomName='" + roomName + '\'' +
+                "id=" + id +
+                ", roomName='" + roomName + '\'' +
                 ", residentName='" + residentName + '\'' +
                 ", residentTel='" + residentTel + '\'' +
                 ", emergencyContact='" + emergencyContact + '\'' +
@@ -141,7 +146,7 @@ public class VoUserDecoration {
                 ", cleanCost=" + cleanCost +
                 ", serviceCost=" + serviceCost +
                 ", refundDeposit=" + refundDeposit +
-                ", isReturnAccess=" + isReturnAccess +
+                ", isReturnAccessCard=" + isReturnAccessCard +
                 ", status=" + status +
                 ", approveResults=" + approveResults +
                 ", approveName='" + approveName + '\'' +
@@ -152,6 +157,14 @@ public class VoUserDecoration {
                 ", unitNo=" + unitNo +
                 ", roomNumber='" + roomNumber + '\'' +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getRoomName() {
@@ -298,12 +311,12 @@ public class VoUserDecoration {
         this.refundDeposit = refundDeposit;
     }
 
-    public Integer getIsReturnAccess() {
-        return isReturnAccess;
+    public Integer getIsReturnAccessCard() {
+        return isReturnAccessCard;
     }
 
-    public void setIsReturnAccess(Integer isReturnAccess) {
-        this.isReturnAccess = isReturnAccess;
+    public void setIsReturnAccessCard(Integer isReturnAccessCard) {
+        this.isReturnAccessCard = isReturnAccessCard;
     }
 
     public Integer getStatus() {
@@ -381,7 +394,8 @@ public class VoUserDecoration {
     public VoUserDecoration() {
     }
 
-    public VoUserDecoration(String roomName, String residentName, String residentTel, String emergencyContact, String tel, String constructionUnit, Integer userAccessCardNum, String constructionName, String constructionTel, BigDecimal decorationDeposit, Date applicationDate, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, BigDecimal cleanCost, BigDecimal serviceCost, BigDecimal refundDeposit, Integer isReturnAccess, Integer status, Integer approveResults, String approveName, Date approveDate, Integer isQualified, String remarks2, Integer buildingNo, Integer unitNo, String roomNumber) {
+    public VoUserDecoration(Integer id, String roomName, String residentName, String residentTel, String emergencyContact, String tel, String constructionUnit, Integer userAccessCardNum, String constructionName, String constructionTel, BigDecimal decorationDeposit, Date applicationDate, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, BigDecimal cleanCost, BigDecimal serviceCost, BigDecimal refundDeposit, Integer isReturnAccessCard, Integer status, Integer approveResults, String approveName, Date approveDate, Integer isQualified, String remarks2, Integer buildingNo, Integer unitNo, String roomNumber) {
+        this.id = id;
         this.roomName = roomName;
         this.residentName = residentName;
         this.residentTel = residentTel;
@@ -400,7 +414,7 @@ public class VoUserDecoration {
         this.cleanCost = cleanCost;
         this.serviceCost = serviceCost;
         this.refundDeposit = refundDeposit;
-        this.isReturnAccess = isReturnAccess;
+        this.isReturnAccessCard = isReturnAccessCard;
         this.status = status;
         this.approveResults = approveResults;
         this.approveName = approveName;

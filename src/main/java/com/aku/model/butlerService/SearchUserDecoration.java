@@ -29,11 +29,11 @@ public class SearchUserDecoration {
     /**
      * 预计开始时间
      */
-    private Date expected_begin;
+    private Date expectedBegin;
     /**
      * 预计结束时间
      */
-    private Date expected_end;
+    private Date expectedEnd;
     /**
      * 紧急联系人
      */
@@ -45,11 +45,11 @@ public class SearchUserDecoration {
     /**
      * 实际开始时间
      */
-    private Date actual_begin;
+    private Date actualBegin;
     /**
      * 时间结束时间
      */
-    private Date actual_end;
+    private Date actualEnd;
     /**
      * 审批结果
      */
@@ -95,12 +95,12 @@ public class SearchUserDecoration {
                 ", roomName='" + roomName + '\'' +
                 ", residentName='" + residentName + '\'' +
                 ", residentTel='" + residentTel + '\'' +
-                ", expected_begin=" + expected_begin +
-                ", expected_end=" + expected_end +
+                ", expectedBegin=" + expectedBegin +
+                ", expectedEnd=" + expectedEnd +
                 ", emergencyContact='" + emergencyContact + '\'' +
                 ", tel='" + tel + '\'' +
-                ", actual_begin=" + actual_begin +
-                ", actual_end=" + actual_end +
+                ", actualBegin=" + actualBegin +
+                ", actualEnd=" + actualEnd +
                 ", approveResults=" + approveResults +
                 ", approveName='" + approveName + '\'' +
                 ", constructionUnit='" + constructionUnit + '\'' +
@@ -153,20 +153,20 @@ public class SearchUserDecoration {
         this.residentTel = residentTel;
     }
 
-    public Date getExpected_begin() {
-        return expected_begin;
+    public Date getExpectedBegin() {
+        return expectedBegin;
     }
 
-    public void setExpected_begin(Date expected_begin) {
-        this.expected_begin = expected_begin;
+    public void setExpectedBegin(Date expectedBegin) {
+        this.expectedBegin = expectedBegin;
     }
 
-    public Date getExpected_end() {
-        return expected_end;
+    public Date getExpectedEnd() {
+        return expectedEnd;
     }
 
-    public void setExpected_end(Date expected_end) {
-        this.expected_end = expected_end;
+    public void setExpectedEnd(Date expectedEnd) {
+        this.expectedEnd = expectedEnd;
     }
 
     public String getEmergencyContact() {
@@ -185,20 +185,20 @@ public class SearchUserDecoration {
         this.tel = tel;
     }
 
-    public Date getActual_begin() {
-        return actual_begin;
+    public Date getActualBegin() {
+        return actualBegin;
     }
 
-    public void setActual_begin(Date actual_begin) {
-        this.actual_begin = actual_begin;
+    public void setActualBegin(Date actualBegin) {
+        this.actualBegin = actualBegin;
     }
 
-    public Date getActual_end() {
-        return actual_end;
+    public Date getActualEnd() {
+        return actualEnd;
     }
 
-    public void setActual_end(Date actual_end) {
-        this.actual_end = actual_end;
+    public void setActualEnd(Date actualEnd) {
+        this.actualEnd = actualEnd;
     }
 
     public Integer getApproveResults() {
@@ -276,18 +276,18 @@ public class SearchUserDecoration {
     public SearchUserDecoration() {
     }
 
-    public SearchUserDecoration(Integer pageNum, Integer size, String roomName, String residentName, String residentTel, Date expected_begin, Date expected_end, String emergencyContact, String tel, Date actual_begin, Date actual_end, Integer approveResults, String approveName, String constructionUnit, String constructionName, String constructionTel, Integer isQualified, Integer buildingNo, Integer unitNo, String roomNumber) {
+    public SearchUserDecoration(Integer pageNum, Integer size, String roomName, String residentName, String residentTel, Date expectedBegin, Date expectedEnd, String emergencyContact, String tel, Date actualBegin, Date actualEnd, Integer approveResults, String approveName, String constructionUnit, String constructionName, String constructionTel, Integer isQualified, Integer buildingNo, Integer unitNo, String roomNumber) {
         this.pageNum = pageNum;
         this.size = size;
         this.roomName = roomName;
         this.residentName = residentName;
         this.residentTel = residentTel;
-        this.expected_begin = expected_begin;
-        this.expected_end = expected_end;
+        this.expectedBegin = expectedBegin;
+        this.expectedEnd = expectedEnd;
         this.emergencyContact = emergencyContact;
         this.tel = tel;
-        this.actual_begin = actual_begin;
-        this.actual_end = actual_end;
+        this.actualBegin = actualBegin;
+        this.actualEnd = actualEnd;
         this.approveResults = approveResults;
         this.approveName = approveName;
         this.constructionUnit = constructionUnit;

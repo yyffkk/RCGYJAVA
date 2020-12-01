@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.butlerService.UserDecorationDao">
     <select id="list" parameterType="com.aku.model.butlerService.SearchUserDecoration" resultType="com.aku.vo.butlerService.VoUserDecoration">
-        select ud.emergency_contact,ud.tel,ud.decoration_deposit,ud.application_date,ud.clean_cost,ud.service_cost,ud.expected_begin,ud.expected_end,ud.actual_begin,ud.actual_end,
+        select ud.id,ud.emergency_contact,ud.tel,ud.decoration_deposit,ud.application_date,ud.clean_cost,ud.service_cost,ud.expected_begin,ud.expected_end,ud.actual_begin,ud.actual_end,
         ud.refund_deposit,ud.is_return_access_card,ud.status,ud.approve_results,ud.approve_date,ud.is_qualified,ud.remarks2,ur2.name as approve_name,
         cb.no as buildingNo,cbu.no as unitNo,cbue.room_number as roomNumber,ur.name as resident_name,ur.tel as residentTel,
         udp.name as construction_name,udp.tel as construction_tel
@@ -17,6 +17,68 @@
             and ur2.id = ud.approve_id
             and udp.decoration_id = ud.id
             and udp.identity = 1
+            <if test="residentName != null and residentName != ''">
+                and ur.name like concat('%',#{residentName},'%')
+            </if>
+            <if test="residentTel != null and residentTel != ''">
+                and ur.tel like concat('%',#{residentTel},'%')
+            </if>
+            <if test="expectedBegin != null">
+                and ud.expected_begin = #{expectedBegin}
+            </if>
+            <if test="expectedEnd != null">
+                and ud.expected_end = #{expectedEnd}
+            </if>
+            <if test="emergencyContact != null and emergencyContact != ''">
+                and ud.emergency_contact like concat('%',#{emergencyContact},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and ud.tel like concat('%',#{tel},'%')
+            </if>
+            <if test="actualBegin != null">
+                and ud.actual_begin = #{actualBegin}
+            </if>
+            <if test="actualEnd != null">
+                and ud.actual_end = #{actualEnd}
+            </if>
+            <if test="approveResults != null">
+                and ud.approve_results = #{approveResults}
+            </if>
+            <if test="approveName != null and approveName != ''">
+                and ur2.name like concat('%',#{approveName},'%')
+            </if>
+<!--            <if test="constructionUnit != null and constructionUnit != ''">-->
+<!--                ....-->
+<!--            </if>-->
+            <if test="constructionName != null and constructionName != ''">
+                and udp.name like concat('%',#{constructionName},'%')
+            </if>
+            <if test="constructionTel != null and constructionTel != ''">
+                and udp.tel like concat('%',#{constructionTel},'%')
+            </if>
+            <if test="isQualified != null">
+                and ud.is_qualified = #{isQualified}
+            </if>
+            <if test="buildingNo != null">
+                and cb.no like concat('%',#{buildingNo},'%')
+            </if>
+            <if test="unitNo != null">
+                and cbu.no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                and cbue.room_number like concat('%',#{roomNumber},'%')
+            </if>
         </where>
+    </select>
+
+    <select id="decorationPersonnelList" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationPersonnel">
+        select id,name,identity,card_type,card_code,tel,address from user_decoration_personnel
+        where decoration_id = #{id}
+    </select>
+
+    <select id="decorationTrackRecordList" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationTrackRecord">
+        select udtr.*,su.actual_name as track_name
+        from user_decoration_track_record as udtr,sys_user as su
+        where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 2
     </select>
 </mapper>
