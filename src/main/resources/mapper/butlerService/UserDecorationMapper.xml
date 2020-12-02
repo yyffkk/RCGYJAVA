@@ -97,5 +97,40 @@
         where decoration_track_record_id = #{id}
     </select>
 
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from user_decoration where id = #{id}
+    </delete>
+
+    <delete id="deleteDecorationAccessCard" parameterType="java.lang.Integer">
+        delete from user_decoration_access_card where decoration_id = #{id}
+    </delete>
+
+    <select id="findTrackRecordByDecorationId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationTrackRecord">
+        select * from user_decoration_track_record where decoration_id = #{id}
+    </select>
+
+    <delete id="deleteTrackRecordDetail" parameterType="java.lang.Integer">
+        delete from user_decoration_track_record_detail where decoration_track_record_id = #{id}
+    </delete>
+
+    <delete id="deleteTrackRecord" parameterType="java.lang.Integer">
+        delete from user_decoration_track_record where decoration_id = #{id}
+    </delete>
+
+    <select id="findUDACByDecorationId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.UserDecorationAccessCard">
+        select * from user_decoration_access_card where decoration_id = #{id}
+    </select>
+
+    <delete id="deleteAccessCard" parameterType="java.lang.Integer">
+        delete from user_access_card where id = #{id}
+    </delete>
+
+    <select id="findUDTRDByTrackRecordId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.UserDecorationTrackRecordDetail">
+        select * from user_decoration_track_record_detail where decoration_track_record_id = #{id}
+    </select>
+
+    <update id="invalid" parameterType="java.lang.Integer">
+        update user_decoration set status = 6 where id = #{id}
+    </update>
 
 </mapper>

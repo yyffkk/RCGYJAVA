@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.butlerService.UserAdviceDao">
+    <select id="list" parameterType="com.aku.model.butlerService.SearchUserAdvice" resultType="com.aku.vo.butlerService.VoUserAdvice">
+        select sa.id,sa.content,sa.type,ur.name as release_name,sa.create_date as release_date,sa.score
+        from sys_advice as sa,user_resident as ur
+        <where>
+            sa.create_id = ur.id
+            <if test="releaseDateStart != null">
+                and sa.create_date <![CDATA[ >= ]]> #{releaseDateStart}
+            </if>
+            <if test="releaseDateEnd != null">
+                and sa.create_date <![CDATA[ <= ]]> #{releaseDateEnd}
+            </if>
+            <if test="score != null">
+                and sa.score = #{score}
+            </if>
+            <if test="type != null">
+                and sa.type = #{type}
+            </if>
+            <if test="releaseName != null and releaseName != ''">
+                ur.name like concat('%',#{releaseName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="countDetailByAdviceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_advice_detail where advice_id = #{id} and is_delete = 1
+    </select>
+</mapper>

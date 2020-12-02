@@ -231,4 +231,26 @@ public class UserDecorationController {
         return map;
     }
 
+    /**
+     * 批量删除装修信息
+     * @param ids 装修信息主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return userDecorationService.delete(ids.getIds());
+    }
+
+    /**
+     * 批量作废装修信息
+     * @param ids 装修信息主键id数组
+     * @return map
+     */
+    @PostMapping("/invalid")
+    public Map<String,Object> invalid(@RequestBody VoIds ids){
+        return userDecorationService.invalid(ids.getIds());
+    }
+
+
+
 }

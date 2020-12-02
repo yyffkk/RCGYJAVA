@@ -23,4 +23,14 @@
             </if>
         </where>
     </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from user_article_out where id = #{id}
+    </delete>
+
+    <update id="applicationRejection" parameterType="com.aku.model.butlerService.UserArticleOut">
+        update user_article_out
+        set status = #{status},review_id = #{reviewId},review_date = #{reviewDate}
+        where id = #{id}
+    </update>
 </mapper>

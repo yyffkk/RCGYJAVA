@@ -4,13 +4,12 @@ import com.aku.model.butlerService.SearchUserArticleOut;
 import com.aku.model.resources.ResourcesImg;
 import com.aku.service.butlerService.UserArticleOutService;
 import com.aku.service.resources.ResourcesImgService;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.butlerService.VoUserArticleOut;
 import com.aku.vo.resources.VoResourcesImg;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -88,5 +87,26 @@ public class UserArticleOutController {
         map.put("resourcesImgList",resourcesImgList);
         return map;
     }
+
+    /**
+     * 批量删除物品出门信息
+     * @param ids 物品出门主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return userArticleOutService.delete(ids.getIds());
+    }
+
+    /**
+     * 驳回申请
+     * @param id 物品出门主键id
+     * @return map
+     */
+    @GetMapping("/applicationRejection")
+    public Map<String,Object> applicationRejection(Integer id){
+        return userArticleOutService.applicationRejection(id);
+    }
+
 
 }

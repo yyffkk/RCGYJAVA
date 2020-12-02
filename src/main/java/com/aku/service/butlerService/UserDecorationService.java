@@ -29,4 +29,8 @@ public interface UserDecorationService {
     Map<String, Object> findByIdDecorationPersonnel(Integer id);
 
     Map<String, Object> updateDecorationPersonnel(UserDecorationPersonnel userDecorationPersonnel);
+
+    Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> invalid(int[] ids);
 }

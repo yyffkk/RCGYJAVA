@@ -4,7 +4,9 @@ import com.aku.dao.butlerService.UserAccessCardDao;
 import com.aku.dao.butlerService.UserDecorationDao;
 import com.aku.dao.butlerService.UserDecorationPersonnelDao;
 import com.aku.model.butlerService.SearchUserDecoration;
+import com.aku.model.butlerService.UserDecorationAccessCard;
 import com.aku.model.butlerService.UserDecorationPersonnel;
+import com.aku.model.butlerService.UserDecorationTrackRecordDetail;
 import com.aku.model.system.SysUser;
 import com.aku.service.butlerService.UserDecorationService;
 import com.aku.vo.butlerService.*;
@@ -107,6 +109,7 @@ public class UserDecorationServiceImpl implements UserDecorationService {
 
     @Override
     public List<VoUserDecorationTrackRecord> decorationFinishRecordList(Integer id) {
+        //查询所有完工检查记录
         List<VoUserDecorationTrackRecord> voUserDecorationTrackRecordList = userDecorationDao.decorationFinishRecordList(id);
         if (voUserDecorationTrackRecordList != null){
             for (VoUserDecorationTrackRecord voUserDecorationTrackRecord : voUserDecorationTrackRecordList) {
@@ -196,6 +199,117 @@ public class UserDecorationServiceImpl implements UserDecorationService {
             map.put("message","修改装修人员失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                //根据装修信息主键id查询装修门禁卡关联信息
+                List<UserDecorationAccessCard> userDecorationAccessCardList = userDecorationDao.findUDACByDecorationId(id);
+                //判断有无装修门禁卡关联信息
+                if (userDecorationAccessCardList != null && userDecorationAccessCardList.size()>0){
+                    for (UserDecorationAccessCard userDecorationAccessCard : userDecorationAccessCardList) {
+                        //批量删除门禁卡信息
+                        int delete5 = userDecorationDao.deleteAccessCard(userDecorationAccessCard.getAccessCardId());
+                        if (delete5<=0){
+                            throw new RuntimeException("批量删除门禁卡信息失败");
+                        }
+                    }
+
+                    //根据装修信息主键id删除装修门禁卡关联信息
+                    int delete1 = userDecorationDao.deleteDecorationAccessCard(id);
+                    if (delete1<=0){
+                        throw new RuntimeException("批量删除装修门禁卡关联信息失败");
+                    }
+                }
+
+
+
+                //根据装修信息主键id查询装修人员信息
+                List<UserDecorationPersonnel> userDecorationPersonnelList = userDecorationPersonnelDao.findByDecorationId(id);
+                //判断有无装修人员信息
+                if (userDecorationPersonnelList != null && userDecorationPersonnelList.size()>0){
+                    //根据装修信息主键id删除装修人员信息
+                    int delete2 = userDecorationPersonnelDao.deletePersonnelByDecorationId(id);
+                    if (delete2<=0){
+                        throw new RuntimeException("批量删除装修人员信息失败");
+                    }
+                }
+
+
+                //根据装修信息主键id查询装修跟踪记录表
+                List<VoUserDecorationTrackRecord> voUserDecorationTrackRecordList = userDecorationDao.findTrackRecordByDecorationId(id);
+                //判断有无装修跟踪记录表
+                if (voUserDecorationTrackRecordList != null && voUserDecorationTrackRecordList.size()>0){
+                    for (VoUserDecorationTrackRecord voUserDecorationTrackRecord : voUserDecorationTrackRecordList) {
+                        //根据装修跟踪记录表主键id查询装修跟踪记录明细表
+                        List<UserDecorationTrackRecordDetail> userDecorationTrackRecordDetailList = userDecorationDao.findUDTRDByTrackRecordId(voUserDecorationTrackRecord.getId());
+                        //判断有无装修跟踪记录明细表
+                        if (userDecorationTrackRecordDetailList != null && userDecorationTrackRecordDetailList.size()>0) {
+                            //根据装修跟踪记录表主键id删除装修跟踪记录明细表
+                            int delete3 = userDecorationDao.deleteTrackRecordDetail(voUserDecorationTrackRecord.getId());
+                            if (delete3<=0){
+                                throw new RuntimeException("批量删除装修跟踪记录明细表信息失败");
+                            }
+                        }
+                    }
+                    //根据装修信息主键id删除装修跟踪记录表
+                    int delete4 = userDecorationDao.deleteTrackRecord(id);
+                    if (delete4<=0){
+                        throw new RuntimeException("批量删除装修跟踪记录表信息失败");
+                    }
+                }
+
+                //根据装修信息主键id删除装修信息
+                int delete = userDecorationDao.delete(id);
+                if (delete<=0){
+                    throw new RuntimeException("批量删除装修信息失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","批量删除装修信息成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> invalid(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                int update = userDecorationDao.invalid(id);
+                if (update <= 0){
+                    throw new RuntimeException("批量作废装修信息失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","批量作废装修信息成功");
+        map.put("status",true);
         return map;
     }
 }
