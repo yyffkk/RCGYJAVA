@@ -75,6 +75,10 @@ public class SearchUserDecoration {
      */
     private Integer isQualified;
     /**
+     * 装修状态(1.未开始，2.装修中，3.装修结束-未退押金，4.装修结束-已退押金，5.已结束，6.已作废)
+     */
+    private Integer status;
+    /**
      * 楼栋编号
      */
     private Integer buildingNo;
@@ -107,6 +111,7 @@ public class SearchUserDecoration {
                 ", constructionName='" + constructionName + '\'' +
                 ", constructionTel='" + constructionTel + '\'' +
                 ", isQualified=" + isQualified +
+                ", status=" + status +
                 ", buildingNo=" + buildingNo +
                 ", unitNo=" + unitNo +
                 ", roomNumber='" + roomNumber + '\'' +
@@ -249,6 +254,14 @@ public class SearchUserDecoration {
         this.isQualified = isQualified;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public Integer getBuildingNo() {
         return buildingNo;
     }
@@ -276,7 +289,7 @@ public class SearchUserDecoration {
     public SearchUserDecoration() {
     }
 
-    public SearchUserDecoration(Integer pageNum, Integer size, String roomName, String residentName, String residentTel, Date expectedBegin, Date expectedEnd, String emergencyContact, String tel, Date actualBegin, Date actualEnd, Integer approveResults, String approveName, String constructionUnit, String constructionName, String constructionTel, Integer isQualified, Integer buildingNo, Integer unitNo, String roomNumber) {
+    public SearchUserDecoration(Integer pageNum, Integer size, String roomName, String residentName, String residentTel, Date expectedBegin, Date expectedEnd, String emergencyContact, String tel, Date actualBegin, Date actualEnd, Integer approveResults, String approveName, String constructionUnit, String constructionName, String constructionTel, Integer isQualified, Integer status, Integer buildingNo, Integer unitNo, String roomNumber) {
         this.pageNum = pageNum;
         this.size = size;
         this.roomName = roomName;
@@ -294,6 +307,7 @@ public class SearchUserDecoration {
         this.constructionName = constructionName;
         this.constructionTel = constructionTel;
         this.isQualified = isQualified;
+        this.status = status;
         this.buildingNo = buildingNo;
         this.unitNo = unitNo;
         this.roomNumber = roomNumber;

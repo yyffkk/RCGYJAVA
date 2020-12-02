@@ -2,16 +2,22 @@ package com.aku.service.butlerService.impl;
 
 import com.aku.dao.butlerService.UserAccessCardDao;
 import com.aku.dao.butlerService.UserDecorationDao;
+import com.aku.dao.butlerService.UserDecorationPersonnelDao;
 import com.aku.model.butlerService.SearchUserDecoration;
+import com.aku.model.butlerService.UserDecorationPersonnel;
+import com.aku.model.system.SysUser;
 import com.aku.service.butlerService.UserDecorationService;
-import com.aku.vo.butlerService.VoUserAccessCard;
-import com.aku.vo.butlerService.VoUserDecoration;
-import com.aku.vo.butlerService.VoUserDecorationPersonnel;
-import com.aku.vo.butlerService.VoUserDecorationTrackRecord;
+import com.aku.vo.butlerService.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +29,8 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     UserDecorationDao userDecorationDao;
     @Resource
     UserAccessCardDao userAccessCardDao;
+    @Resource
+    UserDecorationPersonnelDao userDecorationPersonnelDao;
 
     @Override
     public List<VoUserDecoration> list(SearchUserDecoration searchUserDecoration) {
@@ -90,9 +98,104 @@ public class UserDecorationServiceImpl implements UserDecorationService {
         if (voUserDecorationTrackRecordList != null){
             for (VoUserDecorationTrackRecord voUserDecorationTrackRecord : voUserDecorationTrackRecordList) {
                 //遍历查询跟踪检查记录明细
-                //                userDecorationDao.
+                List<VoUserDecorationTrackRecordDetail> voUserDecorationTrackRecordDetailList = userDecorationDao.decorationTrackRecordDetailList(voUserDecorationTrackRecord.getId());
+                voUserDecorationTrackRecord.setReview(voUserDecorationTrackRecordDetailList);
             }
         }
-        return null;
+        return voUserDecorationTrackRecordList;
+    }
+
+    @Override
+    public List<VoUserDecorationTrackRecord> decorationFinishRecordList(Integer id) {
+        List<VoUserDecorationTrackRecord> voUserDecorationTrackRecordList = userDecorationDao.decorationFinishRecordList(id);
+        if (voUserDecorationTrackRecordList != null){
+            for (VoUserDecorationTrackRecord voUserDecorationTrackRecord : voUserDecorationTrackRecordList) {
+                //遍历查询完工检查记录明细
+                List<VoUserDecorationTrackRecordDetail> voUserDecorationTrackRecordDetailList = userDecorationDao.decorationTrackRecordDetailList(voUserDecorationTrackRecord.getId());
+                voUserDecorationTrackRecord.setReview(voUserDecorationTrackRecordDetailList);
+            }
+        }
+        return voUserDecorationTrackRecordList;
+    }
+
+    @Override
+    public Map<String, Object> insertDecorationPersonnel(UserDecorationPersonnel userDecorationPersonnel) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        //填入创建人
+        userDecorationPersonnel.setCreateId(sysUser.getId());
+        //填入创建时间
+        userDecorationPersonnel.setCreateDate(new Date());
+
+        //添加装修人员信息
+        int insert = userDecorationPersonnelDao.insertDecorationPersonnel(userDecorationPersonnel);
+
+        if (insert>0){
+            map.put("message","添加装修人员成功");
+            map.put("status",true);
+        }else {
+            map.put("message","添加装修人员失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteDecorationPersonnel(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                int delete = userDecorationPersonnelDao.deleteDecorationPersonnel(id);
+                if (delete<=0){
+                    throw new RuntimeException("批量删除装修人员信息失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","批量删除装修人员信息成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findByIdDecorationPersonnel(Integer id) {
+        map = new HashMap<>();
+        VoUserDecorationPersonnel voUserDecorationPersonnel = userDecorationPersonnelDao.findByIdDecorationPersonnel(id);
+        map.put("voUserDecorationPersonnel",voUserDecorationPersonnel);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updateDecorationPersonnel(UserDecorationPersonnel userDecorationPersonnel) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        //填入修改人
+        userDecorationPersonnel.setModifyId(sysUser.getId());
+        //填入修改时间
+        userDecorationPersonnel.setModifyDate(new Date());
+        //修改装修人员信息
+        int update = userDecorationPersonnelDao.updateDecorationPersonnel(userDecorationPersonnel);
+        if (update>0){
+            map.put("message","修改装修人员成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改装修人员失败");
+            map.put("status",false);
+        }
+        return map;
     }
 }

@@ -2,17 +2,19 @@ package com.aku.controller.butlerService;
 
 import com.aku.model.butlerService.QRCodeContent;
 import com.aku.model.butlerService.SearchUserDecoration;
+import com.aku.model.butlerService.UserDecorationPersonnel;
+import com.aku.model.resources.ResourcesImg;
 import com.aku.service.butlerService.UserDecorationService;
-import com.aku.util.GetIpAndPort;
+import com.aku.service.resources.ResourcesImgService;
 import com.aku.util.QRCodeUtil;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.butlerService.*;
+import com.aku.vo.resources.VoResourcesImg;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.annotation.Resource;
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.Map;
 public class UserDecorationController {
     @Resource
     UserDecorationService userDecorationService;
+    @Resource
+    ResourcesImgService resourcesImgService;
 
     /**
      * 查询装修信息（包含条件搜索）
@@ -109,12 +113,13 @@ public class UserDecorationController {
     }
 
     /**
-     * 查询所有跟踪检查记录
+     * 查询所有跟踪检查记录（跟踪人在sys_user里，sys_role里的主键id是2）
      * @param id 装修主键id
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @return map
      */
+    @GetMapping("/decorationTrackRecordList")
     public Map<String,Object> decorationTrackRecordList(Integer id,Integer pageNum,Integer size){
         PageHelper.startPage(pageNum,size);
         List<VoUserDecorationTrackRecord> voUserDecorationTrackRecordList = userDecorationService.decorationTrackRecordList(id);
@@ -126,5 +131,104 @@ public class UserDecorationController {
         return map;
     }
 
+    /**
+     * 查询所有完工检查记录（检查人在sys_user里，sys_role里的主键id是3）
+     * @param id 装修主键id
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/decorationFinishRecordList")
+    public Map<String,Object> decorationFinishRecordList(Integer id,Integer pageNum,Integer size){
+        PageHelper.startPage(pageNum,size);
+        List<VoUserDecorationTrackRecord> voUserDecorationTrackRecordList = userDecorationService.decorationFinishRecordList(id);
+        PageInfo<VoUserDecorationTrackRecord> pageInfo = new PageInfo<>(voUserDecorationTrackRecordList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 新增装修人员
+     * @param userDecorationPersonnel 装修人员表信息
+     * @return map
+     */
+    @PostMapping("/insertDecorationPersonnel")
+    public Map<String,Object> insertDecorationPersonnel(@RequestBody UserDecorationPersonnel userDecorationPersonnel){
+        return userDecorationService.insertDecorationPersonnel(userDecorationPersonnel);
+    }
+
+
+    /**
+     * 批量删除装修人员信息
+     * @param ids 装修人员主键id数组
+     * @return map
+     */
+    @PostMapping("/deleteDecorationPersonnel")
+    public Map<String,Object> deleteDecorationPersonnel(@RequestBody VoIds ids){
+        return userDecorationService.deleteDecorationPersonnel(ids.getIds());
+    }
+
+    /**
+     * 根据装修人员主键id查询装修人员信息
+     * @param id 装修人员主键id
+     * @return map
+     */
+    @GetMapping("/findByIdDecorationPersonnel")
+    public Map<String,Object> findByIdDecorationPersonnel(Integer id){
+        return userDecorationService.findByIdDecorationPersonnel(id);
+    }
+
+    /**
+     * 修改装修人员信息
+     * @param userDecorationPersonnel 新装修人员信息
+     * @return map
+     */
+    @PostMapping("/updateDecorationPersonnel")
+    public Map<String,Object> updateDecorationPersonnel(@RequestBody UserDecorationPersonnel userDecorationPersonnel){
+        return userDecorationService.updateDecorationPersonnel(userDecorationPersonnel);
+    }
+
+    /**
+     * 根据跟踪检查记录id查询装修跟踪检查记录结果照片
+     * @param id 跟踪检查记录id
+     * @return map
+     */
+    @GetMapping("/findTrackImg")
+    public Map<String,Object> findTrackImg(Integer id){
+        Map<String,Object> map = new HashMap<>();
+        ResourcesImg resourcesImg = new ResourcesImg();
+        //填入数据所属id
+        resourcesImg.setDateId(id);
+        //填入所属表名称
+        resourcesImg.setTableName("userDecorationTrackRecord");
+        //填入资源类型名称
+        resourcesImg.setTypeName("trackImg");
+        List<VoResourcesImg> resourcesImgList = resourcesImgService.findGoodsImgByDateId(resourcesImg);
+        map.put("resourcesImgList",resourcesImgList);
+        return map;
+    }
+
+    /**
+     * 根据完工检查记录id查询装修完工检查记录结果照片
+     * @param id 完工检查记录id
+     * @return map
+     */
+    @GetMapping("/findCheckImg")
+    public Map<String,Object> findCheckImg(Integer id){
+        Map<String,Object> map = new HashMap<>();
+        ResourcesImg resourcesImg = new ResourcesImg();
+        //填入数据所属id
+        resourcesImg.setDateId(id);
+        //填入所属表名称
+        resourcesImg.setTableName("userDecorationTrackRecord");
+        //填入资源类型名称
+        resourcesImg.setTypeName("checkImg");
+        List<VoResourcesImg> resourcesImgList = resourcesImgService.findGoodsImgByDateId(resourcesImg);
+        map.put("resourcesImgList",resourcesImgList);
+        return map;
+    }
 
 }

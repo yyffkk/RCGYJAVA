@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.butlerService.UserDecorationDao">
     <select id="list" parameterType="com.aku.model.butlerService.SearchUserDecoration" resultType="com.aku.vo.butlerService.VoUserDecoration">
-        select ud.id,ud.emergency_contact,ud.tel,ud.decoration_deposit,ud.application_date,ud.clean_cost,ud.service_cost,ud.expected_begin,ud.expected_end,ud.actual_begin,ud.actual_end,
+        select ud.id,ud.emergency_contact,ud.tel,ud.construction_unit,ud.decoration_deposit,ud.application_date,ud.clean_cost,ud.service_cost,ud.expected_begin,ud.expected_end,ud.actual_begin,ud.actual_end,
         ud.refund_deposit,ud.is_return_access_card,ud.status,ud.approve_results,ud.approve_date,ud.is_qualified,ud.remarks2,ur2.name as approve_name,
         cb.no as buildingNo,cbu.no as unitNo,cbue.room_number as roomNumber,ur.name as resident_name,ur.tel as residentTel,
         udp.name as construction_name,udp.tel as construction_tel
@@ -47,9 +47,9 @@
             <if test="approveName != null and approveName != ''">
                 and ur2.name like concat('%',#{approveName},'%')
             </if>
-<!--            <if test="constructionUnit != null and constructionUnit != ''">-->
-<!--                ....-->
-<!--            </if>-->
+            <if test="constructionUnit != null and constructionUnit != ''">
+                and ud.construction_unit like concat('%',#{constructionUnit},'%')
+            </if>
             <if test="constructionName != null and constructionName != ''">
                 and udp.name like concat('%',#{constructionName},'%')
             </if>
@@ -68,6 +68,9 @@
             <if test="roomNumber != null and roomNumber != ''">
                 and cbue.room_number like concat('%',#{roomNumber},'%')
             </if>
+            <if test="status != null">
+                and ud.status = #{status}
+            </if>
         </where>
     </select>
 
@@ -81,4 +84,18 @@
         from user_decoration_track_record as udtr,sys_user as su
         where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 2
     </select>
+
+    <select id="decorationFinishRecordList" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationTrackRecord">
+        select udtr.*,su.actual_name as track_name
+        from user_decoration_track_record as udtr,sys_user as su
+        where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 3
+    </select>
+
+    <select id="decorationTrackRecordDetailList" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationTrackRecordDetail">
+        select id,review,is_qualified
+        from user_decoration_track_record_detail
+        where decoration_track_record_id = #{id}
+    </select>
+
+
 </mapper>
