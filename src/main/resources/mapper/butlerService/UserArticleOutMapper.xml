@@ -33,4 +33,11 @@
         set status = #{status},review_id = #{reviewId},review_date = #{reviewDate}
         where id = #{id}
     </update>
+    <select id="countArticleOutNow" resultType="java.lang.Integer">
+        select count(*) from user_article_out where to_days(expected_time) = to_days(now())
+    </select>
+
+    <select id="countPerformed" resultType="java.lang.Integer">
+        select count(*) from user_article_out where status = 1
+    </select>
 </mapper>

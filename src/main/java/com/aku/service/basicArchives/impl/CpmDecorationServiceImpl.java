@@ -52,9 +52,11 @@ public class CpmDecorationServiceImpl implements CpmDecorationService {
             }
         }
         List<VoDecoration> list = cpmDecorationDao.list(searchDecoration);
-        //处理显示的roomName信息
-        for (VoDecoration voDecoration : list) {
-            voDecoration.setRoomName(voDecoration.getEstateNo()+"-"+voDecoration.getUnitNo()+"-"+voDecoration.getRoomNumber());
+        if (list != null && list.size()>0){
+            //处理显示的roomName信息
+            for (VoDecoration voDecoration : list) {
+                voDecoration.setRoomName(voDecoration.getEstateNo()+"-"+voDecoration.getUnitNo()+"-"+voDecoration.getRoomNumber());
+            }
         }
         return list;
     }

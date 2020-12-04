@@ -2,9 +2,15 @@ server:
     port: 9001
     servlet:
         context-path: /
-
 spring:
+#    文件上传
+    servlet:
+        multipart:
+            max-file-size: 50MB
+            max-request-size: 50MB
+#   静态资源路径
     resources: classpath:/static/
+#    数据库源
     datasource:
         url: jdbc:mysql://localhost:3306/IntelligentCommunity?characterEncoding=utf8&useSSL=false
         username: root
@@ -53,4 +59,10 @@ logging:
         com:
             aku:
                 dao: debug
+
+#资源路径
+prop:
+    #管家服务：新增咨询建议照片上传路径 src/main/resources/static
+    upload-folder: /img/advice/
+
 

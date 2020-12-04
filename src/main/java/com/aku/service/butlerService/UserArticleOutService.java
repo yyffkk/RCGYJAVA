@@ -12,4 +12,8 @@ public interface UserArticleOutService {
     Map<String, Object> delete(int[] ids);
 
     Map<String, Object> applicationRejection(Integer id);
+
+    Map<String,Object> countArticleOutNow();
+
+    Map<String, Object> countPerformed();
 }

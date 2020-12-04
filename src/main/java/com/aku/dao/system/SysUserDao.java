@@ -19,5 +19,17 @@ public interface SysUserDao {
      */
     SysUser loginSysUser(SysUser sysUser);
 
+    /**
+     * 根据用户名查询系统用户信息
+     * @param userName 用户名
+     * @return 系统用户信息
+     */
     SysUser findByUserName(String userName);
+
+    /**
+     * 根据id查询系统用户信息
+     * @param createId 系统用户主键id
+     * @return 系统用户信息
+     */
+    SysUser findById(Integer createId);
 }

@@ -13,4 +13,8 @@ public interface UserArticleOutDao {
     int delete(int id);
 
     int applicationRejection(UserArticleOut userArticleOut);
+
+    Integer countArticleOutNow();
+
+    Integer countPerformed();
 }

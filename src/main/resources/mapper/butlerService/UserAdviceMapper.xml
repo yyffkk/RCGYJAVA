@@ -8,6 +8,7 @@
         from sys_advice as sa,user_resident as ur
         <where>
             sa.create_id = ur.id
+            and sa.is_delete = 1
             <if test="releaseDateStart != null">
                 and sa.create_date <![CDATA[ >= ]]> #{releaseDateStart}
             </if>
@@ -28,5 +29,70 @@
 
     <select id="countDetailByAdviceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from sys_advice_detail where advice_id = #{id} and is_delete = 1
+    </select>
+
+    <insert id="insertDetail" parameterType="com.aku.model.butlerService.SysAdviceDetail">
+        insert into sys_advice_detail(
+            advice_id,
+            content,
+            is_delete,
+            create_id,
+            create_date,
+            create_user_type,
+            parent_id
+        ) values (
+            #{adviceId},
+            #{content},
+            #{isDelete},
+            #{createId},
+            #{createDate},
+            #{createUserType},
+            #{parentId}
+        )
+    </insert>
+
+    <insert id="insertAdvice" parameterType="com.aku.model.butlerService.SysAdvice">
+        insert into sys_advice(
+            type,
+            content,
+            hits,
+            create_id,
+            create_date,
+            create_user_type,
+            is_delete
+        ) values (
+            #{type},
+            #{content},
+            #{hits},
+            #{createId},
+            #{createDate},
+            #{createUserType},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_advice where id =#{id}
+    </delete>
+
+    <delete id="deleteDetail" parameterType="java.lang.Integer">
+        delete from sys_advice_detail where advice_id = #{id}
+    </delete>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_advice
+        set is_delete = 0
+        where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdAdvice">
+        select * from sys_advice where id =#{id}
+    </select>
+
+    <select id="findByAdviceIdDetail" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserAdviceDetail">
+        select * from sys_advice_detail where advice_id = #{id}
     </select>
 </mapper>

@@ -95,5 +95,12 @@
         </trim>
     </insert>
 
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.system.SysUser">
+        select
+        <include refid="field"/>
+        from sys_user
+        where id = #{id}
+    </select>
+
 
 </mapper>

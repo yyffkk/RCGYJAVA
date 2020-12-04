@@ -113,4 +113,20 @@ public class UserArticleOutServiceImpl implements UserArticleOutService {
         }
         return map;
     }
+
+    @Override
+    public Map<String,Object> countArticleOutNow() {
+        map = new HashMap<>();
+        Integer integer = userArticleOutDao.countArticleOutNow();
+        map.put("countNow",integer);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> countPerformed() {
+        map = new HashMap<>();
+        Integer integer = userArticleOutDao.countPerformed();
+        map.put("countPerformed",integer);
+        return map;
+    }
 }

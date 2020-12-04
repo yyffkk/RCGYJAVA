@@ -206,7 +206,7 @@ public class UserDecorationController {
         resourcesImg.setTableName("userDecorationTrackRecord");
         //填入资源类型名称
         resourcesImg.setTypeName("trackImg");
-        List<VoResourcesImg> resourcesImgList = resourcesImgService.findGoodsImgByDateId(resourcesImg);
+        List<VoResourcesImg> resourcesImgList = resourcesImgService.findImgByDate(resourcesImg);
         map.put("resourcesImgList",resourcesImgList);
         return map;
     }
@@ -226,7 +226,7 @@ public class UserDecorationController {
         resourcesImg.setTableName("userDecorationTrackRecord");
         //填入资源类型名称
         resourcesImg.setTypeName("checkImg");
-        List<VoResourcesImg> resourcesImgList = resourcesImgService.findGoodsImgByDateId(resourcesImg);
+        List<VoResourcesImg> resourcesImgList = resourcesImgService.findImgByDate(resourcesImg);
         map.put("resourcesImgList",resourcesImgList);
         return map;
     }

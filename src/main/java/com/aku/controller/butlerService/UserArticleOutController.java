@@ -62,7 +62,7 @@ public class UserArticleOutController {
         resourcesImg.setTableName("userArticleOut");
         //填入资源类型名称
         resourcesImg.setTypeName("goodsImg");
-        List<VoResourcesImg> resourcesImgList = resourcesImgService.findGoodsImgByDateId(resourcesImg);
+        List<VoResourcesImg> resourcesImgList = resourcesImgService.findImgByDate(resourcesImg);
         map.put("resourcesImgList",resourcesImgList);
         return map;
     }
@@ -83,7 +83,7 @@ public class UserArticleOutController {
         resourcesImg.setTableName("userArticleOut");
         //填入资源类型名称
         resourcesImg.setTypeName("goOutImg");
-        List<VoResourcesImg> resourcesImgList = resourcesImgService.findGoodsImgByDateId(resourcesImg);
+        List<VoResourcesImg> resourcesImgList = resourcesImgService.findImgByDate(resourcesImg);
         map.put("resourcesImgList",resourcesImgList);
         return map;
     }
@@ -108,5 +108,23 @@ public class UserArticleOutController {
         return userArticleOutService.applicationRejection(id);
     }
 
+
+    /**
+     * 查询今日预计家庭物品出户数量
+     * @return map
+     */
+    @GetMapping("/countArticleOutNow")
+    public Map<String,Object> countArticleOutNow(){
+        return userArticleOutService.countArticleOutNow();
+    }
+
+    /**
+     * 查询未执行的家庭物品出户数量
+     * @return map
+     */
+    @GetMapping("/countPerformed")
+    public Map<String,Object> countPerformed(){
+        return userArticleOutService.countPerformed();
+    }
 
 }

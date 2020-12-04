@@ -6,5 +6,5 @@ import com.aku.vo.resources.VoResourcesImg;
 import java.util.List;
 
 public interface ResourcesImgService {
-    List<VoResourcesImg> findGoodsImgByDateId(ResourcesImg resourcesImg);
+    List<VoResourcesImg> findImgByDate(ResourcesImg resourcesImg);
 }

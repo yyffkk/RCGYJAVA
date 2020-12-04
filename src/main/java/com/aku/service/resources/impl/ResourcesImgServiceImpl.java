@@ -15,7 +15,7 @@ public class ResourcesImgServiceImpl implements ResourcesImgService {
     ResourcesImgDao resourcesImgDao;
 
     @Override
-    public List<VoResourcesImg> findGoodsImgByDateId(ResourcesImg resourcesImg) {
-        return resourcesImgDao.findGoodsImgByDateId(resourcesImg);
+    public List<VoResourcesImg> findImgByDate(ResourcesImg resourcesImg) {
+        return resourcesImgDao.findImgByDate(resourcesImg);
     }
 }
