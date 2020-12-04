@@ -72,4 +72,16 @@ public interface UserAdviceDao {
      * @return 反馈信息集合
      */
     List<VoUserAdviceDetail> findByAdviceIdDetail(Integer id);
+
+    /**
+     * 查询今日建议条数
+     * @return 建议条数
+     */
+    Integer countAdviceNew();
+
+    /**
+     * 查询今日咨询条数
+     * @return 咨询条数
+     */
+    Integer countConsultNew();
 }

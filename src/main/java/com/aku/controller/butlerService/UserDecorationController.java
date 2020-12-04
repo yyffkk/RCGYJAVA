@@ -251,6 +251,23 @@ public class UserDecorationController {
         return userDecorationService.invalid(ids.getIds());
     }
 
+    /**
+     * 查询今日预计发起装修数量
+     * @return map
+     */
+    @GetMapping("/countDecorationNow")
+    public Map<String,Object> countDecorationNow(){
+        return userDecorationService.countDecorationNow();
+    }
+
+    /**
+     * 查询未执行的家庭装修数量
+     * @return map
+     */
+    @GetMapping("/countPerformed")
+    public Map<String,Object> countPerformed(){
+        return userDecorationService.countPerformed();
+    }
 
 
 }

@@ -96,7 +96,29 @@ public interface UserDecorationDao {
      */
     int deleteAccessCard(Integer accessCartId);
 
+    /**
+     * 根据装修跟踪记录表主键id查询装修跟踪记录明细表
+     * @param id 装修跟踪记录表主键id
+     * @return 装修跟踪记录明细表集合
+     */
     List<UserDecorationTrackRecordDetail> findUDTRDByTrackRecordId(Integer id);
 
+    /**
+     * 作废装修信息
+     * @param id 装修信息主键id
+     * @return 影响行数
+     */
     int invalid(int id);
+
+    /**
+     * 查询今日预计发起装修数量
+     * @return 今日预计发起装修数量
+     */
+    Integer countDecorationNow();
+
+    /**
+     * 查询未执行的家庭装修数量
+     * @return 未执行的家庭装修数量
+     */
+    Integer countPerformed();
 }

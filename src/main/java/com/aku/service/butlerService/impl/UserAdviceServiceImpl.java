@@ -293,4 +293,24 @@ public class UserAdviceServiceImpl implements UserAdviceService {
         map.put("voFindByIdAdvice",voFindByIdAdvice);
         return map;
     }
+
+    @Override
+    public Map<String, Object> countAdviceNew() {
+        map = new HashMap<>();
+        Integer integer = userAdviceDao.countAdviceNew();
+        map.put("countAdviceNew",integer);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> countConsultNew() {
+        map = new HashMap<>();
+        Integer integer = userAdviceDao.countConsultNew();
+        map.put("countConsultNew",integer);
+        return map;
+    }
+
+    //校验违禁关键字
+
+
 }

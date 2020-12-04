@@ -30,4 +30,6 @@ public interface UserVisitorsService {
     Map<String, Object> delete(int[] ids);
 
     Map<String, Object> listDetail(Integer id);
+
+    Map<String, Object> countVisitorsNew();
 }

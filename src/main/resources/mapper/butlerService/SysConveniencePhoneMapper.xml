@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.butlerService.SysConveniencePhoneDao">
+    <select id="list" parameterType="com.aku.model.butlerService.SearchConveniencePhone" resultType="com.aku.vo.butlerService.VoConveniencePhone">
+        select * from sys_convenience_phone
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel like concat('%',#{tel},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.aku.model.butlerService.SysConveniencePhone">
+        insert into sys_convenience_phone(
+            name,
+            tel,
+            status,
+            check_status,
+            next_control_date,
+            weight,
+            remind_content,
+            create_id,
+            create_date
+        ) values(
+            #{name},
+            #{tel},
+            #{status},
+            #{checkStatus},
+            #{nextControlDate},
+            #{weight},
+            #{remindContent},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findRemindById" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.SysConveniencePhoneReminder">
+        select * from sys_convenience_phone_reminder where id = #{id}
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoConveniencePhone">
+        select * from sys_convenience_phone where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.aku.model.butlerService.SysConveniencePhone">
+        update sys_convenience_phone
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
+            </if>
+            <if test="modifyId != null">
+                modify_id = #{modifyId},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate},
+            </if>
+            <if test="checkStatus != null">
+                check_status = #{checkStatus},
+            </if>
+            <if test="nextControlDate != null">
+                next_control_date = #{nextControlDate},
+            </if>
+            <if test="remindContent != null and remindContent != ''">
+                remind_content = #{remindContent},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateReminder" parameterType="com.aku.model.butlerService.SysConveniencePhoneReminder">
+        update sys_convenience_phone_reminder
+        <set>
+            <if test="reminderInterval != null">
+                reminder_interval = #{reminderInterval},
+            </if>
+            <if test="reminderContent != null and reminderContent != ''">
+                reminder_content = #{reminderContent},
+            </if>
+        </set>
+        where id =#{id}
+    </update>
+</mapper>

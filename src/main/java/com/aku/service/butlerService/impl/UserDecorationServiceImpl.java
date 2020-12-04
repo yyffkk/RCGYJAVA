@@ -312,4 +312,20 @@ public class UserDecorationServiceImpl implements UserDecorationService {
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> countDecorationNow() {
+        map = new HashMap<>();
+        Integer integer = userDecorationDao.countDecorationNow();
+        map.put("countNow",integer);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> countPerformed() {
+        map = new HashMap<>();
+        Integer integer = userDecorationDao.countPerformed();
+        map.put("countPerformed",integer);
+        return map;
+    }
 }

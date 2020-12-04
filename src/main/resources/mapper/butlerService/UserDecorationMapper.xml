@@ -133,4 +133,12 @@
         update user_decoration set status = 6 where id = #{id}
     </update>
 
+    <select id="countDecorationNow" resultType="java.lang.Integer">
+        select count(*) from user_decoration where to_days(expected_begin) = to_days(now())
+    </select>
+
+    <select id="countPerformed" resultType="java.lang.Integer">
+        select count(*) from user_decoration where status = 1
+    </select>
+
 </mapper>

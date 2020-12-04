@@ -33,4 +33,8 @@ public interface UserDecorationService {
     Map<String, Object> delete(int[] ids);
 
     Map<String, Object> invalid(int[] ids);
+
+    Map<String, Object> countDecorationNow();
+
+    Map<String, Object> countPerformed();
 }

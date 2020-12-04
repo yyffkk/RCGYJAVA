@@ -169,4 +169,12 @@ public class UserVisitorsServiceImpl implements UserVisitorsService {
         map.put("voUserVisitorsDetailList",voUserVisitorsDetailList);
         return map;
     }
+
+    @Override
+    public Map<String, Object> countVisitorsNew() {
+        map = new HashMap<>();
+        Integer integer = userVisitorsDao.countVisitorsNew();
+        map.put("countNew",integer);
+        return map;
+    }
 }

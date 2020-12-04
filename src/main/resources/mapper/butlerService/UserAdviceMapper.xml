@@ -95,4 +95,16 @@
     <select id="findByAdviceIdDetail" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserAdviceDetail">
         select * from sys_advice_detail where advice_id = #{id}
     </select>
+
+    <select id="countAdviceNew" resultType="java.lang.Integer">
+        select count(*) from sys_advice
+        where to_days(create_date) = to_days(now())
+        and type = 2
+    </select>
+
+    <select id="countConsultNew" resultType="java.lang.Integer">
+        select count(*) from sys_advice
+        where to_days(create_date) = to_days(now())
+        and type = 1
+    </select>
 </mapper>

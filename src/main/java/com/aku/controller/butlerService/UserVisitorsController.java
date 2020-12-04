@@ -91,4 +91,12 @@ public class UserVisitorsController {
         return userVisitorsService.listDetail(id);
     }
 
+    /**
+     * 查询今日家庭申报访客通行数量
+     * @return map
+     */
+    @GetMapping("/countVisitorsNew")
+    public Map<String,Object> countVisitorsNew(){
+        return userVisitorsService.countVisitorsNew();
+    }
 }

@@ -95,6 +95,24 @@ public class UserAdviceController {
         return userAdviceService.findById(id);
     }
 
+    /**
+     * 查询今日建议条数
+     * @return map
+     */
+    @GetMapping("/countAdviceNew")
+    public Map<String,Object> countAdviceNew(){
+        return userAdviceService.countAdviceNew();
+    }
+
+    /**
+     * 查询今日咨询条数
+     * @return map
+     */
+    @GetMapping("/countConsultNew")
+    public Map<String,Object> countConsultNew(){
+        return userAdviceService.countConsultNew();
+    }
+
 
 
 

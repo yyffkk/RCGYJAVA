@@ -110,4 +110,8 @@
         where visitors_id = #{id}
         order by visit_time
     </select>
+
+    <select id="countVisitorsNew" resultType="java.lang.Integer">
+        select count(*) from user_visitors where to_days(create_date) = to_days(now())
+    </select>
 </mapper>

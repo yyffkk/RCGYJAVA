@@ -21,4 +21,8 @@ public interface UserAdviceService {
     Map<String, Object> falseDelete(int[] ids);
 
     Map<String, Object> findById(Integer id);
+
+    Map<String, Object> countAdviceNew();
+
+    Map<String, Object> countConsultNew();
 }
