@@ -19,7 +19,7 @@ public class SearchProhibitedKeywords {
     /**
      * 替换后显示的字符
      */
-    private String replace;
+    private String replaces;
 
     @Override
     public String toString() {
@@ -27,7 +27,7 @@ public class SearchProhibitedKeywords {
                 "pageNum=" + pageNum +
                 ", size=" + size +
                 ", keywords='" + keywords + '\'' +
-                ", replace='" + replace + '\'' +
+                ", replaces='" + replaces + '\'' +
                 '}';
     }
 
@@ -55,21 +55,21 @@ public class SearchProhibitedKeywords {
         this.keywords = keywords;
     }
 
-    public String getReplace() {
-        return replace;
+    public String getReplaces() {
+        return replaces;
     }
 
-    public void setReplace(String replace) {
-        this.replace = replace;
+    public void setReplaces(String replaces) {
+        this.replaces = replaces;
     }
 
     public SearchProhibitedKeywords() {
     }
 
-    public SearchProhibitedKeywords(Integer pageNum, Integer size, String keywords, String replace) {
+    public SearchProhibitedKeywords(Integer pageNum, Integer size, String keywords, String replaces) {
         this.pageNum = pageNum;
         this.size = size;
         this.keywords = keywords;
-        this.replace = replace;
+        this.replaces = replaces;
     }
 }

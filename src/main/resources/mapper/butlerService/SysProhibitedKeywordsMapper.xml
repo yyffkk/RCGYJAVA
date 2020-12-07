@@ -9,8 +9,8 @@
             <if test="keywords != null and keywords != ''">
                 and keywords like concat('%',#{keywords},'%')
             </if>
-            <if test="replace != null and replace != ''">
-                and replace like concat('%',#{replace},'%')
+            <if test="replaces != null and replaces != ''">
+                and replaces like concat('%',#{replaces},'%')
             </if>
         </where>
     </select>

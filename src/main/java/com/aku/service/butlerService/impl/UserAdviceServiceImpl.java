@@ -1,10 +1,12 @@
 package com.aku.service.butlerService.impl;
 
 import com.aku.dao.basicArchives.UserResidentDao;
+import com.aku.dao.butlerService.SysProhibitedKeywordsDao;
 import com.aku.dao.butlerService.UserAdviceDao;
 import com.aku.dao.resources.ResourcesImgDao;
 import com.aku.dao.system.SysUserDao;
 import com.aku.model.basicArchives.UserResident;
+import com.aku.model.butlerService.SearchProhibitedKeywords;
 import com.aku.model.butlerService.SearchUserAdvice;
 import com.aku.model.butlerService.SysAdvice;
 import com.aku.model.butlerService.SysAdviceDetail;
@@ -12,6 +14,7 @@ import com.aku.model.resources.ResourcesImg;
 import com.aku.model.system.SysUser;
 import com.aku.service.butlerService.UserAdviceService;
 import com.aku.vo.butlerService.VoFindByIdAdvice;
+import com.aku.vo.butlerService.VoProhibitedKeywords;
 import com.aku.vo.butlerService.VoUserAdvice;
 import com.aku.vo.butlerService.VoUserAdviceDetail;
 import com.aku.vo.resources.VoResourcesImg;
@@ -42,6 +45,8 @@ public class UserAdviceServiceImpl implements UserAdviceService {
     UserResidentDao userResidentDao;
     @Resource
     SysUserDao sysUserDao;
+    @Resource
+    SysProhibitedKeywordsDao sysProhibitedKeywordsDao;
 
     @Override
     public List<VoUserAdvice> list(SearchUserAdvice searchUserAdvice) {
@@ -66,6 +71,9 @@ public class UserAdviceServiceImpl implements UserAdviceService {
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        //替换违禁关键字
+        replaceProhibitedKeywords(sysAdviceDetail.getContent());
 
         //添加是否删除信息，1.删除 0.非删
         sysAdviceDetail.setIsDelete(1);
@@ -93,6 +101,10 @@ public class UserAdviceServiceImpl implements UserAdviceService {
             //获取登录用户信息
             Subject subject = SecurityUtils.getSubject();
             SysUser sysUser = (SysUser) subject.getPrincipal();
+
+            //替换违禁关键字
+            replaceProhibitedKeywords(sysAdvice.getContent());
+
             //填入初始点击数
             sysAdvice.setHits(0);
             //填入发布人id
@@ -310,7 +322,19 @@ public class UserAdviceServiceImpl implements UserAdviceService {
         return map;
     }
 
-    //校验违禁关键字
+    //替换违禁关键字[目前空格无法解决]（后续优化成DFA算法）
+    public String replaceProhibitedKeywords(String content){
+        List<VoProhibitedKeywords> list = sysProhibitedKeywordsDao.list(new SearchProhibitedKeywords());
+        if (list != null){
+            for (VoProhibitedKeywords voProhibitedKeywords : list) {
+                //替换违禁关键字
+                if (content.contains(voProhibitedKeywords.getKeywords())){
+                    content.replace(voProhibitedKeywords.getKeywords(), voProhibitedKeywords.getReplaces());
+                }
+            }
+        }
+        return content;
+    }
 
 
 }

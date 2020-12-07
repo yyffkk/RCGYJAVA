@@ -15,14 +15,14 @@ public class VoProhibitedKeywords {
     /**
      * 替换后显示的字符
      */
-    private String replace;
+    private String replaces;
 
     @Override
     public String toString() {
         return "VoProhibitedKeywords{" +
                 "id=" + id +
                 ", keywords='" + keywords + '\'' +
-                ", replace='" + replace + '\'' +
+                ", replaces='" + replaces + '\'' +
                 '}';
     }
 
@@ -42,20 +42,20 @@ public class VoProhibitedKeywords {
         this.keywords = keywords;
     }
 
-    public String getReplace() {
-        return replace;
+    public String getReplaces() {
+        return replaces;
     }
 
-    public void setReplace(String replace) {
-        this.replace = replace;
+    public void setReplaces(String replaces) {
+        this.replaces = replaces;
     }
 
     public VoProhibitedKeywords() {
     }
 
-    public VoProhibitedKeywords(Integer id, String keywords, String replace) {
+    public VoProhibitedKeywords(Integer id, String keywords, String replaces) {
         this.id = id;
         this.keywords = keywords;
-        this.replace = replace;
+        this.replaces = replaces;
     }
 }
