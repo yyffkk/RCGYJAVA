@@ -4,11 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aku.dao.butlerService.UserAdviceDao">
     <select id="list" parameterType="com.aku.model.butlerService.SearchUserAdvice" resultType="com.aku.vo.butlerService.VoUserAdvice">
-        select sa.id,sa.content,sa.type,ur.name as release_name,sa.create_date as release_date,sa.score
+        select sa.id,sa.content,sa.type,sa.status,ur.name as release_name,sa.create_date as release_date,sa.score
         from sys_advice as sa,user_resident as ur
         <where>
             sa.create_id = ur.id
             and sa.is_delete = 1
+            <if test="status != null">
+                and sa.status = #{status}
+            </if>
             <if test="releaseDateStart != null">
                 and sa.create_date <![CDATA[ >= ]]> #{releaseDateStart}
             </if>
@@ -20,6 +23,9 @@
             </if>
             <if test="type != null">
                 and sa.type = #{type}
+            </if>
+            <if test="type == null">
+                and (sa.type = 1 or sa.type = 2)
             </if>
             <if test="releaseName != null and releaseName != ''">
                 ur.name like concat('%',#{releaseName},'%')
@@ -34,6 +40,7 @@
     <insert id="insertDetail" parameterType="com.aku.model.butlerService.SysAdviceDetail">
         insert into sys_advice_detail(
             advice_id,
+            status,
             content,
             is_delete,
             create_id,
@@ -42,6 +49,7 @@
             parent_id
         ) values (
             #{adviceId},
+            #{status},
             #{content},
             #{isDelete},
             #{createId},
@@ -54,6 +62,7 @@
     <insert id="insertAdvice" parameterType="com.aku.model.butlerService.SysAdvice">
         insert into sys_advice(
             type,
+            status,
             content,
             hits,
             create_id,
@@ -62,6 +71,7 @@
             is_delete
         ) values (
             #{type},
+            #{status},
             #{content},
             #{hits},
             #{createId},
@@ -107,4 +117,8 @@
         where to_days(create_date) = to_days(now())
         and type = 1
     </select>
+
+    <update id="updateAdviceStatus" parameterType="com.aku.model.butlerService.SysAdvice">
+        update sys_advice set status = #{status} where id = #{id}
+    </update>
 </mapper>

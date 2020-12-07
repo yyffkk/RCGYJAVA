@@ -13,6 +13,10 @@ public class SysAdvice {
      */
     private Integer id;
     /**
+     * 状态（1.未反馈，2.反馈中，3.已反馈）
+     */
+    private Integer status;
+    /**
      * 类型(1.咨询，2.建议)
      */
     private Integer type;
@@ -65,6 +69,7 @@ public class SysAdvice {
     public String toString() {
         return "SysAdvice{" +
                 "id=" + id +
+                ", status=" + status +
                 ", type=" + type +
                 ", content='" + content + '\'' +
                 ", hits=" + hits +
@@ -86,6 +91,14 @@ public class SysAdvice {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Integer getType() {
@@ -187,8 +200,9 @@ public class SysAdvice {
     public SysAdvice() {
     }
 
-    public SysAdvice(Integer id, Integer type, String content, Integer hits, Integer score, Integer createId, Date createDate, Integer createUserType, Integer modifyId, Date modifyDate, Integer modifyUserType, Integer isDelete, MultipartFile file) {
+    public SysAdvice(Integer id, Integer status, Integer type, String content, Integer hits, Integer score, Integer createId, Date createDate, Integer createUserType, Integer modifyId, Date modifyDate, Integer modifyUserType, Integer isDelete, MultipartFile file) {
         this.id = id;
+        this.status = status;
         this.type = type;
         this.content = content;
         this.hits = hits;

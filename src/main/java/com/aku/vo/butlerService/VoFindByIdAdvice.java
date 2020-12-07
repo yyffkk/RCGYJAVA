@@ -13,7 +13,7 @@ public class VoFindByIdAdvice {
      */
     private Integer id;
     /**
-     * 类型(1.咨询，2.建议)
+     * 类型(1.咨询，2.建议,3.投诉，4.建议)
      */
     private Integer type;
     /**

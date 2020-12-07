@@ -15,7 +15,7 @@ public class VoUserAdvice {
      */
     private String content;
     /**
-     * 类型 1.咨询，2.建议
+     * 类型 1.咨询，2.建议,3.投诉,4.表扬
      */
     private Integer type;
     /**
@@ -27,7 +27,7 @@ public class VoUserAdvice {
      */
     private Date releaseDate;
     /**
-     * 状态（查询是否有反馈信息）(1.已反馈 0.未反馈)
+     * 状态（查询是否有反馈信息）(1.未反馈，2.反馈中，3.已反馈)
      */
     private Integer status;
     /**

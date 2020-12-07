@@ -27,7 +27,7 @@ public class SearchUserAdvice {
      */
     private Date releaseDateEnd;
     /**
-     * 状态（查询是否有反馈信息）
+     * 状态（1.未反馈，2.反馈中，3.已反馈）
      */
     private Integer status;
     /**
@@ -35,7 +35,7 @@ public class SearchUserAdvice {
      */
     private Integer score;
     /**
-     * 类型 1.咨询，2.建议
+     * 类型 1.咨询，2.建议,3.投诉，4.建议
      */
     private Integer type;
 

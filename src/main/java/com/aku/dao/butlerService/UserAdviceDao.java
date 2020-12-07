@@ -84,4 +84,11 @@ public interface UserAdviceDao {
      * @return 咨询条数
      */
     Integer countConsultNew();
+
+    /**
+     * 更新反馈状态
+     * @param sysAdvice 咨询建议表信息
+     * @return 影响行数
+     */
+    int updateAdviceStatus(SysAdvice sysAdvice);
 }

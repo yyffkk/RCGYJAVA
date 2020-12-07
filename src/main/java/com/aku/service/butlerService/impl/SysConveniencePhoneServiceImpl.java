@@ -10,7 +10,6 @@ import com.aku.vo.butlerService.VoConveniencePhone;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -31,7 +30,7 @@ public class SysConveniencePhoneServiceImpl implements SysConveniencePhoneServic
                     SysConveniencePhone sysConveniencePhone = new SysConveniencePhone();
                     sysConveniencePhone.setId(voConveniencePhone.getId());
                     sysConveniencePhone.setCheckStatus(0);
-                    int update = sysConveniencePhoneDao.update(sysConveniencePhone);
+                    sysConveniencePhoneDao.update(sysConveniencePhone);
                 }
             }
         }

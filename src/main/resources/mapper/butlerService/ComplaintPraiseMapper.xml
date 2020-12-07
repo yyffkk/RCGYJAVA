@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.butlerService.ComplaintPraiseDao">
+    <select id="list" parameterType="com.aku.model.butlerService.SearchUserAdvice" resultType="com.aku.vo.butlerService.VoUserAdvice">
+        select sa.id,sa.content,sa.type,sa.status,ur.name as release_name,sa.create_date as release_date,sa.score
+        from sys_advice as sa,user_resident as ur
+        <where>
+            sa.create_id = ur.id
+            and sa.is_delete = 1
+            <if test="status != null">
+                and sa.status = #{status}
+            </if>
+            <if test="releaseDateStart != null">
+                and sa.create_date <![CDATA[ >= ]]> #{releaseDateStart}
+            </if>
+            <if test="releaseDateEnd != null">
+                and sa.create_date <![CDATA[ <= ]]> #{releaseDateEnd}
+            </if>
+            <if test="score != null">
+                and sa.score = #{score}
+            </if>
+            <if test="type != null">
+                and sa.type = #{type}
+            </if>
+            <if test="type == null">
+                and (sa.type = 3 or sa.type = 4)
+            </if>
+            <if test="releaseName != null and releaseName != ''">
+                ur.name like concat('%',#{releaseName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="countComplaintNew" resultType="java.lang.Integer">
+        select count(*) from sys_advice
+        where to_days(create_date) = to_days(now())
+        and type = 3
+    </select>
+
+    <select id="countPraiseNew" resultType="java.lang.Integer">
+        select count(*) from sys_advice
+        where to_days(create_date) = to_days(now())
+        and type = 4
+    </select>
+</mapper>

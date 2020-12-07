@@ -1,6 +1,7 @@
 package com.aku.service.butlerService.impl;
 
 import com.aku.dao.basicArchives.UserResidentDao;
+import com.aku.dao.butlerService.ComplaintPraiseDao;
 import com.aku.dao.butlerService.SysProhibitedKeywordsDao;
 import com.aku.dao.butlerService.UserAdviceDao;
 import com.aku.dao.resources.ResourcesImgDao;
@@ -12,7 +13,7 @@ import com.aku.model.butlerService.SysAdvice;
 import com.aku.model.butlerService.SysAdviceDetail;
 import com.aku.model.resources.ResourcesImg;
 import com.aku.model.system.SysUser;
-import com.aku.service.butlerService.UserAdviceService;
+import com.aku.service.butlerService.ComplaintPraiseService;
 import com.aku.vo.butlerService.VoFindByIdAdvice;
 import com.aku.vo.butlerService.VoProhibitedKeywords;
 import com.aku.vo.butlerService.VoUserAdvice;
@@ -32,11 +33,12 @@ import java.io.File;
 import java.util.*;
 
 @Service
-public class UserAdviceServiceImpl implements UserAdviceService {
+public class ComplaintPraiseServiceImpl implements ComplaintPraiseService {
     private static Map<String,Object> map = null;
-
     @Value("${prop.upload-folder}")
     private String UPLOAD_FOLDER;
+    @Resource
+    ComplaintPraiseDao complaintPraiseDao;
     @Resource
     UserAdviceDao userAdviceDao;
     @Resource
@@ -50,57 +52,49 @@ public class UserAdviceServiceImpl implements UserAdviceService {
 
     @Override
     public List<VoUserAdvice> list(SearchUserAdvice searchUserAdvice) {
-        List<VoUserAdvice> list = userAdviceDao.list(searchUserAdvice);
-        return list;
+        return complaintPraiseDao.list(searchUserAdvice);
     }
 
     @Override
-    @Transactional
-    public Map<String, Object> insertDetail(SysAdviceDetail sysAdviceDetail) {
+    public Map<String, Object> findById(Integer id) {
         map = new HashMap<>();
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-
-        //替换违禁关键字
-        replaceProhibitedKeywords(sysAdviceDetail.getContent());
-
-        try {
-            //添加是否删除信息，1.非删 0.删除
-            sysAdviceDetail.setIsDelete(1);
-            //添加创建人id
-            sysAdviceDetail.setCreateId(sysUser.getId());
-            //添加创建时间
-            sysAdviceDetail.setCreateDate(new Date());
-
-            //回复反馈
-            int insert = userAdviceDao.insertDetail(sysAdviceDetail);
-            if (insert<=0){
-                throw new RuntimeException("回复反馈失败");
-            }
-            SysAdvice sysAdvice = new SysAdvice();
-            //填入反馈状态，2.反馈中
-            sysAdvice.setStatus(2);
-            //填入咨询建议主键id
-            sysAdvice.setId(sysAdviceDetail.getAdviceId());
-            //更新反馈状态
-            int update = userAdviceDao.updateAdviceStatus(sysAdvice);
-            if (update <=0 ){
-                throw new RuntimeException("更新反馈状态失败");
-            }
-        } catch (RuntimeException e) {
-            //获取抛出的信息
-            String message = e.getMessage();
-            e.printStackTrace();
-            //设置手动回滚
-            TransactionAspectSupport.currentTransactionStatus()
-                    .setRollbackOnly();
-            map.put("message",message);
-            map.put("status",false);
-            return map;
+        //根据咨询建议主键id查询咨询建议信息
+        VoFindByIdAdvice voFindByIdAdvice = userAdviceDao.findById(id);
+        ResourcesImg resourcesImg = new ResourcesImg();
+        //填入表名称 sysAdvice
+        resourcesImg.setTableName("sysAdvice");
+        //填入数据所属id
+        resourcesImg.setDateId(id);
+        //填入类型名称 投诉表扬照片：complaintPraiseImg
+        resourcesImg.setTypeName("complaintPraiseImg");
+        //根据咨询建议主键id查询照片信息集合
+        List<VoResourcesImg> imgByDate = resourcesImgDao.findImgByDate(resourcesImg);
+        if (imgByDate != null && imgByDate.size()>0){
+            //填入照片信息集合
+            voFindByIdAdvice.setImgUrl(imgByDate);
         }
-        map.put("message","回复反馈成功");
-        map.put("status",true);
+        //根据咨询建议主键id查询反馈信息集合
+        List<VoUserAdviceDetail> voUserAdviceDetailList = userAdviceDao.findByAdviceIdDetail(id);
+        if (voUserAdviceDetailList != null && voUserAdviceDetailList.size()>0){
+            for (VoUserAdviceDetail voUserAdviceDetail : voUserAdviceDetailList) {
+                //如果创建人类型为住户 1.住户 跟住户关联查询创建人姓名
+                if (voUserAdviceDetail.getCreateUserType() ==1 ){
+                    //根据反馈信息中的反馈人id 关联住户查询反馈人姓名
+                    UserResident byId = userResidentDao.findById(voUserAdviceDetail.getCreateId());
+                    voUserAdviceDetail.setCreateName(byId.getName());
+                }
+                //如果创建人类型为物业 3.物业 跟物业关联查询创建人姓名
+                if (voUserAdviceDetail.getCreateUserType() == 3){
+                    //根据反馈信息中的反馈人id 关联物业查询反馈人真实姓名
+                    SysUser byId = sysUserDao.findById(voUserAdviceDetail.getCreateId());
+                    voUserAdviceDetail.setCreateName(byId.getActualName());
+                }
+
+            }
+            //填入反馈信息集合
+            voFindByIdAdvice.setVoUserAdviceDetailList(voUserAdviceDetailList);
+        }
+        map.put("voFindByIdAdvice",voFindByIdAdvice);
         return map;
     }
 
@@ -130,7 +124,7 @@ public class UserAdviceServiceImpl implements UserAdviceService {
             sysAdvice.setStatus(1);
             int insert =  userAdviceDao.insertAdvice(sysAdvice);
             if (insert<=0){
-                throw new RuntimeException("新增咨询建议失败");
+                throw new RuntimeException("新增投诉表扬失败");
             }
 
             //上传文件
@@ -163,8 +157,8 @@ public class UserAdviceServiceImpl implements UserAdviceService {
                     resourcesImg.setTableName("sysAdvice");
                     //填入数据所属id
                     resourcesImg.setDateId(sysAdvice.getId());
-                    //填入类型名称 咨询建议照片：adviceImg
-                    resourcesImg.setTypeName("adviceImg");
+                    //填入类型名称 投诉建议照片：complaintPraiseImg
+                    resourcesImg.setTypeName("complaintPraiseImg");
                     //填入图片路径
                     resourcesImg.setUrl(savePath + filename);
                     resourcesImg.setSize("600");
@@ -200,8 +194,24 @@ public class UserAdviceServiceImpl implements UserAdviceService {
         }
 
 
-        map.put("message","新增咨询建议成功");
+        map.put("message","新增投诉表扬成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> countComplaintNew() {
+        map = new HashMap<>();
+        Integer integer = complaintPraiseDao.countComplaintNew();
+        map.put("countComplaintNew",integer);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> countPraiseNew() {
+        map = new HashMap<>();
+        Integer integer = complaintPraiseDao.countPraiseNew();
+        map.put("countPraiseNew",integer);
         return map;
     }
 
@@ -222,17 +232,17 @@ public class UserAdviceServiceImpl implements UserAdviceService {
                 resourcesImg.setTableName("sysAdvice");
                 //填入数据所属id
                 resourcesImg.setDateId(id);
-                //填入类型名称 咨询建议照片：adviceImg
-                resourcesImg.setTypeName("adviceImg");
+                //填入类型名称 投诉建议照片：complaintPraiseImg
+                resourcesImg.setTypeName("complaintPraiseImg");
                 //根据条件删除照片信息
                 int delete3 = resourcesImgDao.deleteImgByDate(resourcesImg);
                 if (delete3<=0){
-                    throw new RuntimeException("批量删除咨询建议照片失败");
+                    throw new RuntimeException("批量删除投诉建议照片失败");
                 }
                 //根据咨询建议主键id删除咨询建议信息
                 int delete = userAdviceDao.delete(id);
                 if (delete<=0){
-                    throw new RuntimeException("批量删除咨询建议信息失败");
+                    throw new RuntimeException("批量删除投诉建议信息失败");
                 }
             }
         } catch (Exception e) {
@@ -246,7 +256,7 @@ public class UserAdviceServiceImpl implements UserAdviceService {
             map.put("status",false);
             return map;
         }
-        map.put("message","批量删除咨询建议信息成功");
+        map.put("message","批量删除投诉建议信息成功");
         map.put("status",true);
         return map;
     }
@@ -258,7 +268,7 @@ public class UserAdviceServiceImpl implements UserAdviceService {
             for (int id : ids) {
                 int update = userAdviceDao.falseDelete(id);
                 if (update <= 0){
-                    throw new RuntimeException("批量删除咨询建议信息失败");
+                    throw new RuntimeException("批量删除投诉表扬信息失败");
                 }
             }
         } catch (Exception e) {
@@ -272,67 +282,8 @@ public class UserAdviceServiceImpl implements UserAdviceService {
             map.put("status",false);
             return map;
         }
-        map.put("message","批量删除咨询建议信息成功，进入回收站");
+        map.put("message","批量删除投诉表扬信息成功，进入回收站");
         map.put("status",true);
-        return map;
-    }
-
-    @Override
-    public Map<String, Object> findById(Integer id) {
-        map = new HashMap<>();
-        //根据咨询建议主键id查询咨询建议信息
-        VoFindByIdAdvice voFindByIdAdvice = userAdviceDao.findById(id);
-        ResourcesImg resourcesImg = new ResourcesImg();
-        //填入表名称 sysAdvice
-        resourcesImg.setTableName("sysAdvice");
-        //填入数据所属id
-        resourcesImg.setDateId(id);
-        //填入类型名称 咨询建议照片：adviceImg
-        resourcesImg.setTypeName("adviceImg");
-        //根据咨询建议主键id查询照片信息集合
-        List<VoResourcesImg> imgByDate = resourcesImgDao.findImgByDate(resourcesImg);
-        if (imgByDate != null && imgByDate.size()>0){
-            //填入照片信息集合
-            voFindByIdAdvice.setImgUrl(imgByDate);
-        }
-        //根据咨询建议主键id查询反馈信息集合
-        List<VoUserAdviceDetail> voUserAdviceDetailList = userAdviceDao.findByAdviceIdDetail(id);
-        if (voUserAdviceDetailList != null && voUserAdviceDetailList.size()>0){
-            for (VoUserAdviceDetail voUserAdviceDetail : voUserAdviceDetailList) {
-                //如果创建人类型为住户 1.住户 跟住户关联查询创建人姓名
-                if (voUserAdviceDetail.getCreateUserType() ==1 ){
-                    //根据反馈信息中的反馈人id 关联住户查询反馈人姓名
-                    UserResident byId = userResidentDao.findById(voUserAdviceDetail.getCreateId());
-                    voUserAdviceDetail.setCreateName(byId.getName());
-                }
-                //如果创建人类型为物业 3.物业 跟物业关联查询创建人姓名
-                if (voUserAdviceDetail.getCreateUserType() == 3){
-                    //根据反馈信息中的反馈人id 关联物业查询反馈人真实姓名
-                    SysUser byId = sysUserDao.findById(voUserAdviceDetail.getCreateId());
-                    voUserAdviceDetail.setCreateName(byId.getActualName());
-                }
-
-            }
-            //填入反馈信息集合
-            voFindByIdAdvice.setVoUserAdviceDetailList(voUserAdviceDetailList);
-        }
-        map.put("voFindByIdAdvice",voFindByIdAdvice);
-        return map;
-    }
-
-    @Override
-    public Map<String, Object> countAdviceNew() {
-        map = new HashMap<>();
-        Integer integer = userAdviceDao.countAdviceNew();
-        map.put("countAdviceNew",integer);
-        return map;
-    }
-
-    @Override
-    public Map<String, Object> countConsultNew() {
-        map = new HashMap<>();
-        Integer integer = userAdviceDao.countConsultNew();
-        map.put("countConsultNew",integer);
         return map;
     }
 
@@ -349,6 +300,4 @@ public class UserAdviceServiceImpl implements UserAdviceService {
         }
         return content;
     }
-
-
 }

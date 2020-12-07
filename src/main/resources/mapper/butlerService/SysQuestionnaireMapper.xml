@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aku.dao.butlerService.SysQuestionnaireDao">
+    <select id="list" parameterType="com.aku.model.butlerService.SearchQuestionnaire" resultType="com.aku.vo.butlerService.VoQuestionnaire">
+        select * from sys_questionnaire
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="answerType != null">
+                and answerType = #{answerType}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertQuestionnaire" parameterType="com.aku.model.butlerService.SysQuestionnaire">
+        insert into sys_questionnaire(
+            title,
+            description,
+            answer_type,
+            begin_date,
+            end_date,
+            is_delete,
+            create_id,
+            create_date,
+            is_release,
+            answer_num
+        ) values (
+            #{title},
+            #{description},
+            #{answerType},
+            #{beginDate},
+            #{endDate},
+            #{isDelete},
+            #{createId},
+            #{createDate},
+            #{isRelease},
+            #{answerNum}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertQuestionnaireTopic" parameterType="com.aku.model.butlerService.SysQuestionnaireTopic">
+        insert into sys_questionnaire_topic(
+            type,
+            topic,
+            questionnaire_id,
+            create_id,
+            create_date
+        ) values (
+            #{type},
+            #{topic},
+            #{questionnaireId},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertQuestionnaireChoice" parameterType="com.aku.model.butlerService.SysQuestionnaireChoice">
+        insert into sys_questionnaire_multiple_choice(
+            options,
+            answer,
+            questionnaire_id,
+            questionnaire_topic_id,
+            create_id,
+            create_date
+        ) values (
+            #{options},
+            #{answer},
+            #{questionnaireId},
+            #{questionnaireTopicId},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdQuestionnaire">
+        select * from sys_questionnaire where id = #{id}
+    </select>
+
+    <select id="findTopicByQuestionnaireId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdTopic">
+        select * from sys_questionnaire_topic where questionnaire_id = #{id}
+    </select>
+
+    <select id="findChoiceByTopicId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdChoice">
+        select * from sys_questionnaire_multiple_choice where questionnaire_topic_id = #{id}
+    </select>
+</mapper>

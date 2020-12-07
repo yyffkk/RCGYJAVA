@@ -46,7 +46,7 @@ public class UserAdviceController {
     }
 
     /**
-     * 回复咨询建议（添加反馈信息）【住户，装修公司，物业】
+     * 回复咨询建议（添加反馈信息）【住户，装修公司，物业】【已替换违禁关键字】
      * @param sysAdviceDetail 建议反馈表信息
      * @return map
      */
@@ -56,7 +56,7 @@ public class UserAdviceController {
     }
 
     /**
-     * 新增咨询建议(未测)
+     * 新增咨询建议(未测)【已替换违禁关键字】
      * @param sysAdvice 咨询建议表信息
      * @return map
      */
