@@ -1,5 +1,7 @@
 package com.aku.model.butlerService;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +65,10 @@ public class SysQuestionnaire {
      * 答题数量
      */
     private Integer answerNum;
+    /**
+     * 上传文件（照片）
+     */
+    private MultipartFile file;
 
     @Override
     public String toString() {
@@ -81,6 +87,7 @@ public class SysQuestionnaire {
                 ", modifyDate=" + modifyDate +
                 ", isRelease=" + isRelease +
                 ", answerNum=" + answerNum +
+                ", file=" + file +
                 '}';
     }
 
@@ -196,10 +203,18 @@ public class SysQuestionnaire {
         this.answerNum = answerNum;
     }
 
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
     public SysQuestionnaire() {
     }
 
-    public SysQuestionnaire(Integer id, String title, String description, Integer answerType, Date beginDate, Date endDate, Integer isDelete, List<SysQuestionnaireTopic> sysQuestionnaireTopicList, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isRelease, Integer answerNum) {
+    public SysQuestionnaire(Integer id, String title, String description, Integer answerType, Date beginDate, Date endDate, Integer isDelete, List<SysQuestionnaireTopic> sysQuestionnaireTopicList, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isRelease, Integer answerNum, MultipartFile file) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -214,5 +229,6 @@ public class SysQuestionnaire {
         this.modifyDate = modifyDate;
         this.isRelease = isRelease;
         this.answerNum = answerNum;
+        this.file = file;
     }
 }

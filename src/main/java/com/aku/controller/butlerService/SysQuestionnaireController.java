@@ -2,8 +2,12 @@ package com.aku.controller.butlerService;
 
 import com.aku.model.butlerService.SearchQuestionnaire;
 import com.aku.model.butlerService.SysQuestionnaire;
+import com.aku.model.butlerService.SysQuestionnaireAnswerSubmit;
+import com.aku.model.butlerService.SysQuestionnaireSubmit;
 import com.aku.service.butlerService.SysQuestionnaireService;
+import com.aku.vo.basicArchives.VoIds;
 import com.aku.vo.butlerService.VoConveniencePhone;
+import com.aku.vo.butlerService.VoFindByIdQuestionnaire;
 import com.aku.vo.butlerService.VoQuestionnaire;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,7 +44,7 @@ public class SysQuestionnaireController {
     }
 
     /**
-     * 添加问卷调查表信息(?????上传照片没做??????)
+     * 添加问卷调查表信息
      * @param sysQuestionnaire 问卷调查表信息
      * @return map
      */
@@ -59,6 +63,47 @@ public class SysQuestionnaireController {
         return sysQuestionnaireService.findById(id);
     }
 
+    /**
+     * 更新问卷调查信息
+     * @param sysQuestionnaire 问卷调查表信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysQuestionnaire sysQuestionnaire){
+        return sysQuestionnaireService.update(sysQuestionnaire);
+    }
+
+
+    /**
+     * 批量删除问卷调查信息（真删除）
+     * @param ids 问卷调查id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysQuestionnaireService.delete(ids.getIds());
+    }
+
+    /**
+     * 批量删除问卷调查信息（假删除）
+     * @param ids 问卷调查id数组
+     * @return map
+     */
+    @PostMapping("/falseDelete")
+    public Map<String,Object> falseDelete(@RequestBody VoIds ids){
+        return sysQuestionnaireService.falseDelete(ids.getIds());
+    }
+
+
+    /**
+     * 问卷调查提交
+     * @param sysQuestionnaireSubmit 问卷调查提交信息
+     * @return map
+     */
+    @PostMapping("/sysQuestionnaireSubmit")
+    public Map<String,Object> sysQuestionnaireSubmit(@RequestBody SysQuestionnaireSubmit sysQuestionnaireSubmit){
+        return sysQuestionnaireService.sysQuestionnaireSubmit(sysQuestionnaireSubmit);
+    }
 
 
 }

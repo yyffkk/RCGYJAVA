@@ -1,9 +1,6 @@
 package com.aku.dao.butlerService;
 
-import com.aku.model.butlerService.SearchQuestionnaire;
-import com.aku.model.butlerService.SysQuestionnaire;
-import com.aku.model.butlerService.SysQuestionnaireChoice;
-import com.aku.model.butlerService.SysQuestionnaireTopic;
+import com.aku.model.butlerService.*;
 import com.aku.vo.butlerService.VoFindByIdChoice;
 import com.aku.vo.butlerService.VoFindByIdQuestionnaire;
 import com.aku.vo.butlerService.VoFindByIdTopic;
@@ -60,4 +57,55 @@ public interface SysQuestionnaireDao {
      * @return 选择项信息集合
      */
     List<VoFindByIdChoice> findChoiceByTopicId(Integer id);
+
+    /**
+     * 根据问卷调查主键ID删除选择项信息
+     * @param id 问卷调查主键ID
+     * @return 影响行数
+     */
+    int deleteChoice(Integer id);
+    /**
+     * 根据问卷调查主键ID删除题目信息
+     * @param id 问卷调查主键ID
+     * @return 影响行数
+     */
+    int deleteTopic(Integer id);
+    /**
+     * 根据问卷调查主键ID真删除问卷调查信息
+     * @param id 问卷调查主键ID
+     * @return 影响行数
+     */
+    int deleteQuestionnaire(Integer id);
+    /**
+     * 根据问卷调查主键ID假删除问卷调查信息
+     * @param id 问卷调查主键ID
+     * @return 影响行数
+     */
+    int falseDeleteQuestionnaire(int id);
+
+    /**
+     * 添加选择答案信息
+     * @param sysQuestionChoiceAnswer 选择答案信息
+     * @return 影响行数
+     */
+    int insertChoiceAnswer(SysQuestionChoiceAnswer sysQuestionChoiceAnswer);
+    /**
+     * 添加判断答案信息
+     * @param sysQuestionJudgmentAnswer 判断答案信息
+     * @return 影响行数
+     */
+    int insertJudgmentAnswer(SysQuestionJudgmentAnswer sysQuestionJudgmentAnswer);
+    /**
+     * 添加开放题答案信息
+     * @param sysQuestionnaireShortAnswer 开放题答案信息
+     * @return 影响行数
+     */
+    int insertShortAnswer(SysQuestionnaireShortAnswer sysQuestionnaireShortAnswer);
+
+    /**
+     * 根据题目id查询题目信息
+     * @param topicId 题目id
+     * @return 题目信息
+     */
+    SysQuestionnaireTopic findTopicByTopicId(Integer topicId);
 }
