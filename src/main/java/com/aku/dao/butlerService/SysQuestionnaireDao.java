@@ -1,10 +1,7 @@
 package com.aku.dao.butlerService;
 
 import com.aku.model.butlerService.*;
-import com.aku.vo.butlerService.VoFindByIdChoice;
-import com.aku.vo.butlerService.VoFindByIdQuestionnaire;
-import com.aku.vo.butlerService.VoFindByIdTopic;
-import com.aku.vo.butlerService.VoQuestionnaire;
+import com.aku.vo.butlerService.*;
 
 import java.util.List;
 
@@ -108,4 +105,67 @@ public interface SysQuestionnaireDao {
      * @return 题目信息
      */
     SysQuestionnaireTopic findTopicByTopicId(Integer topicId);
+
+    /**
+     * 根据问卷调查主键id对答题人员数量进行累加
+     * @param id 问卷调查主键id
+     * @return 影响行数
+     */
+    int accumulationAnswerNum(Integer id);
+
+    /**
+     * 根据答卷人id查询开发题信息
+     * @param id 答卷人id
+     * @return 开发题信息
+     */
+    SysQuestionnaireShortAnswer findShortAnswerByCreateId(Integer id);
+
+    /**
+     * 根据问卷调查主键id查询问卷调查报表信息
+     * @param id 问卷调查主键id
+     * @return 问卷调查报表信息
+     */
+    VoReportQuestionnaire findReportById(Integer id);
+
+    /**
+     * 根据问卷调查主键id查询问卷调查题目报表信息
+     * @param id 问卷调查主键id
+     * @return 问卷调查题目报表信息
+     */
+    List<VoReportQuestionnaireTopic> findReportTopicByQId(Integer id);
+
+    /**
+     * 根据题目报表主键id查询选择项报表信息
+     * @param id 题目报表主键id
+     * @return 选择项报表信息集合
+     */
+    List<VoReportQuestionnaireChoice> findReportChoiceByTopicId(Integer id);
+
+    /**
+     * 根据选择题选项主键id查询该选择题的人数数量(需要去重)
+     * @param id 选择题选项主键id
+     * @return 该选择题的人数数量
+     */
+    int countChoice(Integer id);
+
+    /**
+     * 根据题目主键id查询该题目的人数数量(需要去重)
+     * @param id 题目主键id
+     * @return 该题目的人数数量
+     */
+    int countTopic(Integer id);
+
+    /**
+     * 根据题目报表主键id查询选【对】的数量
+     * @param id 题目主键id
+     * @return 选【对】的数量
+     */
+    int countJudgmentTrueByTId(Integer id);
+
+    /**
+     * 根据题目报表主键id查询选【错】的数量
+     * @param id 题目主键id
+     * @return 选【错】的数量
+     */
+    int countJudgmentFalseByTId(Integer id);
 }

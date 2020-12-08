@@ -164,4 +164,42 @@
     <select id="findTopicByTopicId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.SysQuestionnaireTopic">
         select * from sys_questionnaire_topic where id =#{id}
     </select>
+    <update id="accumulationAnswerNum" parameterType="java.lang.Integer" >
+        update sys_questionnaire set answer_num = answer_num + 1 where id =#{id}
+    </update>
+
+    <select id="findShortAnswerByCreateId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.SysQuestionnaireShortAnswer">
+        select * from sys_questionnaire_short_answer where create_id = #{id}
+    </select>
+
+    <select id="findReportById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoReportQuestionnaire">
+        select * from sys_questionnaire where id =#{id}
+    </select>
+
+    <select id="findReportTopicByQId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoReportQuestionnaireTopic">
+        select * from sys_questionnaire_topic where questionnaire_id = #{id}
+    </select>
+
+    <select id="findReportChoiceByTopicId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoReportQuestionnaireChoice">
+        select * from sys_questionnaire_multiple_choice where questionnaire_topic_id = #{id}
+    </select>
+
+    <select id="countChoice" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(distinct create_id) from sys_questionnaire_single_multiple_choice_answer
+        where questionnaire_multiple_choice_id = #{id}
+    </select>
+
+    <select id="countTopic" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(distinct create_id) from sys_questionnaire_single_multiple_choice_answer
+        where questionnaire_topic_id = #{id}
+    </select>
+
+    <select id="countJudgmentTrueByTId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_questionnaire_judgment_answer where answer = 1
+    </select>
+
+    <select id="countJudgmentFalseByTId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_questionnaire_judgment_answer where answer = 0
+    </select>
+
 </mapper>

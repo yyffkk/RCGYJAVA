@@ -6,10 +6,7 @@ import com.aku.model.butlerService.*;
 import com.aku.model.resources.ResourcesImg;
 import com.aku.model.system.SysUser;
 import com.aku.service.butlerService.SysQuestionnaireService;
-import com.aku.vo.butlerService.VoFindByIdChoice;
-import com.aku.vo.butlerService.VoFindByIdQuestionnaire;
-import com.aku.vo.butlerService.VoFindByIdTopic;
-import com.aku.vo.butlerService.VoQuestionnaire;
+import com.aku.vo.butlerService.*;
 import com.aku.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -195,6 +192,7 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
     @Override
     public Map<String, Object> findById(Integer id) {
         map = new HashMap<>();
+
         //根据问卷调查主键ID查询问卷调查信息
         VoFindByIdQuestionnaire voFindByIdQuestionnaire = sysQuestionnaireDao.findById(id);
         if (voFindByIdQuestionnaire != null){
@@ -477,7 +475,13 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
+
         try {
+            //对该问卷的答题人数量加一
+            int update = sysQuestionnaireDao.accumulationAnswerNum(sysQuestionnaireSubmit.getId());
+            if (update <= 0){
+                throw new RuntimeException("累加答题人数失败");
+            }
             //查询出所有题目-答案信息,然后遍历存储
             List<SysQuestionnaireAnswerSubmit> sysQuestionnaireTopicSubmitList = sysQuestionnaireSubmit.getSysQuestionnaireTopicSubmitList();
             if (sysQuestionnaireTopicSubmitList != null){
@@ -547,6 +551,73 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
         }
         map.put("message","问卷调查提交成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> reportAnalysis(Integer id) {
+        map = new HashMap<>();
+        //根据问卷调查主键id查询问卷调查报表信息
+        VoReportQuestionnaire reportQuestionnaire = sysQuestionnaireDao.findReportById(id);
+        //根据问卷调查主键id查询问卷调查题目报表信息集合
+        List<VoReportQuestionnaireTopic> voReportQuestionnaireTopicList = sysQuestionnaireDao.findReportTopicByQId(id);
+        if (voReportQuestionnaireTopicList != null){
+            //迭代器遍历题目报表，并删除开放题信息
+            Iterator<VoReportQuestionnaireTopic> iterator = voReportQuestionnaireTopicList.iterator();
+            while (iterator.hasNext()){
+                VoReportQuestionnaireTopic topic = iterator.next();
+                //查询该题目的各个选择项人数
+                switch (topic.getType()){
+                    case 1:
+                        //单选
+                    case 2:
+                        //多选
+                    case 3:
+                        //单选下拉
+                        //根据题目报表主键id查询选择项报表信息
+                        List<VoReportQuestionnaireChoice> voReportQuestionnaireChoiceList = sysQuestionnaireDao.findReportChoiceByTopicId(topic.getId());
+                        if (voReportQuestionnaireChoiceList != null){
+                            //遍历选择项信息
+                            for (VoReportQuestionnaireChoice choice : voReportQuestionnaireChoiceList) {
+                                //根据选择题选项主键id查询该选择题的人数数量(需要去重)
+                                int count = sysQuestionnaireDao.countChoice(choice.getId());
+                                //传入该选择项的人数信息
+                                choice.setAnswerNum(count);
+                            }
+                        }
+                        //传入选择项信息集合
+                        topic.setReportQuestionnaireChoiceList(voReportQuestionnaireChoiceList);
+                        //根据题目主键报表id查询该题目的人数数量(需要去重)
+                        int count2 = sysQuestionnaireDao.countTopic(topic.getId());
+                        //传入该题目的选择人数
+                        topic.setAnswerNum(count2);
+                        break;
+                    case 4:
+                        //判断题
+                        //根据题目主键报表id查询选【对】的数量
+                        int count3 = sysQuestionnaireDao.countJudgmentTrueByTId(topic.getId());
+                        //根据题目主键报表id查询选【错】的数量
+                        int count4 = sysQuestionnaireDao.countJudgmentFalseByTId(topic.getId());
+                        //传入选【对】的数量
+                        topic.setTrueNum(count3);
+                        //传入选【错】的数量
+                        topic.setFalseNum(count4);
+                        //传入该题目的选择人数
+                        topic.setAnswerNum(count3+count4);
+                        break;
+                    case 5:
+                        //开放题
+                        iterator.remove();
+                        break;
+                    default:
+                        System.out.println("数据有误");
+                        break;
+                }
+            }
+        }
+        //传入问卷调查题目报表信息集合
+        reportQuestionnaire.setReportQuestionnaireTopicList(voReportQuestionnaireTopicList);
+        map.put("reportQuestionnaire",reportQuestionnaire);
         return map;
     }
 }

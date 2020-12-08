@@ -23,4 +23,6 @@ public interface SysQuestionnaireService {
     Map<String, Object> falseDelete(int[] ids);
 
     Map<String, Object> sysQuestionnaireSubmit(SysQuestionnaireSubmit sysQuestionnaireSubmit);
+
+    Map<String, Object> reportAnalysis(Integer id);
 }

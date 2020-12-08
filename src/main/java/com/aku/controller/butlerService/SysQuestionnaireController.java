@@ -105,5 +105,15 @@ public class SysQuestionnaireController {
         return sysQuestionnaireService.sysQuestionnaireSubmit(sysQuestionnaireSubmit);
     }
 
+    /**
+     * 根据问卷调查主键id查询报表分析信息
+     * @param id 问卷调查主键id
+     * @return map
+     */
+    @GetMapping("/reportAnalysis")
+    public Map<String,Object> reportAnalysis(Integer id){
+        return sysQuestionnaireService.reportAnalysis(id);
+    }
+
 
 }
