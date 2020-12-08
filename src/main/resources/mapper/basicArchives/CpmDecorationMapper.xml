@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.basicArchives.CpmDecorationDao">
-    <select id="list" parameterType="com.aku.model.basicArchives.SearchDecoration" resultType="com.aku.vo.basicArchives.VoDecoration">
+<mapper namespace="com.api.dao.basicArchives.CpmDecorationDao">
+    <select id="list" parameterType="com.api.model.basicArchives.SearchDecoration" resultType="com.api.vo.basicArchives.VoDecoration">
         select cd.*,cbue.room_number,cbu.no as unitNo,cb.no as estateNo,group_concat(ur.name) as residentName
         from cpm_decoration as cd,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,cpm_resident_estate as cre
         <where>
@@ -34,7 +34,7 @@
         GROUP BY cd.id
     </select>
 
-    <insert id="insert" parameterType="com.aku.model.basicArchives.CpmDecoration">
+    <insert id="insert" parameterType="com.api.model.basicArchives.CpmDecoration">
         insert into cpm_decoration(
             name,tel,id_type,id_number,car_code,building_unit_estate_id,status,effective_time_start,effective_time_end
         )values (
@@ -42,7 +42,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.aku.model.basicArchives.CpmDecoration">
+    <update id="update" parameterType="com.api.model.basicArchives.CpmDecoration">
         update cpm_decoration
         <set>
             <if test="name != null and name != ''">
@@ -76,7 +76,7 @@
         where id = #{id}
     </update>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmDecoration">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmDecoration">
         select * from cpm_decoration where id = #{id}
     </select>
 

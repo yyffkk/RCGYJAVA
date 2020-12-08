@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.basicArchives.UserResidentDao">
+<mapper namespace="com.api.dao.basicArchives.UserResidentDao">
     <sql id="field">
         id,building_unit_estate_id,name,type,tel,id_type.id_number,
         pwd,confuse,email,create_id,create_date,effective_time_start,
@@ -10,7 +10,7 @@
     </sql>
 
 <!--    查询业主信息list-->
-    <select id="list" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.vo.basicArchives.VoUserResident">
+    <select id="list" parameterType="com.api.model.basicArchives.UserResident" resultType="com.api.vo.basicArchives.VoUserResident">
         select id,name,tel,id_type,id_number
         from user_resident
         <where>
@@ -28,7 +28,7 @@
     </select>
 
     <!-- 添加住户信息-->
-    <insert id="insert" parameterType="com.aku.model.basicArchives.UserResident">
+    <insert id="insert" parameterType="com.api.model.basicArchives.UserResident">
         insert into
         <trim prefix="user_resident(" suffix=")" suffixOverrides=",">
             name,
@@ -72,12 +72,12 @@
         </selectKey>
     </insert>
     <!--    添加业主亲属关联-->
-    <insert id="insertResidentRelatives" parameterType="com.aku.model.basicArchives.UserResidentRelatives">
+    <insert id="insertResidentRelatives" parameterType="com.api.model.basicArchives.UserResidentRelatives">
         insert into user_resident_relatives(resident_id,relatives_id,identity)
         values (#{residentId},#{relativesId},#{identity})
     </insert>
     <!--添加亲属信息-->
-    <insert id="insertRelatives" parameterType="com.aku.vo.basicArchives.VoRelatives">
+    <insert id="insertRelatives" parameterType="com.api.vo.basicArchives.VoRelatives">
         insert into
         <trim prefix="user_resident(" suffix=")" suffixOverrides=",">
             name,
@@ -121,20 +121,20 @@
         </selectKey>
     </insert>
     <!--添加业主房产关联-->
-    <insert id="insertResidentEstate" parameterType="com.aku.model.basicArchives.CpmResidentEstate">
+    <insert id="insertResidentEstate" parameterType="com.api.model.basicArchives.CpmResidentEstate">
         insert into cpm_resident_estate(building_unit_estate_id,resident_id)
         values (#{buildingUnitEstateId},#{residentId})
     </insert>
 
 <!--    根据房产id查询业主信息-->
-    <select id="findByBuildingUnitEstateId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
+    <select id="findByBuildingUnitEstateId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.UserResident">
         select ur.* from user_resident as ur,cpm_resident_estate as cre
         where ur.id = cre.resident_id
         and cre.building_unit_estate_id = #{buildingUnitEstateId}
     </select>
 
 <!--    修改住户信息-->
-    <update id="update" parameterType="com.aku.model.basicArchives.UserResident">
+    <update id="update" parameterType="com.api.model.basicArchives.UserResident">
         update user_resident
         <set>
             <if test="name != null and name != ''">
@@ -163,18 +163,18 @@
     </update>
 
 <!--    根据住户id查询住户信息-->
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.UserResident">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident where id = #{id}
     </select>
 <!--根据住户ID查询亲属信息-->
-    <select id="findRelativesById" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoRelatives">
+    <select id="findRelativesById" parameterType="java.lang.Integer" resultType="com.api.vo.basicArchives.VoRelatives">
         select ur2.id,ur2.name,ur2.tel,urr.identity,ur2.id_type,ur2.id_number
         from user_resident as ur1,user_resident_relatives as urr,user_resident as ur2
 		where ur1.id = urr.resident_id and ur2.id = urr.relatives_id and ur1.id =#{id}
     </select>
 <!--根据业主id和亲属id修改业主亲属关联中的身份信息-->
-    <update id="updateResidentRelatives" parameterType="com.aku.model.basicArchives.UserResidentRelatives">
+    <update id="updateResidentRelatives" parameterType="com.api.model.basicArchives.UserResidentRelatives">
         update user_resident_relatives
         set identity = #{identity}
         where resident_id = #{residentId} and relatives_id = #{relativesId}
@@ -185,47 +185,47 @@
     </delete>
 
     <!--  根据业主（租户）id和房产id删除业主房产关联表信息  -->
-    <delete id="deleteByResidentIdAndEstateId" parameterType="com.aku.model.basicArchives.ResidentIdAndEstateId">
+    <delete id="deleteByResidentIdAndEstateId" parameterType="com.api.model.basicArchives.ResidentIdAndEstateId">
         delete from cpm_resident_estate
         where building_unit_estate_id = #{estateId} and resident_id = #{residentId}
     </delete>
 
     <!--  根据业主（租户）id和亲属id删除业主亲属关联表信息  -->
-    <delete id="deleteByResidentIdAndRelativesId" parameterType="com.aku.model.basicArchives.ResidentIdAndRelativesId">
+    <delete id="deleteByResidentIdAndRelativesId" parameterType="com.api.model.basicArchives.ResidentIdAndRelativesId">
         delete from user_resident_relatives
         where resident_id = #{ResidentId} and relatives_id = #{RelativesId}
     </delete>
 
     <!--  查询所有的业主信息  -->
-    <select id="findResidentAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+    <select id="findResidentAll" resultType="com.api.vo.basicArchives.VoFindAll">
         select id as value,name as label from user_resident where type = 1
     </select>
 
     <!--  查询所有的住户信息  -->
-    <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+    <select id="findAll" resultType="com.api.vo.basicArchives.VoFindAll">
         select id as value,name as label from user_resident where type = 1 or type = 2
     </select>
 
     <!--   根据业主手机号查询业主信息-->
-    <select id="findByTel" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.UserResident">
+    <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident where tel = #{tel} and type = 1
     </select>
 
     <!--   根据业主证件号码查询业主信息-->
-    <select id="findByIdNumber" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.UserResident">
+    <select id="findByIdNumber" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident where id_number = #{idNumber} and type = 1
     </select>
 
     <!--   根据业主手机号和证件号码查询业主信息-->
-    <select id="findByTelAndIdNumber" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.model.basicArchives.UserResident">
+    <select id="findByTelAndIdNumber" parameterType="com.api.model.basicArchives.UserResident" resultType="com.api.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
         from user_resident where tel = #{tel} and id_number = #{idNumber} and type = 1
     </select>
 
     <!--  根据住户id和房产id查询住户房产关联表  -->
-    <select id="findByEstateIdAndResidentId" parameterType="com.aku.model.basicArchives.ResidentIdAndEstateId" resultType="com.aku.model.basicArchives.CpmResidentEstate">
+    <select id="findByEstateIdAndResidentId" parameterType="com.api.model.basicArchives.ResidentIdAndEstateId" resultType="com.api.model.basicArchives.CpmResidentEstate">
         select * from cpm_resident_estate
         where building_unit_estate_id = #{estateId}
         and resident_id = #{residentId}

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.basicArchives.UserTenantDao">
-    <select id="list" parameterType="com.aku.model.basicArchives.UserResident" resultType="com.aku.vo.basicArchives.VoUserTenant">
+<mapper namespace="com.api.dao.basicArchives.UserTenantDao">
+    <select id="list" parameterType="com.api.model.basicArchives.UserResident" resultType="com.api.vo.basicArchives.VoUserTenant">
         SELECT a.*, uc.code as car_code
 		from (select ur.id,ur.name,ur.tel,ur.id_type,ur.id_number,cre.effective_time_start,cre.effective_time_end,cbue.id as room_id
 		from user_resident as ur,cpm_building_unit_estate as cbue,cpm_resident_estate as cre
@@ -20,7 +20,7 @@
     </select>
 
     <!--添加租户房产关联-->
-    <insert id="insertResidentEstate" parameterType="com.aku.model.basicArchives.CpmResidentEstate">
+    <insert id="insertResidentEstate" parameterType="com.api.model.basicArchives.CpmResidentEstate">
         insert into cpm_resident_estate(building_unit_estate_id,resident_id,effective_time_start,effective_time_end)
         values (#{buildingUnitEstateId},#{residentId},#{effective_time_start},#{effective_time_end})
     </insert>

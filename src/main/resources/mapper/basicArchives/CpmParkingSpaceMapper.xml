@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.basicArchives.CpmParkingSpaceDao">
-    <select id="list" parameterType="com.aku.vo.basicArchives.VoCpmParkingSpace" resultType="com.aku.vo.basicArchives.VoParkingSpace">
+<mapper namespace="com.api.dao.basicArchives.CpmParkingSpaceDao">
+    <select id="list" parameterType="com.api.vo.basicArchives.VoCpmParkingSpace" resultType="com.api.vo.basicArchives.VoParkingSpace">
         SELECT cps.id,cps.code,cps.status,cps.type,ur.name as resident_name,ur2.name as user_name,ur2.tel
         from cpm_parking_space as cps,user_resident as ur,user_resident as ur2
         <where>
@@ -24,7 +24,7 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="com.aku.model.basicArchives.CpmParkingSpace">
+    <insert id="insert" parameterType="com.api.model.basicArchives.CpmParkingSpace">
         insert into
         cpm_parking_space(
             code,
@@ -74,12 +74,12 @@
             )
     </insert>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmParkingSpace">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmParkingSpace">
         select id,code,coordinate,status,type,resident_id,user_id,is_public,effective_time_start,effective_time_end
         from cpm_parking_space where id =#{id}
     </select>
 
-    <update id="update" parameterType="com.aku.model.basicArchives.CpmParkingSpace">
+    <update id="update" parameterType="com.api.model.basicArchives.CpmParkingSpace">
         update cpm_parking_space
         <set>
             <if test="code != null and code != ''">
@@ -119,15 +119,15 @@
         delete from cpm_parking_space where id = #{id}
     </delete>
 
-    <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmParkingSpace">
+    <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmParkingSpace">
         select * from cpm_parking_space where resident_id = #{residentId}
     </select>
 
-    <select id="findByUserId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmParkingSpace">
+    <select id="findByUserId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmParkingSpace">
         select * from cpm_parking_space where user_id = #{userId}
     </select>
 
-    <select id="findByCode" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.CpmParkingSpace">
+    <select id="findByCode" parameterType="java.lang.String" resultType="com.api.model.basicArchives.CpmParkingSpace">
         select * from cpm_parking_space where code = #{code}
     </select>
 

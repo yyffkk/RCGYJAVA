@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.butlerService.UserAdviceDao">
-    <select id="list" parameterType="com.aku.model.butlerService.SearchUserAdvice" resultType="com.aku.vo.butlerService.VoUserAdvice">
+<mapper namespace="com.api.dao.butlerService.UserAdviceDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchUserAdvice" resultType="com.api.vo.butlerService.VoUserAdvice">
         select sa.id,sa.content,sa.type,sa.status,ur.name as release_name,sa.create_date as release_date,sa.score
         from sys_advice as sa,user_resident as ur
         <where>
@@ -37,7 +37,7 @@
         select count(*) from sys_advice_detail where advice_id = #{id} and is_delete = 1
     </select>
 
-    <insert id="insertDetail" parameterType="com.aku.model.butlerService.SysAdviceDetail">
+    <insert id="insertDetail" parameterType="com.api.model.butlerService.SysAdviceDetail">
         insert into sys_advice_detail(
             advice_id,
             status,
@@ -59,7 +59,7 @@
         )
     </insert>
 
-    <insert id="insertAdvice" parameterType="com.aku.model.butlerService.SysAdvice">
+    <insert id="insertAdvice" parameterType="com.api.model.butlerService.SysAdvice">
         insert into sys_advice(
             type,
             status,
@@ -98,11 +98,11 @@
         where id = #{id}
     </update>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdAdvice">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdAdvice">
         select * from sys_advice where id =#{id}
     </select>
 
-    <select id="findByAdviceIdDetail" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserAdviceDetail">
+    <select id="findByAdviceIdDetail" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserAdviceDetail">
         select * from sys_advice_detail where advice_id = #{id}
     </select>
 
@@ -118,7 +118,7 @@
         and type = 1
     </select>
 
-    <update id="updateAdviceStatus" parameterType="com.aku.model.butlerService.SysAdvice">
+    <update id="updateAdviceStatus" parameterType="com.api.model.butlerService.SysAdvice">
         update sys_advice set status = #{status} where id = #{id}
     </update>
 </mapper>

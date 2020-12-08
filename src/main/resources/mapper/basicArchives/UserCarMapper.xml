@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.basicArchives.UserCarDao">
-    <select id="list" parameterType="com.aku.model.basicArchives.SearchUserCar" resultType="com.aku.vo.basicArchives.VoUserCar">
+<mapper namespace="com.api.dao.basicArchives.UserCarDao">
+    <select id="list" parameterType="com.api.model.basicArchives.SearchUserCar" resultType="com.api.vo.basicArchives.VoUserCar">
         select uc.*,cps.code as parking_space_code
         from user_car as uc,cpm_parking_space as cps
         <where>
@@ -20,7 +20,7 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="com.aku.model.basicArchives.UserCar">
+    <insert id="insert" parameterType="com.api.model.basicArchives.UserCar">
         insert into
         <trim prefix="user_car(" suffix=")" suffixOverrides=",">
             id,
@@ -97,13 +97,13 @@
         </trim>
     </insert>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoUserCarFindById">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.basicArchives.VoUserCarFindById">
         select uc.*,cps.code as parking_space_code
         from user_car as uc,cpm_parking_space as cps
         where uc.parking_space_id = cps.id and uc.id = #{id}
     </select>
 
-    <update id="update" parameterType="com.aku.model.basicArchives.UserCar">
+    <update id="update" parameterType="com.api.model.basicArchives.UserCar">
         update user_car
         <set>
             <if test="buildingUnitEstateId != null">

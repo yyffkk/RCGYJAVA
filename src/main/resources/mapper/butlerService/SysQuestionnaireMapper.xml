@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.butlerService.SysQuestionnaireDao">
-    <select id="list" parameterType="com.aku.model.butlerService.SearchQuestionnaire" resultType="com.aku.vo.butlerService.VoQuestionnaire">
+<mapper namespace="com.api.dao.butlerService.SysQuestionnaireDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchQuestionnaire" resultType="com.api.vo.butlerService.VoQuestionnaire">
         select * from sys_questionnaire
         <where>
             <if test="title != null and title != ''">
@@ -19,7 +19,7 @@
         </where>
     </select>
 
-    <insert id="insertQuestionnaire" parameterType="com.aku.model.butlerService.SysQuestionnaire">
+    <insert id="insertQuestionnaire" parameterType="com.api.model.butlerService.SysQuestionnaire">
         insert into sys_questionnaire(
             title,
             description,
@@ -48,7 +48,7 @@
         </selectKey>
     </insert>
 
-    <insert id="insertQuestionnaireTopic" parameterType="com.aku.model.butlerService.SysQuestionnaireTopic">
+    <insert id="insertQuestionnaireTopic" parameterType="com.api.model.butlerService.SysQuestionnaireTopic">
         insert into sys_questionnaire_topic(
             type,
             topic,
@@ -67,7 +67,7 @@
         </selectKey>
     </insert>
 
-    <insert id="insertQuestionnaireChoice" parameterType="com.aku.model.butlerService.SysQuestionnaireChoice">
+    <insert id="insertQuestionnaireChoice" parameterType="com.api.model.butlerService.SysQuestionnaireChoice">
         insert into sys_questionnaire_multiple_choice(
             options,
             answer,
@@ -85,15 +85,15 @@
         )
     </insert>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdQuestionnaire">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdQuestionnaire">
         select * from sys_questionnaire where id = #{id} and is_delete = 1
     </select>
 
-    <select id="findTopicByQuestionnaireId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdTopic">
+    <select id="findTopicByQuestionnaireId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdTopic">
         select * from sys_questionnaire_topic where questionnaire_id = #{id}
     </select>
 
-    <select id="findChoiceByTopicId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdChoice">
+    <select id="findChoiceByTopicId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdChoice">
         select * from sys_questionnaire_multiple_choice where questionnaire_topic_id = #{id}
     </select>
 
@@ -113,7 +113,7 @@
         update sys_questionnaire set is_delete = 0 where id = #{id}
     </update>
 
-    <insert id="insertChoiceAnswer" parameterType="com.aku.model.butlerService.SysQuestionChoiceAnswer">
+    <insert id="insertChoiceAnswer" parameterType="com.api.model.butlerService.SysQuestionChoiceAnswer">
         insert into sys_questionnaire_single_multiple_choice_answer(
             questionnaire_id,
             questionnaire_topic_id,
@@ -129,7 +129,7 @@
         )
     </insert>
 
-    <insert id="insertJudgmentAnswer" parameterType="com.aku.model.butlerService.SysQuestionJudgmentAnswer">
+    <insert id="insertJudgmentAnswer" parameterType="com.api.model.butlerService.SysQuestionJudgmentAnswer">
         insert into sys_questionnaire_judgment_answer(
             questionnaire_id,
             questionnaire_topic_id,
@@ -145,7 +145,7 @@
         )
     </insert>
 
-    <insert id="insertShortAnswer" parameterType="com.aku.model.butlerService.SysQuestionnaireShortAnswer">
+    <insert id="insertShortAnswer" parameterType="com.api.model.butlerService.SysQuestionnaireShortAnswer">
         insert into sys_questionnaire_short_answer(
             questionnaire_id,
             questionnaire_topic_id,
@@ -161,26 +161,26 @@
         )
     </insert>
 
-    <select id="findTopicByTopicId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.SysQuestionnaireTopic">
+    <select id="findTopicByTopicId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysQuestionnaireTopic">
         select * from sys_questionnaire_topic where id =#{id}
     </select>
     <update id="accumulationAnswerNum" parameterType="java.lang.Integer" >
         update sys_questionnaire set answer_num = answer_num + 1 where id =#{id}
     </update>
 
-    <select id="findShortAnswerByCreateId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.SysQuestionnaireShortAnswer">
+    <select id="findShortAnswerByCreateId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysQuestionnaireShortAnswer">
         select * from sys_questionnaire_short_answer where create_id = #{id}
     </select>
 
-    <select id="findReportById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoReportQuestionnaire">
+    <select id="findReportById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoReportQuestionnaire">
         select * from sys_questionnaire where id =#{id}
     </select>
 
-    <select id="findReportTopicByQId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoReportQuestionnaireTopic">
+    <select id="findReportTopicByQId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoReportQuestionnaireTopic">
         select * from sys_questionnaire_topic where questionnaire_id = #{id}
     </select>
 
-    <select id="findReportChoiceByTopicId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoReportQuestionnaireChoice">
+    <select id="findReportChoiceByTopicId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoReportQuestionnaireChoice">
         select * from sys_questionnaire_multiple_choice where questionnaire_topic_id = #{id}
     </select>
 

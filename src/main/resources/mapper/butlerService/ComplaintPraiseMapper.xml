@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.butlerService.ComplaintPraiseDao">
-    <select id="list" parameterType="com.aku.model.butlerService.SearchUserAdvice" resultType="com.aku.vo.butlerService.VoUserAdvice">
+<mapper namespace="com.api.dao.butlerService.ComplaintPraiseDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchUserAdvice" resultType="com.api.vo.butlerService.VoUserAdvice">
         select sa.id,sa.content,sa.type,sa.status,ur.name as release_name,sa.create_date as release_date,sa.score
         from sys_advice as sa,user_resident as ur
         <where>

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.basicArchives.CpmBuildingUnitEstateDao">
-    <select id="list" parameterType="com.aku.model.basicArchives.SearchCpmBuildingUnitEstate" resultType="com.aku.vo.basicArchives.VoCpmBuildingUnitEstate">
+<mapper namespace="com.api.dao.basicArchives.CpmBuildingUnitEstateDao">
+    <select id="list" parameterType="com.api.model.basicArchives.SearchCpmBuildingUnitEstate" resultType="com.api.vo.basicArchives.VoCpmBuildingUnitEstate">
         select b.id,b.building_name,b.building_no,b.building_unit_no,b.room_number,b.status,b.type,b.construction_area,b.indoor_area,group_concat(b.user_resident_name) as user_resident_name,group_concat(b.user_resident_tel) as user_resident_tel
         from (
         select a.id,a.building_name,a.building_no,a.building_unit_no,a.room_number,a.status,a.type,a.construction_area,a.indoor_area,ur.name as user_resident_name,ur.tel as user_resident_tel
@@ -38,7 +38,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+    <insert id="insert" parameterType="com.api.model.basicArchives.CpmBuildingUnitEstate">
         insert into
         cpm_building_unit_estate(
             building_unit_id,
@@ -67,12 +67,12 @@
         </selectKey>
     </insert>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnitEstate">
         select * from cpm_building_unit_estate
         where is_delete = 1 and id =#{id}
     </select>
 
-    <update id="update" parameterType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+    <update id="update" parameterType="com.api.model.basicArchives.CpmBuildingUnitEstate">
         update cpm_building_unit_estate
         <set>
             <if test="buildingUnitId != null">
@@ -114,31 +114,31 @@
     </update>
 
 <!--    根据业主id查询房产信息-->
-    <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+    <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnitEstate">
         select cbue.id,cbue.building_unit_id,cbue.room_number from user_resident as ur,cpm_resident_estate as cre,cpm_building_unit_estate as cbue
 		where ur.id = cre.resident_id and cbue.id =cre.building_unit_estate_id and ur.id =#{id} and ur.type =1
     </select>
 
 <!--    查询所有的房产的id和name-->
-    <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+    <select id="findAll" resultType="com.api.vo.basicArchives.VoFindAll">
         select id as value,room_number as label
         from cpm_building_unit_estate
         where is_delete =1
     </select>
     <!--    根据租客id查询房产信息-->
-    <select id="findByTenantId" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoTenantCpmBuildingUnitEstate">
+    <select id="findByTenantId" parameterType="java.lang.Integer" resultType="com.api.vo.basicArchives.VoTenantCpmBuildingUnitEstate">
         select cbue.id,cbue.building_unit_id,cbue.room_number,cre.effective_time_start,cre.effective_time_end
         from user_resident as ur,cpm_resident_estate as cre,cpm_building_unit_estate as cbue
 		where ur.id = cre.resident_id and cbue.id =cre.building_unit_estate_id and ur.id =#{id} and ur.type =3
     </select>
 
-    <select id="findByBuildingUnitId" parameterType="java.lang.Integer" resultType="com.aku.vo.basicArchives.VoFindAll">
+    <select id="findByBuildingUnitId" parameterType="java.lang.Integer" resultType="com.api.vo.basicArchives.VoFindAll">
         select id as value,room_number as label
         from cpm_building_unit_estate
         where is_delete =1 and building_unit_id = #{id}
     </select>
 
-    <select id="findByRoomNumber" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.CpmBuildingUnitEstate">
+    <select id="findByRoomNumber" parameterType="java.lang.String" resultType="com.api.model.basicArchives.CpmBuildingUnitEstate">
         select * from cpm_building_unit_estate
         where room_number =#{roomNumber}
     </select>

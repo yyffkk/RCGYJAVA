@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.butlerService.SysConveniencePhoneDao">
-    <select id="list" parameterType="com.aku.model.butlerService.SearchConveniencePhone" resultType="com.aku.vo.butlerService.VoConveniencePhone">
+<mapper namespace="com.api.dao.butlerService.SysConveniencePhoneDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchConveniencePhone" resultType="com.api.vo.butlerService.VoConveniencePhone">
         select * from sys_convenience_phone
         <where>
             <if test="name != null and name != ''">
@@ -15,7 +15,7 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="com.aku.model.butlerService.SysConveniencePhone">
+    <insert id="insert" parameterType="com.api.model.butlerService.SysConveniencePhone">
         insert into sys_convenience_phone(
             name,
             tel,
@@ -39,15 +39,15 @@
         )
     </insert>
 
-    <select id="findRemindById" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.SysConveniencePhoneReminder">
+    <select id="findRemindById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysConveniencePhoneReminder">
         select * from sys_convenience_phone_reminder where id = #{id}
     </select>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoConveniencePhone">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoConveniencePhone">
         select * from sys_convenience_phone where id = #{id}
     </select>
 
-    <update id="update" parameterType="com.aku.model.butlerService.SysConveniencePhone">
+    <update id="update" parameterType="com.api.model.butlerService.SysConveniencePhone">
         update sys_convenience_phone
         <set>
             <if test="name != null and name != ''">
@@ -81,7 +81,7 @@
         where id = #{id}
     </update>
 
-    <update id="updateReminder" parameterType="com.aku.model.butlerService.SysConveniencePhoneReminder">
+    <update id="updateReminder" parameterType="com.api.model.butlerService.SysConveniencePhoneReminder">
         update sys_convenience_phone_reminder
         <set>
             <if test="reminderInterval != null">

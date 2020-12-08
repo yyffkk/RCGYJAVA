@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.butlerService.UserArticleOutDao">
-    <select id="list" parameterType="com.aku.model.butlerService.SearchUserArticleOut" resultType="com.aku.vo.butlerService.VoUserArticleOut">
+<mapper namespace="com.api.dao.butlerService.UserArticleOutDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchUserArticleOut" resultType="com.api.vo.butlerService.VoUserArticleOut">
         select cbue.room_number as room_number,cbu.no as unit_no,cb.no as building_no,cbue.status as estate_status,ur1.name as resident_name,ur1.tel as resident_tel,uao.id,uao.name,uao.weight,ur2.name as applicant_name,ur2.tel as applicant_tel,uao.approach,uao.expected_time,uao.actual_time,uao.export,uao.status,uao.remarks
         from user_article_out as uao,cpm_building_unit_estate as cbue,user_resident as ur1,user_resident as ur2,cpm_building_unit as cbu,cpm_building as cb
         <where>
@@ -28,7 +28,7 @@
         delete from user_article_out where id = #{id}
     </delete>
 
-    <update id="applicationRejection" parameterType="com.aku.model.butlerService.UserArticleOut">
+    <update id="applicationRejection" parameterType="com.api.model.butlerService.UserArticleOut">
         update user_article_out
         set status = #{status},review_id = #{reviewId},review_date = #{reviewDate}
         where id = #{id}

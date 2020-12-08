@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.butlerService.UserVisitorsDao">
-    <select id="list" parameterType="com.aku.model.butlerService.SearchUserVisitors" resultType="com.aku.vo.butlerService.VoUserVisitors">
+<mapper namespace="com.api.dao.butlerService.UserVisitorsDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchUserVisitors" resultType="com.api.vo.butlerService.VoUserVisitors">
         SELECT uv.*,cbue.room_number as room_number,cbu.no as unit_no,cb.no as estate_no
         from user_visitors as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         <where>
@@ -43,7 +43,7 @@
         </where>
     </select>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoFindByIdVisitors">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdVisitors">
         SELECT uv.*,cbue.room_number as room_number,cbu.no as unit_no,cb.no as estate_no
         from user_visitors as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         where uv.building_unit_estate_id = cbue.id
@@ -52,7 +52,7 @@
             and uv.id = #{id}
     </select>
 
-    <update id="update" parameterType="com.aku.model.butlerService.UserVisitors">
+    <update id="update" parameterType="com.api.model.butlerService.UserVisitors">
         update user_visitors
         <set>
             <if test="buildingUnitEstateId != null">
@@ -105,7 +105,7 @@
         delete  from user_visitors where id = #{id}
     </delete>
 
-    <select id="listDetail" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserVisitorsDetail">
+    <select id="listDetail" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserVisitorsDetail">
         select * from user_visitors_detail
         where visitors_id = #{id}
         order by visit_time

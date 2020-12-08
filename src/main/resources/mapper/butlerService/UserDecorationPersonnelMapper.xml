@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.butlerService.UserDecorationPersonnelDao">
-    <insert id="insertDecorationPersonnel" parameterType="com.aku.model.butlerService.UserDecorationPersonnel">
+<mapper namespace="com.api.dao.butlerService.UserDecorationPersonnelDao">
+    <insert id="insertDecorationPersonnel" parameterType="com.api.model.butlerService.UserDecorationPersonnel">
         insert into user_decoration_personnel(
             decoration_id,
             name,
@@ -37,17 +37,17 @@
         delete from user_decoration_personnel where decoration_id = #{id}
     </delete>
 
-    <select id="findByIdDecorationPersonnel" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationPersonnel">
+    <select id="findByIdDecorationPersonnel" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationPersonnel">
         select id,name,identity,card_type,card_code,tel,address
         from user_decoration_personnel
         where id = #{id}
     </select>
 
-    <select id="findByDecorationId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.UserDecorationPersonnel">
+    <select id="findByDecorationId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.UserDecorationPersonnel">
         select * from user_decoration_personnel where decoration_id = #{id}
     </select>
 
-    <update id="updateDecorationPersonnel" parameterType="com.aku.model.butlerService.UserDecorationPersonnel">
+    <update id="updateDecorationPersonnel" parameterType="com.api.model.butlerService.UserDecorationPersonnel">
         update user_decoration_personnel
         <set>
             <if test="name != null and name != ''">

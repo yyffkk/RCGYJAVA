@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.basicArchives.CpmBuildingDao">
-    <select id="list" parameterType="com.aku.model.basicArchives.CpmBuilding" resultType="com.aku.model.basicArchives.CpmBuilding">
+<mapper namespace="com.api.dao.basicArchives.CpmBuildingDao">
+    <select id="list" parameterType="com.api.model.basicArchives.CpmBuilding" resultType="com.api.model.basicArchives.CpmBuilding">
         select id,no,name,code from cpm_building
         <where>
             <if test="no != null">
@@ -18,7 +18,7 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="com.aku.model.basicArchives.CpmBuilding">
+    <insert id="insert" parameterType="com.api.model.basicArchives.CpmBuilding">
         insert into
         <trim prefix="cpm_building(" suffix=")" suffixOverrides=",">
             no,
@@ -61,13 +61,13 @@
         </trim>
     </insert>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuilding">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuilding">
         select id,no,name,code
         from cpm_building
         where id = #{id}
     </select>
 
-    <update id="update" parameterType="com.aku.model.basicArchives.CpmBuilding">
+    <update id="update" parameterType="com.api.model.basicArchives.CpmBuilding">
         update cpm_building
         <set>
             <if test="name != null and name != ''">
@@ -90,17 +90,17 @@
         delete from cpm_building where id = #{id}
     </delete>
 
-    <select id="findAll" resultType="com.aku.vo.basicArchives.VoFindAll">
+    <select id="findAll" resultType="com.api.vo.basicArchives.VoFindAll">
         select id as `value`,name as label from cpm_building
     </select>
 
-    <select id="findByNo" parameterType="java.lang.Integer" resultType="com.aku.model.basicArchives.CpmBuilding">
+    <select id="findByNo" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuilding">
         select id,no,name,code
         from cpm_building
         where no = #{no}
     </select>
 
-    <select id="findByName" parameterType="java.lang.String" resultType="com.aku.model.basicArchives.CpmBuilding">
+    <select id="findByName" parameterType="java.lang.String" resultType="com.api.model.basicArchives.CpmBuilding">
         select id,no,name,code
         from cpm_building
         where name = #{name}

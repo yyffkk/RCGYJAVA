@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aku.dao.butlerService.UserDecorationDao">
-    <select id="list" parameterType="com.aku.model.butlerService.SearchUserDecoration" resultType="com.aku.vo.butlerService.VoUserDecoration">
+<mapper namespace="com.api.dao.butlerService.UserDecorationDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchUserDecoration" resultType="com.api.vo.butlerService.VoUserDecoration">
         select ud.id,ud.emergency_contact,ud.tel,ud.construction_unit,ud.decoration_deposit,ud.application_date,ud.clean_cost,ud.service_cost,ud.expected_begin,ud.expected_end,ud.actual_begin,ud.actual_end,
         ud.refund_deposit,ud.is_return_access_card,ud.status,ud.approve_results,ud.approve_date,ud.is_qualified,ud.remarks2,ur2.name as approve_name,
         cb.no as buildingNo,cbu.no as unitNo,cbue.room_number as roomNumber,ur.name as resident_name,ur.tel as residentTel,
@@ -74,24 +74,24 @@
         </where>
     </select>
 
-    <select id="decorationPersonnelList" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationPersonnel">
+    <select id="decorationPersonnelList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationPersonnel">
         select id,name,identity,card_type,card_code,tel,address from user_decoration_personnel
         where decoration_id = #{id}
     </select>
 
-    <select id="decorationTrackRecordList" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationTrackRecord">
+    <select id="decorationTrackRecordList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecord">
         select udtr.*,su.actual_name as track_name
         from user_decoration_track_record as udtr,sys_user as su
         where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 2
     </select>
 
-    <select id="decorationFinishRecordList" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationTrackRecord">
+    <select id="decorationFinishRecordList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecord">
         select udtr.*,su.actual_name as track_name
         from user_decoration_track_record as udtr,sys_user as su
         where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 3
     </select>
 
-    <select id="decorationTrackRecordDetailList" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationTrackRecordDetail">
+    <select id="decorationTrackRecordDetailList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecordDetail">
         select id,review,is_qualified
         from user_decoration_track_record_detail
         where decoration_track_record_id = #{id}
@@ -105,7 +105,7 @@
         delete from user_decoration_access_card where decoration_id = #{id}
     </delete>
 
-    <select id="findTrackRecordByDecorationId" parameterType="java.lang.Integer" resultType="com.aku.vo.butlerService.VoUserDecorationTrackRecord">
+    <select id="findTrackRecordByDecorationId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecord">
         select * from user_decoration_track_record where decoration_id = #{id}
     </select>
 
@@ -117,7 +117,7 @@
         delete from user_decoration_track_record where decoration_id = #{id}
     </delete>
 
-    <select id="findUDACByDecorationId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.UserDecorationAccessCard">
+    <select id="findUDACByDecorationId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.UserDecorationAccessCard">
         select * from user_decoration_access_card where decoration_id = #{id}
     </select>
 
@@ -125,7 +125,7 @@
         delete from user_access_card where id = #{id}
     </delete>
 
-    <select id="findUDTRDByTrackRecordId" parameterType="java.lang.Integer" resultType="com.aku.model.butlerService.UserDecorationTrackRecordDetail">
+    <select id="findUDTRDByTrackRecordId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.UserDecorationTrackRecordDetail">
         select * from user_decoration_track_record_detail where decoration_track_record_id = #{id}
     </select>
 
