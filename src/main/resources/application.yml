@@ -60,9 +60,15 @@ logging:
             api:
                 dao: debug
 
-#资源路径
+#资源路径【注意一定要'/'结尾】
 prop:
+    #文件上传前置路径
+    upload: src/main/resources/static
     #管家服务：新增咨询建议照片上传路径 src/main/resources/static
-    upload-folder: /img/advice/
+    upload-advice: /img/advice/
+    #管家服务：新增投票标题照片上传路径 src/main/resources/static
+    upload-vote-title: /img/vote/title/
+    #管家服务：新增投票候选人照片上传路径 src/main/resources/static
+    upload-vote-candidate: /img/vote/candidate/
 
 

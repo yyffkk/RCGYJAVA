@@ -34,8 +34,8 @@ import java.util.*;
 @Service
 public class ComplaintPraiseServiceImpl implements ComplaintPraiseService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-folder}")
-    private String UPLOAD_FOLDER;
+    @Value("${prop.upload-advice}")
+    private String UPLOAD_ADVICE;
     @Resource
     ComplaintPraiseDao complaintPraiseDao;
     @Resource
@@ -139,7 +139,7 @@ public class ComplaintPraiseServiceImpl implements ComplaintPraiseService {
                     throw new RuntimeException("请选择jpg,jpeg,gif,png格式的图片");
                 }
                 //获取保持路径
-                String savePath = UPLOAD_FOLDER;
+                String savePath = UPLOAD_ADVICE;
                 File savePathFile = new File(savePath);
                 if (!savePathFile.exists()) {
                     //若不存在该目录，则创建目录

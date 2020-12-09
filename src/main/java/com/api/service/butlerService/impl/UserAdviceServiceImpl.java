@@ -35,8 +35,8 @@ import java.util.*;
 public class UserAdviceServiceImpl implements UserAdviceService {
     private static Map<String,Object> map = null;
 
-    @Value("${prop.upload-folder}")
-    private String UPLOAD_FOLDER;
+    @Value("${prop.upload-advice}")
+    private String UPLOAD_ADVICE;
     @Resource
     UserAdviceDao userAdviceDao;
     @Resource
@@ -145,8 +145,8 @@ public class UserAdviceServiceImpl implements UserAdviceService {
                 if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
                     throw new RuntimeException("请选择jpg,jpeg,gif,png格式的图片");
                 }
-                //获取保持路径
-                String savePath = UPLOAD_FOLDER;
+                //获取保存路径
+                String savePath = UPLOAD_ADVICE;
                 File savePathFile = new File(savePath);
                 if (!savePathFile.exists()) {
                     //若不存在该目录，则创建目录
@@ -177,7 +177,7 @@ public class UserAdviceServiceImpl implements UserAdviceService {
                     }else {
                         resourcesImg.setSort(1);
                     }
-
+                    //添加该照片数据到数据库中
                     int insert2 = resourcesImgDao.insert(resourcesImg);
                     if (insert2 <= 0){
                         throw new RuntimeException("添加照片数据失败");

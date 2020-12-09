@@ -3,5 +3,139 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.dao.butlerService.SysVoteDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchVote" resultType="com.api.vo.butlerService.VoVote">
+        select * from sys_vote
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="beginDate != null">
+                and begin_date <![CDATA[>]]> #{beginDate}
+            </if>
+            <if test="endDate != null">
+                and end_date <![CDATA[<]]> #{endDate}
+            </if>
+            and is_delete = 1
+        </where>
+    </select>
 
+    <select id="countVoteCandidate" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_vote_candidate where vote_id = #{id}
+    </select>
+
+    <select id="maxVoteCandidate" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysVoteCandidate">
+        select  group_concat(name) as name,total from sys_vote_candidate  where vote_id = #{voteId} group by total order by total desc limit 1
+    </select>
+
+    <update id="updateStatus" parameterType="com.api.vo.butlerService.VoVote">
+        update sys_vote set status = #{status} where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdVote">
+        select * from sys_vote where id = #{id} and is_delete = 1
+    </select>
+
+    <select id="findCandidateByVoteId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdVoteCandidate">
+        select * from sys_vote_candidate where vote_id = #{id} and is_delete = 1
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.SysVote">
+        insert into sys_vote(
+            title,
+            content,
+            begin_date,
+            end_date,
+            type,
+            status,
+            create_id,
+            create_date,
+            is_delete,
+            is_release
+        ) values (
+            #{title},
+            #{content},
+            #{beginDate},
+            #{endDate},
+            #{type},
+            #{status},
+            #{createId},
+            #{createDate},
+            #{isDelete},
+            #{isRelease}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertCandidate" parameterType="com.api.model.butlerService.SysVoteCandidate">
+        insert into sys_vote_candidate(
+            vote_id,
+            name,
+            tel,
+            total,
+            create_id,
+            create_date,
+            is_delete
+        ) values (
+            #{voteId},
+            #{name},
+            #{tel},
+            #{total},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="com.api.model.butlerService.SysVote">
+        update sys_vote
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="beginDate != null">
+                begin_date = #{beginDate},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate},
+            <if test="isRelease != null">
+                is_release = #{isRelease},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateCandidate" parameterType="com.api.model.butlerService.SysVoteCandidate">
+        update sys_vote_candidate
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
