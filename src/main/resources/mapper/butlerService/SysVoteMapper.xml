@@ -124,18 +124,52 @@
         where id = #{id}
     </update>
 
-    <update id="updateCandidate" parameterType="com.api.model.butlerService.SysVoteCandidate">
-        update sys_vote_candidate
-        <set>
-            <if test="name != null and name != ''">
-                name = #{name},
-            </if>
-            <if test="tel != null and tel != ''">
-                tel = #{tel},
-            </if>
-            modify_id = #{modifyId},
-            modify_date = #{modifyDate}
-        </set>
-        where id = #{id}
+<!--    <update id="updateCandidate" parameterType="com.api.model.butlerService.SysVoteCandidate">-->
+<!--        update sys_vote_candidate-->
+<!--        <set>-->
+<!--            <if test="name != null and name != ''">-->
+<!--                name = #{name},-->
+<!--            </if>-->
+<!--            <if test="tel != null and tel != ''">-->
+<!--                tel = #{tel},-->
+<!--            </if>-->
+<!--            modify_id = #{modifyId},-->
+<!--            modify_date = #{modifyDate}-->
+<!--        </set>-->
+<!--        where id = #{id}-->
+<!--    </update>-->
+
+    <delete id="deleteCandidate" parameterType="java.lang.Integer">
+        delete from sys_vote_candidate where vote_id = #{id}
+    </delete>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_vote set is_delete = 0 where id = #{id}
     </update>
+
+    <update id="release" parameterType="java.lang.Integer">
+        update sys_vote set is_release = 1 where id =#{id}
+    </update>
+
+    <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindDetailByIdVote">
+        select * from sys_vote where id = #{id}
+    </select>
+
+    <select id="listDetailCandidate" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindDetailByIdVoteCandidate">
+        select * from sys_vote_candidate where vote_id = #{id}
+    </select>
+
+    <select id="listVotePersonnel" parameterType="com.api.model.butlerService.SearchVotePersonnel" resultType="com.api.vo.butlerService.VoVotePersonnel">
+        select svp.id,svp.voter_id,ur.name,ur.tel,svp.voter_date
+        from sys_vote_personnel as svp,user_resident as ur
+        where svp.voter_id = ur.id and svp.id = #{id} and svp.vote_id = #{voteId}
+    </select>
+
+    <select id="listVoteExpectedTime" resultType="com.api.vo.butlerService.VoVoteExpectedTime">
+        select * from sys_vote_expected_time where id = 1
+    </select>
+
+    <select id="countVoteExpectedStart" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select count(*) from sys_vote where begin_date <![CDATA[>]]> now() and begin_date <![CDATA[<]]> #{date}
+    </select>
 </mapper>

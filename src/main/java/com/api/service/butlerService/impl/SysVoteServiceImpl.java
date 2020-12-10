@@ -1,18 +1,24 @@
 package com.api.service.butlerService.impl;
 
+import com.api.dao.basicArchives.CpmBuildingDao;
+import com.api.dao.basicArchives.CpmBuildingUnitDao;
+import com.api.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.dao.butlerService.SysVoteDao;
 import com.api.dao.resources.ResourcesImgDao;
+import com.api.model.basicArchives.CpmBuilding;
+import com.api.model.basicArchives.CpmBuildingUnit;
+import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.butlerService.SearchVote;
+import com.api.model.butlerService.SearchVotePersonnel;
 import com.api.model.butlerService.SysVote;
 import com.api.model.butlerService.SysVoteCandidate;
 import com.api.model.resources.ResourcesImg;
 import com.api.model.system.SysUser;
 import com.api.service.butlerService.SysVoteService;
 import com.api.util.UploadUtil;
-import com.api.vo.butlerService.VoFindByIdVote;
-import com.api.vo.butlerService.VoFindByIdVoteCandidate;
-import com.api.vo.butlerService.VoVote;
+import com.api.vo.butlerService.*;
 import com.api.vo.resources.VoResourcesImg;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +41,12 @@ public class SysVoteServiceImpl implements SysVoteService {
     SysVoteDao sysVoteDao;
     @Resource
     ResourcesImgDao resourcesImgDao;
+    @Resource
+    CpmBuildingDao cpmBuildingDao;
+    @Resource
+    CpmBuildingUnitDao cpmBuildingUnitDao;
+    @Resource
+    CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
 
     @Override
     public List<VoVote> list(SearchVote searchVote) {
@@ -120,6 +132,29 @@ public class SysVoteServiceImpl implements SysVoteService {
             }
         }
         map.put("voFindByIdVote",voFindByIdVote);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findDetailById(Integer id) {
+        map = new HashMap<>();
+        //根据投票主键id查询投票信息
+        VoFindDetailByIdVote voFindDetailByIdVote = sysVoteDao.findDetailById(id);
+        if (voFindDetailByIdVote != null) {
+            //查询照片信息集合
+            ResourcesImg resourcesImg = new ResourcesImg();
+            //填入表名称 sysVote
+            resourcesImg.setTableName("sysVote");
+            //填入数据所属id
+            resourcesImg.setDateId(id);
+            //填入类型名称 咨询建议照片：VoteImg
+            resourcesImg.setTypeName("VoteImg");
+            //根据条件查询照片信息集合
+            List<VoResourcesImg> imgByDate = resourcesImgDao.findImgByDate(resourcesImg);
+            //传入 照片信息集合
+            voFindDetailByIdVote.setImgUrls(imgByDate);
+        }
+        map.put("voFindDetailByIdVote",voFindDetailByIdVote);
         return map;
     }
 
@@ -261,30 +296,37 @@ public class SysVoteServiceImpl implements SysVoteService {
                 uploadUtil.upload(file,UPLOAD_VOTE_TITLE,"sysVote",sysVote.getId(),"voteImg","600",30,20);
             }
 
-            //添加候选人信息集合
+            //先删除候选人信息
+            sysVoteDao.deleteCandidate(sysVote.getId());
+            //根据投票主键id查询投票候选人信息
+            List<VoFindByIdVoteCandidate> candidateByVoteId = sysVoteDao.findCandidateByVoteId(sysVote.getId());
+            //删除数据库对应的投票候选人信息
+            if (candidateByVoteId != null && candidateByVoteId.size()>0){
+                for (VoFindByIdVoteCandidate byIdVoteCandidate : candidateByVoteId) {
+                    //删除文件和数据库的资源文件数据
+                    uploadUtil.delete("sysVoteCandidate",byIdVoteCandidate.getId(),"voteCandidateImg");
+                }
+            }
+
+            //再添加候选人信息集合
             List<SysVoteCandidate> sysVoteCandidateList = sysVote.getSysVoteCandidateList();
             if (sysVoteCandidateList != null && sysVoteCandidateList.size()>0){
+                //遍历候选人信息集合
                 for (SysVoteCandidate sysVoteCandidate : sysVoteCandidateList) {
-                    //删除再添加？？？？
-                    //填入修改人
-                    sysVoteCandidate.setModifyId(sysUser.getId());
-                    //填入修改时间
-                    sysVoteCandidate.setModifyDate(new Date());
-                    //修改投票候选人信息
-                    int update2 = sysVoteDao.updateCandidate(sysVoteCandidate);
-                    if (update2 <= 0){
-                        throw new RuntimeException("修改投票候选人信息失败");
-                    }
+                    //填入创建人
+                    sysVoteCandidate.setCreateId(sysUser.getId());
+                    //填入创建时间
+                    sysVoteCandidate.setCreateDate(new Date());
+                    //填入投票id
+                    sysVoteCandidate.setVoteId(sysVote.getId());
+                    //投票总数，初始为0
+                    sysVoteCandidate.setTotal(0);
+                    //填入是否删除，默认1.非删
+                    sysVoteCandidate.setIsDelete(1);
+                    //添加投票候选人信息,并返回主键id
+                    sysVoteDao.insertCandidate(sysVoteCandidate);
 
-                    //先删除文件和数据库的资源文件数据
-                    List<SysVoteCandidate> sysVoteCandidateList1 = sysVote.getSysVoteCandidateList();
-                    if (sysVoteCandidateList1 != null && sysVoteCandidateList1.size()>0){
-                        for (SysVoteCandidate voteCandidate : sysVoteCandidateList1) {
-                            uploadUtil.delete("sysVoteCandidate",voteCandidate.getId(),"voteCandidateImg");
-                        }
-                    }
-
-                    //再上传投票候选人照片
+                    //上传投票候选人照片
                     MultipartFile file1 = sysVoteCandidate.getFile();
                     //如果文件file不为空，则上传该文件到 ../static/img/vote/candidate目录下,并录入数据库
                     if (file1 != null){
@@ -305,6 +347,125 @@ public class SysVoteServiceImpl implements SysVoteService {
         }
         map.put("message","修改投票信息成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> falseDelete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                //更新投票信息假删除状态
+                int update = sysVoteDao.falseDelete(id);
+                if (update <= 0){
+                    throw new RuntimeException("投票信息删除失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","投票信息删除成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> release(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                //更新投票信息发布状态
+                int update = sysVoteDao.release(id);
+                if (update <= 0){
+                    throw new RuntimeException("投票信息发布失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","投票信息发布成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public List<VoFindDetailByIdVoteCandidate> listDetailCandidate(int id) {
+        return sysVoteDao.listDetailCandidate(id);
+    }
+
+    @Override
+    public List<VoVotePersonnel> listVotePersonnel(SearchVotePersonnel searchVotePersonnel) {
+        //查询候选人投票详情信息
+        List<VoVotePersonnel> voVotePersonnelList = sysVoteDao.listVotePersonnel(searchVotePersonnel);
+        //遍历候选人投票详情信息
+        if (voVotePersonnelList != null && voVotePersonnelList.size()>0){
+            for (VoVotePersonnel voVotePersonnel : voVotePersonnelList) {
+                //根据投票人id查询房产信息
+                List<CpmBuildingUnitEstate> byResidentId = cpmBuildingUnitEstateDao.findByResidentId(voVotePersonnel.getVoterId());
+                String roomName = "";
+                if (byResidentId != null && byResidentId.size()>0){
+                    //创建一个list
+                    ArrayList<String> strings = new ArrayList<>(byResidentId.size());
+                    //遍历房产信息集合
+                    for (CpmBuildingUnitEstate cpmBuildingUnitEstate : byResidentId) {
+                        //根据单元id查询单元信息
+                        CpmBuildingUnit byId = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
+                        //根据楼栋id查询楼栋信息
+                        CpmBuilding byId1 = cpmBuildingDao.findById(byId.getBuildingId());
+                        //将单个房产信息传入list中
+                        strings.add(byId1.getNo()+"-"+byId.getNo()+"-"+cpmBuildingUnitEstate.getRoomNumber());
+                    }
+                    //将list转成字符串形式
+                    roomName = StringUtils.join(strings,",");
+                }
+                //传入住户房号
+                voVotePersonnel.setRoomName(roomName);
+            }
+        }
+        return voVotePersonnelList;
+    }
+
+    @Override
+    public Map<String, Object> countVoteExpectedStart() {
+        map = new HashMap<>();
+        //查询设置的预期开始时间间隔
+        VoVoteExpectedTime voVoteExpectedTime = sysVoteDao.listVoteExpectedTime();
+        //获取预期最晚开始时间
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        if (voVoteExpectedTime.getType() == 1){
+            //分
+            c.add(Calendar.MINUTE,voVoteExpectedTime.getLongs());
+        }else if (voVoteExpectedTime.getType() == 2){
+            //时
+            c.add(Calendar.HOUR,voVoteExpectedTime.getLongs());
+        }else if (voVoteExpectedTime.getType() == 3){
+            //天
+            c.add(Calendar.DATE,voVoteExpectedTime.getLongs());
+        }
+        //传出预期最晚开始时间
+        Date date = c.getTime();
+        //查询即将开始的投票数，投票开始时间要大于当前时间，小于预期最晚开始时间
+        int count = sysVoteDao.countVoteExpectedStart(date);
+        map.put("count",count);
         return map;
     }
 }

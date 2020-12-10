@@ -60,7 +60,7 @@ logging:
             api:
                 dao: debug
 
-#资源路径【注意一定要'/'结尾】
+#资源路径【注意一定要'/'结尾,前置路径除外】
 prop:
     #文件上传前置路径
     upload: src/main/resources/static
