@@ -1,11 +1,13 @@
 package com.api.controller.butlerService;
 
 import com.api.model.butlerService.SearchQuestionnaire;
+import com.api.model.butlerService.SearchShortAnswer;
 import com.api.model.butlerService.SysQuestionnaire;
 import com.api.model.butlerService.SysQuestionnaireSubmit;
 import com.api.service.butlerService.SysQuestionnaireService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoQuestionnaire;
+import com.api.vo.butlerService.VoReportQuestionnaireShort;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -111,6 +113,26 @@ public class SysQuestionnaireController {
     public Map<String,Object> reportAnalysis(Integer id){
         return sysQuestionnaireService.reportAnalysis(id);
     }
+
+
+    /**
+     * 根据题目主键id查询开放题内容详情 (包含条件搜索)
+     * @param searchShortAnswer 搜索条件
+     * @return map
+     */
+    @GetMapping("/listShortAnswer")
+    public Map<String,Object> listShortAnswer(SearchShortAnswer searchShortAnswer){
+        PageHelper.startPage(searchShortAnswer.getPageNum(),searchShortAnswer.getSize());
+        List<VoReportQuestionnaireShort> voReportQuestionnaireShortList = sysQuestionnaireService.listShortAnswer(searchShortAnswer);
+        PageInfo<VoReportQuestionnaireShort> pageInfo = new PageInfo<>(voReportQuestionnaireShortList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
 
 
 }

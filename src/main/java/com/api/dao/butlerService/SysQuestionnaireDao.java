@@ -168,4 +168,18 @@ public interface SysQuestionnaireDao {
      * @return 选【错】的数量
      */
     int countJudgmentFalseByTId(Integer id);
+
+    /**
+     * 根据题目报表主键id查询该简答题的答题人数
+     * @param id 题目主键id
+     * @return 该简答题的答题人数
+     */
+    int countShort(Integer id);
+
+    /**
+     * 根据题目主键id查询开放题内容详情 (包含条件搜索)
+     * @param searchShortAnswer 搜索条件
+     * @return 开放题内容详情集合
+     */
+    List<VoReportQuestionnaireShort> listShortAnswer(SearchShortAnswer searchShortAnswer);
 }

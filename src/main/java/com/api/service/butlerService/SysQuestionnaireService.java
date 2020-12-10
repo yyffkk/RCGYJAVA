@@ -1,9 +1,11 @@
 package com.api.service.butlerService;
 
 import com.api.model.butlerService.SearchQuestionnaire;
+import com.api.model.butlerService.SearchShortAnswer;
 import com.api.model.butlerService.SysQuestionnaire;
 import com.api.model.butlerService.SysQuestionnaireSubmit;
 import com.api.vo.butlerService.VoQuestionnaire;
+import com.api.vo.butlerService.VoReportQuestionnaireShort;
 
 import java.util.List;
 import java.util.Map;
@@ -24,4 +26,6 @@ public interface SysQuestionnaireService {
     Map<String, Object> sysQuestionnaireSubmit(SysQuestionnaireSubmit sysQuestionnaireSubmit);
 
     Map<String, Object> reportAnalysis(Integer id);
+
+    List<VoReportQuestionnaireShort> listShortAnswer(SearchShortAnswer searchShortAnswer);
 }

@@ -607,7 +607,10 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
                         break;
                     case 5:
                         //开放题
-                        iterator.remove();
+//                        iterator.remove();
+                        //查询开放题的答题人数,开放题只需查答题人数，内容，另外页面查
+                        int count5 = sysQuestionnaireDao.countShort(topic.getId());
+                        topic.setAnswerNum(count5);
                         break;
                     default:
                         System.out.println("数据有误");
@@ -619,5 +622,10 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
         reportQuestionnaire.setReportQuestionnaireTopicList(voReportQuestionnaireTopicList);
         map.put("reportQuestionnaire",reportQuestionnaire);
         return map;
+    }
+
+    @Override
+    public List<VoReportQuestionnaireShort> listShortAnswer(SearchShortAnswer searchShortAnswer) {
+        return sysQuestionnaireDao.listShortAnswer(searchShortAnswer);
     }
 }

@@ -202,4 +202,13 @@
         select count(*) from sys_questionnaire_judgment_answer where answer = 0
     </select>
 
+    <select id="countShort" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_questionnaire_short_answer where questionnaire_topic_id = #{id}
+    </select>
+
+    <select id="listShortAnswer" parameterType="com.api.model.butlerService.SearchShortAnswer" resultType="com.api.vo.butlerService.VoReportQuestionnaireShort">
+        select sqsa.id,ur.name,sqsa.answer from sys_questionnaire_short_answer as sqsa,user_resident as ur
+        where sqsa.create_id = ur.id and questionnaire_topic_id = #{id}
+    </select>
+
 </mapper>
