@@ -72,5 +72,7 @@ prop:
     upload-vote-candidate: /img/vote/candidate/
     #管家服务-社区话题：新增话题照片上传路径
     upload-gambit: /img/gambit/
+    #管家服务-物品管理：新增物品信息
+    upload-article: /img/article/
 
 
