@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 上传文件工具类
+ * 上传文件(照片)工具类
  */
 @Component
 public class UploadUtil {
@@ -139,8 +139,26 @@ public class UploadUtil {
                 throw new RuntimeException("数据库资源删除失败");
             }
         }
+    }
 
 
+    /**
+     * 根据条件查询照片信息集合
+     * @param tableName 表名称
+     * @param dateId 数据所属id
+     * @param typeName 类型名称
+     * @return 照片信息集合
+     */
+    public List<VoResourcesImg> findImgByDate(String tableName,Integer dateId,String typeName){
+        ResourcesImg resourcesImg = new ResourcesImg();
+        //填入表名称
+        resourcesImg.setTableName(tableName);
+        //填入数据所属id
+        resourcesImg.setDateId(dateId);
+        //填入类型名称
+        resourcesImg.setTypeName(typeName);
+        //根据条件查询照片信息集合
+        return uploadUtil.resourcesImgDao.findImgByDate(resourcesImg);
     }
 }
 

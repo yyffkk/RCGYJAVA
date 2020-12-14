@@ -257,6 +257,12 @@ public class SysVoteServiceImpl implements SysVoteService {
 
         //添加投票信息
         try {
+            //判断投票是否开始
+            VoFindByIdVote byId = sysVoteDao.findById(sysVote.getId());
+            if (new Date().getTime() >= byId.getBeginDate().getTime()){
+                throw new RuntimeException("投票已开始，无法修改投票信息");
+            }
+
             //填入修改人id
             sysVote.setModifyId(sysUser.getId());
             //填入修改时间
