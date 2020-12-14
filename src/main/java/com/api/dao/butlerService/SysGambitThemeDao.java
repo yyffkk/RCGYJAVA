@@ -12,4 +12,32 @@ public interface SysGambitThemeDao {
      * @return 主题明细信息集合
      */
     List<VoGambitTheme> list(SearchGambitTheme searchGambitTheme);
+
+    /**
+     * 查询点赞人数
+     * @param id 主题明细主键id
+     * @return 点赞人数
+     */
+    int countLikeNum(Integer id);
+
+    /**
+     * 查询评论人数
+     * @param id 主题明细主键id
+     * @return 评论人数
+     */
+    int countCommentNum(Integer id);
+
+    /**
+     * 根据主题明细主键id删除主题明细信息
+     * @param id 主题明细主键id
+     * @return 影响行数
+     */
+    int falseDelete(int id);
+
+    /**
+     * 根据主题明细主键id恢复主题明细信息
+     * @param id 主题明细主键id
+     * @return 影响行数
+     */
+    int recovery(int id);
 }

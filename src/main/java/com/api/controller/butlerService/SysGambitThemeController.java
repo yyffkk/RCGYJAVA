@@ -2,13 +2,12 @@ package com.api.controller.butlerService;
 
 import com.api.model.butlerService.SearchGambitTheme;
 import com.api.service.butlerService.SysGambitThemeService;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoGambit;
 import com.api.vo.butlerService.VoGambitTheme;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -39,6 +38,26 @@ public class SysGambitThemeController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 批量删除主题明细信息
+     * @param ids 主题明细主键id数组
+     * @return map
+     */
+    @PostMapping("/falseDelete")
+    public Map<String,Object> falseDelete(@RequestBody VoIds ids){
+        return sysGambitThemeService.falseDelete(ids.getIds());
+    }
+
+    /**
+     * 批量恢复主题明细信息
+     * @param ids 主题明细主键id数组
+     * @return map
+     */
+    @PostMapping("/recovery")
+    public Map<String,Object> recovery(@RequestBody VoIds ids){
+        return sysGambitThemeService.recovery(ids.getIds());
     }
 
 }
