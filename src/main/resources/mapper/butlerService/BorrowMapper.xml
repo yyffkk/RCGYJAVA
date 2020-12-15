@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.dao.butlerService.BorrowDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchBorrow" resultType="com.api.vo.butlerService.VoBorrow">
-        select sab.id,sa.name,sab.quantity,ur.name as borrow_name,ur.tel,sab.begin_date,sab.end_date,sab.status,sab.remake
-        ,(select (select count(quantity) from sys_article_borrow where borrow_status = 1 or borrow_status = 3 and article_id = sa.id) ) as stock
+        select sab.id,sa.quantity,sa.name,ur.name as borrow_name,ur.tel,sab.begin_date,sab.end_date,sab.status,sab.remake
+        ,(select (select count(quantity) from sys_article_borrow where borrow_status = 1 and article_id = sa.id) ) as stock
         from sys_article_borrow as sab,sys_article as sa,user_resident as ur
         <where>
             sab.article_id = sa.id
@@ -30,5 +30,48 @@
             </if>
 
         </where>
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysArticleBorrow">
+        select * from sys_article_borrow where id = #{id}
+    </select>
+
+    <insert id="insertMessage" parameterType="com.api.model.butlerService.SysMessage">
+        insert into sys_message(
+            title,
+            content,
+            generate_date,
+            send_date,
+            sender,
+            type
+        ) values (
+            #{title},
+            #{content},
+            #{generateDate},
+            #{sendDate},
+            #{sender},
+            #{type}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertSending" parameterType="com.api.model.butlerService.SysSending">
+        insert into sys_sending(
+            message_id,
+            receiver_account,
+            send_status,
+            send_date
+        ) values (
+            #{messageId},
+            #{receiverAccount},
+            #{sendStatus},
+            #{sendDate}
+        )
+    </insert>
+
+    <select id="findAll" resultType="com.api.model.butlerService.SysArticleBorrow">
+        select * from sys_article_borrow
     </select>
 </mapper>

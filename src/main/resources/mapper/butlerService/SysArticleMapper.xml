@@ -80,6 +80,15 @@
         </set>
         where id = #{id}
     </update>
+    <update id="updateDetail" parameterType="com.api.model.butlerService.ArticleDetail">
+        update sys_article_detail
+        <set>
+            status = #{status},
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
 
     <delete id="deleteDetail" parameterType="java.lang.Integer">
         delete from sys_article_detail where article_id = #{id}

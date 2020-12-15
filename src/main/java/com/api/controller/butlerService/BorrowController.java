@@ -1,6 +1,7 @@
 package com.api.controller.butlerService;
 
 import com.api.model.butlerService.SearchBorrow;
+import com.api.model.butlerService.SysMessage;
 import com.api.service.butlerService.BorrowService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoArticleDetail;
@@ -41,13 +42,13 @@ public class BorrowController {
     }
 
     /**
-     * 批量提醒
-     * @param ids 需要提醒的借还主键id数组
+     * 提醒(管理员发送)
+     * @param sysMessage 提醒的消息
      * @return map
      */
     @PostMapping("/remind")
-    public Map<String,Object> remind(@RequestBody VoIds ids){
-        return null;
+    public Map<String,Object> remind(@RequestBody SysMessage sysMessage){
+        return borrowService.remind(sysMessage);
     }
 
 

@@ -92,7 +92,7 @@ public class SysArticleController {
     }
 
     /**
-     * 更新物品信息
+     * 更新物品信息（无删除）
      * @param article 新物品信息
      * @return map
      */

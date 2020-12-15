@@ -164,27 +164,37 @@ public class SysArticleServiceImpl implements SysArticleService {
             //再添加照片信息
             uploadUtil.upload(article.getFile(), UPLOAD_ARTICLE,"sysArticle",article.getId(),"articleImg","600",30,20);
 
-            //更新物品明细信息
-            //先删除物品明细信息
-            sysArticleDao.deleteDetail(article.getId());
-            //再添加物品明细信息
+            //更新物品明细信息(无删除)
             //获取传入的物品明细信息
             List<ArticleDetail> articleDetailList = article.getArticleDetailList();
             if (articleDetailList != null && articleDetailList.size()>0){
                 for (ArticleDetail articleDetail : articleDetailList) {
-                    //填入物品id
-                    articleDetail.setArticleId(article.getId());
-                    //填入物品状态
-                    articleDetail.setStatus(1);
-                    //填入创建人
-                    articleDetail.setCreateId(sysUser.getId());
-                    //填入创建时间
-                    articleDetail.setCreateDate(new Date());
-                    //添加物品明细信息
-                    int insert2 = sysArticleDao.insertDetail(articleDetail);
-                    if (insert2 <= 0){
-                        throw new RuntimeException("添加物品明细信息失败");
+                    //根据id来决定是添加还是更新物品明细信息
+                    if (articleDetail.getId() != null){
+                        //更新物品明细信息
+                        //填入修改人id
+                        articleDetail.setModifyId(sysUser.getId());
+                        //填入修改时间
+                        articleDetail.setModifyDate(new Date());
+                        //更新物品明细信息
+                        sysArticleDao.updateDetail(articleDetail);
+                    }else {
+                        //添加物品明细信息
+                        //填入物品id
+                        articleDetail.setArticleId(article.getId());
+                        //填入物品状态
+                        articleDetail.setStatus(1);
+                        //填入创建人
+                        articleDetail.setCreateId(sysUser.getId());
+                        //填入创建时间
+                        articleDetail.setCreateDate(new Date());
+                        //添加物品明细信息
+                        int insert2 = sysArticleDao.insertDetail(articleDetail);
+                        if (insert2 <= 0){
+                            throw new RuntimeException("添加物品明细信息失败");
+                        }
                     }
+
                 }
             }
         } catch (RuntimeException e) {

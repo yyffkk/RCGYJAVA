@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.dao.butlerService.SysOwnersCommitteeDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchOwnersCommittee" resultType="com.api.vo.butlerService.VoOwnersCommittee">
+        select soc.*,ur.name,ur.sex as sex_id,cbue.room_number,cbu.no as unit_no,cb.no as estate_no from sys_owners_committee as soc,user_resident as ur,
+        cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        <where>
+            soc.resident_id = ur.id
+            and soc.building_unit_estate_id = cbue.id
+            and  cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="name != null and name != ''">
+                and ur.name like concat('%',#{name},'%')
+            </if>
+            <if test="sexId != null">
+                and ur.sex = #{sexId}
+            </if>
+            <if test="positionId != null">
+                and soc.position_id = #{positionId}
+            </if>
+            <if test="educationId != null">
+                and soc.education_id = #{educationId}
+            </if>
+            <if test="profession != null and profession != ''">
+                and soc.profession like concat('%',#{profession},'%')
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                and cbue.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="unitNo != null">
+                and cbu.no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="estateNo != null">
+                and cb.no like concat('%',#{estateNo},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.SysOwnersCommittee">
+        insert into sys_owners_committee(
+            resident_id,
+            position_id,
+            age,
+            education_id,
+            building_unit_estate_id,
+            profession,
+            create_id,
+            create_date
+        ) values (
+            #{residentId},
+            #{positionId},
+            #{age},
+            #{educationId},
+            #{estateId},
+            #{profession},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdOwnersCommittee">
+        select soc.*, ur.name,cbue.id as estate_id,cbu.id as unit_id,cbu.building_id
+        from sys_owners_committee as soc,user_resident as ur,cpm_building_unit_estate as cbue,cpm_building_unit as cbu
+        <where>
+            soc.resident_id = ur.id
+            and soc.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and soc.id = #{id}
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.api.model.butlerService.SysOwnersCommittee">
+        update sys_owners_committee
+        <set>
+            <if test="positionId != null">
+                position_id = #{positionId},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="educationId != null">
+                education_id = #{educationId},
+            </if>
+            <if test="estateId != null">
+                building_unit_estate_id = #{estateId},
+            </if>
+            <if test="profession != null and profession != ''">
+                profession = #{profession},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_owners_committee where id = #{id}
+    </delete>
+</mapper>

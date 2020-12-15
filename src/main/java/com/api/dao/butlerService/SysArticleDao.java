@@ -68,4 +68,11 @@ public interface SysArticleDao {
      * @return 影响行数
      */
     int deleteDetail(Integer id);
+
+    /**
+     * 根据物品主键id更新物品明细信息
+     * @param articleDetail 新物品明细信息
+     * @return 影响行数
+     */
+    int updateDetail(ArticleDetail articleDetail);
 }
