@@ -1,12 +1,11 @@
-package com.api.model.butlerService;
+package com.api.vo.chargeManagement;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * 物业收费标准明细 信息
+ * 物业收费标准明细Vo findById 回显
  */
-public class SysChargesTemplateDetail {
+public class VoFindByIdChargesTemplateDetail {
     /**
      * 主键id
      */
@@ -31,36 +30,16 @@ public class SysChargesTemplateDetail {
      * 附加或固定费用
      */
     private BigDecimal otherFee;
-    /**
-     * 创建人
-     */
-    private Integer createId;
-    /**
-     * 创建时间
-     */
-    private Date createDate;
-    /**
-     * 修改人
-     */
-    private Integer modifyId;
-    /**
-     * 修改时间
-     */
-    private Date modifyDate;
 
     @Override
     public String toString() {
-        return "SysChargesTemplateDetail{" +
+        return "VoFindByIdChargesTemplateDetail{" +
                 "id=" + id +
                 ", chargesTemplateId=" + chargesTemplateId +
                 ", name='" + name + '\'' +
                 ", unitPrice=" + unitPrice +
                 ", type=" + type +
                 ", otherFee=" + otherFee +
-                ", createId=" + createId +
-                ", createDate=" + createDate +
-                ", modifyId=" + modifyId +
-                ", modifyDate=" + modifyDate +
                 '}';
     }
 
@@ -112,51 +91,15 @@ public class SysChargesTemplateDetail {
         this.otherFee = otherFee;
     }
 
-    public Integer getCreateId() {
-        return createId;
+    public VoFindByIdChargesTemplateDetail() {
     }
 
-    public void setCreateId(Integer createId) {
-        this.createId = createId;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Integer getModifyId() {
-        return modifyId;
-    }
-
-    public void setModifyId(Integer modifyId) {
-        this.modifyId = modifyId;
-    }
-
-    public Date getModifyDate() {
-        return modifyDate;
-    }
-
-    public void setModifyDate(Date modifyDate) {
-        this.modifyDate = modifyDate;
-    }
-
-    public SysChargesTemplateDetail() {
-    }
-
-    public SysChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public VoFindByIdChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee) {
         this.id = id;
         this.chargesTemplateId = chargesTemplateId;
         this.name = name;
         this.unitPrice = unitPrice;
         this.type = type;
         this.otherFee = otherFee;
-        this.createId = createId;
-        this.createDate = createDate;
-        this.modifyId = modifyId;
-        this.modifyDate = modifyDate;
     }
 }

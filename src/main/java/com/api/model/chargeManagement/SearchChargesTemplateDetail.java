@@ -1,4 +1,4 @@
-package com.api.model.butlerService;
+package com.api.model.chargeManagement;
 
 /**
  * 物业收费标准明细 搜索条件

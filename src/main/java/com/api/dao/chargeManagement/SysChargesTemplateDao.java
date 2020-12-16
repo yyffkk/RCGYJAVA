@@ -1,7 +1,7 @@
-package com.api.dao.butlerService;
+package com.api.dao.chargeManagement;
 
-import com.api.model.butlerService.ChargesTemplate;
-import com.api.vo.butlerService.VoChargesTemplate;
+import com.api.model.chargeManagement.ChargesTemplate;
+import com.api.vo.chargeManagement.VoChargesTemplate;
 
 import java.util.List;
 

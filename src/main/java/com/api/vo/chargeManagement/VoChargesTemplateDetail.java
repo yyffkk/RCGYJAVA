@@ -1,4 +1,4 @@
-package com.api.vo.butlerService;
+package com.api.vo.chargeManagement;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,7 +14,7 @@ public class VoChargesTemplateDetail {
     /**
      * 物业收费标准模版 状态
      */
-    private String Status;
+    private Integer Status;
     /**
      * 收费名称
      */
@@ -44,7 +44,7 @@ public class VoChargesTemplateDetail {
     public String toString() {
         return "VoChargesTemplateDetail{" +
                 "id=" + id +
-                ", Status='" + Status + '\'' +
+                ", Status=" + Status +
                 ", name='" + name + '\'' +
                 ", unitPrice=" + unitPrice +
                 ", type=" + type +
@@ -62,11 +62,11 @@ public class VoChargesTemplateDetail {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return Status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         Status = status;
     }
 
@@ -121,7 +121,7 @@ public class VoChargesTemplateDetail {
     public VoChargesTemplateDetail() {
     }
 
-    public VoChargesTemplateDetail(Integer id, String status, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee, String createName, Date modifyDate) {
+    public VoChargesTemplateDetail(Integer id, Integer status, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee, String createName, Date modifyDate) {
         this.id = id;
         Status = status;
         this.name = name;

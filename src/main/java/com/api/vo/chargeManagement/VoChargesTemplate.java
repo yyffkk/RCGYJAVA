@@ -1,4 +1,4 @@
-package com.api.vo.butlerService;
+package com.api.vo.chargeManagement;
 
 /**
  * 物业收费标准模版Vo list 回显

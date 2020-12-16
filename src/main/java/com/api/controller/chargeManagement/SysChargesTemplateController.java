@@ -1,9 +1,9 @@
-package com.api.controller.butlerService;
+package com.api.controller.chargeManagement;
 
-import com.api.model.butlerService.ChargesTemplate;
-import com.api.service.butlerService.SysChargesTemplateService;
+import com.api.model.chargeManagement.ChargesTemplate;
+import com.api.service.chargeManagement.SysChargesTemplateService;
 import com.api.vo.basicArchives.VoIds;
-import com.api.vo.butlerService.VoChargesTemplate;
+import com.api.vo.chargeManagement.VoChargesTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

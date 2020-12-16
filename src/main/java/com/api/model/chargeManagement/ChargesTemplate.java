@@ -1,4 +1,4 @@
-package com.api.model.butlerService;
+package com.api.model.chargeManagement;
 
 import java.util.Date;
 
