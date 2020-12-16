@@ -26,7 +26,9 @@
     <update id="update" parameterType="com.api.model.butlerService.SysWorkOrderType">
         update sys_work_order_type
         <set>
-            name = #{name},
+            <if test="name != null and  name != ''">
+                name = #{name},
+            </if>
             modify_id = #{modifyId},
             modify_date = #{modifyDate}
         </set>

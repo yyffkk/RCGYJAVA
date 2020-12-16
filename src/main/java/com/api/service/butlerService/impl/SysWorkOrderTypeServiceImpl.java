@@ -1,6 +1,7 @@
 package com.api.service.butlerService.impl;
 
 import com.api.dao.butlerService.SysWorkOrderTypeDao;
+import com.api.dao.butlerService.SysWorkOrderTypeDetailDao;
 import com.api.model.butlerService.SysWorkOrderType;
 import com.api.model.system.SysUser;
 import com.api.service.butlerService.SysWorkOrderTypeService;
@@ -21,6 +22,8 @@ public class SysWorkOrderTypeServiceImpl implements SysWorkOrderTypeService {
     private static Map<String,Object> map = null;
     @Resource
     SysWorkOrderTypeDao sysWorkOrderTypeDao;
+    @Resource
+    SysWorkOrderTypeDetailDao sysWorkOrderTypeDetailDao;
 
     @Override
     public List<VoWorkOrderType> list() {
@@ -80,7 +83,11 @@ public class SysWorkOrderTypeServiceImpl implements SysWorkOrderTypeService {
     public Map<String, Object> delete(Integer id) {
         map = new HashMap<>();
         try {
-            //先删除工单类型明细信息
+            //如果此工单已被引用，无法删除
+//            this new RuntimeException("此工单已被引用，无法删除");
+
+            //先根据工单大类主键id删除工单类型明细信息
+            sysWorkOrderTypeDetailDao.deleteByWorkOrderTypeId(id);
 
             //再删除工单类型信息
             int delete = sysWorkOrderTypeDao.delete(id);

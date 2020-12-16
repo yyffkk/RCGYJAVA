@@ -114,7 +114,9 @@ public class SysGambitServiceImpl implements SysGambitService {
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
+        //填入修改人id
         sysGambit.setModifyId(sysUser.getId());
+        //填入修改时间
         sysGambit.setModifyDate(new Date());
         try {
             //修改话题信息(物业后台修改)

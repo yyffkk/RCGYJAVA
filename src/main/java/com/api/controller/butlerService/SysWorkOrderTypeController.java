@@ -58,8 +58,8 @@ public class SysWorkOrderTypeController {
     }
 
     /**
-     * 根据主键id删除工单大类信息(设计上没有)
-     * @param id 主键id
+     * 根据主键id删除工单大类信息
+     * @param id 工单大类主键id
      * @return map
      */
     @GetMapping("/delete")
