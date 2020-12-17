@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.dao.butlerService.SysDispatchListDao">
+<!--    ????-->
+    <select id="list" parameterType="com.api.model.butlerService.SearchDispatchList" resultType="com.api.vo.butlerService.VoDispatchList">
+        select a.*,sdld.create_date as dispatch_date,sdld.work_order_time_limit from (
+                select sdl.id,sdl.code,swot.name,sdl.status,ur.name as create_name,srr.tel, srr.building_unit_estate_id,srr.report_detail,sdl.begin_date,sdl.revisit_date,sdl.revisit_detail
+                from sys_dispatch_list as sdl,sys_work_order_type as swot,sys_report_repair as srr,user_resident as ur
+                where sdl.work_order_type = swot.id and srr.dispatch_list_id = sdl.id and ur.id = sdl.create_id
+        ) as a LEFT JOIN sys_dispatch_list_detail as sdld
+        on sdld.dispatch_list_id = a.id
+    </select>
+</mapper>

@@ -5,12 +5,12 @@
 <mapper namespace="com.api.dao.chargeManagement.SysChargesTemplateDetailDao">
     <select id="list" parameterType="com.api.model.chargeManagement.SearchChargesTemplateDetail" resultType="com.api.vo.chargeManagement.VoChargesTemplateDetail">
         select sctd.id,sctd.name,sctd.unit_price,sctd.type,sctd.other_fee,(
-        case sctd.modify_date
-            when not null
+        case sctd.modify_date is null
+            when true
             then
-                sctd.modify_date
-            else
                 sctd.create_date
+            else
+                sctd.modify_date
         end
         ) as modify_date,su.actual_name as create_name,sct.status from sys_charges_template_detail as sctd,sys_user as su,sys_charges_template as sct
         <where>
