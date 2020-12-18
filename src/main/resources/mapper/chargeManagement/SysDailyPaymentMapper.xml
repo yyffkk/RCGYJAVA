@@ -52,4 +52,41 @@
         where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cre.building_unit_estate_id = sdp.building_unit_estate_id
         and cre.resident_id = ur.id and sctd.id = sdp.charges_template_detail_id and sdp.id = #{id} limit 1
     </select>
+
+    <select id="findAll" resultType="com.api.vo.chargeManagement.VoFindAllDailyPayment">
+        select * from sys_daily_payment
+    </select>
+
+    <insert id="insertOrder" parameterType="com.api.model.chargeManagement.DailyPaymentOrder">
+        insert into sys_daily_payment_order(
+            daily_payment_id,
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date,
+            remake
+        ) values (
+            #{dailyPaymentId},
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate},
+            #{remake}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="updatePaidPriceAndPaymentPrice" parameterType="com.api.model.chargeManagement.UpdateDailyPayment">
+        update sys_daily_payment
+        set paid_price = paid_price + #{payPrice},payment_price = payment_price - #{payPrice}
+        where id = #{DailyPaymentId}
+    </update>
 </mapper>

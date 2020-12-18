@@ -2,7 +2,9 @@ package com.api.service.chargeManagement.impl;
 
 import com.api.dao.chargeManagement.SysDailyPaymentDao;
 import com.api.dao.remind.RemindDao;
+import com.api.model.chargeManagement.DailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentPush;
+import com.api.model.chargeManagement.UpdateDailyPayment;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.chargeManagement.SearchDailyPayment;
@@ -123,6 +125,53 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
         }
         map.put("message","推送成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> insertOrder(DailyPaymentOrder dailyPaymentOrder) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        try {
+            //填入创建人
+            dailyPaymentOrder.setCreateId(sysUser.getId());
+            //填入创建时间
+            dailyPaymentOrder.setCreateDate(new Date());
+            //添加缴费订单信息
+            int i = sysDailyPaymentDao.insertOrder(dailyPaymentOrder);
+            if (i<=0){
+               throw new RuntimeException("添加缴费订单失败");
+            }
+            UpdateDailyPayment updateDailyPayment = new UpdateDailyPayment();
+            //填入支付金额
+            updateDailyPayment.setPayPrice(dailyPaymentOrder.getPayPrice());
+            //填入日常缴费信息主键id
+            updateDailyPayment.setDailyPaymentId(dailyPaymentOrder.getDailyPaymentId());
+            //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额(/????状态未修改)
+            int update = sysDailyPaymentDao.updatePaidPriceAndPaymentPrice(updateDailyPayment);
+            if (update <= 0){
+                throw new RuntimeException("修改缴费信息失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","缴费成功");
+        map.put("status",true);
+        //如果为1，则打印该订单信息
+        if (dailyPaymentOrder.getIsPrinting() == 1){
+            System.out.println("打印该订单成功");
+            map.put("message","缴费并打印成功");
+        }
         return map;
     }
 }

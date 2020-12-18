@@ -1,5 +1,6 @@
 package com.api.service.chargeManagement;
 
+import com.api.model.chargeManagement.DailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentPush;
 import com.api.model.remind.SysMessage;
 import com.api.model.chargeManagement.SearchDailyPayment;
@@ -15,4 +16,6 @@ public interface SysDailyPaymentService {
     VoFindByIdDailyPayment findById(Integer id);
 
     Map<String, Object> push(DailyPaymentPush dailyPaymentPush);
+
+    Map<String, Object> insertOrder(DailyPaymentOrder dailyPaymentOrder);
 }

@@ -51,6 +51,14 @@ public class DailyPaymentOrder {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 备注
+     */
+    private String remake;
+    /**
+     * 是否打印该日常缴费订单（1.确认并开始打印，0.确认但不打印）
+     */
+    private Integer isPrinting;
 
     @Override
     public String toString() {
@@ -66,6 +74,8 @@ public class DailyPaymentOrder {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", remake='" + remake + '\'' +
+                ", isPrinting=" + isPrinting +
                 '}';
     }
 
@@ -157,10 +167,26 @@ public class DailyPaymentOrder {
         this.modifyDate = modifyDate;
     }
 
+    public String getRemake() {
+        return remake;
+    }
+
+    public void setRemake(String remake) {
+        this.remake = remake;
+    }
+
+    public Integer getIsPrinting() {
+        return isPrinting;
+    }
+
+    public void setIsPrinting(Integer isPrinting) {
+        this.isPrinting = isPrinting;
+    }
+
     public DailyPaymentOrder() {
     }
 
-    public DailyPaymentOrder(Integer id, Integer dailyPaymentId, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public DailyPaymentOrder(Integer id, Integer dailyPaymentId, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String remake, Integer isPrinting) {
         this.id = id;
         this.dailyPaymentId = dailyPaymentId;
         this.code = code;
@@ -172,5 +198,7 @@ public class DailyPaymentOrder {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.remake = remake;
+        this.isPrinting = isPrinting;
     }
 }

@@ -1,6 +1,7 @@
 package com.api.controller.chargeManagement;
 
 import com.api.model.chargeManagement.DailyPayment;
+import com.api.model.chargeManagement.DailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentPush;
 import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.service.chargeManagement.SysDailyPaymentService;
@@ -42,7 +43,7 @@ public class SysDailyPaymentController {
     }
 
     /**
-     * 添加缴费信息 ？？？？？？
+     * 添加缴费信息 ？？？？？？//原型图上客户名称和联系方式不存在，是否需要？
      * @param dailyPayment 缴费信息
      * @return map
      */
@@ -62,6 +63,7 @@ public class SysDailyPaymentController {
         return sysDailyPaymentService.findById(id);
     }
 
+
     /**
      * 更新缴费信息 ？？？？
      * @param dailyPayment 新缴费信息
@@ -80,6 +82,18 @@ public class SysDailyPaymentController {
     public Map<String,Object> push(@RequestBody DailyPaymentPush dailyPaymentPush){
         return sysDailyPaymentService.push(dailyPaymentPush);
     }
+
+    /**
+     * 添加日常缴费订单信息（缴费）【未测】（????状态未修改）
+     * @param dailyPaymentOrder 日常缴费订单信息
+     * @return map
+     */
+    @PostMapping("/insertOrder")
+    public Map<String,Object> insertOrder(@RequestBody DailyPaymentOrder dailyPaymentOrder){
+        return sysDailyPaymentService.insertOrder(dailyPaymentOrder);
+    }
+
+
 
 
 }

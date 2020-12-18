@@ -142,4 +142,8 @@
         select * from cpm_building_unit_estate
         where room_number =#{roomNumber}
     </select>
+
+    <select id="findResidentIdByEstateId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select resident_id from cpm_resident_estate where building_unit_estate_id =#{id}
+    </select>
 </mapper>

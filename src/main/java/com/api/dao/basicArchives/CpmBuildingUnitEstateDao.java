@@ -79,4 +79,11 @@ public interface CpmBuildingUnitEstateDao {
      * @return 房产信息
      */
     CpmBuildingUnitEstate findByRoomNumber(String roomNumber);
+
+    /**
+     * 根据房产id查询业主id,
+     * @param buildingUnitEstateId 房产id
+     * @return 业主id集合
+     */
+    List<Integer> findResidentIdByEstateId(Integer buildingUnitEstateId);
 }
