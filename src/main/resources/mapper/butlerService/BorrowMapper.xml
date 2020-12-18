@@ -36,41 +36,6 @@
         select * from sys_article_borrow where id = #{id}
     </select>
 
-    <insert id="insertMessage" parameterType="com.api.model.butlerService.SysMessage">
-        insert into sys_message(
-            title,
-            content,
-            generate_date,
-            send_date,
-            sender,
-            type
-        ) values (
-            #{title},
-            #{content},
-            #{generateDate},
-            #{sendDate},
-            #{sender},
-            #{type}
-        )
-        <selectKey keyProperty="id" resultType="java.lang.Integer">
-            select LAST_INSERT_ID() AS id
-        </selectKey>
-    </insert>
-
-    <insert id="insertSending" parameterType="com.api.model.butlerService.SysSending">
-        insert into sys_sending(
-            message_id,
-            receiver_account,
-            send_status,
-            send_date
-        ) values (
-            #{messageId},
-            #{receiverAccount},
-            #{sendStatus},
-            #{sendDate}
-        )
-    </insert>
-
     <select id="findAll" resultType="com.api.model.butlerService.SysArticleBorrow">
         select * from sys_article_borrow
     </select>

@@ -67,4 +67,9 @@ public class SysDataDictionaryServiceImpl implements SysDataDictionaryService {
     public List<VoDataDictionary> findUserResidentType() {
         return sysDataDictionaryDao.findUserResidentType();
     }
+
+    @Override
+    public List<VoDataDictionary> findSysDailyPaymentType() {
+        return sysDataDictionaryDao.findSysDailyPaymentType();
+    }
 }

@@ -119,7 +119,14 @@ public class SysDataDictionaryController {
         return sysDataDictionaryService.findUserResidentType();
     }
 
-
+    /**
+     * 查询日常缴费计费单位 sys_daily_payment
+     * @return List<VoDecoration> 回显字典数据集合
+     */
+    @GetMapping("/findSysDailyPaymentType")
+    public List<VoDataDictionary> findSysDailyPaymentType(){
+        return sysDataDictionaryService.findSysDailyPaymentType();
+    }
 
 
 }

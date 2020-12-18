@@ -1,4 +1,4 @@
-package com.api.model.butlerService;
+package com.api.model.remind;
 
 import java.util.Date;
 
@@ -34,10 +34,6 @@ public class SysMessage {
      * 发送类型（1.系统广播，2.管理员消息）
      */
     private Integer type;
-    /**
-     * 借还主键id
-     */
-    private Integer borrowId;
 
     @Override
     public String toString() {
@@ -49,7 +45,6 @@ public class SysMessage {
                 ", sendDate=" + sendDate +
                 ", sender=" + sender +
                 ", type=" + type +
-                ", borrowId=" + borrowId +
                 '}';
     }
 
@@ -109,18 +104,10 @@ public class SysMessage {
         this.type = type;
     }
 
-    public Integer getBorrowId() {
-        return borrowId;
-    }
-
-    public void setBorrowId(Integer borrowId) {
-        this.borrowId = borrowId;
-    }
-
     public SysMessage() {
     }
 
-    public SysMessage(Integer id, String title, String content, Date generateDate, Date sendDate, Integer sender, Integer type, Integer borrowId) {
+    public SysMessage(Integer id, String title, String content, Date generateDate, Date sendDate, Integer sender, Integer type) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -128,6 +115,5 @@ public class SysMessage {
         this.sendDate = sendDate;
         this.sender = sender;
         this.type = type;
-        this.borrowId = borrowId;
     }
 }

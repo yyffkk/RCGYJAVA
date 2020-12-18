@@ -103,4 +103,13 @@
         order by sort
     </select>
 
+    <!--  查询日常缴费计费单位  -->
+    <select id="findSysDailyPaymentType" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'sys_charges_template_detail_type' and is_delete =1
+        order by sort
+    </select>
+
 </mapper>

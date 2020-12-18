@@ -1,10 +1,10 @@
 package com.api.config;
 
 import com.api.dao.butlerService.BorrowDao;
+import com.api.dao.remind.RemindDao;
 import com.api.model.butlerService.SysArticleBorrow;
-import com.api.model.butlerService.SysMessage;
-import com.api.model.butlerService.SysSending;
-import com.api.vo.butlerService.VoBorrow;
+import com.api.model.remind.SysMessage;
+import com.api.model.remind.SysSending;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,6 +31,8 @@ import java.util.List;
 public class SysBorrowRemind {
     @Resource
     BorrowDao borrowDao;
+    @Resource
+    RemindDao remindDao;
     //1天执行一次
     @Scheduled(cron = "0 0 0 0/1 * ?")
 //    @Scheduled(cron = "0/10 * * * * ?")
@@ -58,7 +60,7 @@ public class SysBorrowRemind {
                         //填入发送类型（1.系统广播，2.管理员消息）
                         sysMessage.setType(1);
                         //添加提醒 消息列表 并返回主键id
-                        int insert = borrowDao.insertMessage(sysMessage);
+                        int insert = remindDao.insertMessage(sysMessage);
                         if (insert <= 0){
                             throw new RuntimeException("添加消息列表失败");
                         }
@@ -73,7 +75,7 @@ public class SysBorrowRemind {
                         //填入发送日期
                         sysSending.setSendDate(new Date());
                         //添加消息接收列表
-                        int i = borrowDao.insertSending(sysSending);
+                        int i = remindDao.insertSending(sysSending);
                         if (i <= 0){
                             throw new RuntimeException("添加消息接收列表失败");
                         }

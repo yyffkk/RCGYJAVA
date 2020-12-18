@@ -26,4 +26,6 @@ public interface SysDataDictionaryService {
     List<VoDataDictionary> findDecorationStaffIdentity();
 
     List<VoDataDictionary> findUserResidentType();
+
+    List<VoDataDictionary> findSysDailyPaymentType();
 }

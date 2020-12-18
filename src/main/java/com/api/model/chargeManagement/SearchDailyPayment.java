@@ -17,7 +17,7 @@ public class SearchDailyPayment {
     /**
      * 费用名称类型(取自 物业收费标准明细表)
      */
-    private Integer workOrderTypeDetailId;
+    private Integer chargesTemplateDetailId;
     /**
      * 计费开始时间
      */
@@ -56,7 +56,7 @@ public class SearchDailyPayment {
         return "SearchDailyPayment{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
-                ", workOrderTypeDetailId=" + workOrderTypeDetailId +
+                ", chargesTemplateDetailId=" + chargesTemplateDetailId +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
                 ", payName='" + payName + '\'' +
@@ -84,12 +84,12 @@ public class SearchDailyPayment {
         this.size = size;
     }
 
-    public Integer getWorkOrderTypeDetailId() {
-        return workOrderTypeDetailId;
+    public Integer getChargesTemplateDetailId() {
+        return chargesTemplateDetailId;
     }
 
-    public void setWorkOrderTypeDetailId(Integer workOrderTypeDetailId) {
-        this.workOrderTypeDetailId = workOrderTypeDetailId;
+    public void setChargesTemplateDetailId(Integer chargesTemplateDetailId) {
+        this.chargesTemplateDetailId = chargesTemplateDetailId;
     }
 
     public Date getBeginDate() {
@@ -159,10 +159,10 @@ public class SearchDailyPayment {
     public SearchDailyPayment() {
     }
 
-    public SearchDailyPayment(int pageNum, int size, Integer workOrderTypeDetailId, Date beginDate, Date endDate, String payName, String roomName, String tel, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchDailyPayment(int pageNum, int size, Integer chargesTemplateDetailId, Date beginDate, Date endDate, String payName, String roomName, String tel, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
-        this.workOrderTypeDetailId = workOrderTypeDetailId;
+        this.chargesTemplateDetailId = chargesTemplateDetailId;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.payName = payName;
