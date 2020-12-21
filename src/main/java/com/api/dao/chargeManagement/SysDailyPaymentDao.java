@@ -1,5 +1,6 @@
 package com.api.dao.chargeManagement;
 
+import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.DailyPaymentOrder;
 import com.api.model.chargeManagement.UpdateDailyPayment;
 import com.api.model.remind.SysMessage;
@@ -47,4 +48,11 @@ public interface SysDailyPaymentDao {
      * @return 影响行数
      */
     int updatePaidPriceAndPaymentPrice(UpdateDailyPayment updateDailyPayment);
+
+    /**
+     * 添加日常缴费信息,并返回主键id
+     * @param dailyPayment 日常缴费信息
+     * @return 影响行数
+     */
+    int insert(DailyPayment dailyPayment);
 }

@@ -1,5 +1,6 @@
 package com.api.service.chargeManagement;
 
+import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.DailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentPush;
 import com.api.model.remind.SysMessage;
@@ -18,4 +19,6 @@ public interface SysDailyPaymentService {
     Map<String, Object> push(DailyPaymentPush dailyPaymentPush);
 
     Map<String, Object> insertOrder(DailyPaymentOrder dailyPaymentOrder);
+
+    Map<String, Object> insert(DailyPayment dailyPayment);
 }

@@ -43,13 +43,13 @@ public class SysDailyPaymentController {
     }
 
     /**
-     * 添加缴费信息 ？？？？？？//原型图上客户名称和联系方式不存在，是否需要？
+     * 添加缴费信息
      * @param dailyPayment 缴费信息
      * @return map
      */
     @PostMapping("/insert")
     public Map<String,Object> insert(@RequestBody DailyPayment dailyPayment){
-        return null;
+        return sysDailyPaymentService.insert(dailyPayment);
     }
 
 
@@ -64,14 +64,14 @@ public class SysDailyPaymentController {
     }
 
 
-    /**
-     * 更新缴费信息 ？？？？
-     * @param dailyPayment 新缴费信息
-     * @return map
-     */
-    public Map<String,Object> update(@RequestBody DailyPayment dailyPayment){
-        return null;
-    }
+//    /**
+//     * 更新缴费信息（如果订单已生成，则不可修改信息）【设计图没有更新】
+//     * @param dailyPayment 新缴费信息
+//     * @return map
+//     */
+//    public Map<String,Object> update(@RequestBody DailyPayment dailyPayment){
+//        return null;
+//    }
 
     /**
      * 人工手动推送日常缴费提醒
@@ -84,7 +84,7 @@ public class SysDailyPaymentController {
     }
 
     /**
-     * 添加日常缴费订单信息（缴费）【未测】（????状态未修改）
+     * 添加日常缴费订单信息（缴费）【打印功能未做】
      * @param dailyPaymentOrder 日常缴费订单信息
      * @return map
      */

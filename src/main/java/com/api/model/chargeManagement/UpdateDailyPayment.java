@@ -11,6 +11,10 @@ public class UpdateDailyPayment {
      */
     private Integer DailyPaymentId;
     /**
+     * 剩余待缴金额
+     */
+    private BigDecimal RemainingPaymentPrice;
+    /**
      * 支付金额
      */
     private BigDecimal payPrice;
@@ -19,6 +23,7 @@ public class UpdateDailyPayment {
     public String toString() {
         return "UpdateDailyPayment{" +
                 "DailyPaymentId=" + DailyPaymentId +
+                ", RemainingPaymentPrice=" + RemainingPaymentPrice +
                 ", payPrice=" + payPrice +
                 '}';
     }
@@ -29,6 +34,14 @@ public class UpdateDailyPayment {
 
     public void setDailyPaymentId(Integer dailyPaymentId) {
         DailyPaymentId = dailyPaymentId;
+    }
+
+    public BigDecimal getRemainingPaymentPrice() {
+        return RemainingPaymentPrice;
+    }
+
+    public void setRemainingPaymentPrice(BigDecimal remainingPaymentPrice) {
+        RemainingPaymentPrice = remainingPaymentPrice;
     }
 
     public BigDecimal getPayPrice() {
@@ -42,8 +55,9 @@ public class UpdateDailyPayment {
     public UpdateDailyPayment() {
     }
 
-    public UpdateDailyPayment(Integer dailyPaymentId, BigDecimal payPrice) {
+    public UpdateDailyPayment(Integer dailyPaymentId, BigDecimal remainingPaymentPrice, BigDecimal payPrice) {
         DailyPaymentId = dailyPaymentId;
+        RemainingPaymentPrice = remainingPaymentPrice;
         this.payPrice = payPrice;
     }
 }

@@ -18,7 +18,7 @@ public class DailyPayment {
     /**
      * 费用名称类型(取自 物业收费标准明细表)
      */
-    private Integer workOrderTypeDetailId;
+    private Integer chargesTemplateDetailId;
     /**
      * 计费开始时间
      */
@@ -60,10 +60,6 @@ public class DailyPayment {
      */
     private Integer status;
     /**
-     * 备注
-     */
-    private String remake;
-    /**
      * 创建人
      */
     private Integer createId;
@@ -89,7 +85,7 @@ public class DailyPayment {
         return "DailyPayment{" +
                 "id=" + id +
                 ", buildingUnitEstateId=" + buildingUnitEstateId +
-                ", workOrderTypeDetailId=" + workOrderTypeDetailId +
+                ", chargesTemplateDetailId=" + chargesTemplateDetailId +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
                 ", unitPrice=" + unitPrice +
@@ -100,7 +96,6 @@ public class DailyPayment {
                 ", totalPrice=" + totalPrice +
                 ", paymentPrice=" + paymentPrice +
                 ", status=" + status +
-                ", remake='" + remake + '\'' +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
@@ -125,12 +120,12 @@ public class DailyPayment {
         this.buildingUnitEstateId = buildingUnitEstateId;
     }
 
-    public Integer getWorkOrderTypeDetailId() {
-        return workOrderTypeDetailId;
+    public Integer getChargesTemplateDetailId() {
+        return chargesTemplateDetailId;
     }
 
-    public void setWorkOrderTypeDetailId(Integer workOrderTypeDetailId) {
-        this.workOrderTypeDetailId = workOrderTypeDetailId;
+    public void setChargesTemplateDetailId(Integer chargesTemplateDetailId) {
+        this.chargesTemplateDetailId = chargesTemplateDetailId;
     }
 
     public Date getBeginDate() {
@@ -213,14 +208,6 @@ public class DailyPayment {
         this.status = status;
     }
 
-    public String getRemake() {
-        return remake;
-    }
-
-    public void setRemake(String remake) {
-        this.remake = remake;
-    }
-
     public Integer getCreateId() {
         return createId;
     }
@@ -264,10 +251,10 @@ public class DailyPayment {
     public DailyPayment() {
     }
 
-    public DailyPayment(Integer id, Integer buildingUnitEstateId, Integer workOrderTypeDetailId, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, String remake, Integer createId, Date createDate, Integer modifyId, Date modifyDate, DailyPaymentOrder dailyPaymentOrder) {
+    public DailyPayment(Integer id, Integer buildingUnitEstateId, Integer chargesTemplateDetailId, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, DailyPaymentOrder dailyPaymentOrder) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
-        this.workOrderTypeDetailId = workOrderTypeDetailId;
+        this.chargesTemplateDetailId = chargesTemplateDetailId;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.unitPrice = unitPrice;
@@ -278,7 +265,6 @@ public class DailyPayment {
         this.totalPrice = totalPrice;
         this.paymentPrice = paymentPrice;
         this.status = status;
-        this.remake = remake;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;

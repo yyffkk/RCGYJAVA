@@ -2,12 +2,9 @@ package com.api.service.chargeManagement.impl;
 
 import com.api.dao.chargeManagement.SysDailyPaymentDao;
 import com.api.dao.remind.RemindDao;
-import com.api.model.chargeManagement.DailyPaymentOrder;
-import com.api.model.chargeManagement.DailyPaymentPush;
-import com.api.model.chargeManagement.UpdateDailyPayment;
+import com.api.model.chargeManagement.*;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
-import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.model.system.SysUser;
 import com.api.service.chargeManagement.SysDailyPaymentService;
 import com.api.vo.chargeManagement.VoDailyPayment;
@@ -16,9 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -129,12 +128,20 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insertOrder(DailyPaymentOrder dailyPaymentOrder) {
         map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
+            //判断支付金额是否超出待缴金额
+            VoFindByIdDailyPayment byId = sysDailyPaymentDao.findById(dailyPaymentOrder.getDailyPaymentId());
+            if (dailyPaymentOrder.getPayPrice().compareTo(byId.getPaymentPrice())  == 1 ){
+                throw new RuntimeException("支付超出待缴金额，请重新支付,待缴金额为："+byId.getPaymentPrice());
+            }
+
+
             //填入创建人
             dailyPaymentOrder.setCreateId(sysUser.getId());
             //填入创建时间
@@ -142,14 +149,18 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             //添加缴费订单信息
             int i = sysDailyPaymentDao.insertOrder(dailyPaymentOrder);
             if (i<=0){
-               throw new RuntimeException("添加缴费订单失败");
+               throw new RuntimeException("添加缴费订单信息失败");
             }
+
+            //获取状态更新信息
             UpdateDailyPayment updateDailyPayment = new UpdateDailyPayment();
+            //填入剩余待缴金额（待缴金额 - 支付金额）
+            updateDailyPayment.setRemainingPaymentPrice(byId.getPaymentPrice().subtract(dailyPaymentOrder.getPayPrice()));
             //填入支付金额
             updateDailyPayment.setPayPrice(dailyPaymentOrder.getPayPrice());
             //填入日常缴费信息主键id
             updateDailyPayment.setDailyPaymentId(dailyPaymentOrder.getDailyPaymentId());
-            //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额(/????状态未修改)
+            //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
             int update = sysDailyPaymentDao.updatePaidPriceAndPaymentPrice(updateDailyPayment);
             if (update <= 0){
                 throw new RuntimeException("修改缴费信息失败");
@@ -172,6 +183,84 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             System.out.println("打印该订单成功");
             map.put("message","缴费并打印成功");
         }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insert(DailyPayment dailyPayment) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        try {
+            //添加创建人id
+            dailyPayment.setCreateId(sysUser.getId());
+            //添加创建人时间
+            dailyPayment.setCreateDate(new Date());
+            //填入已缴金额
+            dailyPayment.setPaidPrice(BigDecimal.ZERO);
+            //填入费用金额(单价*用量)
+            dailyPayment.setCostPrice(dailyPayment.getUnitPrice().multiply(BigDecimal.valueOf(dailyPayment.getNum())));
+            //填入应收总计(费用金额)
+            dailyPayment.setTotalPrice(dailyPayment.getCostPrice());
+            //填入待缴金额
+            dailyPayment.setPaymentPrice(dailyPayment.getCostPrice());
+            //填入状态(1.未缴纳)
+            dailyPayment.setStatus(1);
+            //添加日常缴费信息,并返回主键id
+             int insert = sysDailyPaymentDao.insert(dailyPayment);
+            if (insert <= 0){
+                throw new RuntimeException("添加日常缴费信息失败");
+            }
+            //获取订单信息
+            DailyPaymentOrder dailyPaymentOrder = dailyPayment.getDailyPaymentOrder();
+            if (dailyPaymentOrder != null){
+                //填入创建人
+                dailyPaymentOrder.setCreateId(sysUser.getId());
+                //填入创建时间
+                dailyPaymentOrder.setCreateDate(new Date());
+                //填入日常缴费信息id
+                dailyPaymentOrder.setDailyPaymentId(dailyPayment.getId());
+                //添加缴费订单信息
+                int i = sysDailyPaymentDao.insertOrder(dailyPaymentOrder);
+                if (i<=0){
+                    throw new RuntimeException("添加缴费订单信息失败");
+                }
+
+                //获取状态更新信息
+                UpdateDailyPayment updateDailyPayment = new UpdateDailyPayment();
+                //填入剩余待缴金额（待缴金额 - 支付金额）
+                updateDailyPayment.setRemainingPaymentPrice(dailyPayment.getPaymentPrice().subtract(dailyPaymentOrder.getPayPrice()));
+                //填入支付金额
+                updateDailyPayment.setPayPrice(dailyPaymentOrder.getPayPrice());
+                //填入日常缴费信息主键id
+                updateDailyPayment.setDailyPaymentId(dailyPayment.getId());
+                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
+                int update = sysDailyPaymentDao.updatePaidPriceAndPaymentPrice(updateDailyPayment);
+                if (update <= 0){
+                    throw new RuntimeException("修改缴费信息失败");
+                }
+
+                //如果为1，则打印该订单信息
+                if (dailyPayment.getDailyPaymentOrder().getIsPrinting() == 1){
+                    System.out.println("打印该订单成功");
+                    map.put("message","缴费并打印成功");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","操作成功");
+        map.put("status",true);
         return map;
     }
 }
