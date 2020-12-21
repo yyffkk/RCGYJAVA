@@ -1,5 +1,7 @@
 package com.api.controller.butlerService;
 
+import com.api.model.butlerService.CancelWorkOrder;
+import com.api.model.butlerService.RevisitWorkOrder;
 import com.api.model.butlerService.SearchDispatchList;
 import com.api.service.butlerService.SysDispatchListService;
 import com.api.vo.butlerService.VoDispatchList;
@@ -39,6 +41,46 @@ public class SysDispatchListController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 假删除工单
+     * @param id 订单
+     * @return map
+     */
+    @GetMapping("/falseDelete")
+    public Map<String,Object> falseDelete(Integer id){
+        return sysDispatchListService.falseDelete(id);
+    }
+
+    /**
+     * 作废工单
+     * @param cancelWorkOrder 作废原因
+     * @return map
+     */
+    @GetMapping("/cancel")
+    public Map<String,Object> cancel(CancelWorkOrder cancelWorkOrder){
+        return sysDispatchListService.cancel(cancelWorkOrder);
+    }
+
+
+    /**
+     * 回访
+     * @param revisitWorkOrder 回访信息
+     * @return map
+     */
+    @GetMapping("/revisit")
+    public Map<String,Object> revisit(RevisitWorkOrder revisitWorkOrder){
+        return sysDispatchListService.revisit(revisitWorkOrder);
+    }
+
+    /**
+     * 回退
+     * @param id 主键id
+     * @return map
+     */
+    public Map<String,Object> rollback(Integer id){
+        return null;
     }
 
 }

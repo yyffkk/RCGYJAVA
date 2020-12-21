@@ -119,7 +119,7 @@ public class SysAutoRemind {
     //10秒执行一次，测试专用
 //    @Scheduled(cron = "0/10 * * * * ?")
     private void sysDailyPaymentRemind() {
-        System.out.println("【每日定时检查任务】 每到月初就执行一次日常缴费提醒！");
+        System.out.println("【每日定时检查任务】 每到月初（1号）就执行一次日常缴费提醒！");
 
         //获取当前时间
         Calendar now = Calendar.getInstance();

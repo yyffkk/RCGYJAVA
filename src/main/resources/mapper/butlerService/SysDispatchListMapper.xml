@@ -12,4 +12,29 @@
         ) as a LEFT JOIN sys_dispatch_list_detail as sdld
         on sdld.dispatch_list_id = a.id
     </select>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_dispatch_list set sys_delete = 0
+        where id = #{id}
+    </update>
+
+    <update id="cancel" parameterType="com.api.model.butlerService.CancelWorkOrder">
+        update sys_dispatch_list
+        <set>
+            status = 7,
+            <if test="content != null and content != ''">
+                cancel_detail = #{content},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="revisit" parameterType="com.api.model.butlerService.RevisitWorkOrder">
+        update sys_dispatch_list
+        <set>
+            revisit_date = #{revisitDate},
+            revisit_detail = #{content},
+        </set>
+        where id =#{id}
+    </update>
 </mapper>
