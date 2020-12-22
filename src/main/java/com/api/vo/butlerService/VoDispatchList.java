@@ -13,7 +13,7 @@ public class VoDispatchList {
     /**
      * 工单类型（取自工单类型管理）
      */
-    private Integer workOrderType;
+    private String workOrderTypeName;
     /**
      * 工单号
      */
@@ -71,7 +71,7 @@ public class VoDispatchList {
     public String toString() {
         return "VoDispatchList{" +
                 "id=" + id +
-                ", workOrderType=" + workOrderType +
+                ", workOrderTypeName='" + workOrderTypeName + '\'' +
                 ", code='" + code + '\'' +
                 ", status=" + status +
                 ", dispatchDate=" + dispatchDate +
@@ -96,12 +96,12 @@ public class VoDispatchList {
         this.id = id;
     }
 
-    public Integer getWorkOrderType() {
-        return workOrderType;
+    public String getWorkOrderTypeName() {
+        return workOrderTypeName;
     }
 
-    public void setWorkOrderType(Integer workOrderType) {
-        this.workOrderType = workOrderType;
+    public void setWorkOrderTypeName(String workOrderTypeName) {
+        this.workOrderTypeName = workOrderTypeName;
     }
 
     public String getCode() {
@@ -211,9 +211,9 @@ public class VoDispatchList {
     public VoDispatchList() {
     }
 
-    public VoDispatchList(Integer id, Integer workOrderType, String code, Integer status, Date dispatchDate, Integer workOrderTimeLimit, String createName, String tel, String operatorName, String roomName, String reportDetail, String remake, Date beginDate, Date revisitDate, String revisitDetail) {
+    public VoDispatchList(Integer id, String workOrderTypeName, String code, Integer status, Date dispatchDate, Integer workOrderTimeLimit, String createName, String tel, String operatorName, String roomName, String reportDetail, String remake, Date beginDate, Date revisitDate, String revisitDetail) {
         this.id = id;
-        this.workOrderType = workOrderType;
+        this.workOrderTypeName = workOrderTypeName;
         this.code = code;
         this.status = status;
         this.dispatchDate = dispatchDate;

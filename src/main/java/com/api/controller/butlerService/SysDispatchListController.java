@@ -1,16 +1,17 @@
 package com.api.controller.butlerService;
 
+import com.api.dao.butlerService.SysDispatchListDao;
 import com.api.model.butlerService.CancelWorkOrder;
 import com.api.model.butlerService.RevisitWorkOrder;
 import com.api.model.butlerService.SearchDispatchList;
+import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.service.butlerService.SysDispatchListService;
 import com.api.vo.butlerService.VoDispatchList;
 import com.api.vo.butlerService.VoGambit;
+import com.api.vo.butlerService.VoRepair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -79,8 +80,31 @@ public class SysDispatchListController {
      * @param id 主键id
      * @return map
      */
+    @GetMapping("/rollback")
     public Map<String,Object> rollback(Integer id){
-        return null;
+        return sysDispatchListService.rollback(id);
+    }
+
+
+    /**
+     * 派工
+     * @param sysDispatchListDetail 派工单详情信息
+     * @return map
+     */
+    @PostMapping("/dispatch")
+    public Map<String,Object> dispatch(@RequestBody SysDispatchListDetail sysDispatchListDetail){
+        return sysDispatchListService.dispatch(sysDispatchListDetail);
+    }
+
+
+    /**
+     * 报修工单详情
+     * @param id 工单主键id
+     * @return map
+     */
+    @GetMapping("/repairWorkOrderDetail")
+    public Map<String,Object> repairWorkOrderDetail(Integer id){
+        return sysDispatchListService.repairWorkOrderDetail(id);
     }
 
 }

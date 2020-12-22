@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.dao.butlerService.SysProcessRecordDao">
+    <insert id="insert" parameterType="com.api.model.butlerService.ProcessRecord">
+        insert into sys_process_record(
+            dispatch_list_id,
+            operation_date,
+            operation_type,
+            operator,
+            operator_type,
+            operator_content
+        ) values (
+            #{dispatchListId},
+            #{operationDate},
+            #{operationType},
+            #{operator},
+            #{operatorType},
+            #{operatorContent}
+        )
+    </insert>
+
+    <select id="findByDispatchListId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoProcessRecord">
+    select *,(
+    CASE operator_type
+    WHEN 1 THEN
+        (select name from user_resident where id = operator)
+    WHEN 2 THEN
+		(select actual_name from sys_user where id = operator)
+	WHEN 3 THEN
+		(select actual_name from sys_user where id = operator)
+    END
+    ) as operator_name
+    from sys_process_record
+    where dispatch_list_id = #{id} order by operation_date desc
+    </select>
+</mapper>

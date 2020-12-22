@@ -54,6 +54,18 @@ public class SearchDispatchList {
      * 派工时间结束
      */
     private Date dispatchTimeEnd;
+    /**
+     * 房间号
+     */
+    private String roomNumber;
+    /**
+     * 单元号
+     */
+    private Integer unitNo;
+    /**
+     * 楼栋编号
+     */
+    private Integer estateNo;
 
     @Override
     public String toString() {
@@ -70,6 +82,9 @@ public class SearchDispatchList {
                 ", beginDateEnd=" + beginDateEnd +
                 ", dispatchTimeStart=" + dispatchTimeStart +
                 ", dispatchTimeEnd=" + dispatchTimeEnd +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", unitNo=" + unitNo +
+                ", estateNo=" + estateNo +
                 '}';
     }
 
@@ -169,10 +184,34 @@ public class SearchDispatchList {
         this.dispatchTimeEnd = dispatchTimeEnd;
     }
 
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public Integer getUnitNo() {
+        return unitNo;
+    }
+
+    public void setUnitNo(Integer unitNo) {
+        this.unitNo = unitNo;
+    }
+
+    public Integer getEstateNo() {
+        return estateNo;
+    }
+
+    public void setEstateNo(Integer estateNo) {
+        this.estateNo = estateNo;
+    }
+
     public SearchDispatchList() {
     }
 
-    public SearchDispatchList(int pageNum, int size, String code, Integer type, String roomName, Integer workOrderTimeId, String distributorName, String operatorName, Date beginDateStart, Date beginDateEnd, Date dispatchTimeStart, Date dispatchTimeEnd) {
+    public SearchDispatchList(int pageNum, int size, String code, Integer type, String roomName, Integer workOrderTimeId, String distributorName, String operatorName, Date beginDateStart, Date beginDateEnd, Date dispatchTimeStart, Date dispatchTimeEnd, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
         this.code = code;
@@ -185,5 +224,8 @@ public class SearchDispatchList {
         this.beginDateEnd = beginDateEnd;
         this.dispatchTimeStart = dispatchTimeStart;
         this.dispatchTimeEnd = dispatchTimeEnd;
+        this.roomNumber = roomNumber;
+        this.unitNo = unitNo;
+        this.estateNo = estateNo;
     }
 }

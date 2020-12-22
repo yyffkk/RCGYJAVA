@@ -3,7 +3,7 @@ package com.api.controller.butlerService;
 import com.api.model.butlerService.ReportRepair;
 import com.api.model.butlerService.SearchReportRepair;
 import com.api.service.butlerService.SysReportRepairService;
-import com.api.vo.butlerService.VoBorrow;
+import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,6 +44,15 @@ public class SysReportRepairController {
     }
 
 
+    /**
+     * 查询报修详情
+     * @param id 工单主键id
+     * @return 报修详情
+     */
+    @GetMapping("/findRepairDetail")
+    public VoRepair findRepairDetail(Integer id){
+        return sysReportRepairService.findRepairDetail(id);
+    }
 
     /**
      * 添加报事报修信息（原型图有问题）
@@ -52,9 +61,7 @@ public class SysReportRepairController {
      */
     @PostMapping("/insert")
     public Map<String,Object> insert(ReportRepair reportRepair){
-        return null;
+        return sysReportRepairService.insert(reportRepair);
     }
-
-
 
 }

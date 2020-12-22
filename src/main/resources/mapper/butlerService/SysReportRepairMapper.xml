@@ -54,4 +54,18 @@
         </where>
     </select>
 
+    <select id="findRepairDetail" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoRepair">
+        select srr.*,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,ur.name as repair_name,ur.tel
+        from sys_report_repair as srr,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        where srr.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and ur.id = srr.repairman and srr.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.ReportRepair">
+        insert into sys_report_repair(
+
+        ) values (
+
+        )
+    </insert>
+
 </mapper>
