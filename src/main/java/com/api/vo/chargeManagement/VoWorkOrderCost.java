@@ -1,24 +1,36 @@
-package com.api.model.chargeManagement;
+package com.api.vo.chargeManagement;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 日常缴费 信息model
+ * 工单费用Vo list 回显
  */
-public class DailyPayment {
+public class VoWorkOrderCost {
     /**
      * 主键id
      */
     private Integer id;
     /**
-     * 房产id
+     * 费用名称
      */
-    private Integer buildingUnitEstateId;
+    private String name;
     /**
-     * 费用名称类型(取自 物业收费标准明细表)
+     * 费用单号（工单表中的工单号）
      */
-    private Integer chargesTemplateDetailId;
+    private String dispatchListCode;
+    /**
+     * 工单主键id
+     */
+    private Integer dispatchListId;
+    /**
+     * 交易号（缴费订单表的支付单号）
+     */
+    private String orderCode;
+    /**
+     * 房屋信息
+     */
+    private String roomName;
     /**
      * 计费开始时间
      */
@@ -32,7 +44,7 @@ public class DailyPayment {
      */
     private BigDecimal unitPrice;
     /**
-     * 计费单位
+     * 计费单位(数据字典取)
      */
     private Integer type;
     /**
@@ -60,36 +72,27 @@ public class DailyPayment {
      */
     private Integer status;
     /**
+     * 备注（订单中的备注信息）
+     */
+    private String remake;
+    /**
      * 创建人
      */
-    private Integer createId;
+    private String createName;
     /**
-     * 创建时间
+     * 更新时间
      */
-    private Date createDate;
-    /**
-     * 修改人
-     */
-    private Integer modifyId;
-    /**
-     * 修改时间
-     */
-    private Date modifyDate;
-    /**
-     * 是否删除，0.删除 1.非删
-     */
-    private Integer isDelete;
-    /**
-     * 日常缴费订单信息
-     */
-    private DailyPaymentOrder dailyPaymentOrder;
+    private Date updateDate;
 
     @Override
     public String toString() {
-        return "DailyPayment{" +
+        return "VoWorkOrderCost{" +
                 "id=" + id +
-                ", buildingUnitEstateId=" + buildingUnitEstateId +
-                ", chargesTemplateDetailId=" + chargesTemplateDetailId +
+                ", name='" + name + '\'' +
+                ", dispatchListCode='" + dispatchListCode + '\'' +
+                ", dispatchListId=" + dispatchListId +
+                ", orderCode='" + orderCode + '\'' +
+                ", roomName='" + roomName + '\'' +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
                 ", unitPrice=" + unitPrice +
@@ -100,12 +103,9 @@ public class DailyPayment {
                 ", totalPrice=" + totalPrice +
                 ", paymentPrice=" + paymentPrice +
                 ", status=" + status +
-                ", createId=" + createId +
-                ", createDate=" + createDate +
-                ", modifyId=" + modifyId +
-                ", modifyDate=" + modifyDate +
-                ", isDelete=" + isDelete +
-                ", dailyPaymentOrder=" + dailyPaymentOrder +
+                ", remake='" + remake + '\'' +
+                ", createName='" + createName + '\'' +
+                ", updateDate=" + updateDate +
                 '}';
     }
 
@@ -117,20 +117,44 @@ public class DailyPayment {
         this.id = id;
     }
 
-    public Integer getBuildingUnitEstateId() {
-        return buildingUnitEstateId;
+    public String getName() {
+        return name;
     }
 
-    public void setBuildingUnitEstateId(Integer buildingUnitEstateId) {
-        this.buildingUnitEstateId = buildingUnitEstateId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getChargesTemplateDetailId() {
-        return chargesTemplateDetailId;
+    public String getDispatchListCode() {
+        return dispatchListCode;
     }
 
-    public void setChargesTemplateDetailId(Integer chargesTemplateDetailId) {
-        this.chargesTemplateDetailId = chargesTemplateDetailId;
+    public void setDispatchListCode(String dispatchListCode) {
+        this.dispatchListCode = dispatchListCode;
+    }
+
+    public Integer getDispatchListId() {
+        return dispatchListId;
+    }
+
+    public void setDispatchListId(Integer dispatchListId) {
+        this.dispatchListId = dispatchListId;
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public Date getBeginDate() {
@@ -213,61 +237,40 @@ public class DailyPayment {
         this.status = status;
     }
 
-    public Integer getCreateId() {
-        return createId;
+    public String getRemake() {
+        return remake;
     }
 
-    public void setCreateId(Integer createId) {
-        this.createId = createId;
+    public void setRemake(String remake) {
+        this.remake = remake;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getCreateName() {
+        return createName;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateName(String createName) {
+        this.createName = createName;
     }
 
-    public Integer getModifyId() {
-        return modifyId;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setModifyId(Integer modifyId) {
-        this.modifyId = modifyId;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
-    public Date getModifyDate() {
-        return modifyDate;
+    public VoWorkOrderCost() {
     }
 
-    public void setModifyDate(Date modifyDate) {
-        this.modifyDate = modifyDate;
-    }
-
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public DailyPaymentOrder getDailyPaymentOrder() {
-        return dailyPaymentOrder;
-    }
-
-    public void setDailyPaymentOrder(DailyPaymentOrder dailyPaymentOrder) {
-        this.dailyPaymentOrder = dailyPaymentOrder;
-    }
-
-    public DailyPayment() {
-    }
-
-    public DailyPayment(Integer id, Integer buildingUnitEstateId, Integer chargesTemplateDetailId, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, DailyPaymentOrder dailyPaymentOrder) {
+    public VoWorkOrderCost(Integer id, String name, String dispatchListCode, Integer dispatchListId, String orderCode, String roomName, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, String remake, String createName, Date updateDate) {
         this.id = id;
-        this.buildingUnitEstateId = buildingUnitEstateId;
-        this.chargesTemplateDetailId = chargesTemplateDetailId;
+        this.name = name;
+        this.dispatchListCode = dispatchListCode;
+        this.dispatchListId = dispatchListId;
+        this.orderCode = orderCode;
+        this.roomName = roomName;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.unitPrice = unitPrice;
@@ -278,11 +281,8 @@ public class DailyPayment {
         this.totalPrice = totalPrice;
         this.paymentPrice = paymentPrice;
         this.status = status;
-        this.createId = createId;
-        this.createDate = createDate;
-        this.modifyId = modifyId;
-        this.modifyDate = modifyDate;
-        this.isDelete = isDelete;
-        this.dailyPaymentOrder = dailyPaymentOrder;
+        this.remake = remake;
+        this.createName = createName;
+        this.updateDate = updateDate;
     }
 }

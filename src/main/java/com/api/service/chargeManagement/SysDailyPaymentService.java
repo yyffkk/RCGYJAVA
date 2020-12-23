@@ -7,6 +7,7 @@ import com.api.model.remind.SysMessage;
 import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
+import com.api.vo.chargeManagement.VoPayResident;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,6 @@ public interface SysDailyPaymentService {
     Map<String, Object> insertOrder(DailyPaymentOrder dailyPaymentOrder);
 
     Map<String, Object> insert(DailyPayment dailyPayment);
+
+    VoPayResident findResidentByEstateId(Integer id);
 }

@@ -89,4 +89,11 @@ public interface SysDispatchListDao {
      * @return 影响行数
      */
     int insert(DispatchList dispatchList);
+
+    /**
+     * 根据缴费主键id查询费用单号（工单号）和工单主键id
+     * @param id 缴费主键id
+     * @return 费用单号（工单号）和工单主键id信息
+     */
+    VoFindCodeAndIdSDPI findCodeAndIdBySDPI(Integer id);
 }

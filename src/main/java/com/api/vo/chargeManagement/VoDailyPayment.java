@@ -8,6 +8,10 @@ import java.util.Date;
  */
 public class VoDailyPayment {
     /**
+     * 缴费主键id
+     */
+    private Integer id;
+    /**
      * 费用名称
      */
     private String name;
@@ -56,7 +60,7 @@ public class VoDailyPayment {
      */
     private Integer status;
     /**
-     * 备注
+     * 备注（订单中的备注信息）
      */
     private String remake;
     /**
@@ -83,7 +87,8 @@ public class VoDailyPayment {
     @Override
     public String toString() {
         return "VoDailyPayment{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", roomName='" + roomName + '\'' +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
@@ -102,6 +107,14 @@ public class VoDailyPayment {
                 ", unitNo=" + unitNo +
                 ", estateNo=" + estateNo +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -251,7 +264,8 @@ public class VoDailyPayment {
     public VoDailyPayment() {
     }
 
-    public VoDailyPayment(String name, String roomName, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, String remake, String createName, Date updateDate, String roomNumber, Integer unitNo, Integer estateNo) {
+    public VoDailyPayment(Integer id, String name, String roomName, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, String remake, String createName, Date updateDate, String roomNumber, Integer unitNo, Integer estateNo) {
+        this.id = id;
         this.name = name;
         this.roomName = roomName;
         this.beginDate = beginDate;

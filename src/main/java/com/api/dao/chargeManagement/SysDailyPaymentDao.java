@@ -6,9 +6,11 @@ import com.api.model.chargeManagement.UpdateDailyPayment;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.chargeManagement.SearchDailyPayment;
+import com.api.vo.basicArchives.VoUserResident;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
+import com.api.vo.chargeManagement.VoPayResident;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -55,4 +57,18 @@ public interface SysDailyPaymentDao {
      * @return 影响行数
      */
     int insert(DailyPayment dailyPayment);
+
+    /**
+     * 根据缴费主键id查询缴费订单支付单号
+     * @param id 缴费主键id
+     * @return 缴费订单支付单号
+     */
+    String findOrderCodeBySDPI(Integer id);
+
+    /**
+     * 根据房产id查询待缴费人信息
+     * @param id 房产id
+     * @return 待缴费人信息
+     */
+    VoPayResident findResidentByEstateId(Integer id);
 }

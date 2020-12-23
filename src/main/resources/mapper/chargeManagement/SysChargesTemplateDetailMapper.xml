@@ -38,7 +38,8 @@
                 other_fee,
             </if>
             create_id,
-            create_date
+            create_date,
+            marker
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -54,7 +55,8 @@
                 #{otherFee},
             </if>
             #{createId},
-            #{createDate}
+            #{createDate},
+            #{marker}
         </trim>
     </insert>
 

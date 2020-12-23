@@ -7,8 +7,10 @@ import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.system.SysUser;
 import com.api.service.chargeManagement.SysDailyPaymentService;
+import com.api.vo.basicArchives.VoUserResident;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
+import com.api.vo.chargeManagement.VoPayResident;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -208,6 +210,8 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             dailyPayment.setPaymentPrice(dailyPayment.getCostPrice());
             //填入状态(1.未缴纳)
             dailyPayment.setStatus(1);
+            //填入是否删除，0.删除 1.非删
+            dailyPayment.setIsDelete(1);
             //添加日常缴费信息,并返回主键id
              int insert = sysDailyPaymentDao.insert(dailyPayment);
             if (insert <= 0){
@@ -262,5 +266,11 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
         map.put("message","操作成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public VoPayResident findResidentByEstateId(Integer id) {
+        //根据房产id查询待缴费人信息
+        return sysDailyPaymentDao.findResidentByEstateId(id);
     }
 }

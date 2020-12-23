@@ -46,6 +46,8 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
         sysChargesTemplateDetail.setCreateId(sysUser.getId());
         //填入创建时间
         sysChargesTemplateDetail.setCreateDate(new Date());
+        //添加标记符 1.日常缴费
+        sysChargesTemplateDetail.setMarker(1);
         //添加物业收费标准明细信息
         int insert = sysChargesTemplateDetailDao.insert(sysChargesTemplateDetail);
         if (insert >0) {

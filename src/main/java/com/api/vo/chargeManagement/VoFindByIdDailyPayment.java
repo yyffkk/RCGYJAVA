@@ -27,10 +27,10 @@ public class VoFindByIdDailyPayment {
      * 费用名称
      */
     private String chargesTemplateDetailName;
-//    /**
-//     * 费用类型名称
-//     */
-//    private String workOrderTypeName;
+    /**
+     * 费用类型名称（1.物业管理费，2.维修费（报事报修 唯一））
+     */
+    private Integer workOrderType;
     /**
      * 计费开始时间
      */
@@ -72,6 +72,7 @@ public class VoFindByIdDailyPayment {
                 ", customerName='" + customerName + '\'' +
                 ", totalPrice=" + totalPrice +
                 ", chargesTemplateDetailName='" + chargesTemplateDetailName + '\'' +
+                ", workOrderType=" + workOrderType +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
                 ", costPrice=" + costPrice +
@@ -121,6 +122,14 @@ public class VoFindByIdDailyPayment {
 
     public void setChargesTemplateDetailName(String chargesTemplateDetailName) {
         this.chargesTemplateDetailName = chargesTemplateDetailName;
+    }
+
+    public Integer getWorkOrderType() {
+        return workOrderType;
+    }
+
+    public void setWorkOrderType(Integer workOrderType) {
+        this.workOrderType = workOrderType;
     }
 
     public Date getBeginDate() {
@@ -190,12 +199,13 @@ public class VoFindByIdDailyPayment {
     public VoFindByIdDailyPayment() {
     }
 
-    public VoFindByIdDailyPayment(Integer id, String roomName, String customerName, BigDecimal totalPrice, String chargesTemplateDetailName, Date beginDate, Date endDate, BigDecimal costPrice, BigDecimal unitPrice, Integer type, Integer num, BigDecimal paidPrice, BigDecimal paymentPrice) {
+    public VoFindByIdDailyPayment(Integer id, String roomName, String customerName, BigDecimal totalPrice, String chargesTemplateDetailName, Integer workOrderType, Date beginDate, Date endDate, BigDecimal costPrice, BigDecimal unitPrice, Integer type, Integer num, BigDecimal paidPrice, BigDecimal paymentPrice) {
         this.id = id;
         this.roomName = roomName;
         this.customerName = customerName;
         this.totalPrice = totalPrice;
         this.chargesTemplateDetailName = chargesTemplateDetailName;
+        this.workOrderType = workOrderType;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.costPrice = costPrice;

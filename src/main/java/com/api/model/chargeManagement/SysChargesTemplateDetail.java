@@ -47,6 +47,10 @@ public class SysChargesTemplateDetail {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 标记符（1.日常缴费，2.报事报修（唯一））
+     */
+    private Integer marker;
 
     @Override
     public String toString() {
@@ -61,6 +65,7 @@ public class SysChargesTemplateDetail {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", marker=" + marker +
                 '}';
     }
 
@@ -144,10 +149,18 @@ public class SysChargesTemplateDetail {
         this.modifyDate = modifyDate;
     }
 
+    public Integer getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Integer marker) {
+        this.marker = marker;
+    }
+
     public SysChargesTemplateDetail() {
     }
 
-    public SysChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public SysChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer marker) {
         this.id = id;
         this.chargesTemplateId = chargesTemplateId;
         this.name = name;
@@ -158,5 +171,6 @@ public class SysChargesTemplateDetail {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.marker = marker;
     }
 }

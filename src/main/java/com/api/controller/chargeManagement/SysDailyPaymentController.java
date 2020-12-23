@@ -7,6 +7,7 @@ import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.service.chargeManagement.SysDailyPaymentService;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
+import com.api.vo.chargeManagement.VoPayResident;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -91,6 +92,17 @@ public class SysDailyPaymentController {
     @PostMapping("/insertOrder")
     public Map<String,Object> insertOrder(@RequestBody DailyPaymentOrder dailyPaymentOrder){
         return sysDailyPaymentService.insertOrder(dailyPaymentOrder);
+    }
+
+
+    /**
+     * 根据房产id查询待缴费人信息
+     * @param id 房产id
+     * @return map
+     */
+    @GetMapping("/findResidentByEstateId")
+    public VoPayResident findResidentByEstateId(Integer id){
+        return sysDailyPaymentService.findResidentByEstateId(id);
     }
 
 

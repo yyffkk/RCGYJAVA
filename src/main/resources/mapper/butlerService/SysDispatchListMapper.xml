@@ -159,4 +159,8 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+
+    <select id="findCodeAndIdBySDPI" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindCodeAndIdSDPI">
+        select id,code from sys_dispatch_list where sys_daily_payment_id = #{id}
+    </select>
 </mapper>
