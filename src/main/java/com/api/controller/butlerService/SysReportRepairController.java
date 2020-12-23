@@ -7,10 +7,7 @@ import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -55,12 +52,12 @@ public class SysReportRepairController {
     }
 
     /**
-     * 添加报事报修信息（原型图有问题）
+     * 添加报事报修信息
      * @param reportRepair 报事报修信息
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(ReportRepair reportRepair){
+    public Map<String,Object> insert(@RequestBody ReportRepair reportRepair){
         return sysReportRepairService.insert(reportRepair);
     }
 

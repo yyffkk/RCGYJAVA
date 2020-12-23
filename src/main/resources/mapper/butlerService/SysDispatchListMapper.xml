@@ -117,6 +117,9 @@
             #{createId},
             #{createDate}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <select id="findDispatchDetail" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoDispatch">
@@ -152,5 +155,8 @@
             #{userDelete},
             #{sysDelete}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 </mapper>

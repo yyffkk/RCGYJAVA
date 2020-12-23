@@ -45,7 +45,7 @@ public class ReportRepair {
     /**
      * 报修地点（房产id）
      */
-    private Integer building_unit_estate_id;
+    private Integer buildingUnitEstateId;
     /**
      * 报修来源(1.业主来电 2.app提交)
      */
@@ -71,7 +71,7 @@ public class ReportRepair {
                 ", tel='" + tel + '\'' +
                 ", repairDate=" + repairDate +
                 ", appointmentTime=" + appointmentTime +
-                ", building_unit_estate_id=" + building_unit_estate_id +
+                ", buildingUnitEstateId=" + buildingUnitEstateId +
                 ", froms=" + froms +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -150,12 +150,12 @@ public class ReportRepair {
         this.appointmentTime = appointmentTime;
     }
 
-    public Integer getBuilding_unit_estate_id() {
-        return building_unit_estate_id;
+    public Integer getBuildingUnitEstateId() {
+        return buildingUnitEstateId;
     }
 
-    public void setBuilding_unit_estate_id(Integer building_unit_estate_id) {
-        this.building_unit_estate_id = building_unit_estate_id;
+    public void setBuildingUnitEstateId(Integer buildingUnitEstateId) {
+        this.buildingUnitEstateId = buildingUnitEstateId;
     }
 
     public Integer getFroms() {
@@ -185,7 +185,7 @@ public class ReportRepair {
     public ReportRepair() {
     }
 
-    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Date appointmentTime, Integer building_unit_estate_id, Integer froms, Integer createId, Date createDate) {
+    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Date appointmentTime, Integer buildingUnitEstateId, Integer froms, Integer createId, Date createDate) {
         this.id = id;
         this.code = code;
         this.dispatchListId = dispatchListId;
@@ -195,7 +195,7 @@ public class ReportRepair {
         this.tel = tel;
         this.repairDate = repairDate;
         this.appointmentTime = appointmentTime;
-        this.building_unit_estate_id = building_unit_estate_id;
+        this.buildingUnitEstateId = buildingUnitEstateId;
         this.froms = froms;
         this.createId = createId;
         this.createDate = createDate;

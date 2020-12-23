@@ -62,9 +62,31 @@
 
     <insert id="insert" parameterType="com.api.model.butlerService.ReportRepair">
         insert into sys_report_repair(
-
+            code,
+            dispatch_list_id,
+            type,
+            repairman,
+            tel,
+            repair_date,
+            building_unit_estate_id,
+            froms,
+            appointment_time,
+            report_detail,
+            create_id,
+            create_date
         ) values (
-
+            #{code},
+            #{dispatchListId},
+            #{type},
+            #{repairman},
+            #{tel},
+            #{repairDate},
+            #{buildingUnitEstateId},
+            #{froms},
+            #{appointmentTime},
+            #{reportDetail},
+            #{createId},
+            #{createDate}
         )
     </insert>
 

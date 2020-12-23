@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -69,16 +70,19 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(ReportRepair reportRepair) {
         map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
+            //生成单号
+            String code = UUID.randomUUID().toString().replaceAll("-", "");
             //先创建报修工单
             DispatchList dispatchList = new DispatchList();
             //填入工单号（UUid随机生成）
-            dispatchList.setCode(UUID.randomUUID().toString().replaceAll("-",""));
+            dispatchList.setCode(code);
             //填入工单类型（取自工单类型管理）
             dispatchList.setWorkOrderType(1);
             //填入状态（1.待分配，2.已分配未接单，3.已分配处理中，4.已处理，5.已确认已完成，6.已关闭，7.已作废）
@@ -97,9 +101,22 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
                 throw new RuntimeException("添加工单信息失败");
             }
             //添加报事报修信息
+            //填入创建人
+            reportRepair.setCreateId(sysUser.getId());
+            //填入创建时间
+            reportRepair.setCreateDate(new Date());
+            //填入报修时间
+            reportRepair.setRepairDate(new Date());
+            //填入单号
+            reportRepair.setCode(code);
+            //填入工单主键id
+            reportRepair.setDispatchListId(dispatchList.getId());
+            //填入报修来源
+            reportRepair.setFroms(1);
+            //添加报事报修信息
             int insert2 = sysReportRepairDao.insert(reportRepair);
             if (insert2 <= 0){
-                throw new RuntimeException("添加工单信息失败");
+                throw new RuntimeException("添加报事报修信息失败");
             }
         } catch (RuntimeException e) {
             //获取抛出的信息

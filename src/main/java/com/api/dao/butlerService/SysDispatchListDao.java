@@ -56,7 +56,7 @@ public interface SysDispatchListDao {
     int updateStatus(UpdateDispatchStatus updateDispatchStatus);
 
     /**
-     * 添加派工单详情信息
+     * 添加派工单详情信息 并返回主键id
      * @param sysDispatchListDetail 派工单详情信息
      * @return 影响行数
      */
@@ -84,7 +84,7 @@ public interface SysDispatchListDao {
     VoRevisit findRevisitById(Integer id);
 
     /**
-     * 添加工单信息
+     * 添加工单信息 并返回主键id
      * @param dispatchList 工单信息
      * @return 影响行数
      */
