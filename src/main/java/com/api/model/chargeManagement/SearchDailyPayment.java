@@ -31,6 +31,10 @@ public class SearchDailyPayment {
      */
     private String payName;
     /**
+     * 状态（1.未缴纳，2.部分缴纳，3.全部缴纳）
+     */
+    private Integer status;
+    /**
      * 房屋信息
      */
     private String roomName;
@@ -60,6 +64,7 @@ public class SearchDailyPayment {
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
                 ", payName='" + payName + '\'' +
+                ", status=" + status +
                 ", roomName='" + roomName + '\'' +
                 ", tel='" + tel + '\'' +
                 ", roomNumber='" + roomNumber + '\'' +
@@ -116,6 +121,14 @@ public class SearchDailyPayment {
         this.payName = payName;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getRoomName() {
         return roomName;
     }
@@ -159,13 +172,14 @@ public class SearchDailyPayment {
     public SearchDailyPayment() {
     }
 
-    public SearchDailyPayment(int pageNum, int size, Integer chargesTemplateDetailId, Date beginDate, Date endDate, String payName, String roomName, String tel, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchDailyPayment(int pageNum, int size, Integer chargesTemplateDetailId, Date beginDate, Date endDate, String payName, Integer status, String roomName, String tel, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
         this.chargesTemplateDetailId = chargesTemplateDetailId;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.payName = payName;
+        this.status = status;
         this.roomName = roomName;
         this.tel = tel;
         this.roomNumber = roomNumber;

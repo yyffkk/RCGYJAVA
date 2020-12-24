@@ -3,12 +3,14 @@ package com.api.service.butlerService.impl;
 import com.api.dao.butlerService.SysDispatchListDao;
 import com.api.dao.butlerService.SysProcessRecordDao;
 import com.api.dao.butlerService.SysReportRepairDao;
+import com.api.dao.chargeManagement.SysHandleCompleteDetailDao;
 import com.api.dao.system.SysUserDao;
 import com.api.model.butlerService.*;
 import com.api.model.system.SysUser;
 import com.api.service.butlerService.SysDispatchListService;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.*;
+import com.api.vo.chargeManagement.VoHandleCompleteDetail;
 import com.api.vo.resources.VoResourcesImg;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -31,6 +33,8 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
     SysProcessRecordDao sysProcessRecordDao;
     @Resource
     SysUserDao sysUserDao;
+    @Resource
+    SysHandleCompleteDetailDao sysHandleCompleteDetailDao;
 
     @Override
     public List<VoDispatchList> list(SearchDispatchList searchDispatchList) {
@@ -313,6 +317,9 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
         //传出处理进程记录
         List<VoProcessRecord> voProcessRecordList = sysProcessRecordDao.findByDispatchListId(id);
         map.put("voProcessRecordList",voProcessRecordList);
+        //传出处理完成情况
+        VoHandleCompleteDetail voHandleCompleteDetail = sysHandleCompleteDetailDao.findByDispatchListId(id);
+        map.put("voHandleCompleteDetail",voHandleCompleteDetail);
         //传出客户评价
         VoEvaluation voEvaluation = sysDispatchListDao.findEvaluationById(id);
         map.put("voEvaluation",voEvaluation);

@@ -1,14 +1,11 @@
 package com.api.controller.butlerService;
 
-import com.api.dao.butlerService.SysDispatchListDao;
 import com.api.model.butlerService.CancelWorkOrder;
 import com.api.model.butlerService.RevisitWorkOrder;
 import com.api.model.butlerService.SearchDispatchList;
 import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.service.butlerService.SysDispatchListService;
 import com.api.vo.butlerService.VoDispatchList;
-import com.api.vo.butlerService.VoGambit;
-import com.api.vo.butlerService.VoRepair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;

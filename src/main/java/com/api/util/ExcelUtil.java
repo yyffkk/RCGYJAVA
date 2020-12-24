@@ -34,7 +34,7 @@ public class ExcelUtil {
         //创建标题
         for(int i=0;i<title.length;i++){
             cell = row.createCell(i);
-            cell.setCellValue(title[i]);
+            cell.setCellValue(new HSSFRichTextString(title[i]));
             cell.setCellStyle(style);
         }
 

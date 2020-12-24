@@ -43,6 +43,9 @@
             <if test="estateNo != null">
                 and a.estate_no like concat('%',#{estateNo},'%')
             </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
         </where>
     </select>
 
@@ -144,4 +147,6 @@
         select ur.* from cpm_resident_estate as cre,user_resident as ur
         where cre.resident_id = ur.id and building_unit_estate_id = #{id} limit 1
     </select>
+
+
 </mapper>
