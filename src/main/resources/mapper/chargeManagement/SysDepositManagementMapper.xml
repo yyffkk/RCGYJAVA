@@ -4,6 +4,182 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.dao.chargeManagement.SysDepositManagementDao">
     <select id="list" parameterType="com.api.model.chargeManagement.SearchDepositManagement" resultType="com.api.vo.chargeManagement.VoDepositManagement">
+        select sdm.*,sctd.name as charges_template_detail_name,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,ur.name as deposit_name,
+            (case sdm.create_id when -1 then ur.name else (select actual_name from sys_user where id = sdm.create_id) end) as create_name,
+            (case sdm.modify_date is null when true then sdm.create_date else sdm.modify_date end) as update_date
+        from sys_deposit_management as sdm,sys_charges_template_detail as sctd
+            ,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        <where>
+            sdm.charges_template_detail_id = sctd.id
+            and sdm.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id  = cbu.id
+            and cbu.building_id = cb.id
+            and sdm.resident_id = ur.id
+            <if test="chargesTemplateDetailId != null and chargesTemplateDetailId != ''">
+                and sdm.charges_template_detail_id = #{chargesTemplateDetailId}
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                and cbue.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="unitNo != null">
+                and cbu.no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="estateNo != null">
+                and cb.no like concat('%',#{estateNo},'%')
+            </if>
+            <if test="payDateStart != null">
+                and sdm.pay_date <![CDATA[ > ]]> #{payDateStart}
+            </if>
+            <if test="payDateEnd != null">
+                and sdm.pay_date <![CDATA[ < ]]> #{payDateEnd}
+            </if>
+            <if test="depositName != null and depositName != ''">
+                and ur.name like concat('%',#{depositName},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and sdm.tel like concat('%',#{tel},'%')
+            </if>
+            <if test="status != null">
+                and sdm.status = #{status}
+            </if>
+            <if test="froms != null">
+                and sdm.froms = #{froms}
+            </if>
+            and sdm.is_delete = 1
+        </where>
+    </select>
 
+    <select id="findOrderCodeByDMI" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select code from sys_deposit_management_refund_order
+        where deposit_management_id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.chargeManagement.SysDepositManagement">
+        insert into sys_deposit_management(
+            user_decoration_id,
+            charges_template_detail_id,
+            building_unit_estate_id,
+            resident_id,
+            tel,
+            pay_date,
+            deposit_price,
+            status,
+            froms,
+            pay_type,
+            renovation_date_start,
+            renovation_date_end,
+            remake,
+            create_id,
+            create_date,
+            is_delete
+        ) values (
+            #{userDecorationId},
+            #{chargesTemplateDetailId},
+            #{buildingUnitEstateId},
+            #{residentId},
+            #{tel},
+            #{payDate},
+            #{depositPrice},
+            #{status},
+            #{froms},
+            #{payType},
+            #{renovationDateStart},
+            #{renovationDateEnd},
+            #{remake},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+    </insert>
+
+    <select id="countByUDId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_deposit_management where user_decoration_id = #{id}
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoFindByIdDepositManagement">
+        select sdm.*,cbue.id as estate_id,cbu.id as unit_id,cb.id as building_id,ur.name as resident_name
+        from sys_deposit_management as sdm,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        where sdm.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and sdm.resident_id = ur.id and sdm.id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.chargeManagement.SysDepositManagement">
+        update sys_deposit_management
+        <set>
+            <if test="chargesTemplateDetailId != null">
+                charges_template_detail_id = #{chargesTemplateDetailId},
+            </if>
+            <if test="buildingUnitEstateId != null">
+                building_unit_estate_id = #{buildingUnitEstateId},
+            </if>
+            <if test="residentId != null">
+                resident_id = #{residentId},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="payDate != null">
+                pay_date = #{payDate},
+            </if>
+            <if test="froms != null">
+                froms = #{froms},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType},
+            </if>
+            <if test="renovationDateStart != null">
+                renovation_date_start = #{renovationDateStart},
+            </if>
+            <if test="renovationDateEnd != null">
+                renovation_date_end = #{renovationDateEnd},
+            </if>
+            <if test="remake != null and remake != ''">
+                remake = #{remake},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate},
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_deposit_management set is_delete = 0
+    </update>
+
+    <select id="refundDecorationDetail" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoRefundDecorationDetail">
+        select sdm.id,ud.status,ud.is_qualified
+        from sys_deposit_management as sdm,user_decoration as ud
+        where sdm.building_unit_estate_id = ud.building_unit_estate_id and sdm.id = #{id}
+    </select>
+
+    <insert id="refund" parameterType="com.api.model.chargeManagement.SysDepositManagementOrder">
+        insert into sys_deposit_management_refund_order (
+            deposit_management_id,
+            code,
+            deposit_price,
+            deposit_deduction,
+            refund_type,
+            refund_date,
+            refund_price,
+            create_id,
+            create_date
+        ) values (
+            #{depositManagementId},
+            #{code},
+            #{depositPrice},
+            #{depositDeduction},
+            #{refundType},
+            #{refundDate},
+            #{refundPrice},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="updateStatusById" parameterType="java.lang.Integer">
+        update sys_deposit_management set status = 2 where id =#{id}
+    </update>
+
+    <select id="countOrderByDMI" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_deposit_management_refund_order where deposit_management_id = #{id}
     </select>
 </mapper>

@@ -141,4 +141,8 @@
         select count(*) from user_decoration where status = 1
     </select>
 
+    <select id="findIdByEstateId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from user_decoration where building_unit_estate_id = #{id} and status = 1
+    </select>
+
 </mapper>

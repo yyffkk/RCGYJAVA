@@ -121,4 +121,11 @@ public interface UserDecorationDao {
      * @return 未执行的家庭装修数量
      */
     Integer countPerformed();
+
+    /**
+     * 当装修状态为未开始，根据房产id查询装修id
+     * @param buildingUnitEstateId 房产id
+     * @return 装修id
+     */
+    Integer findIdByEstateId(Integer buildingUnitEstateId);
 }

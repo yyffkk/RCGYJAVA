@@ -15,9 +15,9 @@ public class SearchDepositManagement {
      */
     private int size;
     /**
-     * 费用名称
+     * 费用名称id
      */
-    private String chargesTemplateDetailName;
+    private Integer chargesTemplateDetailId;
     /**
      * 房屋信息
      */
@@ -38,6 +38,10 @@ public class SearchDepositManagement {
      * 联系方式
      */
     private String tel;
+    /**
+     * 状态 1.未退，2.已退
+     */
+    private Integer status;
     /**
      * 来源（1.app,2.线下）
      */
@@ -60,12 +64,13 @@ public class SearchDepositManagement {
         return "SearchDepositManagement{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
-                ", chargesTemplateDetailName='" + chargesTemplateDetailName + '\'' +
+                ", chargesTemplateDetailId=" + chargesTemplateDetailId +
                 ", roomName='" + roomName + '\'' +
                 ", payDateStart=" + payDateStart +
                 ", payDateEnd=" + payDateEnd +
                 ", depositName='" + depositName + '\'' +
                 ", tel='" + tel + '\'' +
+                ", status=" + status +
                 ", froms=" + froms +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", unitNo=" + unitNo +
@@ -89,12 +94,12 @@ public class SearchDepositManagement {
         this.size = size;
     }
 
-    public String getChargesTemplateDetailName() {
-        return chargesTemplateDetailName;
+    public Integer getChargesTemplateDetailId() {
+        return chargesTemplateDetailId;
     }
 
-    public void setChargesTemplateDetailName(String chargesTemplateDetailName) {
-        this.chargesTemplateDetailName = chargesTemplateDetailName;
+    public void setChargesTemplateDetailId(Integer chargesTemplateDetailId) {
+        this.chargesTemplateDetailId = chargesTemplateDetailId;
     }
 
     public String getRoomName() {
@@ -137,6 +142,14 @@ public class SearchDepositManagement {
         this.tel = tel;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public Integer getFroms() {
         return froms;
     }
@@ -172,15 +185,16 @@ public class SearchDepositManagement {
     public SearchDepositManagement() {
     }
 
-    public SearchDepositManagement(int pageNum, int size, String chargesTemplateDetailName, String roomName, Date payDateStart, Date payDateEnd, String depositName, String tel, Integer froms, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchDepositManagement(int pageNum, int size, Integer chargesTemplateDetailId, String roomName, Date payDateStart, Date payDateEnd, String depositName, String tel, Integer status, Integer froms, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
-        this.chargesTemplateDetailName = chargesTemplateDetailName;
+        this.chargesTemplateDetailId = chargesTemplateDetailId;
         this.roomName = roomName;
         this.payDateStart = payDateStart;
         this.payDateEnd = payDateEnd;
         this.depositName = depositName;
         this.tel = tel;
+        this.status = status;
         this.froms = froms;
         this.roomNumber = roomNumber;
         this.unitNo = unitNo;
