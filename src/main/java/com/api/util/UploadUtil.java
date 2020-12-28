@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +36,9 @@ public class UploadUtil {
     //service层或其他注入bean的调用 模版
     //int count = uploadUtil.resourcesImgDao.countByData(resourcesImg);
 
+    //属性同理 private String UPLOAD;
+    //uploadUtil.UPLOAD 的形式来调用
+
 
     /**
      * 文件上传并将路径存入数据库
@@ -52,6 +56,10 @@ public class UploadUtil {
      */
     public void upload(MultipartFile file,String path,String tableName,int id,String typeName,
                         String imgSize,int imgLongs,int imgParagraph){
+        //如果文件为空，则直接退出该方法，不上传
+        if (file == null){
+            return;
+        }
         if (file.getSize() > 1024 * 1024 * 10) {
             throw new RuntimeException("文件大小不能大于10M");
         }
@@ -61,7 +69,7 @@ public class UploadUtil {
             throw new RuntimeException("请选择jpg,jpeg,gif,png格式的图片");
         }
         //加上前置路径
-        String savePath = UPLOAD + path;
+        String savePath = uploadUtil.UPLOAD + path;
         //获取保存路径
         File savePathFile = new File(savePath);
         if (!savePathFile.exists()) {
@@ -124,7 +132,7 @@ public class UploadUtil {
         if (imgByDate != null && imgByDate.size()>0){
             for (VoResourcesImg voResourcesImg : imgByDate) {
                 //加上前置路径
-                String savePath = UPLOAD + voResourcesImg.getUrl();
+                String savePath = uploadUtil.UPLOAD + voResourcesImg.getUrl();
                 //获取保存路径
                 File savePathFile = new File(savePath);
                 //删除对应文件
@@ -159,6 +167,62 @@ public class UploadUtil {
         resourcesImg.setTypeName(typeName);
         //根据条件查询照片信息集合
         return uploadUtil.resourcesImgDao.findImgByDate(resourcesImg);
+    }
+
+
+    /**
+     * 上传doc，docx文件
+     * @param file doc,docx文件
+     * @param path 上传路径
+     * @return 上传路径+文件名
+     */
+    public String uploadDoc(MultipartFile file,String path){
+        //如果文件为空，则返回""
+        if (file == null){
+            return "";
+        }
+        if (file.getSize() > 1024 * 1024 * 10) {
+            throw new RuntimeException("文件大小不能大于10M");
+        }
+        //获取文件后缀
+        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
+        if (!"doc,docx".toUpperCase().contains(suffix.toUpperCase())) {
+            throw new RuntimeException("请选择doc,docx格式的文件");
+        }
+        //加上前置路径
+        String savePath = uploadUtil.UPLOAD + path;
+        //获取保存路径
+        File savePathFile = new File(savePath);
+        if (!savePathFile.exists()) {
+            //若不存在该目录，则创建目录
+            savePathFile.mkdir();
+        }
+        //通过UUID生成唯一文件名
+        String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
+        //将文件保存指定目录
+        try {
+            file.transferTo(new File(savePath + filename));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("保存文件异常");
+        }
+        return path+filename;
+    }
+
+    public void deleteDoc(String path){
+        //如果路径为""，则返回，不进行删除操作
+        if (path.trim().equals("")){
+            return;
+        }
+        //加上前置路径
+        String savePath = uploadUtil.UPLOAD + path;
+        //获取保存路径
+        File savePathFile = new File(savePath);
+        //删除对应文件
+        boolean delete = savePathFile.delete();
+        if (!delete){
+            throw new RuntimeException("文件删除失败");
+        }
     }
 }
 

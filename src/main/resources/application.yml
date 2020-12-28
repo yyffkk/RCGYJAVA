@@ -72,7 +72,13 @@ prop:
     upload-vote-candidate: /img/vote/candidate/
     #管家服务-社区话题：新增话题照片上传路径
     upload-gambit: /img/gambit/
-    #管家服务-物品管理：新增物品信息
+    #管家服务-物品管理：新增物品信息照片上传路径
     upload-article: /img/article/
+
+    #运营管理-公告管理：新增公告信息照片上传路径
+    upload-announcement: /img/announcement/
+    #运营管理-公告管理：新增公告信息doc,docx文件上传路径
+    upload-announcement-doc: /doc/announcement/
+
 
 
