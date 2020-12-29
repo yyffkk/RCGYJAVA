@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/notificationManagement")
-public class sysNotificationManagementController {
+public class SysNotificationManagementController {
     @Resource
     SysNotificationManagementService sysNotificationManagementService;
 
