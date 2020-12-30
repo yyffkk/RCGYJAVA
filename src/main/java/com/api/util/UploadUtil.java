@@ -135,10 +135,12 @@ public class UploadUtil {
                 String savePath = uploadUtil.UPLOAD + voResourcesImg.getUrl();
                 //获取保存路径
                 File savePathFile = new File(savePath);
-                //删除对应文件
-                boolean delete = savePathFile.delete();
-                if (!delete){
-                    throw new RuntimeException("文件删除失败");
+                if (savePathFile.exists()){
+                    //删除对应文件
+                    boolean delete = savePathFile.delete();
+                    if (!delete){
+                        throw new RuntimeException("文件删除失败");
+                    }
                 }
             }
             //删除数据库数据

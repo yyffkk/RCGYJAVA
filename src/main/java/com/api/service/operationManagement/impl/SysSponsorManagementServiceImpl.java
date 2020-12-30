@@ -7,6 +7,8 @@ import com.api.model.operationManagement.SponsorManagement;
 import com.api.model.system.SysUser;
 import com.api.service.operationManagement.SysSponsorManagementService;
 import com.api.util.UploadUtil;
+import com.api.vo.operationManagement.VoFindByIdSponsorManagement;
+import com.api.vo.operationManagement.VoSponsorActivityDetail;
 import com.api.vo.operationManagement.VoSponsorManagement;
 import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
@@ -88,5 +90,87 @@ public class SysSponsorManagementServiceImpl implements SysSponsorManagementServ
         map.put("message","添加主办方信息成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public VoFindByIdSponsorManagement findById(Integer id) {
+        VoFindByIdSponsorManagement byId = sysSponsorManagementDao.findById(id);
+        if (byId != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysSponsorManagement", byId.getId(), "businessLicenseImg");
+            byId.setImgUrls(imgByDate);
+        }
+        return byId;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> update(SponsorManagement sponsorManagement) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        try {
+            //填入修改人id
+            sponsorManagement.setModifyId(sysUser.getId());
+            //填入修改时间
+            sponsorManagement.setModifyDate(new Date());
+            //修改主办方信息
+            int update = sysSponsorManagementDao.update(sponsorManagement);
+            if (update <= 0){
+                throw new RuntimeException("修改主办方信息失败");
+            }
+            UploadUtil uploadUtil = new UploadUtil();
+            //先删除照片资源
+            uploadUtil.delete("sysSponsorManagement",sponsorManagement.getId(), "businessLicenseImg");
+            //再添加照片资源
+            uploadUtil.upload(sponsorManagement.getFile(),UPLOAD_SPONSOR,"sysSponsorManagement",sponsorManagement.getId(),"businessLicenseImg","600",30,20);
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","修改主办方信息成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> falseDelete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                //假删除主办方信息
+                int update = sysSponsorManagementDao.falseDelete(id);
+                if (update <= 0){
+                    throw new RuntimeException("删除主办方信息失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除主办方信息成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public List<VoSponsorActivityDetail> sponsorActivityDetail(Integer id) {
+        return sysSponsorManagementDao.sponsorActivityDetail(id);
     }
 }
