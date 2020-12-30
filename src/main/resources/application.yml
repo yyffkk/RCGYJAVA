@@ -81,6 +81,8 @@ prop:
     upload-announcement-doc: /doc/announcement/
     #运营管理-主办方管理：新增主办方信息 营业执照照片上传路径
     upload-sponsor: /img/sponsor/
+    #运营管理-活动管理：新增活动信息 照片上传路径
+    upload-activity: /img/activity/
 
 
 
