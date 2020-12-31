@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.dao.chargeManagement.SysFixedAmountAllocationDao">
+    <select id="list" parameterType="com.api.model.chargeManagement.SearchFixedAmountAllocation" resultType="com.api.vo.chargeManagement.VoFixedAmountAllocation">
+        select sfaa.*,su1.actual_name as create_name,su2.actual_name as share_operator_name
+        from sys_user as su1,sys_fixed_amount_allocation as sfaa LEFT JOIN sys_user as su2
+        on sfaa.share_operator = su2.id
+        <where>
+            sfaa.is_delete = 1
+            and sfaa.create_id = su1.id
+            <if test="name != null and name != ''">
+                and sfaa.name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and sfaa.status = #{status}
+            </if>
+        </where>
+    </select>
+    <insert id="insert" parameterType="com.api.model.chargeManagement.SysFixedAmountAllocation">
+        insert into sys_fixed_amount_allocation(
+            name,
+            total_price,
+            share_type,
+            start_date,
+            end_date,
+            status,
+            remake,
+            share_range,
+            <if test="shareObjects != null and shareObjects != ''">
+                share_objects,
+            </if>
+            create_id,
+            create_date,
+            is_delete
+        ) values (
+            #{name},
+            #{totalPrice},
+            #{shareType},
+            #{startDate},
+            #{endDate},
+            #{status},
+            #{remake},
+            #{shareRange},
+            <if test="shareObjects != null and shareObjects != ''">
+                #{shareObjects},
+            </if>
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoFindByIdFAA">
+        select * from sys_fixed_amount_allocation where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.chargeManagement.SysFixedAmountAllocation">
+        update sys_fixed_amount_allocation
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="shareType != null">
+                share_type = #{shareType},
+            </if>
+            <if test="totalPrice != null">
+                total_price = #{totalPrice},
+            </if>
+            <if test="startDate != null">
+                start_date = #{startDate},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate},
+            </if>
+            <if test="remake != null and remake != ''">
+                remake = #{remake},
+            </if>
+            <if test="shareRange != null">
+                share_range = #{shareRange},
+            </if>
+            <if test="shareObjects != null">
+                share_objects = #{shareObjects},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_fixed_amount_allocation set is_delete = 0 where id =#{id}
+    </update>
+</mapper>
