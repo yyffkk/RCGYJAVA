@@ -1,9 +1,11 @@
 package com.api.service.chargeManagement;
 
 import com.api.model.chargeManagement.SearchFixedAmountAllocation;
+import com.api.model.chargeManagement.SearchFixedAmountAllocationResult;
 import com.api.model.chargeManagement.SysFixedAmountAllocation;
 import com.api.vo.chargeManagement.VoFindByIdFAA;
 import com.api.vo.chargeManagement.VoFixedAmountAllocation;
+import com.api.vo.chargeManagement.VoFixedAmountAllocationResult;
 
 import java.util.List;
 import java.util.Map;
@@ -18,4 +20,8 @@ public interface SysFixedAmountAllocationService {
     Map<String, Object> update(SysFixedAmountAllocation sysFixedAmountAllocation);
 
     Map<String, Object> falseDelete(int[] ids);
+
+    List<VoFixedAmountAllocationResult> listResult(SearchFixedAmountAllocationResult searchFixedAmountAllocationResult);
+
+    Map<String, Object> share(Integer id);
 }

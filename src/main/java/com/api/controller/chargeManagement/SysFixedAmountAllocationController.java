@@ -1,12 +1,14 @@
 package com.api.controller.chargeManagement;
 
 import com.api.model.chargeManagement.SearchFixedAmountAllocation;
+import com.api.model.chargeManagement.SearchFixedAmountAllocationResult;
 import com.api.model.chargeManagement.SysFixedAmountAllocation;
 import com.api.service.chargeManagement.SysFixedAmountAllocationService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.chargeManagement.VoExpenseBill;
 import com.api.vo.chargeManagement.VoFindByIdFAA;
 import com.api.vo.chargeManagement.VoFixedAmountAllocation;
+import com.api.vo.chargeManagement.VoFixedAmountAllocationResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -83,5 +85,33 @@ public class SysFixedAmountAllocationController {
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysFixedAmountAllocationService.falseDelete(ids.getIds());
     }
+
+    /**
+     * 分摊
+     * @param id 固定金额分摊主键id
+     * @return map
+     */
+    @GetMapping("/share")
+    public Map<String,Object> share(Integer id){
+        return sysFixedAmountAllocationService.share(id);
+    }
+
+    /**
+     * 查询当前固定金额的分摊结果 （包含条件搜索）
+     * @param searchFixedAmountAllocationResult 搜索条件
+     * @return map
+     */
+    @GetMapping("/listResult")
+    public Map<String,Object> listResult(SearchFixedAmountAllocationResult searchFixedAmountAllocationResult){
+        PageHelper.startPage(searchFixedAmountAllocationResult.getPageNum(),searchFixedAmountAllocationResult.getSize());
+        List<VoFixedAmountAllocationResult> voFixedAmountAllocationResultList = sysFixedAmountAllocationService.listResult(searchFixedAmountAllocationResult);
+        PageInfo<VoFixedAmountAllocationResult> pageInfo = new PageInfo<>(voFixedAmountAllocationResultList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
 
 }

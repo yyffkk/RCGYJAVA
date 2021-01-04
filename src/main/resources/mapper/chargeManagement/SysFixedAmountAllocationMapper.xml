@@ -92,4 +92,30 @@
     <update id="falseDelete" parameterType="java.lang.Integer">
         update sys_fixed_amount_allocation set is_delete = 0 where id =#{id}
     </update>
+
+    <select id="listResult" parameterType="com.api.model.chargeManagement.SearchFixedAmountAllocationResult" resultType="com.api.vo.chargeManagement.VoFixedAmountAllocationResult">
+        select sfaar.*,cb.no as building_no,cbu.no as unit_no,cbue.room_number,GROUP_CONCAT(ur.name SEPARATOR '/r/n') as name,GROUP_CONCAT(ur.tel SEPARATOR '/r/n') as tel,sfaa.share_date,sfaa.start_date,sfaa.end_date,sfaa.name as cost_name
+        from sys_fixed_amount_allocation_result as sfaar,cpm_building as cb,cpm_building_unit as cbu,cpm_building_unit_estate as cbue,cpm_resident_estate as cre,user_resident as ur,sys_fixed_amount_allocation as sfaa
+        <where>
+            sfaar.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and cre.building_unit_estate_id = cbue.id
+            and cre.resident_id = ur.id
+            and sfaa.id = sfaar.fixed_amount_allocation_id
+            <if test="buildId != null">
+                and cb.id = #{buildId}
+            </if>
+            <if test="unitId != null">
+                and cbu.id = #{unitId}
+            </if>
+            <if test="estateId != null">
+                and cbue.id = #{estateId}
+            </if>
+            <if test="name != null and name != ''">
+                and ur.name like concat('%',#{name},'%')
+            </if>
+        </where>
+        group by sfaar.id
+    </select>
 </mapper>

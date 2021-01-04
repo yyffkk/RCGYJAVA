@@ -1,12 +1,17 @@
 package com.api.service.chargeManagement.impl;
 
 import com.api.dao.chargeManagement.SysFixedAmountAllocationDao;
+import com.api.model.chargeManagement.FixedAmountAllocationResult;
 import com.api.model.chargeManagement.SearchFixedAmountAllocation;
+import com.api.model.chargeManagement.SearchFixedAmountAllocationResult;
 import com.api.model.chargeManagement.SysFixedAmountAllocation;
 import com.api.model.system.SysUser;
 import com.api.service.chargeManagement.SysFixedAmountAllocationService;
+import com.api.util.UploadUtil;
 import com.api.vo.chargeManagement.VoFindByIdFAA;
 import com.api.vo.chargeManagement.VoFixedAmountAllocation;
+import com.api.vo.chargeManagement.VoFixedAmountAllocationResult;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -106,6 +111,54 @@ public class SysFixedAmountAllocationServiceImpl implements SysFixedAmountAlloca
         }
         map.put("message","删除固定金额分摊信息成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public List<VoFixedAmountAllocationResult> listResult(SearchFixedAmountAllocationResult searchFixedAmountAllocationResult) {
+        List<VoFixedAmountAllocationResult> voFixedAmountAllocationResultList = sysFixedAmountAllocationDao.listResult(searchFixedAmountAllocationResult);
+        if (voFixedAmountAllocationResultList != null && voFixedAmountAllocationResultList.size()>0){
+            for (VoFixedAmountAllocationResult voFixedAmountAllocationResult : voFixedAmountAllocationResultList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysFixedAmountAllocationResult", voFixedAmountAllocationResult.getId(), "voucherImg");
+                voFixedAmountAllocationResult.setImgUrls(imgByDate);
+            }
+        }
+        return voFixedAmountAllocationResultList;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> share(Integer id) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        FixedAmountAllocationResult fixedAmountAllocationResult = new FixedAmountAllocationResult();
+        //填入创建人
+        fixedAmountAllocationResult.setCreateId(sysUser.getId());
+        //填入创建时间
+        fixedAmountAllocationResult.setCreateDate(new Date());
+        //填入固定金额分摊id
+        fixedAmountAllocationResult.setId(id);
+        //填入状态，初始为1.未缴纳
+        fixedAmountAllocationResult.setStatus(1);
+        //根据主键id 查询 固定金额分摊信息
+        VoFindByIdFAA byId = sysFixedAmountAllocationDao.findById(id);
+        //根据分摊范围和分摊对象，查询分摊的房产id集合
+        if (byId.getShareRange() == 3){
+            //所有房间（查询有业主的房间）
+//            sysFixedAmountAllocationDao.findRoomBy
+
+        }else if (byId.getShareRange() == 2){
+            //指定楼栋（查询有业主的房间）
+        }else {
+            //指定房间（查询有业主的房间）
+        }
+
+        //填入房产id
+//        sysFixedAmountAllocationDao.share(fixedAmountAllocationResult);
+
         return map;
     }
 }
