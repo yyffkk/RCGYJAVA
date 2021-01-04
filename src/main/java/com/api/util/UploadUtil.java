@@ -5,11 +5,13 @@ import com.api.model.resources.ResourcesImg;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +23,7 @@ import java.util.UUID;
 public class UploadUtil {
     @Resource
     ResourcesImgDao resourcesImgDao;
-    @Value("${prop.upload}")
+    //@Value("${prop.upload}") //有文件服务器用这个，没有则注释
     private String UPLOAD;
 
     //解决工具类无法调用Dao层数据，数据为null
@@ -40,6 +42,7 @@ public class UploadUtil {
     //uploadUtil.UPLOAD 的形式来调用
 
 
+
     /**
      * 文件上传并将路径存入数据库
      * @param file 上传文件
@@ -56,6 +59,9 @@ public class UploadUtil {
      */
     public void upload(MultipartFile file,String path,String tableName,int id,String typeName,
                         String imgSize,int imgLongs,int imgParagraph){
+        //传入真实路径
+        setRealPath();
+
         //如果文件为空，则直接退出该方法，不上传
         if (file == null){
             return;
@@ -120,6 +126,9 @@ public class UploadUtil {
      * @param typeName 类型名称
      */
     public void delete(String tableName, int id, String typeName){
+        //传入真实路径
+        setRealPath();
+
         ResourcesImg resourcesImg = new ResourcesImg();
         //填入表名称
         resourcesImg.setTableName(tableName);
@@ -160,6 +169,9 @@ public class UploadUtil {
      * @return 照片信息集合
      */
     public List<VoResourcesImg> findImgByDate(String tableName,Integer dateId,String typeName){
+        //传入真实路径
+        setRealPath();
+
         ResourcesImg resourcesImg = new ResourcesImg();
         //填入表名称
         resourcesImg.setTableName(tableName);
@@ -179,6 +191,9 @@ public class UploadUtil {
      * @return 上传路径+文件名
      */
     public String uploadDoc(MultipartFile file,String path){
+        //传入真实路径
+        setRealPath();
+
         //如果文件为空，则返回""
         if (file == null){
             return "";
@@ -212,6 +227,9 @@ public class UploadUtil {
     }
 
     public void deleteDoc(String path){
+        //传入真实路径
+        setRealPath();
+
         //如果路径为""，则返回，不进行删除操作
         if (path.trim().equals("")){
             return;
@@ -221,9 +239,23 @@ public class UploadUtil {
         //获取保存路径
         File savePathFile = new File(savePath);
         //删除对应文件
-        boolean delete = savePathFile.delete();
-        if (!delete){
-            throw new RuntimeException("文件删除失败");
+        if (savePathFile.exists()){
+            boolean delete = savePathFile.delete();
+            if (!delete){
+                throw new RuntimeException("文件删除失败");
+            }
+        }
+    }
+
+    //传入真实路径（没有文件服务器的情况，用项目目录下的static）
+    public void setRealPath(){
+        try {
+            // 获取项目同级目录，传入static中
+            String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
+            //覆盖文件服务器上传路径
+            uploadUtil.UPLOAD = realPath;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -7,7 +7,7 @@
   <groupId>org.example</groupId>
   <artifactId>IntelligentCommunity</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>IntelligentCommunity Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
@@ -132,6 +132,25 @@
       <artifactId>log4j</artifactId>
       <version>1.2.12</version>
     </dependency>
+
+    <!--  部署到tomcat上，需要移除springboot自带的tomcat容器  -->
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-web</artifactId>-->
+<!--      &lt;!&ndash; 移除嵌入式tomcat插件 &ndash;&gt;-->
+<!--      <exclusions>-->
+<!--        <exclusion>-->
+<!--          <groupId>org.springframework.boot</groupId>-->
+<!--          <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--        </exclusion>-->
+<!--      </exclusions>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>javax.servlet</groupId>-->
+<!--      <artifactId>javax.servlet-api</artifactId>-->
+<!--      <version>3.1.0</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
   </dependencies>
 
   <build>

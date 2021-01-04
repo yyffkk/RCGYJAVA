@@ -9,40 +9,20 @@ spring:
             max-file-size: 50MB
             max-request-size: 50MB
 #   静态资源路径
+#    resources: classpath:/static/
     resources: classpath:/static/
-#    数据库源
+    #    数据库源
     datasource:
+        #本地数据库连接
         url: jdbc:mysql://localhost:3306/IntelligentCommunity?characterEncoding=utf8&useSSL=false
         username: root
         password: jlw15906763698
+        #测试数据库连接
 #        url: jdbc:mysql://localhost:3306/smart_community?characterEncoding=utf8&useSSL=false
 #        username: smart_community
 #        password: 123456
         driver-class-name: com.mysql.jdbc.Driver
-#redis数据库
-#    redis:
-#        # Redis数据库索引（默认为0）
-#        database: 0
-#        #Redis服务器地址
-#        host: 127.0.0.1
-#        # Redis服务器连接端口
-#        port: 6379
-#        # Redis服务器连接密码（默认为空）
-#        password:
-#        jedis:
-#            pool:
-#                # 连接池最大连接数（使用负值表示没有限制）
-#                max-active: 20
-#                # 连接池最大阻塞等待时间（使用负值表示没有限制）
-#                max-wait: -1
-#                # 连接池中的最大空闲连接
-#                max-idle: 10
-#                # 连接池中的最小空闲连接
-#                min-idle: 0
-#        # 连接超时时间（毫秒）
-#        timeout: 1000
-#    jmx:
-#        enabled: true
+
 
 #mybatis
 mybatis:
@@ -62,8 +42,9 @@ logging:
 
 #资源路径【注意一定要'/'结尾,前置路径除外】
 prop:
-    #文件上传前置路径 src/main/resources/static
-    upload: src/main/resources/static
+    #文件上传前置路径 src/main/resources/static 有文件服务器用这个，没有则注释
+#    upload: classpath:/static
+
     #管家服务-咨询建议：新增咨询建议照片上传路径
     upload-advice: /img/advice/
     #管家服务-投票管理：新增投票标题照片上传路径
