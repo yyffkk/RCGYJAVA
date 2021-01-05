@@ -26,8 +26,6 @@ import java.util.Map;
 @Service
 public class SysActivityManagementServiceImpl implements SysActivityManagementService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-activity}")
-    private String UPLOAD_ACTIVITY;
     @Resource
     SysActivityManagementDao sysActivityManagementDao;
 
@@ -76,8 +74,8 @@ public class SysActivityManagementServiceImpl implements SysActivityManagementSe
                 throw new RuntimeException("添加活动信息失败");
             }
             UploadUtil uploadUtil = new UploadUtil();
-            //上传图片
-            uploadUtil.upload(activityManagement.getFile(),UPLOAD_ACTIVITY,"sysActivityManagement",activityManagement.getId(),"activityImg","600",30,20);
+            //上传图片到数据库
+            uploadUtil.saveUrlToDB(activityManagement.getFileUrls(),"sysActivityManagement",activityManagement.getId(),"activityImg","600",30,20);
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -114,8 +112,8 @@ public class SysActivityManagementServiceImpl implements SysActivityManagementSe
             UploadUtil uploadUtil = new UploadUtil();
             //先删除图片资源
             uploadUtil.delete("sysActivityManagement",activityManagement.getId(),"activityImg");
-            //再添加图片资源
-            uploadUtil.upload(activityManagement.getFile(),UPLOAD_ACTIVITY,"sysActivityManagement",activityManagement.getId(),"activityImg","600",30,20);
+            //再添加图片资源到数据库
+            uploadUtil.saveUrlToDB(activityManagement.getFileUrls(),"sysActivityManagement",activityManagement.getId(),"activityImg","600",30,20);
 
             //填入修改人
             activityManagement.setModifyId(sysUser.getId());

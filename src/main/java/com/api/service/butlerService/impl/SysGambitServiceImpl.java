@@ -27,8 +27,6 @@ import java.util.Map;
 @Service
 public class SysGambitServiceImpl implements SysGambitService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-gambit}")
-    private String UPLOAD_GAMBIT;
     @Resource
     SysGambitDao sysGambitDao;
 
@@ -70,13 +68,10 @@ public class SysGambitServiceImpl implements SysGambitService {
                 throw new RuntimeException("添加话题信息失败");
             }
 
-            //上传文件
+            //添加上传文件照片信息到数据库
             UploadUtil uploadUtil = new UploadUtil();
-            MultipartFile file = sysGambit.getFile();
-            //如果文件file不为空，则上传该文件到 ../static/img/gambit目录下,并录入数据库
-            if (file != null){
-                uploadUtil.upload(file,UPLOAD_GAMBIT,"sysGambit",sysGambit.getId(),"gambitImg","600",30,20);
-            }
+            uploadUtil.saveUrlToDB(sysGambit.getFileUrls(),"sysGambit",sysGambit.getId(),"gambitImg","600",30,20);
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -127,12 +122,9 @@ public class SysGambitServiceImpl implements SysGambitService {
             UploadUtil uploadUtil = new UploadUtil();
             //先删除上传文件
             uploadUtil.delete("sysGambit",sysGambit.getId(),"gambitImg");
+            //再添加上传文件照片信息到数据库
+            uploadUtil.saveUrlToDB(sysGambit.getFileUrls(),"sysGambit",sysGambit.getId(),"gambitImg","600",30,20);
 
-            MultipartFile file = sysGambit.getFile();
-            if (file != null){
-                //再添加上传文件
-                uploadUtil.upload(file,UPLOAD_GAMBIT,"sysGambit",sysGambit.getId(),"gambitImg","600",30,20);
-            }
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();

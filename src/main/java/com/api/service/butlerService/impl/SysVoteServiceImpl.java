@@ -33,10 +33,6 @@ import java.util.*;
 @Service
 public class SysVoteServiceImpl implements SysVoteService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-vote-title}")
-    private String UPLOAD_VOTE_TITLE;
-    @Value("${prop.upload-vote-candidate}")
-    private String UPLOAD_VOTE_CANDIDATE;
     @Resource
     SysVoteDao sysVoteDao;
     @Resource
@@ -198,13 +194,10 @@ public class SysVoteServiceImpl implements SysVoteService {
             if (insert <= 0){
                 throw new RuntimeException("添加投票信息失败");
             }
-            //上传投票信息照片
-            MultipartFile file = sysVote.getFile();
-            //如果文件file不为空，则上传该文件到 ../static/img/vote/title目录下,并录入数据库
-            if (file != null){
-                UploadUtil uploadUtil = new UploadUtil();
-                uploadUtil.upload(file,UPLOAD_VOTE_TITLE,"sysVote",sysVote.getId(),"voteImg","600",30,20);
-            }
+            //上传投票信息照片到数据库
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(sysVote.getFileUrls(),"sysVote",sysVote.getId(),"voteImg","600",30,20);
+
 
             //添加候选人信息集合
             List<SysVoteCandidate> sysVoteCandidateList = sysVote.getSysVoteCandidateList();
@@ -222,13 +215,8 @@ public class SysVoteServiceImpl implements SysVoteService {
                     sysVoteCandidate.setIsDelete(1);
                     //添加投票候选人信息,并返回主键id
                     sysVoteDao.insertCandidate(sysVoteCandidate);
-                    //上传投票候选人照片
-                    MultipartFile file1 = sysVoteCandidate.getFile();
-                    //如果文件file不为空，则上传该文件到 ../static/img/vote/candidate目录下,并录入数据库
-                    if (file1 != null){
-                        UploadUtil uploadUtil = new UploadUtil();
-                        uploadUtil.upload(file1,UPLOAD_VOTE_CANDIDATE,"sysVoteCandidate",sysVoteCandidate.getId(),"voteCandidateImg","600",30,20);
-                    }
+                    //上传投票候选人照片到数据库
+                    uploadUtil.saveUrlToDB(sysVoteCandidate.getFileUrls(),"sysVoteCandidate",sysVoteCandidate.getId(),"voteCandidateImg","600",30,20);
                 }
             }
         } catch (RuntimeException e) {
@@ -295,12 +283,9 @@ public class SysVoteServiceImpl implements SysVoteService {
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.delete("sysVote",sysVote.getId(),"voteImg");
 
-            //再上传投票信息照片
-            MultipartFile file = sysVote.getFile();
-            //如果文件file不为空，则上传该文件到 ../static/img/vote/title目录下,并录入数据库
-            if (file != null){
-                uploadUtil.upload(file,UPLOAD_VOTE_TITLE,"sysVote",sysVote.getId(),"voteImg","600",30,20);
-            }
+            //再上传投票信息照片到数据库
+            uploadUtil.saveUrlToDB(sysVote.getFileUrls(),"sysVote",sysVote.getId(),"voteImg","600",30,20);
+
 
             //先删除候选人信息
             sysVoteDao.deleteCandidate(sysVote.getId());
@@ -332,12 +317,9 @@ public class SysVoteServiceImpl implements SysVoteService {
                     //添加投票候选人信息,并返回主键id
                     sysVoteDao.insertCandidate(sysVoteCandidate);
 
-                    //上传投票候选人照片
-                    MultipartFile file1 = sysVoteCandidate.getFile();
-                    //如果文件file不为空，则上传该文件到 ../static/img/vote/candidate目录下,并录入数据库
-                    if (file1 != null){
-                        uploadUtil.upload(file1,UPLOAD_VOTE_CANDIDATE,"sysVoteCandidate",sysVoteCandidate.getId(),"voteCandidateImg","600",30,20);
-                    }
+                    //上传投票候选人照片到数据库
+                    uploadUtil.saveUrlToDB(sysVoteCandidate.getFileUrls(),"sysVoteCandidate",sysVoteCandidate.getId(),"voteCandidateImg","600",30,20);
+
                 }
             }
         } catch (RuntimeException e) {

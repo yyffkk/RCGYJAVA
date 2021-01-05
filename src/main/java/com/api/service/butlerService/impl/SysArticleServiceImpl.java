@@ -32,8 +32,6 @@ import java.util.Map;
 @Service
 public class SysArticleServiceImpl implements SysArticleService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-article}")
-    private String UPLOAD_ARTICLE;
     @Resource
     SysArticleDao sysArticleDao;
     @Resource
@@ -82,11 +80,9 @@ public class SysArticleServiceImpl implements SysArticleService {
 
             //上传文件
             UploadUtil uploadUtil = new UploadUtil();
-            MultipartFile file = article.getFile();
-            //如果文件file不为空，则上传该文件到 ../static/img/article目录下,并录入数据库
-            if (file != null){
-                uploadUtil.upload(file,UPLOAD_ARTICLE,"sysArticle",article.getId(),"articleImg","600",30,20);
-            }
+            //添加照片信息进入数据库
+            uploadUtil.saveUrlToDB(article.getFileUrls(),"sysArticle",article.getId(),"articleImg","600",30,20);
+
 
             //获取传入的物品明细信息
             List<ArticleDetail> articleDetailList = article.getArticleDetailList();
@@ -162,7 +158,7 @@ public class SysArticleServiceImpl implements SysArticleService {
             //先删除照片信息
             uploadUtil.delete("sysArticle",article.getId(),"articleImg");
             //再添加照片信息
-            uploadUtil.upload(article.getFile(), UPLOAD_ARTICLE,"sysArticle",article.getId(),"articleImg","600",30,20);
+            uploadUtil.saveUrlToDB(article.getFileUrls(),"sysArticle",article.getId(),"articleImg","600",30,20);
 
             //更新物品明细信息(无删除)
             //获取传入的物品明细信息

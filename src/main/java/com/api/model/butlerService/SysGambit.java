@@ -2,6 +2,7 @@ package com.api.model.butlerService;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 /**
  * 话题管理信息
@@ -64,9 +65,9 @@ public class SysGambit {
      */
     private Date modifyDate;
     /**
-     * 上传文件
+     * 上传文件路径数组
      */
-    private MultipartFile file;
+    private String[] fileUrls;
     /**
      * 是否删除默认否（1.非删，0.删除）
      */
@@ -89,7 +90,7 @@ public class SysGambit {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
-                ", file=" + file +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 ", isDelete=" + isDelete +
                 '}';
     }
@@ -206,12 +207,12 @@ public class SysGambit {
         this.modifyDate = modifyDate;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFileUrls() {
+        return fileUrls;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     public Integer getIsDelete() {
@@ -225,7 +226,7 @@ public class SysGambit {
     public SysGambit() {
     }
 
-    public SysGambit(Integer id, String title, String summary, Date beginDate, Date endDate, Integer status, Integer isPublic, Integer isRating, String content, Integer userType, Integer createId, Date createDate, Integer modifyId, Date modifyDate, MultipartFile file, Integer isDelete) {
+    public SysGambit(Integer id, String title, String summary, Date beginDate, Date endDate, Integer status, Integer isPublic, Integer isRating, String content, Integer userType, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls, Integer isDelete) {
         this.id = id;
         this.title = title;
         this.summary = summary;
@@ -240,7 +241,7 @@ public class SysGambit {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
-        this.file = file;
+        this.fileUrls = fileUrls;
         this.isDelete = isDelete;
     }
 }

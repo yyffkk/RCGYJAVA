@@ -2,6 +2,8 @@ package com.api.model.chargeManagement;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+
 /**
  * 固定金额 缴纳model
  */
@@ -11,9 +13,9 @@ public class FixedPayment {
      */
     private Integer id;
     /**
-     * 缴纳凭证
+     * 缴纳凭证路径数组
      */
-    private MultipartFile file;
+    private String[] fileUrls;
     /**
      * 缴纳状态
      */
@@ -23,7 +25,7 @@ public class FixedPayment {
     public String toString() {
         return "FixedPayment{" +
                 "id=" + id +
-                ", file=" + file +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 ", status=" + status +
                 '}';
     }
@@ -36,12 +38,12 @@ public class FixedPayment {
         this.id = id;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFileUrls() {
+        return fileUrls;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     public Integer getStatus() {
@@ -55,9 +57,9 @@ public class FixedPayment {
     public FixedPayment() {
     }
 
-    public FixedPayment(Integer id, MultipartFile file, Integer status) {
+    public FixedPayment(Integer id, String[] fileUrls, Integer status) {
         this.id = id;
-        this.file = file;
+        this.fileUrls = fileUrls;
         this.status = status;
     }
 }

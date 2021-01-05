@@ -42,29 +42,19 @@ public class UploadUtil {
     //uploadUtil.UPLOAD 的形式来调用
 
 
-
     /**
-     * 文件上传并将路径存入数据库
+     * 文件上传
      * @param file 上传文件
      * @param path 上传路径
-     * @param tableName 表名称
-     * @param id 数据所属id
-     * @param typeName 类型名称
-     * @param imgSize 图片大小
-     * @param imgLongs 长（像素）
-     * @param imgParagraph 宽（像素）
-     *
-     *                     // 服务器的真实路径
-     * 		String realPath = request.getSession().getServletContext().getRealPath("/");
+     * @return 返回图片路径
      */
-    public void upload(MultipartFile file,String path,String tableName,int id,String typeName,
-                        String imgSize,int imgLongs,int imgParagraph){
+    public String upload(MultipartFile file,String path){
         //传入真实路径
         setRealPath();
 
-        //如果文件为空，则直接退出该方法，不上传
+        //如果文件为空，则返回文件为空
         if (file == null){
-            return;
+            throw new RuntimeException("文件为空");
         }
         if (file.getSize() > 1024 * 1024 * 10) {
             throw new RuntimeException("文件大小不能大于10M");
@@ -87,6 +77,27 @@ public class UploadUtil {
         try {
             //将文件保存指定目录
             file.transferTo(new File(savePath + filename));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("保存文件异常");
+        }
+        return savePath + filename;
+    }
+
+    /**
+     * 将路径存入数据库
+     * @param urls 图片路径数组
+     * @param tableName 表名称
+     * @param id 数据所属id
+     * @param typeName 类型名称
+     * @param imgSize 图片大小
+     * @param imgLongs 长（像素）
+     * @param imgParagraph 宽（像素）
+     *
+     */
+    public void saveUrlToDB(String[] urls,String tableName,int id,String typeName,
+                       String imgSize,int imgLongs,int imgParagraph){
+        for (int i = 0; i < urls.length; i++) {
             //保存后，将文件路径存入数据库
             ResourcesImg resourcesImg = new ResourcesImg();
             //填入表名称
@@ -96,9 +107,12 @@ public class UploadUtil {
             //填入类型名称
             resourcesImg.setTypeName(typeName);
             //填入图片路径
-            resourcesImg.setUrl(savePath + filename);
+            resourcesImg.setUrl(urls[i]);
+            //填入图片大小
             resourcesImg.setSize(imgSize);
+            //填入长（像素）
             resourcesImg.setLongs(imgLongs);
+            //填入宽（像素）
             resourcesImg.setParagraph(imgParagraph);
             //查询该表，该类型名称的照片数量
             int count = uploadUtil.resourcesImgDao.countByData(resourcesImg);
@@ -112,11 +126,81 @@ public class UploadUtil {
             if (insert2 <= 0){
                 throw new RuntimeException("添加照片数据失败");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("保存文件异常");
         }
     }
+
+//    /**
+//     * 文件上传并将路径存入数据库
+//     * @param file 上传文件
+//     * @param path 上传路径
+//     * @param tableName 表名称
+//     * @param id 数据所属id
+//     * @param typeName 类型名称
+//     * @param imgSize 图片大小
+//     * @param imgLongs 长（像素）
+//     * @param imgParagraph 宽（像素）
+//     *
+//     */
+//    public void upload(MultipartFile file,String path,String tableName,int id,String typeName,
+//                        String imgSize,int imgLongs,int imgParagraph){
+//        //传入真实路径
+//        setRealPath();
+//
+//        //如果文件为空，则直接退出该方法，不上传
+//        if (file == null){
+//            return;
+//        }
+//        if (file.getSize() > 1024 * 1024 * 10) {
+//            throw new RuntimeException("文件大小不能大于10M");
+//        }
+//        //获取文件后缀
+//        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
+//        if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
+//            throw new RuntimeException("请选择jpg,jpeg,gif,png格式的图片");
+//        }
+//        //加上前置路径
+//        String savePath = uploadUtil.UPLOAD + path;
+//        //获取保存路径
+//        File savePathFile = new File(savePath);
+//        if (!savePathFile.exists()) {
+//            //若不存在该目录，则创建目录
+//            savePathFile.mkdir();
+//        }
+//        //通过UUID生成唯一文件名
+//        String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
+//        try {
+//            //将文件保存指定目录
+//            file.transferTo(new File(savePath + filename));
+//            //保存后，将文件路径存入数据库
+//            ResourcesImg resourcesImg = new ResourcesImg();
+//            //填入表名称
+//            resourcesImg.setTableName(tableName);
+//            //填入数据所属id
+//            resourcesImg.setDateId(id);
+//            //填入类型名称
+//            resourcesImg.setTypeName(typeName);
+//            //填入图片路径
+//            resourcesImg.setUrl(savePath + filename);
+//            resourcesImg.setSize(imgSize);
+//            resourcesImg.setLongs(imgLongs);
+//            resourcesImg.setParagraph(imgParagraph);
+//            //查询该表，该类型名称的照片数量
+//            int count = uploadUtil.resourcesImgDao.countByData(resourcesImg);
+//            if (count > 0){
+//                resourcesImg.setSort(count+1);
+//            }else {
+//                resourcesImg.setSort(1);
+//            }
+//            //添加该照片数据到数据库中
+//            int insert2 = uploadUtil.resourcesImgDao.insert(resourcesImg);
+//            if (insert2 <= 0){
+//                throw new RuntimeException("添加照片数据失败");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("保存文件异常");
+//        }
+//    }
 
 
     /**
@@ -226,6 +310,10 @@ public class UploadUtil {
         return path+filename;
     }
 
+    /**
+     * 删除doc，docx文件
+     * @param path 上传路径
+     */
     public void deleteDoc(String path){
         //传入真实路径
         setRealPath();

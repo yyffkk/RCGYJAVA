@@ -27,8 +27,6 @@ import java.util.Map;
 @Service
 public class SysSponsorManagementServiceImpl implements SysSponsorManagementService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-sponsor}")
-    private String UPLOAD_SPONSOR;
     @Resource
     SysSponsorManagementDao sysSponsorManagementDao;
     @Resource
@@ -72,9 +70,9 @@ public class SysSponsorManagementServiceImpl implements SysSponsorManagementServ
             if (insert <= 0){
                 throw new RuntimeException("添加主办方信息失败");
             }
-            //添加照片资源
+            //添加照片资源到数据库
             UploadUtil uploadUtil = new UploadUtil();
-            uploadUtil.upload(sponsorManagement.getFile(),UPLOAD_SPONSOR,"sysSponsorManagement",sponsorManagement.getId(),"businessLicenseImg","600",30,20);
+            uploadUtil.saveUrlToDB(sponsorManagement.getFileUrls(),"sysSponsorManagement",sponsorManagement.getId(),"businessLicenseImg","600",30,20);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -123,8 +121,8 @@ public class SysSponsorManagementServiceImpl implements SysSponsorManagementServ
             UploadUtil uploadUtil = new UploadUtil();
             //先删除照片资源
             uploadUtil.delete("sysSponsorManagement",sponsorManagement.getId(), "businessLicenseImg");
-            //再添加照片资源
-            uploadUtil.upload(sponsorManagement.getFile(),UPLOAD_SPONSOR,"sysSponsorManagement",sponsorManagement.getId(),"businessLicenseImg","600",30,20);
+            //再添加照片资源到数据库
+            uploadUtil.saveUrlToDB(sponsorManagement.getFileUrls(),"sysSponsorManagement",sponsorManagement.getId(),"businessLicenseImg","600",30,20);
 
         } catch (Exception e) {
             //获取抛出的信息

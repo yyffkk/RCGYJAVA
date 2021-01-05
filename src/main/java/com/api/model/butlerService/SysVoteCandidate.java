@@ -1,7 +1,7 @@
 package com.api.model.butlerService;
 
-import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -25,9 +25,9 @@ public class SysVoteCandidate {
      */
     private String tel;
     /**
-     * 上传文件（照片）
+     * 上传文件（照片路径）
      */
-    private MultipartFile file;
+    private String[] fileUrls;
     /**
      * 投票总数（默认为0，数量取sys_vote_personnel）
      */
@@ -60,7 +60,7 @@ public class SysVoteCandidate {
                 ", voteId=" + voteId +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
-                ", file=" + file +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 ", total=" + total +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -102,12 +102,12 @@ public class SysVoteCandidate {
         this.tel = tel;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFileUrls() {
+        return fileUrls;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     public Integer getTotal() {
@@ -161,12 +161,12 @@ public class SysVoteCandidate {
     public SysVoteCandidate() {
     }
 
-    public SysVoteCandidate(Integer id, Integer voteId, String name, String tel, MultipartFile file, Integer total, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
+    public SysVoteCandidate(Integer id, Integer voteId, String name, String tel, String[] fileUrls, Integer total, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
         this.id = id;
         this.voteId = voteId;
         this.name = name;
         this.tel = tel;
-        this.file = file;
+        this.fileUrls = fileUrls;
         this.total = total;
         this.createId = createId;
         this.createDate = createDate;

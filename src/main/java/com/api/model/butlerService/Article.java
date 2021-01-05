@@ -1,7 +1,7 @@
 package com.api.model.butlerService;
 
-import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class Article {
      */
     private String name;
     /**
-     * 上传文件（照片）
+     * 上传文件（照片路径）
      */
-    private MultipartFile file;
+    private String[] fileUrls;
     /**
      * 数量
      */
@@ -51,7 +51,7 @@ public class Article {
         return "Article{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", file=" + file +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 ", quantity=" + quantity +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -77,12 +77,12 @@ public class Article {
         this.name = name;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFileUrls() {
+        return fileUrls;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     public Integer getQuantity() {
@@ -136,10 +136,10 @@ public class Article {
     public Article() {
     }
 
-    public Article(Integer id, String name, MultipartFile file, Integer quantity, Integer createId, Date createDate, Integer modifyId, Date modifyDate, List<ArticleDetail> articleDetailList) {
+    public Article(Integer id, String name, String[] fileUrls, Integer quantity, Integer createId, Date createDate, Integer modifyId, Date modifyDate, List<ArticleDetail> articleDetailList) {
         this.id = id;
         this.name = name;
-        this.file = file;
+        this.fileUrls = fileUrls;
         this.quantity = quantity;
         this.createId = createId;
         this.createDate = createDate;

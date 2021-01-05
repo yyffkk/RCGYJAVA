@@ -1,8 +1,8 @@
 package com.api.model.operationManagement;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -26,9 +26,9 @@ public class ActivityManagement {
      */
     private String content;
     /**
-     * 图片资源
+     * 图片资源路径数组
      */
-    private MultipartFile file;
+    private String[] fileUrls;
     /**
      * 活动地点
      */
@@ -101,7 +101,7 @@ public class ActivityManagement {
                 ", sponsorId=" + sponsorId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", file=" + file +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 ", location='" + location + '\'' +
                 ", registrationStartTime=" + registrationStartTime +
                 ", registrationEndTime=" + registrationEndTime +
@@ -153,12 +153,12 @@ public class ActivityManagement {
         this.content = content;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFileUrls() {
+        return fileUrls;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     public String getLocation() {
@@ -292,12 +292,12 @@ public class ActivityManagement {
     public ActivityManagement() {
     }
 
-    public ActivityManagement(Integer id, Integer sponsorId, String title, String content, MultipartFile file, String location, Date registrationStartTime, Date registrationEndTime, Date activityStartTime, Date activityEndTime, Integer participantsNumber, Integer chargesTemplateDetailId, Integer status, BigDecimal refund, String name, String tel, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
+    public ActivityManagement(Integer id, Integer sponsorId, String title, String content, String[] fileUrls, String location, Date registrationStartTime, Date registrationEndTime, Date activityStartTime, Date activityEndTime, Integer participantsNumber, Integer chargesTemplateDetailId, Integer status, BigDecimal refund, String name, String tel, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
         this.id = id;
         this.sponsorId = sponsorId;
         this.title = title;
         this.content = content;
-        this.file = file;
+        this.fileUrls = fileUrls;
         this.location = location;
         this.registrationStartTime = registrationStartTime;
         this.registrationEndTime = registrationEndTime;

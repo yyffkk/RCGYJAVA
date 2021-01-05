@@ -23,8 +23,6 @@ import java.util.*;
 @Service
 public class SysFixedAmountAllocationServiceImpl implements SysFixedAmountAllocationService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-voucher}")
-    private String UPLOAD_VOUCHER;
     @Resource
     SysFixedAmountAllocationDao sysFixedAmountAllocationDao;
 
@@ -240,7 +238,7 @@ public class SysFixedAmountAllocationServiceImpl implements SysFixedAmountAlloca
     public Map<String, Object> payment(FixedPayment fixedPayment) {
         map = new HashMap<>();
 
-        if (fixedPayment.getFile() == null){
+        if (fixedPayment.getFileUrls().length <= 0){
             //填入缴纳状态 2.已缴纳但无凭证
             fixedPayment.setStatus(2);
         }else {
@@ -250,9 +248,9 @@ public class SysFixedAmountAllocationServiceImpl implements SysFixedAmountAlloca
 
 
         try {
-            //上传缴纳凭证
+            //上传缴纳凭证到数据库
             UploadUtil uploadUtil = new UploadUtil();
-            uploadUtil.upload(fixedPayment.getFile(),UPLOAD_VOUCHER,"sysFixedAmountAllocationResult",fixedPayment.getId(),"voucherImg","600",30,20);
+            uploadUtil.saveUrlToDB(fixedPayment.getFileUrls(),"sysFixedAmountAllocationResult",fixedPayment.getId(),"voucherImg","600",30,20);
         } catch (Exception e) {
             e.printStackTrace();
             //填入缴纳状态 2.已缴纳但无凭证

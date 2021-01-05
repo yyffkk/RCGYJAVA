@@ -1,7 +1,7 @@
 package com.api.model.butlerService;
 
-import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class SysVote {
      */
     private String title;
     /**
-     * 上传文件（照片）
+     * 上传文件（照片路径）
      */
-    private MultipartFile file;
+    private String[] fileUrls;
     /**
      * 内容
      */
@@ -75,7 +75,7 @@ public class SysVote {
         return "SysVote{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", file=" + file +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 ", content='" + content + '\'' +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
@@ -107,12 +107,12 @@ public class SysVote {
         this.title = title;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFileUrls() {
+        return fileUrls;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     public String getContent() {
@@ -214,10 +214,10 @@ public class SysVote {
     public SysVote() {
     }
 
-    public SysVote(Integer id, String title, MultipartFile file, String content, Date beginDate, Date endDate, Integer type, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, Integer isRelease, List<SysVoteCandidate> sysVoteCandidateList) {
+    public SysVote(Integer id, String title, String[] fileUrls, String content, Date beginDate, Date endDate, Integer type, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, Integer isRelease, List<SysVoteCandidate> sysVoteCandidateList) {
         this.id = id;
         this.title = title;
-        this.file = file;
+        this.fileUrls = fileUrls;
         this.content = content;
         this.beginDate = beginDate;
         this.endDate = endDate;

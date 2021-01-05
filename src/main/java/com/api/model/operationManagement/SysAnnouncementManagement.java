@@ -2,6 +2,7 @@ package com.api.model.operationManagement;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -21,19 +22,15 @@ public class SysAnnouncementManagement {
      */
     private Integer pushObject;
     /**
-     * 上传照片文件
+     * 上传照片文件路径数组
      */
-    private MultipartFile excelFile;
+    private String[] excelFileUrls;
     /**
      * 公告内容
      */
     private String content;
     /**
-     * 上传doc文件
-     */
-    private MultipartFile docFile;
-    /**
-     * doc,docx文件上传路径
+     * 上传doc文件路径
      */
     private String fileDocUrl;
     /**
@@ -75,9 +72,8 @@ public class SysAnnouncementManagement {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", pushObject=" + pushObject +
-                ", excelFile=" + excelFile +
+                ", excelFileUrls=" + Arrays.toString(excelFileUrls) +
                 ", content='" + content + '\'' +
-                ", docFile=" + docFile +
                 ", fileDocUrl='" + fileDocUrl + '\'' +
                 ", status=" + status +
                 ", scheduledReleaseTime=" + scheduledReleaseTime +
@@ -114,12 +110,12 @@ public class SysAnnouncementManagement {
         this.pushObject = pushObject;
     }
 
-    public MultipartFile getExcelFile() {
-        return excelFile;
+    public String[] getExcelFileUrls() {
+        return excelFileUrls;
     }
 
-    public void setExcelFile(MultipartFile excelFile) {
-        this.excelFile = excelFile;
+    public void setExcelFileUrls(String[] excelFileUrls) {
+        this.excelFileUrls = excelFileUrls;
     }
 
     public String getContent() {
@@ -128,14 +124,6 @@ public class SysAnnouncementManagement {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public MultipartFile getDocFile() {
-        return docFile;
-    }
-
-    public void setDocFile(MultipartFile docFile) {
-        this.docFile = docFile;
     }
 
     public String getFileDocUrl() {
@@ -213,13 +201,12 @@ public class SysAnnouncementManagement {
     public SysAnnouncementManagement() {
     }
 
-    public SysAnnouncementManagement(Integer id, String title, Integer pushObject, MultipartFile excelFile, String content, MultipartFile docFile, String fileDocUrl, Integer status, Date scheduledReleaseTime, Integer readingVolume, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date releaseDate) {
+    public SysAnnouncementManagement(Integer id, String title, Integer pushObject, String[] excelFileUrls, String content, String fileDocUrl, Integer status, Date scheduledReleaseTime, Integer readingVolume, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date releaseDate) {
         this.id = id;
         this.title = title;
         this.pushObject = pushObject;
-        this.excelFile = excelFile;
+        this.excelFileUrls = excelFileUrls;
         this.content = content;
-        this.docFile = docFile;
         this.fileDocUrl = fileDocUrl;
         this.status = status;
         this.scheduledReleaseTime = scheduledReleaseTime;

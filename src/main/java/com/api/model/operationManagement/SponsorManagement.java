@@ -1,7 +1,7 @@
 package com.api.model.operationManagement;
 
-import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -17,9 +17,9 @@ public class SponsorManagement {
      */
     private String sponsorUnit;
     /**
-     * 营业执照（照片资源）
+     * 营业执照（照片资源路径数组）
      */
-    private MultipartFile file;
+    private String[] fileUrls;
     /**
      * 联系人（负责人）
      */
@@ -62,7 +62,7 @@ public class SponsorManagement {
         return "SponsorManagement{" +
                 "id=" + id +
                 ", sponsorUnit='" + sponsorUnit + '\'' +
-                ", file=" + file +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 ", director='" + director + '\'' +
                 ", tel='" + tel + '\'' +
                 ", idType=" + idType +
@@ -91,12 +91,12 @@ public class SponsorManagement {
         this.sponsorUnit = sponsorUnit;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFileUrls() {
+        return fileUrls;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     public String getDirector() {
@@ -174,10 +174,10 @@ public class SponsorManagement {
     public SponsorManagement() {
     }
 
-    public SponsorManagement(Integer id, String sponsorUnit, MultipartFile file, String director, String tel, Integer idType, String idNumber, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
+    public SponsorManagement(Integer id, String sponsorUnit, String[] fileUrls, String director, String tel, Integer idType, String idNumber, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
         this.id = id;
         this.sponsorUnit = sponsorUnit;
-        this.file = file;
+        this.fileUrls = fileUrls;
         this.director = director;
         this.tel = tel;
         this.idType = idType;

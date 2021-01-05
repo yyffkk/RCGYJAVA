@@ -27,10 +27,6 @@ import java.util.Map;
 @Service
 public class SysAnnouncementManagementServiceImpl implements SysAnnouncementManagementService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-announcement}")
-    private String UPLOAD_ANNOUNCEMENT;
-    @Value("${prop.upload-announcement-doc}")
-    private String UPLOAD_ANNOUNCEMENT_DOC;
     @Resource
     SysAnnouncementManagementDao sysAnnouncementManagementDao;
 
@@ -76,10 +72,6 @@ public class SysAnnouncementManagementServiceImpl implements SysAnnouncementMana
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
             UploadUtil uploadUtil = new UploadUtil();
-            //上传doc文件，并获取路径
-            String fileDocUrl = uploadUtil.uploadDoc(sysAnnouncementManagement.getDocFile(), UPLOAD_ANNOUNCEMENT_DOC);
-            //填入doc文件路径
-            sysAnnouncementManagement.setFileDocUrl(fileDocUrl);
             //填入创建人
             sysAnnouncementManagement.setCreateId(sysUser.getId());
             //填入创建时间
@@ -95,8 +87,8 @@ public class SysAnnouncementManagementServiceImpl implements SysAnnouncementMana
             if (insert <= 0){
                 throw new RuntimeException("添加公告信息失败");
             }
-            //上传照片文件
-            uploadUtil.upload(sysAnnouncementManagement.getExcelFile(),UPLOAD_ANNOUNCEMENT,"sysAnnouncementManagement",sysAnnouncementManagement.getId(),"announcementImg","600",30,20);
+            //上传照片文件到数据库
+            uploadUtil.saveUrlToDB(sysAnnouncementManagement.getExcelFileUrls(),"sysAnnouncementManagement",sysAnnouncementManagement.getId(),"announcementImg","600",30,20);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -128,16 +120,12 @@ public class SysAnnouncementManagementServiceImpl implements SysAnnouncementMana
             UploadUtil uploadUtil = new UploadUtil();
             //先删除照片信息
             uploadUtil.delete("sysAnnouncementManagement",sysAnnouncementManagement.getId(),"announcementImg");
-            //再添加照片信息
-            uploadUtil.upload(sysAnnouncementManagement.getExcelFile(),UPLOAD_ANNOUNCEMENT,"sysAnnouncementManagement",sysAnnouncementManagement.getId(),"announcementImg","600",30,20);
+            //再添加照片信息到数据库
+            uploadUtil.saveUrlToDB(sysAnnouncementManagement.getExcelFileUrls(),"sysAnnouncementManagement",sysAnnouncementManagement.getId(),"announcementImg","600",30,20);
             //根据主键id查询公告信息
             VoFindByIdAnnouncementManagement byId = sysAnnouncementManagementDao.findById(sysAnnouncementManagement.getId());
             //先删除doc文件信息
             uploadUtil.deleteDoc(byId.getFileDocUrl());
-            //再添加doc文件信息，并获取路径
-            String fileDocUrl = uploadUtil.uploadDoc(sysAnnouncementManagement.getDocFile(), sysAnnouncementManagement.getFileDocUrl());
-            //填入doc文件上传路径
-            sysAnnouncementManagement.setFileDocUrl(fileDocUrl);
             //填入修改人
             sysAnnouncementManagement.setModifyId(sysUser.getId());
             //填入修改时间
