@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.basicArchives.CpmParkingSpaceDao">
+    <select id="list" parameterType="com.api.vo.basicArchives.VoCpmParkingSpace" resultType="com.api.vo.basicArchives.VoParkingSpace">
+        SELECT cps.id,cps.code,cps.status,cps.type,ur.name as resident_name,ur2.name as user_name,ur2.tel
+        from cpm_parking_space as cps,user_resident as ur,user_resident as ur2
+        <where>
+            cps.resident_id = ur.id
+            and cps.user_id = ur2.id
+            <if test="code != null and code != ''">
+                and cps.code like concat('%',#{code},'%')
+            </if>
+            <if test="status != null">
+                and cps.status = #{status}
+            </if>
+            <if test="residentName != null and residentName != ''">
+                and ur.name like concat('%',#{residentName},'%')
+            </if>
+            <if test="userName != null and userName != ''">
+                and ur2.name like concat('%',#{userName},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.basicArchives.CpmParkingSpace">
+        insert into
+        cpm_parking_space(
+            code,
+            coordinate,
+            status,
+            type,
+            <if test="residentId != null">
+                resident_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            create_id,
+            create_date,
+            <if test="isPublic != null">
+                is_public,
+            </if>
+            <if test="effectiveTimeStart != null">
+                effective_time_start,
+            </if>
+            <if test="effectiveTimeEnd != null">
+                effective_time_end,
+            </if>
+        )
+        values (
+            #{code},
+            #{coordinate},
+            #{status},
+            #{type},
+            <if test="residentId != null">
+                #{residentId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            #{createId},
+            #{createDate},
+            <if test="isPublic != null">
+                #{isPublic},
+            </if>
+            <if test="effectiveTimeStart != null">
+                #{effectiveTimeStart},
+            </if>
+            <if test="effectiveTimeEnd != null">
+                #{effectiveTimeEnd},
+            </if>
+            )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmParkingSpace">
+        select id,code,coordinate,status,type,resident_id,user_id,is_public,effective_time_start,effective_time_end
+        from cpm_parking_space where id =#{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.basicArchives.CpmParkingSpace">
+        update cpm_parking_space
+        <set>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="residentId != null">
+                resident_id = #{residentId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="coordinate != null and coordinate != ''">
+                coordinate = #{coordinate},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate},
+            <if test="isPublic != null and isPublic != ''">
+                is_public = #{isPublic},
+            </if>
+            <if test="effectiveTimeStart != null and effectiveTimeStart != ''">
+                effective_time_start = #{effectiveTimeStart},
+            </if>
+            <if test="effectiveTimeEnd != null and effectiveTimeEnd != ''">
+                effective_time_end = #{effectiveTimeEnd},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from cpm_parking_space where id = #{id}
+    </delete>
+
+    <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmParkingSpace">
+        select * from cpm_parking_space where resident_id = #{residentId}
+    </select>
+
+    <select id="findByUserId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmParkingSpace">
+        select * from cpm_parking_space where user_id = #{userId}
+    </select>
+
+    <select id="findByCode" parameterType="java.lang.String" resultType="com.api.model.basicArchives.CpmParkingSpace">
+        select * from cpm_parking_space where code = #{code}
+    </select>
+
+</mapper>

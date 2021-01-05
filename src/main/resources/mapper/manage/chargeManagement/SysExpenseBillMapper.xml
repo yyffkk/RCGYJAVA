@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.chargeManagement.SysExpenseBillDao">
+    <select id="list" parameterType="com.api.model.chargeManagement.SearchDailyPayment" resultType="com.api.vo.chargeManagement.VoExpenseBill">
+        select a.*,group_concat(sdpo.name SEPARATOR '\r\n') as pay_name,group_concat(sdpo.tel SEPARATOR '\r\n') as pay_tel,group_concat(sdpo.code SEPARATOR '\r\n') as order_code,group_concat(sdpo.create_date SEPARATOR '\r\n') as pay_date
+        ,group_concat(
+            case sdpo.remake is null
+            when true then '暂无备注' ELSE sdpo.remake end SEPARATOR '\r\n'
+        ) as remake
+        from (
+        select sdp.*,sctd.name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,su.actual_name as create_name,
+        (case sdp.modify_date is null
+        when true
+        then
+        sdp.create_date
+        else
+        sdp.modify_date
+        end) as update_date
+        from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su,sys_charges_template_detail as sctd
+        where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and su.id =sdp.create_id and sctd.id = sdp.charges_template_detail_id  and sdp.is_delete = 1
+        ) as a
+        LEFT JOIN sys_daily_payment_order as sdpo
+        on a.id = sdpo.daily_payment_id
+        <where>
+            <if test="chargesTemplateDetailId != null">
+                and a.charges_template_detail_id = #{chargesTemplateDetailId}
+            </if>
+            <if test="beginDate != null">
+                and a.begin_date <![CDATA[ > ]]> #{beginDate}
+            </if>
+            <if test="endDate != null">
+                and a.end_date <![CDATA[ < ]]> #{endDate}
+            </if>
+            <if test="payName != null and payName != ''">
+                and sdpo.name like concat('%',#{payName},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and sdpo.tel like concat('%',#{tel},'%')
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                and a.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="unitNo != null">
+                and a.unit_no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="estateNo != null">
+                and a.estate_no like concat('%',#{estateNo},'%')
+            </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+        </where>
+        group by id
+    </select>
+
+    <select id="findStatusSNBySV" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select show_name from sys_data_dictionary
+        where type_name = 'sys_daily_payment_status' and show_value = #{status}
+    </select>
+</mapper>

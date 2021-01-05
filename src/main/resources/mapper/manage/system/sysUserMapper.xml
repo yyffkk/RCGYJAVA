@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.system.SysUserDao">
+    <sql id="field">
+        id,user_name,pwd,actual_name,tel,sex,user_code,birthday,
+        email,id_card,organization_id,position_id,role_id,status,is_delete,
+        create_id,create_date,modify_date,last_login_ip,last_login_date
+    </sql>
+
+    <select id="loginSysUser" resultType="com.api.model.system.SysUser">
+        select
+        <include refid="field"/>
+        from sys_user
+        where user_name = #{userName}
+    </select>
+
+    <select id="findByUserName" parameterType="String" resultType="com.api.model.system.SysUser">
+        select
+        <include refid="field"/>
+         from sys_user where user_name = #{userName}
+    </select>
+
+    <insert id="registerSysUser" parameterType="com.api.model.system.SysUser">
+        insert into
+        <trim prefix="sys_user(" suffix=")" suffixOverrides=",">
+            user_name,
+            pwd,
+            actual_name,
+            tel,
+            sex,
+            user_code,
+            <if test="birthday != null and birthday != ''">
+                birthday,
+            </if>
+            <if test="email != null and pwd != ''">
+                email,
+            </if>
+            id_card,
+            organization_id,
+            position_id,
+            role_id,
+            status,
+            is_delete,
+            create_id,
+            create_date,
+            <if test="modifyId != null and modifyId != ''">
+                modify_id,
+            </if>
+            <if test="modifyDate != null and modifyDate != ''">
+                modifyDate,
+            </if>
+            <if test="lastLoginIp != null and lastLoginIp != ''">
+                lastLoginIp,
+            </if>
+            <if test="lastLoginDate != null and lastLoginDate != ''">
+                lastLoginDate,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{userName},
+            #{pwd},
+            #{actualName},
+            #{tel},
+            #{sex},
+            #{userCode},
+            <if test="birthday != null and birthday != ''">
+                #{birthday},
+            </if>
+            <if test="email != null and pwd != ''">
+                #{email},
+            </if>
+            #{idCard},
+            #{organizationId},
+            #{positionId},
+            #{roleId},
+            #{status},
+            #{isDelete},
+            #{createId},
+            #{createDate},
+            <if test="modifyId != null and modifyId != ''">
+                #{modifyId},
+            </if>
+            <if test="modifyDate != null and modifyDate != ''">
+                #{modifyDate},
+            </if>
+            <if test="lastLoginIp != null and lastLoginIp != ''">
+                #{lastLoginIp},
+            </if>
+            <if test="lastLoginDate != null and lastLoginDate != ''">
+                #{lastLoginDate},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.system.SysUser">
+        select
+        <include refid="field"/>
+        from sys_user
+        where id = #{id}
+    </select>
+
+    <update id="updateCodeByTel" parameterType="com.api.model.system.SysUser">
+        update sys_user set code = #{code},code_send_date = #{codeSendDate} where tel = #{tel}
+    </update>
+
+    <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.system.SysUser">
+        select * from sys_user where tel = #{tel}
+    </select>
+
+    <update id="updateCodeDateByTel" parameterType="com.api.model.system.SysUser">
+        update sys_user set code_send_date = #{codeSendDate} where tel = #{tel}
+    </update>
+
+
+</mapper>

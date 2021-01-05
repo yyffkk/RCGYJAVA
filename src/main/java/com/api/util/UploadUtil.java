@@ -1,9 +1,8 @@
 package com.api.util;
 
-import com.api.dao.resources.ResourcesImgDao;
+import com.api.manage.dao.resources.ResourcesImgDao;
 import com.api.model.resources.ResourcesImg;
 import com.api.vo.resources.VoResourcesImg;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;

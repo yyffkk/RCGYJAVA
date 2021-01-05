@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysGambitThemeDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchGambitTheme" resultType="com.api.vo.butlerService.VoGambitTheme">
+        select a.*
+        from (
+            select sg.id,sg.title,sg.summary,sg.content as gambit_content,sg.is_public,sg.is_rating,sg.create_date as gambit_create_date,
+            (
+                case sg.user_type
+                when 1 then (select ur.name from user_resident as ur where ur.id = sg.create_id)
+                when 2 then (select udp.name from user_decoration_personnel as udp where udp.id = sg.create_id)
+                when 3 then (select su.actual_name from sys_user as su where su.id = sg.create_id) 	end
+            ) as gambit_name ,
+            (
+                case sg.user_type
+                when 1 then (select ur.nick_name from user_resident as ur where ur.id = sg.create_id)
+                when 2 then (select udp.nick_name from user_decoration_personnel as udp where udp.id = sg.create_id)
+                when 3 then (select su.nick_name from sys_user as su where su.id = sg.create_id) 	end
+            ) as gambit_nick_name,
+            (
+                case sgt.user_type
+                when 1 then (select ur.name from user_resident as ur where ur.id = sg.create_id)
+                when 2 then (select udp.name from user_decoration_personnel as udp where udp.id = sg.create_id)
+                when 3 then (select su.actual_name from sys_user as su where su.id = sg.create_id) 	end
+            ) as theme_name ,
+            (
+                case sgt.user_type
+                when 1 then (select ur.nick_name from user_resident as ur where ur.id = sg.create_id)
+                when 2 then (select udp.nick_name from user_decoration_personnel as udp where udp.id = sg.create_id)
+                when 3 then (select su.nick_name from sys_user as su where su.id = sg.create_id) 	end
+            ) as theme_nick_name,
+            sgt.create_date as theme_create_date,sgt.content as theme_content,sgt.like as like_num,sgt.is_delete
+            from sys_gambit as sg LEFT JOIN sys_gambit_theme as sgt
+            on sg.id = sgt.gambit_id
+        ) as a
+        <where>
+            <if test="beginDate != null">
+                and a.gambit_create_date <![CDATA[>]]> #{beginDate}
+            </if>
+            <if test="endDate != null">
+                and a.gambit_create_date <![CDATA[<]]> #{endDate}
+            </if>
+            <if test="title != null and title != ''">
+                and a.title like concat('%',#{title},'%')
+            </if>
+            <if test="gambitName != null and gambitName != ''">
+                and a.gambit_name like concat('%',#{gambitName},'%')
+            </if>
+            <if test="nickName != null and nickName != ''">
+                and a.gambit_nick_name like concat('%',#{nickName},'%')
+            </if>
+            <if test="summary != null and summary != ''">
+                and a.summary like concat('%',#{summary},'%')
+            </if>
+            <if test="gambitContent != null and gambitContent != ''">
+                and a.gambit_content like concat('%',#{gambitContent},'%')
+            </if>
+            <if test="content != null and content != ''">
+                and a.theme_content like concat('%',#{content},'%')
+            </if>
+            <if test="themeName != null and themeName != ''">
+                and a.theme_name like concat('%',#{themeName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="countLikeNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(distinct user_type,create_id) from sys_gambit_theme_like where gambit_theme_id = #{id}
+    </select>
+
+    <select id="countCommentNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(distinct user_type,create_id) from sys_gambit_theme_comment where gambit_theme_id = #{id}
+    </select>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_gambit_theme set is_delete = 0 where id = #{id}
+    </update>
+    <update id="recovery" parameterType="java.lang.Integer">
+        update sys_gambit_theme set is_delete = 1 where id = #{id}
+    </update>
+</mapper>

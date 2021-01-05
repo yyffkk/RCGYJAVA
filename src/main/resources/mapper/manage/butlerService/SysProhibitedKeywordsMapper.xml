@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysProhibitedKeywordsDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchProhibitedKeywords" resultType="com.api.vo.butlerService.VoProhibitedKeywords">
+        select * from sys_prohibited_keywords
+        <where>
+            <if test="keywords != null and keywords != ''">
+                and keywords like concat('%',#{keywords},'%')
+            </if>
+            <if test="replaces != null and replaces != ''">
+                and replaces like concat('%',#{replaces},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

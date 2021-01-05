@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.system.SysDataDictionaryDao">
+    <sql id="field">
+        show_name,show_value,remarks
+    </sql>
+    <!--  查询车位状态  -->
+    <select id="findParkingSpaceStatus" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'cpm_parking_space_status' and is_delete =1
+        order by sort
+    </select>
+    <!-- 查询住户证件类型 -->
+    <select id="findUserResidentIdType" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'user_resident_id_type' and is_delete =1
+        order by sort
+    </select>
+    <!--  查询车位类型  -->
+    <select id="findParkingSpaceType" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'cpm_parking_space_type' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询房屋状态  -->
+    <select id="findEstateStatus" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'cpm_building_unit_estate_status' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询房屋类型  -->
+    <select id="findEstateType" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'cpm_building_unit_estate_type' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询车辆类型  -->
+    <select id="findUserCarType" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'user_car_type' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询车辆状态  -->
+    <select id="findUserCarStatus" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'user_car_status' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询租户状态  -->
+    <select id="findResidentEstateStatus" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'cpm_resident_estate_status' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询亲属身份信息  -->
+    <select id="findResidentRelativesIdentity" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'user_resident_relatives_identity' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询装修成员身份信息  -->
+    <select id="findDecorationStaffIdentity" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'cpm_decoration_staff_identity' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询住户类型  -->
+    <select id="findUserResidentType" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'user_resident_type' and is_delete =1
+        order by sort
+    </select>
+
+    <!--  查询日常缴费计费单位  -->
+    <select id="findSysDailyPaymentType" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'sys_charges_template_detail_type' and is_delete =1
+        order by sort
+    </select>
+
+</mapper>

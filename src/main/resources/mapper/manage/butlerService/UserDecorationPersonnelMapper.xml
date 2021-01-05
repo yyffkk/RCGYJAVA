@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.UserDecorationPersonnelDao">
+    <insert id="insertDecorationPersonnel" parameterType="com.api.model.butlerService.UserDecorationPersonnel">
+        insert into user_decoration_personnel(
+            decoration_id,
+            name,
+            identity,
+            card_type,
+            card_code,
+            tel,
+            address,
+            create_id,
+            create_date,
+            add_way
+        ) values (
+            #{decorationId},
+            #{name},
+            #{identity},
+            #{cardType},
+            #{cardCode},
+            #{tel},
+            #{address},
+            #{createId},
+            #{createDate},
+            #{addWay}
+        )
+    </insert>
+
+    <delete id="deleteDecorationPersonnel" parameterType="java.lang.Integer">
+        delete from user_decoration_personnel where id = #{id}
+    </delete>
+
+    <delete id="deletePersonnelByDecorationId" parameterType="java.lang.Integer">
+        delete from user_decoration_personnel where decoration_id = #{id}
+    </delete>
+
+    <select id="findByIdDecorationPersonnel" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationPersonnel">
+        select id,name,identity,card_type,card_code,tel,address
+        from user_decoration_personnel
+        where id = #{id}
+    </select>
+
+    <select id="findByDecorationId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.UserDecorationPersonnel">
+        select * from user_decoration_personnel where decoration_id = #{id}
+    </select>
+
+    <update id="updateDecorationPersonnel" parameterType="com.api.model.butlerService.UserDecorationPersonnel">
+        update user_decoration_personnel
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="identity != null">
+                identity = #{identity},
+            </if>
+            <if test="cardType != null">
+                card_type = #{cardType},
+            </if>
+            <if test="cardCode != null and cardCode != ''">
+                card_code = #{cardCode},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id =#{id}
+    </update>
+
+
+</mapper>

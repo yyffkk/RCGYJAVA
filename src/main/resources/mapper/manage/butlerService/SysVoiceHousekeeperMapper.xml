@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysVoiceHousekeeperDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchVoiceHousekeeper" resultType="com.api.vo.butlerService.VoVoiceHousekeeper">
+        select svh.*,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,ur.name,ur.tel
+        from sys_voice_housekeeper as svh,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        <where>
+            and svh.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and svh.resident_id = ur.id
+            <if test="name != null and name != ''">
+                and ur.name like concat('%',#{name},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and ur.tel like concat('%',#{tel},'%')
+            </if>
+            <if test="status != null">
+                and svh.status = #{status}
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                and cbue.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="unitNo != null">
+                and cbu.no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="estateNo != null">
+                and cb.no like concat('%',#{estateNo},'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="insertRemake" parameterType="com.api.model.butlerService.VoiceHousekeeperRemake">
+        update sys_voice_housekeeper
+        set remake = #{remake}
+        where id = #{id}
+    </update>
+</mapper>

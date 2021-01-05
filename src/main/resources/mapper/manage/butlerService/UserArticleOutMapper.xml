@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.UserArticleOutDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchUserArticleOut" resultType="com.api.vo.butlerService.VoUserArticleOut">
+        select cbue.room_number as room_number,cbu.no as unit_no,cb.no as building_no,cbue.status as estate_status,ur1.name as resident_name,ur1.tel as resident_tel,uao.id,uao.name,uao.weight,ur2.name as applicant_name,ur2.tel as applicant_tel,uao.approach,uao.expected_time,uao.actual_time,uao.export,uao.status,uao.remarks
+        from user_article_out as uao,cpm_building_unit_estate as cbue,user_resident as ur1,user_resident as ur2,cpm_building_unit as cbu,cpm_building as cb
+        <where>
+            uao.building_unit_estate_id = cbue.id
+            and uao.resident_id = ur1.id
+            and uao.applicant_id = ur2.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="roomNumber != null and roomNumber != ''">
+                and cbue.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="unitNo != null">
+                and cbu.no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="buildingNo != null">
+                and cb.no like concat('%',#{buildingNo},'%')
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from user_article_out where id = #{id}
+    </delete>
+
+    <update id="applicationRejection" parameterType="com.api.model.butlerService.UserArticleOut">
+        update user_article_out
+        set status = #{status},review_id = #{reviewId},review_date = #{reviewDate}
+        where id = #{id}
+    </update>
+    <select id="countArticleOutNow" resultType="java.lang.Integer">
+        select count(*) from user_article_out where to_days(expected_time) = to_days(now())
+    </select>
+
+    <select id="countPerformed" resultType="java.lang.Integer">
+        select count(*) from user_article_out where status = 1
+    </select>
+</mapper>

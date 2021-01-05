@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysArticleDao">
+
+    <select id="list" parameterType="com.api.model.butlerService.SearchArticle" resultType="com.api.vo.butlerService.VoArticle">
+        select * from sys_article
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="listDetail" parameterType="com.api.model.butlerService.SearchArticleDetail" resultType="com.api.vo.butlerService.VoArticleDetail">
+        select sad.*,sa.name from sys_article_detail as sad, sys_article as sa
+        <where>
+            and sa.id = sad.article_id
+            <if test="name != null and name != ''">
+                and sa.name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and sad.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.Article">
+        insert into  sys_article(
+            name,
+            quantity,
+            create_id,
+            create_date
+        ) values (
+            #{name},
+            #{quantity},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+    <insert id="insertDetail" parameterType="com.api.model.butlerService.ArticleDetail">
+        insert into sys_article_detail(
+            article_id,
+            code,
+            status,
+            create_id,
+            create_date
+        ) values (
+            #{articleId},
+            #{code},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdArticle">
+        select * from sys_article where id = #{id}
+    </select>
+
+    <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdArticleDetail">
+        select * from sys_article_detail where article_id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.butlerService.Article">
+        update sys_article
+        <set>
+            <if test="name != null and  name != ''">
+                name = #{name},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate},
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateDetail" parameterType="com.api.model.butlerService.ArticleDetail">
+        update sys_article_detail
+        <set>
+            status = #{status},
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDetail" parameterType="java.lang.Integer">
+        delete from sys_article_detail where article_id = #{id}
+    </delete>
+</mapper>

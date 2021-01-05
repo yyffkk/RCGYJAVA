@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.UserDecorationDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchUserDecoration" resultType="com.api.vo.butlerService.VoUserDecoration">
+        select ud.id,ud.emergency_contact,ud.tel,ud.construction_unit,ud.decoration_deposit,ud.application_date,ud.clean_cost,ud.service_cost,ud.expected_begin,ud.expected_end,ud.actual_begin,ud.actual_end,
+        ud.refund_deposit,ud.is_return_access_card,ud.status,ud.approve_results,ud.approve_date,ud.is_qualified,ud.remarks2,ur2.name as approve_name,
+        cb.no as buildingNo,cbu.no as unitNo,cbue.room_number as roomNumber,ur.name as resident_name,ur.tel as residentTel,
+        udp.name as construction_name,udp.tel as construction_tel
+        from user_decoration as ud,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,user_decoration_personnel as udp,user_resident as ur2
+        <where>
+            ud.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and ud.resident_id = ur.id
+            and ur2.id = ud.approve_id
+            and udp.decoration_id = ud.id
+            and udp.identity = 1
+            <if test="residentName != null and residentName != ''">
+                and ur.name like concat('%',#{residentName},'%')
+            </if>
+            <if test="residentTel != null and residentTel != ''">
+                and ur.tel like concat('%',#{residentTel},'%')
+            </if>
+            <if test="expectedBegin != null">
+                and ud.expected_begin = #{expectedBegin}
+            </if>
+            <if test="expectedEnd != null">
+                and ud.expected_end = #{expectedEnd}
+            </if>
+            <if test="emergencyContact != null and emergencyContact != ''">
+                and ud.emergency_contact like concat('%',#{emergencyContact},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and ud.tel like concat('%',#{tel},'%')
+            </if>
+            <if test="actualBegin != null">
+                and ud.actual_begin = #{actualBegin}
+            </if>
+            <if test="actualEnd != null">
+                and ud.actual_end = #{actualEnd}
+            </if>
+            <if test="approveResults != null">
+                and ud.approve_results = #{approveResults}
+            </if>
+            <if test="approveName != null and approveName != ''">
+                and ur2.name like concat('%',#{approveName},'%')
+            </if>
+            <if test="constructionUnit != null and constructionUnit != ''">
+                and ud.construction_unit like concat('%',#{constructionUnit},'%')
+            </if>
+            <if test="constructionName != null and constructionName != ''">
+                and udp.name like concat('%',#{constructionName},'%')
+            </if>
+            <if test="constructionTel != null and constructionTel != ''">
+                and udp.tel like concat('%',#{constructionTel},'%')
+            </if>
+            <if test="isQualified != null">
+                and ud.is_qualified = #{isQualified}
+            </if>
+            <if test="buildingNo != null">
+                and cb.no like concat('%',#{buildingNo},'%')
+            </if>
+            <if test="unitNo != null">
+                and cbu.no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                and cbue.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="status != null">
+                and ud.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="decorationPersonnelList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationPersonnel">
+        select id,name,identity,card_type,card_code,tel,address from user_decoration_personnel
+        where decoration_id = #{id}
+    </select>
+
+    <select id="decorationTrackRecordList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecord">
+        select udtr.*,su.actual_name as track_name
+        from user_decoration_track_record as udtr,sys_user as su
+        where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 2
+    </select>
+
+    <select id="decorationFinishRecordList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecord">
+        select udtr.*,su.actual_name as track_name
+        from user_decoration_track_record as udtr,sys_user as su
+        where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 3
+    </select>
+
+    <select id="decorationTrackRecordDetailList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecordDetail">
+        select id,review,is_qualified
+        from user_decoration_track_record_detail
+        where decoration_track_record_id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from user_decoration where id = #{id}
+    </delete>
+
+    <delete id="deleteDecorationAccessCard" parameterType="java.lang.Integer">
+        delete from user_decoration_access_card where decoration_id = #{id}
+    </delete>
+
+    <select id="findTrackRecordByDecorationId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecord">
+        select * from user_decoration_track_record where decoration_id = #{id}
+    </select>
+
+    <delete id="deleteTrackRecordDetail" parameterType="java.lang.Integer">
+        delete from user_decoration_track_record_detail where decoration_track_record_id = #{id}
+    </delete>
+
+    <delete id="deleteTrackRecord" parameterType="java.lang.Integer">
+        delete from user_decoration_track_record where decoration_id = #{id}
+    </delete>
+
+    <select id="findUDACByDecorationId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.UserDecorationAccessCard">
+        select * from user_decoration_access_card where decoration_id = #{id}
+    </select>
+
+    <delete id="deleteAccessCard" parameterType="java.lang.Integer">
+        delete from user_access_card where id = #{id}
+    </delete>
+
+    <select id="findUDTRDByTrackRecordId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.UserDecorationTrackRecordDetail">
+        select * from user_decoration_track_record_detail where decoration_track_record_id = #{id}
+    </select>
+
+    <update id="invalid" parameterType="java.lang.Integer">
+        update user_decoration set status = 6 where id = #{id}
+    </update>
+
+    <select id="countDecorationNow" resultType="java.lang.Integer">
+        select count(*) from user_decoration where to_days(expected_begin) = to_days(now())
+    </select>
+
+    <select id="countPerformed" resultType="java.lang.Integer">
+        select count(*) from user_decoration where status = 1
+    </select>
+
+    <select id="findIdByEstateId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from user_decoration where building_unit_estate_id = #{id} and status = 1
+    </select>
+
+</mapper>

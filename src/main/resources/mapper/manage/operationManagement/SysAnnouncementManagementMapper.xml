@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysAnnouncementManagementDao">
+    <select id="list" parameterType="com.api.model.operationManagement.SearchAnnouncementManagement" resultType="com.api.vo.operationManagement.VoAnnouncementManagement">
+        select sam.*,su.actual_name as create_name,
+        (case sam.modify_date is null when true then sam.create_date else sam.modify_date end) as update_date
+        from sys_announcement_management as sam,sys_user as su
+        <where>
+            and sam.create_id = su.id
+            <if test="title != null and title != ''">
+                and sam.title like concat('%',#{title},'%')
+            </if>
+            <if test="status != null">
+                and sam.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFindByIdAnnouncementManagement">
+        select * from sys_announcement_management where id= #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysAnnouncementManagement">
+        insert into sys_announcement_management(
+            title,
+            push_object,
+            content,
+            status,
+            reading_volume,
+            file_doc_url,
+            <if test="scheduledReleaseTime != null">
+                scheduled_release_time,
+            </if>
+            <if test="releaseDate != null">
+                release_date,
+            </if>
+            create_id,
+            create_date
+        ) values (
+            #{title},
+            #{pushObject},
+            #{content},
+            #{status},
+            #{readingVolume},
+            #{fileDocUrl},
+            <if test="scheduledReleaseTime != null">
+                #{scheduledReleaseTime},
+            </if>
+            <if test="releaseDate != null">
+                #{releaseDate},
+            </if>
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysAnnouncementManagement">
+        update sys_announcement_management
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="pushObject != null">
+                push_object = #{pushObject},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            file_doc_url = #{fileDocUrl},
+            <if test="scheduledReleaseTime != null">
+                scheduled_release_time = #{scheduledReleaseTime},
+            </if>
+            <if test="releaseDate != null">
+                release_date = #{releaseDate},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        delete from sys_announcement_management where id =#{id}
+    </delete>
+
+    <update id="release" parameterType="com.api.model.operationManagement.ReleaseDateAndId">
+        update sys_announcement_management
+        set status = 2,release_date = #{releaseDate}
+        where id = #{id}
+    </update>
+
+    <select id="preview" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoPreviewAnnouncementManagement">
+        select * from sys_announcement_management where id = #{id}
+    </select>
+</mapper>

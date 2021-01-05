@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysWorkOrderTypeDetailDao">
+    <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoWorkOrderTypeDetail">
+        select * from sys_work_order_type_detail where work_order_type_id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.SysWorkOrderTypeDetail">
+        insert into sys_work_order_type_detail(
+            work_order_type_id,
+            name,
+            create_id,
+            create_date
+        ) values (
+            #{workOrderTypeId},
+            #{name},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoWorkOrderTypeDetail">
+        select * from sys_work_order_type_detail where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.butlerService.SysWorkOrderTypeDetail">
+        update sys_work_order_type_detail
+        <set>
+            <if test="name != null and  name != ''">
+                name = #{name},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id= #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_work_order_type_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteByWorkOrderTypeId" parameterType="java.lang.Integer">
+        delete from sys_work_order_type_detail where work_order_type_id = #{id}
+    </delete>
+</mapper>

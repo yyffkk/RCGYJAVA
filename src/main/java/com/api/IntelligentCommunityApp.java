@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.api.dao")
+@MapperScan("com.api.manage.dao")
 public class IntelligentCommunityApp {
     public static void main(String[] args) {
         SpringApplication.run(IntelligentCommunityApp.class,args);

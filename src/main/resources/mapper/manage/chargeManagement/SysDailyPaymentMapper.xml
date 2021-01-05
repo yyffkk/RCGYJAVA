@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.chargeManagement.SysDailyPaymentDao">
+    <select id="list" parameterType="com.api.model.chargeManagement.SearchDailyPayment" resultType="com.api.vo.chargeManagement.VoDailyPayment">
+        select a.*,sdpo.name as pay_name from (
+        select sdp.*,sctd.name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no,su.actual_name as create_name,
+        (case sdp.modify_date is null
+            when true
+            then
+                sdp.create_date
+            else
+                sdp.modify_date
+        end) as update_date
+        from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su,sys_charges_template_detail as sctd
+        where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and su.id =sdp.create_id and sctd.id = sdp.charges_template_detail_id and sdp.is_delete = 1
+        ) as a
+        LEFT JOIN sys_daily_payment_order as sdpo
+        on a.id = sdpo.daily_payment_id
+        <where>
+            <if test="chargesTemplateDetailId != null">
+                and a.charges_template_detail_id = #{chargesTemplateDetailId}
+            </if>
+            <if test="beginDate != null">
+                and a.begin_date <![CDATA[ > ]]> #{beginDate}
+            </if>
+            <if test="endDate != null">
+                and a.end_date <![CDATA[ < ]]> #{endDate}
+            </if>
+            <if test="payName != null and payName != ''">
+                and sdpo.name like concat('%',#{payName},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and sdpo.tel like concat('%',#{tel},'%')
+            </if>
+            <if test="roomNumber != null and roomNumber != ''">
+                and a.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="unitNo != null">
+                and a.unit_no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="estateNo != null">
+                and a.estate_no like concat('%',#{estateNo},'%')
+            </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoFindByIdDailyPayment">
+        select sdp.*,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,ur.name as customer_name,sctd.name as charges_template_detail_name,sctd.marker as work_order_type
+        from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,cpm_resident_estate as cre,user_resident as ur,sys_charges_template_detail as sctd
+        where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cre.building_unit_estate_id = sdp.building_unit_estate_id
+        and cre.resident_id = ur.id and sctd.id = sdp.charges_template_detail_id and sdp.is_delete = 1 and sdp.id = #{id} limit 1
+    </select>
+
+    <select id="findAll" resultType="com.api.vo.chargeManagement.VoFindAllDailyPayment">
+        select * from sys_daily_payment
+    </select>
+
+    <insert id="insertOrder" parameterType="com.api.model.chargeManagement.DailyPaymentOrder">
+        insert into sys_daily_payment_order(
+            daily_payment_id,
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date,
+            remake
+        ) values (
+            #{dailyPaymentId},
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate},
+            #{remake}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="updatePaidPriceAndPaymentPrice" parameterType="com.api.model.chargeManagement.UpdateDailyPayment">
+        update sys_daily_payment
+        <set>
+            paid_price = paid_price + #{payPrice},
+            payment_price = payment_price - #{payPrice},
+            <if test="RemainingPaymentPrice == 0">
+                status = 3
+            </if>
+            <if test="RemainingPaymentPrice != 0">
+                status = 2
+            </if>
+        </set>
+        where id = #{DailyPaymentId}
+    </update>
+
+    <insert id="insert" parameterType="com.api.model.chargeManagement.DailyPayment">
+        insert into sys_daily_payment(
+            building_unit_estate_id,
+            charges_template_detail_id,
+            begin_date,
+            end_date,
+            unit_price,
+            type,
+            num,
+            cost_price,
+            paid_price,
+            total_price,
+            payment_price,
+            status,
+            create_id,
+            create_date
+        ) values (
+            #{buildingUnitEstateId},
+            #{chargesTemplateDetailId},
+            #{beginDate},
+            #{endDate},
+            #{unitPrice},
+            #{type},
+            #{num},
+            #{costPrice},
+            #{paidPrice},
+            #{totalPrice},
+            #{paymentPrice},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="findOrderCodeBySDPI" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select code from sys_daily_payment_order where daily_payment_id = #{id}
+    </select>
+
+    <select id="findResidentByEstateId" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoPayResident">
+        select ur.* from cpm_resident_estate as cre,user_resident as ur
+        where cre.resident_id = ur.id and building_unit_estate_id = #{id} limit 1
+    </select>
+
+
+</mapper>
