@@ -118,4 +118,53 @@
         </where>
         group by sfaar.id
     </select>
+
+    <select id="findAllRoomByHave" resultType="com.api.model.chargeManagement.EstateIdAndConstructionArea">
+        select distinct cbue.id,cbue.construction_area from cpm_resident_estate as cre,cpm_building_unit_estate as cbue
+        where cre.building_unit_estate_id = cbue.id
+    </select>
+
+    <select id="findBuildingRoomByHave" parameterType="java.lang.String" resultType="com.api.model.chargeManagement.EstateIdAndConstructionArea">
+        select distinct cbue.id,cbue.construction_area from cpm_resident_estate as cre,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where cre.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cb.id = #{id}
+    </select>
+
+    <select id="findRoomByHave" parameterType="java.lang.String" resultType="com.api.model.chargeManagement.EstateIdAndConstructionArea">
+        select distinct cbue.id,cbue.construction_area from cpm_resident_estate as cre,cpm_building_unit_estate as cbue
+        where cre.building_unit_estate_id = cbue.id and cbue.id = #{id}
+    </select>
+
+    <insert id="share" parameterType="com.api.model.chargeManagement.FixedAmountAllocationResult">
+        insert into sys_fixed_amount_allocation_result(
+            fixed_amount_allocation_id,
+            building_unit_estate_id,
+            share_price,
+            status,
+            create_id,
+            create_date
+        ) values (
+            #{fixedAmountAllocationId},
+            #{estateId},
+            #{sharePrice},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="updateStatus" parameterType="com.api.model.chargeManagement.SysFixedAmountAllocation">
+        update sys_fixed_amount_allocation
+        <set>
+            status = #{status},
+            share_date = #{shareDate},
+            share_operator = #{shareOperator}
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateResultStatus" parameterType="com.api.model.chargeManagement.FixedPayment">
+        update sys_fixed_amount_allocation_result
+        set status = #{status}
+        where id = #{id}
+    </update>
 </mapper>

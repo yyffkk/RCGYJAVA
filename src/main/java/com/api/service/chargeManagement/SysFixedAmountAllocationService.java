@@ -1,5 +1,6 @@
 package com.api.service.chargeManagement;
 
+import com.api.model.chargeManagement.FixedPayment;
 import com.api.model.chargeManagement.SearchFixedAmountAllocation;
 import com.api.model.chargeManagement.SearchFixedAmountAllocationResult;
 import com.api.model.chargeManagement.SysFixedAmountAllocation;
@@ -24,4 +25,6 @@ public interface SysFixedAmountAllocationService {
     List<VoFixedAmountAllocationResult> listResult(SearchFixedAmountAllocationResult searchFixedAmountAllocationResult);
 
     Map<String, Object> share(Integer id);
+
+    Map<String, Object> payment(FixedPayment fixedPayment);
 }

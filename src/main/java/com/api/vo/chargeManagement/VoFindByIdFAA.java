@@ -32,6 +32,10 @@ public class VoFindByIdFAA {
      */
     private Date endDate;
     /**
+     * 状态，1.未分摊，2.已分摊
+     */
+    private Integer status;
+    /**
      * 备注
      */
     private String remake;
@@ -44,18 +48,6 @@ public class VoFindByIdFAA {
      */
     private String shareObjects;
 
-    public VoFindByIdFAA(Integer id, String name, Integer shareType, BigDecimal totalPrice, Date startDate, Date endDate, String remake, Integer shareRange, String shareObjects) {
-        this.id = id;
-        this.name = name;
-        this.shareType = shareType;
-        this.totalPrice = totalPrice;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.remake = remake;
-        this.shareRange = shareRange;
-        this.shareObjects = shareObjects;
-    }
-
     @Override
     public String toString() {
         return "VoFindByIdFAA{" +
@@ -65,6 +57,7 @@ public class VoFindByIdFAA {
                 ", totalPrice=" + totalPrice +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", status=" + status +
                 ", remake='" + remake + '\'' +
                 ", shareRange=" + shareRange +
                 ", shareObjects='" + shareObjects + '\'' +
@@ -119,6 +112,14 @@ public class VoFindByIdFAA {
         this.endDate = endDate;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getRemake() {
         return remake;
     }
@@ -144,5 +145,18 @@ public class VoFindByIdFAA {
     }
 
     public VoFindByIdFAA() {
+    }
+
+    public VoFindByIdFAA(Integer id, String name, Integer shareType, BigDecimal totalPrice, Date startDate, Date endDate, Integer status, String remake, Integer shareRange, String shareObjects) {
+        this.id = id;
+        this.name = name;
+        this.shareType = shareType;
+        this.totalPrice = totalPrice;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.remake = remake;
+        this.shareRange = shareRange;
+        this.shareObjects = shareObjects;
     }
 }

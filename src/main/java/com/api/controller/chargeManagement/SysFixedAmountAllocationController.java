@@ -1,5 +1,6 @@
 package com.api.controller.chargeManagement;
 
+import com.api.model.chargeManagement.FixedPayment;
 import com.api.model.chargeManagement.SearchFixedAmountAllocation;
 import com.api.model.chargeManagement.SearchFixedAmountAllocationResult;
 import com.api.model.chargeManagement.SysFixedAmountAllocation;
@@ -111,6 +112,17 @@ public class SysFixedAmountAllocationController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+
+    /**
+     * 缴纳固定金额
+     * @param fixedPayment 固定金额 缴纳model
+     * @return map
+     */
+    @PostMapping("/payment")
+    public Map<String,Object> payment(@RequestBody FixedPayment fixedPayment){
+        return sysFixedAmountAllocationService.payment(fixedPayment);
     }
 
 
