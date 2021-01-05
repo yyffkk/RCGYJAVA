@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +26,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private RedisUtil redisUtil;
+
+    //验证码过期时间
+    private final long EXPIRATION_TIME = 3*60*1000;
 
     /**
      * 系统用户注册
@@ -87,36 +91,60 @@ public class SysUserServiceImpl implements SysUserService {
         return map;
     }
     /**
-     * 系统用户短信登录
+     * 系统用户短信登录(此验证码和手机号均为前端传入)
      * @param sysUser 系统用户model
-     * @param captcha 验证码
      * @return map {message 消息, status 状态}
      */
     @Override
-    public Map<String, Object> loginSMSSysUser(SysUser sysUser, String captcha) {
+    public Map<String, Object> loginSMSSysUser(SysUser sysUser) {
         Map<String, Object> map = new HashMap<>();
-        // 此验证码和手机号均为前端传入
-        String MOBILE = sysUser.getTel();
 
-        // 校验验证码是否存在Redis中
-        if (!redisUtil.exists(MOBILE)) {
+        //根据手机号查询用户信息
+        SysUser sysUser1 = sysUserDao.findByTel(sysUser.getTel());
+        if (sysUser1 == null){
+            //如果没有此手机号，则返回无此手机号
+            map.put("message","无此手机号");
+            map.put("status",false);
+            return map;
+        }
+
+        if (sysUser1.getCodeSendDate() == null){
             map.put("message","验证码已过期");
             map.put("status",false);
             return map;
         }
 
-        // 获取Redis中的验证码
-        String tempCaptcha = redisUtil.get(MOBILE);
+        //给验证码 发送时间减去过期时间（防止一个验证码多次登录）
+        Date date = new Date(sysUser1.getCodeSendDate().getTime() - EXPIRATION_TIME);
+        sysUser.setCodeSendDate(date);
+        //修改验证码发送时间
+        sysUserDao.updateCodeDateByTel(sysUser);
 
-        // 校验验证码
-        if (!captcha.equals(tempCaptcha)) {
+
+        //校验验证码是否过期(判断相差时间是否超过3分钟)
+        long time = new Date().getTime() - sysUser1.getCodeSendDate().getTime();
+        if (time > EXPIRATION_TIME){
+            map.put("message","验证码已过期");
+            map.put("status",false);
+            return map;
+        }
+        //校验验证码
+        if (!sysUser.getCode().equals(sysUser1.getCode())) {
             map.put("message","验证码错误");
             map.put("status",false);
             return map;
         }
 
-        // 删除Redis中的验证码
-        redisUtil.delete(MOBILE);
+        //登录
+        //将用户封装成token
+        AuthenticationToken token = new UsernamePasswordToken(sysUser1.getUserName(), sysUser1.getPwd());
+        //获取当前的Subject
+        Subject subject = SecurityUtils.getSubject();
+        //登录并存入该用户信息
+        subject.login(token);
+
+
+        map.put("token",subject.getSession().getId());
         map.put("message","验证码正确");
         map.put("status",true);
         return map;
@@ -130,7 +158,7 @@ public class SysUserServiceImpl implements SysUserService {
     public Map<String, Object> sendMMSLogin(SysUser sysUser) {
         Map<String, Object> map = new HashMap<>();
         // 验证码为后台随机生成
-        final String CAPTCHA = "666666";
+        final String CAPTCHA = String.valueOf(new Random().nextInt(899999) + 100000);
         // 手机号为前端传入
         final String MOBILE = sysUser.getTel();
 
@@ -143,14 +171,32 @@ public class SysUserServiceImpl implements SysUserService {
             map.put("status",false);
             return map;
         }
+        //根据手机号查询用户信息
+        SysUser sysUser1 = sysUserDao.findByTel(sysUser.getTel());
+        if (sysUser1 == null){
+            //如果没有此手机号，则返回无此手机号
+            map.put("message","无此手机号");
+            map.put("status",false);
+            return map;
+        }
+
+
+
+        //填入验证码
+        sysUser.setCode(CAPTCHA);
+        //填入验证码发送时间
+        sysUser.setCodeSendDate(new Date());
+        //将验证码和验证码发送时间存入数据库
+        int update = sysUserDao.updateCodeByTel(sysUser);
+        if (update <= 0){
+            map.put("message","验证码发送失败");
+            map.put("status",false);
+            return map;
+        }
+
         // 发送短信工具类
 //        SmsSendUtil.send(CAPTCHA, MOBILE);
-
-        // 将验证码存入Redis
-        redisUtil.set(MOBILE, CAPTCHA);
-        // 设置验证码过期时间为2分钟
-        redisUtil.expire(MOBILE, 60*2);
-
+        map.put("code",CAPTCHA);
         map.put("message","验证码发送成功");
         map.put("status",true);
         return map;

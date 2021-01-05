@@ -24,10 +24,9 @@ public interface SysUserService {
     /**
      * 系统用户短信登录
      * @param sysUser 系统用户model
-     * @param captcha
      * @return map {message 消息, status 状态}
      */
-    Map<String, Object> loginSMSSysUser(SysUser sysUser, String captcha);
+    Map<String, Object> loginSMSSysUser(SysUser sysUser);
 
     /**
      * 发送短信验证码

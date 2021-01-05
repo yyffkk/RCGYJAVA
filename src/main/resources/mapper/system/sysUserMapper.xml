@@ -102,5 +102,17 @@
         where id = #{id}
     </select>
 
+    <update id="updateCodeByTel" parameterType="com.api.model.system.SysUser">
+        update sys_user set code = #{code},code_send_date = #{codeSendDate} where tel = #{tel}
+    </update>
+
+    <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.system.SysUser">
+        select * from sys_user where tel = #{tel}
+    </select>
+
+    <update id="updateCodeDateByTel" parameterType="com.api.model.system.SysUser">
+        update sys_user set code_send_date = #{codeSendDate} where tel = #{tel}
+    </update>
+
 
 </mapper>

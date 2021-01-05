@@ -90,6 +90,14 @@ public class SysUser {
      * 最后一次登录时间
      */
     private Date lastLoginDate;
+    /**
+     * 验证码（用于用户验证码登录）
+     */
+    private String code;
+    /**
+     * 验证码发送时间
+     */
+    private Date codeSendDate;
 
     @Override
     public String toString() {
@@ -115,6 +123,8 @@ public class SysUser {
                 ", modifyDate=" + modifyDate +
                 ", lastLoginIp=" + lastLoginIp +
                 ", lastLoginDate=" + lastLoginDate +
+                ", code='" + code + '\'' +
+                ", codeSendDate=" + codeSendDate +
                 '}';
     }
 
@@ -286,10 +296,26 @@ public class SysUser {
         this.lastLoginDate = lastLoginDate;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Date getCodeSendDate() {
+        return codeSendDate;
+    }
+
+    public void setCodeSendDate(Date codeSendDate) {
+        this.codeSendDate = codeSendDate;
+    }
+
     public SysUser() {
     }
 
-    public SysUser(Integer id, String userName, String pwd, String actualName, String tel, Integer sex, String userCode, Date birthday, String email, String idCard, Integer organizationId, Integer positionId, Integer roleId, Integer status, Integer isDelete, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer lastLoginIp, Date lastLoginDate) {
+    public SysUser(Integer id, String userName, String pwd, String actualName, String tel, Integer sex, String userCode, Date birthday, String email, String idCard, Integer organizationId, Integer positionId, Integer roleId, Integer status, Integer isDelete, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer lastLoginIp, Date lastLoginDate, String code, Date codeSendDate) {
         this.id = id;
         this.userName = userName;
         this.pwd = pwd;
@@ -311,5 +337,7 @@ public class SysUser {
         this.modifyDate = modifyDate;
         this.lastLoginIp = lastLoginIp;
         this.lastLoginDate = lastLoginDate;
+        this.code = code;
+        this.codeSendDate = codeSendDate;
     }
 }

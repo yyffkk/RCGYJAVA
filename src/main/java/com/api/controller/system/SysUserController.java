@@ -21,7 +21,6 @@ public class SysUserController {
      */
     @PostMapping("/registerSysUser")
     public Map<String,Object> registerSysUser(@RequestBody SysUser sysUser){
-
         return sysUserService.registerSysUser(sysUser);
     }
 
@@ -53,8 +52,8 @@ public class SysUserController {
      * @return map {message 消息, status 状态}
      */
     @PostMapping("/loginSMSSysUser")
-    public Map<String,Object> loginSMSSysUser(@RequestBody SysUser sysUser,@RequestBody String captcha){
-        return sysUserService.loginSMSSysUser(sysUser,captcha);
+    public Map<String,Object> loginSMSSysUser(@RequestBody SysUser sysUser){
+        return sysUserService.loginSMSSysUser(sysUser);
     }
 
     /**

@@ -30,4 +30,25 @@ public interface SysUserDao {
      * @return 系统用户信息
      */
     SysUser findById(Integer createId);
+
+    /**
+     * 将验证码和验证码发送时间存入数据库
+     * @param sysUser
+     * @return
+     */
+    int updateCodeByTel(SysUser sysUser);
+
+    /**
+     * 根据手机号查询用户信息
+     * @param tel 手机号
+     * @return 用户信息
+     */
+    SysUser findByTel(String tel);
+
+
+    /**
+     * 给验证码 发送时间减去过期时间（防止一个验证码多次登录）
+     * @param sysUser 手机号 和 减完后的时间
+     */
+    void updateCodeDateByTel(SysUser sysUser);
 }
