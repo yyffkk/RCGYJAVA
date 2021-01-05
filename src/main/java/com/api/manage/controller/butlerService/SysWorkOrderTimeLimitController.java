@@ -17,7 +17,7 @@ import java.util.Map;
  * 工单时限管理表
  */
 @RestController
-@RequestMapping("workOrderTimeLimit")
+@RequestMapping("manage/workOrderTimeLimit")
 public class SysWorkOrderTimeLimitController {
     @Resource
     SysWorkOrderTimeLimitService sysWorkOrderTimeLimitService;

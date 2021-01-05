@@ -19,7 +19,7 @@ import java.util.Map;
  * 话题管理表
  */
 @RestController
-@RequestMapping("gambit")
+@RequestMapping("manage/gambit")
 public class SysGambitController {
     @Resource
     SysGambitService sysGambitService;

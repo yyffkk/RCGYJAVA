@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 租户controller
  */
-@RequestMapping("tenant")
+@RequestMapping("manage/tenant")
 @RestController
 public class UserTenantController {
     @Resource

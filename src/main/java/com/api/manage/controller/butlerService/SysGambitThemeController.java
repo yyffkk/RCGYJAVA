@@ -17,7 +17,7 @@ import java.util.Map;
  * 主题明细管理
  */
 @RestController
-@RequestMapping("gambitTheme")
+@RequestMapping("manage/gambitTheme")
 public class SysGambitThemeController {
     @Resource
     SysGambitThemeService sysGambitThemeService;

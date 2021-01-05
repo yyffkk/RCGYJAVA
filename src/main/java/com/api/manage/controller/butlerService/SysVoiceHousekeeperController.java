@@ -17,7 +17,7 @@ import java.util.Map;
  * 语音管家
  */
 @RestController
-@RequestMapping("/voiceHousekeeper")
+@RequestMapping("manage/voiceHousekeeper")
 public class SysVoiceHousekeeperController {
     @Resource
     SysVoiceHousekeeperService sysVoiceHousekeeperService;

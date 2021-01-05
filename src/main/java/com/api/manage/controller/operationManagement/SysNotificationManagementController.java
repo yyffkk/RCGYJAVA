@@ -19,7 +19,7 @@ import java.util.Map;
  * 通知管理
  */
 @RestController
-@RequestMapping("/notificationManagement")
+@RequestMapping("manage/notificationManagement")
 public class SysNotificationManagementController {
     @Resource
     SysNotificationManagementService sysNotificationManagementService;

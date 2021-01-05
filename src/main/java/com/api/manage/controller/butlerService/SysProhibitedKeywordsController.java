@@ -18,7 +18,7 @@ import java.util.Map;
  * 违禁关键字表
  */
 @RestController
-@RequestMapping("prohibitedKeywords")
+@RequestMapping("manage/prohibitedKeywords")
 public class SysProhibitedKeywordsController {
     @Resource
     SysProhibitedKeywordsService sysProhibitedKeywordsService;

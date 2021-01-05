@@ -20,7 +20,7 @@ import java.util.Map;
  * 物品出门
  */
 @RestController
-@RequestMapping("userArticleOut")
+@RequestMapping("manage/userArticleOut")
 public class UserArticleOutController {
     private static Map<String,Object> map = null;
 

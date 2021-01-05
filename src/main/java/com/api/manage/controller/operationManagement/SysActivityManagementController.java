@@ -21,7 +21,7 @@ import java.util.Map;
  * 活动管理
  */
 @RestController
-@RequestMapping("/activityManagement")
+@RequestMapping("manage/activityManagement")
 public class SysActivityManagementController {
     @Resource
     SysActivityManagementService sysActivityManagementService;

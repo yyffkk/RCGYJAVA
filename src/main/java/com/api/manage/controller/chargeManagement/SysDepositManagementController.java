@@ -21,7 +21,7 @@ import java.util.Map;
  * 押金管理
  */
 @RestController
-@RequestMapping("/depositManagement")
+@RequestMapping("manage/depositManagement")
 public class SysDepositManagementController {
     @Resource
     SysDepositManagementService sysDepositManagementService;

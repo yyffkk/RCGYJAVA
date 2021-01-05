@@ -21,7 +21,7 @@ import java.util.Map;
  * 投诉表扬表(与咨询建议使用同一个表)
  */
 @RestController
-@RequestMapping("complaintPraise")
+@RequestMapping("manage/complaintPraise")
 public class ComplaintPraiseController {
     @Resource
     ComplaintPraiseService complaintPraiseService;

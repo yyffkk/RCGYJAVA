@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("cpmBuildingUnitEstate")
+@RequestMapping("manage/cpmBuildingUnitEstate")
 @RestController
 public class CpmBuildingUnitEstateController {
     //房产状态为4时，未售

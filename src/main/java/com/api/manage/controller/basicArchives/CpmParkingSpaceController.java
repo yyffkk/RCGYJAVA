@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("cpmParkingSpace")
+@RequestMapping("manage/cpmParkingSpace")
 @RestController
 public class CpmParkingSpaceController {
     @Resource

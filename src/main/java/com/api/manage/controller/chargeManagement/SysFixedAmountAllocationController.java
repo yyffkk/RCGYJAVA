@@ -22,7 +22,7 @@ import java.util.Map;
  * 固定金额分摊
  */
 @RestController
-@RequestMapping("/fixedAmountAllocation")
+@RequestMapping("manage/fixedAmountAllocation")
 public class SysFixedAmountAllocationController {
     @Resource
     SysFixedAmountAllocationService sysFixedAmountAllocationService;

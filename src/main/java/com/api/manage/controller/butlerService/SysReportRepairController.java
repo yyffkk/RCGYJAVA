@@ -18,7 +18,7 @@ import java.util.Map;
  * 报事报修表
  */
 @RestController
-@RequestMapping("reportRepair")
+@RequestMapping("manage/reportRepair")
 public class SysReportRepairController {
     @Resource
     SysReportRepairService sysReportRepairService;

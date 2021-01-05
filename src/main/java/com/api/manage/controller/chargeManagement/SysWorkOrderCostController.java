@@ -17,7 +17,7 @@ import java.util.Map;
  * 工单费用
  */
 @RestController
-@RequestMapping("/workOrderCost")
+@RequestMapping("manage/workOrderCost")
 public class SysWorkOrderCostController {
     @Resource
     SysWorkOrderCostService sysWorkOrderCostService;

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/decoration")
+@RequestMapping("manage//decoration")
 @RestController
 public class CpmDecorationController {
     @Resource

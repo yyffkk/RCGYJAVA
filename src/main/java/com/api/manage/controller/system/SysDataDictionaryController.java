@@ -13,7 +13,7 @@ import java.util.List;
  * 数据字典表
  */
 @RestController
-@RequestMapping("/dataDictionary")
+@RequestMapping("manage/dataDictionary")
 public class SysDataDictionaryController {
     @Resource
     SysDataDictionaryService sysDataDictionaryService;

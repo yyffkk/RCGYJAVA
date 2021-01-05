@@ -19,7 +19,7 @@ import java.util.Map;
  * 车辆表
  */
 @RestController
-@RequestMapping("userCar")
+@RequestMapping("manage/userCar")
 public class UserCarController {
     @Resource
     UserCarService userCarService;

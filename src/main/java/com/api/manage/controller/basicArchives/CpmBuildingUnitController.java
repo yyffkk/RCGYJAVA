@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("cpmBuildingUnit")
+@RequestMapping("manage/cpmBuildingUnit")
 @RestController
 public class CpmBuildingUnitController {
     @Resource

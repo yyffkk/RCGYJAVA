@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * 咨询建议表
  */
-@RequestMapping("/advice")
+@RequestMapping("manage/advice")
 @RestController
 public class UserAdviceController {
 

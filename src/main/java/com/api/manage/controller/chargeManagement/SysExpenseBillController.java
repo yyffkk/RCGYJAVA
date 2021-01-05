@@ -20,7 +20,7 @@ import java.util.Map;
  * 费用账单（账单管理）
  */
 @RestController
-@RequestMapping("/expenseBill")
+@RequestMapping("manage/expenseBill")
 public class SysExpenseBillController {
     @Resource
     SysExpenseBillService sysExpenseBillService;

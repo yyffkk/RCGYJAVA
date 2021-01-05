@@ -21,7 +21,7 @@ import java.util.Map;
  * 日常缴费表
  */
 @RestController
-@RequestMapping("dailyPayment")
+@RequestMapping("manage/dailyPayment")
 public class SysDailyPaymentController {
     @Resource
     SysDailyPaymentService sysDailyPaymentService;

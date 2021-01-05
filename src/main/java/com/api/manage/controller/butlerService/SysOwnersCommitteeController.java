@@ -19,7 +19,7 @@ import java.util.Map;
  * 业委会管理
  */
 @RestController
-@RequestMapping("ownersCommittee")
+@RequestMapping("manage/ownersCommittee")
 public class SysOwnersCommitteeController {
     @Resource
     SysOwnersCommitteeService sysOwnersCommitteeService;

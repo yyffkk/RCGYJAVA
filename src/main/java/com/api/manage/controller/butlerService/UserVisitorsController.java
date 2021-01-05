@@ -19,7 +19,7 @@ import java.util.Map;
  * 访客管理表
  */
 @RestController
-@RequestMapping("/visitors")
+@RequestMapping("manage/visitors")
 public class UserVisitorsController {
     @Resource
     UserVisitorsService userVisitorsService;

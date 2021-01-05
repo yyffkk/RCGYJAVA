@@ -17,7 +17,7 @@ import java.util.Map;
  * 借还管理
  */
 @RestController
-@RequestMapping("/borrow")
+@RequestMapping("manage/borrow")
 public class BorrowController {
     @Resource
     BorrowService borrowService;

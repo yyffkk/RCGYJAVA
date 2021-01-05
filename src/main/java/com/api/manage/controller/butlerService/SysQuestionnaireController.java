@@ -21,7 +21,7 @@ import java.util.Map;
  * 问卷调查表
  */
 @RestController
-@RequestMapping("questionnaire")
+@RequestMapping("manage/questionnaire")
 public class SysQuestionnaireController {
     @Resource
     SysQuestionnaireService sysQuestionnaireService;

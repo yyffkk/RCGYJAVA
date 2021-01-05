@@ -18,7 +18,7 @@ import java.util.Map;
  * 便民电话表
  */
 @RestController
-@RequestMapping("/conveniencePhone")
+@RequestMapping("manage/conveniencePhone")
 public class SysConveniencePhoneController {
     @Resource
     SysConveniencePhoneService sysConveniencePhoneService;

@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * 工单类型管理
  */
-@RequestMapping("/workOrderType")
+@RequestMapping("manage/workOrderType")
 @RestController
 public class SysWorkOrderTypeController {
     @Resource

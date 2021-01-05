@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/userDecoration")
+@RequestMapping("manage/userDecoration")
 public class UserDecorationController {
     @Resource
     UserDecorationService userDecorationService;

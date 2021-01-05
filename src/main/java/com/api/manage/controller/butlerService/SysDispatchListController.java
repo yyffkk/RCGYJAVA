@@ -19,7 +19,7 @@ import java.util.Map;
  * 派工单表
  */
 @RestController
-@RequestMapping("dispatch")
+@RequestMapping("manage/dispatch")
 public class SysDispatchListController {
     @Resource
     SysDispatchListService sysDispatchListService;

@@ -21,7 +21,7 @@ import java.util.Map;
  * 投票管理
  */
 @RestController
-@RequestMapping("vote")
+@RequestMapping("manage/vote")
 public class SysVoteController {
     @Resource
     SysVoteService sysVoteService;

@@ -20,7 +20,7 @@ import java.util.Map;
  * 主办方管理
  */
 @RestController
-@RequestMapping("/sponsorManagement")
+@RequestMapping("manage/sponsorManagement")
 public class SysSponsorManagementController {
     @Resource
     SysSponsorManagementService sysSponsorManagementService;

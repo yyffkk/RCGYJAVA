@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 楼栋管理
  */
-@RequestMapping("cpmBuilding")
+@RequestMapping("manage/cpmBuilding")
 @RestController
 public class CpmBuildingController {
 

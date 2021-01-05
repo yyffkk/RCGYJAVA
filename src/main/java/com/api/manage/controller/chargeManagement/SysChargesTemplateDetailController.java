@@ -21,7 +21,7 @@ import java.util.Map;
  * 物业收费标准明细表
  */
 @RestController
-@RequestMapping("/chargesTemplateDetail")
+@RequestMapping("manage/chargesTemplateDetail")
 public class SysChargesTemplateDetailController {
     @Resource
     SysChargesTemplateDetailService sysChargesTemplateDetailService;

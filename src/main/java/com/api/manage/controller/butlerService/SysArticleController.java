@@ -21,7 +21,7 @@ import java.util.Map;
  * 物品管理表
  */
 @RestController
-@RequestMapping("article")
+@RequestMapping("manage/article")
 public class SysArticleController {
     @Resource
     SysArticleService sysArticleService;

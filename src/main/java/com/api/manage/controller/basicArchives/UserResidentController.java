@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("userResident")
+@RequestMapping("manage/userResident")
 @RestController
 public class UserResidentController {
     @Resource

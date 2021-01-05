@@ -20,7 +20,7 @@ import java.util.Map;
  * 公告管理
  */
 @RestController
-@RequestMapping("/announcementManagement")
+@RequestMapping("manage/announcementManagement")
 public class SysAnnouncementManagementController {
     @Resource
     SysAnnouncementManagementService sysAnnouncementManagementService;

@@ -14,7 +14,7 @@ import java.util.Map;
  * 工单类型明细管理
  */
 @RestController
-@RequestMapping("/workOrderTypeDetail")
+@RequestMapping("manage/workOrderTypeDetail")
 public class SysWorkOrderTypeDetailController {
     @Resource
     SysWorkOrderTypeDetailService sysWorkOrderTypeDetailService;

@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 @RestController
-@RequestMapping("sysUser")
+@RequestMapping("manage/sysUser")
 public class SysUserController {
     @Resource
     SysUserService sysUserService;
