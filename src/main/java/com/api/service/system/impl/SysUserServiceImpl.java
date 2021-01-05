@@ -3,7 +3,6 @@ package com.api.service.system.impl;
 import com.api.dao.system.SysUserDao;
 import com.api.model.system.SysUser;
 import com.api.service.system.SysUserService;
-import com.api.util.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -23,9 +22,6 @@ import java.util.regex.Pattern;
 public class SysUserServiceImpl implements SysUserService {
     @Resource
     SysUserDao sysUserDao;
-
-    @Resource
-    private RedisUtil redisUtil;
 
     //验证码过期时间
     private final long EXPIRATION_TIME = 3*60*1000;
