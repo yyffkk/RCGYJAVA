@@ -1,6 +1,6 @@
-package com.api.manage.dao.system;
+package com.api.manage.dao.businessManagement;
 
-import com.api.model.system.SysOrganization;
+import com.api.model.businessManagement.SysOrganization;
 import org.springframework.stereotype.Component;
 
 /**

@@ -1,8 +1,8 @@
-package com.api.manage.service.system.impl;
+package com.api.manage.service.businessManagement.impl;
 
-import com.api.manage.dao.system.SysOrganizationDao;
-import com.api.model.system.SysOrganization;
-import com.api.manage.service.system.SysOrganizationService;
+import com.api.manage.dao.businessManagement.SysOrganizationDao;
+import com.api.model.businessManagement.SysOrganization;
+import com.api.manage.service.businessManagement.SysOrganizationService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,4 +1,4 @@
-package com.api.model.system;
+package com.api.model.businessManagement;
 
 /**
  * 组织信息
