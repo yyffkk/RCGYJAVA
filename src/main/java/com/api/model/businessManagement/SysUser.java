@@ -1,4 +1,4 @@
-package com.api.model.system;
+package com.api.model.businessManagement;
 
 import java.util.Date;
 
@@ -51,6 +51,10 @@ public class SysUser {
      */
     private Integer organizationId;
     /**
+     * 组织ID全路径  用‘:’分割
+     */
+    private String organizationIdPath;
+    /**
      * 职位ID
      */
     private Integer positionId;
@@ -91,6 +95,10 @@ public class SysUser {
      */
     private Date lastLoginDate;
     /**
+     * 昵称
+     */
+    private String nickName;
+    /**
      * 验证码（用于用户验证码登录）
      */
     private String code;
@@ -98,6 +106,18 @@ public class SysUser {
      * 验证码发送时间
      */
     private Date codeSendDate;
+    /**
+     * 备注
+     */
+    private String remake;
+    /**
+     * 汇报对象
+     */
+    private Integer reportTo;
+    /**
+     * 入职日期
+     */
+    private Date entryDate;
 
     @Override
     public String toString() {
@@ -113,6 +133,7 @@ public class SysUser {
                 ", email='" + email + '\'' +
                 ", idCard='" + idCard + '\'' +
                 ", organizationId=" + organizationId +
+                ", organizationIdPath='" + organizationIdPath + '\'' +
                 ", positionId=" + positionId +
                 ", roleId=" + roleId +
                 ", status=" + status +
@@ -123,8 +144,12 @@ public class SysUser {
                 ", modifyDate=" + modifyDate +
                 ", lastLoginIp=" + lastLoginIp +
                 ", lastLoginDate=" + lastLoginDate +
+                ", nickName='" + nickName + '\'' +
                 ", code='" + code + '\'' +
                 ", codeSendDate=" + codeSendDate +
+                ", remake='" + remake + '\'' +
+                ", reportTo=" + reportTo +
+                ", entryDate=" + entryDate +
                 '}';
     }
 
@@ -216,6 +241,14 @@ public class SysUser {
         this.organizationId = organizationId;
     }
 
+    public String getOrganizationIdPath() {
+        return organizationIdPath;
+    }
+
+    public void setOrganizationIdPath(String organizationIdPath) {
+        this.organizationIdPath = organizationIdPath;
+    }
+
     public Integer getPositionId() {
         return positionId;
     }
@@ -296,6 +329,14 @@ public class SysUser {
         this.lastLoginDate = lastLoginDate;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public String getCode() {
         return code;
     }
@@ -312,10 +353,34 @@ public class SysUser {
         this.codeSendDate = codeSendDate;
     }
 
+    public String getRemake() {
+        return remake;
+    }
+
+    public void setRemake(String remake) {
+        this.remake = remake;
+    }
+
+    public Integer getReportTo() {
+        return reportTo;
+    }
+
+    public void setReportTo(Integer reportTo) {
+        this.reportTo = reportTo;
+    }
+
+    public Date getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
+    }
+
     public SysUser() {
     }
 
-    public SysUser(Integer id, String userName, String pwd, String actualName, String tel, Integer sex, String userCode, Date birthday, String email, String idCard, Integer organizationId, Integer positionId, Integer roleId, Integer status, Integer isDelete, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer lastLoginIp, Date lastLoginDate, String code, Date codeSendDate) {
+    public SysUser(Integer id, String userName, String pwd, String actualName, String tel, Integer sex, String userCode, Date birthday, String email, String idCard, Integer organizationId, String organizationIdPath, Integer positionId, Integer roleId, Integer status, Integer isDelete, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer lastLoginIp, Date lastLoginDate, String nickName, String code, Date codeSendDate, String remake, Integer reportTo, Date entryDate) {
         this.id = id;
         this.userName = userName;
         this.pwd = pwd;
@@ -327,6 +392,7 @@ public class SysUser {
         this.email = email;
         this.idCard = idCard;
         this.organizationId = organizationId;
+        this.organizationIdPath = organizationIdPath;
         this.positionId = positionId;
         this.roleId = roleId;
         this.status = status;
@@ -337,7 +403,11 @@ public class SysUser {
         this.modifyDate = modifyDate;
         this.lastLoginIp = lastLoginIp;
         this.lastLoginDate = lastLoginDate;
+        this.nickName = nickName;
         this.code = code;
         this.codeSendDate = codeSendDate;
+        this.remake = remake;
+        this.reportTo = reportTo;
+        this.entryDate = entryDate;
     }
 }

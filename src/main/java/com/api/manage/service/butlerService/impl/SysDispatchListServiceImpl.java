@@ -6,7 +6,7 @@ import com.api.manage.dao.butlerService.SysReportRepairDao;
 import com.api.manage.dao.chargeManagement.SysHandleCompleteDetailDao;
 import com.api.manage.dao.system.SysLoginDao;
 import com.api.model.butlerService.*;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysDispatchListService;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.*;
@@ -32,7 +32,7 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
     @Resource
     SysProcessRecordDao sysProcessRecordDao;
     @Resource
-    SysLoginDao sysUserDao;
+    SysLoginDao sysLoginDao;
     @Resource
     SysHandleCompleteDetailDao sysHandleCompleteDetailDao;
 
@@ -274,7 +274,7 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
             processRecord.setOperator(sysUser.getId());
             processRecord.setOperatorType(3);
             //查询维修人信息
-            SysUser byId = sysUserDao.findById(sysDispatchListDetail.getOperator());
+            SysUser byId = sysLoginDao.findById(sysDispatchListDetail.getOperator());
             processRecord.setOperatorContent("报修单指派给"+byId.getActualName());
             int insert2 = sysProcessRecordDao.insert(processRecord);
             if (insert2 <= 0){

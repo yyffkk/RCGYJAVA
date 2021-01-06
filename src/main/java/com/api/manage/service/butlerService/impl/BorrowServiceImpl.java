@@ -7,7 +7,7 @@ import com.api.model.butlerService.SearchBorrow;
 import com.api.model.butlerService.SysArticleBorrow;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.BorrowService;
 import com.api.vo.butlerService.VoBorrow;
 import org.apache.shiro.SecurityUtils;

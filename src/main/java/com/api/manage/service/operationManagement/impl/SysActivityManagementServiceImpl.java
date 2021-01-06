@@ -3,7 +3,7 @@ package com.api.manage.service.operationManagement.impl;
 import com.api.manage.dao.operationManagement.SysActivityManagementDao;
 import com.api.model.operationManagement.ActivityManagement;
 import com.api.model.operationManagement.SearchActivityManagement;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.operationManagement.SysActivityManagementService;
 import com.api.util.UploadUtil;
 import com.api.vo.operationManagement.VoActivityManagement;

@@ -3,7 +3,7 @@ package com.api.manage.service.operationManagement.impl;
 import com.api.manage.dao.operationManagement.SysNotificationManagementDao;
 import com.api.model.operationManagement.NotificationManagement;
 import com.api.model.operationManagement.SearchNotificationManagement;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.operationManagement.SysNotificationManagementService;
 import com.api.vo.operationManagement.VoFindByIdNotificationManagement;
 import com.api.vo.operationManagement.VoNotificationManagement;

@@ -79,4 +79,8 @@
         update sys_organization set status = 1 where id = #{id}
     </update>
 
+    <select id="findParentIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select parent_id from sys_organization where id = #{id}
+    </select>
+
 </mapper>

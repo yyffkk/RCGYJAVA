@@ -7,7 +7,7 @@ import com.api.model.butlerService.SearchUserDecoration;
 import com.api.model.butlerService.UserDecorationAccessCard;
 import com.api.model.butlerService.UserDecorationPersonnel;
 import com.api.model.butlerService.UserDecorationTrackRecordDetail;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.UserDecorationService;
 import com.api.vo.butlerService.*;
 import org.apache.commons.lang3.StringUtils;

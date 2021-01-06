@@ -4,7 +4,7 @@ import com.api.manage.dao.operationManagement.SysActivityManagementDao;
 import com.api.manage.dao.operationManagement.SysSponsorManagementDao;
 import com.api.model.operationManagement.SearchSponsorManagement;
 import com.api.model.operationManagement.SponsorManagement;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.operationManagement.SysSponsorManagementService;
 import com.api.util.UploadUtil;
 import com.api.vo.operationManagement.VoFindByIdSponsorManagement;

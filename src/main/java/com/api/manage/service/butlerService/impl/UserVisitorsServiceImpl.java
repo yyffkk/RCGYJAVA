@@ -3,7 +3,7 @@ package com.api.manage.service.butlerService.impl;
 import com.api.manage.dao.butlerService.UserVisitorsDao;
 import com.api.model.butlerService.SearchUserVisitors;
 import com.api.model.butlerService.UserVisitors;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.UserVisitorsService;
 import com.api.vo.butlerService.VoFindByIdVisitors;
 import com.api.vo.butlerService.VoUserVisitors;

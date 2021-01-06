@@ -3,7 +3,7 @@ package com.api.manage.service.chargeManagement.impl;
 import com.api.manage.dao.chargeManagement.SysChargesTemplateDetailDao;
 import com.api.model.chargeManagement.SearchChargesTemplateDetail;
 import com.api.model.chargeManagement.SysChargesTemplateDetail;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysChargesTemplateDetailService;
 import com.api.util.ExcelUtil;
 import com.api.vo.chargeManagement.VoChargesTemplateDetail;

@@ -2,7 +2,7 @@ package com.api.manage.service.basicArchives.impl;
 
 import com.api.manage.dao.basicArchives.CpmBuildingDao;
 import com.api.model.basicArchives.CpmBuilding;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.basicArchives.CpmBuildingService;
 import com.api.vo.basicArchives.VoFindAll;
 import org.apache.shiro.SecurityUtils;

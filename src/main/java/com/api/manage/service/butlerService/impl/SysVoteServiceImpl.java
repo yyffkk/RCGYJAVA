@@ -13,7 +13,7 @@ import com.api.model.butlerService.SearchVotePersonnel;
 import com.api.model.butlerService.SysVote;
 import com.api.model.butlerService.SysVoteCandidate;
 import com.api.model.resources.ResourcesImg;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysVoteService;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.*;

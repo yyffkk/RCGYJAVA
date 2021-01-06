@@ -1,6 +1,6 @@
 package com.api.manage.controller.system;
 
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.system.SysLoginService;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,10 +8,10 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 @RestController
-@RequestMapping("manage/sysUser")
+@RequestMapping("manage/sysLogin")
 public class SysLoginController {
     @Resource
-    SysLoginService sysUserService;
+    SysLoginService sysLoginService;
 
 
     /**
@@ -21,7 +21,7 @@ public class SysLoginController {
      */
     @PostMapping("/registerSysUser")
     public Map<String,Object> registerSysUser(@RequestBody SysUser sysUser){
-        return sysUserService.registerSysUser(sysUser);
+        return sysLoginService.registerSysUser(sysUser);
     }
 
     /**
@@ -33,7 +33,7 @@ public class SysLoginController {
     public Map<String,Object> loginSysUser(@RequestBody SysUser sysUser){
         System.out.println(sysUser.getPwd());
         System.out.println(sysUser.getUserName());
-        return sysUserService.loginSysUser(sysUser);
+        return sysLoginService.loginSysUser(sysUser);
     }
 
     /**
@@ -43,7 +43,7 @@ public class SysLoginController {
      */
     @PostMapping("/sendMMSLogin")
     public Map<String,Object> sendMMSLogin (@RequestBody SysUser sysUser){
-        return sysUserService.sendMMSLogin (sysUser);
+        return sysLoginService.sendMMSLogin (sysUser);
     }
 
     /**
@@ -53,7 +53,7 @@ public class SysLoginController {
      */
     @PostMapping("/loginSMSSysUser")
     public Map<String,Object> loginSMSSysUser(@RequestBody SysUser sysUser){
-        return sysUserService.loginSMSSysUser(sysUser);
+        return sysLoginService.loginSMSSysUser(sysUser);
     }
 
     /**
@@ -62,7 +62,7 @@ public class SysLoginController {
      */
     @GetMapping("/logout")
     public Map<String,Object> logout(){
-        return sysUserService.logout();
+        return sysLoginService.logout();
     }
 
 

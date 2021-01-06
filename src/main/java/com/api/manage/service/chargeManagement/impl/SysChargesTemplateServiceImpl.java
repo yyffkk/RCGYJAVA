@@ -4,7 +4,7 @@ import com.api.manage.dao.chargeManagement.SysChargesTemplateDao;
 import com.api.manage.dao.chargeManagement.SysChargesTemplateDetailDao;
 import com.api.model.chargeManagement.ChargesTemplate;
 import com.api.model.chargeManagement.SysChargesTemplateDetail;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysChargesTemplateService;
 import com.api.vo.chargeManagement.VoChargesTemplate;
 import org.apache.shiro.SecurityUtils;

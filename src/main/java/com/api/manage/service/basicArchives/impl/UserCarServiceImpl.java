@@ -7,7 +7,7 @@ import com.api.model.basicArchives.CpmBuilding;
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.model.basicArchives.SearchUserCar;
 import com.api.model.basicArchives.UserCar;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.basicArchives.UserCarService;
 import com.api.vo.basicArchives.VoUserCar;
 import com.api.vo.basicArchives.VoUserCarFindById;

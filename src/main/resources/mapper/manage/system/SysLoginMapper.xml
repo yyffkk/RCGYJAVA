@@ -9,20 +9,20 @@
         create_id,create_date,modify_date,last_login_ip,last_login_date
     </sql>
 
-    <select id="loginSysUser" resultType="com.api.model.system.SysUser">
+    <select id="loginSysUser" resultType="com.api.model.businessManagement.SysUser">
         select
         <include refid="field"/>
         from sys_user
         where user_name = #{userName}
     </select>
 
-    <select id="findByUserName" parameterType="String" resultType="com.api.model.system.SysUser">
+    <select id="findByUserName" parameterType="String" resultType="com.api.model.businessManagement.SysUser">
         select
         <include refid="field"/>
          from sys_user where user_name = #{userName}
     </select>
 
-    <insert id="registerSysUser" parameterType="com.api.model.system.SysUser">
+    <insert id="registerSysUser" parameterType="com.api.model.businessManagement.SysUser">
         insert into
         <trim prefix="sys_user(" suffix=")" suffixOverrides=",">
             user_name,
@@ -95,22 +95,22 @@
         </trim>
     </insert>
 
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.system.SysUser">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.businessManagement.SysUser">
         select
         <include refid="field"/>
         from sys_user
         where id = #{id}
     </select>
 
-    <update id="updateCodeByTel" parameterType="com.api.model.system.SysUser">
+    <update id="updateCodeByTel" parameterType="com.api.model.businessManagement.SysUser">
         update sys_user set code = #{code},code_send_date = #{codeSendDate} where tel = #{tel}
     </update>
 
-    <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.system.SysUser">
+    <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
         select * from sys_user where tel = #{tel}
     </select>
 
-    <update id="updateCodeDateByTel" parameterType="com.api.model.system.SysUser">
+    <update id="updateCodeDateByTel" parameterType="com.api.model.businessManagement.SysUser">
         update sys_user set code_send_date = #{codeSendDate} where tel = #{tel}
     </update>
 

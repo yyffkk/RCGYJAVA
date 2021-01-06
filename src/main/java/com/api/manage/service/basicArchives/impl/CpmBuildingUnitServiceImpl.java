@@ -2,7 +2,7 @@ package com.api.manage.service.basicArchives.impl;
 
 import com.api.manage.dao.basicArchives.CpmBuildingUnitDao;
 import com.api.model.basicArchives.CpmBuildingUnit;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.vo.basicArchives.VoCpmBuildingUnit;
 import com.api.manage.service.basicArchives.CpmBuildingUnitService;
 import com.api.vo.basicArchives.VoFindAll;

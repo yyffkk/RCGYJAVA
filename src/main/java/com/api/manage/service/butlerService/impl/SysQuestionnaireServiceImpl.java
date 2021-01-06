@@ -4,7 +4,7 @@ import com.api.manage.dao.butlerService.SysQuestionnaireDao;
 import com.api.manage.dao.resources.ResourcesImgDao;
 import com.api.model.butlerService.*;
 import com.api.model.resources.ResourcesImg;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysQuestionnaireService;
 import com.api.vo.butlerService.*;
 import com.api.vo.resources.VoResourcesImg;

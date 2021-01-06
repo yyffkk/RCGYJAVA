@@ -7,7 +7,7 @@ import com.api.model.butlerService.ArticleDetail;
 import com.api.model.butlerService.SearchArticle;
 import com.api.model.butlerService.SearchArticleDetail;
 import com.api.model.resources.ResourcesImg;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysArticleService;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoArticle;

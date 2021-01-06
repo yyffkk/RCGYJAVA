@@ -5,7 +5,7 @@ import com.api.manage.dao.chargeManagement.SysDepositManagementDao;
 import com.api.model.chargeManagement.SearchDepositManagement;
 import com.api.model.chargeManagement.SysDepositManagement;
 import com.api.model.chargeManagement.SysDepositManagementOrder;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysDepositManagementService;
 import com.api.vo.chargeManagement.VoDepositManagement;
 import com.api.vo.chargeManagement.VoFindByIdDepositManagement;

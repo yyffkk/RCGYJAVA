@@ -11,7 +11,7 @@ import com.api.model.butlerService.SearchUserAdvice;
 import com.api.model.butlerService.SysAdvice;
 import com.api.model.butlerService.SysAdviceDetail;
 import com.api.model.resources.ResourcesImg;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.UserAdviceService;
 import com.api.vo.butlerService.VoFindByIdAdvice;
 import com.api.vo.butlerService.VoProhibitedKeywords;
@@ -44,7 +44,7 @@ public class UserAdviceServiceImpl implements UserAdviceService {
     @Resource
     UserResidentDao userResidentDao;
     @Resource
-    SysLoginDao sysUserDao;
+    SysLoginDao sysLoginDao;
     @Resource
     SysProhibitedKeywordsDao sysProhibitedKeywordsDao;
 
@@ -308,7 +308,7 @@ public class UserAdviceServiceImpl implements UserAdviceService {
                 //如果创建人类型为物业 3.物业 跟物业关联查询创建人姓名
                 if (voUserAdviceDetail.getCreateUserType() == 3){
                     //根据反馈信息中的反馈人id 关联物业查询反馈人真实姓名
-                    SysUser byId = sysUserDao.findById(voUserAdviceDetail.getCreateId());
+                    SysUser byId = sysLoginDao.findById(voUserAdviceDetail.getCreateId());
                     voUserAdviceDetail.setCreateName(byId.getActualName());
                 }
 

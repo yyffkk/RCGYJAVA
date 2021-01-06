@@ -2,7 +2,7 @@ package com.api.manage.service.chargeManagement.impl;
 
 import com.api.manage.dao.chargeManagement.SysFixedAmountAllocationDao;
 import com.api.model.chargeManagement.*;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysFixedAmountAllocationService;
 import com.api.util.UploadUtil;
 import com.api.vo.chargeManagement.VoFindByIdFAA;

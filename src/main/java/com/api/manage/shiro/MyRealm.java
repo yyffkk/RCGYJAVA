@@ -2,7 +2,7 @@ package com.api.manage.shiro;
 
 import com.api.model.system.SysJurisdiction;
 import com.api.model.system.SysRole;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.system.SysJurisdictionService;
 import com.api.manage.service.system.SysRoleService;
 import com.api.manage.service.system.SysLoginService;

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.businessManagement.SysUserDao">
+    <select id="list" parameterType="com.api.model.businessManagement.SearchUser" resultType="com.api.vo.businessManagement.VoUser">
+        select su.*,so.name as organization_name,si.name as position_name,sr.name as role_name
+        from sys_user as su,sys_organization as so,sys_identity as si,sys_role as sr
+        <where>
+            su.organization_id = so.id
+            and su.position_id = si.id
+            and su.role_id = sr.id
+            <if test="organizationId != null">
+                and su.organization_id_path like concat('%',#{organizationId},':','%')
+            </if>
+            <if test="nickName != null and nickName != ''">
+                and su.nick_name like concat('%',#{nickName},'%')
+            </if>
+            <if test="status != null">
+                and su.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.businessManagement.SysUser">
+        insert into sys_user(
+            user_name,
+            pwd,
+            <if test="actualName != null and actualName != ''">
+                actual_name,
+            </if>
+            tel,
+            sex,
+            user_code,
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="email != null and email != ''">
+                email,
+            </if>
+            id_card,
+            organization_id,
+            organization_id_path,
+            <if test="positionId != null">
+                position_id,
+            </if>
+            status,
+            is_delete,
+            create_id,
+            create_date,
+            <if test="reportTo != null">
+                report_to,
+            </if>
+            <if test="entryDate != null">
+                entry_date,
+            </if>
+            nick_name
+        )values (
+            #{userName},
+            #{pwd},
+            <if test="actualName != null and actualName != ''">
+                #{actualName},
+            </if>
+            #{tel},
+            #{sex},
+            #{userCode},
+            <if test="birthday != null">
+                #{birthday},
+            </if>
+            <if test="email != null and email != ''">
+                #{email},
+            </if>
+            #{idCard},
+            #{organizationId},
+            #{organizationIdPath},
+            <if test="positionId != null">
+                #{positionId},
+            </if>
+            #{status},
+            #{isDelete},
+            #{createId},
+            #{createDate},
+            <if test="reportTo != null">
+                #{reportTo},
+            </if>
+            <if test="entryDate != null">
+                #{entryDate},
+            </if>
+            #{nickName}
+        )
+    </insert>
+
+    <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
+        select * from sys_user where tel = #{tel}
+    </select>
+
+    <select id="findByIdCard" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
+        select * from sys_user where id_card = #{idCard}
+    </select>
+</mapper>

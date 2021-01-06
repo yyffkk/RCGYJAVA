@@ -67,4 +67,11 @@ public interface SysOrganizationDao {
      * @return 影响行数
      */
     int recovery(Integer id);
+
+    /**
+     * 根据组织主键id 查询上级id
+     * @param organizationId 组织主键id
+     * @return 上级id
+     */
+    int findParentIdById(Integer organizationId);
 }

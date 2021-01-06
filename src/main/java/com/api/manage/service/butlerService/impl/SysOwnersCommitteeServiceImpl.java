@@ -3,7 +3,7 @@ package com.api.manage.service.butlerService.impl;
 import com.api.manage.dao.butlerService.SysOwnersCommitteeDao;
 import com.api.model.butlerService.SearchOwnersCommittee;
 import com.api.model.butlerService.SysOwnersCommittee;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysOwnersCommitteeService;
 import com.api.vo.butlerService.VoFindByIdOwnersCommittee;
 import com.api.vo.butlerService.VoOwnersCommittee;

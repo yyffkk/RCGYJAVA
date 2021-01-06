@@ -1,6 +1,6 @@
 package com.api.manage.service.system;
 
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 
 import java.util.Map;
 

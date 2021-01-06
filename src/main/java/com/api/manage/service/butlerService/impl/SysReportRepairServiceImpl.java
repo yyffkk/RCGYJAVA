@@ -5,7 +5,7 @@ import com.api.manage.dao.butlerService.SysReportRepairDao;
 import com.api.model.butlerService.DispatchList;
 import com.api.model.butlerService.ReportRepair;
 import com.api.model.butlerService.SearchReportRepair;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysReportRepairService;
 import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;

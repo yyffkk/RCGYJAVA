@@ -3,7 +3,7 @@ package com.api.manage.service.butlerService.impl;
 import com.api.manage.dao.butlerService.UserArticleOutDao;
 import com.api.model.butlerService.SearchUserArticleOut;
 import com.api.model.butlerService.UserArticleOut;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.UserArticleOutService;
 import com.api.vo.butlerService.VoUserArticleOut;
 import org.apache.commons.lang3.StringUtils;

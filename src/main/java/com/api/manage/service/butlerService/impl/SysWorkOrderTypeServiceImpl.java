@@ -3,7 +3,7 @@ package com.api.manage.service.butlerService.impl;
 import com.api.manage.dao.butlerService.SysWorkOrderTypeDao;
 import com.api.manage.dao.butlerService.SysWorkOrderTypeDetailDao;
 import com.api.model.butlerService.SysWorkOrderType;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysWorkOrderTypeService;
 import com.api.vo.butlerService.VoWorkOrderType;
 import org.apache.shiro.SecurityUtils;

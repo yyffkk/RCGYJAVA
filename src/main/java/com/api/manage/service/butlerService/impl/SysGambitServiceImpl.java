@@ -3,7 +3,7 @@ package com.api.manage.service.butlerService.impl;
 import com.api.manage.dao.butlerService.SysGambitDao;
 import com.api.model.butlerService.SearchGambit;
 import com.api.model.butlerService.SysGambit;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysGambitService;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFindByIdGambit;

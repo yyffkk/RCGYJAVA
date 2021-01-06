@@ -1,7 +1,7 @@
 package com.api.manage.service.system.impl;
 
 import com.api.manage.dao.system.SysLoginDao;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.system.SysLoginService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 @Service
 public class SysLoginServiceImpl implements SysLoginService {
     @Resource
-    SysLoginDao sysUserDao;
+    SysLoginDao sysLoginDao;
 
     //验证码过期时间
     private final long EXPIRATION_TIME = 3*60*1000;
@@ -43,7 +43,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         //判断注册参数是否可用
         boolean registerParam = isRegisterParam(sysUser);
         if (registerParam){
-            int integer = sysUserDao.registerSysUser(sysUser);
+            int integer = sysLoginDao.registerSysUser(sysUser);
             if (integer >0){
                 map.put("message","注册成功");
                 map.put("status",true);
@@ -96,7 +96,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         Map<String, Object> map = new HashMap<>();
 
         //根据手机号查询用户信息
-        SysUser sysUser1 = sysUserDao.findByTel(sysUser.getTel());
+        SysUser sysUser1 = sysLoginDao.findByTel(sysUser.getTel());
         if (sysUser1 == null){
             //如果没有此手机号，则返回无此手机号
             map.put("message","无此手机号");
@@ -114,7 +114,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         Date date = new Date(sysUser1.getCodeSendDate().getTime() - EXPIRATION_TIME);
         sysUser.setCodeSendDate(date);
         //修改验证码发送时间
-        sysUserDao.updateCodeDateByTel(sysUser);
+        sysLoginDao.updateCodeDateByTel(sysUser);
 
 
         //校验验证码是否过期(判断相差时间是否超过3分钟)
@@ -168,7 +168,7 @@ public class SysLoginServiceImpl implements SysLoginService {
             return map;
         }
         //根据手机号查询用户信息
-        SysUser sysUser1 = sysUserDao.findByTel(sysUser.getTel());
+        SysUser sysUser1 = sysLoginDao.findByTel(sysUser.getTel());
         if (sysUser1 == null){
             //如果没有此手机号，则返回无此手机号
             map.put("message","无此手机号");
@@ -183,7 +183,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         //填入验证码发送时间
         sysUser.setCodeSendDate(new Date());
         //将验证码和验证码发送时间存入数据库
-        int update = sysUserDao.updateCodeByTel(sysUser);
+        int update = sysLoginDao.updateCodeByTel(sysUser);
         if (update <= 0){
             map.put("message","验证码发送失败");
             map.put("status",false);
@@ -205,7 +205,7 @@ public class SysLoginServiceImpl implements SysLoginService {
      */
     @Override
     public SysUser findByUserName(String userName) {
-        return sysUserDao.findByUserName(userName);
+        return sysLoginDao.findByUserName(userName);
     }
     /**
      * 系统用户登出

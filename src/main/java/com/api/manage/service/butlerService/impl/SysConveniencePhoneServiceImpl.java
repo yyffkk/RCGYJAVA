@@ -4,7 +4,7 @@ import com.api.manage.dao.butlerService.SysConveniencePhoneDao;
 import com.api.model.butlerService.SearchConveniencePhone;
 import com.api.model.butlerService.SysConveniencePhone;
 import com.api.model.butlerService.SysConveniencePhoneReminder;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysConveniencePhoneService;
 import com.api.vo.butlerService.VoConveniencePhone;
 import org.apache.shiro.SecurityUtils;

@@ -2,7 +2,7 @@ package com.api.manage.service.basicArchives.impl;
 
 import com.api.manage.dao.basicArchives.CpmParkingSpaceDao;
 import com.api.model.basicArchives.CpmParkingSpace;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.vo.basicArchives.VoCpmParkingSpace;
 import com.api.manage.service.basicArchives.CpmParkingSpaceService;
 import com.api.vo.basicArchives.VoParkingSpace;

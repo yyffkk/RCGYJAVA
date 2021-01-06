@@ -3,7 +3,7 @@ package com.api.manage.service.businessManagement.impl;
 import com.api.manage.dao.businessManagement.SysOrganizationDao;
 import com.api.model.businessManagement.SysOrganization;
 import com.api.manage.service.businessManagement.SysOrganizationService;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.vo.businessManagement.VoFindByIdOrganization;
 import com.api.vo.businessManagement.VoOrganization;
 import org.apache.shiro.SecurityUtils;

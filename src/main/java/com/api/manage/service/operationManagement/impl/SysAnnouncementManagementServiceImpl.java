@@ -4,7 +4,7 @@ import com.api.manage.dao.operationManagement.SysAnnouncementManagementDao;
 import com.api.model.operationManagement.ReleaseDateAndId;
 import com.api.model.operationManagement.SearchAnnouncementManagement;
 import com.api.model.operationManagement.SysAnnouncementManagement;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.operationManagement.SysAnnouncementManagementService;
 import com.api.util.UploadUtil;
 import com.api.vo.operationManagement.VoAnnouncementManagement;

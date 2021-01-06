@@ -5,7 +5,7 @@ import com.api.manage.dao.remind.RemindDao;
 import com.api.model.chargeManagement.*;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysDailyPaymentService;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;

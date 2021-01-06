@@ -2,7 +2,7 @@ package com.api.manage.service.butlerService.impl;
 
 import com.api.manage.dao.butlerService.SysWorkOrderTimeLimitDao;
 import com.api.model.butlerService.SysWorkOrderTimeLimit;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysWorkOrderTimeLimitService;
 import com.api.vo.butlerService.VoWorkOrderTimeLimit;
 import org.apache.shiro.SecurityUtils;

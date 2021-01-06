@@ -3,7 +3,7 @@ package com.api.manage.service.basicArchives.impl;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.basicArchives.UserResidentDao;
 import com.api.model.basicArchives.*;
-import com.api.model.system.SysUser;
+import com.api.model.businessManagement.SysUser;
 import com.api.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.api.manage.service.basicArchives.CpmBuildingUnitEstateService;
 import com.api.vo.basicArchives.VoFindAll;
