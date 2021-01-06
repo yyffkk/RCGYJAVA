@@ -3,9 +3,11 @@ package com.api.manage.service.system.impl;
 import com.api.manage.dao.system.SysRoleDao;
 import com.api.model.system.SysRole;
 import com.api.manage.service.system.SysRoleService;
+import com.api.vo.system.VoRole;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 角色service实现
@@ -43,5 +45,24 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public SysRole findByIdentityId(Integer positionId) {
         return sysRoleDao.findByIdentityId(positionId);
+    }
+
+    @Override
+    public List<VoRole> roleList() {
+        //递归查询下级，最高级为0
+        List<VoRole> voRoleList = findRoleList(0);
+        return voRoleList;
+    }
+
+    private List<VoRole> findRoleList(Integer parentId) {
+        List<VoRole> voRoleList = sysRoleDao.roleList(parentId);
+        if (voRoleList != null && voRoleList.size()>0){
+            for (VoRole voRole : voRoleList) {
+                //递归查询下级，并填入集合中
+                List<VoRole> roleList = findRoleList(voRole.getId());
+                voRole.setVoRoleList(roleList);
+            }
+        }
+        return voRoleList;
     }
 }

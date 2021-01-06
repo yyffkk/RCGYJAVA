@@ -59,9 +59,9 @@ public class SysUser {
      */
     private Integer positionId;
     /**
-     * 角色ID
+     * 角色ID，用'，'隔开，格式为(1,2)
      */
-    private Integer roleId;
+    private String roleId;
     /**
      * 用户状态
      */
@@ -135,7 +135,7 @@ public class SysUser {
                 ", organizationId=" + organizationId +
                 ", organizationIdPath='" + organizationIdPath + '\'' +
                 ", positionId=" + positionId +
-                ", roleId=" + roleId +
+                ", roleId='" + roleId + '\'' +
                 ", status=" + status +
                 ", isDelete=" + isDelete +
                 ", createId=" + createId +
@@ -257,11 +257,11 @@ public class SysUser {
         this.positionId = positionId;
     }
 
-    public Integer getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 
@@ -380,7 +380,7 @@ public class SysUser {
     public SysUser() {
     }
 
-    public SysUser(Integer id, String userName, String pwd, String actualName, String tel, Integer sex, String userCode, Date birthday, String email, String idCard, Integer organizationId, String organizationIdPath, Integer positionId, Integer roleId, Integer status, Integer isDelete, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer lastLoginIp, Date lastLoginDate, String nickName, String code, Date codeSendDate, String remake, Integer reportTo, Date entryDate) {
+    public SysUser(Integer id, String userName, String pwd, String actualName, String tel, Integer sex, String userCode, Date birthday, String email, String idCard, Integer organizationId, String organizationIdPath, Integer positionId, String roleId, Integer status, Integer isDelete, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer lastLoginIp, Date lastLoginDate, String nickName, String code, Date codeSendDate, String remake, Integer reportTo, Date entryDate) {
         this.id = id;
         this.userName = userName;
         this.pwd = pwd;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.businessManagement.FunctionAuthorityDao">
+    <select id="list" parameterType="com.api.model.businessManagement.SearchFunctionAuthority" resultType="com.api.vo.businessManagement.VoFunctionAuthority">
+        select su.*,so.name as organization_name,si.name as position_name
+        from sys_user as su,sys_organization as so,sys_identity as si
+        <where>
+            su.organization_id = so.id
+            and su.position_id = si.id
+            and su.is_delete = 1
+            <if test="organizationId != null">
+                and su.organization_id = #{organizationId}
+            </if>
+            <if test="roleId != null">
+                and su.role_id = #{roleId}
+            </if>
+        </where>
+    </select>
+</mapper>

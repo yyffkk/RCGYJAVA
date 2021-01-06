@@ -92,4 +92,11 @@ public interface SysUserDao {
      * @return 影响行数
      */
     int resetPWD(SysUser sysUser);
+
+    /**
+     * 根据员工主键id查询所属角色
+     * @param id 员工主键id
+     * @return 所属角色
+     */
+    String findRoleNameByUserId(Integer id);
 }

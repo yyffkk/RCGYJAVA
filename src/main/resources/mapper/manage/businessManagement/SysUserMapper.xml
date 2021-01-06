@@ -4,12 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.businessManagement.SysUserDao">
     <select id="list" parameterType="com.api.model.businessManagement.SearchUser" resultType="com.api.vo.businessManagement.VoUser">
-        select su.*,so.name as organization_name,si.name as position_name,sr.name as role_name
-        from sys_user as su,sys_organization as so,sys_identity as si,sys_role as sr
+        select su.*,so.name as organization_name,si.name as position_name
+        from sys_user as su,sys_organization as so,sys_identity as si
         <where>
             su.organization_id = so.id
             and su.position_id = si.id
-            and su.role_id = sr.id
             and su.is_delete = 1
             <if test="organizationId != null">
                 and su.organization_id_path like concat('%',#{organizationId},':','%')
@@ -179,6 +178,10 @@
         set pwd = #{pwd},modify_id = #{modifyId},modify_date = #{modifyDate}
         where id = #{id}
     </update>
+
+    <select id="findRoleNameByUserId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select role_id from sys_user where id = #{id}
+    </select>
 
 
 </mapper>

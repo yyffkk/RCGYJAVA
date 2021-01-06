@@ -2,10 +2,12 @@ package com.api.manage.service.businessManagement.impl;
 
 import com.api.manage.dao.businessManagement.SysOrganizationDao;
 import com.api.manage.dao.businessManagement.SysUserDao;
+import com.api.manage.dao.system.SysRoleDao;
 import com.api.manage.service.businessManagement.SysUserService;
 import com.api.model.businessManagement.SearchUser;
 import com.api.model.businessManagement.SysUser;
 import com.api.vo.businessManagement.VoFindByIdUser;
+import com.api.vo.businessManagement.VoFunctionAuthority;
 import com.api.vo.businessManagement.VoUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -24,10 +26,32 @@ public class SysUserServiceImpl implements SysUserService {
     SysUserDao sysUserDao;
     @Resource
     SysOrganizationDao sysOrganizationDao;
+    @Resource
+    SysRoleDao sysRoleDao;
 
     @Override
     public List<VoUser> list(SearchUser searchUser) {
-        return sysUserDao.list(searchUser);
+        List<VoUser> list = sysUserDao.list(searchUser);
+        if (list != null && list.size()>0){
+            for (VoUser voUser : list) {
+                //查询角色信息
+                String roleId = voUser.getRoleId();
+                if (roleId != null){
+                    String roleName = "";
+                    String[] split = roleId.split(",");
+                    for (int i = 0; i < split.length; i++) {
+                        String name = sysRoleDao.findNameByRoleId(Integer.valueOf(split[i]));
+                        if (i == 0){
+                            roleName += name;
+                        }else {
+                            roleName += ","+name;
+                        }
+                    }
+                    voUser.setRoleName(roleName);
+                }
+            }
+        }
+        return list;
     }
 
     @Override

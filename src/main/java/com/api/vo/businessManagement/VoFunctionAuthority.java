@@ -1,23 +1,19 @@
 package com.api.vo.businessManagement;
 
 /**
- * 人员管理Vo 回显 list
+ * 功能权限管理Vo list 回显
  */
-public class VoUser {
+public class VoFunctionAuthority {
     /**
-     * 主键id
+     * 员工主键id
      */
     private Integer id;
     /**
-     * 昵称
+     * 昵称（系统名）
      */
     private String nickName;
     /**
-     * 电话
-     */
-    private String tel;
-    /**
-     * 部门名称
+     * 主属部门名称
      */
     private String organizationName;
     /**
@@ -32,27 +28,16 @@ public class VoUser {
      * 角色名称
      */
     private String roleName;
-    /**
-     * 用户状态（1.正常，2.停用，3.禁止登录）
-     */
-    private Integer status;
-    /**
-     * 备注
-     */
-    private String remake;
 
     @Override
     public String toString() {
-        return "VoUser{" +
+        return "VoFunctionAuthority{" +
                 "id=" + id +
                 ", nickName='" + nickName + '\'' +
-                ", tel='" + tel + '\'' +
                 ", organizationName='" + organizationName + '\'' +
                 ", positionName='" + positionName + '\'' +
                 ", roleId='" + roleId + '\'' +
                 ", roleName='" + roleName + '\'' +
-                ", status=" + status +
-                ", remake='" + remake + '\'' +
                 '}';
     }
 
@@ -70,14 +55,6 @@ public class VoUser {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
     }
 
     public String getOrganizationName() {
@@ -112,34 +89,15 @@ public class VoUser {
         this.roleName = roleName;
     }
 
-    public Integer getStatus() {
-        return status;
+    public VoFunctionAuthority() {
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getRemake() {
-        return remake;
-    }
-
-    public void setRemake(String remake) {
-        this.remake = remake;
-    }
-
-    public VoUser() {
-    }
-
-    public VoUser(Integer id, String nickName, String tel, String organizationName, String positionName, String roleId, String roleName, Integer status, String remake) {
+    public VoFunctionAuthority(Integer id, String nickName, String organizationName, String positionName, String roleId, String roleName) {
         this.id = id;
         this.nickName = nickName;
-        this.tel = tel;
         this.organizationName = organizationName;
         this.positionName = positionName;
         this.roleId = roleId;
         this.roleName = roleName;
-        this.status = status;
-        this.remake = remake;
     }
 }

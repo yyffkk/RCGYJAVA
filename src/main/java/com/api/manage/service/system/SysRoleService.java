@@ -1,6 +1,9 @@
 package com.api.manage.service.system;
 
 import com.api.model.system.SysRole;
+import com.api.vo.system.VoRole;
+
+import java.util.List;
 
 /**
  * 角色service接口
@@ -26,4 +29,6 @@ public interface SysRoleService {
      * @return 角色信息
      */
     SysRole findByIdentityId(Integer positionId);
+
+    List<VoRole> roleList();
 }
