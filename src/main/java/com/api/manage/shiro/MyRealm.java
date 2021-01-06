@@ -5,7 +5,7 @@ import com.api.model.system.SysRole;
 import com.api.model.system.SysUser;
 import com.api.manage.service.system.SysJurisdictionService;
 import com.api.manage.service.system.SysRoleService;
-import com.api.manage.service.system.SysUserService;
+import com.api.manage.service.system.SysLoginService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class MyRealm extends AuthorizingRealm {
     @Autowired
-    SysUserService sysUserService;
+    SysLoginService sysUserService;
     @Autowired
     SysRoleService sysRoleService;
     @Autowired

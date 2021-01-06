@@ -4,7 +4,7 @@ import com.api.manage.dao.butlerService.SysDispatchListDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
 import com.api.manage.dao.butlerService.SysReportRepairDao;
 import com.api.manage.dao.chargeManagement.SysHandleCompleteDetailDao;
-import com.api.manage.dao.system.SysUserDao;
+import com.api.manage.dao.system.SysLoginDao;
 import com.api.model.butlerService.*;
 import com.api.model.system.SysUser;
 import com.api.manage.service.butlerService.SysDispatchListService;
@@ -32,7 +32,7 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
     @Resource
     SysProcessRecordDao sysProcessRecordDao;
     @Resource
-    SysUserDao sysUserDao;
+    SysLoginDao sysUserDao;
     @Resource
     SysHandleCompleteDetailDao sysHandleCompleteDetailDao;
 

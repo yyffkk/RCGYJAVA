@@ -3,8 +3,80 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.businessManagement.SysOrganizationDao">
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.businessManagement.SysOrganization">
-        select * from sys_organization where id =#{id}
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.businessManagement.VoFindByIdOrganization">
+        select so.*,su.tel as leading_tel from sys_organization as so,sys_user as su where so.leading_id = su.id and so.id =#{id}
     </select>
+
+    <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.businessManagement.VoOrganization">
+        select so.*,su.actual_name as leading_name,su.tel as leading_tel from sys_organization as so,sys_user as su
+        where so.leading_id = su.id and parent_id = #{parentId}
+    </select>
+
+    <select id="countNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_user where organization_id_path like concat('%',#{id},':','%')
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.businessManagement.SysOrganization">
+        insert into sys_organization(
+            name,
+            parent_id,
+            leading_id,
+            status,
+            sort,
+            remake,
+            category_id,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{parentId},
+            #{leadingId},
+            #{status},
+            #{sort},
+            #{remake},
+            #{categoryId},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.api.model.businessManagement.SysOrganization">
+        update sys_organization
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="leadingId != null">
+                leading_id = #{leadingId},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="remake != null and remake != ''">
+                remake = #{remake},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_organization where id = #{id}
+    </delete>
+
+    <update id="stop" parameterType="java.lang.Integer">
+        update sys_organization set status = 2 where id = #{id}
+    </update>
+
+    <update id="recovery" parameterType="java.lang.Integer">
+        update sys_organization set status = 1 where id = #{id}
+    </update>
 
 </mapper>

@@ -1,7 +1,7 @@
 package com.api.manage.controller.system;
 
 import com.api.model.system.SysUser;
-import com.api.manage.service.system.SysUserService;
+import com.api.manage.service.system.SysLoginService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -9,9 +9,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("manage/sysUser")
-public class SysUserController {
+public class SysLoginController {
     @Resource
-    SysUserService sysUserService;
+    SysLoginService sysUserService;
 
 
     /**

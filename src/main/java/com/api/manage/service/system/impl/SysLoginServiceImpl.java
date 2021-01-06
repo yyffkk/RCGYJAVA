@@ -1,8 +1,8 @@
 package com.api.manage.service.system.impl;
 
-import com.api.manage.dao.system.SysUserDao;
+import com.api.manage.dao.system.SysLoginDao;
 import com.api.model.system.SysUser;
-import com.api.manage.service.system.SysUserService;
+import com.api.manage.service.system.SysLoginService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -19,9 +19,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class SysUserServiceImpl implements SysUserService {
+public class SysLoginServiceImpl implements SysLoginService {
     @Resource
-    SysUserDao sysUserDao;
+    SysLoginDao sysUserDao;
 
     //验证码过期时间
     private final long EXPIRATION_TIME = 3*60*1000;

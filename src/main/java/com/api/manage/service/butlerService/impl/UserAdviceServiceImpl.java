@@ -4,7 +4,7 @@ import com.api.manage.dao.basicArchives.UserResidentDao;
 import com.api.manage.dao.butlerService.SysProhibitedKeywordsDao;
 import com.api.manage.dao.butlerService.UserAdviceDao;
 import com.api.manage.dao.resources.ResourcesImgDao;
-import com.api.manage.dao.system.SysUserDao;
+import com.api.manage.dao.system.SysLoginDao;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SearchProhibitedKeywords;
 import com.api.model.butlerService.SearchUserAdvice;
@@ -44,7 +44,7 @@ public class UserAdviceServiceImpl implements UserAdviceService {
     @Resource
     UserResidentDao userResidentDao;
     @Resource
-    SysUserDao sysUserDao;
+    SysLoginDao sysUserDao;
     @Resource
     SysProhibitedKeywordsDao sysProhibitedKeywordsDao;
 

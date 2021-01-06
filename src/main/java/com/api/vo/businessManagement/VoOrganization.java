@@ -3,7 +3,7 @@ package com.api.vo.businessManagement;
 import java.util.List;
 
 /**
- * 组织架构
+ * 组织架构Vo 回显 list
  */
 public class VoOrganization {
     /**

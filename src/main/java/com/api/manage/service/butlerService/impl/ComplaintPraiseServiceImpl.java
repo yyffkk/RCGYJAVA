@@ -5,7 +5,7 @@ import com.api.manage.dao.butlerService.ComplaintPraiseDao;
 import com.api.manage.dao.butlerService.SysProhibitedKeywordsDao;
 import com.api.manage.dao.butlerService.UserAdviceDao;
 import com.api.manage.dao.resources.ResourcesImgDao;
-import com.api.manage.dao.system.SysUserDao;
+import com.api.manage.dao.system.SysLoginDao;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SearchProhibitedKeywords;
 import com.api.model.butlerService.SearchUserAdvice;
@@ -45,7 +45,7 @@ public class ComplaintPraiseServiceImpl implements ComplaintPraiseService {
     @Resource
     UserResidentDao userResidentDao;
     @Resource
-    SysUserDao sysUserDao;
+    SysLoginDao sysUserDao;
     @Resource
     SysProhibitedKeywordsDao sysProhibitedKeywordsDao;
 

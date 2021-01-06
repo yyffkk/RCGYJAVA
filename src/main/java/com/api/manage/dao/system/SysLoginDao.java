@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
  * 系统用户管理
  */
 @Component
-public interface SysUserDao {
+public interface SysLoginDao {
     /**
      * 系统用户注册
      */

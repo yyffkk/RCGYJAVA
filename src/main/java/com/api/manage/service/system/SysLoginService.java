@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * 系统用户管理
  */
-public interface SysUserService {
+public interface SysLoginService {
     /**
      * 系统用户注册
      * @param sysUser 系统用户model
