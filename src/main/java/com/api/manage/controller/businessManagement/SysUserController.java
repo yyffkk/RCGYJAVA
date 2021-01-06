@@ -60,4 +60,75 @@ public class SysUserController {
     public VoFindByIdUser findById(Integer id){
         return sysUserService.findById(id);
     }
+
+    /**
+     * 修改员工信息
+     * @param sysUser 新员工信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysUser sysUser){
+        return sysUserService.update(sysUser);
+    }
+
+    /**
+     * 假删除员工信息
+     * @param id 员工主键id
+     * @return map
+     */
+    @GetMapping("/falseDelete")
+    public Map<String,Object> falseDelete(Integer id){
+        return sysUserService.falseDelete(id);
+    }
+
+    /**
+     * 禁止登录
+     * @param id 员工主键id
+     * @return map
+     */
+    @GetMapping("/disableLogins")
+    public Map<String,Object> disableLogins(Integer id){
+        return sysUserService.disableLogins(id);
+    }
+
+    /**
+     * 允许登录
+     * @param id 员工主键id
+     * @return map
+     */
+    @GetMapping("/allowLogins")
+    public Map<String,Object> allowLogins(Integer id){
+        return sysUserService.allowLogins(id);
+    }
+
+    /**
+     * 停用
+     * @param id 员工主键id
+     * @return map
+     */
+    @GetMapping("/stop")
+    public Map<String,Object> stop(Integer id){
+        return sysUserService.stop(id);
+    }
+
+    /**
+     * 恢复
+     * @param id 员工主键id
+     * @return map
+     */
+    @GetMapping("/recovery")
+    public Map<String,Object> recovery(Integer id){
+        return sysUserService.recovery(id);
+    }
+
+    /**
+     * 重置密码
+     * @param sysUser 人员信息
+     * @return map
+     */
+    @PostMapping("/resetPWD")
+    public Map<String,Object> resetPWD(@RequestBody SysUser sysUser){
+        return sysUserService.resetPWD(sysUser);
+    }
+
 }

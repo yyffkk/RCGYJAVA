@@ -14,4 +14,18 @@ public interface SysUserService {
     Map<String, Object> insert(SysUser sysUser);
 
     VoFindByIdUser findById(Integer id);
+
+    Map<String, Object> update(SysUser sysUser);
+
+    Map<String, Object> falseDelete(Integer id);
+
+    Map<String, Object> disableLogins(Integer id);
+
+    Map<String, Object> allowLogins(Integer id);
+
+    Map<String, Object> stop(Integer id);
+
+    Map<String, Object> recovery(Integer id);
+
+    Map<String, Object> resetPWD(SysUser sysUser);
 }

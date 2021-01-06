@@ -10,6 +10,7 @@
             su.organization_id = so.id
             and su.position_id = si.id
             and su.role_id = sr.id
+            and su.is_delete = 1
             <if test="organizationId != null">
                 and su.organization_id_path like concat('%',#{organizationId},':','%')
             </if>
@@ -97,4 +98,87 @@
     <select id="findByIdCard" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
         select * from sys_user where id_card = #{idCard}
     </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.businessManagement.VoFindByIdUser">
+        select * from sys_user where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.businessManagement.SysUser">
+        update sys_user
+        <set>
+            <if test="nickName != null and nickName != ''">
+                nick_name = #{nickName},
+            </if>
+            <if test="actualName != null and actualName != ''">
+                actual_name = #{actualName},
+            </if>
+            <if test="tel != null and  tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="pwd != null and pwd != ''">
+                pwd = #{pwd},
+            </if>
+            <if test="organizationId != null">
+                organization_id = #{organizationId},
+            </if>
+            <if test="organizationIdPath != null and organizationIdPath != ''">
+                organization_id_path = #{organizationIdPath},
+            </if>
+            <if test="positionId != null">
+                position_id = #{positionId},
+            </if>
+            <if test="reportTo != null">
+                report_to = #{reportTo},
+            </if>
+            <if test="entryDate != null">
+                entry_date = #{entryDate},
+            </if>
+            <if test="userCode != null and userCode != ''">
+                user_code = #{userCode},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="idCard != null and idCard != ''">
+                id_card = #{idCard},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_user set is_delete = 0 where id = #{id}
+    </update>
+
+    <update id="disableLogins" parameterType="java.lang.Integer">
+        update sys_user set status = status + 1 where id = #{id}
+    </update>
+
+    <update id="allowLogins" parameterType="java.lang.Integer">
+        update sys_user set status = status - 1 where id = #{id}
+    </update>
+
+    <update id="stop" parameterType="java.lang.Integer">
+        update sys_user set status = status + 2 where id = #{id}
+    </update>
+
+    <update id="recovery" parameterType="java.lang.Integer">
+        update sys_user set status = status - 2 where id = #{id}
+    </update>
+
+    <update id="resetPWD" parameterType="com.api.model.businessManagement.SysUser">
+        update sys_user
+        set pwd = #{pwd},modify_id = #{modifyId},modify_date = #{modifyDate}
+        where id = #{id}
+    </update>
+
+
 </mapper>
