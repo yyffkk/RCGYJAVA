@@ -2,7 +2,7 @@ package com.api.model.businessManagement;
 
 
 /**
- * 给员工添加角色
+ * 员工主键id 和 角色ID
  */
 public class UserIdAndRoleId {
     /**

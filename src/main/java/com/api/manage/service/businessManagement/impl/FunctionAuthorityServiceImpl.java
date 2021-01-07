@@ -5,16 +5,19 @@ import com.api.manage.dao.businessManagement.SysUserDao;
 import com.api.manage.dao.system.SysRoleDao;
 import com.api.manage.service.businessManagement.FunctionAuthorityService;
 import com.api.model.businessManagement.SearchFunctionAuthority;
-import com.api.model.businessManagement.SysUser;
+import com.api.model.businessManagement.UserIdAndRoleId;
 import com.api.vo.businessManagement.VoFunctionAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FunctionAuthorityServiceImpl implements FunctionAuthorityService {
+    private static Map<String,Object> map = null;
     @Resource
     FunctionAuthorityDao functionAuthorityDao;
     @Resource
@@ -58,5 +61,20 @@ public class FunctionAuthorityServiceImpl implements FunctionAuthorityService {
             }
         }
         return objects;
+    }
+
+    @Override
+    public Map<String, Object> updateRole(UserIdAndRoleId userIdAndRoleId) {
+        map = new HashMap<>();
+        //给员工修改角色配置
+        int update = sysUserDao.updateRole(userIdAndRoleId);
+        if (update >0){
+            map.put("message","修改员工角色配置成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改员工角色配置失败");
+            map.put("status",false);
+        }
+        return map;
     }
 }

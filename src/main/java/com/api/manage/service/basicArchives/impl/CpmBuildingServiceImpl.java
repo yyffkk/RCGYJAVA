@@ -6,6 +6,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.basicArchives.CpmBuildingService;
 import com.api.vo.basicArchives.VoFindAll;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class CpmBuildingServiceImpl implements CpmBuildingService {
     CpmBuildingDao cpmBuildingDao;
 
     @Override
+    @RequiresPermissions(value = {"0201"})
     public List<CpmBuilding> list(CpmBuilding cpmBuilding) {
         return cpmBuildingDao.list(cpmBuilding);
     }

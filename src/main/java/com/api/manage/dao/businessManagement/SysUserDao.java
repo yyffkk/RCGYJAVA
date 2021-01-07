@@ -2,6 +2,7 @@ package com.api.manage.dao.businessManagement;
 
 import com.api.model.businessManagement.SearchUser;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.businessManagement.UserIdAndRoleId;
 import com.api.vo.businessManagement.VoFindByIdUser;
 import com.api.vo.businessManagement.VoUser;
 
@@ -99,4 +100,11 @@ public interface SysUserDao {
      * @return 所属角色
      */
     String findRoleNameByUserId(Integer id);
+
+    /**
+     * 给员工修改角色配置
+     * @param userIdAndRoleId 员工主键id 和 角色ID
+     * @return 影响行数
+     */
+    int updateRole(UserIdAndRoleId userIdAndRoleId);
 }

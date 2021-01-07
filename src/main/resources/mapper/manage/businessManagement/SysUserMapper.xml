@@ -183,5 +183,8 @@
         select role_id from sys_user where id = #{id}
     </select>
 
+    <update id="updateRole" parameterType="com.api.model.businessManagement.UserIdAndRoleId">
+        update sys_user set role_id = #{roleId} where id =#{id}
+    </update>
 
 </mapper>

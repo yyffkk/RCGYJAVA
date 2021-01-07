@@ -3,14 +3,13 @@ package com.api.manage.controller.businessManagement;
 import com.api.manage.service.businessManagement.FunctionAuthorityService;
 import com.api.manage.service.system.SysRoleService;
 import com.api.model.businessManagement.SearchFunctionAuthority;
+import com.api.model.businessManagement.UserIdAndRoleId;
 import com.api.vo.businessManagement.VoFunctionAuthority;
 import com.api.vo.businessManagement.VoUser;
 import com.api.vo.system.VoRole;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -62,6 +61,16 @@ public class FunctionAuthorityController {
     @GetMapping("/findRoleNameByUserId")
     public List<Integer> findRoleNameByUserId(Integer id){
         return functionAuthorityService.findRoleNameByUserId(id);
+    }
+
+    /**
+     * 给员工修改角色配置
+     * @param userIdAndRoleId 员工主键id 和 角色ID
+     * @return map
+     */
+    @PostMapping("/updateRole")
+    public Map<String,Object> updateRole(@RequestBody UserIdAndRoleId userIdAndRoleId){
+        return functionAuthorityService.updateRole(userIdAndRoleId);
     }
 
 

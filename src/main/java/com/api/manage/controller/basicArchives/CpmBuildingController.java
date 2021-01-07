@@ -6,6 +6,7 @@ import com.api.vo.basicArchives.VoIds;
 import com.api.manage.service.basicArchives.CpmBuildingService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +19,8 @@ import java.util.Map;
  */
 @RequestMapping("manage/cpmBuilding")
 @RestController
+//基础档案权限
+//@RequiresPermissions(value = {"02"})
 public class CpmBuildingController {
 
     @Resource
@@ -32,6 +35,7 @@ public class CpmBuildingController {
      * @return map
      */
     @GetMapping("/list")
+    //查看列表权限
     public Map<String,Object> list(CpmBuilding cpmBuilding,Integer pageNum,Integer size){
         PageHelper.startPage(pageNum,size);
         List<CpmBuilding> cpmBuildingList =cpmBuildingService.list(cpmBuilding);
