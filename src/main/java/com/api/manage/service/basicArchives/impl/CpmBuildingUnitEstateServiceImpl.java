@@ -110,7 +110,7 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
         //根据楼栋单元房产房间号查询是否已有房产信息
         CpmBuildingUnitEstate cpmBuildingUnitEstate1 = cpmBuildingUnitEstateDao.findByRoomNumber(cpmBuildingUnitEstate.getRoomNumber());
         if (cpmBuildingUnitEstate1 != null){
-            map.put("message","房间号已存在");
+            map.put("message","房屋名称已存在");
             map.put("status",false);
             return map;
         }

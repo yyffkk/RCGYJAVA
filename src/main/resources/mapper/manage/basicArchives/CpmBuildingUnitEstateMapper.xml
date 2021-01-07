@@ -4,37 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao">
     <select id="list" parameterType="com.api.model.basicArchives.SearchCpmBuildingUnitEstate" resultType="com.api.vo.basicArchives.VoCpmBuildingUnitEstate">
-        select b.id,b.building_name,b.building_no,b.building_unit_no,b.room_number,b.status,b.type,b.construction_area,b.indoor_area,group_concat(b.user_resident_name) as user_resident_name,group_concat(b.user_resident_tel) as user_resident_tel
+        select a.id,a.building_name,a.building_no,a.building_unit_no,a.room_number,a.status,a.type,a.construction_area,a.indoor_area,group_concat(b.name) as user_resident_name,group_concat(b.tel) as user_resident_tel
         from (
-        select a.id,a.building_name,a.building_no,a.building_unit_no,a.room_number,a.status,a.type,a.construction_area,a.indoor_area,ur.name as user_resident_name,ur.tel as user_resident_tel
-        from (
-        select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name,cb.no as building_no,cre.resident_id as resident_id
-        from cpm_building_unit_estate cbue,cpm_building cb,cpm_building_unit cbu,cpm_resident_estate cre
-        where cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cbue.id = cre.building_unit_estate_id
-        ) as a LEFT JOIN user_resident ur
-        on a.resident_id = ur.id
+        select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name,cb.no as building_no
+        from cpm_building_unit_estate cbue,cpm_building cb,cpm_building_unit cbu
+        where cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+        ) as a LEFT JOIN (
+        select ur.name,ur.tel,cre.building_unit_estate_id
+        from user_resident as ur,cpm_resident_estate as cre
+        where ur.id = cre.resident_id
         ) as b
+        on a.id = b.building_unit_estate_id
         <where>
             <if test="buildingNo != null and buildingNo != ''">
-                and b.building_no like concat('%',#{buildingNo},'%')
+                and a.building_no like concat('%',#{buildingNo},'%')
             </if>
             <if test="unitNo != null">
-                and b.building_unit_no like concat('%',#{unitNo},'%')
+                and a.building_unit_no like concat('%',#{unitNo},'%')
             </if>
             <if test="roomNumber != null and roomNumber != ''">
-                and b.room_number like concat('%',#{roomNumber},'%')
+                and a.room_number like concat('%',#{roomNumber},'%')
             </if>
             <if test="status != null">
-                and b.status = #{status}
+                and a.status = #{status}
             </if>
             <if test="residentName != null and residentName != ''">
-                and b.user_resident_name like concat('%',#{residentName},'%')
+                and b.name like concat('%',#{residentName},'%')
             </if>
             <if test="residentTel != null and residentTel != ''">
-                and b.user_resident_tel like concat('%',#{residentTel},'%')
+                and b.tel like concat('%',#{residentTel},'%')
             </if>
         </where>
-        GROUP BY b.id
+        GROUP BY a.id
     </select>
 
 
