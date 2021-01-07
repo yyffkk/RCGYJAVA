@@ -1,11 +1,13 @@
 package com.api.manage.controller.basicArchives;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.basicArchives.CpmBuilding;
 import com.api.vo.basicArchives.VoFindAll;
 import com.api.vo.basicArchives.VoIds;
 import com.api.manage.service.basicArchives.CpmBuildingService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,7 @@ import java.util.Map;
 @RequestMapping("manage/cpmBuilding")
 @RestController
 //基础档案权限
-//@RequiresPermissions(value = {"02"})
-public class CpmBuildingController {
+public class CpmBuildingController extends ShiroExceptions {
 
     @Resource
     CpmBuildingService cpmBuildingService;
@@ -36,6 +37,7 @@ public class CpmBuildingController {
      */
     @GetMapping("/list")
     //查看列表权限
+    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
     public Map<String,Object> list(CpmBuilding cpmBuilding,Integer pageNum,Integer size){
         PageHelper.startPage(pageNum,size);
         List<CpmBuilding> cpmBuildingList =cpmBuildingService.list(cpmBuilding);
@@ -54,6 +56,7 @@ public class CpmBuildingController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody CpmBuilding cpmBuilding){
         return cpmBuildingService.insert(cpmBuilding);
     }
@@ -64,6 +67,7 @@ public class CpmBuildingController {
      * @return 楼栋信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
     public CpmBuilding findById(Integer id){
         return cpmBuildingService.findById(id);
     }
@@ -74,6 +78,7 @@ public class CpmBuildingController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody CpmBuilding cpmBuilding){
         return cpmBuildingService.update(cpmBuilding);
     }
@@ -84,6 +89,7 @@ public class CpmBuildingController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return cpmBuildingService.delete(ids.getIds());
     }

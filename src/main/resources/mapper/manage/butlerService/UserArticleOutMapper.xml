@@ -21,6 +21,27 @@
             <if test="buildingNo != null">
                 and cb.no like concat('%',#{buildingNo},'%')
             </if>
+            <if test="export != null">
+                and uao.export = #{export}
+            </if>
+            <if test="applicantName != null and applicantName != ''">
+                and ur2.name like concat('%',#{applicantName},'%')
+            </if>
+            <if test="applicantTel != null and applicantTel != ''">
+                and ur2.tel like concat('%',#{applicantTel},'%')
+            </if>
+            <if test="actualTimeStart != null">
+                and uao.actual_time <![CDATA[ > ]]> #{actualTimeStart}
+            </if>
+            <if test="actualTimeEnd != null">
+                and uao.actual_time <![CDATA[ < ]]> #{actualTimeEnd}
+            </if>
+            <if test="name != null and name != ''">
+                and uao.name = #{name}
+            </if>
+            <if test="status != null">
+                and uao.status = #{status}
+            </if>
         </where>
     </select>
 

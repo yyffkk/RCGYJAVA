@@ -31,9 +31,13 @@ public class SearchUserArticleOut {
      */
     private String applicantTel;
     /**
-     * 实际出门时间
+     * 实际出门时间开始
      */
-    private Date actualTime;
+    private Date actualTimeStart;
+    /**
+     * 实际出门时间结束
+     */
+    private Date actualTimeEnd;
     /**
      * 物品名称
      */
@@ -50,6 +54,10 @@ public class SearchUserArticleOut {
      * 楼栋编号
      */
     private Integer buildingNo;
+    /**
+     * 状态(1.待出门，2.已出门，3.驳回申请)
+     */
+    private Integer status;
 
     @Override
     public String toString() {
@@ -60,11 +68,13 @@ public class SearchUserArticleOut {
                 ", export=" + export +
                 ", applicantName='" + applicantName + '\'' +
                 ", applicantTel='" + applicantTel + '\'' +
-                ", actualTime=" + actualTime +
+                ", actualTimeStart=" + actualTimeStart +
+                ", actualTimeEnd=" + actualTimeEnd +
                 ", name='" + name + '\'' +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", unitNo=" + unitNo +
                 ", buildingNo=" + buildingNo +
+                ", status=" + status +
                 '}';
     }
 
@@ -116,12 +126,20 @@ public class SearchUserArticleOut {
         this.applicantTel = applicantTel;
     }
 
-    public Date getActualTime() {
-        return actualTime;
+    public Date getActualTimeStart() {
+        return actualTimeStart;
     }
 
-    public void setActualTime(Date actualTime) {
-        this.actualTime = actualTime;
+    public void setActualTimeStart(Date actualTimeStart) {
+        this.actualTimeStart = actualTimeStart;
+    }
+
+    public Date getActualTimeEnd() {
+        return actualTimeEnd;
+    }
+
+    public void setActualTimeEnd(Date actualTimeEnd) {
+        this.actualTimeEnd = actualTimeEnd;
     }
 
     public String getName() {
@@ -156,20 +174,30 @@ public class SearchUserArticleOut {
         this.buildingNo = buildingNo;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public SearchUserArticleOut() {
     }
 
-    public SearchUserArticleOut(int pageNum, int size, String roomName, Integer export, String applicantName, String applicantTel, Date actualTime, String name, String roomNumber, Integer unitNo, Integer buildingNo) {
+    public SearchUserArticleOut(int pageNum, int size, String roomName, Integer export, String applicantName, String applicantTel, Date actualTimeStart, Date actualTimeEnd, String name, String roomNumber, Integer unitNo, Integer buildingNo, Integer status) {
         this.pageNum = pageNum;
         this.size = size;
         this.roomName = roomName;
         this.export = export;
         this.applicantName = applicantName;
         this.applicantTel = applicantTel;
-        this.actualTime = actualTime;
+        this.actualTimeStart = actualTimeStart;
+        this.actualTimeEnd = actualTimeEnd;
         this.name = name;
         this.roomNumber = roomNumber;
         this.unitNo = unitNo;
         this.buildingNo = buildingNo;
+        this.status = status;
     }
 }

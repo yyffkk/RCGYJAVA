@@ -23,7 +23,6 @@ public class CpmBuildingServiceImpl implements CpmBuildingService {
     CpmBuildingDao cpmBuildingDao;
 
     @Override
-    @RequiresPermissions(value = {"0201"})
     public List<CpmBuilding> list(CpmBuilding cpmBuilding) {
         return cpmBuildingDao.list(cpmBuilding);
     }

@@ -1,5 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.basicArchives.DecorationAndStaff;
 import com.api.model.basicArchives.DecorationIdAndStaffId;
 import com.api.model.basicArchives.SearchDecoration;
@@ -8,6 +9,8 @@ import com.api.vo.basicArchives.VoDecoration;
 import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,7 +20,7 @@ import java.util.Map;
 
 @RequestMapping("manage//decoration")
 @RestController
-public class CpmDecorationController {
+public class CpmDecorationController extends ShiroExceptions {
     @Resource
     CpmDecorationService cpmDecorationService;
 
@@ -28,6 +31,7 @@ public class CpmDecorationController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
     public Map<String,Object> list(SearchDecoration searchDecoration){
         PageHelper.startPage(searchDecoration.getPageNum(),searchDecoration.getSize());
         List<VoDecoration> voDecorationList =cpmDecorationService.list(searchDecoration);
@@ -45,6 +49,7 @@ public class CpmDecorationController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody DecorationAndStaff decorationAndStaff){
         return cpmDecorationService.insert(decorationAndStaff);
     }
@@ -55,6 +60,7 @@ public class CpmDecorationController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody DecorationAndStaff decorationAndStaff){
         return cpmDecorationService.update(decorationAndStaff);
     }
@@ -65,6 +71,7 @@ public class CpmDecorationController {
      * @return 装修信息 和 附属员工信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
     public DecorationAndStaff findById(Integer id){
         return cpmDecorationService.findById(id);
     }
@@ -76,6 +83,7 @@ public class CpmDecorationController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return cpmDecorationService.delete(ids.getIds());
     }
@@ -85,6 +93,7 @@ public class CpmDecorationController {
      * @return map
      */
     @GetMapping("/deleteStaff")
+    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
     public Map<String,Object> deleteStaff(DecorationIdAndStaffId decorationIdAndStaffId){
         return cpmDecorationService.deleteStaff(decorationIdAndStaffId);
     }

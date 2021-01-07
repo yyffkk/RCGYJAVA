@@ -1,5 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.basicArchives.CpmParkingSpace;
 import com.api.vo.basicArchives.VoCpmParkingSpace;
 import com.api.manage.service.basicArchives.CpmParkingSpaceService;
@@ -7,6 +8,8 @@ import com.api.vo.basicArchives.VoIds;
 import com.api.vo.basicArchives.VoParkingSpace;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,7 +19,7 @@ import java.util.Map;
 
 @RequestMapping("manage/cpmParkingSpace")
 @RestController
-public class CpmParkingSpaceController {
+public class CpmParkingSpaceController extends ShiroExceptions {
     @Resource
     CpmParkingSpaceService cpmParkingSpaceService;
 
@@ -28,6 +31,7 @@ public class CpmParkingSpaceController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
     public Map<String,Object> list(VoCpmParkingSpace voCpmParkingSpace, int pageNum, int size){
         PageHelper.startPage(pageNum,size);
         List<VoParkingSpace> voParkingSpaceList =cpmParkingSpaceService.list(voCpmParkingSpace);
@@ -45,6 +49,7 @@ public class CpmParkingSpaceController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody CpmParkingSpace cpmParkingSpace){
         return cpmParkingSpaceService.insert(cpmParkingSpace);
     }
@@ -55,6 +60,7 @@ public class CpmParkingSpaceController {
      * @return 车位信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
     public CpmParkingSpace findById(Integer id){
         return cpmParkingSpaceService.findById(id);
     }
@@ -65,6 +71,7 @@ public class CpmParkingSpaceController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody CpmParkingSpace cpmParkingSpace){
         return cpmParkingSpaceService.update(cpmParkingSpace);
     }
@@ -75,6 +82,7 @@ public class CpmParkingSpaceController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return cpmParkingSpaceService.delete(ids.getIds());
     }

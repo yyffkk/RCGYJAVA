@@ -1,11 +1,14 @@
 package com.api.manage.controller.basicArchives;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.basicArchives.*;
 import com.api.manage.service.basicArchives.UserTenantService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.basicArchives.VoUserTenant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +21,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/tenant")
 @RestController
-public class UserTenantController {
+public class UserTenantController extends ShiroExceptions {
     @Resource
     UserTenantService userTenantService;
 
@@ -31,6 +34,7 @@ public class UserTenantController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
     public Map<String,Object> list(UserResident userTenant, int pageNum, int size){
         PageHelper.startPage(pageNum,size);
         List<VoUserTenant> voUserTenantLists = userTenantService.list(userTenant);
@@ -48,6 +52,7 @@ public class UserTenantController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
     public Map<String,Object> insert(UserTenantInsert userTenantInsert){
         return userTenantService.insert(userTenantInsert);
     }
@@ -58,6 +63,7 @@ public class UserTenantController {
      * @return map
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return userTenantService.findById(id);
     }
@@ -68,6 +74,7 @@ public class UserTenantController {
      * @return map
      */
     @PostMapping("/updateRelatives")
+    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
     public Map<String,Object> updateRelatives(@RequestBody ResidentAndRelativesList residentAndRelativesList){
         return userTenantService.updateRelatives(residentAndRelativesList);
     }
@@ -79,6 +86,7 @@ public class UserTenantController {
      * @return map
      */
     @PostMapping("/updateEstate")
+    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
     public Map<String,Object> updateEstate(@RequestBody List<CpmResidentEstate> cpmResidentEstateList,@RequestBody Integer tenantId){
         return userTenantService.updateEstate(cpmResidentEstateList,tenantId);
     }
@@ -90,6 +98,7 @@ public class UserTenantController {
      * @return map
      */
     @PostMapping("/updateParkingSpace")
+    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
     public Map<String,Object> updateParkingSpace(@RequestBody List<CpmParkingSpace> cpmParkingSpaceList,@RequestBody Integer tenantId){
         return userTenantService.updateParkingSpace(cpmParkingSpaceList,tenantId);
     }
@@ -100,6 +109,7 @@ public class UserTenantController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return userTenantService.delete(ids.getIds());
     }

@@ -29,7 +29,7 @@ public abstract class ShiroExceptions {
         Map<String, Object> map = new HashMap<>();
         map.put("status", "-1000");
         map.put("message", "未登录");
-        writeJson(map, response);
+        writeJson(map,response);
         return null;
     }
 

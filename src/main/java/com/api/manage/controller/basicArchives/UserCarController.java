@@ -1,5 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.basicArchives.SearchUserCar;
 import com.api.model.basicArchives.UserCar;
 import com.api.manage.service.basicArchives.UserCarService;
@@ -8,6 +9,8 @@ import com.api.vo.basicArchives.VoUserCar;
 import com.api.vo.basicArchives.VoUserCarFindById;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/userCar")
-public class UserCarController {
+public class UserCarController extends ShiroExceptions {
     @Resource
     UserCarService userCarService;
 
@@ -30,6 +33,7 @@ public class UserCarController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserCar searchUserCar){
         PageHelper.startPage(searchUserCar.getPageNum(),searchUserCar.getSize());
         List<VoUserCar> voUserCarList =userCarService.list(searchUserCar);
@@ -47,6 +51,7 @@ public class UserCarController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody UserCar userCar){
         return userCarService.insert(userCar);
     }
@@ -57,6 +62,7 @@ public class UserCarController {
      * @return UserCar车辆信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
     public VoUserCarFindById findById(Integer id){
         return userCarService.findById(id);
     }
@@ -67,6 +73,7 @@ public class UserCarController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody UserCar userCar){
         return userCarService.update(userCar);
     }
@@ -77,6 +84,7 @@ public class UserCarController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return userCarService.delete(ids.getIds());
     }
