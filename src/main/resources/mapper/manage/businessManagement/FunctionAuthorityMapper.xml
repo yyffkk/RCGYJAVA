@@ -19,4 +19,27 @@
         </where>
     </select>
 
+    <select id="listJurisdiction" parameterType="com.api.model.businessManagement.RoleIdAndParentId" resultType="com.api.vo.businessManagement.VoListJurisdiction">
+        select sj.*,
+        (case srj.id is null when true then 0 else 1 end) as is_check
+        from sys_jurisdiction as sj LEFT JOIN sys_role_jurisdiction as srj
+        on sj.id = srj.jurisdiction_id and srj.role_id = #{roleId} where sj.parent_id = #{parentId}
+    </select>
+
+    <delete id="deleteJurisdictionByRoleId" parameterType="java.lang.Integer">
+        delete from sys_role_jurisdiction where role_id = #{roleId}
+    </delete>
+
+    <insert id="insertJurisdiction" parameterType="com.api.model.businessManagement.RoleIdAndJurisdictionId">
+        insert into sys_role_jurisdiction(
+            role_id,
+            jurisdiction_id,
+            action_id
+        )values (
+            #{roleId},
+            #{jurisdictionId},
+            1
+        )
+    </insert>
+
 </mapper>

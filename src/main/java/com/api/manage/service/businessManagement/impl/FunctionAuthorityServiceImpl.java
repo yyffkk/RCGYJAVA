@@ -4,10 +4,12 @@ import com.api.manage.dao.businessManagement.FunctionAuthorityDao;
 import com.api.manage.dao.businessManagement.SysUserDao;
 import com.api.manage.dao.system.SysRoleDao;
 import com.api.manage.service.businessManagement.FunctionAuthorityService;
-import com.api.model.businessManagement.SearchFunctionAuthority;
-import com.api.model.businessManagement.UserIdAndRoleId;
+import com.api.model.businessManagement.*;
 import com.api.vo.businessManagement.VoFunctionAuthority;
+import com.api.vo.businessManagement.VoListJurisdiction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -76,5 +78,68 @@ public class FunctionAuthorityServiceImpl implements FunctionAuthorityService {
             map.put("status",false);
         }
         return map;
+    }
+
+    @Override
+    public List<VoListJurisdiction> listJurisdiction(RoleIdAndParentId searchListJurisdiction) {
+        //填入上级权限id，最高级为0
+        searchListJurisdiction.setParentId(0);
+        //递归查询当前角色的所有权限信息
+        List<VoListJurisdiction> listJurisdiction = findListJurisdiction(searchListJurisdiction);
+        return listJurisdiction;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> updateJurisdiction(RoleIdAndJurisdictionIdList roleIdAndJurisdictionIdList) {
+        map = new HashMap<>();
+        try {
+            //先删除该角色的所有权限
+            functionAuthorityDao.deleteJurisdictionByRoleId(roleIdAndJurisdictionIdList.getRoleId());
+            //再添加权限
+            if (roleIdAndJurisdictionIdList.getJurisdictionIdList().length>0){
+                for (Integer jurisdictionId : roleIdAndJurisdictionIdList.getJurisdictionIdList()) {
+                    RoleIdAndJurisdictionId roleIdAndJurisdictionId = new RoleIdAndJurisdictionId();
+                    //填入角色id
+                    roleIdAndJurisdictionId.setRoleId(roleIdAndJurisdictionIdList.getRoleId());
+                    //填入权限id
+                    roleIdAndJurisdictionId.setJurisdictionId(jurisdictionId);
+                    //添加权限
+                    int insert = functionAuthorityDao.insertJurisdiction(roleIdAndJurisdictionId);
+                    if (insert <=0){
+                        throw new RuntimeException("保存失败");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","保存成功");
+        map.put("status",true);
+        return map;
+    }
+
+    //递归查询当前角色的所有权限信息
+    public List<VoListJurisdiction> findListJurisdiction(RoleIdAndParentId searchListJurisdiction){
+        List<VoListJurisdiction> voListJurisdictionList = functionAuthorityDao.listJurisdiction(searchListJurisdiction);
+        if (voListJurisdictionList != null && voListJurisdictionList.size() >0){
+            for (VoListJurisdiction voListJurisdiction : voListJurisdictionList) {
+                //填入上级权限id
+                searchListJurisdiction.setParentId(voListJurisdiction.getId());
+                //递归查询下级权限信息，并填入集合中
+                List<VoListJurisdiction> listJurisdiction = findListJurisdiction(searchListJurisdiction);
+                voListJurisdiction.setVoListJurisdictionList(listJurisdiction);
+                voListJurisdiction.setRoleId(searchListJurisdiction.getRoleId());
+            }
+        }
+        return voListJurisdictionList;
     }
 }
