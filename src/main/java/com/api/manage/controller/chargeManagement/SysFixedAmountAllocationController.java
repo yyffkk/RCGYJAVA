@@ -1,5 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.chargeManagement.FixedPayment;
 import com.api.model.chargeManagement.SearchFixedAmountAllocation;
 import com.api.model.chargeManagement.SearchFixedAmountAllocationResult;
@@ -11,6 +12,8 @@ import com.api.vo.chargeManagement.VoFixedAmountAllocation;
 import com.api.vo.chargeManagement.VoFixedAmountAllocationResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/fixedAmountAllocation")
-public class SysFixedAmountAllocationController {
+public class SysFixedAmountAllocationController extends ShiroExceptions {
     @Resource
     SysFixedAmountAllocationService sysFixedAmountAllocationService;
 
@@ -33,6 +36,7 @@ public class SysFixedAmountAllocationController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> list(SearchFixedAmountAllocation searchFixedAmountAllocation){
         PageHelper.startPage(searchFixedAmountAllocation.getPageNum(),searchFixedAmountAllocation.getSize());
         List<VoFixedAmountAllocation> voFixedAmountAllocationList = sysFixedAmountAllocationService.list(searchFixedAmountAllocation);
@@ -51,6 +55,7 @@ public class SysFixedAmountAllocationController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0403","04"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysFixedAmountAllocation sysFixedAmountAllocation){
         return sysFixedAmountAllocationService.insert(sysFixedAmountAllocation);
     }
@@ -62,6 +67,7 @@ public class SysFixedAmountAllocationController {
      * @return 固定金额分摊信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0402","04"},logical = Logical.AND)
     public VoFindByIdFAA findById(Integer id){
         return sysFixedAmountAllocationService.findById(id);
     }
@@ -72,6 +78,7 @@ public class SysFixedAmountAllocationController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0405","04"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysFixedAmountAllocation sysFixedAmountAllocation){
         return sysFixedAmountAllocationService.update(sysFixedAmountAllocation);
     }
@@ -82,6 +89,7 @@ public class SysFixedAmountAllocationController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0404","04"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysFixedAmountAllocationService.falseDelete(ids.getIds());
     }
@@ -92,6 +100,7 @@ public class SysFixedAmountAllocationController {
      * @return map
      */
     @GetMapping("/share")
+    @RequiresPermissions(value = {"0409","04"},logical = Logical.AND)
     public Map<String,Object> share(Integer id){
         return sysFixedAmountAllocationService.share(id);
     }
@@ -102,6 +111,7 @@ public class SysFixedAmountAllocationController {
      * @return map
      */
     @GetMapping("/listResult")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> listResult(SearchFixedAmountAllocationResult searchFixedAmountAllocationResult){
         PageHelper.startPage(searchFixedAmountAllocationResult.getPageNum(),searchFixedAmountAllocationResult.getSize());
         List<VoFixedAmountAllocationResult> voFixedAmountAllocationResultList = sysFixedAmountAllocationService.listResult(searchFixedAmountAllocationResult);
@@ -120,6 +130,7 @@ public class SysFixedAmountAllocationController {
      * @return map
      */
     @PostMapping("/payment")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> payment(@RequestBody FixedPayment fixedPayment){
         return sysFixedAmountAllocationService.payment(fixedPayment);
     }

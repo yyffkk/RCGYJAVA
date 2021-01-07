@@ -1,5 +1,6 @@
 package com.api.manage.controller.operationManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.operationManagement.ActivityManagement;
 import com.api.model.operationManagement.SearchActivityManagement;
 import com.api.manage.service.operationManagement.SysActivityManagementService;
@@ -10,6 +11,8 @@ import com.api.vo.operationManagement.VoFindByIdActivityManagement;
 import com.api.vo.resources.VoResourcesImg;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/activityManagement")
-public class SysActivityManagementController {
+public class SysActivityManagementController extends ShiroExceptions {
     @Resource
     SysActivityManagementService sysActivityManagementService;
 
@@ -33,6 +36,7 @@ public class SysActivityManagementController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501","05"},logical = Logical.AND)
     public Map<String,Object> list(SearchActivityManagement searchActivityManagement){
         PageHelper.startPage(searchActivityManagement.getPageNum(),searchActivityManagement.getSize());
         List<VoActivityManagement> voActivityManagementList = sysActivityManagementService.list(searchActivityManagement);
@@ -50,6 +54,7 @@ public class SysActivityManagementController {
      * @return 照片资源信息
      */
     @GetMapping("/findImgById")
+    @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
     public List<VoResourcesImg> findImgById(Integer id){
         return sysActivityManagementService.findImgById(id);
     }
@@ -60,6 +65,7 @@ public class SysActivityManagementController {
      * @return 报名记录信息集合
      */
     @GetMapping("/findRegistrationById")
+    @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
     public List<VoActivityRegistration> findRegistrationById(Integer id){
         return sysActivityManagementService.findRegistrationById(id);
     }
@@ -70,6 +76,7 @@ public class SysActivityManagementController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0503","05"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody ActivityManagement activityManagement){
         return sysActivityManagementService.insert(activityManagement);
     }
@@ -80,6 +87,7 @@ public class SysActivityManagementController {
      * @return 活动信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
     public VoFindByIdActivityManagement findById(Integer id){
         return sysActivityManagementService.findById(id);
     }
@@ -90,6 +98,7 @@ public class SysActivityManagementController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0505","05"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody ActivityManagement activityManagement){
         return sysActivityManagementService.update(activityManagement);
     }
@@ -100,6 +109,7 @@ public class SysActivityManagementController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0504","05"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysActivityManagementService.falseDelete(ids.getIds());
     }

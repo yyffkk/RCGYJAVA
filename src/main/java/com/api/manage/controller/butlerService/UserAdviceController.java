@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchUserAdvice;
 import com.api.model.butlerService.SysAdvice;
 import com.api.model.butlerService.SysAdviceDetail;
@@ -8,6 +9,8 @@ import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoUserAdvice;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,7 +24,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/advice")
 @RestController
-public class UserAdviceController {
+public class UserAdviceController extends ShiroExceptions {
 
     @Resource
     UserAdviceService userAdviceService;
@@ -32,6 +35,7 @@ public class UserAdviceController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserAdvice searchUserAdvice){
         PageHelper.startPage(searchUserAdvice.getPageNum(),searchUserAdvice.getSize());
         List<VoUserAdvice> voUserAdvices = userAdviceService.list(searchUserAdvice);
@@ -49,6 +53,7 @@ public class UserAdviceController {
      * @return map
      */
     @PostMapping("/insertDetail")
+    @RequiresPermissions(value = {"0307","03"},logical = Logical.AND)
     public Map<String,Object> insertDetail(@RequestBody SysAdviceDetail sysAdviceDetail){
         return userAdviceService.insertDetail(sysAdviceDetail);
     }
@@ -59,6 +64,7 @@ public class UserAdviceController {
      * @return map
      */
     @PostMapping("/insertAdvice")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertAdvice(@RequestBody SysAdvice sysAdvice,HttpServletRequest request){
         return userAdviceService.insertAdvice(sysAdvice,request);
     }
@@ -69,6 +75,7 @@ public class UserAdviceController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return userAdviceService.delete(ids.getIds());
     }
@@ -79,6 +86,7 @@ public class UserAdviceController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return userAdviceService.falseDelete(ids.getIds());
     }
@@ -89,6 +97,7 @@ public class UserAdviceController {
      * @return map
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return userAdviceService.findById(id);
     }
@@ -98,6 +107,7 @@ public class UserAdviceController {
      * @return map
      */
     @GetMapping("/countAdviceNew")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> countAdviceNew(){
         return userAdviceService.countAdviceNew();
     }
@@ -107,6 +117,7 @@ public class UserAdviceController {
      * @return map
      */
     @GetMapping("/countConsultNew")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> countConsultNew(){
         return userAdviceService.countConsultNew();
     }

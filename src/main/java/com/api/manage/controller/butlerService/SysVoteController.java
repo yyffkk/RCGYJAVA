@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchVote;
 import com.api.model.butlerService.SearchVotePersonnel;
 import com.api.model.butlerService.SysVote;
@@ -10,6 +11,8 @@ import com.api.vo.butlerService.VoVote;
 import com.api.vo.butlerService.VoVotePersonnel;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/vote")
-public class SysVoteController {
+public class SysVoteController extends ShiroExceptions {
     @Resource
     SysVoteService sysVoteService;
 
@@ -32,6 +35,7 @@ public class SysVoteController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchVote searchVote){
         PageHelper.startPage(searchVote.getPageNum(),searchVote.getSize());
         List<VoVote> voVoteList = sysVoteService.list(searchVote);
@@ -49,6 +53,7 @@ public class SysVoteController {
      * @return 投票信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return sysVoteService.findById(id);
     }
@@ -59,6 +64,7 @@ public class SysVoteController {
      * @return 投票信息
      */
     @GetMapping("/findDetailById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> findDetailById(Integer id){
         return sysVoteService.findDetailById(id);
     }
@@ -70,6 +76,7 @@ public class SysVoteController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysVote sysVote){
         return sysVoteService.insert(sysVote);
     }
@@ -80,6 +87,7 @@ public class SysVoteController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysVote sysVote){
         return sysVoteService.update(sysVote);
     }
@@ -90,6 +98,7 @@ public class SysVoteController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysVoteService.falseDelete(ids.getIds());
     }
@@ -100,6 +109,7 @@ public class SysVoteController {
      * @return map
      */
     @PostMapping("/release")
+    @RequiresPermissions(value = {"0313","03"},logical = Logical.AND)
     public Map<String,Object> release(@RequestBody VoIds ids){
         return sysVoteService.release(ids.getIds());
     }
@@ -112,6 +122,7 @@ public class SysVoteController {
      * @return map
      */
     @GetMapping("/listDetailCandidate")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> listDetailCandidate(int pageNum,int size,int id){
         PageHelper.startPage(pageNum,size);
         List<VoFindDetailByIdVoteCandidate> voFindDetailByIdVoteCandidates = sysVoteService.listDetailCandidate(id);
@@ -129,6 +140,7 @@ public class SysVoteController {
      * @return map
      */
     @GetMapping("/listVotePersonnel")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> listVotePersonnel(SearchVotePersonnel searchVotePersonnel){
         PageHelper.startPage(searchVotePersonnel.getPageNum(),searchVotePersonnel.getSize());
         List<VoVotePersonnel> voVotePersonnelList = sysVoteService.listVotePersonnel(searchVotePersonnel);
@@ -145,6 +157,7 @@ public class SysVoteController {
      * @return map
      */
     @GetMapping("countVoteExpectedStart")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> countVoteExpectedStart(){
         return sysVoteService.countVoteExpectedStart();
     }

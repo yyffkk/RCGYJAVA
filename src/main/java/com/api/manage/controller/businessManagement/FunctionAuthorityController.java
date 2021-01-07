@@ -2,6 +2,7 @@ package com.api.manage.controller.businessManagement;
 
 import com.api.manage.service.businessManagement.FunctionAuthorityService;
 import com.api.manage.service.system.SysRoleService;
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.businessManagement.SearchFunctionAuthority;
 import com.api.model.businessManagement.UserIdAndRoleId;
 import com.api.vo.businessManagement.VoFunctionAuthority;
@@ -9,6 +10,8 @@ import com.api.vo.businessManagement.VoUser;
 import com.api.vo.system.VoRole;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/functionAuthority")
-public class FunctionAuthorityController {
+public class FunctionAuthorityController extends ShiroExceptions {
     @Resource
     FunctionAuthorityService functionAuthorityService;
     @Resource
@@ -32,6 +35,7 @@ public class FunctionAuthorityController {
      * @return 用户角色信息
      */
     @GetMapping("/roleList")
+    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
     public List<VoRole> roleList(){
         return sysRoleService.roleList();
     }
@@ -42,6 +46,7 @@ public class FunctionAuthorityController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
     public Map<String,Object> list(SearchFunctionAuthority searchFunctionAuthority){
         PageHelper.startPage(searchFunctionAuthority.getPageNum(),searchFunctionAuthority.getSize());
         List<VoFunctionAuthority> voFunctionAuthorityList = functionAuthorityService.list(searchFunctionAuthority);
@@ -59,6 +64,7 @@ public class FunctionAuthorityController {
      * @return 员工角色配置
      */
     @GetMapping("/findRoleNameByUserId")
+    @RequiresPermissions(value = {"0102","01"},logical = Logical.AND)
     public List<Integer> findRoleNameByUserId(Integer id){
         return functionAuthorityService.findRoleNameByUserId(id);
     }
@@ -69,6 +75,7 @@ public class FunctionAuthorityController {
      * @return map
      */
     @PostMapping("/updateRole")
+    @RequiresPermissions(value = {"0105","01"},logical = Logical.AND)
     public Map<String,Object> updateRole(@RequestBody UserIdAndRoleId userIdAndRoleId){
         return functionAuthorityService.updateRole(userIdAndRoleId);
     }

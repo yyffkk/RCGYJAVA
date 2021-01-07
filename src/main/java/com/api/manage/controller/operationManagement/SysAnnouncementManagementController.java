@@ -1,5 +1,6 @@
 package com.api.manage.controller.operationManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.operationManagement.SearchAnnouncementManagement;
 import com.api.model.operationManagement.SysAnnouncementManagement;
 import com.api.manage.service.operationManagement.SysAnnouncementManagementService;
@@ -9,6 +10,8 @@ import com.api.vo.operationManagement.VoFindByIdAnnouncementManagement;
 import com.api.vo.operationManagement.VoPreviewAnnouncementManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/announcementManagement")
-public class SysAnnouncementManagementController {
+public class SysAnnouncementManagementController extends ShiroExceptions {
     @Resource
     SysAnnouncementManagementService sysAnnouncementManagementService;
 
@@ -31,6 +34,7 @@ public class SysAnnouncementManagementController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501","05"},logical = Logical.AND)
     public Map<String,Object> list(SearchAnnouncementManagement searchAnnouncementManagement){
         PageHelper.startPage(searchAnnouncementManagement.getPageNum(),searchAnnouncementManagement.getSize());
         List<VoAnnouncementManagement> voAnnouncementManagementList = sysAnnouncementManagementService.list(searchAnnouncementManagement);
@@ -49,6 +53,7 @@ public class SysAnnouncementManagementController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0503","05"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysAnnouncementManagement sysAnnouncementManagement){
         return sysAnnouncementManagementService.insert(sysAnnouncementManagement);
     }
@@ -59,6 +64,7 @@ public class SysAnnouncementManagementController {
      * @return 公告信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
     public VoFindByIdAnnouncementManagement findById(Integer id){
         return sysAnnouncementManagementService.findById(id);
     }
@@ -69,6 +75,7 @@ public class SysAnnouncementManagementController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0505","05"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysAnnouncementManagement sysAnnouncementManagement){
         return sysAnnouncementManagementService.update(sysAnnouncementManagement);
     }
@@ -80,6 +87,7 @@ public class SysAnnouncementManagementController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0504","05"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysAnnouncementManagementService.delete(ids.getIds());
     }
@@ -90,6 +98,7 @@ public class SysAnnouncementManagementController {
      * @return map
      */
     @GetMapping("/release")
+    @RequiresPermissions(value = {"0506","05"},logical = Logical.AND)
     public Map<String,Object> release(Integer id){
         return sysAnnouncementManagementService.release(id);
     }
@@ -100,6 +109,7 @@ public class SysAnnouncementManagementController {
      * @return 公告管理预览Vo 回显
      */
     @GetMapping("/preview")
+    @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
     public VoPreviewAnnouncementManagement preview(Integer id){
         return sysAnnouncementManagementService.preview(id);
     }

@@ -1,5 +1,6 @@
 package com.api.manage.controller.operationManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.operationManagement.SearchSponsorManagement;
 import com.api.model.operationManagement.SponsorManagement;
 import com.api.manage.service.operationManagement.SysSponsorManagementService;
@@ -9,6 +10,8 @@ import com.api.vo.operationManagement.VoSponsorActivityDetail;
 import com.api.vo.operationManagement.VoSponsorManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/sponsorManagement")
-public class SysSponsorManagementController {
+public class SysSponsorManagementController extends ShiroExceptions {
     @Resource
     SysSponsorManagementService sysSponsorManagementService;
 
@@ -31,6 +34,7 @@ public class SysSponsorManagementController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501","05"},logical = Logical.AND)
     public Map<String,Object> list(SearchSponsorManagement searchSponsorManagement){
         PageHelper.startPage(searchSponsorManagement.getPageNum(),searchSponsorManagement.getSize());
         List<VoSponsorManagement> voSponsorManagementList = sysSponsorManagementService.list(searchSponsorManagement);
@@ -48,6 +52,7 @@ public class SysSponsorManagementController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0503","05"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SponsorManagement sponsorManagement){
         return sysSponsorManagementService.insert(sponsorManagement);
     }
@@ -58,6 +63,7 @@ public class SysSponsorManagementController {
      * @return 主办方信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
     public VoFindByIdSponsorManagement findById(Integer id){
         return sysSponsorManagementService.findById(id);
     }
@@ -68,6 +74,7 @@ public class SysSponsorManagementController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0505","05"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SponsorManagement sponsorManagement){
         return sysSponsorManagementService.update(sponsorManagement);
     }
@@ -78,6 +85,7 @@ public class SysSponsorManagementController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0504","05"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysSponsorManagementService.falseDelete(ids.getIds());
     }
@@ -88,6 +96,7 @@ public class SysSponsorManagementController {
      * @return 活动名称集合
      */
     @GetMapping("/sponsorActivityDetail")
+    @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
     public List<VoSponsorActivityDetail> sponsorActivityDetail(Integer id){
         return sysSponsorManagementService.sponsorActivityDetail(id);
     }

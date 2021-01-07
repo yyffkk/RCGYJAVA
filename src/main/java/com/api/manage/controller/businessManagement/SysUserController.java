@@ -1,6 +1,7 @@
 package com.api.manage.controller.businessManagement;
 
 import com.api.manage.service.businessManagement.SysUserService;
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.businessManagement.SearchUser;
 import com.api.model.businessManagement.SysUser;
 import com.api.vo.businessManagement.VoFindByIdUser;
@@ -8,6 +9,8 @@ import com.api.vo.businessManagement.VoUser;
 import com.api.vo.operationManagement.VoActivityManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/sysUser")
-public class SysUserController {
+public class SysUserController extends ShiroExceptions {
     @Resource
     SysUserService sysUserService;
 
@@ -30,6 +33,7 @@ public class SysUserController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
     public Map<String,Object> list(SearchUser searchUser){
         PageHelper.startPage(searchUser.getPageNum(),searchUser.getSize());
         List<VoUser> voActivityManagementList = sysUserService.list(searchUser);
@@ -47,6 +51,7 @@ public class SysUserController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0104","01"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysUser sysUser){
         return sysUserService.insert(sysUser);
     }
@@ -57,6 +62,7 @@ public class SysUserController {
      * @return 人员信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0102","01"},logical = Logical.AND)
     public VoFindByIdUser findById(Integer id){
         return sysUserService.findById(id);
     }
@@ -67,6 +73,7 @@ public class SysUserController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0105","01"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysUser sysUser){
         return sysUserService.update(sysUser);
     }
@@ -77,6 +84,7 @@ public class SysUserController {
      * @return map
      */
     @GetMapping("/falseDelete")
+    @RequiresPermissions(value = {"0110","01"},logical = Logical.AND)
     public Map<String,Object> falseDelete(Integer id){
         return sysUserService.falseDelete(id);
     }
@@ -87,6 +95,7 @@ public class SysUserController {
      * @return map
      */
     @GetMapping("/disableLogins")
+    @RequiresPermissions(value = {"0106","01"},logical = Logical.AND)
     public Map<String,Object> disableLogins(Integer id){
         return sysUserService.disableLogins(id);
     }
@@ -97,6 +106,7 @@ public class SysUserController {
      * @return map
      */
     @GetMapping("/allowLogins")
+    @RequiresPermissions(value = {"0108","01"},logical = Logical.AND)
     public Map<String,Object> allowLogins(Integer id){
         return sysUserService.allowLogins(id);
     }
@@ -107,6 +117,7 @@ public class SysUserController {
      * @return map
      */
     @GetMapping("/stop")
+    @RequiresPermissions(value = {"0103","01"},logical = Logical.AND)
     public Map<String,Object> stop(Integer id){
         return sysUserService.stop(id);
     }
@@ -117,6 +128,7 @@ public class SysUserController {
      * @return map
      */
     @GetMapping("/recovery")
+    @RequiresPermissions(value = {"0107","01"},logical = Logical.AND)
     public Map<String,Object> recovery(Integer id){
         return sysUserService.recovery(id);
     }
@@ -127,6 +139,7 @@ public class SysUserController {
      * @return map
      */
     @PostMapping("/resetPWD")
+    @RequiresPermissions(value = {"0109","01"},logical = Logical.AND)
     public Map<String,Object> resetPWD(@RequestBody SysUser sysUser){
         return sysUserService.resetPWD(sysUser);
     }

@@ -1,10 +1,13 @@
 package com.api.manage.controller.chargeManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.manage.service.chargeManagement.SysExpenseBillService;
 import com.api.vo.chargeManagement.VoExpenseBill;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/expenseBill")
-public class SysExpenseBillController {
+public class SysExpenseBillController extends ShiroExceptions {
     @Resource
     SysExpenseBillService sysExpenseBillService;
 
@@ -31,6 +34,7 @@ public class SysExpenseBillController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> list(SearchDailyPayment searchDailyPayment){
         PageHelper.startPage(searchDailyPayment.getPageNum(),searchDailyPayment.getSize());
         List<VoExpenseBill> voExpenseBillList = sysExpenseBillService.list(searchDailyPayment);
@@ -50,6 +54,7 @@ public class SysExpenseBillController {
      * @param searchDailyPayment 费用账单搜索条件
      */
     @GetMapping("/export")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public void export(HttpServletRequest request, HttpServletResponse response, SearchDailyPayment searchDailyPayment){
         //查询导出数据
         PageHelper.startPage(searchDailyPayment.getPageNum(),searchDailyPayment.getSize());
@@ -64,6 +69,7 @@ public class SysExpenseBillController {
      * 费用账单退款接口
      * @return map
      */
+    @RequiresPermissions(value = {"0408","04"},logical = Logical.AND)
     public Map<String,Object> refund(){
         return null;
     }

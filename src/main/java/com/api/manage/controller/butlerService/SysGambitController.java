@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchGambit;
 import com.api.model.butlerService.SysGambit;
 import com.api.manage.service.butlerService.SysGambitService;
@@ -8,6 +9,8 @@ import com.api.vo.butlerService.VoFindByIdGambit;
 import com.api.vo.butlerService.VoGambit;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/gambit")
-public class SysGambitController {
+public class SysGambitController extends ShiroExceptions {
     @Resource
     SysGambitService sysGambitService;
 
@@ -30,6 +33,7 @@ public class SysGambitController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchGambit searchGambit){
         PageHelper.startPage(searchGambit.getPageNum(),searchGambit.getSize());
         List<VoGambit> voGambitList = sysGambitService.list(searchGambit);
@@ -47,6 +51,7 @@ public class SysGambitController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysGambit sysGambit){
         return sysGambitService.insert(sysGambit);
     }
@@ -57,6 +62,7 @@ public class SysGambitController {
      * @return map
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public VoFindByIdGambit findById(Integer id){
         return sysGambitService.findById(id);
     }
@@ -68,6 +74,7 @@ public class SysGambitController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysGambit sysGambit){
         return sysGambitService.update(sysGambit);
     }
@@ -78,6 +85,7 @@ public class SysGambitController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysGambitService.falseDelete(ids.getIds());
     }
@@ -88,6 +96,7 @@ public class SysGambitController {
      * @return map
      */
     @GetMapping("/enableGambit")
+    @RequiresPermissions(value = {"0312","03"},logical = Logical.AND)
     public Map<String,Object> enableGambit(Integer id){
         return sysGambitService.enableGambit(id);
     }
@@ -98,6 +107,7 @@ public class SysGambitController {
      * @return map
      */
     @GetMapping("/disableGambit")
+    @RequiresPermissions(value = {"0312","03"},logical = Logical.AND)
     public Map<String,Object> disableGambit(Integer id){
         return sysGambitService.disableGambit(id);
     }

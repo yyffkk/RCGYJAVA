@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchOwnersCommittee;
 import com.api.model.butlerService.SysOwnersCommittee;
 import com.api.manage.service.butlerService.SysOwnersCommitteeService;
@@ -8,6 +9,8 @@ import com.api.vo.butlerService.VoFindByIdOwnersCommittee;
 import com.api.vo.butlerService.VoOwnersCommittee;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/ownersCommittee")
-public class SysOwnersCommitteeController {
+public class SysOwnersCommitteeController extends ShiroExceptions {
     @Resource
     SysOwnersCommitteeService sysOwnersCommitteeService;
 
@@ -30,6 +33,7 @@ public class SysOwnersCommitteeController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchOwnersCommittee searchOwnersCommittee){
         PageHelper.startPage(searchOwnersCommittee.getPageNum(),searchOwnersCommittee.getSize());
         List<VoOwnersCommittee> voOwnersCommitteeList = sysOwnersCommitteeService.list(searchOwnersCommittee);
@@ -48,6 +52,7 @@ public class SysOwnersCommitteeController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysOwnersCommittee sysOwnersCommittee){
         return sysOwnersCommitteeService.insert(sysOwnersCommittee);
     }
@@ -58,6 +63,7 @@ public class SysOwnersCommitteeController {
      * @return 业委会信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public VoFindByIdOwnersCommittee findById(Integer id){
         return sysOwnersCommitteeService.findById(id);
     }
@@ -68,6 +74,7 @@ public class SysOwnersCommitteeController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysOwnersCommittee sysOwnersCommittee){
         return sysOwnersCommitteeService.update(sysOwnersCommittee);
     }
@@ -78,6 +85,7 @@ public class SysOwnersCommitteeController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysOwnersCommitteeService.delete(ids.getIds());
     }

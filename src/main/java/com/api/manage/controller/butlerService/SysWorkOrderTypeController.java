@@ -1,8 +1,11 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SysWorkOrderType;
 import com.api.manage.service.butlerService.SysWorkOrderTypeService;
 import com.api.vo.butlerService.VoWorkOrderType;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,7 +17,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/workOrderType")
 @RestController
-public class SysWorkOrderTypeController {
+public class SysWorkOrderTypeController extends ShiroExceptions {
     @Resource
     SysWorkOrderTypeService sysWorkOrderTypeService;
 
@@ -23,6 +26,7 @@ public class SysWorkOrderTypeController {
      * @return 工单大类信息集合
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public List<VoWorkOrderType> list(){
         return sysWorkOrderTypeService.list();
     }
@@ -33,6 +37,7 @@ public class SysWorkOrderTypeController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysWorkOrderType sysWorkOrderType){
         return sysWorkOrderTypeService.insert(sysWorkOrderType);
     }
@@ -43,6 +48,7 @@ public class SysWorkOrderTypeController {
      * @return 工单大类信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public VoWorkOrderType findById(Integer id){
         return sysWorkOrderTypeService.findById(id);
     }
@@ -53,6 +59,7 @@ public class SysWorkOrderTypeController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysWorkOrderType sysWorkOrderType){
         return sysWorkOrderTypeService.update(sysWorkOrderType);
     }
@@ -63,6 +70,7 @@ public class SysWorkOrderTypeController {
      * @return map
      */
     @GetMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> delete(Integer id){
         return sysWorkOrderTypeService.delete(id);
     }

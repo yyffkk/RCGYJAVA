@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchUserArticleOut;
 import com.api.model.resources.ResourcesImg;
 import com.api.manage.service.butlerService.UserArticleOutService;
@@ -9,6 +10,8 @@ import com.api.vo.butlerService.VoUserArticleOut;
 import com.api.vo.resources.VoResourcesImg;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/userArticleOut")
-public class UserArticleOutController {
+public class UserArticleOutController extends ShiroExceptions {
     private static Map<String,Object> map = null;
 
     @Resource
@@ -35,6 +38,7 @@ public class UserArticleOutController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String, Object> list(SearchUserArticleOut searchUserArticleOut){
         PageHelper.startPage(searchUserArticleOut.getPageNum(),searchUserArticleOut.getSize());
         List<VoUserArticleOut> voUserArticleOutList =userArticleOutService.list(searchUserArticleOut);
@@ -53,6 +57,7 @@ public class UserArticleOutController {
      * @return map
      */
     @GetMapping("/findGoodsImgById")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> findGoodsImgById(Integer id){
         map = new HashMap<>();
         ResourcesImg resourcesImg = new ResourcesImg();
@@ -74,6 +79,7 @@ public class UserArticleOutController {
      * @return map
      */
     @GetMapping("/findGoOutImgById")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> findGoOutImgById(Integer id){
         map = new HashMap<>();
         ResourcesImg resourcesImg = new ResourcesImg();
@@ -94,6 +100,7 @@ public class UserArticleOutController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return userArticleOutService.delete(ids.getIds());
     }
@@ -104,6 +111,7 @@ public class UserArticleOutController {
      * @return map
      */
     @GetMapping("/applicationRejection")
+    @RequiresPermissions(value = {"0314","03"},logical = Logical.AND)
     public Map<String,Object> applicationRejection(Integer id){
         return userArticleOutService.applicationRejection(id);
     }

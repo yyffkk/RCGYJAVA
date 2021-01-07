@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.CancelWorkOrder;
 import com.api.model.butlerService.RevisitWorkOrder;
 import com.api.model.butlerService.SearchDispatchList;
@@ -8,6 +9,8 @@ import com.api.manage.service.butlerService.SysDispatchListService;
 import com.api.vo.butlerService.VoDispatchList;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/dispatch")
-public class SysDispatchListController {
+public class SysDispatchListController extends ShiroExceptions {
     @Resource
     SysDispatchListService sysDispatchListService;
 
@@ -30,6 +33,7 @@ public class SysDispatchListController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchDispatchList searchDispatchList){
         PageHelper.startPage(searchDispatchList.getPageNum(),searchDispatchList.getSize());
         List<VoDispatchList> voDispatchListList = sysDispatchListService.list(searchDispatchList);
@@ -47,6 +51,7 @@ public class SysDispatchListController {
      * @return map
      */
     @GetMapping("/falseDelete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> falseDelete(Integer id){
         return sysDispatchListService.falseDelete(id);
     }
@@ -57,6 +62,7 @@ public class SysDispatchListController {
      * @return map
      */
     @GetMapping("/cancel")
+    @RequiresPermissions(value = {"0308","03"},logical = Logical.AND)
     public Map<String,Object> cancel(CancelWorkOrder cancelWorkOrder){
         return sysDispatchListService.cancel(cancelWorkOrder);
     }
@@ -68,6 +74,7 @@ public class SysDispatchListController {
      * @return map
      */
     @GetMapping("/revisit")
+    @RequiresPermissions(value = {"0309","03"},logical = Logical.AND)
     public Map<String,Object> revisit(RevisitWorkOrder revisitWorkOrder){
         return sysDispatchListService.revisit(revisitWorkOrder);
     }
@@ -78,6 +85,7 @@ public class SysDispatchListController {
      * @return map
      */
     @GetMapping("/rollback")
+    @RequiresPermissions(value = {"0310","03"},logical = Logical.AND)
     public Map<String,Object> rollback(Integer id){
         return sysDispatchListService.rollback(id);
     }
@@ -89,6 +97,7 @@ public class SysDispatchListController {
      * @return map
      */
     @PostMapping("/dispatch")
+    @RequiresPermissions(value = {"0311","03"},logical = Logical.AND)
     public Map<String,Object> dispatch(@RequestBody SysDispatchListDetail sysDispatchListDetail){
         return sysDispatchListService.dispatch(sysDispatchListDetail);
     }
@@ -100,6 +109,7 @@ public class SysDispatchListController {
      * @return map
      */
     @GetMapping("/repairWorkOrderDetail")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> repairWorkOrderDetail(Integer id){
         return sysDispatchListService.repairWorkOrderDetail(id);
     }

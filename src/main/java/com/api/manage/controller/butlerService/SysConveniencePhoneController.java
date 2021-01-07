@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchConveniencePhone;
 import com.api.model.butlerService.SysConveniencePhone;
 import com.api.model.butlerService.SysConveniencePhoneReminder;
@@ -7,6 +8,8 @@ import com.api.manage.service.butlerService.SysConveniencePhoneService;
 import com.api.vo.butlerService.VoConveniencePhone;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/conveniencePhone")
-public class SysConveniencePhoneController {
+public class SysConveniencePhoneController extends ShiroExceptions {
     @Resource
     SysConveniencePhoneService sysConveniencePhoneService;
 
@@ -30,6 +33,7 @@ public class SysConveniencePhoneController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchConveniencePhone searchConveniencePhone){
         PageHelper.startPage(searchConveniencePhone.getPageNum(),searchConveniencePhone.getSize());
         List<VoConveniencePhone> voConveniencePhoneList = sysConveniencePhoneService.list(searchConveniencePhone);
@@ -47,6 +51,7 @@ public class SysConveniencePhoneController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysConveniencePhone sysConveniencePhone){
         return sysConveniencePhoneService.insert(sysConveniencePhone);
     }
@@ -57,6 +62,7 @@ public class SysConveniencePhoneController {
      * @return 便民电话信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return sysConveniencePhoneService.findById(id);
     }
@@ -67,6 +73,7 @@ public class SysConveniencePhoneController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysConveniencePhone sysConveniencePhone){
         return sysConveniencePhoneService.update(sysConveniencePhone);
     }
@@ -78,6 +85,7 @@ public class SysConveniencePhoneController {
      * @return map
      */
     @PostMapping("/updateReminder")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> updateReminder(@RequestBody SysConveniencePhoneReminder sysConveniencePhoneReminder){
         return sysConveniencePhoneService.updateReminder(sysConveniencePhoneReminder);
     }

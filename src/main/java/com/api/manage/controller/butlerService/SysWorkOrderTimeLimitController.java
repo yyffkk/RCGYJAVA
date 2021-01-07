@@ -1,11 +1,14 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SysWorkOrderTimeLimit;
 import com.api.manage.service.butlerService.SysWorkOrderTimeLimitService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoWorkOrderTimeLimit;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/workOrderTimeLimit")
-public class SysWorkOrderTimeLimitController {
+public class SysWorkOrderTimeLimitController extends ShiroExceptions {
     @Resource
     SysWorkOrderTimeLimitService sysWorkOrderTimeLimitService;
 
@@ -29,6 +32,7 @@ public class SysWorkOrderTimeLimitController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(int pageNum,int size){
         PageHelper.startPage(pageNum,size);
         List<VoWorkOrderTimeLimit> voWorkOrderTimeLimitList = sysWorkOrderTimeLimitService.list();
@@ -46,6 +50,7 @@ public class SysWorkOrderTimeLimitController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysWorkOrderTimeLimit sysWorkOrderTimeLimit){
         return sysWorkOrderTimeLimitService.insert(sysWorkOrderTimeLimit);
     }
@@ -56,6 +61,7 @@ public class SysWorkOrderTimeLimitController {
      * @return 工单时限信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public VoWorkOrderTimeLimit findById(Integer id){
         return sysWorkOrderTimeLimitService.findById(id);
     }
@@ -66,6 +72,7 @@ public class SysWorkOrderTimeLimitController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysWorkOrderTimeLimit sysWorkOrderTimeLimit){
         return sysWorkOrderTimeLimitService.update(sysWorkOrderTimeLimit);
     }
@@ -76,6 +83,7 @@ public class SysWorkOrderTimeLimitController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysWorkOrderTimeLimitService.delete(ids.getIds());
     }

@@ -1,11 +1,14 @@
 package com.api.manage.controller.chargeManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.manage.service.chargeManagement.SysWorkOrderCostService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.chargeManagement.VoWorkOrderCost;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/workOrderCost")
-public class SysWorkOrderCostController {
+public class SysWorkOrderCostController extends ShiroExceptions {
     @Resource
     SysWorkOrderCostService sysWorkOrderCostService;
 
@@ -28,6 +31,7 @@ public class SysWorkOrderCostController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> list(SearchDailyPayment searchDailyPayment){
         PageHelper.startPage(searchDailyPayment.getPageNum(),searchDailyPayment.getSize());
         List<VoWorkOrderCost> voWorkOrderCostList = sysWorkOrderCostService.list(searchDailyPayment);
@@ -45,6 +49,7 @@ public class SysWorkOrderCostController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0404","04"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysWorkOrderCostService.falseDelete(ids.getIds());
     }

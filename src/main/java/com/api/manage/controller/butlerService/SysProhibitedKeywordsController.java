@@ -1,10 +1,13 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchProhibitedKeywords;
 import com.api.manage.service.butlerService.SysProhibitedKeywordsService;
 import com.api.vo.butlerService.VoProhibitedKeywords;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/prohibitedKeywords")
-public class SysProhibitedKeywordsController {
+public class SysProhibitedKeywordsController extends ShiroExceptions {
     @Resource
     SysProhibitedKeywordsService sysProhibitedKeywordsService;
 
@@ -29,6 +32,7 @@ public class SysProhibitedKeywordsController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchProhibitedKeywords searchProhibitedKeywords){
         PageHelper.startPage(searchProhibitedKeywords.getPageNum(),searchProhibitedKeywords.getSize());
         List<VoProhibitedKeywords> voProhibitedKeywordsList = sysProhibitedKeywordsService.list(searchProhibitedKeywords);

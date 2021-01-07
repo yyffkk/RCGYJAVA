@@ -1,11 +1,14 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchGambitTheme;
 import com.api.manage.service.butlerService.SysGambitThemeService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoGambitTheme;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/gambitTheme")
-public class SysGambitThemeController {
+public class SysGambitThemeController extends ShiroExceptions {
     @Resource
     SysGambitThemeService sysGambitThemeService;
 
@@ -28,6 +31,7 @@ public class SysGambitThemeController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchGambitTheme searchGambitTheme){
         PageHelper.startPage(searchGambitTheme.getPageNum(),searchGambitTheme.getSize());
         List<VoGambitTheme> voGambitThemeList = sysGambitThemeService.list(searchGambitTheme);
@@ -45,6 +49,7 @@ public class SysGambitThemeController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysGambitThemeService.falseDelete(ids.getIds());
     }
@@ -55,6 +60,7 @@ public class SysGambitThemeController {
      * @return map
      */
     @PostMapping("/recovery")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> recovery(@RequestBody VoIds ids){
         return sysGambitThemeService.recovery(ids.getIds());
     }

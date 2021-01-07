@@ -1,5 +1,6 @@
 package com.api.manage.controller.operationManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.operationManagement.NotificationManagement;
 import com.api.model.operationManagement.SearchNotificationManagement;
 import com.api.manage.service.operationManagement.SysNotificationManagementService;
@@ -8,6 +9,8 @@ import com.api.vo.operationManagement.VoFindByIdNotificationManagement;
 import com.api.vo.operationManagement.VoNotificationManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/notificationManagement")
-public class SysNotificationManagementController {
+public class SysNotificationManagementController extends ShiroExceptions {
     @Resource
     SysNotificationManagementService sysNotificationManagementService;
 
@@ -30,6 +33,7 @@ public class SysNotificationManagementController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501","05"},logical = Logical.AND)
     public Map<String,Object> list(SearchNotificationManagement searchNotificationManagement){
         PageHelper.startPage(searchNotificationManagement.getPageNum(),searchNotificationManagement.getSize());
         List<VoNotificationManagement> voNotificationManagementList = sysNotificationManagementService.list(searchNotificationManagement);
@@ -47,6 +51,7 @@ public class SysNotificationManagementController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0503","05"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody NotificationManagement notificationManagement){
         return sysNotificationManagementService.insert(notificationManagement);
     }
@@ -57,6 +62,7 @@ public class SysNotificationManagementController {
      * @return 通知信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
     public VoFindByIdNotificationManagement findById(Integer id){
         return sysNotificationManagementService.findById(id);
     }
@@ -67,6 +73,7 @@ public class SysNotificationManagementController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0505","05"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody NotificationManagement notificationManagement){
         return sysNotificationManagementService.update(notificationManagement);
     }
@@ -77,6 +84,7 @@ public class SysNotificationManagementController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0504","05"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysNotificationManagementService.delete(ids.getIds());
     }

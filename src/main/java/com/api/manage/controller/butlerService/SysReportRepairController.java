@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.ReportRepair;
 import com.api.model.butlerService.SearchReportRepair;
 import com.api.manage.service.butlerService.SysReportRepairService;
@@ -7,6 +8,8 @@ import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/reportRepair")
-public class SysReportRepairController {
+public class SysReportRepairController extends ShiroExceptions {
     @Resource
     SysReportRepairService sysReportRepairService;
 
@@ -29,6 +32,7 @@ public class SysReportRepairController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchReportRepair searchReportRepair){
         PageHelper.startPage(searchReportRepair.getPageNum(),searchReportRepair.getSize());
         List<VoReportRepair> voReportRepairList = sysReportRepairService.list(searchReportRepair);
@@ -47,6 +51,7 @@ public class SysReportRepairController {
      * @return 报修详情
      */
     @GetMapping("/findRepairDetail")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public VoRepair findRepairDetail(Integer id){
         return sysReportRepairService.findRepairDetail(id);
     }
@@ -57,6 +62,7 @@ public class SysReportRepairController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody ReportRepair reportRepair){
         return sysReportRepairService.insert(reportRepair);
     }

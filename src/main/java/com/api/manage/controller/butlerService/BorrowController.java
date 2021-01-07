@@ -1,11 +1,14 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.BorrowRemind;
 import com.api.model.butlerService.SearchBorrow;
 import com.api.manage.service.butlerService.BorrowService;
 import com.api.vo.butlerService.VoBorrow;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/borrow")
-public class BorrowController {
+public class BorrowController extends ShiroExceptions {
     @Resource
     BorrowService borrowService;
 
@@ -28,6 +31,7 @@ public class BorrowController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchBorrow searchBorrow){
         PageHelper.startPage(searchBorrow.getPageNum(),searchBorrow.getSize());
         List<VoBorrow> voBorrowList = borrowService.list(searchBorrow);
@@ -45,6 +49,7 @@ public class BorrowController {
      * @return map
      */
     @PostMapping("/remind")
+    @RequiresPermissions(value = {"0306","03"},logical = Logical.AND)
     public Map<String,Object> remind(@RequestBody BorrowRemind borrowRemind){
         return borrowService.remind(borrowRemind);
     }

@@ -1,9 +1,12 @@
 package com.api.manage.controller.chargeManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.chargeManagement.ChargesTemplate;
 import com.api.manage.service.chargeManagement.SysChargesTemplateService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.chargeManagement.VoChargesTemplate;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -15,7 +18,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/chargesTemplate")
-public class SysChargesTemplateController {
+public class SysChargesTemplateController extends ShiroExceptions {
     @Resource
     SysChargesTemplateService sysChargesTemplateService;
 
@@ -24,6 +27,7 @@ public class SysChargesTemplateController {
      * @return 物业收费标准模版集合
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public List<VoChargesTemplate> list(){
         return sysChargesTemplateService.list();
     }
@@ -34,6 +38,7 @@ public class SysChargesTemplateController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0403","04"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody ChargesTemplate chargesTemplate){
         return sysChargesTemplateService.insert(chargesTemplate);
     }
@@ -44,6 +49,7 @@ public class SysChargesTemplateController {
      * @return 物业收费标准模版信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0402","04"},logical = Logical.AND)
     public VoChargesTemplate findById(Integer id){
         return sysChargesTemplateService.findById(id);
     }
@@ -55,6 +61,7 @@ public class SysChargesTemplateController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0404","04"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysChargesTemplateService.delete(ids.getIds());
     }
@@ -65,6 +72,7 @@ public class SysChargesTemplateController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0405","04"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody ChargesTemplate chargesTemplate){
         return sysChargesTemplateService.update(chargesTemplate);
     }
@@ -75,6 +83,7 @@ public class SysChargesTemplateController {
      * @return map
      */
     @GetMapping("/enable")
+    @RequiresPermissions(value = {"0406","04"},logical = Logical.AND)
     public Map<String,Object> enable(Integer id){
         return sysChargesTemplateService.enable(id);
     }
@@ -86,6 +95,7 @@ public class SysChargesTemplateController {
      * @return map
      */
     @GetMapping("/disable")
+    @RequiresPermissions(value = {"0406","04"},logical = Logical.AND)
     public Map<String,Object> disable(Integer id){
         return sysChargesTemplateService.disable(id);
     }

@@ -1,11 +1,14 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchVoiceHousekeeper;
 import com.api.model.butlerService.VoiceHousekeeperRemake;
 import com.api.manage.service.butlerService.SysVoiceHousekeeperService;
 import com.api.vo.butlerService.VoVoiceHousekeeper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/voiceHousekeeper")
-public class SysVoiceHousekeeperController {
+public class SysVoiceHousekeeperController extends ShiroExceptions {
     @Resource
     SysVoiceHousekeeperService sysVoiceHousekeeperService;
 
@@ -28,6 +31,7 @@ public class SysVoiceHousekeeperController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchVoiceHousekeeper searchVoiceHousekeeper){
         PageHelper.startPage(searchVoiceHousekeeper.getPageNum(),searchVoiceHousekeeper.getSize());
         List<VoVoiceHousekeeper> voVoiceHousekeeperList = sysVoiceHousekeeperService.list(searchVoiceHousekeeper);
@@ -46,6 +50,7 @@ public class SysVoiceHousekeeperController {
      * @return map
      */
     @PostMapping("/insertRemake")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertRemake(@RequestBody VoiceHousekeeperRemake voiceHousekeeperRemake){
         return sysVoiceHousekeeperService.insertRemake(voiceHousekeeperRemake);
     }

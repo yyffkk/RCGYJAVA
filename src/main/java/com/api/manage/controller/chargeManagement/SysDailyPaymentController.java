@@ -1,5 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.DailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentPush;
@@ -10,6 +11,8 @@ import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
 import com.api.vo.chargeManagement.VoPayResident;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/dailyPayment")
-public class SysDailyPaymentController {
+public class SysDailyPaymentController extends ShiroExceptions {
     @Resource
     SysDailyPaymentService sysDailyPaymentService;
 
@@ -32,6 +35,7 @@ public class SysDailyPaymentController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> list(SearchDailyPayment searchDailyPayment){
         PageHelper.startPage(searchDailyPayment.getPageNum(),searchDailyPayment.getSize());
         List<VoDailyPayment> voDailyPaymentList = sysDailyPaymentService.list(searchDailyPayment);
@@ -49,6 +53,7 @@ public class SysDailyPaymentController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0403","04"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody DailyPayment dailyPayment){
         return sysDailyPaymentService.insert(dailyPayment);
     }
@@ -60,6 +65,7 @@ public class SysDailyPaymentController {
      * @return 缴费信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0402","04"},logical = Logical.AND)
     public VoFindByIdDailyPayment findById(Integer id){
         return sysDailyPaymentService.findById(id);
     }
@@ -80,6 +86,7 @@ public class SysDailyPaymentController {
      * @return map
      */
     @PostMapping("/push")
+    @RequiresPermissions(value = {"0407","04"},logical = Logical.AND)
     public Map<String,Object> push(@RequestBody DailyPaymentPush dailyPaymentPush){
         return sysDailyPaymentService.push(dailyPaymentPush);
     }
@@ -90,6 +97,7 @@ public class SysDailyPaymentController {
      * @return map
      */
     @PostMapping("/insertOrder")
+    @RequiresPermissions(value = {"0403","04"},logical = Logical.AND)
     public Map<String,Object> insertOrder(@RequestBody DailyPaymentOrder dailyPaymentOrder){
         return sysDailyPaymentService.insertOrder(dailyPaymentOrder);
     }
@@ -101,6 +109,7 @@ public class SysDailyPaymentController {
      * @return map
      */
     @GetMapping("/findResidentByEstateId")
+    @RequiresPermissions(value = {"0402","04"},logical = Logical.AND)
     public VoPayResident findResidentByEstateId(Integer id){
         return sysDailyPaymentService.findResidentByEstateId(id);
     }

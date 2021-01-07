@@ -31,7 +31,7 @@
                 and b.user_resident_name like concat('%',#{residentName},'%')
             </if>
             <if test="residentTel != null and residentTel != ''">
-                and b.user_resident_tel = #{residentTel}
+                and b.user_resident_tel like concat('%',#{residentTel},'%')
             </if>
         </where>
         GROUP BY b.id

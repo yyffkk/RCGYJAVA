@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchUserAdvice;
 import com.api.model.butlerService.SysAdvice;
 import com.api.model.butlerService.SysAdviceDetail;
@@ -9,6 +10,8 @@ import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoUserAdvice;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/complaintPraise")
-public class ComplaintPraiseController {
+public class ComplaintPraiseController extends ShiroExceptions {
     @Resource
     ComplaintPraiseService complaintPraiseService;
     @Resource
@@ -34,6 +37,7 @@ public class ComplaintPraiseController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserAdvice searchUserAdvice){
         PageHelper.startPage(searchUserAdvice.getPageNum(),searchUserAdvice.getSize());
         List<VoUserAdvice> voUserAdviceList = complaintPraiseService.list(searchUserAdvice);
@@ -51,6 +55,7 @@ public class ComplaintPraiseController {
      * @return map
      */
     @PostMapping("/insertDetail")
+    @RequiresPermissions(value = {"0307","03"},logical = Logical.AND)
     public Map<String,Object> insertDetail(@RequestBody SysAdviceDetail sysAdviceDetail){
         return userAdviceService.insertDetail(sysAdviceDetail);
     }
@@ -61,6 +66,7 @@ public class ComplaintPraiseController {
      * @return map
      */
     @PostMapping("/insertAdvice")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertAdvice(@RequestBody SysAdvice sysAdvice, HttpServletRequest request){
         return complaintPraiseService.insertAdvice(sysAdvice,request);
     }
@@ -71,6 +77,7 @@ public class ComplaintPraiseController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return complaintPraiseService.delete(ids.getIds());
     }
@@ -81,6 +88,7 @@ public class ComplaintPraiseController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return complaintPraiseService.falseDelete(ids.getIds());
     }
@@ -91,6 +99,7 @@ public class ComplaintPraiseController {
      * @return map
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return complaintPraiseService.findById(id);
     }
@@ -100,6 +109,7 @@ public class ComplaintPraiseController {
      * @return map
      */
     @GetMapping("/countComplaintNew")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> countComplaintNew(){
         return complaintPraiseService.countComplaintNew();
     }
@@ -109,6 +119,7 @@ public class ComplaintPraiseController {
      * @return map
      */
     @GetMapping("/countPraiseNew")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> countPraiseNew(){
         return complaintPraiseService.countPraiseNew();
     }

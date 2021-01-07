@@ -1,5 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.chargeManagement.SearchChargesTemplateDetail;
 import com.api.model.chargeManagement.SysChargesTemplateDetail;
 import com.api.manage.service.chargeManagement.SysChargesTemplateDetailService;
@@ -8,6 +9,8 @@ import com.api.vo.chargeManagement.VoChargesTemplateDetail;
 import com.api.vo.chargeManagement.VoFindByIdChargesTemplateDetail;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/chargesTemplateDetail")
-public class SysChargesTemplateDetailController {
+public class SysChargesTemplateDetailController extends ShiroExceptions {
     @Resource
     SysChargesTemplateDetailService sysChargesTemplateDetailService;
 
@@ -32,6 +35,7 @@ public class SysChargesTemplateDetailController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> list(SearchChargesTemplateDetail searchChargesTemplateDetail){
         PageHelper.startPage(searchChargesTemplateDetail.getPageNum(),searchChargesTemplateDetail.getSize());
         List<VoChargesTemplateDetail> voChargesTemplateList = sysChargesTemplateDetailService.list(searchChargesTemplateDetail);
@@ -49,6 +53,7 @@ public class SysChargesTemplateDetailController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0403","04"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysChargesTemplateDetail sysChargesTemplateDetail){
         return sysChargesTemplateDetailService.insert(sysChargesTemplateDetail);
     }
@@ -60,6 +65,7 @@ public class SysChargesTemplateDetailController {
      * @return 物业收费标准明细信息
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0402","04"},logical = Logical.AND)
     public VoFindByIdChargesTemplateDetail findById(Integer id){
         return sysChargesTemplateDetailService.findById(id);
     }
@@ -70,6 +76,7 @@ public class SysChargesTemplateDetailController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0405","04"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysChargesTemplateDetail sysChargesTemplateDetail){
         return sysChargesTemplateDetailService.update(sysChargesTemplateDetail);
     }
@@ -80,6 +87,7 @@ public class SysChargesTemplateDetailController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0404","04"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysChargesTemplateDetailService.delete(ids.getIds());
     }
@@ -91,6 +99,7 @@ public class SysChargesTemplateDetailController {
      * @param chargesTemplateId 物业收费标准模版主键id
      */
     @GetMapping("/export")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public void export(HttpServletRequest request, HttpServletResponse response,Integer chargesTemplateId){
         sysChargesTemplateDetailService.export(request,response,chargesTemplateId);
     }
