@@ -1,5 +1,8 @@
 package com.api.model.app;
 
+/**
+ * app用户登录login_token
+ */
 public class UserLoginToken {
     /**
      * 主键id

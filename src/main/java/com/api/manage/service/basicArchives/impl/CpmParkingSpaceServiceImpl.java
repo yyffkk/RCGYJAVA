@@ -88,6 +88,12 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
     public Map<String, Object> delete(int[] ids) {
         try {
             for (int id : ids) {
+                //先查询是否有关联业主信息
+                CpmParkingSpace byId = cpmParkingSpaceDao.findById(id);
+                if (byId.getResidentId() != null && byId.getResidentId()>0){
+                    throw new RuntimeException("批量删除失败，请先解除关联业主信息");
+                }
+                //再删除车位信息
                 int delete = cpmParkingSpaceDao.delete(id);
                 if (delete<=0){
                     throw new RuntimeException("批量删除车位信息失败");

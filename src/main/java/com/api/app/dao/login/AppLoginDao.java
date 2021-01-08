@@ -40,5 +40,10 @@ public interface AppLoginDao {
      */
     UserResident findUserResidentByTel(String tel);
 
+    /**
+     * 添加app用户登录login_token进数据库
+     * @param userLoginToken app用户登录login_token
+     * @return 影响行数
+     */
     int insertLoginToken(UserLoginToken userLoginToken);
 }

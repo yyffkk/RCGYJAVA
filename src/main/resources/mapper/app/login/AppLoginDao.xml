@@ -28,6 +28,16 @@
     </delete>
 
     <select id="findUserResidentByTel" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserResident">
-        select * from uer_resident where tel = #{tel}
+        select * from user_resident where tel = #{tel}
     </select>
+
+    <insert id="insertLoginToken" parameterType="com.api.model.app.UserLoginToken">
+        insert into user_login_token(
+            user_login_session,
+            resident_id
+        )values (
+            #{userLoginSession},
+            #{residentId}
+        )
+    </insert>
 </mapper>

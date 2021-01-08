@@ -7,6 +7,8 @@ import com.api.model.app.UserLoginToken;
 import com.api.model.basicArchives.UserResident;
 import com.api.util.IdWorker;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -77,66 +79,89 @@ public class AppLoginServiceImpl implements AppLoginService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> loginSMSUser(UserCode userCode) {
         map = new HashMap<>();
-        //根据手机号查询手机验证码信息
-        UserCode userCodeByTel = appLoginDao.findUserCodeByTel(userCode.getTel());
-        if (userCodeByTel == null){
-            map.put("message","验证码已过期");
-            map.put("status",false);
-            return map;
-        }
-
-        //删除手机验证码信息（防止一个验证码多次登录）
-        appLoginDao.deleteUserCodeByTel(userCode.getTel());
-
-
-        //校验验证码是否过期(判断相差时间是否超过3分钟)
-        long time = new Date().getTime() - userCodeByTel.getCodeSendDate().getTime();
-        if (time > EXPIRATION_TIME){
-            map.put("message","验证码已过期");
-            map.put("status",false);
-            return map;
-        }
-        //校验验证码
-        if (!userCode.getCode().equals(userCodeByTel.getCode())) {
-            map.put("message","验证码错误");
-            map.put("status",false);
-            return map;
-        }
-
-
-        //根据手机号查询住户信息
-        UserResident userResident = appLoginDao.findUserResidentByTel(userCode.getTel());
-
-
-        if (userResident != null){
-            //登录
-            IdWorker idWorker = new IdWorker(1,1,1);
-            long l = idWorker.nextId();
-
-
-            UserLoginToken userLoginToken = new UserLoginToken();
-            //填入登录token值
-            userLoginToken.setUserLoginSession(l);
-            //填入住户id
-            userLoginToken.setResidentId(userResident.getId());
-            //添加进数据库
-            int insert = appLoginDao.insertLoginToken(userLoginToken);
-            if (insert <= 0){
-                throw new RuntimeException("登录失败");
+        try {
+            //根据手机号查询手机验证码信息
+            UserCode userCodeByTel = appLoginDao.findUserCodeByTel(userCode.getTel());
+            if (userCodeByTel == null){
+                map.put("message","验证码已过期");
+                map.put("status",false);
+                return map;
             }
-            map.put("token",l);
-            //choose为1，登录成功后 app界面
-            map.put("choose",1);
-            map.put("message","登录成功，欢迎使用");
-        }else {
-            //注册
-            //choose为2，注册界面
-            map.put("choose",2);
-            map.put("message","登录成功,请填写信息");
+
+            //删除手机验证码信息（防止一个验证码多次登录）
+            appLoginDao.deleteUserCodeByTel(userCode.getTel());
+
+
+            //校验验证码是否过期(判断相差时间是否超过3分钟)
+            long time = new Date().getTime() - userCodeByTel.getCodeSendDate().getTime();
+            if (time > EXPIRATION_TIME){
+                map.put("message","验证码已过期");
+                map.put("status",false);
+                return map;
+            }
+            //校验验证码
+            if (!userCode.getCode().equals(userCodeByTel.getCode())) {
+                map.put("message","验证码错误");
+                map.put("status",false);
+                return map;
+            }
+
+
+            //根据手机号查询住户信息
+            UserResident userResident = appLoginDao.findUserResidentByTel(userCode.getTel());
+
+
+            if (userResident != null){
+                //登录
+                IdWorker idWorker = new IdWorker(1,1,1);
+                long l = idWorker.nextId();
+
+
+                UserLoginToken userLoginToken = new UserLoginToken();
+                //填入登录token值
+                userLoginToken.setUserLoginSession(l);
+                //填入住户id
+                userLoginToken.setResidentId(userResident.getId());
+                //添加app用户登录login_token进数据库
+                int insert = appLoginDao.insertLoginToken(userLoginToken);
+                if (insert <= 0){
+                    throw new RuntimeException("登录失败");
+                }
+                map.put("token",l);
+                //choose为1，登录成功后 app界面
+                map.put("choose",1);
+                map.put("message","登录成功，欢迎使用");
+            }else {
+                //注册
+                //choose为2，注册界面
+                map.put("choose",2);
+                map.put("message","登录成功,请填写信息");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
         }
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> register(UserResident userResident) {
+        map = new HashMap<>();
+
+
+
+
         return map;
     }
 }
