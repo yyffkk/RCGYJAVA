@@ -1,5 +1,6 @@
 package com.api.manage.service.basicArchives.impl;
 
+import com.api.manage.dao.basicArchives.CpmBuildingUnitDao;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.basicArchives.UserResidentDao;
 import com.api.model.basicArchives.*;
@@ -36,6 +37,8 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
     @Resource
     UserResidentDao userResidentDao;
+    @Resource
+    CpmBuildingUnitDao cpmBuildingUnitDao;
 
     @Override
     public List<VoCpmBuildingUnitEstate> list(SearchCpmBuildingUnitEstate searchCpmBuildingUnitEstate) {
@@ -218,7 +221,14 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
 
     @Override
     public CpmBuildingUnitEstate findById(Integer id) {
-        return cpmBuildingUnitEstateDao.findById(id);
+        CpmBuildingUnitEstate byId = cpmBuildingUnitEstateDao.findById(id);
+        if (byId != null){
+            //根据楼栋单元id查询楼栋单元信息
+            CpmBuildingUnit byId1 = cpmBuildingUnitDao.findById(byId.getBuildingUnitId());
+            //填入楼栋id
+            byId.setBuildingId(byId1.getBuildingId());
+        }
+        return byId;
     }
 
     @Override

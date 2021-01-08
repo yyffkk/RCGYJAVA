@@ -37,8 +37,6 @@
             <if test="userId != null">
                 user_id,
             </if>
-            create_id,
-            create_date,
             <if test="isPublic != null">
                 is_public,
             </if>
@@ -48,6 +46,8 @@
             <if test="effectiveTimeEnd != null">
                 effective_time_end,
             </if>
+            create_id,
+            create_date
         )
         values (
             #{code},
@@ -60,8 +60,6 @@
             <if test="userId != null">
                 #{userId},
             </if>
-            #{createId},
-            #{createDate},
             <if test="isPublic != null">
                 #{isPublic},
             </if>
@@ -71,7 +69,9 @@
             <if test="effectiveTimeEnd != null">
                 #{effectiveTimeEnd},
             </if>
-            )
+            #{createId},
+            #{createDate}
+        )
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmParkingSpace">

@@ -58,6 +58,10 @@ public class UserResident {
      * 房屋状态（只限租客）
      */
     private Integer roomStatus;
+    /**
+     * 昵称
+     */
+    private String nickName;
 
     @Override
     public String toString() {
@@ -75,6 +79,7 @@ public class UserResident {
                 ", createDate=" + createDate +
                 ", identity=" + identity +
                 ", roomStatus=" + roomStatus +
+                ", nickName='" + nickName + '\'' +
                 '}';
     }
 
@@ -182,10 +187,18 @@ public class UserResident {
         this.roomStatus = roomStatus;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public UserResident() {
     }
 
-    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus) {
+    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -199,5 +212,6 @@ public class UserResident {
         this.createDate = createDate;
         this.identity = identity;
         this.roomStatus = roomStatus;
+        this.nickName = nickName;
     }
 }

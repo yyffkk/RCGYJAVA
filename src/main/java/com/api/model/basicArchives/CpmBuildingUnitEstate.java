@@ -12,6 +12,10 @@ public class CpmBuildingUnitEstate {
      */
     private Integer id;
     /**
+     * 楼栋id
+     */
+    private Integer buildingId;
+    /**
      * 楼宇单元id
      */
     private Integer buildingUnitId;
@@ -76,6 +80,7 @@ public class CpmBuildingUnitEstate {
     public String toString() {
         return "CpmBuildingUnitEstate{" +
                 "id=" + id +
+                ", buildingId=" + buildingId +
                 ", buildingUnitId=" + buildingUnitId +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", status=" + status +
@@ -100,6 +105,14 @@ public class CpmBuildingUnitEstate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Integer buildingId) {
+        this.buildingId = buildingId;
     }
 
     public Integer getBuildingUnitId() {
@@ -225,8 +238,9 @@ public class CpmBuildingUnitEstate {
     public CpmBuildingUnitEstate() {
     }
 
-    public CpmBuildingUnitEstate(Integer id, Integer buildingUnitId, String roomNumber, Integer status, Integer type, BigDecimal constructionArea, BigDecimal indoorArea, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String buildingName, Integer buildingUnitNo, String userResidentName, String userResidentTel) {
+    public CpmBuildingUnitEstate(Integer id, Integer buildingId, Integer buildingUnitId, String roomNumber, Integer status, Integer type, BigDecimal constructionArea, BigDecimal indoorArea, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String buildingName, Integer buildingUnitNo, String userResidentName, String userResidentTel) {
         this.id = id;
+        this.buildingId = buildingId;
         this.buildingUnitId = buildingUnitId;
         this.roomNumber = roomNumber;
         this.status = status;
