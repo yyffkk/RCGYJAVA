@@ -53,7 +53,7 @@ public class UserTenantController extends ShiroExceptions {
      */
     @PostMapping("/insert")
     @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
-    public Map<String,Object> insert(UserTenantInsert userTenantInsert){
+    public Map<String,Object> insert(@RequestBody UserTenantInsert userTenantInsert){
         return userTenantService.insert(userTenantInsert);
     }
 
