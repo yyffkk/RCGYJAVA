@@ -159,6 +159,7 @@ public class AppLoginServiceImpl implements AppLoginService {
     public Map<String, Object> register(UserResident userResident) {
         map = new HashMap<>();
 
+        //注册service  ????? 想个办法，让房产去审核，不是在这个游客名下
 
 
 
