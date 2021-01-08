@@ -16,6 +16,7 @@
         ) as b
         on a.id = b.building_unit_estate_id
         <where>
+            and a.is_delete = 1
             <if test="buildingNo != null and buildingNo != ''">
                 and a.building_no like concat('%',#{buildingNo},'%')
             </if>
