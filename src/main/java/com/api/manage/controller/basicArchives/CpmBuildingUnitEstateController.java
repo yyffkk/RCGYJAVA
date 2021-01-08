@@ -60,11 +60,20 @@ public class CpmBuildingUnitEstateController extends ShiroExceptions {
     public Map<String,Object> insert(@RequestBody EstateAndResidentList estateAndResidentList){
         //判断是否有业主需要关联
         if (estateAndResidentList.getEstate().getStatus() == ESTATE_STATUS){
-            //不关联业主
+            //不关联业主(房屋状态为 4.未售)
             return cpmBuildingUnitEstateService.insert(estateAndResidentList.getEstate());
         } else {
-            //关联业主
-            return cpmBuildingUnitEstateService.insert(estateAndResidentList.getResidentList(),estateAndResidentList.getEstate());
+            //关联业主（房屋状态为 除4.未售以外其他状态）
+            if (estateAndResidentList.getResidentList() != null && estateAndResidentList.getResidentList().size()>0){
+                //如果有业主信息则关联房屋
+                return cpmBuildingUnitEstateService.insert(estateAndResidentList.getResidentList(),estateAndResidentList.getEstate());
+            }else {
+                //如果没有业主信息则提示没有填写业主信息
+                Map<String,Object> map = new HashMap<>();
+                map.put("message","请填写业主信息");
+                map.put("status",false);
+                return map;
+            }
         }
     }
 
