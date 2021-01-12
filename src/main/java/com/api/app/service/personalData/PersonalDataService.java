@@ -9,4 +9,6 @@ public interface PersonalDataService {
     PersonalDataVo findById(Integer id);
 
     Map<String, Object> updateNickName(UserResident userResident);
+
+    Map<String, Object> updateHeadPortrait(UserResident userResident, String[] fileUrls);
 }

@@ -7,6 +7,8 @@ import com.api.util.UploadUtil;
 import com.api.vo.app.PersonalDataVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -42,6 +44,32 @@ public class PersonalDataServiceImpl implements PersonalDataService {
             map.put("message","修改失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> updateHeadPortrait(UserResident userResident, String[] fileUrls) {
+        map = new HashMap<>();
+        try {
+            UploadUtil uploadUtil = new UploadUtil();
+            //先删除头像信息
+            uploadUtil.delete("userResident",userResident.getId(),"headSculpture");
+            //在添加头像信息
+            uploadUtil.saveUrlToDB(fileUrls,"userResident",userResident.getId(),"headSculpture","600",30,20);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","修改头像信息成功");
+        map.put("status",true);
         return map;
     }
 }

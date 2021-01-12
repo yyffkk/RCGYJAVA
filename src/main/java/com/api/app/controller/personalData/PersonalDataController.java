@@ -2,12 +2,14 @@ package com.api.app.controller.personalData;
 
 import com.api.app.service.personalData.PersonalDataService;
 import com.api.model.basicArchives.UserResident;
+import com.api.util.UploadUtil;
 import com.api.vo.app.PersonalDataVo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.api.vo.app.UserLoginTokenVo;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,14 +68,20 @@ public class PersonalDataController {
 
     /**
      * 修改头像
-     * @param userResident 住户信息表
-     * @param imgUrl 头像资源路径
+//     * @param userResident 住户信息表
+     * @param fileUrls 头像资源路径
      * @return map
      */
-    @GetMapping("/updateHeadPortrait")
-    public Map<String,Object> updateHeadPortrait(UserResident userResident,String imgUrl){
-//        new
-        return null;
+    @PostMapping("/updateHeadPortrait")
+    public Map<String,Object> updateHeadPortrait(@RequestBody String[] fileUrls,HttpServletRequest request){
+        String header = request.getHeader("app-admin-token");
+//        //根据token Id查询登录信息 (user_login_token)
+//        UserLoginTokenVo userLoginTokenVo = appLoginDao.findULTByTokenId(Long.valueOf(tokenId));
+//        //根据主键id查询住户信息
+//        UserResident userResident = appLoginDao.findUserResidentById(userLoginTokenVo.getResidentId());
+        UserResident userResident = new UserResident();
+
+        return personalDataService.updateHeadPortrait(userResident,fileUrls);
     }
 
 

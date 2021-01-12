@@ -67,7 +67,7 @@ prop:
     upload-voucher: /img/voucher/
 
     #App-个人资料：头像照片上传路径
-    upload-app-headSculpture: /img/headSculpture/
+    upload-app-head-sculpture: /img/headSculpture/
 
 
 
