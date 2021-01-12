@@ -34,10 +34,36 @@
     <insert id="insertLoginToken" parameterType="com.api.model.app.UserLoginToken">
         insert into user_login_token(
             user_login_session,
-            resident_id
+            resident_id,
+            user_login_date
         )values (
             #{userLoginSession},
+            #{residentId},
+            #{userLoginDate}
+        )
+    </insert>
+
+    <insert id="insertResidentEstateExamine" parameterType="com.api.model.basicArchives.ResidentIdAndEstateId">
+        insert into cpm_resident_estate_examine(
+            building_unit_estate_id,
+            resident_id
+        )values (
+            #{estateId},
             #{residentId}
         )
     </insert>
+
+    <select id="findULTByTokenId" parameterType="java.lang.Long" resultType="com.api.vo.app.UserLoginTokenVo">
+        select * from user_login_token where user_login_session = #{tokenId}
+    </select>
+
+    <select id="findUserResidentById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.UserResident">
+        select * from user_resident where id = #{id}
+    </select>
+
+    <update id="updateULTById" parameterType="com.api.vo.app.UserLoginTokenVo">
+        update user_login_token
+        set user_login_date = #{userLoginDate}
+        where id = #{id}
+    </update>
 </mapper>

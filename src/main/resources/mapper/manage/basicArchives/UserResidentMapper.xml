@@ -45,6 +45,9 @@
             <if test="email != null and email != ''">
                 email,
             </if>
+            <if test="nickName != null and nickName != ''">
+                nick_name,
+            </if>
             create_id,
             create_date,
         </trim>
@@ -63,6 +66,9 @@
             </if>
             <if test="email != null and email != ''">
                 #{email},
+            </if>
+            <if test="nickName != null and nickName != ''">
+                #{nickName},
             </if>
             #{createId},
             #{createDate},

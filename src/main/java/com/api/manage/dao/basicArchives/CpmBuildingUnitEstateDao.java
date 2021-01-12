@@ -86,4 +86,11 @@ public interface CpmBuildingUnitEstateDao {
      * @return 业主id集合
      */
     List<Integer> findResidentIdByEstateId(Integer buildingUnitEstateId);
+
+    /**
+     * 根据楼栋id查询对应的楼栋单元房产id和name
+     * @param buildingId 楼栋id
+     * @return 楼栋单元房产id和name
+     */
+    List<VoFindAll> findByBuildingId(Integer buildingId);
 }

@@ -1,11 +1,11 @@
-package com.api.model.app;
+package com.api.vo.app;
 
 import java.util.Date;
 
 /**
- * app用户登录login_token
+ * app用户登录login_token Vo
  */
-public class UserLoginToken {
+public class UserLoginTokenVo {
     /**
      * 主键id
      */
@@ -13,7 +13,7 @@ public class UserLoginToken {
     /**
      * 登录token值
      */
-    private Long userLoginSession;
+    private String userLoginSession;
     /**
      * 住户id
      */
@@ -25,9 +25,9 @@ public class UserLoginToken {
 
     @Override
     public String toString() {
-        return "UserLoginToken{" +
+        return "UserLoginTokenVo{" +
                 "id=" + id +
-                ", userLoginSession=" + userLoginSession +
+                ", userLoginSession='" + userLoginSession + '\'' +
                 ", residentId=" + residentId +
                 ", userLoginDate=" + userLoginDate +
                 '}';
@@ -41,11 +41,11 @@ public class UserLoginToken {
         this.id = id;
     }
 
-    public Long getUserLoginSession() {
+    public String getUserLoginSession() {
         return userLoginSession;
     }
 
-    public void setUserLoginSession(Long userLoginSession) {
+    public void setUserLoginSession(String userLoginSession) {
         this.userLoginSession = userLoginSession;
     }
 
@@ -65,10 +65,10 @@ public class UserLoginToken {
         this.userLoginDate = userLoginDate;
     }
 
-    public UserLoginToken() {
+    public UserLoginTokenVo() {
     }
 
-    public UserLoginToken(Integer id, Long userLoginSession, Integer residentId, Date userLoginDate) {
+    public UserLoginTokenVo(Integer id, String userLoginSession, Integer residentId, Date userLoginDate) {
         this.id = id;
         this.userLoginSession = userLoginSession;
         this.residentId = residentId;

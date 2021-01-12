@@ -29,4 +29,6 @@ public interface CpmBuildingUnitEstateService {
     List<VoFindAll> findByBuildingUnitId(Integer id);
 
     Map<String, Object> importBuildingUnitEstate(MultipartFile file);
+
+    List<VoFindAll> findByBuildingId(Integer buildingId);
 }

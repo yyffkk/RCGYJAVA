@@ -1,7 +1,13 @@
 package com.api.vo.basicArchives;
 
 public class VoFindAll {
+    /**
+     * 房产id
+     */
     private Integer value;
+    /**
+     * 房产name
+     */
     private String label;
 
     @Override

@@ -2,8 +2,11 @@ package com.api.app.service.login.impl;
 
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.service.login.AppLoginService;
+import com.api.manage.dao.basicArchives.UserResidentDao;
 import com.api.model.app.UserCode;
 import com.api.model.app.UserLoginToken;
+import com.api.model.app.UserRegister;
+import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.util.IdWorker;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ public class AppLoginServiceImpl implements AppLoginService {
     private static Map<String,Object> map = null;
     @Resource
     AppLoginDao appLoginDao;
+    @Resource
+    UserResidentDao userResidentDao;
 
 
     //验证码过期时间
@@ -125,6 +130,8 @@ public class AppLoginServiceImpl implements AppLoginService {
                 userLoginToken.setUserLoginSession(l);
                 //填入住户id
                 userLoginToken.setResidentId(userResident.getId());
+                //填入用户登录信息
+                userLoginToken.setUserLoginDate(new Date());
                 //添加app用户登录login_token进数据库
                 int insert = appLoginDao.insertLoginToken(userLoginToken);
                 if (insert <= 0){
@@ -156,13 +163,91 @@ public class AppLoginServiceImpl implements AppLoginService {
     }
 
     @Override
-    public Map<String, Object> register(UserResident userResident) {
+    @Transactional
+    public Map<String, Object> register(UserRegister userRegister) {
         map = new HashMap<>();
 
-        //注册service  ????? 想个办法，让房产去审核，不是在这个游客名下
+        try {
+            //校验重复
+            //根据业主手机号查询是否已有业主信息
+            UserResident userResident1 = userResidentDao.findByTel(userRegister.getTel());
+            if (userResident1 != null){
+                throw new RuntimeException("业主手机号已存在");
+            }
+
+            //根据业主证件号码查询是否已有业主信息
+            UserResident userResident2 = userResidentDao.findByIdNumber(userRegister.getIdNumber());
+            if (userResident2 != null){
+                throw new RuntimeException("业主证件号码已存在");
+            }
+
+            UserResident userResident = new UserResident();
+            //填入住户名称
+            userResident.setName(userRegister.getName());
+            //填入住户类型（1业主，2亲属，3租客）
+            userResident.setType(userRegister.getType());
+            //填入联系电话
+            userResident.setTel(userRegister.getTel());
+            //填入证件类型（1身份证，2营业执照，3.军人证）
+            userResident.setIdType(userRegister.getIdType());
+            //填入证件号码
+            userResident.setIdNumber(userRegister.getIdNumber());
+            //填入创建人
+            userResident.setCreateId(-1);
+            //填入创建时间
+            userResident.setCreateDate(new Date());
+            //填入昵称
+            userResident.setNickName(userRegister.getNickName());
+            //添加用户信息
+            int insert1 = userResidentDao.insert(userResident);
+            if (insert1 <= 0){
+                throw new RuntimeException("添加用户信息失败");
+            }
+
+            //添加房产审核信息
+            ResidentIdAndEstateId residentIdAndEstateId = new ResidentIdAndEstateId();
+            //添加房产id
+            residentIdAndEstateId.setEstateId(userRegister.getEstateId());
+            //添加住户id
+            residentIdAndEstateId.setResidentId(userResident.getId());
+            //添加住户房产审核信息
+            int insert2 = appLoginDao.insertResidentEstateExamine(residentIdAndEstateId);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加住户房产审核信息");
+            }
 
 
+            //注册成功，去登录
+            IdWorker idWorker = new IdWorker(1,1,1);
+            long l = idWorker.nextId();
 
-        return map;
+            UserLoginToken userLoginToken = new UserLoginToken();
+            //填入登录token值
+            userLoginToken.setUserLoginSession(l);
+            //填入住户id
+            userLoginToken.setResidentId(userResident.getId());
+            //填入用户登录时间
+            userLoginToken.setUserLoginDate(new Date());
+            //添加app用户登录login_token进数据库
+            int insert = appLoginDao.insertLoginToken(userLoginToken);
+            if (insert <= 0){
+                throw new RuntimeException("登录失败");
+            }
+            //输出token值
+            map.put("token",l);
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","登录成功，欢迎使用");
+        map.put("status",true);return map;
     }
 }

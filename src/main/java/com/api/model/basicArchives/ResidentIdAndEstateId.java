@@ -5,11 +5,11 @@ package com.api.model.basicArchives;
  */
 public class ResidentIdAndEstateId {
     /**
-     * 房产id
+     * 业主id
      */
     private Integer residentId;
     /**
-     * 业主id
+     * 房产id
      */
     private Integer estateId;
 

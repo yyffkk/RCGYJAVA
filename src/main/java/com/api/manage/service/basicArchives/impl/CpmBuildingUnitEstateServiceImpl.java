@@ -392,4 +392,9 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
         }
         return null;
     }
+
+    @Override
+    public List<VoFindAll> findByBuildingId(Integer buildingId) {
+        return cpmBuildingUnitEstateDao.findByBuildingId(buildingId);
+    }
 }
