@@ -7,6 +7,8 @@ import com.api.model.app.UserLoginToken;
 import com.api.model.basicArchives.UserResident;
 import com.api.vo.app.UserLoginTokenVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.*;
@@ -32,6 +34,7 @@ public class LoginDetectionFilter implements Filter {
     //登录过期时间为30分钟
     private static final long LoginExpireTime = 30*60*1000;
 
+    @Autowired
     AppLoginService appLoginService = new AppLoginServiceImpl();
 
     ObjectMapper objectMapper = new ObjectMapper();
