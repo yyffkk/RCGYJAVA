@@ -15,10 +15,6 @@ public class UserCar {
      */
     private Integer buildingUnitEstateId;
     /**
-     * 车辆类型
-     */
-    private Integer type;
-    /**
      * 车牌号
      */
     private String code;
@@ -42,14 +38,6 @@ public class UserCar {
      * 手机号
      */
     private String tel;
-    /**
-     * 业主，租户id
-     */
-    private Integer residentId;
-    /**
-     * 物业人员id
-     */
-    private Integer userId;
     /**
      * 车位id
      */
@@ -84,15 +72,12 @@ public class UserCar {
         return "UserCar{" +
                 "id=" + id +
                 ", buildingUnitEstateId=" + buildingUnitEstateId +
-                ", type=" + type +
                 ", code='" + code + '\'' +
                 ", status=" + status +
                 ", owner='" + owner + '\'' +
                 ", idType=" + idType +
                 ", idNumber='" + idNumber + '\'' +
                 ", tel='" + tel + '\'' +
-                ", residentId=" + residentId +
-                ", userId=" + userId +
                 ", parkingSpaceId=" + parkingSpaceId +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -117,14 +102,6 @@ public class UserCar {
 
     public void setBuildingUnitEstateId(Integer buildingUnitEstateId) {
         this.buildingUnitEstateId = buildingUnitEstateId;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public String getCode() {
@@ -173,22 +150,6 @@ public class UserCar {
 
     public void setTel(String tel) {
         this.tel = tel;
-    }
-
-    public Integer getResidentId() {
-        return residentId;
-    }
-
-    public void setResidentId(Integer residentId) {
-        this.residentId = residentId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Integer getParkingSpaceId() {
@@ -250,18 +211,15 @@ public class UserCar {
     public UserCar() {
     }
 
-    public UserCar(Integer id, Integer buildingUnitEstateId, Integer type, String code, Integer status, String owner, Integer idType, String idNumber, String tel, Integer residentId, Integer userId, Integer parkingSpaceId, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public UserCar(Integer id, Integer buildingUnitEstateId, String code, Integer status, String owner, Integer idType, String idNumber, String tel, Integer parkingSpaceId, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
-        this.type = type;
         this.code = code;
         this.status = status;
         this.owner = owner;
         this.idType = idType;
         this.idNumber = idNumber;
         this.tel = tel;
-        this.residentId = residentId;
-        this.userId = userId;
         this.parkingSpaceId = parkingSpaceId;
         this.createId = createId;
         this.createDate = createDate;

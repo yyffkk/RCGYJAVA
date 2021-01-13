@@ -4,10 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.basicArchives.UserCarDao">
     <select id="list" parameterType="com.api.model.basicArchives.SearchUserCar" resultType="com.api.vo.basicArchives.VoUserCar">
-        select uc.*,cps.code as parking_space_code
-        from user_car as uc,cpm_parking_space as cps
+        select uc.*,cps.code as parking_space_code,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name
+        from user_car as uc,cpm_parking_space as cps,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         <where>
             uc.parking_space_id = cps.id
+            and cbue.id = uc.building_unit_estate_id
+            and cbu.id = cbue.building_unit_id
+            and cb.id = cbu.building_id
             <if test="code != null and code != ''">
                 and uc.code like concat('%',#{code},'%')
             </if>
@@ -25,9 +28,6 @@
         <trim prefix="user_car(" suffix=")" suffixOverrides=",">
             id,
             building_unit_estate_id,
-            <if test="type != null">
-                type,
-            </if>
             code,
             status,
             owner,
@@ -39,12 +39,6 @@
             </if>
             <if test="tel != null and tel != ''">
                 tel,
-            </if>
-            <if test="residentId != null">
-                resident_id,
-            </if>
-            <if test="userId != null">
-                user_id,
             </if>
             <if test="parkingSpaceId != null">
                 parking_space_id,
@@ -62,9 +56,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             #{id},
             #{buildingUnitEstateId},
-            <if test="type != null">
-                #{type},
-            </if>
             #{code},
             #{status},
             #{owner},
@@ -76,12 +67,6 @@
             </if>
             <if test="tel != null and tel != ''">
                 #{tel},
-            </if>
-            <if test="residentId != null">
-                #{residentId},
-            </if>
-            <if test="userId != null">
-                #{userId},
             </if>
             <if test="parkingSpaceId != null">
                 #{parkingSpaceId},
@@ -108,9 +93,6 @@
         <set>
             <if test="buildingUnitEstateId != null">
                 building_unit_estate_id = #{buildingUnitEstateId},
-            </if>
-            <if test="type != null">
-                type = #{type},
             </if>
             <if test="code != null and code != ''">
                 code = #{code},

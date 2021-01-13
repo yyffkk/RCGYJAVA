@@ -34,19 +34,15 @@ public class UserCarServiceImpl implements UserCarService {
         List<VoUserCar> userCarList = userCarDao.list(searchUserCar);
         //遍历查询出房产对应的单元和楼栋
         for (VoUserCar voUserCar : userCarList) {
-            //根据房产主键id查询对应的单元号
-            CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(voUserCar.getId());
-            //根据单元主键id查询对应的楼栋号
-            CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
-            //楼栋，单元，房产（房间）
-            voUserCar.setRoomName(cpmBuilding.getId()+"-"+cpmBuildingUnit.getId()+"-"+voUserCar.getRoomName());
             if (voUserCar.getStatus() == 2|| voUserCar.getStatus() == 3){
                 //为包月包年，计算剩余时间
                 long l = voUserCar.getEffectiveTimeEnd().getTime() - (new Date()).getTime();
                 //判断是否还有剩余时间
                 if (l>0){
+                    //填入剩余时间
                     voUserCar.setRemainingTime(l);
                 }else {
+                    //填入剩余时间
                     voUserCar.setRemainingTime(0L);
                 }
             }else {
@@ -84,12 +80,17 @@ public class UserCarServiceImpl implements UserCarService {
             userCar.setEffectiveTimeEnd(date);
         }else {
             //全部置为null
+            //设置有效开始时间
             userCar.setEffectiveTimeStart(null);
+            //设置有效结束时间
             userCar.setEffectiveTimeEnd(null);
         }
+        //填入创建人
         userCar.setCreateId(sysUser.getId());
+        //填入创建时间
         userCar.setCreateDate(new Date());
 
+        //添加车辆信息
         int insert = userCarDao.insert(userCar);
         if (insert >0){
             map.put("message","添加车辆信息成功");
