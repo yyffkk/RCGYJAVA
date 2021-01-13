@@ -25,17 +25,12 @@ import java.util.Map;
 //@Order(1)
 @WebFilter(urlPatterns = "/app/user/*")
 public class LoginDetectionFilter implements Filter {
-    //有问题
-//    @Resource
-//    AppLoginDao appLoginDao;
-
-
 
     //登录过期时间为30分钟
     private static final long LoginExpireTime = 30*60*1000;
 
-    @Autowired
-    AppLoginService appLoginService = new AppLoginServiceImpl();
+//    @Autowired
+//    AppLoginService appLoginService = new AppLoginServiceImpl();
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -46,6 +41,7 @@ public class LoginDetectionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        AppLoginService appLoginService = (AppLoginService) SpringContextUtil.getBean("appLoginServiceImpl");
         //转换成httpServletRequest
         HttpServletRequest req = (HttpServletRequest) request;
         //获取token信息
@@ -59,7 +55,6 @@ public class LoginDetectionFilter implements Filter {
 
         //根据token Id查询登录信息 (user_login_token)
         UserLoginTokenVo userLoginTokenVo = appLoginService.findULTByTokenId(Long.valueOf(tokenId));
-//        UserLoginTokenVo userLoginTokenVo = appLoginDao.findULTByTokenId(Long.valueOf(tokenId));
         //如果根据tokenId查询登录信息为null，返回失败结果Json数据
         if (userLoginTokenVo == null) {
             this.respFail(response);
@@ -85,7 +80,6 @@ public class LoginDetectionFilter implements Filter {
         requestWrapper.addObject(userResident);
 
         chain.doFilter(requestWrapper, response);
-        chain.doFilter(request, response);
     }
 
     /** 返回失败结果Json数据 */
