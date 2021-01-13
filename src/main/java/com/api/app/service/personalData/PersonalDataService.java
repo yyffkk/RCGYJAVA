@@ -10,5 +10,5 @@ public interface PersonalDataService {
 
     Map<String, Object> updateNickName(UserResident userResident);
 
-    Map<String, Object> updateHeadPortrait(UserResident userResident, String[] fileUrls);
+    Map<String, Object> updateHeadPortrait(Integer id, String[] fileUrls);
 }

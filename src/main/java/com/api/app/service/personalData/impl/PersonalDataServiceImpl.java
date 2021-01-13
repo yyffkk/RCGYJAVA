@@ -38,10 +38,10 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         //修改用户昵称
         int update = personalDataDao.updateNickName(userResident);
         if (update >0){
-            map.put("message","修改成功");
+            map.put("message","修改昵称成功");
             map.put("status",true);
         }else {
-            map.put("message","修改失败");
+            map.put("message","修改昵称失败");
             map.put("status",false);
         }
         return map;
@@ -49,14 +49,14 @@ public class PersonalDataServiceImpl implements PersonalDataService {
 
     @Override
     @Transactional
-    public Map<String, Object> updateHeadPortrait(UserResident userResident, String[] fileUrls) {
+    public Map<String, Object> updateHeadPortrait(Integer id, String[] fileUrls) {
         map = new HashMap<>();
         try {
             UploadUtil uploadUtil = new UploadUtil();
             //先删除头像信息
-            uploadUtil.delete("userResident",userResident.getId(),"headSculpture");
+            uploadUtil.delete("userResident",id,"headSculpture");
             //在添加头像信息
-            uploadUtil.saveUrlToDB(fileUrls,"userResident",userResident.getId(),"headSculpture","600",30,20);
+            uploadUtil.saveUrlToDB(fileUrls,"userResident",id,"headSculpture","600",30,20);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

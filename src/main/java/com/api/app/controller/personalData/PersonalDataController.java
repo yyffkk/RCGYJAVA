@@ -1,6 +1,7 @@
 package com.api.app.controller.personalData;
 
 import com.api.app.service.personalData.PersonalDataService;
+import com.api.model.app.UpdateHeadPortrait;
 import com.api.model.basicArchives.UserResident;
 import com.api.util.UploadUtil;
 import com.api.vo.app.PersonalDataVo;
@@ -56,32 +57,29 @@ public class PersonalDataController {
     /**
      * 修改用户昵称
      * @param userResident 住户信息表
-     * @param updateNickName 用户需要修改的昵称
+     * @param request app-admin-token获取的request用户信息
      * @return map
      */
-    @GetMapping("/updateNickName")
-    public Map<String,Object> updateNickName(UserResident userResident,String updateNickName){
+    @PostMapping("/updateNickName")
+    public Map<String,Object> updateNickName(@RequestBody UserResident userResident,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
         //填入需要修改的昵称
-        userResident.setNickName(updateNickName);
+        userResident.setId(id);
         return personalDataService.updateNickName(userResident);
     }
 
     /**
      * 修改头像
-//     * @param userResident 住户信息表
-     * @param fileUrls 头像资源路径
+     * @param updateHeadPortrait 修改头像信息资源
+     * @param request app-admin-token获取的request用户信息
      * @return map
      */
     @PostMapping("/updateHeadPortrait")
-    public Map<String,Object> updateHeadPortrait(@RequestBody String[] fileUrls,HttpServletRequest request){
-        String header = request.getHeader("app-admin-token");
-//        //根据token Id查询登录信息 (user_login_token)
-//        UserLoginTokenVo userLoginTokenVo = appLoginDao.findULTByTokenId(Long.valueOf(tokenId));
-//        //根据主键id查询住户信息
-//        UserResident userResident = appLoginDao.findUserResidentById(userLoginTokenVo.getResidentId());
-        UserResident userResident = new UserResident();
-
-        return personalDataService.updateHeadPortrait(userResident,fileUrls);
+    public Map<String,Object> updateHeadPortrait(@RequestBody UpdateHeadPortrait updateHeadPortrait,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return personalDataService.updateHeadPortrait(id,updateHeadPortrait.getFileUrls());
     }
 
 
