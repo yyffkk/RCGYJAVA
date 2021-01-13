@@ -11,4 +11,8 @@ public interface PersonalDataService {
     Map<String, Object> updateNickName(UserResident userResident);
 
     Map<String, Object> updateHeadPortrait(Integer id, String[] fileUrls);
+
+    Map<String, Object> updateTel(UserResident userResident);
+
+    Map<String, Object> sendTelUpdateCode(UserResident userResident, String oldTel);
 }

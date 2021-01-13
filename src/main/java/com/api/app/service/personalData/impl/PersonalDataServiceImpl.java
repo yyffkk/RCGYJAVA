@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class PersonalDataServiceImpl implements PersonalDataService {
@@ -69,6 +69,65 @@ public class PersonalDataServiceImpl implements PersonalDataService {
             return map;
         }
         map.put("message","修改头像信息成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updateTel(UserResident userResident) {
+        map = new HashMap<>();
+        int update = personalDataDao.updateTel(userResident);
+        if (update >0){
+            map.put("message","修改手机号成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改手机号失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sendTelUpdateCode(UserResident userResident, String oldTel) {
+        map = new HashMap<>();
+        // 验证码为后台随机生成
+        final String CAPTCHA = String.valueOf(new Random().nextInt(899999) + 100000);
+        // 手机号为前端传入
+        final String MOBILE = userResident.getTel();
+
+        //验证手机号格式
+        Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Matcher m=p.matcher(MOBILE);
+        boolean matches = m.matches();
+        if (!matches){
+            map.put("message","手机号格式有误");
+            map.put("status",false);
+            return map;
+        }
+
+        //查询是否是该旧手机号
+        if (!userResident.getTel().equals(oldTel)){
+            map.put("message","旧手机号输入不正确");
+            map.put("status",false);
+            return map;
+        }
+
+        //填入手机号修改验证码
+        userResident.setTelUpdateCode(CAPTCHA);
+        //填入手机号修改验证码发送日期
+        userResident.setTelUpdateCodeSendTime(new Date());
+        //修改 手机号修改验证码 和 手机号修改验证码发送时间
+        int update = personalDataDao.sendTelUpdateCode(userResident);
+        if (update <=0){
+            map.put("message","验证码发送失败");
+            map.put("status",false);
+        }
+
+        // 发送短信工具类
+//        SmsSendUtil.send(CAPTCHA, MOBILE);
+
+        map.put("message","验证码发送成功");
+        map.put("code",CAPTCHA);
         map.put("status",true);
         return map;
     }

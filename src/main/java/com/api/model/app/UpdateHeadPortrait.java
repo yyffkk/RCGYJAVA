@@ -8,7 +8,7 @@ import java.util.Arrays;
  */
 public class UpdateHeadPortrait {
     /**
-     * 头像资源路径
+     * 用户头像资源路径数组
      */
     private String[] fileUrls;
 

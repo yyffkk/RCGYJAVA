@@ -64,13 +64,13 @@ public class PersonalDataController {
     public Map<String,Object> updateNickName(@RequestBody UserResident userResident,HttpServletRequest request){
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
-        //填入需要修改的昵称
+        //填入用户id
         userResident.setId(id);
         return personalDataService.updateNickName(userResident);
     }
 
     /**
-     * 修改头像
+     * 修改用户头像
      * @param updateHeadPortrait 修改头像信息资源
      * @param request app-admin-token获取的request用户信息
      * @return map
@@ -82,6 +82,37 @@ public class PersonalDataController {
         return personalDataService.updateHeadPortrait(id,updateHeadPortrait.getFileUrls());
     }
 
+    /**
+     * 修改用户手机号
+     * @param userResident 住户信息表
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/updateTel")
+    public Map<String,Object> updateTel(@RequestBody UserResident userResident,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //填入用户id
+        userResident.setId(id);
+        return personalDataService.updateTel(userResident);
+    }
+
+    /**
+     * 发送手机号修改验证码
+     * @param userResident 住户信息表
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("sendTelUpdateCode")
+    public Map<String,Object> sendTelUpdateCode(@RequestBody UserResident userResident,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户tel
+        String oldTel = request.getParameter("tel");
+        //填入用户id
+        userResident.setId(id);
+        return personalDataService.sendTelUpdateCode(userResident,oldTel);
+    }
 
 
 

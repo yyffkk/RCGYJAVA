@@ -62,6 +62,14 @@ public class UserResident {
      * 昵称
      */
     private String nickName;
+    /**
+     * 手机号修改验证码
+     */
+    private String telUpdateCode;
+    /**
+     * 手机号修改验证码发送日期
+     */
+    private Date telUpdateCodeSendTime;
 
     @Override
     public String toString() {
@@ -80,6 +88,8 @@ public class UserResident {
                 ", identity=" + identity +
                 ", roomStatus=" + roomStatus +
                 ", nickName='" + nickName + '\'' +
+                ", telUpdateCode='" + telUpdateCode + '\'' +
+                ", telUpdateCodeSendTime=" + telUpdateCodeSendTime +
                 '}';
     }
 
@@ -195,10 +205,26 @@ public class UserResident {
         this.nickName = nickName;
     }
 
+    public String getTelUpdateCode() {
+        return telUpdateCode;
+    }
+
+    public void setTelUpdateCode(String telUpdateCode) {
+        this.telUpdateCode = telUpdateCode;
+    }
+
+    public Date getTelUpdateCodeSendTime() {
+        return telUpdateCodeSendTime;
+    }
+
+    public void setTelUpdateCodeSendTime(Date telUpdateCodeSendTime) {
+        this.telUpdateCodeSendTime = telUpdateCodeSendTime;
+    }
+
     public UserResident() {
     }
 
-    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName) {
+    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName, String telUpdateCode, Date telUpdateCodeSendTime) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -213,5 +239,7 @@ public class UserResident {
         this.identity = identity;
         this.roomStatus = roomStatus;
         this.nickName = nickName;
+        this.telUpdateCode = telUpdateCode;
+        this.telUpdateCodeSendTime = telUpdateCodeSendTime;
     }
 }

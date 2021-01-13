@@ -17,4 +17,25 @@ public interface PersonalDataDao {
      * @return 影响行数
      */
     int updateNickName(UserResident userResident);
+
+    /**
+     * 修改用户手机号
+     * @param userResident 住户信息表
+     * @return 影响行数
+     */
+    int updateTel(UserResident userResident);
+
+    /**
+     * 根据手机号查询是否有该手机号
+     * @param tel 手机号
+     * @return 住户信息表
+     */
+    UserResident findUserResidentByTel(String tel);
+
+    /**
+     * 修改 手机号修改验证码 和 手机号修改验证码发送时间
+     * @param userResident 住户信息表
+     * @return 影响行数
+     */
+    int sendTelUpdateCode(UserResident userResident);
 }

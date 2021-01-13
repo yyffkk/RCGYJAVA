@@ -10,4 +10,18 @@
     <update id="updateNickName" parameterType="com.api.model.basicArchives.UserResident">
         update user_resident set nick_name = #{nickName} where id = #{id}
     </update>
+
+    <update id="updateTel" parameterType="com.api.model.basicArchives.UserResident">
+        update user_resident set tel = #{tel} where id = #{id}
+    </update>
+
+    <select id="findUserResidentByTel" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserResident">
+        select * from user_resident where tel = #{tel}
+    </select>
+
+    <update id="sendTelUpdateCode" parameterType="com.api.model.basicArchives.UserResident">
+        update user_resident
+        set tel_update_code = #{telUpdateCode},tel_update_code_send_time = #{telUpdateCodeSendTime}
+        where id = #{id}
+    </update>
 </mapper>
