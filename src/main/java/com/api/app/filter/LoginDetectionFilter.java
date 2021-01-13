@@ -29,9 +29,6 @@ public class LoginDetectionFilter implements Filter {
     //登录过期时间为30分钟
     private static final long LoginExpireTime = 30*60*1000;
 
-//    @Autowired
-//    AppLoginService appLoginService = new AppLoginServiceImpl();
-
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -41,6 +38,8 @@ public class LoginDetectionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        //解决外置 tomcat启动Spring Boot程序模式下解决过滤器中 @AutoWired注入bean的空指针问题
+        //在相应的业务代码中 使用SpringContextUtil.getBean("xxx") 获取相应的bean组件即可
         AppLoginService appLoginService = (AppLoginService) SpringContextUtil.getBean("appLoginServiceImpl");
         //转换成httpServletRequest
         HttpServletRequest req = (HttpServletRequest) request;
