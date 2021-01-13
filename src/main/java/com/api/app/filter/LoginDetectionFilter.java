@@ -1,11 +1,12 @@
 package com.api.app.filter;
 
 import com.api.app.dao.login.AppLoginDao;
+import com.api.app.service.login.AppLoginService;
+import com.api.app.service.login.impl.AppLoginServiceImpl;
 import com.api.model.app.UserLoginToken;
 import com.api.model.basicArchives.UserResident;
 import com.api.vo.app.UserLoginTokenVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.*;
@@ -18,12 +19,20 @@ import java.util.Map;
 
 //过滤器去掉@Component，在程序启动类加上@ServletComponentScan，过滤器和urlPatterns属性均生效。
 //@Component
+//@Order注解表示执行过滤顺序，值越小，越先执行
+//@Order(1)
 @WebFilter(urlPatterns = "/app/user/*")
 public class LoginDetectionFilter implements Filter {
-    @Resource
-    AppLoginDao appLoginDao;
+    //有问题
+//    @Resource
+//    AppLoginDao appLoginDao;
+
+
+
     //登录过期时间为30分钟
     private static final long LoginExpireTime = 30*60*1000;
+
+    AppLoginService appLoginService = new AppLoginServiceImpl();
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -46,7 +55,8 @@ public class LoginDetectionFilter implements Filter {
         }
 
         //根据token Id查询登录信息 (user_login_token)
-        UserLoginTokenVo userLoginTokenVo = appLoginDao.findULTByTokenId(Long.valueOf(tokenId));
+        UserLoginTokenVo userLoginTokenVo = appLoginService.findULTByTokenId(Long.valueOf(tokenId));
+//        UserLoginTokenVo userLoginTokenVo = appLoginDao.findULTByTokenId(Long.valueOf(tokenId));
         //如果根据tokenId查询登录信息为null，返回失败结果Json数据
         if (userLoginTokenVo == null) {
             this.respFail(response);
@@ -59,12 +69,12 @@ public class LoginDetectionFilter implements Filter {
             return;
         }
         //根据主键id查询住户信息
-        UserResident userResident = appLoginDao.findUserResidentById(userLoginTokenVo.getResidentId());
+        UserResident userResident = appLoginService.findUserResidentById(userLoginTokenVo.getResidentId());
 
 
         //每次请求更新一次登录user_login_token时间
         userLoginTokenVo.setUserLoginDate(new Date());
-        appLoginDao.updateULTById(userLoginTokenVo);
+        appLoginService.updateULTById(userLoginTokenVo);
 
         //创建一个重新包装的Request请求
         ParameterRequestWrapper requestWrapper = new ParameterRequestWrapper(req);
@@ -72,6 +82,7 @@ public class LoginDetectionFilter implements Filter {
         requestWrapper.addObject(userResident);
 
         chain.doFilter(requestWrapper, response);
+        chain.doFilter(request, response);
     }
 
     /** 返回失败结果Json数据 */

@@ -9,6 +9,7 @@ import com.api.model.app.UserRegister;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.util.IdWorker;
+import com.api.vo.app.UserLoginTokenVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -249,5 +250,20 @@ public class AppLoginServiceImpl implements AppLoginService {
         }
         map.put("message","登录成功，欢迎使用");
         map.put("status",true);return map;
+    }
+
+    @Override
+    public UserLoginTokenVo findULTByTokenId(Long tokenId) {
+        return appLoginDao.findULTByTokenId(tokenId);
+    }
+
+    @Override
+    public UserResident findUserResidentById(Integer residentId) {
+        return appLoginDao.findUserResidentById(residentId);
+    }
+
+    @Override
+    public int updateULTById(UserLoginTokenVo userLoginTokenVo) {
+        return appLoginDao.updateULTById(userLoginTokenVo);
     }
 }
