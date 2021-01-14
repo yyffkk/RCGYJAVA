@@ -2,6 +2,7 @@ package com.api.model.butlerService;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -61,9 +62,9 @@ public class SysAdvice {
      */
     private Integer isDelete;
     /**
-     * 上传文件（照片）
+     * 上传文件（照片路径数组）
      */
-    private MultipartFile file;
+    private String[] fileUrls;
 
     @Override
     public String toString() {
@@ -81,7 +82,7 @@ public class SysAdvice {
                 ", modifyDate=" + modifyDate +
                 ", modifyUserType=" + modifyUserType +
                 ", isDelete=" + isDelete +
-                ", file=" + file +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 '}';
     }
 
@@ -189,18 +190,18 @@ public class SysAdvice {
         this.isDelete = isDelete;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFileUrls() {
+        return fileUrls;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     public SysAdvice() {
     }
 
-    public SysAdvice(Integer id, Integer status, Integer type, String content, Integer hits, Integer score, Integer createId, Date createDate, Integer createUserType, Integer modifyId, Date modifyDate, Integer modifyUserType, Integer isDelete, MultipartFile file) {
+    public SysAdvice(Integer id, Integer status, Integer type, String content, Integer hits, Integer score, Integer createId, Date createDate, Integer createUserType, Integer modifyId, Date modifyDate, Integer modifyUserType, Integer isDelete, String[] fileUrls) {
         this.id = id;
         this.status = status;
         this.type = type;
@@ -214,6 +215,6 @@ public class SysAdvice {
         this.modifyDate = modifyDate;
         this.modifyUserType = modifyUserType;
         this.isDelete = isDelete;
-        this.file = file;
+        this.fileUrls = fileUrls;
     }
 }

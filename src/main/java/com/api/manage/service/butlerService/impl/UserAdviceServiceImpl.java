@@ -13,6 +13,7 @@ import com.api.model.butlerService.SysAdviceDetail;
 import com.api.model.resources.ResourcesImg;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.UserAdviceService;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFindByIdAdvice;
 import com.api.vo.butlerService.VoProhibitedKeywords;
 import com.api.vo.butlerService.VoUserAdvice;
@@ -114,7 +115,8 @@ public class UserAdviceServiceImpl implements UserAdviceService {
             SysUser sysUser = (SysUser) subject.getPrincipal();
 
             //替换违禁关键字
-            replaceProhibitedKeywords(sysAdvice.getContent());
+            String content = replaceProhibitedKeywords(sysAdvice.getContent());
+            sysAdvice.setContent(content);
 
             //填入初始点击数
             sysAdvice.setHits(0);
@@ -133,60 +135,9 @@ public class UserAdviceServiceImpl implements UserAdviceService {
                 throw new RuntimeException("新增咨询建议失败");
             }
 
-            //上传文件
-            MultipartFile file = sysAdvice.getFile();
-            //如果文件file不为空，则上传该文件到 ../static/img/advice目录下
-            if (file != null){
-                if (file.getSize() > 1024 * 1024 * 10) {
-                    throw new RuntimeException("文件大小不能大于10M");
-                }
-                //获取文件后缀
-                String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
-                if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
-                    throw new RuntimeException("请选择jpg,jpeg,gif,png格式的图片");
-                }
-                //获取保存路径
-                String savePath = UPLOAD_ADVICE;
-                File savePathFile = new File(savePath);
-                if (!savePathFile.exists()) {
-                    //若不存在该目录，则创建目录
-                    savePathFile.mkdir();
-                }
-                //通过UUID生成唯一文件名
-                String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
-                try {
-                    //将文件保存指定目录
-                    file.transferTo(new File(savePath + filename));
-                    //保存后，将文件路径存入数据库
-                    ResourcesImg resourcesImg = new ResourcesImg();
-                    //填入表名称 sysAdvice
-                    resourcesImg.setTableName("sysAdvice");
-                    //填入数据所属id
-                    resourcesImg.setDateId(sysAdvice.getId());
-                    //填入类型名称 咨询建议照片：adviceImg
-                    resourcesImg.setTypeName("adviceImg");
-                    //填入图片路径
-                    resourcesImg.setUrl(savePath + filename);
-                    resourcesImg.setSize("600");
-                    resourcesImg.setLongs(30);
-                    resourcesImg.setParagraph(20);
-                    //查询该表，该类型名称的照片数量
-                    int count = resourcesImgDao.countByData(resourcesImg);
-                    if (count > 0){
-                        resourcesImg.setSort(count+1);
-                    }else {
-                        resourcesImg.setSort(1);
-                    }
-                    //添加该照片数据到数据库中
-                    int insert2 = resourcesImgDao.insert(resourcesImg);
-                    if (insert2 <= 0){
-                        throw new RuntimeException("添加照片数据失败");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new RuntimeException("保存文件异常");
-                }
-            }
+            UploadUtil uploadUtil = new UploadUtil();
+            //上传文件到数据库
+            uploadUtil.saveUrlToDB(sysAdvice.getFileUrls(),"sysAdvice",sysAdvice.getId(),"adviceImg","600",30,20);
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
