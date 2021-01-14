@@ -26,8 +26,8 @@ import java.util.Map;
 @WebFilter(urlPatterns = "/app/user/*")
 public class LoginDetectionFilter implements Filter {
 
-    //登录过期时间为30分钟
-    private static final long LoginExpireTime = 30*60*1000;
+    //登录过期时间为15天，连续15天没登录，需要重新登录
+    private static final long LoginExpireTime = 15*24*60*60*1000;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
