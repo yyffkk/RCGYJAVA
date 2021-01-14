@@ -5,9 +5,7 @@ import com.api.model.app.PersonalData;
 import com.api.model.app.UpdateHeadPortrait;
 import com.api.model.app.UpdateTel;
 import com.api.model.basicArchives.UserResident;
-import com.api.util.UploadUtil;
 import com.api.vo.app.PersonalDataVo;
-import com.api.vo.app.UserLoginTokenVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
