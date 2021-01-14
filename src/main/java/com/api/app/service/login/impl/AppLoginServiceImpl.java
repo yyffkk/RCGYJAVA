@@ -121,10 +121,15 @@ public class AppLoginServiceImpl implements AppLoginService {
 
 
             if (userResident != null){
+                //先根据用户id删除登录token信息【单token登录】（只能一个手机登录，另一个手机登录，会弹掉已登录的手机用户）
+                int delete = appLoginDao.deleteULTByResidentId(userResident.getId());
+                if (delete <= 0){
+                    throw new RuntimeException("唯一登录失败");
+                }
+
                 //登录
                 IdWorker idWorker = new IdWorker(1,1,1);
                 long l = idWorker.nextId();
-
 
                 UserLoginToken userLoginToken = new UserLoginToken();
                 //填入登录token值

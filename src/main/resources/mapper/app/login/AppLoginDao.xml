@@ -66,4 +66,8 @@
         set user_login_date = #{userLoginDate}
         where id = #{id}
     </update>
+
+    <delete id="deleteULTByResidentId" parameterType="java.lang.Integer">
+        delete from user_login_token where resident_id = #{residentId}
+    </delete>
 </mapper>

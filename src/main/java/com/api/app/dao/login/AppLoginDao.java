@@ -76,4 +76,11 @@ public interface AppLoginDao {
      * @return 影响行数
      */
     int updateULTById(UserLoginTokenVo userLoginTokenVo);
+
+    /**
+     * 根据用户id删除登录token信息
+     * @param residentId 用户id
+     * @return 影响行数
+     */
+    int deleteULTByResidentId(Integer residentId);
 }
