@@ -24,6 +24,7 @@ public class FeedbackController {
     /**
      * app意见反馈提交（建议）
      * @param sysAdvice 咨询建议表信息
+     * @param request app-admin-token获取的request用户信息
      * @return map
      */
     @PostMapping("/submit")
