@@ -15,9 +15,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +71,11 @@ public class UserDecorationController extends ShiroExceptions {
             //QRCodeUtil.encode(text, "e:\\csdn.jpg", "e:\\", true);
             //含Logo，指定二维码图片名
             //content:内容  logoPath:LOGO地址   destPath：存放目录  fileName：二维码文件名  needCompress：是否压缩LOGO
-            QRCodeUtil.encode(text, "src/main/resources/static/img/logo/QRCode.png", "src/main/resources/static/img/QRCode", "qrcode", true);
+
+            // 获取项目同级目录，传入static中
+            String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
+
+            QRCodeUtil.encode(text, realPath+"/img/logo/QRCode.png", realPath+"/img/QRCode", "qrcode", true);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("imgUrl","二维码生成失败");
