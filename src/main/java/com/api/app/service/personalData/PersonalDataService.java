@@ -1,5 +1,7 @@
 package com.api.app.service.personalData;
 
+import com.api.model.app.PersonalData;
+import com.api.model.app.UpdateTel;
 import com.api.model.basicArchives.UserResident;
 import com.api.vo.app.PersonalDataVo;
 
@@ -12,7 +14,13 @@ public interface PersonalDataService {
 
     Map<String, Object> updateHeadPortrait(Integer id, String[] fileUrls);
 
-    Map<String, Object> updateTel(UserResident userResident);
 
-    Map<String, Object> sendTelUpdateCode(UserResident userResident, String oldTel);
+
+    Map<String, Object> sendTelUpdateCode(UpdateTel updateTel);
+
+    Map<String, Object> updateTel(UpdateTel updateTel, String oldTel);
+
+    Map<String, Object> updateSex(PersonalData personalData);
+
+    Map<String, Object> updateBirthday(PersonalData personalData);
 }

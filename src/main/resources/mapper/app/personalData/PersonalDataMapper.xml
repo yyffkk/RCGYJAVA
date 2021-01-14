@@ -11,17 +11,45 @@
         update user_resident set nick_name = #{nickName} where id = #{id}
     </update>
 
-    <update id="updateTel" parameterType="com.api.model.basicArchives.UserResident">
-        update user_resident set tel = #{tel} where id = #{id}
+    <update id="updateTel" parameterType="com.api.model.app.UpdateTel">
+        update user_resident set tel = #{newTel} where id = #{id}
     </update>
 
-    <select id="findUserResidentByTel" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserResident">
-        select * from user_resident where tel = #{tel}
+    <select id="findTelUpdateCodeByTel" parameterType="java.lang.String" resultType="com.api.model.app.UpdateTel">
+        select * from user_tel_update_code where new_tel = #{newTel}
     </select>
 
-    <update id="sendTelUpdateCode" parameterType="com.api.model.basicArchives.UserResident">
-        update user_resident
-        set tel_update_code = #{telUpdateCode},tel_update_code_send_time = #{telUpdateCodeSendTime}
+    <update id="updateTelUpdateCode" parameterType="com.api.model.app.UpdateTel">
+        update user_tel_update_code
+        set code = #{code},code_send_date = #{codeSendDate}
         where id = #{id}
+    </update>
+
+    <insert id="insertTelUpdateCode" parameterType="com.api.model.app.UpdateTel">
+        insert into user_tel_update_code(
+            new_tel,
+            code,
+            code_send_date
+        )values (
+            #{newTel},
+            #{code},
+            #{codeSendDate}
+        )
+    </insert>
+
+    <select id="findUserTelUpdateByTel" parameterType="java.lang.String" resultType="com.api.model.app.UpdateTel">
+        select * from user_tel_update_code where new_tel = #{newTel}
+    </select>
+
+    <delete id="deleteUserTelUpdateByTel" parameterType="java.lang.String">
+        delete from user_tel_update_code where new_tel = #{newTel}
+    </delete>
+
+    <update id="updateSex" parameterType="com.api.model.app.PersonalData">
+        update user_resident set sex = #{sex} where id = #{id}
+    </update>
+
+    <update id="updateBirthday" parameterType="com.api.model.app.PersonalData">
+        update user_resident set birthday = #{birthday} where id = #{id}
     </update>
 </mapper>

@@ -1,7 +1,9 @@
 package com.api.app.controller.personalData;
 
 import com.api.app.service.personalData.PersonalDataService;
+import com.api.model.app.PersonalData;
 import com.api.model.app.UpdateHeadPortrait;
+import com.api.model.app.UpdateTel;
 import com.api.model.basicArchives.UserResident;
 import com.api.util.UploadUtil;
 import com.api.vo.app.PersonalDataVo;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,37 +86,66 @@ public class PersonalDataController {
     }
 
     /**
-     * 修改用户手机号
-     * @param userResident 住户信息表
-     * @param request app-admin-token获取的request用户信息
-     * @return map
-     */
-    @PostMapping("/updateTel")
-    public Map<String,Object> updateTel(@RequestBody UserResident userResident,HttpServletRequest request){
-        //从request获取用户id
-        Integer id = Integer.valueOf(request.getParameter("id"));
-        //填入用户id
-        userResident.setId(id);
-        return personalDataService.updateTel(userResident);
-    }
-
-    /**
      * 发送手机号修改验证码
-     * @param userResident 住户信息表
+     * @param updateTel 修改手机号信息
      * @param request app-admin-token获取的request用户信息
      * @return map
      */
     @PostMapping("sendTelUpdateCode")
-    public Map<String,Object> sendTelUpdateCode(@RequestBody UserResident userResident,HttpServletRequest request){
+    public Map<String,Object> sendTelUpdateCode(@RequestBody UpdateTel updateTel,HttpServletRequest request){
+        //从request获取用户tel
+        String oldTel = request.getParameter("tel");
+        updateTel.setOldTel(oldTel);
+        return personalDataService.sendTelUpdateCode(updateTel);
+    }
+
+    /**
+     * 根据新手机号发送修改验证码
+     * @param updateTel 修改手机号信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/updateTel")
+    public Map<String,Object> updateTel(@RequestBody UpdateTel updateTel, HttpServletRequest request){
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
         //从request获取用户tel
         String oldTel = request.getParameter("tel");
         //填入用户id
-        userResident.setId(id);
-        return personalDataService.sendTelUpdateCode(userResident,oldTel);
+        updateTel.setId(id);
+        return personalDataService.updateTel(updateTel,oldTel);
     }
 
+
+    /**
+     * 修改用户性别
+     * @param personalData 个人资料信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/updateSex")
+    public Map<String,Object> updateSex(@RequestBody PersonalData personalData,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //填入用户id
+        personalData.setId(id);
+        return personalDataService.updateSex(personalData);
+    }
+
+    /**
+     * 修改用户出生日期
+     * @param personalData 个人资料信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/updateBirthday")
+    public Map<String,Object> updateBirthday(@RequestBody PersonalData personalData,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //填入用户id
+        personalData.setId(id);
+        return personalDataService.updateBirthday(personalData);
+    }
 
 
 

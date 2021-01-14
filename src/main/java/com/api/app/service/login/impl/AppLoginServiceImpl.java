@@ -109,7 +109,7 @@ public class AppLoginServiceImpl implements AppLoginService {
                 return map;
             }
             //校验验证码
-            if (!userCode.getCode().equals(userCodeByTel.getCode())) {
+            if (!userCodeByTel.getCode().equals(userCode.getCode())) {
                 map.put("message","验证码错误");
                 map.put("status",false);
                 return map;
