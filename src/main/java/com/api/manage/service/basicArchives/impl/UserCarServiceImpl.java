@@ -58,6 +58,14 @@ public class UserCarServiceImpl implements UserCarService {
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
+        //根据车牌号查询车辆信息是否存在
+        UserCar userCar1 = userCarDao.findByCode(userCar.getCode());
+        if (userCar1 != null){
+            map.put("message","该车牌号已存在");
+            map.put("status",false);
+            return map;
+        }
+
         if (userCar.getStatus() == 2){
             Date date = new Date();
             //设置有效开始时间

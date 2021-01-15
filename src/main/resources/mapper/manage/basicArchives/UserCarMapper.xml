@@ -128,4 +128,8 @@
         delete from user_car
         where id = #{id}
     </delete>
+
+    <select id="findByCode" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserCar">
+        select * from user_car where code = #{code}
+    </select>
 </mapper>

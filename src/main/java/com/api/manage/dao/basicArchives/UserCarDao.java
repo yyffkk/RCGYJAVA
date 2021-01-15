@@ -42,4 +42,11 @@ public interface UserCarDao {
      * @return 影响行数
      */
     int delete(Integer id);
+
+    /**
+     * 根据车牌号查询车辆信息
+     * @param code 车牌号
+     * @return 车辆信息
+     */
+    UserCar findByCode(String code);
 }
