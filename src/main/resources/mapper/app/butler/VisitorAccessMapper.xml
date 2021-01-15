@@ -3,5 +3,45 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.butler.VisitorAccessDao">
+    <insert id="insertVisitorInfo" parameterType="com.api.model.butlerService.UserVisitors">
+        insert into user_visitors(
+            building_unit_estate_id,
+            invite_people_id,
+            type,
+            name,
+            sex,
+            tel,
+            is_drive,
+            car_num,
+            expected_visit_date,
+            effective_time,
+            visitor_status,
+            create_id,
+            create_date,
+            access_code
+        )values (
+            #{buildingUnitEstateId},
+            #{invitePeopleId},
+            #{type},
+            #{name},
+            #{sex},
+            #{tel},
+            #{isDrive},
+            #{carNum},
+            #{expectedVisitDate},
+            #{effectiveTime},
+            #{visitorStatus},
+            #{createId},
+            #{createDate},
+            #{accessCode}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="findVisitorByAC" parameterType="java.lang.Long" resultType="com.api.vo.app.VisitorAccessFindByIdVo">
+        select * from user_visitors where access_code = #{accessCode}
+    </select>
 
 </mapper>

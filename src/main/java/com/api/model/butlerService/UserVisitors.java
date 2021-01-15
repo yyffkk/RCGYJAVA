@@ -11,7 +11,7 @@ public class UserVisitors {
      */
     private Integer id;
     /**
-     * 访问单元id
+     * 访问单元房产id
      */
     private Integer buildingUnitEstateId;
     /**
@@ -86,6 +86,10 @@ public class UserVisitors {
      * 核对时间
      */
     private Date verifierDate;
+    /**
+     * 通行证认证码
+     */
+    private Long accessCode;
 
     @Override
     public String toString() {
@@ -110,6 +114,7 @@ public class UserVisitors {
                 ", modifyDate=" + modifyDate +
                 ", verifierId=" + verifierId +
                 ", verifierDate=" + verifierDate +
+                ", accessCode=" + accessCode +
                 '}';
     }
 
@@ -273,10 +278,18 @@ public class UserVisitors {
         this.verifierDate = verifierDate;
     }
 
+    public Long getAccessCode() {
+        return accessCode;
+    }
+
+    public void setAccessCode(Long accessCode) {
+        this.accessCode = accessCode;
+    }
+
     public UserVisitors() {
     }
 
-    public UserVisitors(Integer id, Integer buildingUnitEstateId, Integer invitePeopleId, Integer type, String name, Integer sex, String tel, Integer isDrive, String carNum, Date expectedVisitDate, Date visitDate, Date departureTime, Date effectiveTime, Integer visitorStatus, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer verifierId, Date verifierDate) {
+    public UserVisitors(Integer id, Integer buildingUnitEstateId, Integer invitePeopleId, Integer type, String name, Integer sex, String tel, Integer isDrive, String carNum, Date expectedVisitDate, Date visitDate, Date departureTime, Date effectiveTime, Integer visitorStatus, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer verifierId, Date verifierDate, Long accessCode) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.invitePeopleId = invitePeopleId;
@@ -297,5 +310,6 @@ public class UserVisitors {
         this.modifyDate = modifyDate;
         this.verifierId = verifierId;
         this.verifierDate = verifierDate;
+        this.accessCode = accessCode;
     }
 }
