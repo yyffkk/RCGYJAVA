@@ -63,6 +63,10 @@ public class UserVisitorsController extends ShiroExceptions {
     @PostMapping("/update")
     @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody UserVisitors visitors){
+        //如果访客状态为3.已过期，则自动转换成1.未到，因为过期状态是靠判断出来的，数据库不录入
+        if (visitors.getVisitorStatus() == 3){
+            visitors.setVisitorStatus(1);
+        }
         return userVisitorsService.update(visitors);
     }
 

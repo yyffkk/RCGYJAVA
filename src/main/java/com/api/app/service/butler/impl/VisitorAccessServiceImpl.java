@@ -2,13 +2,17 @@ package com.api.app.service.butler.impl;
 
 import com.api.app.dao.butler.VisitorAccessDao;
 import com.api.app.service.butler.VisitorAccessService;
+import com.api.model.app.SearchVisitorAccess;
 import com.api.model.butlerService.UserVisitors;
 import com.api.util.IdWorker;
 import com.api.vo.app.VisitorAccessFindByIdVo;
+import com.api.vo.app.VisitorAccessVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -50,5 +54,20 @@ public class VisitorAccessServiceImpl implements VisitorAccessService {
             map.put("status",false);
         }
         return map;
+    }
+
+    @Override
+    public List<VisitorAccessVo> list(SearchVisitorAccess searchVisitorAccess) {
+        List<VisitorAccessVo> visitorAccessVos = visitorAccessDao.list(searchVisitorAccess);
+        //判断未到是否有已过期
+        if (visitorAccessVos != null && visitorAccessVos.size()>0){
+            for (VisitorAccessVo visitorAccessVo : visitorAccessVos) {
+                //如果状态为1.未到，并且当前时间大于有效时间，则显示3.已过期
+                if (visitorAccessVo.getVisitorStatus() == 1&&(new Date().getTime()>visitorAccessVo.getEffectiveTime().getTime())){
+                    visitorAccessVo.setVisitorStatus(3);
+                }
+            }
+        }
+        return visitorAccessVos;
     }
 }

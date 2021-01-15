@@ -1,13 +1,20 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.VisitorAccessService;
+import com.api.model.app.SearchVisitorAccess;
 import com.api.model.butlerService.UserVisitors;
 import com.api.vo.app.VisitorAccessFindByIdVo;
+import com.api.vo.app.VisitorAccessVo;
+import com.api.vo.basicArchives.VoDecoration;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -60,6 +67,23 @@ public class VisitorAccessController {
     @GetMapping("/findVisitorByAC")
     public Map<String,Object> findVisitorByAC(Long accessCode){
         return visitorAccessService.findVisitorByAC(accessCode);
+    }
+
+    /**
+     * 查询访客记录信息（包含条件搜索）
+     * @param searchVisitorAccess 访客通行搜索条件
+     * @return map
+     */
+    @GetMapping("/list")
+    public Map<String,Object> list(SearchVisitorAccess searchVisitorAccess){
+        PageHelper.startPage(searchVisitorAccess.getPageNum(),searchVisitorAccess.getSize());
+        List<VisitorAccessVo> visitorAccessVos =visitorAccessService.list(searchVisitorAccess);
+        PageInfo<VisitorAccessVo> pageInfo = new PageInfo<>(visitorAccessVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 

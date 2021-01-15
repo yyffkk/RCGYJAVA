@@ -44,4 +44,14 @@
         select * from user_visitors where access_code = #{accessCode}
     </select>
 
+    <select id="list" parameterType="com.api.model.app.SearchVisitorAccess" resultType="com.api.vo.app.VisitorAccessVo">
+        select * from user_visitors
+        <where>
+            invite_people_id = #{id}
+            <if test="visitorStatus != null">
+                and visitor_status = #{visitorStatus}
+            </if>
+        </where>
+    </select>
+
 </mapper>

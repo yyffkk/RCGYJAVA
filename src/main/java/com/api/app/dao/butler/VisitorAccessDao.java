@@ -1,7 +1,11 @@
 package com.api.app.dao.butler;
 
+import com.api.model.app.SearchVisitorAccess;
 import com.api.model.butlerService.UserVisitors;
 import com.api.vo.app.VisitorAccessFindByIdVo;
+import com.api.vo.app.VisitorAccessVo;
+
+import java.util.List;
 
 public interface VisitorAccessDao {
     /**
@@ -17,4 +21,11 @@ public interface VisitorAccessDao {
      * @return app访客通行信息Vo  FindById 回显
      */
     VisitorAccessFindByIdVo findVisitorByAC(Long accessCode);
+
+    /**
+     * 查询访客通行信息（包含条件搜索）
+     * @param searchVisitorAccess 访客通行搜索条件
+     * @return 访客通行信息集合
+     */
+    List<VisitorAccessVo> list(SearchVisitorAccess searchVisitorAccess);
 }

@@ -58,6 +58,10 @@ public class UserVisitorsServiceImpl implements UserVisitorsService {
         if (voUserVisitorsList != null && voUserVisitorsList.size()>0){
             //处理显示的roomName信息
             for (VoUserVisitors voUserVisitors : voUserVisitorsList) {
+                //如果状态为1.未到，并且当前时间大于有效时间，则显示3.已过期
+                if (voUserVisitors.getVisitorStatus() == 1 && (new Date().getTime()>voUserVisitors.getEffectiveTime().getTime())){
+                    voUserVisitors.setVisitorStatus(3);
+                }
                 voUserVisitors.setRoomName(voUserVisitors.getEstateNo()+"-"+voUserVisitors.getUnitNo()+"-"+voUserVisitors.getRoomNumber());
             }
         }
@@ -68,6 +72,10 @@ public class UserVisitorsServiceImpl implements UserVisitorsService {
     public VoFindByIdVisitors findById(Integer id) {
         VoFindByIdVisitors voFindByIdVisitors = userVisitorsDao.findById(id);
         if (voFindByIdVisitors != null){
+            //如果状态为1.未到，并且当前时间大于有效时间，则显示3.已过期
+            if (voFindByIdVisitors.getVisitorStatus() == 1&&(new Date().getTime()>voFindByIdVisitors.getEffectiveTime().getTime())){
+                voFindByIdVisitors.setVisitorStatus(3);
+            }
             voFindByIdVisitors.setRoomName(voFindByIdVisitors.getEstateNo()+"-"+voFindByIdVisitors.getUnitNo()+"-"+voFindByIdVisitors.getRoomNumber());
         }
         return voFindByIdVisitors;
