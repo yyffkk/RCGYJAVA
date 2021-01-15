@@ -11,10 +11,10 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * app装修申请(少显示页面)
+ * app装修申请(缺少显示页面)
  */
 @RestController
-@RequestMapping("app/decorationApplication")
+@RequestMapping("app/user/decorationApplication")
 public class DecorationApplicationController {
     @Resource
     DecorationApplicationService decorationApplicationService;

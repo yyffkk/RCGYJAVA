@@ -13,7 +13,7 @@ import java.util.Map;
  * app 上传文件资源
  */
 @RestController
-@RequestMapping("app/upload")
+@RequestMapping("app/user/upload")
 public class AppUploadController {
     @Resource
     AppUploadService appUploadService;
