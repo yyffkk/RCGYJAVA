@@ -1,7 +1,7 @@
 package com.api.app.service.butler.impl;
 
-import com.api.app.dao.butler.VisitorAccessDao;
-import com.api.app.service.butler.VisitorAccessService;
+import com.api.app.dao.butler.AppVisitorAccessDao;
+import com.api.app.service.butler.AppVisitorAccessService;
 import com.api.model.app.SearchVisitorAccess;
 import com.api.model.butlerService.UserVisitors;
 import com.api.util.IdWorker;
@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class VisitorAccessServiceImpl implements VisitorAccessService {
+public class AppVisitorAccessServiceImpl implements AppVisitorAccessService {
     @Resource
-    VisitorAccessDao visitorAccessDao;
+    AppVisitorAccessDao visitorAccessDao;
     private static Map<String,Object> map = null;
 
     @Override

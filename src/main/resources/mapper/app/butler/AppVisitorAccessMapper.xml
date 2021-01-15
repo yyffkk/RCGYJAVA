@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.api.app.dao.butler.VisitorAccessDao">
+<mapper namespace="com.api.app.dao.butler.AppVisitorAccessDao">
     <insert id="insertVisitorInfo" parameterType="com.api.model.butlerService.UserVisitors">
         insert into user_visitors(
             building_unit_estate_id,

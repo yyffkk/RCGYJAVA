@@ -1,11 +1,9 @@
 package com.api.app.controller.butler;
 
-import com.api.app.service.butler.VisitorAccessService;
+import com.api.app.service.butler.AppVisitorAccessService;
 import com.api.model.app.SearchVisitorAccess;
 import com.api.model.butlerService.UserVisitors;
-import com.api.vo.app.VisitorAccessFindByIdVo;
 import com.api.vo.app.VisitorAccessVo;
-import com.api.vo.basicArchives.VoDecoration;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +17,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("app/user/visitorAccess")
-public class VisitorAccessController {
+public class AppVisitorAccessController {
 
     @Resource
-    VisitorAccessService visitorAccessService;
+    AppVisitorAccessService visitorAccessService;
 
 
     /**

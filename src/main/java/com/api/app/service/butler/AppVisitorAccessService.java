@@ -7,7 +7,7 @@ import com.api.vo.app.VisitorAccessVo;
 import java.util.List;
 import java.util.Map;
 
-public interface VisitorAccessService {
+public interface AppVisitorAccessService {
     Map<String, Object> insertVisitorInfo(UserVisitors userVisitors);
 
     Map<String, Object> findVisitorByAC(Long accessCode);

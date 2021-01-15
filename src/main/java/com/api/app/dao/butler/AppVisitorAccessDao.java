@@ -7,7 +7,7 @@ import com.api.vo.app.VisitorAccessVo;
 
 import java.util.List;
 
-public interface VisitorAccessDao {
+public interface AppVisitorAccessDao {
     /**
      * 添加填写的访客信息
      * @param userVisitors 访问管理表信息
