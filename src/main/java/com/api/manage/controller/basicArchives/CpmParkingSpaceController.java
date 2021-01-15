@@ -2,7 +2,7 @@ package com.api.manage.controller.basicArchives;
 
 import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.basicArchives.CpmParkingSpace;
-import com.api.vo.basicArchives.VoCpmParkingSpace;
+import com.api.model.basicArchives.SearchCpmParkingSpace;
 import com.api.manage.service.basicArchives.CpmParkingSpaceService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.basicArchives.VoParkingSpace;
@@ -25,16 +25,14 @@ public class CpmParkingSpaceController extends ShiroExceptions {
 
     /**
      * 查询车位信息（包含条件搜索）
-     * @param voCpmParkingSpace 搜索条件
-     * @param pageNum 当前页数
-     * @param size 每页记录数
+     * @param searchCpmParkingSpace 车位信息搜索条件
      * @return map
      */
     @GetMapping("/list")
     @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
-    public Map<String,Object> list(VoCpmParkingSpace voCpmParkingSpace, int pageNum, int size){
-        PageHelper.startPage(pageNum,size);
-        List<VoParkingSpace> voParkingSpaceList =cpmParkingSpaceService.list(voCpmParkingSpace);
+    public Map<String,Object> list(SearchCpmParkingSpace searchCpmParkingSpace){
+        PageHelper.startPage(searchCpmParkingSpace.getPageNum(),searchCpmParkingSpace.getSize());
+        List<VoParkingSpace> voParkingSpaceList =cpmParkingSpaceService.list(searchCpmParkingSpace);
         PageInfo<VoParkingSpace> pageInfo = new PageInfo<>(voParkingSpaceList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());

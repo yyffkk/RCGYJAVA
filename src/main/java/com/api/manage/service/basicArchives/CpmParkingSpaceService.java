@@ -1,14 +1,14 @@
 package com.api.manage.service.basicArchives;
 
 import com.api.model.basicArchives.CpmParkingSpace;
-import com.api.vo.basicArchives.VoCpmParkingSpace;
+import com.api.model.basicArchives.SearchCpmParkingSpace;
 import com.api.vo.basicArchives.VoParkingSpace;
 
 import java.util.List;
 import java.util.Map;
 
 public interface CpmParkingSpaceService {
-    List<VoParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace);
+    List<VoParkingSpace> list(SearchCpmParkingSpace searchCpmParkingSpace);
 
     Map<String, Object> insert(CpmParkingSpace cpmParkingSpace);
 

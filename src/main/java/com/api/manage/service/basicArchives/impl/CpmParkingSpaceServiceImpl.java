@@ -3,7 +3,7 @@ package com.api.manage.service.basicArchives.impl;
 import com.api.manage.dao.basicArchives.CpmParkingSpaceDao;
 import com.api.model.basicArchives.CpmParkingSpace;
 import com.api.model.businessManagement.SysUser;
-import com.api.vo.basicArchives.VoCpmParkingSpace;
+import com.api.model.basicArchives.SearchCpmParkingSpace;
 import com.api.manage.service.basicArchives.CpmParkingSpaceService;
 import com.api.vo.basicArchives.VoParkingSpace;
 import org.apache.shiro.SecurityUtils;
@@ -25,8 +25,8 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
     CpmParkingSpaceDao cpmParkingSpaceDao;
 
     @Override
-    public List<VoParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace) {
-        return cpmParkingSpaceDao.list(voCpmParkingSpace);
+    public List<VoParkingSpace> list(SearchCpmParkingSpace searchCpmParkingSpace) {
+        return cpmParkingSpaceDao.list(searchCpmParkingSpace);
     }
 
     @Override

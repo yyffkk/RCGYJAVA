@@ -1,7 +1,7 @@
 package com.api.manage.dao.basicArchives;
 
 import com.api.model.basicArchives.CpmParkingSpace;
-import com.api.vo.basicArchives.VoCpmParkingSpace;
+import com.api.model.basicArchives.SearchCpmParkingSpace;
 import com.api.vo.basicArchives.VoParkingSpace;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +11,10 @@ import java.util.List;
 public interface CpmParkingSpaceDao {
     /**
      * 查询车位信息（包含条件搜索）【车位表，住户表-业主（拥有者），住户表-业主，租客（使用者）】
-     * @param voCpmParkingSpace 搜索条件
+     * @param searchCpmParkingSpace 搜索条件
      * @return 车位信息集合
      */
-    List<VoParkingSpace> list(VoCpmParkingSpace voCpmParkingSpace);
+    List<VoParkingSpace> list(SearchCpmParkingSpace searchCpmParkingSpace);
 
     /**
      * 添加车位信息 【车位表】
