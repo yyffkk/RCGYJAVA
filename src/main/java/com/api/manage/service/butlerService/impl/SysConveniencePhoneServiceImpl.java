@@ -25,12 +25,9 @@ public class SysConveniencePhoneServiceImpl implements SysConveniencePhoneServic
         List<VoConveniencePhone> list = sysConveniencePhoneDao.list(searchConveniencePhone);
         if (list != null){
             for (VoConveniencePhone voConveniencePhone : list) {
-                //如果下次检查时间大于当前时间，怎将检查状态改为 0.未检查
+                //如果下次检查时间大于当前时间，怎将检查状态显示为 0.未检查
                 if (voConveniencePhone.getNextControlDate().getTime() <= (new Date()).getTime()){
-                    SysConveniencePhone sysConveniencePhone = new SysConveniencePhone();
-                    sysConveniencePhone.setId(voConveniencePhone.getId());
-                    sysConveniencePhone.setCheckStatus(0);
-                    sysConveniencePhoneDao.update(sysConveniencePhone);
+                    voConveniencePhone.setCheckStatus(0);
                 }
             }
         }
@@ -86,6 +83,12 @@ public class SysConveniencePhoneServiceImpl implements SysConveniencePhoneServic
     public Map<String, Object> findById(Integer id) {
         map = new HashMap<>();
         VoConveniencePhone voConveniencePhone = sysConveniencePhoneDao.findById(id);
+        if (voConveniencePhone != null){
+            //如果下次检查时间大于当前时间，怎将检查状态显示为 0.未检查
+            if (voConveniencePhone.getNextControlDate().getTime() <= (new Date()).getTime()){
+                voConveniencePhone.setCheckStatus(0);
+            }
+        }
         map.put("voConveniencePhone",voConveniencePhone);
         return map;
     }

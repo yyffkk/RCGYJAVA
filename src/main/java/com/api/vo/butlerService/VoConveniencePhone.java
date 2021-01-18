@@ -27,7 +27,7 @@ public class VoConveniencePhone {
      */
     private Date nextControlDate;
     /**
-     * 检查状态
+     * 检查状态(0.未检查，1.已检查)
      */
     private Integer checkStatus;
     /**
