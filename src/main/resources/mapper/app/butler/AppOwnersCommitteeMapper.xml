@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppOwnersCommitteeDao">
+    <select id="findAll" resultType="com.api.vo.butlerService.VoOwnersCommittee">
+        select soc.*,ur.name as name,ur.sex as sex_id,concat(cb.no,'幢',cbu.no,'单元',cbue.room_number) as room_name,cb.no as estate_no,cbu.no as unit_no,cbue.room_number as room_number
+        from sys_owners_committee as soc,user_resident as ur,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where soc.resident_id = ur.id and soc.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+    </select>
+</mapper>
