@@ -52,7 +52,7 @@ public class UserResidentServiceImpl implements UserResidentService {
         }
 
         //校验重复
-        //根据业主手机号查询是否已有业主信息
+        //根据住户手机号查询是否已有住户信息
         UserResident userResident1 = userResidentDao.findByTel(userResident.getTel());
         if (userResident1 != null){
             map.put("message","业主手机号已存在");
@@ -60,7 +60,7 @@ public class UserResidentServiceImpl implements UserResidentService {
             return map;
         }
 
-        //根据业主证件号码查询是否已有业主信息
+        //根据住户证件号码查询是否已有住户信息
         UserResident userResident2 = userResidentDao.findByIdNumber(userResident.getIdNumber());
         if (userResident2 != null){
             map.put("message","业主证件号码已存在");
@@ -97,6 +97,19 @@ public class UserResidentServiceImpl implements UserResidentService {
 
             //关联亲属信息
             for (VoRelatives voRelatives : voRelativesList) {
+                //校验重复亲属信息
+                //根据住户手机号查询是否已有住户信息
+                UserResident userResident3 = userResidentDao.findByTel(voRelatives.getTel());
+                if (userResident3 != null){
+                    throw new RuntimeException("亲属手机号已存在");
+                }
+
+                //根据住户证件号码查询是否已有住户信息
+                UserResident userResident4 = userResidentDao.findByIdNumber(voRelatives.getIdNumber());
+                if (userResident4 != null){
+                    throw new RuntimeException("亲属证件号码已存在");
+                }
+
                 //添加亲属信息
                 voRelatives.setType(2);
                 voRelatives.setCreateId(sysUser.getId());
@@ -297,7 +310,7 @@ public class UserResidentServiceImpl implements UserResidentService {
     @Transactional
     public Map<String, Object> updateRelatives(ResidentAndRelativesList residentAndRelatives) {
         map = new HashMap<>();
-        //校验重复
+        //校验重复业主信息
         //根据业主手机号查询是否已有业主信息
         UserResident userResident1 = userResidentDao.findByTel(residentAndRelatives.getUserResident().getTel());
         if (userResident1 != null){
@@ -340,6 +353,19 @@ public class UserResidentServiceImpl implements UserResidentService {
 //        再添加业主的关联亲属
             if (residentAndRelatives.getUserRelatives() != null){
                 for (UserResident userRelative : residentAndRelatives.getUserRelatives()) {
+                    //校验重复亲属信息
+                    //根据住户手机号查询是否已有住户信息
+                    UserResident userResident3 = userResidentDao.findByTel(userRelative.getTel());
+                    if (userResident3 != null){
+                        throw new RuntimeException("亲属手机号已存在");
+                    }
+
+                    //根据住户证件号码查询是否已有住户信息
+                    UserResident userResident4 = userResidentDao.findByIdNumber(userRelative.getIdNumber());
+                    if (userResident4 != null){
+                        throw new RuntimeException("亲属证件号码已存在");
+                    }
+
                     //添加亲属信息
                     userResidentDao.insert(userRelative);
                     //添加业主亲属关联信息

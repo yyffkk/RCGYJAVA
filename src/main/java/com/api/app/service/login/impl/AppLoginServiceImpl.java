@@ -175,16 +175,16 @@ public class AppLoginServiceImpl implements AppLoginService {
 
         try {
             //校验重复
-            //根据业主手机号查询是否已有业主信息
+            //根据业主手机号查询是否已有用户信息
             UserResident userResident1 = userResidentDao.findByTel(userRegister.getTel());
             if (userResident1 != null){
-                throw new RuntimeException("业主手机号已存在");
+                throw new RuntimeException("用户手机号已存在");
             }
 
             //根据业主证件号码查询是否已有业主信息
             UserResident userResident2 = userResidentDao.findByIdNumber(userRegister.getIdNumber());
             if (userResident2 != null){
-                throw new RuntimeException("业主证件号码已存在");
+                throw new RuntimeException("用户证件号码已存在");
             }
 
             UserResident userResident = new UserResident();

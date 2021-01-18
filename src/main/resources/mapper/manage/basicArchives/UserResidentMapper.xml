@@ -209,19 +209,19 @@
 
     <!--  查询所有的住户信息  -->
     <select id="findAll" resultType="com.api.vo.basicArchives.VoFindAll">
-        select id as value,name as label from user_resident where type = 1 or type = 2
+        select id as value,name as label from user_resident where type != 3
     </select>
 
-    <!--   根据业主手机号查询业主信息-->
+    <!--   根据住户手机号查询住户信息-->
     <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
-        from user_resident where tel = #{tel} and type = 1
+        from user_resident where tel = #{tel}
     </select>
 
-    <!--   根据业主证件号码查询业主信息-->
+    <!--   根据住户证件号码查询住户信息-->
     <select id="findByIdNumber" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
-        from user_resident where id_number = #{idNumber} and type = 1
+        from user_resident where id_number = #{idNumber}
     </select>
 
     <!--   根据业主手机号和证件号码查询业主信息-->

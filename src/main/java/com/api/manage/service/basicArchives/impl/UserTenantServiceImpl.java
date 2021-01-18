@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 public class UserTenantServiceImpl implements UserTenantService {
-    private final Map<String,Object> map = new HashMap<>();
+    private static Map<String,Object> map = null;
     //设置业主类型，3租客
     private static final int RESIDENT_TYPE = 3;
     @Resource
@@ -51,12 +51,30 @@ public class UserTenantServiceImpl implements UserTenantService {
     @Override
     @Transactional
     public Map<String, Object> insert(UserTenantInsert userTenantInsert) {
+        map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         //判断是否关联房产（房产一定要关联）
         if (userTenantInsert.getCpmResidentEstateList() ==null || userTenantInsert.getCpmResidentEstateList().size()<=0){
             map.put("message","添加租户信息失败，请关联至少一栋楼栋单元房产信息");
+            map.put("status",false);
+            return map;
+        }
+
+        //校验重复
+        //根据住户手机号查询是否已有住户信息
+        UserResident userResident1 = userResidentDao.findByTel(userTenantInsert.getUserResident().getTel());
+        if (userResident1 != null){
+            map.put("message","业主手机号已存在");
+            map.put("status",false);
+            return map;
+        }
+
+        //根据住户证件号码查询是否已有住户信息
+        UserResident userResident2 = userResidentDao.findByIdNumber(userTenantInsert.getUserResident().getIdNumber());
+        if (userResident2 != null){
+            map.put("message","业主证件号码已存在");
             map.put("status",false);
             return map;
         }
@@ -89,6 +107,19 @@ public class UserTenantServiceImpl implements UserTenantService {
 
             //关联亲属信息
             for (UserResident relatives : userTenantInsert.getVoRelativesList()) {
+                //校验重复亲属信息
+                //根据住户手机号查询是否已有住户信息
+                UserResident userResident3 = userResidentDao.findByTel(relatives.getTel());
+                if (userResident3 != null){
+                    throw new RuntimeException("亲属手机号已存在");
+                }
+
+                //根据住户证件号码查询是否已有住户信息
+                UserResident userResident4 = userResidentDao.findByIdNumber(relatives.getIdNumber());
+                if (userResident4 != null){
+                    throw new RuntimeException("亲属证件号码已存在");
+                }
+
                 //添加亲属信息
                 relatives.setType(2);
                 relatives.setCreateId(sysUser.getId());
@@ -140,6 +171,7 @@ public class UserTenantServiceImpl implements UserTenantService {
 
     @Override
     public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
         //根据id查询租户信息
         UserResident userResident = userResidentDao.findById(id);
 
@@ -171,6 +203,30 @@ public class UserTenantServiceImpl implements UserTenantService {
     @Override
     @Transactional
     public Map<String, Object> updateRelatives(ResidentAndRelativesList residentAndRelativesList) {
+        map = new HashMap<>();
+        //校验重复
+        //根据住户手机号查询是否已有住户信息
+        UserResident userResident1 = userResidentDao.findByTel(residentAndRelativesList.getUserResident().getTel());
+        if (userResident1 != null){
+            //如果输入id与查询到的id不一致，则修改了住户手机号信息，并且住户手机号重复
+            if (!userResident1.getId().equals(residentAndRelativesList.getUserResident().getId())){
+                map.put("message","业主手机号已存在");
+                map.put("status",false);
+                return map;
+            }
+        }
+
+        //根据住户证件号码查询是否已有住户信息
+        UserResident userResident2 = userResidentDao.findByIdNumber(residentAndRelativesList.getUserResident().getIdNumber());
+        if (userResident2 != null){
+            //如果输入id与查询到的id不一致，则修改了住户手机号信息，并且住户手机号重复
+            if (!userResident2.getId().equals(residentAndRelativesList.getUserResident().getId())){
+                map.put("message","业主证件号码已存在");
+                map.put("status",false);
+                return map;
+            }
+        }
+
         try {
             //修改租户信息
             int update = userResidentDao.update(residentAndRelativesList.getUserResident());
@@ -191,6 +247,19 @@ public class UserTenantServiceImpl implements UserTenantService {
             //再添加业主的关联亲属
             if (residentAndRelativesList.getUserRelatives() != null){
                 for (UserResident userRelative : residentAndRelativesList.getUserRelatives()) {
+                    //校验重复亲属信息
+                    //根据住户手机号查询是否已有住户信息
+                    UserResident userResident3 = userResidentDao.findByTel(userRelative.getTel());
+                    if (userResident3 != null){
+                        throw new RuntimeException("亲属手机号已存在");
+                    }
+
+                    //根据住户证件号码查询是否已有住户信息
+                    UserResident userResident4 = userResidentDao.findByIdNumber(userRelative.getIdNumber());
+                    if (userResident4 != null){
+                        throw new RuntimeException("亲属证件号码已存在");
+                    }
+
                     //添加亲属信息
                     userResidentDao.insert(userRelative);
                     //添加业主亲属关联信息
@@ -224,7 +293,7 @@ public class UserTenantServiceImpl implements UserTenantService {
     @Override
     @Transactional
     public Map<String, Object> updateEstate(List<CpmResidentEstate> cpmResidentEstateList,Integer tenantId) {
-
+        map = new HashMap<>();
         try {
             //先删除租客房产关联信息
             List<CpmBuildingUnitEstate> byResidentId = cpmBuildingUnitEstateDao.findByResidentId(tenantId);
@@ -265,6 +334,7 @@ public class UserTenantServiceImpl implements UserTenantService {
     @Override
     @Transactional
     public Map<String, Object> updateParkingSpace(List<CpmParkingSpace> cpmParkingSpaceList,Integer tenantId) {
+        map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
@@ -315,6 +385,7 @@ public class UserTenantServiceImpl implements UserTenantService {
     @Override
     @Transactional
     public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
         try {
             for (int id : ids) {
                 List<VoTenantCpmBuildingUnitEstate> byTenantId = cpmBuildingUnitEstateDao.findByTenantId(id);
