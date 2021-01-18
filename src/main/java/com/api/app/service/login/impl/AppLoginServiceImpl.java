@@ -31,7 +31,7 @@ public class AppLoginServiceImpl implements AppLoginService {
     UserResidentDao userResidentDao;
 
 
-    //验证码过期时间
+    //验证码过期时间（3分钟）
     private final long EXPIRATION_TIME = 3*60*1000;
 
     @Override
@@ -92,13 +92,10 @@ public class AppLoginServiceImpl implements AppLoginService {
             //根据手机号查询手机验证码信息
             UserCode userCodeByTel = appLoginDao.findUserCodeByTel(userCode.getTel());
             if (userCodeByTel == null){
-                map.put("message","验证码已过期");
+                map.put("message","验证码已失效");
                 map.put("status",false);
                 return map;
             }
-
-            //删除手机验证码信息（防止一个验证码多次登录）
-            appLoginDao.deleteUserCodeByTel(userCode.getTel());
 
 
             //校验验证码是否过期(判断相差时间是否超过3分钟)
@@ -114,6 +111,9 @@ public class AppLoginServiceImpl implements AppLoginService {
                 map.put("status",false);
                 return map;
             }
+
+            //登录成功后，删除手机验证码信息（防止一个验证码多次登录）
+            appLoginDao.deleteUserCodeByTel(userCode.getTel());
 
 
             //根据手机号查询住户信息
@@ -254,7 +254,8 @@ public class AppLoginServiceImpl implements AppLoginService {
             return map;
         }
         map.put("message","登录成功，欢迎使用");
-        map.put("status",true);return map;
+        map.put("status",true);
+        return map;
     }
 
     @Override

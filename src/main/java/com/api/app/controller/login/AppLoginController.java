@@ -6,6 +6,7 @@ import com.api.manage.service.basicArchives.CpmBuildingUnitEstateService;
 import com.api.model.app.UserCode;
 import com.api.model.app.UserRegister;
 import com.api.vo.basicArchives.VoFindAll;
+import com.util.RandomName;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -78,6 +79,21 @@ public class AppLoginController {
         List<VoFindAll> byBuildingId = cpmBuildingUnitEstateService.findByBuildingId(buildingId);
         map.put("message","请求成功");
         map.put("data",byBuildingId);
+        map.put("status",true);
+        return map;
+    }
+
+    /**
+     * 随机昵称生成器
+     * @param simple 是否单姓
+     * @param len 生成姓名长度
+     * @return map
+     */
+    @GetMapping("/getRandomName")
+    public Map<String,Object> getRandomName(Boolean simple,int len){
+        Map<String,Object> map = new HashMap<>();
+        String name = RandomName.randomName(simple, len);
+        map.put("data",name);
         map.put("status",true);
         return map;
     }
