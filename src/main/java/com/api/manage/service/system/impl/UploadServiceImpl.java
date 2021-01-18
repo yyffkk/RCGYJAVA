@@ -30,6 +30,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_ANNOUNCEMENT_DOC;
     @Value("${prop.upload-sponsor}")
     private String UPLOAD_SPONSOR;
+    @Value("${prop.upload-repair}")
+    private String UPLOAD_REPAIR;
 
     @Override
     public Map<String, Object> uploadArticle(MultipartFile file) {
@@ -76,6 +78,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadSponsor(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_SPONSOR);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadRepair(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_REPAIR);
         return map;
     }
 

@@ -24,4 +24,6 @@ public interface UploadService {
     Map<String, Object> uploadAnnouncementDoc(MultipartFile file);
 
     Map<String, Object> uploadSponsor(MultipartFile file);
+
+    Map<String, Object> uploadRepair(MultipartFile file);
 }

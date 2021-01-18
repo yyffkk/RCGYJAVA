@@ -53,6 +53,8 @@ prop:
     upload-gambit: /img/gambit/
     #管家服务-物品管理：新增物品信息照片上传路径
     upload-article: /img/article/
+    #管家服务-报事报修：新增报事报修照片上传路径
+    upload-repair: /img/repair/
 
     #运营管理-公告管理：新增公告信息照片上传路径
     upload-announcement: /img/announcement/

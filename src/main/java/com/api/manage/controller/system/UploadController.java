@@ -110,4 +110,15 @@ public class UploadController {
     }
 
 
+    /**
+     * 上传报事报修信息 报事报修照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadRepair")
+    public Map<String,Object> uploadRepair(MultipartFile file){
+        return uploadService.uploadRepair(file);
+    }
+
+
 }
