@@ -204,6 +204,9 @@ public class UserTenantServiceImpl implements UserTenantService {
     @Transactional
     public Map<String, Object> updateRelatives(ResidentAndRelativesList residentAndRelativesList) {
         map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
         //校验重复
         //根据住户手机号查询是否已有住户信息
         UserResident userResident1 = userResidentDao.findByTel(residentAndRelativesList.getUserResident().getTel());
@@ -238,8 +241,11 @@ public class UserTenantServiceImpl implements UserTenantService {
             List<VoRelatives> relativesById = userResidentDao.findRelativesById(residentAndRelativesList.getUserResident().getId());
             if (relativesById != null){
                 for (VoRelatives voRelatives : relativesById) {
+                    //删除业主亲属关联表
                     int delete = userResidentDao.deleteByResidentIdAndRelativesId(new ResidentIdAndRelativesId(residentAndRelativesList.getUserResident().getId(),voRelatives.getId()));
-                    if (delete <= 0){
+                    //删除亲属信息
+                    int delete1 = userResidentDao.delete(voRelatives.getId());
+                    if (delete <= 0 || delete1 <= 0){
                         throw new RuntimeException("修改租户关联亲属信息失败");
                     }
                 }
@@ -261,6 +267,9 @@ public class UserTenantServiceImpl implements UserTenantService {
                     }
 
                     //添加亲属信息
+                    userRelative.setType(2);
+                    userRelative.setCreateId(sysUser.getId());
+                    userRelative.setCreateDate(new Date());
                     userResidentDao.insert(userRelative);
                     //添加业主亲属关联信息
                     UserResidentRelatives userResidentRelatives = new UserResidentRelatives();

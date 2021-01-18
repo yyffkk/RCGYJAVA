@@ -46,7 +46,7 @@ public class SysReportRepairController extends ShiroExceptions {
 
 
     /**
-     * 查询报修详情
+     * 查询报修详情(该接口暂时没用，报修详情 请查询 【工单管理：报修工单详情】)
      * @param id 工单主键id
      * @return 报修详情
      */
