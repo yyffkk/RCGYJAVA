@@ -224,7 +224,7 @@ public class UserResidentServiceImpl implements UserResidentService {
             CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
             //根据单元主键id查询对应的楼栋号
             CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
-            //楼栋，单元，房产（房间）
+            //楼栋，单元，房产（房间） id,前端用-取
             cpmBuildingUnitEstateIdList.add(cpmBuilding.getId()+"-"+cpmBuildingUnit.getId()+"-"+cpmBuildingUnitEstate.getId());
         }
         map.put("userResident",userResident);

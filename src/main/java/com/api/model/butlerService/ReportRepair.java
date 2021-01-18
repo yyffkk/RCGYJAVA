@@ -1,5 +1,6 @@
 package com.api.model.butlerService;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -58,6 +59,10 @@ public class ReportRepair {
      * 创建时间（录单时间）
      */
     private Date createDate;
+    /**
+     * 上传文件路径数据
+     */
+    private String[] fileUrls;
 
     @Override
     public String toString() {
@@ -75,6 +80,7 @@ public class ReportRepair {
                 ", froms=" + froms +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 '}';
     }
 
@@ -182,10 +188,18 @@ public class ReportRepair {
         this.createDate = createDate;
     }
 
+    public String[] getFileUrls() {
+        return fileUrls;
+    }
+
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
+    }
+
     public ReportRepair() {
     }
 
-    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Date appointmentTime, Integer buildingUnitEstateId, Integer froms, Integer createId, Date createDate) {
+    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Date appointmentTime, Integer buildingUnitEstateId, Integer froms, Integer createId, Date createDate, String[] fileUrls) {
         this.id = id;
         this.code = code;
         this.dispatchListId = dispatchListId;
@@ -199,5 +213,6 @@ public class ReportRepair {
         this.froms = froms;
         this.createId = createId;
         this.createDate = createDate;
+        this.fileUrls = fileUrls;
     }
 }

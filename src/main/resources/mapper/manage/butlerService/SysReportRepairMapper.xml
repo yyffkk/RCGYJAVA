@@ -88,6 +88,9 @@
             #{createId},
             #{createDate}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
 </mapper>

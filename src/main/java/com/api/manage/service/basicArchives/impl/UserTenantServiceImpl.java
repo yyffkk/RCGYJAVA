@@ -43,7 +43,7 @@ public class UserTenantServiceImpl implements UserTenantService {
             //根据单元主键id查询对应的楼栋号
             CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
             //楼栋，单元，房产（房间）
-            userTenantList.setRoomName(cpmBuilding.getId()+"-"+cpmBuildingUnit.getId()+"-"+userTenantList.getRoomId());
+            userTenantList.setRoomName(cpmBuilding.getNo()+"-"+cpmBuildingUnit.getNo()+"-"+userTenantList.getRoomId());
         }
         return voUserTenantList;
     }
@@ -184,7 +184,7 @@ public class UserTenantServiceImpl implements UserTenantService {
             //根据单元主键id查询对应的楼栋号
             CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
             //楼栋，单元，房产（房间）
-            voTenantCpmBuildingUnitEstate.setRoomName(cpmBuilding.getId()+"-"+cpmBuildingUnit.getId()+"-"+voTenantCpmBuildingUnitEstate.getRoomNumber());
+            voTenantCpmBuildingUnitEstate.setRoomName(cpmBuilding.getNo()+"-"+cpmBuildingUnit.getNo()+"-"+voTenantCpmBuildingUnitEstate.getRoomNumber());
         }
         //查询租户所有的车位，判断是否有租车位
         List<CpmParkingSpace> cpmParkingSpaceList = cpmParkingSpaceDao.findByUserId(id);

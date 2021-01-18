@@ -8,7 +8,7 @@
 		from (select ur.id,ur.name,ur.tel,ur.id_type,ur.id_number,cre.effective_time_start,cre.effective_time_end,cbue.id as room_id
 		from user_resident as ur,cpm_building_unit_estate as cbue,cpm_resident_estate as cre
 		where ur.id = cre.resident_id and cbue.id = cre.building_unit_estate_id  and  ur.type = 3) as a LEFT JOIN user_car as uc
-		on a.id = uc. resident_id
+		on a.id = uc.resident_id
 		<where>
             <if test="name != null and name != ''">
                 and a.name = #{name}

@@ -7,6 +7,7 @@ import com.api.model.butlerService.ReportRepair;
 import com.api.model.butlerService.SearchReportRepair;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysReportRepairService;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;
 import org.apache.commons.lang3.StringUtils;
@@ -118,6 +119,10 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
             if (insert2 <= 0){
                 throw new RuntimeException("添加报事报修信息失败");
             }
+            //将上传路径传入数据库
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(reportRepair.getFileUrls(),"sys_report_repair",reportRepair.getId(),"repairImg","600",30,20);
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
