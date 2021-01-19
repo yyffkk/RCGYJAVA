@@ -1,5 +1,9 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
+import java.util.List;
+
 /**
  * 业委会管理Vo findById 回显
  */
@@ -44,6 +48,10 @@ public class VoFindByIdOwnersCommittee {
      * 职业（社会职业）
      */
     private String profession;
+    /**
+     * 照片资源集合
+     */
+    private List<VoResourcesImg> imgUrls;
 
     @Override
     public String toString() {
@@ -58,6 +66,7 @@ public class VoFindByIdOwnersCommittee {
                 ", unitId=" + unitId +
                 ", buildingId=" + buildingId +
                 ", profession='" + profession + '\'' +
+                ", imgUrls=" + imgUrls +
                 '}';
     }
 
@@ -141,10 +150,18 @@ public class VoFindByIdOwnersCommittee {
         this.profession = profession;
     }
 
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public VoFindByIdOwnersCommittee() {
     }
 
-    public VoFindByIdOwnersCommittee(Integer id, Integer residentId, String name, Integer positionId, Integer age, Integer educationId, Integer estateId, Integer unitId, Integer buildingId, String profession) {
+    public VoFindByIdOwnersCommittee(Integer id, Integer residentId, String name, Integer positionId, Integer age, Integer educationId, Integer estateId, Integer unitId, Integer buildingId, String profession, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.residentId = residentId;
         this.name = name;
@@ -155,5 +172,6 @@ public class VoFindByIdOwnersCommittee {
         this.unitId = unitId;
         this.buildingId = buildingId;
         this.profession = profession;
+        this.imgUrls = imgUrls;
     }
 }

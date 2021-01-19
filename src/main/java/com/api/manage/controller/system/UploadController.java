@@ -120,5 +120,16 @@ public class UploadController {
         return uploadService.uploadRepair(file);
     }
 
+    /**
+     * 上传业委会照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadOwnersCommittee")
+    public Map<String,Object> uploadOwnersCommittee(MultipartFile file){
+        return uploadService.uploadOwnersCommittee(file);
+    }
+
+
 
 }

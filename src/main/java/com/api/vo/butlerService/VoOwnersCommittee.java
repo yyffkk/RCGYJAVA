@@ -1,6 +1,10 @@
 package com.api.vo.butlerService;
 
 
+import com.api.vo.resources.VoResourcesImg;
+
+import java.util.List;
+
 /**
  * 业委会管理 Vo list回显
  */
@@ -49,6 +53,10 @@ public class VoOwnersCommittee {
      * 楼栋编号
      */
     private Integer estateNo;
+    /**
+     * 照片资源集合
+     */
+    private List<VoResourcesImg> imgUrls;
 
     @Override
     public String toString() {
@@ -64,6 +72,7 @@ public class VoOwnersCommittee {
                 ", roomNumber='" + roomNumber + '\'' +
                 ", unitNo=" + unitNo +
                 ", estateNo=" + estateNo +
+                ", imgUrls=" + imgUrls +
                 '}';
     }
 
@@ -155,10 +164,18 @@ public class VoOwnersCommittee {
         this.estateNo = estateNo;
     }
 
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public VoOwnersCommittee() {
     }
 
-    public VoOwnersCommittee(Integer id, Integer positionId, String name, Integer sexId, Integer age, Integer educationId, String roomName, String profession, String roomNumber, Integer unitNo, Integer estateNo) {
+    public VoOwnersCommittee(Integer id, Integer positionId, String name, Integer sexId, Integer age, Integer educationId, String roomName, String profession, String roomNumber, Integer unitNo, Integer estateNo, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.positionId = positionId;
         this.name = name;
@@ -170,5 +187,6 @@ public class VoOwnersCommittee {
         this.roomNumber = roomNumber;
         this.unitNo = unitNo;
         this.estateNo = estateNo;
+        this.imgUrls = imgUrls;
     }
 }

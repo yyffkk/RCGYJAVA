@@ -32,6 +32,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_SPONSOR;
     @Value("${prop.upload-repair}")
     private String UPLOAD_REPAIR;
+    @Value("${prop.upload-owners-committee}")
+    private String UPLOAD_OWNERS_COMMITTEE;
 
     @Override
     public Map<String, Object> uploadArticle(MultipartFile file) {
@@ -84,6 +86,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadRepair(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_REPAIR);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadOwnersCommittee(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_OWNERS_COMMITTEE);
         return map;
     }
 

@@ -5,8 +5,10 @@ import com.api.model.butlerService.SearchOwnersCommittee;
 import com.api.model.butlerService.SysOwnersCommittee;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysOwnersCommitteeService;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFindByIdOwnersCommittee;
 import com.api.vo.butlerService.VoOwnersCommittee;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -64,30 +66,49 @@ public class SysOwnersCommitteeServiceImpl implements SysOwnersCommitteeService 
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(SysOwnersCommittee sysOwnersCommittee) {
         map = new HashMap<>();
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-        //填入创建人
-        sysOwnersCommittee.setCreateId(sysUser.getId());
-        //填入创建时间
-        sysOwnersCommittee.setCreateDate(new Date());
-        //添加业委会信息
-        int insert = sysOwnersCommitteeDao.insert(sysOwnersCommittee);
-        if (insert >0){
-            map.put("message","添加业委会信息成功");
-            map.put("status",true);
-        }else {
-            map.put("message","添加业委会信息失败");
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+            //填入创建人
+            sysOwnersCommittee.setCreateId(sysUser.getId());
+            //填入创建时间
+            sysOwnersCommittee.setCreateDate(new Date());
+            //添加业委会信息
+            int insert = sysOwnersCommitteeDao.insert(sysOwnersCommittee);
+            if (insert <= 0){
+                throw new RuntimeException("添加业委会信息失败");
+            }
+            //上传照片到数据库
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(sysOwnersCommittee.getFileUrls(),"sys_owners_committee",sysOwnersCommittee.getId(),"ownersCommitteeImg","600",30,20);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","添加业委会信息成功");
+        map.put("status",true);
         return map;
     }
 
     @Override
     public VoFindByIdOwnersCommittee findById(Integer id) {
-        return sysOwnersCommitteeDao.findById(id);
+        VoFindByIdOwnersCommittee byId = sysOwnersCommitteeDao.findById(id);
+        UploadUtil uploadUtil = new UploadUtil();
+        List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_owners_committee", id, "ownersCommitteeImg");
+        //填入照片资源集合
+        byId.setImgUrls(imgByDate);
+        return byId;
     }
 
     @Override
@@ -96,18 +117,33 @@ public class SysOwnersCommitteeServiceImpl implements SysOwnersCommitteeService 
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        //填入修改人
-        sysOwnersCommittee.setModifyId(sysUser.getId());
-        //填入修改时间
-        sysOwnersCommittee.setModifyDate(new Date());
-        int update = sysOwnersCommitteeDao.update(sysOwnersCommittee);
-        if (update >0) {
-            map.put("message","更新业委会信息成功");
-            map.put("status",true);
-        }else {
-            map.put("message","更新业委会信息失败");
+        try {
+            //填入修改人
+            sysOwnersCommittee.setModifyId(sysUser.getId());
+            //填入修改时间
+            sysOwnersCommittee.setModifyDate(new Date());
+            int update = sysOwnersCommitteeDao.update(sysOwnersCommittee);
+            if (update <= 0) {
+                throw new RuntimeException("更新业委会信息失败");
+            }
+            UploadUtil uploadUtil = new UploadUtil();
+            //先根据业委会数据id删除数据库照片资源
+            uploadUtil.delete("sys_owners_committee", sysOwnersCommittee.getId(), "ownersCommitteeImg");
+            //在添加照片资源
+            uploadUtil.saveUrlToDB(sysOwnersCommittee.getFileUrls(),"sys_owners_committee",sysOwnersCommittee.getId(),"ownersCommitteeImg","600",30,20);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","更新业委会信息成功");
+        map.put("status",true);
         return map;
     }
 

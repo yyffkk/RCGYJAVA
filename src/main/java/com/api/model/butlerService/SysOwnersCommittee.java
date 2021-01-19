@@ -1,5 +1,6 @@
 package com.api.model.butlerService;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -50,6 +51,10 @@ public class SysOwnersCommittee {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 上传照片路径数组
+     */
+    private String[] fileUrls;
 
     @Override
     public String toString() {
@@ -65,6 +70,7 @@ public class SysOwnersCommittee {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 '}';
     }
 
@@ -156,10 +162,18 @@ public class SysOwnersCommittee {
         this.modifyDate = modifyDate;
     }
 
+    public String[] getFileUrls() {
+        return fileUrls;
+    }
+
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
+    }
+
     public SysOwnersCommittee() {
     }
 
-    public SysOwnersCommittee(Integer id, Integer residentId, Integer positionId, Integer age, Integer educationId, Integer estateId, String profession, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public SysOwnersCommittee(Integer id, Integer residentId, Integer positionId, Integer age, Integer educationId, Integer estateId, String profession, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
         this.id = id;
         this.residentId = residentId;
         this.positionId = positionId;
@@ -171,5 +185,6 @@ public class SysOwnersCommittee {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.fileUrls = fileUrls;
     }
 }

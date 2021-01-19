@@ -55,6 +55,8 @@ prop:
     upload-article: /img/article/
     #管家服务-报事报修：新增报事报修照片上传路径
     upload-repair: /img/repair/
+    #管家服务-业委会管理：业委会成员照片上传路径
+    upload-owners-committee: /img/ownersCommittee/
 
     #运营管理-公告管理：新增公告信息照片上传路径
     upload-announcement: /img/announcement/
