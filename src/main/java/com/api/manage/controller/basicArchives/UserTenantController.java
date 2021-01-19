@@ -58,7 +58,7 @@ public class UserTenantController extends ShiroExceptions {
     }
 
     /**
-     * 根据id查询租客信息
+     * 根据id查询租客信息(详情页面)
      * @param id 租客ID
      * @return map
      */

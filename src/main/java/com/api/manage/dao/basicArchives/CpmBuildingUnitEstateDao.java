@@ -1,8 +1,10 @@
 package com.api.manage.dao.basicArchives;
 
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
+import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.SearchCpmBuildingUnitEstate;
 import com.api.vo.basicArchives.VoCpmBuildingUnitEstate;
+import com.api.vo.basicArchives.VoEffectiveTimes;
 import com.api.vo.basicArchives.VoFindAll;
 import com.api.vo.basicArchives.VoTenantCpmBuildingUnitEstate;
 import org.springframework.stereotype.Component;
@@ -93,4 +95,11 @@ public interface CpmBuildingUnitEstateDao {
      * @return 楼栋单元房产id和name
      */
     List<VoFindAll> findByBuildingId(Integer buildingId);
+
+    /**
+     * 根据房产主键id查询房产有效开始时间，有效结束时间（此属性只有租客有用）
+     * @param residentIdAndEstateId 房产id 和 业主id
+     * @return 房产有效时间
+     */
+    VoEffectiveTimes findTimeByEstateId(ResidentIdAndEstateId residentIdAndEstateId);
 }

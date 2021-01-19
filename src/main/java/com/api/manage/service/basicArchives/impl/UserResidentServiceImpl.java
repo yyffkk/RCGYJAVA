@@ -3,6 +3,7 @@ package com.api.manage.service.basicArchives.impl;
 import com.api.manage.dao.basicArchives.*;
 import com.api.model.basicArchives.*;
 import com.api.model.businessManagement.SysUser;
+import com.api.vo.basicArchives.VoEffectiveTimes;
 import com.api.vo.basicArchives.VoFindAll;
 import com.api.vo.basicArchives.VoRelatives;
 import com.api.manage.service.basicArchives.UserResidentService;
@@ -224,8 +225,21 @@ public class UserResidentServiceImpl implements UserResidentService {
             CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
             //根据单元主键id查询对应的楼栋号
             CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
-            //楼栋，单元，房产（房间） id,前端用-取
-            cpmBuildingUnitEstateIdList.add(cpmBuilding.getId()+"-"+cpmBuildingUnit.getId()+"-"+cpmBuildingUnitEstate.getId());
+            ResidentIdAndEstateId residentIdAndEstateId = new ResidentIdAndEstateId();
+            //填入业主id
+            residentIdAndEstateId.setResidentId(id);
+            //填入房产id
+            residentIdAndEstateId.setEstateId(cpmBuildingUnitEstate.getId());
+            //根据 房产id 和 业主id 查询房产有效开始时间，有效结束时间（此属性只有租客有用）
+            VoEffectiveTimes timeByEstateId = cpmBuildingUnitEstateDao.findTimeByEstateId(residentIdAndEstateId);
+            //判断房产有效时间是否为空
+            if (timeByEstateId != null){
+                //楼栋id-单元id-房产id-有效开始时间-有效结束时间
+                cpmBuildingUnitEstateIdList.add(cpmBuilding.getId()+"|"+cpmBuildingUnit.getId()+"|"+cpmBuildingUnitEstate.getId()+"|"+timeByEstateId.getEffectiveTimeStart()+"|"+timeByEstateId.getEffectiveTimeEnd());
+            }else {
+                //楼栋id-单元id-房产id-有效开始时间-有效结束时间
+                cpmBuildingUnitEstateIdList.add(cpmBuilding.getId()+"|"+cpmBuildingUnit.getId()+"|"+cpmBuildingUnitEstate.getId()+"|"+null+"|"+null);
+            }
         }
         map.put("userResident",userResident);
         map.put("cpmBuildingUnitEstateIdList",cpmBuildingUnitEstateIdList);
@@ -242,7 +256,7 @@ public class UserResidentServiceImpl implements UserResidentService {
         ArrayList<Object> cpmParkingSpaceIdList = new ArrayList<>();
         //遍历查询所有的车位id
         for (CpmParkingSpace cpmParkingSpace : cpmParkingSpaceList) {
-            cpmParkingSpaceIdList.add(cpmParkingSpace.getId());
+            cpmParkingSpaceIdList.add(cpmParkingSpace.getId()+"|"+cpmParkingSpace.getEffectiveTimeStart()+"|"+cpmParkingSpace.getEffectiveTimeEnd());
         }
         map.put("cpmParkingSpaceIdList",cpmParkingSpaceIdList);
         map.put("userResident",userResident);

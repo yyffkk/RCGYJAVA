@@ -38,6 +38,16 @@ public class UserTenantServiceImpl implements UserTenantService {
     public List<VoUserTenant> list(UserResident userTenant) {
         List<VoUserTenant> voUserTenantList = userTenantDao.list(userTenant);
         for (VoUserTenant userTenantList : voUserTenantList) {
+            if (userTenantList.getEffectiveTimeEnd() != null){
+                //根据终止时间来判断在租状态
+                if (userTenantList.getEffectiveTimeEnd().getTime() < new Date().getTime()){
+                    //2.已退租
+                    userTenantList.setRoomStatus(2);
+                }else {
+                    //1.在租
+                    userTenantList.setRoomStatus(1);
+                }
+            }
             //根据房产主键id查询对应的单元号
             CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(userTenantList.getRoomId());
             //根据单元主键id查询对应的楼栋号
@@ -188,9 +198,7 @@ public class UserTenantServiceImpl implements UserTenantService {
         }
         //查询租户所有的车位，判断是否有租车位
         List<CpmParkingSpace> cpmParkingSpaceList = cpmParkingSpaceDao.findByUserId(id);
-        if (cpmParkingSpaceList != null && cpmParkingSpaceList.size()>0){
-            map.put("cpmParkingSpaceList",cpmParkingSpaceList);
-        }
+        map.put("cpmParkingSpaceList",cpmParkingSpaceList);
 
         //查询租户关联亲属信息
         List<VoRelatives> voRelativesList = userResidentDao.findRelativesById(id);

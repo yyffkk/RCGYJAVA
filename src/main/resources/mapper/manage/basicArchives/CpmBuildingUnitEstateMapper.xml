@@ -118,7 +118,7 @@
 <!--    根据业主id查询房产信息-->
     <select id="findByResidentId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnitEstate">
         select cbue.id,cbue.building_unit_id,cbue.room_number from user_resident as ur,cpm_resident_estate as cre,cpm_building_unit_estate as cbue
-		where ur.id = cre.resident_id and cbue.id =cre.building_unit_estate_id and ur.id =#{id} and ur.type =1
+		where ur.id = cre.resident_id and cbue.id =cre.building_unit_estate_id and ur.id =#{id}
     </select>
 
 <!--    查询所有的房产的id和name-->
@@ -153,5 +153,9 @@
         select cbue.id as value,cbue.room_number as label
         from cpm_building_unit_estate as cbue,cpm_building_unit as cbu
         where cbue.building_unit_id = cbu.id and cbu.building_id = #{buildingId}
+    </select>
+
+    <select id="findTimeByEstateId" parameterType="com.api.model.basicArchives.ResidentIdAndEstateId" resultType="com.api.vo.basicArchives.VoEffectiveTimes">
+        select * from cpm_resident_estate where building_unit_estate_id = #{estateId} and resident_id = #{residentId}
     </select>
 </mapper>

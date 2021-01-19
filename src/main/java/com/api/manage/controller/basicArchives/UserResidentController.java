@@ -65,7 +65,7 @@ public class UserResidentController extends ShiroExceptions {
     }
 
     /**
-     * 根据业主主键id 查询业主及其亲属信息
+     * 根据业主(租户)主键id 查询业主(租户)及其亲属信息
      * @return map
      */
     @GetMapping("/findRelativesById")
@@ -75,7 +75,7 @@ public class UserResidentController extends ShiroExceptions {
     }
 
     /**
-     * 根据业主主键id 查询业主及其房产信息
+     * 根据业主(租户)主键id 查询业主(租户)及其房产信息
      * @return map
      */
     @GetMapping("/findEstateById")
@@ -85,7 +85,7 @@ public class UserResidentController extends ShiroExceptions {
     }
 
     /**
-     * 根据业主主键id 查询业主及其车位信息
+     * 根据业主(租户)主键id 查询业主(租户)及其车位信息
      * @return map
      */
     @GetMapping("/findParkingSpaceById")
