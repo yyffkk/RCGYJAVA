@@ -96,34 +96,36 @@ public class UploadUtil {
      */
     public void saveUrlToDB(String[] urls,String tableName,int id,String typeName,
                        String imgSize,int imgLongs,int imgParagraph){
-        for (int i = 0; i < urls.length; i++) {
-            //保存后，将文件路径存入数据库
-            ResourcesImg resourcesImg = new ResourcesImg();
-            //填入表名称
-            resourcesImg.setTableName(tableName);
-            //填入数据所属id
-            resourcesImg.setDateId(id);
-            //填入类型名称
-            resourcesImg.setTypeName(typeName);
-            //填入图片路径
-            resourcesImg.setUrl(urls[i]);
-            //填入图片大小
-            resourcesImg.setSize(imgSize);
-            //填入长（像素）
-            resourcesImg.setLongs(imgLongs);
-            //填入宽（像素）
-            resourcesImg.setParagraph(imgParagraph);
-            //查询该表，该类型名称的照片数量
-            int count = uploadUtil.resourcesImgDao.countByData(resourcesImg);
-            if (count > 0){
-                resourcesImg.setSort(count+1);
-            }else {
-                resourcesImg.setSort(1);
-            }
-            //添加该照片数据到数据库中
-            int insert2 = uploadUtil.resourcesImgDao.insert(resourcesImg);
-            if (insert2 <= 0){
-                throw new RuntimeException("添加照片数据失败");
+        if (urls != null){
+            for (int i = 0; i < urls.length; i++) {
+                //保存后，将文件路径存入数据库
+                ResourcesImg resourcesImg = new ResourcesImg();
+                //填入表名称
+                resourcesImg.setTableName(tableName);
+                //填入数据所属id
+                resourcesImg.setDateId(id);
+                //填入类型名称
+                resourcesImg.setTypeName(typeName);
+                //填入图片路径
+                resourcesImg.setUrl(urls[i]);
+                //填入图片大小
+                resourcesImg.setSize(imgSize);
+                //填入长（像素）
+                resourcesImg.setLongs(imgLongs);
+                //填入宽（像素）
+                resourcesImg.setParagraph(imgParagraph);
+                //查询该表，该类型名称的照片数量
+                int count = uploadUtil.resourcesImgDao.countByData(resourcesImg);
+                if (count > 0){
+                    resourcesImg.setSort(count+1);
+                }else {
+                    resourcesImg.setSort(1);
+                }
+                //添加该照片数据到数据库中
+                int insert2 = uploadUtil.resourcesImgDao.insert(resourcesImg);
+                if (insert2 <= 0){
+                    throw new RuntimeException("添加照片数据失败");
+                }
             }
         }
     }

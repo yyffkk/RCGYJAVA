@@ -5,7 +5,7 @@
 <mapper namespace="com.api.manage.dao.butlerService.SysReportRepairDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchReportRepair" resultType="com.api.vo.butlerService.VoReportRepair">
         select sdl.id,srr.code,sdl.status,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,ur.name as repairman_name,ur.tel as repair_tel,srr.repair_date as repair_date,a.*,srr.froms as froms_name
-        from sys_report_repair as srr,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,sys_dispatch_list as sdl
+        from sys_report_repair as srr,cpm_resident_estate as cre,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,sys_dispatch_list as sdl
         left join
         (
         select sdld.dispatch_list_id,su1.actual_name as distributor_name,su2.actual_name as operator_name,swotl.name as work_order_time_limit,su1.id as operator,su2.id as distributor
@@ -15,7 +15,8 @@
         on sdl.id = a.dispatch_list_id
         <where>
             sdl.id = srr.dispatch_list_id
-            and srr.building_unit_estate_id = cbue.id
+            and srr.repairman = cre.resident_id
+            and cre.building_unit_estate_id = cbue.id
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
             and ur.id = srr.repairman
@@ -68,7 +69,6 @@
             repairman,
             tel,
             repair_date,
-            building_unit_estate_id,
             froms,
             appointment_time,
             report_detail,
@@ -81,7 +81,6 @@
             #{repairman},
             #{tel},
             #{repairDate},
-            #{buildingUnitEstateId},
             #{froms},
             #{appointmentTime},
             #{reportDetail},
@@ -92,5 +91,38 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdRepair">
+        select srr.*,ur.name as repair_name,su.actual_name as create_name
+        from sys_report_repair as srr,user_resident as ur,sys_user as su
+        where srr.repairman = ur.id and srr.create_id = su.id and srr.id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.butlerService.ReportRepair">
+        update sys_report_repair
+        <set>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="repairman != null">
+                repairman = #{repairman},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="froms != null">
+                froms = #{froms},
+            </if>
+            <if test="appointmentTime != null">
+                appointment_time = #{appointmentTime},
+            </if>
+            <if test="reportDetail != null and reportDetail != ''">
+                report_detail = #{reportDetail},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

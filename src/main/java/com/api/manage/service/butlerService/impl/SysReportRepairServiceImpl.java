@@ -8,6 +8,7 @@ import com.api.model.butlerService.SearchReportRepair;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysReportRepairService;
 import com.api.util.UploadUtil;
+import com.api.vo.butlerService.VoFindByIdRepair;
 import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;
 import org.apache.commons.lang3.StringUtils;
@@ -135,6 +136,49 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
             return map;
         }
         map.put("message","添加工单信息成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public VoFindByIdRepair findById(Integer id) {
+        return sysReportRepairDao.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> update(ReportRepair reportRepair) {
+        map = new HashMap<>();
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+            //填入创建人
+            reportRepair.setModifyId(sysUser.getId());
+            //填入创建时间
+            reportRepair.setModifyDate(new Date());
+            //修改报事报修信息
+            int update = sysReportRepairDao.update(reportRepair);
+            if (update <= 0){
+                throw new RuntimeException("修改报事报修信息失败");
+            }
+            UploadUtil uploadUtil = new UploadUtil();
+            //先根据报事报修主键数据id 删除数据库的照片资源
+            uploadUtil.delete("sys_report_repair",reportRepair.getId(),"repairImg");
+            //再添加照片资源到数据库
+            uploadUtil.saveUrlToDB(reportRepair.getFileUrls(),"sys_report_repair",reportRepair.getId(),"repairImg","600",30,20);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","修改报事报修信息成功");
         map.put("status",true);
         return map;
     }

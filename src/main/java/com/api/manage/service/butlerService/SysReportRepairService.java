@@ -2,6 +2,7 @@ package com.api.manage.service.butlerService;
 
 import com.api.model.butlerService.ReportRepair;
 import com.api.model.butlerService.SearchReportRepair;
+import com.api.vo.butlerService.VoFindByIdRepair;
 import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;
 
@@ -14,4 +15,8 @@ public interface SysReportRepairService {
     VoRepair findRepairDetail(Integer id);
 
     Map<String, Object> insert(ReportRepair reportRepair);
+
+    VoFindByIdRepair findById(Integer id);
+
+    Map<String, Object> update(ReportRepair reportRepair);
 }

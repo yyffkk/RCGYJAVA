@@ -4,6 +4,7 @@ import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.ReportRepair;
 import com.api.model.butlerService.SearchReportRepair;
 import com.api.manage.service.butlerService.SysReportRepairService;
+import com.api.vo.butlerService.VoFindByIdRepair;
 import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;
 import com.github.pagehelper.PageHelper;
@@ -65,6 +66,29 @@ public class SysReportRepairController extends ShiroExceptions {
     @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody ReportRepair reportRepair){
         return sysReportRepairService.insert(reportRepair);
+    }
+
+    /**
+     * 根据报事报修主键id 查询报事报修信息
+     * @param id 报事报修主键id
+     * @return 报事报修 Vo findById 回显
+     */
+    @GetMapping("/findById")
+    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    public VoFindByIdRepair findById(Integer id){
+        return sysReportRepairService.findById(id);
+    }
+
+
+    /**
+     * 修改报事报修信息
+     * @param reportRepair 报事报修model insert
+     * @return map
+     */
+    @PostMapping("/update")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    public Map<String,Object> update(@RequestBody ReportRepair reportRepair){
+        return sysReportRepairService.update(reportRepair);
     }
 
 }

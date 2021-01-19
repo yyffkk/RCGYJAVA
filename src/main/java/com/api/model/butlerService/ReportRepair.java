@@ -44,10 +44,6 @@ public class ReportRepair {
      */
     private Date appointmentTime;
     /**
-     * 报修地点（房产id）
-     */
-    private Integer buildingUnitEstateId;
-    /**
      * 报修来源(1.业主来电 2.app提交)
      */
     private Integer froms;
@@ -59,6 +55,14 @@ public class ReportRepair {
      * 创建时间（录单时间）
      */
     private Date createDate;
+    /**
+     * 修改人
+     */
+    private Integer modifyId;
+    /**
+     * 修改时间
+     */
+    private Date modifyDate;
     /**
      * 上传文件路径数据
      */
@@ -76,10 +80,11 @@ public class ReportRepair {
                 ", tel='" + tel + '\'' +
                 ", repairDate=" + repairDate +
                 ", appointmentTime=" + appointmentTime +
-                ", buildingUnitEstateId=" + buildingUnitEstateId +
                 ", froms=" + froms +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", modifyId=" + modifyId +
+                ", modifyDate=" + modifyDate +
                 ", fileUrls=" + Arrays.toString(fileUrls) +
                 '}';
     }
@@ -156,14 +161,6 @@ public class ReportRepair {
         this.appointmentTime = appointmentTime;
     }
 
-    public Integer getBuildingUnitEstateId() {
-        return buildingUnitEstateId;
-    }
-
-    public void setBuildingUnitEstateId(Integer buildingUnitEstateId) {
-        this.buildingUnitEstateId = buildingUnitEstateId;
-    }
-
     public Integer getFroms() {
         return froms;
     }
@@ -188,6 +185,22 @@ public class ReportRepair {
         this.createDate = createDate;
     }
 
+    public Integer getModifyId() {
+        return modifyId;
+    }
+
+    public void setModifyId(Integer modifyId) {
+        this.modifyId = modifyId;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
     public String[] getFileUrls() {
         return fileUrls;
     }
@@ -199,7 +212,7 @@ public class ReportRepair {
     public ReportRepair() {
     }
 
-    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Date appointmentTime, Integer buildingUnitEstateId, Integer froms, Integer createId, Date createDate, String[] fileUrls) {
+    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Date appointmentTime, Integer froms, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
         this.id = id;
         this.code = code;
         this.dispatchListId = dispatchListId;
@@ -209,10 +222,11 @@ public class ReportRepair {
         this.tel = tel;
         this.repairDate = repairDate;
         this.appointmentTime = appointmentTime;
-        this.buildingUnitEstateId = buildingUnitEstateId;
         this.froms = froms;
         this.createId = createId;
         this.createDate = createDate;
+        this.modifyId = modifyId;
+        this.modifyDate = modifyDate;
         this.fileUrls = fileUrls;
     }
 }
