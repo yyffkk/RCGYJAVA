@@ -40,10 +40,6 @@ public class ReportRepair {
      */
     private Date repairDate;
     /**
-     * 预约时间
-     */
-    private Date appointmentTime;
-    /**
      * 报修来源(1.业主来电 2.app提交)
      */
     private Integer froms;
@@ -79,7 +75,6 @@ public class ReportRepair {
                 ", repairman=" + repairman +
                 ", tel='" + tel + '\'' +
                 ", repairDate=" + repairDate +
-                ", appointmentTime=" + appointmentTime +
                 ", froms=" + froms +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -153,14 +148,6 @@ public class ReportRepair {
         this.repairDate = repairDate;
     }
 
-    public Date getAppointmentTime() {
-        return appointmentTime;
-    }
-
-    public void setAppointmentTime(Date appointmentTime) {
-        this.appointmentTime = appointmentTime;
-    }
-
     public Integer getFroms() {
         return froms;
     }
@@ -212,7 +199,7 @@ public class ReportRepair {
     public ReportRepair() {
     }
 
-    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Date appointmentTime, Integer froms, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
+    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Integer froms, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
         this.id = id;
         this.code = code;
         this.dispatchListId = dispatchListId;
@@ -221,7 +208,6 @@ public class ReportRepair {
         this.repairman = repairman;
         this.tel = tel;
         this.repairDate = repairDate;
-        this.appointmentTime = appointmentTime;
         this.froms = froms;
         this.createId = createId;
         this.createDate = createDate;

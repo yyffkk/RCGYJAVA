@@ -107,8 +107,6 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
             reportRepair.setCreateId(sysUser.getId());
             //填入创建时间
             reportRepair.setCreateDate(new Date());
-            //填入报修时间
-            reportRepair.setRepairDate(new Date());
             //填入单号
             reportRepair.setCode(code);
             //填入工单主键id

@@ -3,5 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.butler.AppReportRepairDao">
-
+    <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppReportRepairVo">
+        select srr.*,sdl.status
+        from sys_report_repair as srr,sys_dispatch_list as sdl
+        where srr.dispatch_list_id = sdl.id and sdl.sys_delete = 1 and sdl.user_delete = 1 and srr.repairman = #{id}
+    </select>
 </mapper>

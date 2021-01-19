@@ -31,9 +31,9 @@ public class VoFindByIdRepair {
      */
     private String tel;
     /**
-     * 预约时间
+     * 报修时间
      */
-    private Date appointmentTime;
+    private Date repairDate;
     /**
      * 报修来源
      */
@@ -56,7 +56,7 @@ public class VoFindByIdRepair {
                 ", repairman=" + repairman +
                 ", repairName='" + repairName + '\'' +
                 ", tel='" + tel + '\'' +
-                ", appointmentTime=" + appointmentTime +
+                ", repairDate=" + repairDate +
                 ", froms=" + froms +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
@@ -111,12 +111,12 @@ public class VoFindByIdRepair {
         this.tel = tel;
     }
 
-    public Date getAppointmentTime() {
-        return appointmentTime;
+    public Date getRepairDate() {
+        return repairDate;
     }
 
-    public void setAppointmentTime(Date appointmentTime) {
-        this.appointmentTime = appointmentTime;
+    public void setRepairDate(Date repairDate) {
+        this.repairDate = repairDate;
     }
 
     public Integer getFroms() {
@@ -146,14 +146,14 @@ public class VoFindByIdRepair {
     public VoFindByIdRepair() {
     }
 
-    public VoFindByIdRepair(Integer id, Integer type, String reportDetail, Integer repairman, String repairName, String tel, Date appointmentTime, Integer froms, String createName, Date createDate) {
+    public VoFindByIdRepair(Integer id, Integer type, String reportDetail, Integer repairman, String repairName, String tel, Date repairDate, Integer froms, String createName, Date createDate) {
         this.id = id;
         this.type = type;
         this.reportDetail = reportDetail;
         this.repairman = repairman;
         this.repairName = repairName;
         this.tel = tel;
-        this.appointmentTime = appointmentTime;
+        this.repairDate = repairDate;
         this.froms = froms;
         this.createName = createName;
         this.createDate = createDate;
