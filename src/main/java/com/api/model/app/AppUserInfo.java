@@ -1,6 +1,5 @@
 package com.api.model.app;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
