@@ -1,6 +1,7 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppReportRepairService;
+import com.api.model.app.UserIdAndRepairId;
 import com.api.vo.app.AppConvenientTelephoneVo;
 import com.api.vo.app.AppReportRepairVo;
 import com.github.pagehelper.PageHelper;
@@ -42,5 +43,13 @@ public class AppReportRepairController {
         return map;
     }
 
-//    public
+    /**
+     * app根据主键id查询报事报修详情
+     * @param userIdAndRepairId 用户id和报事报修主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(UserIdAndRepairId userIdAndRepairId){
+        return appReportRepairService.findById(userIdAndRepairId);
+    }
 }

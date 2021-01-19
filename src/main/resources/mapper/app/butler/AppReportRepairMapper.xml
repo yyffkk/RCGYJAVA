@@ -8,4 +8,21 @@
         from sys_report_repair as srr,sys_dispatch_list as sdl
         where srr.dispatch_list_id = sdl.id and sdl.sys_delete = 1 and sdl.user_delete = 1 and srr.repairman = #{id}
     </select>
+    <select id="findRepairByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppReportRepairVo">
+        select srr.*,sdl.status
+        from sys_report_repair as srr,sys_dispatch_list as sdl
+        where srr.dispatch_list_id = sdl.id and sdl.sys_delete = 1 and sdl.user_delete = 1 and srr.repairman = #{id} and srr.id = #{repairId}
+    </select>
+
+    <select id="findDispatchListByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppDispatchListVo">
+        select sdld.code,srr.repair_date as order_date,sdld.type,su1.actual_name as operator_name,su2.actual_name as distributor_name
+        from sys_report_repair as srr,sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld,sys_user as su1,sys_user as su2
+        where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and sdld.operator = su1.id and sdld.create_id = su2.id and sdl.user_delete =1 and sdl.sys_delete =1
+        and srr.repairman = #{id} and srr.id = #{repairId}
+    </select>
+
+    <select id="findProcessRecordByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppProcessRecordVo">
+        select * from sys_process_record as spr,sys_dispatch_list as sdl
+        where spr.dispatch_list_id = sdl.id and sdl.user_delete = 1 and sdl.sys_delete = 1 and dispatch_list_id = #{repairId}
+    </select>
 </mapper>

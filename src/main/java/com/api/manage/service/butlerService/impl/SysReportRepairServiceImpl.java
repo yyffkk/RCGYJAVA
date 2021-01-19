@@ -1,8 +1,10 @@
 package com.api.manage.service.butlerService.impl;
 
 import com.api.manage.dao.butlerService.SysDispatchListDao;
+import com.api.manage.dao.butlerService.SysProcessRecordDao;
 import com.api.manage.dao.butlerService.SysReportRepairDao;
 import com.api.model.butlerService.DispatchList;
+import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.ReportRepair;
 import com.api.model.butlerService.SearchReportRepair;
 import com.api.model.businessManagement.SysUser;
@@ -28,6 +30,8 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
     SysReportRepairDao sysReportRepairDao;
     @Resource
     SysDispatchListDao sysDispatchListDao;
+    @Resource
+    SysProcessRecordDao sysProcessRecordDao;
 
     @Override
     public List<VoReportRepair> list(SearchReportRepair searchReportRepair) {
@@ -122,6 +126,18 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(reportRepair.getFileUrls(),"sys_report_repair",reportRepair.getId(),"repairImg","600",30,20);
 
+            //添加处理进程记录
+            ProcessRecord processRecord = new ProcessRecord();
+            processRecord.setDispatchListId(dispatchList.getId());
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(1);
+            processRecord.setOperator(sysUser.getId());
+            processRecord.setOperatorType(2);
+            processRecord.setOperatorContent("您的工单正在等待分配");
+            int insert3 = sysProcessRecordDao.insert(processRecord);
+            if (insert3 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
