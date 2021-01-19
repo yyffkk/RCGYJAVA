@@ -34,9 +34,9 @@ public class VoRepair {
      */
     private Integer froms;
     /**
-     * 预约时间
+     * 报修时间
      */
-    private Date appointmentTime;
+    private Date repairDate;
     /**
      * 分配人
      */
@@ -59,7 +59,7 @@ public class VoRepair {
                 ", repairName='" + repairName + '\'' +
                 ", tel='" + tel + '\'' +
                 ", froms=" + froms +
-                ", appointmentTime=" + appointmentTime +
+                ", repairDate=" + repairDate +
                 ", dispatchName='" + dispatchName + '\'' +
                 ", reportDetail='" + reportDetail + '\'' +
                 ", imgUrls=" + imgUrls +
@@ -114,12 +114,12 @@ public class VoRepair {
         this.froms = froms;
     }
 
-    public Date getAppointmentTime() {
-        return appointmentTime;
+    public Date getRepairDate() {
+        return repairDate;
     }
 
-    public void setAppointmentTime(Date appointmentTime) {
-        this.appointmentTime = appointmentTime;
+    public void setRepairDate(Date repairDate) {
+        this.repairDate = repairDate;
     }
 
     public String getDispatchName() {
@@ -149,14 +149,14 @@ public class VoRepair {
     public VoRepair() {
     }
 
-    public VoRepair(Integer id, Integer type, String roomName, String repairName, String tel, Integer froms, Date appointmentTime, String dispatchName, String reportDetail, List<VoResourcesImg> imgUrls) {
+    public VoRepair(Integer id, Integer type, String roomName, String repairName, String tel, Integer froms, Date repairDate, String dispatchName, String reportDetail, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.type = type;
         this.roomName = roomName;
         this.repairName = repairName;
         this.tel = tel;
         this.froms = froms;
-        this.appointmentTime = appointmentTime;
+        this.repairDate = repairDate;
         this.dispatchName = dispatchName;
         this.reportDetail = reportDetail;
         this.imgUrls = imgUrls;

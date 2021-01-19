@@ -300,11 +300,13 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
     @Override
     public Map<String, Object> repairWorkOrderDetail(Integer id) {
         map = new HashMap<>();
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
+        //根据报事报修主键id查询报修详情
         VoRepair voRepair = sysReportRepairDao.findRepairDetail(id);
-        voRepair.setDispatchName(sysUser.getActualName());
+        if (voRepair == null){
+            map.put("message","此报事报修信息不存在或已被删除");
+            map.put("status",false);
+            return map;
+        }
         //传入照片资源信息
         UploadUtil uploadUtil = new UploadUtil();
         List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", id, "repairImg");
