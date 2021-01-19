@@ -5,6 +5,7 @@ import com.api.model.butlerService.SearchConveniencePhone;
 import com.api.model.butlerService.SysConveniencePhone;
 import com.api.model.butlerService.SysConveniencePhoneReminder;
 import com.api.manage.service.butlerService.SysConveniencePhoneService;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoConveniencePhone;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -88,5 +89,16 @@ public class SysConveniencePhoneController extends ShiroExceptions {
     @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> updateReminder(@RequestBody SysConveniencePhoneReminder sysConveniencePhoneReminder){
         return sysConveniencePhoneService.updateReminder(sysConveniencePhoneReminder);
+    }
+
+    /**
+     * 批量删除便民电话
+     * @param ids 主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysConveniencePhoneService.delete(ids.getIds());
     }
 }

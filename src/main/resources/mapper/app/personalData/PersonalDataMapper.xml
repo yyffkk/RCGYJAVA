@@ -52,4 +52,10 @@
     <update id="updateBirthday" parameterType="com.api.model.app.PersonalData">
         update user_resident set birthday = #{birthday} where id = #{id}
     </update>
+
+    <select id="findEstateNameByResidentId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select concat(cb.no,"幢-",cbu.no,"单元-",cbue.room_number)
+        from cpm_resident_estate as cre,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where cre.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cre.resident_id = #{id}
+    </select>
 </mapper>

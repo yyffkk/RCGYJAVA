@@ -230,4 +230,9 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         }
         return map;
     }
+
+    @Override
+    public List<String> findEstateNameByResidentId(Integer id) {
+        return personalDataDao.findEstateNameByResidentId(id);
+    }
 }

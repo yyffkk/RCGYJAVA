@@ -93,4 +93,8 @@
         </set>
         where id =#{id}
     </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_convenience_phone where id = #{id}
+    </delete>
 </mapper>

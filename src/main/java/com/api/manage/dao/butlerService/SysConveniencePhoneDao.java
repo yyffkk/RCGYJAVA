@@ -49,4 +49,11 @@ public interface SysConveniencePhoneDao {
      * @return 影响行数
      */
     int updateReminder(SysConveniencePhoneReminder sysConveniencePhoneReminder);
+
+    /**
+     * 根据主键id删除便民电话
+     * @param id 主键
+     * @return 影响行数
+     */
+    int delete(int id);
 }

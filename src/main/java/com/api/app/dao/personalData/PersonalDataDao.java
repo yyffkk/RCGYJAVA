@@ -5,6 +5,8 @@ import com.api.model.app.UpdateTel;
 import com.api.model.basicArchives.UserResident;
 import com.api.vo.app.PersonalDataVo;
 
+import java.util.List;
+
 public interface PersonalDataDao {
     /**
      * 根据用户主键id查询个人资料信息
@@ -76,4 +78,11 @@ public interface PersonalDataDao {
      * @return 影响行数
      */
     int updateBirthday(PersonalData personalData);
+
+    /**
+     * 根据用户id查询房产信息
+     * @param id 用户id
+     * @return 房产信息集合
+     */
+    List<String> findEstateNameByResidentId(Integer id);
 }

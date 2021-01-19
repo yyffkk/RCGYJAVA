@@ -5,6 +5,7 @@ import com.api.model.app.UpdateTel;
 import com.api.model.basicArchives.UserResident;
 import com.api.vo.app.PersonalDataVo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface PersonalDataService {
@@ -23,4 +24,6 @@ public interface PersonalDataService {
     Map<String, Object> updateSex(PersonalData personalData);
 
     Map<String, Object> updateBirthday(PersonalData personalData);
+
+    List<String> findEstateNameByResidentId(Integer id);
 }

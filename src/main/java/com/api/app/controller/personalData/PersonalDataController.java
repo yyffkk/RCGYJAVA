@@ -1,6 +1,7 @@
 package com.api.app.controller.personalData;
 
 import com.api.app.service.personalData.PersonalDataService;
+import com.api.model.app.AppUserInfo;
 import com.api.model.app.PersonalData;
 import com.api.model.app.UpdateHeadPortrait;
 import com.api.model.app.UpdateTel;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,15 +27,18 @@ public class PersonalDataController {
 
     /**
      * 获取用户信息
-     * @param userResident 住户信息表
+     * @param appUserInfo app用户信息
      * @return map
      */
     @GetMapping("/getUserDetail")
-    public Map<String, Object> getUserDetail(UserResident userResident){
+    public Map<String, Object> getUserDetail(AppUserInfo appUserInfo){
         Map<String, Object> map = new HashMap<>();
+        //根据用户id查询房产信息
+        List<String> stringList = personalDataService.findEstateNameByResidentId(appUserInfo.getId());
+        appUserInfo.setEstateNames(stringList);
         map.put("status", true);
         map.put("message", "请求成功");
-        map.put("data", userResident);
+        map.put("data", appUserInfo);
         return map;
     }
 

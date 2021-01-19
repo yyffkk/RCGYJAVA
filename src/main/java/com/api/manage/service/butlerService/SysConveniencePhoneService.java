@@ -19,4 +19,5 @@ public interface SysConveniencePhoneService {
 
     Map<String, Object> updateReminder(SysConveniencePhoneReminder sysConveniencePhoneReminder);
 
+    Map<String, Object> delete(int[] ids);
 }
