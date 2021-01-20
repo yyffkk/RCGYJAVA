@@ -3,7 +3,9 @@ package com.api.app.service.butler.impl;
 import com.api.app.dao.butler.AppArticleOutDao;
 import com.api.app.service.butler.AppArticleOutService;
 import com.api.model.app.AppArticleOut;
+import com.api.model.app.UserIdAndArticleOutId;
 import com.api.util.UploadUtil;
+import com.api.vo.app.AppArticleOutVo;
 import com.api.vo.app.AppMovingCompanyVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,8 @@ public class AppArticleOutServiceImpl implements AppArticleOutService {
             appArticleOut.setStatus(1);
             //填入申请时间
             appArticleOut.setApplicantDate(new Date());
+            //填入是否删除（0.删除，1.非删）【用户app端删除】默认为1.非删
+            appArticleOut.setUserDelete(1);
             int insert = appArticleOutDao.submit(appArticleOut);
             if (insert <= 0){
                 throw new RuntimeException("提交失败");
@@ -58,6 +62,43 @@ public class AppArticleOutServiceImpl implements AppArticleOutService {
         map = new HashMap<>();
         List<AppMovingCompanyVo> appMovingCompanyVoList = appArticleOutDao.getMovingCompanyTel();
         map.put("appMovingCompanyVoList",appMovingCompanyVoList);
+        return map;
+    }
+
+    @Override
+    public List<AppArticleOutVo> list(Integer id) {
+        return appArticleOutDao.list(id);
+    }
+
+    @Override
+    public Map<String, Object> falseDelete(int[] ids, Integer id) {
+        map = new HashMap<>();
+        try {
+            UserIdAndArticleOutId userIdAndArticleOutId = new UserIdAndArticleOutId();
+            //填入用户id
+            userIdAndArticleOutId.setUserId(id);
+            for (int articleOutId : ids) {
+                //填入物品出户主键id
+                userIdAndArticleOutId.setArticleOutId(articleOutId);
+                //假删除物品出户信息
+                int update = appArticleOutDao.falseDelete(userIdAndArticleOutId);
+                if (update <=0 ){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
         return map;
     }
 }

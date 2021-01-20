@@ -16,7 +16,8 @@
             expected_time,
             status,
             applicant_id,
-            applicant_date
+            applicant_date,
+            user_delete
         )values (
             #{residentId},
             #{buildingUnitEstateId},
@@ -29,7 +30,8 @@
             #{expectedTime},
             #{status},
             #{applicantId},
-            #{applicantDate}
+            #{applicantDate},
+            #{userDelete}
         )
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id
@@ -39,4 +41,13 @@
     <select id="getMovingCompanyTel" resultType="com.api.vo.app.AppMovingCompanyVo">
         select * from sys_convenience_phone where type = 4
     </select>
+
+    <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppArticleOutVo">
+        select * from user_article_out where user_delete = 1 and resident_id = #{id}
+    </select>
+
+    <update id="falseDelete" parameterType="com.api.model.app.UserIdAndArticleOutId">
+        update user_article_out set user_delete = 0
+        where id = #{articleOutId} and resident_id = #{userId}
+    </update>
 </mapper>

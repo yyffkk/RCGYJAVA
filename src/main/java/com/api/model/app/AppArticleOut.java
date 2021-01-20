@@ -75,6 +75,10 @@ public class AppArticleOut {
      * 照片资源路径数组
      */
     private String[] imgUrls;
+    /**
+     * 是否删除（0.删除，1.非删）【用户app端删除】
+     */
+    private Integer userDelete;
 
     @Override
     public String toString() {
@@ -96,6 +100,7 @@ public class AppArticleOut {
                 ", reviewId=" + reviewId +
                 ", reviewDate=" + reviewDate +
                 ", imgUrls=" + Arrays.toString(imgUrls) +
+                ", userDelete=" + userDelete +
                 '}';
     }
 
@@ -235,10 +240,18 @@ public class AppArticleOut {
         this.imgUrls = imgUrls;
     }
 
+    public Integer getUserDelete() {
+        return userDelete;
+    }
+
+    public void setUserDelete(Integer userDelete) {
+        this.userDelete = userDelete;
+    }
+
     public AppArticleOut() {
     }
 
-    public AppArticleOut(Integer id, Integer residentId, Integer buildingUnitEstateId, String name, Integer weight, Integer approach, String movingCompanyTel, Date expectedTime, Date actualTime, Integer export, Integer status, String remarks, Integer applicantId, Date applicantDate, Integer reviewId, Date reviewDate, String[] imgUrls) {
+    public AppArticleOut(Integer id, Integer residentId, Integer buildingUnitEstateId, String name, Integer weight, Integer approach, String movingCompanyTel, Date expectedTime, Date actualTime, Integer export, Integer status, String remarks, Integer applicantId, Date applicantDate, Integer reviewId, Date reviewDate, String[] imgUrls, Integer userDelete) {
         this.id = id;
         this.residentId = residentId;
         this.buildingUnitEstateId = buildingUnitEstateId;
@@ -256,5 +269,6 @@ public class AppArticleOut {
         this.reviewId = reviewId;
         this.reviewDate = reviewDate;
         this.imgUrls = imgUrls;
+        this.userDelete = userDelete;
     }
 }
