@@ -44,7 +44,7 @@ public class AppReportRepairController {
     }
 
     /**
-     * app根据主键id查询报事报修详情
+     * app根据用户id和报事报修主键id查询报事报修详情
      * @param userIdAndRepairId 用户id和报事报修主键id
      * @return map
      */
