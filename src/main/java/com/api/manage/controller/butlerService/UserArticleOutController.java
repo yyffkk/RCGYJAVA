@@ -72,7 +72,6 @@ public class UserArticleOutController extends ShiroExceptions {
         return map;
     }
 
-
     /**
      * 查询出门照片
      * @param id 物品出门主键id
