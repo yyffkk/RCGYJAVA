@@ -19,6 +19,7 @@
         insert into sys_convenience_phone(
             name,
             tel,
+            type,
             status,
             check_status,
             next_control_date,
@@ -29,6 +30,7 @@
         ) values(
             #{name},
             #{tel},
+            #{type},
             #{status},
             #{checkStatus},
             #{nextControlDate},
@@ -55,6 +57,9 @@
             </if>
             <if test="tel != null and tel != ''">
                 tel = #{tel},
+            </if>
+            <if test="type != null">
+                type = #{type},
             </if>
             <if test="status != null">
                 status = #{status},

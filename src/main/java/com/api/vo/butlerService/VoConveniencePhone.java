@@ -19,7 +19,11 @@ public class VoConveniencePhone {
      */
     private String tel;
     /**
-     * 状态
+     * 类型（1.业委会，2.绿化，3.快递，4.搬家）
+     */
+    private Integer type;
+    /**
+     * 状态（1.正常，2.有误，3.空号）
      */
     private Integer status;
     /**
@@ -41,6 +45,7 @@ public class VoConveniencePhone {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
+                ", type=" + type +
                 ", status=" + status +
                 ", nextControlDate=" + nextControlDate +
                 ", checkStatus=" + checkStatus +
@@ -70,6 +75,14 @@ public class VoConveniencePhone {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getStatus() {
@@ -107,10 +120,11 @@ public class VoConveniencePhone {
     public VoConveniencePhone() {
     }
 
-    public VoConveniencePhone(Integer id, String name, String tel, Integer status, Date nextControlDate, Integer checkStatus, Integer weight) {
+    public VoConveniencePhone(Integer id, String name, String tel, Integer type, Integer status, Date nextControlDate, Integer checkStatus, Integer weight) {
         this.id = id;
         this.name = name;
         this.tel = tel;
+        this.type = type;
         this.status = status;
         this.nextControlDate = nextControlDate;
         this.checkStatus = checkStatus;

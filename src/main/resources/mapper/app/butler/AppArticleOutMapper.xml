@@ -3,5 +3,40 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.butler.AppArticleOutDao">
+    <insert id="submit" parameterType="com.api.model.app.AppArticleOut">
+        insert into user_article_out(
+            resident_id,
+            building_unit_estate_id,
+            name,
+            weight,
+            approach,
+            <if test="movingCompanyTel != null and movingCompanyTel != ''">
+                moving_company_tel,
+            </if>
+            expected_time,
+            status,
+            applicant_id,
+            applicant_date
+        )values (
+            #{residentId},
+            #{buildingUnitEstateId},
+            #{name},
+            #{weight},
+            #{approach},
+            <if test="movingCompanyTel != null and movingCompanyTel != ''">
+                #{movingCompanyTel},
+            </if>
+            #{expectedTime},
+            #{status},
+            #{applicantId},
+            #{applicantDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 
+    <select id="getMovingCompanyTel" resultType="com.api.vo.app.AppMovingCompanyVo">
+        select * from sys_convenience_phone where type = 4
+    </select>
 </mapper>

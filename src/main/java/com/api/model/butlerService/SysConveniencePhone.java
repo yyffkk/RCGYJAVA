@@ -19,7 +19,11 @@ public class SysConveniencePhone {
      */
     private String tel;
     /**
-     * 状态
+     * 类型（1.业委会，2.绿化，3.快递，4.搬家）
+     */
+    private Integer type;
+    /**
+     * 状态（1.正常，2.有误，3.空号）
      */
     private Integer status;
     /**
@@ -27,7 +31,7 @@ public class SysConveniencePhone {
      */
     private Date nextControlDate;
     /**
-     * 检查状态
+     * 检查状态(0.未检查，1.已检查)
      */
     private Integer checkStatus;
     /**
@@ -61,6 +65,7 @@ public class SysConveniencePhone {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
+                ", type=" + type +
                 ", status=" + status +
                 ", nextControlDate=" + nextControlDate +
                 ", checkStatus=" + checkStatus +
@@ -95,6 +100,14 @@ public class SysConveniencePhone {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getStatus() {
@@ -172,10 +185,11 @@ public class SysConveniencePhone {
     public SysConveniencePhone() {
     }
 
-    public SysConveniencePhone(Integer id, String name, String tel, Integer status, Date nextControlDate, Integer checkStatus, Integer weight, String remindContent, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public SysConveniencePhone(Integer id, String name, String tel, Integer type, Integer status, Date nextControlDate, Integer checkStatus, Integer weight, String remindContent, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
         this.id = id;
         this.name = name;
         this.tel = tel;
+        this.type = type;
         this.status = status;
         this.nextControlDate = nextControlDate;
         this.checkStatus = checkStatus;

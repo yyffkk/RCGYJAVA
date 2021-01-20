@@ -1,11 +1,12 @@
-package com.api.model.butlerService;
+package com.api.model.app;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
- * 物品出门表
+ * app 物品出户
  */
-public class UserArticleOut {
+public class AppArticleOut {
     /**
      * 主键id
      */
@@ -30,6 +31,10 @@ public class UserArticleOut {
      * 搬运方式（1.自己搬运，2.搬家公司）
      */
     private Integer approach;
+    /**
+     * 搬家公司手机号
+     */
+    private String movingCompanyTel;
     /**
      * 预计出门时间
      */
@@ -66,16 +71,21 @@ public class UserArticleOut {
      * 审核时间
      */
     private Date reviewDate;
+    /**
+     * 照片资源路径数组
+     */
+    private String[] imgUrls;
 
     @Override
     public String toString() {
-        return "UserArticleOut{" +
+        return "AppArticleOut{" +
                 "id=" + id +
                 ", residentId=" + residentId +
                 ", buildingUnitEstateId=" + buildingUnitEstateId +
                 ", name='" + name + '\'' +
                 ", weight=" + weight +
                 ", approach=" + approach +
+                ", movingCompanyTel='" + movingCompanyTel + '\'' +
                 ", expectedTime=" + expectedTime +
                 ", actualTime=" + actualTime +
                 ", export=" + export +
@@ -85,6 +95,7 @@ public class UserArticleOut {
                 ", applicantDate=" + applicantDate +
                 ", reviewId=" + reviewId +
                 ", reviewDate=" + reviewDate +
+                ", imgUrls=" + Arrays.toString(imgUrls) +
                 '}';
     }
 
@@ -134,6 +145,14 @@ public class UserArticleOut {
 
     public void setApproach(Integer approach) {
         this.approach = approach;
+    }
+
+    public String getMovingCompanyTel() {
+        return movingCompanyTel;
+    }
+
+    public void setMovingCompanyTel(String movingCompanyTel) {
+        this.movingCompanyTel = movingCompanyTel;
     }
 
     public Date getExpectedTime() {
@@ -208,16 +227,25 @@ public class UserArticleOut {
         this.reviewDate = reviewDate;
     }
 
-    public UserArticleOut() {
+    public String[] getImgUrls() {
+        return imgUrls;
     }
 
-    public UserArticleOut(Integer id, Integer residentId, Integer buildingUnitEstateId, String name, Integer weight, Integer approach, Date expectedTime, Date actualTime, Integer export, Integer status, String remarks, Integer applicantId, Date applicantDate, Integer reviewId, Date reviewDate) {
+    public void setImgUrls(String[] imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
+    public AppArticleOut() {
+    }
+
+    public AppArticleOut(Integer id, Integer residentId, Integer buildingUnitEstateId, String name, Integer weight, Integer approach, String movingCompanyTel, Date expectedTime, Date actualTime, Integer export, Integer status, String remarks, Integer applicantId, Date applicantDate, Integer reviewId, Date reviewDate, String[] imgUrls) {
         this.id = id;
         this.residentId = residentId;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.name = name;
         this.weight = weight;
         this.approach = approach;
+        this.movingCompanyTel = movingCompanyTel;
         this.expectedTime = expectedTime;
         this.actualTime = actualTime;
         this.export = export;
@@ -227,5 +255,6 @@ public class UserArticleOut {
         this.applicantDate = applicantDate;
         this.reviewId = reviewId;
         this.reviewDate = reviewDate;
+        this.imgUrls = imgUrls;
     }
 }
