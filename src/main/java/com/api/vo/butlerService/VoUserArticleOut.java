@@ -31,7 +31,7 @@ public class VoUserArticleOut {
      */
     private String name;
     /**
-     * 物品重量
+     * 物品重量(1. <50kg , 2. 50kg-100kg , 3. >100kg)
      */
     private Integer weight;
     /**
@@ -43,7 +43,7 @@ public class VoUserArticleOut {
      */
     private String applicantTel;
     /**
-     * 搬运方式
+     * 搬运方式（1.自己搬运，2.搬家公司）
      */
     private Integer approach;
     /**
