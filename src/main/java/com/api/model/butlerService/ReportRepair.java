@@ -60,7 +60,7 @@ public class ReportRepair {
      */
     private Date modifyDate;
     /**
-     * 上传文件路径数据
+     * 上传文件路径数组
      */
     private String[] fileUrls;
 

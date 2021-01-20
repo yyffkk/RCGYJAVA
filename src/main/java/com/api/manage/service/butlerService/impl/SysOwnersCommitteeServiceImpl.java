@@ -84,7 +84,7 @@ public class SysOwnersCommitteeServiceImpl implements SysOwnersCommitteeService 
             }
             //上传照片到数据库
             UploadUtil uploadUtil = new UploadUtil();
-            uploadUtil.saveUrlToDB(sysOwnersCommittee.getFileUrls(),"sys_owners_committee",sysOwnersCommittee.getId(),"ownersCommitteeImg","600",30,20);
+            uploadUtil.saveUrlToDB(sysOwnersCommittee.getFileUrls(),"sysOwnersCommittee",sysOwnersCommittee.getId(),"ownersCommitteeImg","600",30,20);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -105,7 +105,7 @@ public class SysOwnersCommitteeServiceImpl implements SysOwnersCommitteeService 
     public VoFindByIdOwnersCommittee findById(Integer id) {
         VoFindByIdOwnersCommittee byId = sysOwnersCommitteeDao.findById(id);
         UploadUtil uploadUtil = new UploadUtil();
-        List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_owners_committee", id, "ownersCommitteeImg");
+        List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysOwnersCommittee", id, "ownersCommitteeImg");
         //填入照片资源集合
         byId.setImgUrls(imgByDate);
         return byId;
@@ -128,9 +128,9 @@ public class SysOwnersCommitteeServiceImpl implements SysOwnersCommitteeService 
             }
             UploadUtil uploadUtil = new UploadUtil();
             //先根据业委会数据id删除数据库照片资源
-            uploadUtil.delete("sys_owners_committee", sysOwnersCommittee.getId(), "ownersCommitteeImg");
+            uploadUtil.delete("sysOwnersCommittee", sysOwnersCommittee.getId(), "ownersCommitteeImg");
             //在添加照片资源
-            uploadUtil.saveUrlToDB(sysOwnersCommittee.getFileUrls(),"sys_owners_committee",sysOwnersCommittee.getId(),"ownersCommitteeImg","600",30,20);
+            uploadUtil.saveUrlToDB(sysOwnersCommittee.getFileUrls(),"sysOwnersCommittee",sysOwnersCommittee.getId(),"ownersCommitteeImg","600",30,20);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

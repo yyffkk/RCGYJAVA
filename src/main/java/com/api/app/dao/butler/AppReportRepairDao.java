@@ -35,4 +35,25 @@ public interface AppReportRepairDao {
      * @return app进程处理集合
      */
     List<AppProcessRecordVo>  findProcessRecordByIds(UserIdAndRepairId userIdAndRepairId);
+
+    /**
+     * 假删除报事报修信息，将工单表的 用户端删除字段 改为 0.删除
+     * @param userIdAndRepairId 用户id和报事报修主键id
+     * @return 影响行数
+     */
+    int falseDelete(UserIdAndRepairId userIdAndRepairId);
+
+    /**
+     * 取消订单
+     * @param userIdAndRepairId 用户id和报事报修主键id
+     * @return 影响行数
+     */
+    int cancel(UserIdAndRepairId userIdAndRepairId);
+
+    /**
+     * 根据用户id和报事报修主键id 查询派工单id
+     * @param userIdAndRepairId 用户id和报事报修主键id
+     * @return 影响行数
+     */
+    int findDispatchListIdByIds(UserIdAndRepairId userIdAndRepairId);
 }

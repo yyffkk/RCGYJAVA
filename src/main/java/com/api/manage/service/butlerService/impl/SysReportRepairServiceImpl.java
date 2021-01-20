@@ -115,7 +115,7 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
             reportRepair.setCode(code);
             //填入工单主键id
             reportRepair.setDispatchListId(dispatchList.getId());
-            //填入报修来源
+            //填入报修来源，1.业主来电
             reportRepair.setFroms(1);
             //添加报事报修信息
             int insert2 = sysReportRepairDao.insert(reportRepair);
@@ -124,15 +124,21 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
             }
             //将上传路径传入数据库
             UploadUtil uploadUtil = new UploadUtil();
-            uploadUtil.saveUrlToDB(reportRepair.getFileUrls(),"sys_report_repair",reportRepair.getId(),"repairImg","600",30,20);
+            uploadUtil.saveUrlToDB(reportRepair.getFileUrls(),"sysReportRepair",reportRepair.getId(),"repairImg","600",30,20);
 
             //添加处理进程记录
             ProcessRecord processRecord = new ProcessRecord();
+            //填入派工单id
             processRecord.setDispatchListId(dispatchList.getId());
+            //填入操作时间（数据创建时间）
             processRecord.setOperationDate(new Date());
+            //填入操作类型（1.提交报修，2.派单，3.开始处理，4.处理完成，5.确认，6.回访，7.回退，8.作废，9.取消）
             processRecord.setOperationType(1);
+            //填入操作人（取自住户表或物业表）
             processRecord.setOperator(sysUser.getId());
+            //填入操作人类型（1.住户，2.管家（物业）,3.操作人（物业））
             processRecord.setOperatorType(2);
+            //填入操作内容
             processRecord.setOperatorContent("您的工单正在等待分配");
             int insert3 = sysProcessRecordDao.insert(processRecord);
             if (insert3 <= 0){
@@ -178,9 +184,9 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
             }
             UploadUtil uploadUtil = new UploadUtil();
             //先根据报事报修主键数据id 删除数据库的照片资源
-            uploadUtil.delete("sys_report_repair",reportRepair.getId(),"repairImg");
+            uploadUtil.delete("sysReportRepair",reportRepair.getId(),"repairImg");
             //再添加照片资源到数据库
-            uploadUtil.saveUrlToDB(reportRepair.getFileUrls(),"sys_report_repair",reportRepair.getId(),"repairImg","600",30,20);
+            uploadUtil.saveUrlToDB(reportRepair.getFileUrls(),"sysReportRepair",reportRepair.getId(),"repairImg","600",30,20);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

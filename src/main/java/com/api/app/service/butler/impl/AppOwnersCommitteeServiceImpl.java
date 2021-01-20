@@ -21,7 +21,7 @@ public class AppOwnersCommitteeServiceImpl implements AppOwnersCommitteeService 
         if (all != null && all.size()>0){
             for (VoOwnersCommittee voOwnersCommittee : all) {
                 UploadUtil uploadUtil = new UploadUtil();
-                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_owners_committee", voOwnersCommittee.getId(), "ownersCommitteeImg");
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysOwnersCommittee", voOwnersCommittee.getId(), "ownersCommitteeImg");
                 //填入照片资源集合
                 voOwnersCommittee.setImgUrls(imgByDate);
             }
