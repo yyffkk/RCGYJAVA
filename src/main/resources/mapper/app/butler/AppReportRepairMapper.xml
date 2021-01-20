@@ -23,7 +23,12 @@
 
     <select id="findProcessRecordByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppProcessRecordVo">
         select * from sys_process_record as spr,sys_dispatch_list as sdl
-        where spr.dispatch_list_id = sdl.id and sdl.user_delete = 1 and sdl.sys_delete = 1 and dispatch_list_id = #{repairId}
+        where spr.dispatch_list_id = sdl.id and sdl.user_delete = 1 and sdl.sys_delete = 1 and spr.dispatch_list_id = #{repairId}
+    </select>
+
+    <select id="findHandleCompleteByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppMaintenanceResultVo">
+        select * from sys_handle_complete_detail as shcd,sys_dispatch_list as sdl
+        where shcd.dispatch_list_id = sdl.id and sdl.user_delete = 1 and sdl.sys_delete = 1 and shcd.dispatch_list_id = #{repairId}
     </select>
 
     <update id="falseDelete" parameterType="com.api.model.app.UserIdAndRepairId">
@@ -39,4 +44,19 @@
     <select id="findDispatchListIdByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="java.lang.Integer">
         select dispatch_list_id from sys_report_repair where repairman = #{id} and id = #{repairId}
     </select>
+
+    <update id="completeOrder" parameterType="com.api.model.app.UserIdAndRepairId">
+        update sys_dispatch_list set status = 5
+        where id = (select dispatch_list_id from sys_report_repair where id = #{repairId} and repairman = #{id})
+    </update>
+
+    <update id="evaluate" parameterType="com.api.model.app.AppRepairEvaluate" >
+        update sys_dispatch_list
+        <set>
+            evaluation_level = #{evaluationLevel},
+            evaluation_content = #{evaluationContent},
+            evaluation_date = #{evaluationDate}
+        </set>
+        where id = (select dispatch_list_id from sys_report_repair where id = #{repairId} and repairman = #{id})
+    </update>
 </mapper>

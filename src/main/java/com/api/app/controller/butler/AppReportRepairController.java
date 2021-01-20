@@ -1,6 +1,7 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppReportRepairService;
+import com.api.model.app.AppRepairEvaluate;
 import com.api.model.app.UserIdAndRepairId;
 import com.api.model.butlerService.ReportRepair;
 import com.api.vo.app.AppConvenientTelephoneVo;
@@ -91,6 +92,32 @@ public class AppReportRepairController {
     public Map<String,Object> cancel(UserIdAndRepairId userIdAndRepairId,String name){
         return appReportRepairService.cancel(userIdAndRepairId,name);
     }
+
+    /**
+     * 确认完成订单
+     * @param userIdAndRepairId 用户id和报事报修主键id
+     * @return map
+     */
+    @GetMapping("/completeOrder")
+    public Map<String,Object> completeOrder(UserIdAndRepairId userIdAndRepairId,String name){
+        return appReportRepairService.completeOrder(userIdAndRepairId,name);
+    }
+
+
+    /**
+     * 用户评价
+     * @param appRepairEvaluate app报事报修评论信息
+     * @return map
+     */
+    @PostMapping("/evaluate")
+    public Map<String,Object> evaluate(@RequestBody AppRepairEvaluate appRepairEvaluate,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        appRepairEvaluate.setId(id);
+        return appReportRepairService.evaluate(appRepairEvaluate);
+    }
+
+
 
 
 

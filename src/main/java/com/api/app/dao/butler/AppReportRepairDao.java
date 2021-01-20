@@ -1,7 +1,9 @@
 package com.api.app.dao.butler;
 
+import com.api.model.app.AppRepairEvaluate;
 import com.api.model.app.UserIdAndRepairId;
 import com.api.vo.app.AppDispatchListVo;
+import com.api.vo.app.AppMaintenanceResultVo;
 import com.api.vo.app.AppProcessRecordVo;
 import com.api.vo.app.AppReportRepairVo;
 
@@ -37,6 +39,14 @@ public interface AppReportRepairDao {
     List<AppProcessRecordVo>  findProcessRecordByIds(UserIdAndRepairId userIdAndRepairId);
 
     /**
+     * //根据 用户id和报事报修主键id 查询维修结果信息
+     * @param userIdAndRepairId 用户id和报事报修主键id
+     * @return 维修结果信息
+     */
+    AppMaintenanceResultVo findHandleCompleteByIds(UserIdAndRepairId userIdAndRepairId);
+
+
+    /**
      * 假删除报事报修信息，将工单表的 用户端删除字段 改为 0.删除
      * @param userIdAndRepairId 用户id和报事报修主键id
      * @return 影响行数
@@ -56,4 +66,18 @@ public interface AppReportRepairDao {
      * @return 影响行数
      */
     int findDispatchListIdByIds(UserIdAndRepairId userIdAndRepairId);
+
+    /**
+     * 用户确认完成订单，改变报修单状态为 5.已确认已完成
+     * @param userIdAndRepairId 用户id和报事报修主键id
+     * @return 影响行数
+     */
+    int completeOrder(UserIdAndRepairId userIdAndRepairId);
+
+    /**
+     * 用户评价
+     * @param appRepairEvaluate app报事报修评论信息
+     * @return 影响行数
+     */
+    int evaluate(AppRepairEvaluate appRepairEvaluate);
 }

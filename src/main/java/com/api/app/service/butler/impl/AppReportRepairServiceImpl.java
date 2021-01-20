@@ -5,12 +5,14 @@ import com.api.app.service.butler.AppReportRepairService;
 import com.api.manage.dao.butlerService.SysDispatchListDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
 import com.api.manage.dao.butlerService.SysReportRepairDao;
+import com.api.model.app.AppRepairEvaluate;
 import com.api.model.app.UserIdAndRepairId;
 import com.api.model.butlerService.DispatchList;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.ReportRepair;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppDispatchListVo;
+import com.api.vo.app.AppMaintenanceResultVo;
 import com.api.vo.app.AppProcessRecordVo;
 import com.api.vo.app.AppReportRepairVo;
 import com.api.vo.resources.VoResourcesImg;
@@ -68,6 +70,15 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
         //根据用户id和报事报修主键id查询app进程处理集合
         List<AppProcessRecordVo>  appProcessRecordVoList = appReportRepairDao.findProcessRecordByIds(userIdAndRepairId);
         map.put("appProcessRecordVo",appProcessRecordVoList);
+
+        //根据 用户id和报事报修主键id 查询维修结果信息
+        AppMaintenanceResultVo appMaintenanceResultVo = appReportRepairDao.findHandleCompleteByIds(userIdAndRepairId);
+        if (appMaintenanceResultVo != null){
+            UploadUtil uploadUtil1 = new UploadUtil();
+            List<VoResourcesImg> imgByDate1 = uploadUtil1.findImgByDate("sysHandleCompleteDetail", appMaintenanceResultVo.getId(), "maintenanceResultImg");
+            appMaintenanceResultVo.setImgUrls(imgByDate1);
+        }
+        map.put("appMaintenanceResultVo",appMaintenanceResultVo);
 
         return map;
     }
@@ -251,6 +262,68 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
         }
         map.put("message","取消订单成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> completeOrder(UserIdAndRepairId userIdAndRepairId, String name) {
+        map = new HashMap<>();
+        try {
+            //用户确认完成订单，改变报修单状态为 5.已确认已完成
+            int update = appReportRepairDao.completeOrder(userIdAndRepairId);
+            if (update <= 0){
+                throw new RuntimeException("确认订单失败");
+            }
+            //根据用户id和报事报修主键id 查询派工单id
+            int dispatchListId = appReportRepairDao.findDispatchListIdByIds(userIdAndRepairId);
+            //添加处理进程记录
+            ProcessRecord processRecord = new ProcessRecord();
+            //填入派工单id
+            processRecord.setDispatchListId(dispatchListId);
+            //填入操作时间（数据创建时间）
+            processRecord.setOperationDate(new Date());
+            //填入操作类型（1.提交报修，2.派单，3.开始处理，4.处理完成，5.确认，6.回访，7.回退，8.作废，9.取消）
+            processRecord.setOperationType(5);
+            //填入操作人（取自住户表或物业表）
+            processRecord.setOperator(userIdAndRepairId.getId());
+            //填入操作人类型（1.住户，2.管家（物业）,3.操作人（物业））
+            processRecord.setOperatorType(1);
+            //填入操作内容
+            processRecord.setOperatorContent(name+"确认了订单");
+            int insert3 = sysProcessRecordDao.insert(processRecord);
+            if (insert3 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","确认订单成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> evaluate(AppRepairEvaluate appRepairEvaluate) {
+        map = new HashMap<>();
+        //填入评价时间
+        appRepairEvaluate.setEvaluationDate(new Date());
+        //用户评价
+        int update = appReportRepairDao.evaluate(appRepairEvaluate);
+        if (update > 0){
+            map.put("message","评价成功");
+            map.put("status",true);
+        }else {
+            map.put("message","评价失败");
+            map.put("status",false);
+        }
         return map;
     }
 }
