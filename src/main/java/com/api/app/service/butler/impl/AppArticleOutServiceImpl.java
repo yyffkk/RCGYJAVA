@@ -107,9 +107,15 @@ public class AppArticleOutServiceImpl implements AppArticleOutService {
     public Map<String, Object> getQRCode(UserIdAndArticleOutId userIdAndArticleOutId) {
         map = new HashMap<>();
         AppArticleOutQRCodeVo appArticleOutQRCodeVo = appArticleOutDao.findQRCodeByIds(userIdAndArticleOutId);
+        if (appArticleOutQRCodeVo == null){
+            map.put("message","不存在或已被删除");
+            map.put("status",false);
+            return map;
+        }
         //有效时间 = 预计时间 + 24小时
         appArticleOutQRCodeVo.setEffectiveTime(new Date(appArticleOutQRCodeVo.getEffectiveTime().getTime()+24*60*60*1000));
         map.put("appArticleOutQRCodeVo",appArticleOutQRCodeVo);
+        map.put("message","查询成功");
         map.put("status",true);
         return map;
     }
