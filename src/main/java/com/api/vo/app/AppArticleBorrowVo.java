@@ -1,11 +1,15 @@
-package com.api.vo.butlerService;
+package com.api.vo.app;
+
+import com.api.vo.resources.VoResourcesImg;
+
+import java.util.List;
 
 /**
- * 查询物品管理信息Vo list 回显
+ * app物品所有可借信息Vo list 回显
  */
-public class VoArticle {
+public class AppArticleBorrowVo {
     /**
-     * 主键id
+     * 物品主键id
      */
     private Integer id;
     /**
@@ -13,21 +17,21 @@ public class VoArticle {
      */
     private String name;
     /**
-     * 物品数量
+     * 可借数量剩余
      */
     private Integer quantity;
     /**
-     * 库存
+     * 照片资源集合
      */
-    private Integer stock;
+    private List<VoResourcesImg> imgUrls;
 
     @Override
     public String toString() {
-        return "VoArticle{" +
+        return "AppArticleBorrowVo{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +
-                ", stock=" + stock +
+                ", imgUrls=" + imgUrls +
                 '}';
     }
 
@@ -55,21 +59,21 @@ public class VoArticle {
         this.quantity = quantity;
     }
 
-    public Integer getStock() {
-        return stock;
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
     }
 
-    public VoArticle() {
+    public AppArticleBorrowVo() {
     }
 
-    public VoArticle(Integer id, String name, Integer quantity, Integer stock) {
+    public AppArticleBorrowVo(Integer id, String name, Integer quantity, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
-        this.stock = stock;
+        this.imgUrls = imgUrls;
     }
 }

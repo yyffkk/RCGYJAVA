@@ -27,4 +27,10 @@ public interface BorrowDao {
      */
     List<SysArticleBorrow> findAll();
 
+    /**
+     * 根据物品id查询物品借取数
+     * @param id 物品id
+     * @return 物品借取数
+     */
+    int countBorrowNum(Integer id);
 }

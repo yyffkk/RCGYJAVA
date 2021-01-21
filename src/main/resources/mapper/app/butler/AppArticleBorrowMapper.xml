@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppArticleBorrowDao">
+    <select id="list" resultType="com.api.vo.app.AppArticleBorrowVo">
+        select sa.id,sa.name,count(article_id) as quantity
+        from sys_article_detail as sad,sys_article as sa
+        where sad.article_id = sa.id and sad.status = 1
+        GROUP BY sad.article_id
+    </select>
+
+    <select id="findBorrowNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select (case sum(quantity) is null when true then 0 else sum(quantity) end) as num
+        from sys_article_borrow
+        where borrow_status = 1 and  article_id = #{id}
+    </select>
+</mapper>

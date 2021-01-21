@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.BorrowDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchBorrow" resultType="com.api.vo.butlerService.VoBorrow">
-        select sab.id,sa.quantity,sa.name,ur.name as borrow_name,ur.tel,sab.begin_date,sab.end_date,sab.status,sab.remake
-        ,(select (select count(quantity) from sys_article_borrow where borrow_status = 1 and article_id = sa.id) ) as stock
-        from sys_article_borrow as sab,sys_article as sa,user_resident as ur
+        select sab.*,sad.code,sa.name,ur.name as borrow_name,ur.tel
+        from sys_article_borrow as sab,sys_article_detail as sad,sys_article as sa,user_resident as ur
         <where>
-            sab.article_id = sa.id
-            and ur.id = sab.create_id
+            sab.article_detail_id = sad.id
+            and sad.article_id = sa.id
+            and sab.create_id = ur.id
             <if test="name != null and name != ''">
                 and sa.name like concat('%',#{name},'%')
             </if>
@@ -38,5 +38,11 @@
 
     <select id="findAll" resultType="com.api.model.butlerService.SysArticleBorrow">
         select * from sys_article_borrow
+    </select>
+
+    <select id="countBorrowNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) as num
+        from sys_article_borrow as sab,sys_article_detail as sad
+        where sab.article_detail_id = sad.id and borrow_status = 1 and sad.article_id = #{id}
     </select>
 </mapper>

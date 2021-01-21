@@ -15,9 +15,9 @@ public class VoBorrow {
      */
     private String name;
     /**
-     * 借取数量
+     * 物品编号
      */
-    private Integer quantity;
+    private Integer code;
     /**
      * 借用人
      */
@@ -47,11 +47,7 @@ public class VoBorrow {
      */
     private Integer status;
     /**
-     * 库存
-     */
-    private Integer stock;
-    /**
-     * 备注
+     * 备注（损坏原因）
      */
     private String remake;
 
@@ -60,7 +56,7 @@ public class VoBorrow {
         return "VoBorrow{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", quantity=" + quantity +
+                ", code=" + code +
                 ", borrowName='" + borrowName + '\'' +
                 ", tel='" + tel + '\'' +
                 ", beginDate=" + beginDate +
@@ -68,7 +64,6 @@ public class VoBorrow {
                 ", borrowDate=" + borrowDate +
                 ", borrowStatus=" + borrowStatus +
                 ", status=" + status +
-                ", stock=" + stock +
                 ", remake='" + remake + '\'' +
                 '}';
     }
@@ -89,12 +84,12 @@ public class VoBorrow {
         this.name = name;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getCode() {
+        return code;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     public String getBorrowName() {
@@ -153,14 +148,6 @@ public class VoBorrow {
         this.status = status;
     }
 
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
     public String getRemake() {
         return remake;
     }
@@ -172,10 +159,10 @@ public class VoBorrow {
     public VoBorrow() {
     }
 
-    public VoBorrow(Integer id, String name, Integer quantity, String borrowName, String tel, Date beginDate, Date endDate, long borrowDate, Integer borrowStatus, Integer status, Integer stock, String remake) {
+    public VoBorrow(Integer id, String name, Integer code, String borrowName, String tel, Date beginDate, Date endDate, long borrowDate, Integer borrowStatus, Integer status, String remake) {
         this.id = id;
         this.name = name;
-        this.quantity = quantity;
+        this.code = code;
         this.borrowName = borrowName;
         this.tel = tel;
         this.beginDate = beginDate;
@@ -183,7 +170,6 @@ public class VoBorrow {
         this.borrowDate = borrowDate;
         this.borrowStatus = borrowStatus;
         this.status = status;
-        this.stock = stock;
         this.remake = remake;
     }
 }

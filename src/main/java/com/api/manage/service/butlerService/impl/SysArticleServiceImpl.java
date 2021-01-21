@@ -1,7 +1,9 @@
 package com.api.manage.service.butlerService.impl;
 
+import com.api.manage.dao.butlerService.BorrowDao;
 import com.api.manage.dao.butlerService.SysArticleDao;
 import com.api.manage.dao.resources.ResourcesImgDao;
+import com.api.manage.service.butlerService.BorrowService;
 import com.api.model.butlerService.Article;
 import com.api.model.butlerService.ArticleDetail;
 import com.api.model.butlerService.SearchArticle;
@@ -34,10 +36,21 @@ public class SysArticleServiceImpl implements SysArticleService {
     SysArticleDao sysArticleDao;
     @Resource
     ResourcesImgDao resourcesImgDao;
+    @Resource
+    BorrowDao borrowDao;
 
     @Override
     public List<VoArticle> list(SearchArticle searchArticle) {
-        return sysArticleDao.list(searchArticle);
+        List<VoArticle> list = sysArticleDao.list(searchArticle);
+        if (list != null && list.size()>0){
+            for (VoArticle voArticle : list) {
+                //根据物品id查询物品借取数
+                int num = borrowDao.countBorrowNum(voArticle.getId());
+                //库存 = 数量 - 借取数
+                voArticle.setStock(voArticle.getQuantity() - num);
+            }
+        }
+        return list;
     }
 
     @Override

@@ -35,10 +35,18 @@ public class BorrowServiceImpl implements BorrowService {
         List<VoBorrow> list = borrowDao.list(searchBorrow);
         if (list != null && list.size()>0){
             for (VoBorrow voBorrow : list) {
-                //计算出出借时长
-                long hour = (new Date().getTime() - voBorrow.getBeginDate().getTime())/(60*60*1000);
-                //传入出借时长
-                voBorrow.setBorrowDate(hour);
+                //判断借取状态（1.出借中，2.已还）
+                if (voBorrow.getBorrowStatus() == 1){
+                    //1.出借中
+                    //计算出出借时长(现在时间-借出时间)
+                    long hour = (new Date().getTime() - voBorrow.getBeginDate().getTime())/(60*60*1000);
+                    voBorrow.setBorrowDate(hour);
+                }else if (voBorrow.getBorrowStatus() == 2){
+                    //2.已还
+                    //计算出出借时长(归还时间-借出时间)
+                    long hour = (voBorrow.getEndDate().getTime() - voBorrow.getBeginDate().getTime())/(60*60*1000);
+                    voBorrow.setBorrowDate(hour);
+                }
             }
         }
         return list;
