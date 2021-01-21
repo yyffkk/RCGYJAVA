@@ -1,6 +1,7 @@
 package com.api.app.service.butler;
 
 import com.api.model.app.AppArticleOut;
+import com.api.model.app.UserIdAndArticleOutId;
 import com.api.vo.app.AppArticleOutVo;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface AppArticleOutService {
     List<AppArticleOutVo> list(Integer id);
 
     Map<String, Object> falseDelete(int[] ids, Integer id);
+
+    Map<String, Object> getQRCode(UserIdAndArticleOutId userIdAndArticleOutId);
 }

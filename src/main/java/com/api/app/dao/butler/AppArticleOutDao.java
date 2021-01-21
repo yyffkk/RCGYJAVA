@@ -2,6 +2,7 @@ package com.api.app.dao.butler;
 
 import com.api.model.app.AppArticleOut;
 import com.api.model.app.UserIdAndArticleOutId;
+import com.api.vo.app.AppArticleOutQRCodeVo;
 import com.api.vo.app.AppArticleOutVo;
 import com.api.vo.app.AppMovingCompanyVo;
 
@@ -34,4 +35,11 @@ public interface AppArticleOutDao {
      * @return 影响行数
      */
     int falseDelete(UserIdAndArticleOutId userIdAndArticleOutId);
+
+    /**
+     * 根据 用户主键id 和 物品出户主键id 查询二维码信息
+     * @param userIdAndArticleOutId 用户主键id 和 物品出户主键id
+     * @return map
+     */
+    AppArticleOutQRCodeVo findQRCodeByIds(UserIdAndArticleOutId userIdAndArticleOutId);
 }

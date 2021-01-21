@@ -5,6 +5,7 @@ import com.api.app.service.butler.AppArticleOutService;
 import com.api.model.app.AppArticleOut;
 import com.api.model.app.UserIdAndArticleOutId;
 import com.api.util.UploadUtil;
+import com.api.vo.app.AppArticleOutQRCodeVo;
 import com.api.vo.app.AppArticleOutVo;
 import com.api.vo.app.AppMovingCompanyVo;
 import org.springframework.stereotype.Service;
@@ -98,6 +99,17 @@ public class AppArticleOutServiceImpl implements AppArticleOutService {
             return map;
         }
         map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getQRCode(UserIdAndArticleOutId userIdAndArticleOutId) {
+        map = new HashMap<>();
+        AppArticleOutQRCodeVo appArticleOutQRCodeVo = appArticleOutDao.findQRCodeByIds(userIdAndArticleOutId);
+        //有效时间 = 预计时间 + 24小时
+        appArticleOutQRCodeVo.setEffectiveTime(new Date(appArticleOutQRCodeVo.getEffectiveTime().getTime()+24*60*60*1000));
+        map.put("appArticleOutQRCodeVo",appArticleOutQRCodeVo);
         map.put("status",true);
         return map;
     }

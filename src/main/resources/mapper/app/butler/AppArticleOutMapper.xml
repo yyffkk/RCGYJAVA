@@ -50,4 +50,10 @@
         update user_article_out set user_delete = 0
         where id = #{articleOutId} and resident_id = #{userId}
     </update>
+
+    <select id="findQRCodeByIds" parameterType="com.api.model.app.UserIdAndArticleOutId" resultType="com.api.vo.app.AppArticleOutQRCodeVo">
+        select uao.id,uao.resident_id,uao.expected_time as effective_time,ur.name as resident_name
+        from user_article_out as uao,user_resident as ur
+        where uao.resident_id = ur.id and uao.id = #{articleOutId} and uao.resident_id = #{userId}
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppArticleOutService;
 import com.api.model.app.AppArticleOut;
+import com.api.model.app.UserIdAndArticleOutId;
 import com.api.model.butlerService.UserArticleOut;
 import com.api.vo.app.AppArticleOutVo;
 import com.api.vo.app.AppConvenientTelephoneVo;
@@ -82,6 +83,21 @@ public class AppArticleOutController {
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
         return appArticleOutService.falseDelete(ids.getIds(),id);
+    }
+
+
+    /**
+     * 根据 用户主键id 和 物品出户主键id 查询二维码信息
+     * @param id 用户主键id
+     * @param articleOutId 物品出户主键id
+     * @return map
+     */
+    @GetMapping("/getQRCode")
+    public Map<String,Object> getQRCode(Integer id,Integer articleOutId){
+        UserIdAndArticleOutId userIdAndArticleOutId = new UserIdAndArticleOutId();
+        userIdAndArticleOutId.setUserId(id);
+        userIdAndArticleOutId.setArticleOutId(articleOutId);
+        return appArticleOutService.getQRCode(userIdAndArticleOutId);
     }
 
 
