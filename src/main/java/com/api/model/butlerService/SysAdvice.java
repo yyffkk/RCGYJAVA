@@ -1,6 +1,5 @@
 package com.api.model.butlerService;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.Date;
