@@ -6,4 +6,36 @@
     <select id="list" parameterType="com.api.model.app.SearchAppAdvice" resultType="com.api.vo.app.AppAdviceVo">
         select * from sys_advice where create_id = #{id} and type = #{adviceType} and create_user_type = 1 and is_delete = 1
     </select>
+    <insert id="insert" parameterType="com.api.model.butlerService.SysAdvice">
+        insert into sys_advice(
+            type,
+            status,
+            content,
+            hits,
+            create_id,
+            create_date,
+            create_user_type,
+            is_delete
+        )values (
+            #{type},
+            #{status},
+            #{content},
+            #{hits},
+            #{createId},
+            #{createDate},
+            #{createUserType},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="findAdviceDetailByAdviceId" parameterType="com.api.model.app.UserIdAndAdviceId" resultType="com.api.vo.app.AppAdviceContentVo">
+        select * from sys_advice_detail where advice_id = #{adviceId} and create_id = #{id}
+    </select>
+
+    <select id="findAdviceByAdviceId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppAdviceVo">
+        select * from sys_advice where id = #{adviceId}
+    </select>
 </mapper>

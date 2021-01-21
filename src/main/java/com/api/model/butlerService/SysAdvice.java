@@ -17,7 +17,7 @@ public class SysAdvice {
      */
     private Integer status;
     /**
-     * 类型(1.咨询，2.建议)
+     * 类型(1.咨询，2.建议，3.投诉，4.表扬)
      */
     private Integer type;
     /**
