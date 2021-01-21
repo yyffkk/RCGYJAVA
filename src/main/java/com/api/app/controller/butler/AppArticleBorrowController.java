@@ -1,8 +1,10 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppArticleBorrowService;
+import com.api.model.app.UserIdAndArticleBorrowId;
 import com.api.vo.app.AppArticleBorrowVo;
 import com.api.vo.app.AppArticleOutVo;
+import com.api.vo.app.AppMyArticleBorrowVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +53,24 @@ public class AppArticleBorrowController {
      */
     @GetMapping("/myList")
     public Map<String,Object> myList(int pageNum,int size,Integer id){
-        return null;
+        PageHelper.startPage(pageNum,size);
+        List<AppMyArticleBorrowVo> appMyArticleBorrowVos =appArticleBorrowService.myList(id);
+        PageInfo<AppMyArticleBorrowVo> pageInfo = new PageInfo<>(appMyArticleBorrowVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 报损
+     * @param userIdAndArticleBorrowId 用户id 和 物品借还主键id
+     * @return map
+     */
+    @GetMapping("/frmLoss")
+    public Map<String,Object> frmLoss(UserIdAndArticleBorrowId userIdAndArticleBorrowId){
+        return appArticleBorrowService.frmLoss(userIdAndArticleBorrowId);
     }
 
 }

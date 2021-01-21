@@ -1,6 +1,8 @@
 package com.api.app.dao.butler;
 
+import com.api.model.app.UserIdAndArticleBorrowId;
 import com.api.vo.app.AppArticleBorrowVo;
+import com.api.vo.app.AppMyArticleBorrowVo;
 
 import java.util.List;
 
@@ -17,4 +19,18 @@ public interface AppArticleBorrowDao {
      * @return 借出数量
      */
     int findBorrowNumById(Integer id);
+
+    /**
+     * 查询该用户的所有物品借还信息
+     * @param id 用户id
+     * @return 我的借还物品信息集合
+     */
+    List<AppMyArticleBorrowVo> myList(Integer id);
+
+    /**
+     * 报损
+     * @param userIdAndArticleBorrowId 用户id 和 物品借还主键id
+     * @return 影响行数
+     */
+    int frmLoss(UserIdAndArticleBorrowId userIdAndArticleBorrowId);
 }
