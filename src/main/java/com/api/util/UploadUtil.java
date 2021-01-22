@@ -80,7 +80,7 @@ public class UploadUtil {
             e.printStackTrace();
             throw new RuntimeException("保存文件异常");
         }
-        return savePath + filename;
+        return path + filename;
     }
 
     /**
