@@ -7,6 +7,7 @@ import com.api.model.butlerService.SysAdvice;
 import com.api.model.butlerService.SysAdviceDetail;
 import com.api.vo.app.AppAdviceVo;
 import com.api.vo.app.AppMyArticleBorrowVo;
+import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -66,14 +67,44 @@ public class AppAdviceController {
     }
 
     /**
-     * 继续提问？？？？
+     * 继续提问
      * @param sysAdviceDetail 建议反馈表信息
      * @param request app-admin-token获取的request用户信息
      * @return map
      */
     @PostMapping("/reQuestion")
     public Map<String,Object> reQuestion(@RequestBody SysAdviceDetail sysAdviceDetail,HttpServletRequest request){
-        return null;
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        sysAdviceDetail.setCreateId(id);
+        return appAdviceService.reQuestion(sysAdviceDetail);
     }
 
+
+    /**
+     * 评价
+     * @param sysAdvice 咨询建议表信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/evaluate")
+    public Map<String,Object> evaluate(@RequestBody SysAdvice sysAdvice,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        sysAdvice.setCreateId(id);
+        return appAdviceService.evaluate(sysAdvice);
+    }
+
+    /**
+     * app批量删除咨询建议信息
+     * @param ids 咨询建议主键id数组
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/falseDelete")
+    public Map<String,Object> falseDelete(@RequestBody VoIds ids,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return appAdviceService.falseDelete(ids.getIds(),id);
+    }
 }

@@ -8,14 +8,18 @@ import com.api.model.app.SearchAppAdvice;
 import com.api.model.app.UserIdAndAdviceId;
 import com.api.model.butlerService.SearchProhibitedKeywords;
 import com.api.model.butlerService.SysAdvice;
+import com.api.model.butlerService.SysAdviceDetail;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppAdviceContentVo;
 import com.api.vo.app.AppAdviceDetailVo;
 import com.api.vo.app.AppAdviceVo;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoFindByIdAdvice;
 import com.api.vo.butlerService.VoProhibitedKeywords;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -68,6 +72,8 @@ public class AppAdviceServiceImpl implements AppAdviceService {
         sysAdvice.setCreateUserType(1);
         //填入是否删除 1.非删 0.删除
         sysAdvice.setIsDelete(1);
+        //填入是否删除 1.非删 0.删除 【用户端】
+        sysAdvice.setUserDelete(1);
 
         //添加建议咨询/投诉表扬 信息
         int insert = appAdviceDao.insert(sysAdvice);
@@ -88,9 +94,14 @@ public class AppAdviceServiceImpl implements AppAdviceService {
     @Override
     public Map<String, Object> findAdviceDetailByAdviceId(UserIdAndAdviceId userIdAndAdviceId) {
         map = new HashMap<>();
-        List<AppAdviceContentVo> appAdviceContentVos = appAdviceDao.findAdviceDetailByAdviceId(userIdAndAdviceId);
+        List<AppAdviceContentVo> appAdviceContentVos = appAdviceDao.findAdviceDetailByAdviceId(userIdAndAdviceId.getAdviceId());
         //根据咨询建议主键id查询咨询建议信息
         AppAdviceVo appAdviceVo = appAdviceDao.findAdviceByAdviceId(userIdAndAdviceId.getAdviceId());
+        if (appAdviceVo == null){
+            map.put("message","该咨询建议不存在或已被删除");
+            map.put("status",false);
+            return map;
+        }
         //填入咨询建议照片资源集合
         UploadUtil uploadUtil = new UploadUtil();
         List<VoResourcesImg> imgByDate = null;
@@ -107,6 +118,74 @@ public class AppAdviceServiceImpl implements AppAdviceService {
         appAdviceDetailVo.setAppAdviceContentVos(appAdviceContentVos);
         appAdviceDetailVo.setAppAdviceVo(appAdviceVo);
         map.put("appAdviceDetailVo",appAdviceDetailVo);
+        map.put("message","查询成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> reQuestion(SysAdviceDetail sysAdviceDetail) {
+        map = new HashMap<>();
+        //填入是否删除 默认为1.非删
+        sysAdviceDetail.setIsDelete(1);
+        //填入创建时间
+        sysAdviceDetail.setCreateDate(new Date());
+        //填入创建人类型,1.住户
+        sysAdviceDetail.setCreateUserType(1);
+        //添加用户反馈回复信息
+        int insert = appAdviceDao.reQuestion(sysAdviceDetail);
+        if (insert >0){
+            map.put("message","提问成功");
+            map.put("status",true);
+        }else {
+            map.put("message","提问失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> evaluate(SysAdvice sysAdvice) {
+        map = new HashMap<>();
+        //添加评价分数
+        int update = appAdviceDao.evaluate(sysAdvice);
+        if (update >0){
+            map.put("message","打分成功");
+            map.put("status",true);
+        }else {
+            map.put("message","打分失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> falseDelete(int[] ids, Integer id) {
+        map = new HashMap<>();
+        try {
+            UserIdAndAdviceId userIdAndAdviceId = new UserIdAndAdviceId();
+            userIdAndAdviceId.setId(id);
+            for (int adviceId : ids) {
+                userIdAndAdviceId.setAdviceId(adviceId);
+                int update = appAdviceDao.falseDelete(userIdAndAdviceId);
+                if (update <= 0){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
         return map;
     }
 

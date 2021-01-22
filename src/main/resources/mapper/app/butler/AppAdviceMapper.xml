@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.butler.AppAdviceDao">
     <select id="list" parameterType="com.api.model.app.SearchAppAdvice" resultType="com.api.vo.app.AppAdviceVo">
-        select * from sys_advice where create_id = #{id} and type = #{adviceType} and create_user_type = 1 and is_delete = 1
+        select * from sys_advice where create_id = #{id} and type = #{adviceType} and create_user_type = 1 and is_delete = 1 and user_delete = 1
     </select>
     <insert id="insert" parameterType="com.api.model.butlerService.SysAdvice">
         insert into sys_advice(
@@ -15,7 +15,8 @@
             create_id,
             create_date,
             create_user_type,
-            is_delete
+            is_delete,
+            user_delete
         )values (
             #{type},
             #{status},
@@ -24,6 +25,38 @@
             #{createId},
             #{createDate},
             #{createUserType},
+            #{isDelete},
+            #{userDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="findAdviceDetailByAdviceId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppAdviceContentVo">
+        select * from sys_advice_detail where advice_id = #{adviceId} and is_delete = 1
+    </select>
+
+    <select id="findAdviceByAdviceId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppAdviceVo">
+        select * from sys_advice where id = #{adviceId} and is_delete = 1 and user_delete = 1
+    </select>
+
+    <insert id="reQuestion" parameterType="com.api.model.butlerService.SysAdviceDetail">
+        insert into sys_advice_detail(
+            advice_id,
+            content,
+            create_id,
+            create_date,
+            create_user_type,
+            parent_id,
+            is_delete
+        )values (
+            #{adviceId},
+            #{content},
+            #{createId},
+            #{createDate},
+            #{createUserType},
+            #{parentId},
             #{isDelete}
         )
         <selectKey keyProperty="id" resultType="java.lang.Integer">
@@ -31,11 +64,12 @@
         </selectKey>
     </insert>
 
-    <select id="findAdviceDetailByAdviceId" parameterType="com.api.model.app.UserIdAndAdviceId" resultType="com.api.vo.app.AppAdviceContentVo">
-        select * from sys_advice_detail where advice_id = #{adviceId} and create_id = #{id}
-    </select>
+    <update id="evaluate" parameterType="com.api.model.butlerService.SysAdvice">
+        update sys_advice set score = #{score}
+        where id = #{id} and create_id = #{createId} and create_user_type = 1
+    </update>
 
-    <select id="findAdviceByAdviceId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppAdviceVo">
-        select * from sys_advice where id = #{adviceId}
-    </select>
+    <update id="falseDelete" parameterType="com.api.model.app.UserIdAndAdviceId">
+        update sys_advice set user_delete = 0 where id = #{adviceId} and create_id = #{id} and create_user_type = 1
+    </update>
 </mapper>

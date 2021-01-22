@@ -26,6 +26,10 @@ public class AppAdviceVo {
      */
     private String content;
     /**
+     * 评分数1-10分
+     */
+    private Integer score;
+    /**
      * 创建时间
      */
     private Date createDate;
@@ -41,6 +45,7 @@ public class AppAdviceVo {
                 ", type=" + type +
                 ", status=" + status +
                 ", content='" + content + '\'' +
+                ", score=" + score +
                 ", createDate=" + createDate +
                 ", imgUrls=" + imgUrls +
                 '}';
@@ -78,6 +83,14 @@ public class AppAdviceVo {
         this.content = content;
     }
 
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -97,11 +110,12 @@ public class AppAdviceVo {
     public AppAdviceVo() {
     }
 
-    public AppAdviceVo(Integer id, Integer type, Integer status, String content, Date createDate, List<VoResourcesImg> imgUrls) {
+    public AppAdviceVo(Integer id, Integer type, Integer status, String content, Integer score, Date createDate, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.type = type;
         this.status = status;
         this.content = content;
+        this.score = score;
         this.createDate = createDate;
         this.imgUrls = imgUrls;
     }

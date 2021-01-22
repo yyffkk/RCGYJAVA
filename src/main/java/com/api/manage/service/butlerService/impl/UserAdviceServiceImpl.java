@@ -128,6 +128,8 @@ public class UserAdviceServiceImpl implements UserAdviceService {
             sysAdvice.setCreateUserType(1);
             //填入是否删除 1.非删 0.删除
             sysAdvice.setIsDelete(1);
+            //填入是否删除 1.非删 0.删除 【用户端】
+            sysAdvice.setUserDelete(1);
             //填入状态（1.未反馈，2.反馈中，3.已反馈）
             sysAdvice.setStatus(1);
             int insert =  userAdviceDao.insertAdvice(sysAdvice);

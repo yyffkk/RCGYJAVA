@@ -61,6 +61,10 @@ public class SysAdvice {
      */
     private Integer isDelete;
     /**
+     * 是否删除（0删除，1非删）[用户端删除]
+     */
+    private Integer userDelete;
+    /**
      * 上传文件（照片路径数组）
      */
     private String[] fileUrls;
@@ -81,6 +85,7 @@ public class SysAdvice {
                 ", modifyDate=" + modifyDate +
                 ", modifyUserType=" + modifyUserType +
                 ", isDelete=" + isDelete +
+                ", userDelete=" + userDelete +
                 ", fileUrls=" + Arrays.toString(fileUrls) +
                 '}';
     }
@@ -189,6 +194,14 @@ public class SysAdvice {
         this.isDelete = isDelete;
     }
 
+    public Integer getUserDelete() {
+        return userDelete;
+    }
+
+    public void setUserDelete(Integer userDelete) {
+        this.userDelete = userDelete;
+    }
+
     public String[] getFileUrls() {
         return fileUrls;
     }
@@ -200,7 +213,7 @@ public class SysAdvice {
     public SysAdvice() {
     }
 
-    public SysAdvice(Integer id, Integer status, Integer type, String content, Integer hits, Integer score, Integer createId, Date createDate, Integer createUserType, Integer modifyId, Date modifyDate, Integer modifyUserType, Integer isDelete, String[] fileUrls) {
+    public SysAdvice(Integer id, Integer status, Integer type, String content, Integer hits, Integer score, Integer createId, Date createDate, Integer createUserType, Integer modifyId, Date modifyDate, Integer modifyUserType, Integer isDelete, Integer userDelete, String[] fileUrls) {
         this.id = id;
         this.status = status;
         this.type = type;
@@ -214,6 +227,7 @@ public class SysAdvice {
         this.modifyDate = modifyDate;
         this.modifyUserType = modifyUserType;
         this.isDelete = isDelete;
+        this.userDelete = userDelete;
         this.fileUrls = fileUrls;
     }
 }
