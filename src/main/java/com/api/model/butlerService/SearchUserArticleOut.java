@@ -1,5 +1,6 @@
 package com.api.model.butlerService;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -39,9 +40,13 @@ public class SearchUserArticleOut {
      */
     private Date actualTimeEnd;
     /**
-     * 物品名称
+     * 物品名称字符串
      */
     private String name;
+    /**
+     * 物品名称数组
+     */
+    private String[] names;
     /**
      * 房间号
      */
@@ -71,6 +76,7 @@ public class SearchUserArticleOut {
                 ", actualTimeStart=" + actualTimeStart +
                 ", actualTimeEnd=" + actualTimeEnd +
                 ", name='" + name + '\'' +
+                ", names=" + Arrays.toString(names) +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", unitNo=" + unitNo +
                 ", buildingNo=" + buildingNo +
@@ -150,6 +156,14 @@ public class SearchUserArticleOut {
         this.name = name;
     }
 
+    public String[] getNames() {
+        return names;
+    }
+
+    public void setNames(String[] names) {
+        this.names = names;
+    }
+
     public String getRoomNumber() {
         return roomNumber;
     }
@@ -185,7 +199,7 @@ public class SearchUserArticleOut {
     public SearchUserArticleOut() {
     }
 
-    public SearchUserArticleOut(int pageNum, int size, String roomName, Integer export, String applicantName, String applicantTel, Date actualTimeStart, Date actualTimeEnd, String name, String roomNumber, Integer unitNo, Integer buildingNo, Integer status) {
+    public SearchUserArticleOut(int pageNum, int size, String roomName, Integer export, String applicantName, String applicantTel, Date actualTimeStart, Date actualTimeEnd, String name, String[] names, String roomNumber, Integer unitNo, Integer buildingNo, Integer status) {
         this.pageNum = pageNum;
         this.size = size;
         this.roomName = roomName;
@@ -195,6 +209,7 @@ public class SearchUserArticleOut {
         this.actualTimeStart = actualTimeStart;
         this.actualTimeEnd = actualTimeEnd;
         this.name = name;
+        this.names = names;
         this.roomNumber = roomNumber;
         this.unitNo = unitNo;
         this.buildingNo = buildingNo;

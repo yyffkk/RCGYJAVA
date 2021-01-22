@@ -51,6 +51,8 @@ public class UserArticleOutServiceImpl implements UserArticleOutService {
                 searchUserArticleOut.setRoomNumber(split[2]);
             }
         }
+        String[] split1 = searchUserArticleOut.getName().split(",");
+        searchUserArticleOut.setNames(split1);
         List<VoUserArticleOut> list = userArticleOutDao.list(searchUserArticleOut);
         //处理显示的roomName信息
         for (VoUserArticleOut voUserArticleOut : list) {

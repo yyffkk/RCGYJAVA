@@ -36,8 +36,12 @@
             <if test="actualTimeEnd != null">
                 and uao.actual_time <![CDATA[ < ]]> #{actualTimeEnd}
             </if>
-            <if test="name != null and name != ''">
-                and uao.name = #{name}
+            <if test="names != null and names != ''">
+                and uao.name in
+                <foreach collection="names" index="index" item="name"
+                         open="(" separator="," close=")">
+                    #{name}
+                </foreach>
             </if>
             <if test="status != null">
                 and uao.status = #{status}
