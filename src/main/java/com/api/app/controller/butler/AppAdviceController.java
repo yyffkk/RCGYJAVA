@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * app 咨询建议/投诉表扬
+ */
 @RestController
 @RequestMapping("app/user/advice")
 public class AppAdviceController {

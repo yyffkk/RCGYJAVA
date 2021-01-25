@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppDailyPaymentDao">
+    <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDailyPaymentVo">
+        select year(end_date) as years,count(*) as payment_num from sys_daily_payment where building_unit_estate_id = #{estateId} and status != 3 group by year(end_date)
+    </select>
+
+    <select id="listType" parameterType="com.api.model.app.AppDailyPaymentDetail" resultType="com.api.vo.app.AppDailyPaymentTypeVo">
+        select DISTINCT sctd.id,sctd.name from sys_daily_payment as sdp,sys_charges_template_detail as sctd
+        where sdp.charges_template_detail_id = sctd.id and sdp.building_unit_estate_id = #{estateId} and year(sdp.end_date) = #{years} and status != 3
+    </select>
+
+    <select id="listDetailed" parameterType="com.api.model.app.AppDailyPaymentDetail" resultType="com.api.vo.app.AppDailyPaymentDetailedVo">
+        select T.group_id,sum(T.payment_price) as payment_price from (
+            select sdp.*,CEILING((MONTH(sdp.end_date)/7)) as group_id
+            from sys_daily_payment as sdp
+            where sdp.building_unit_estate_id = #{estateId} and sdp.charges_template_detail_id =#{chargesTemplateDetailId} and year(sdp.end_date) = #{years} and sdp.status != 3
+        ) as T GROUP BY T.group_id
+    </select>
+
+    <select id="listDetails" parameterType="com.api.model.app.AppDailyPaymentDetail" resultType="com.api.vo.app.AppDailyPaymentDetailsVo">
+        select T.*,concat(year(T.end_date),"年",MONTH(T.end_date),"月") as month from (
+            select sdp.*,CEILING((MONTH(sdp.end_date)/7)) as group_id,concat(sdp.unit_price,sdd.show_name) as unit_price_type
+            from sys_daily_payment as sdp,sys_data_dictionary as sdd
+            where sdp.building_unit_estate_id = #{estateId} and sdp.charges_template_detail_id =#{chargesTemplateDetailId} and year(sdp.end_date) = #{years} and sdp.status != 3
+            and sdd.type_name = "sys_charges_template_detail_type" and sdd.show_value = sdp.type
+        ) as T where T.group_id = #{groupId}
+    </select>
+</mapper>
