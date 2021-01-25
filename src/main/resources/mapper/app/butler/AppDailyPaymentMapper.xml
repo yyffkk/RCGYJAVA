@@ -29,7 +29,7 @@
         ) as T where T.group_id = #{groupId} order by MONTH(T.end_date)
     </select>
 
-    <select id="findPaymentPriceById" parameterType="java.util.Arrays" resultType="java.math.BigDecimal">
+    <select id="findPaymentPriceById" parameterType="com.api.model.app.AppDailyPaymentOrder" resultType="java.math.BigDecimal">
         select sum(payment_price) from sys_daily_payment where id in
         <foreach collection="ids" open="(" close=")" separator="," item="id">
             #{id}

@@ -74,7 +74,7 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
         try {
             int[] ids = appDailyPaymentOrder.getIds();
             //计算出所需支付总金额
-            BigDecimal paymentPrice = appDailyPaymentDao.findPaymentPriceById(ids);
+            BigDecimal paymentPrice = appDailyPaymentDao.findPaymentPriceById(appDailyPaymentOrder);
             if (paymentPrice.compareTo(appDailyPaymentOrder.getPayPrice()) != 0){
                 throw new RuntimeException("支付金额有误，请重新支付");
             }

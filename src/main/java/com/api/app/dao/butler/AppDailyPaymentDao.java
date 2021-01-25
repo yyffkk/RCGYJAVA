@@ -3,7 +3,6 @@ package com.api.app.dao.butler;
 import com.api.model.app.AppDailyPaymentDetail;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
-import com.api.model.chargeManagement.UpdateDailyPayment;
 import com.api.vo.app.AppDailyPaymentDetailedVo;
 import com.api.vo.app.AppDailyPaymentDetailsVo;
 import com.api.vo.app.AppDailyPaymentTypeVo;
@@ -43,10 +42,10 @@ public interface AppDailyPaymentDao {
 
     /**
      * 根据缴费主键id查询所需支付总金额
-     * @param ids 缴费主键id
+     * @param appDailyPaymentOrder app生活缴纳 支付订单信息
      * @return 待缴金额
      */
-    BigDecimal findPaymentPriceById(int[] ids);
+    BigDecimal findPaymentPriceById(AppDailyPaymentOrder appDailyPaymentOrder);
 
     /**
      * 添加生活缴费订单信息
