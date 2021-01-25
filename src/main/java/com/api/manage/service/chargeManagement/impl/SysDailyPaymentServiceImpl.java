@@ -130,14 +130,15 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
 
     @Override
     @Transactional
-    public Map<String, Object> insertOrder(DailyPaymentOrder dailyPaymentOrder) {
+    public Map<String, Object> insertOrder(DailyPaymentPayInfo dailyPaymentPayInfo) {
         map = new HashMap<>();
+        DailyPaymentOrder dailyPaymentOrder = dailyPaymentPayInfo.getDailyPaymentOrder();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
             //判断支付金额是否超出待缴金额
-            VoFindByIdDailyPayment byId = sysDailyPaymentDao.findById(dailyPaymentOrder.getDailyPaymentId());
+            VoFindByIdDailyPayment byId = sysDailyPaymentDao.findById(dailyPaymentPayInfo.getDailyPaymentId());
             if (dailyPaymentOrder.getPayPrice().compareTo(byId.getPaymentPrice())  == 1 ){
                 throw new RuntimeException("支付超出待缴金额，请重新支付,待缴金额为："+byId.getPaymentPrice());
             }
@@ -153,6 +154,17 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
                throw new RuntimeException("添加缴费订单信息失败");
             }
 
+            //添加缴费订单清单信息（缴费信息 与 缴费订单信息 关联表）
+            DailyPaymentOrderList dailyPaymentOrderList = new DailyPaymentOrderList();
+            dailyPaymentOrderList.setDailyPaymentId(dailyPaymentPayInfo.getDailyPaymentId());
+            dailyPaymentOrderList.setDailyPaymentOrderId(dailyPaymentOrder.getId());
+            int orderList = sysDailyPaymentDao.insertOrderList(dailyPaymentOrderList);
+            if (orderList <= 0){
+                throw new RuntimeException("添加缴费订单清单信息失败");
+            }
+
+
+
             //获取状态更新信息
             UpdateDailyPayment updateDailyPayment = new UpdateDailyPayment();
             //填入剩余待缴金额（待缴金额 - 支付金额）
@@ -160,7 +172,7 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             //填入支付金额
             updateDailyPayment.setPayPrice(dailyPaymentOrder.getPayPrice());
             //填入日常缴费信息主键id
-            updateDailyPayment.setDailyPaymentId(dailyPaymentOrder.getDailyPaymentId());
+            updateDailyPayment.setDailyPaymentId(dailyPaymentPayInfo.getDailyPaymentId());
             //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
             int update = sysDailyPaymentDao.updatePaidPriceAndPaymentPrice(updateDailyPayment);
             if (update <= 0){
@@ -212,24 +224,38 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             //填入是否删除，0.删除 1.非删
             dailyPayment.setIsDelete(1);
             //添加日常缴费信息,并返回主键id
-             int insert = sysDailyPaymentDao.insert(dailyPayment);
+            int insert = sysDailyPaymentDao.insert(dailyPayment);
             if (insert <= 0){
                 throw new RuntimeException("添加日常缴费信息失败");
             }
+
             //获取订单信息
             DailyPaymentOrder dailyPaymentOrder = dailyPayment.getDailyPaymentOrder();
             if (dailyPaymentOrder != null){
+                //如果待缴金额小于支付金额，则抛出 超出待缴金额异常
+                if (dailyPayment.getPaymentPrice().compareTo(dailyPaymentOrder.getPayPrice()) == -1 ){
+                    throw new RuntimeException("支付超出待缴金额，请重新支付,待缴金额为："+dailyPayment.getPaymentPrice());
+                }
+
                 //填入创建人
                 dailyPaymentOrder.setCreateId(sysUser.getId());
                 //填入创建时间
                 dailyPaymentOrder.setCreateDate(new Date());
-                //填入日常缴费信息id
-                dailyPaymentOrder.setDailyPaymentId(dailyPayment.getId());
                 //添加缴费订单信息
                 int i = sysDailyPaymentDao.insertOrder(dailyPaymentOrder);
                 if (i<=0){
                     throw new RuntimeException("添加缴费订单信息失败");
                 }
+
+                //添加缴费订单清单信息（缴费信息 与 缴费订单信息 关联表）
+                DailyPaymentOrderList dailyPaymentOrderList = new DailyPaymentOrderList();
+                dailyPaymentOrderList.setDailyPaymentId(dailyPayment.getId());
+                dailyPaymentOrderList.setDailyPaymentOrderId(dailyPaymentOrder.getId());
+                int orderList = sysDailyPaymentDao.insertOrderList(dailyPaymentOrderList);
+                if (orderList <= 0){
+                    throw new RuntimeException("添加缴费订单清单信息失败");
+                }
+
 
                 //获取状态更新信息
                 UpdateDailyPayment updateDailyPayment = new UpdateDailyPayment();

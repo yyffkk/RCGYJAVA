@@ -1,10 +1,7 @@
 package com.api.manage.controller.chargeManagement;
 
 import com.api.manage.shiro.ShiroExceptions;
-import com.api.model.chargeManagement.DailyPayment;
-import com.api.model.chargeManagement.DailyPaymentOrder;
-import com.api.model.chargeManagement.DailyPaymentPush;
-import com.api.model.chargeManagement.SearchDailyPayment;
+import com.api.model.chargeManagement.*;
 import com.api.manage.service.chargeManagement.SysDailyPaymentService;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
@@ -93,13 +90,13 @@ public class SysDailyPaymentController extends ShiroExceptions {
 
     /**
      * 添加日常缴费订单信息（缴费）【打印功能未做】
-     * @param dailyPaymentOrder 日常缴费订单信息
+     * @param dailyPaymentPayInfo 日常缴费 缴费支付信息
      * @return map
      */
     @PostMapping("/insertOrder")
     @RequiresPermissions(value = {"0403","04"},logical = Logical.AND)
-    public Map<String,Object> insertOrder(@RequestBody DailyPaymentOrder dailyPaymentOrder){
-        return sysDailyPaymentService.insertOrder(dailyPaymentOrder);
+    public Map<String,Object> insertOrder(@RequestBody DailyPaymentPayInfo dailyPaymentPayInfo){
+        return sysDailyPaymentService.insertOrder(dailyPaymentPayInfo);
     }
 
 

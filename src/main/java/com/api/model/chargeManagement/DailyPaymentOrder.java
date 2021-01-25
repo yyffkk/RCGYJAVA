@@ -12,10 +12,6 @@ public class DailyPaymentOrder {
      */
     private Integer id;
     /**
-     * 日常缴费信息主键id
-     */
-    private Integer dailyPaymentId;
-    /**
      * 支付单号
      */
     private String code;
@@ -64,7 +60,6 @@ public class DailyPaymentOrder {
     public String toString() {
         return "DailyPaymentOrder{" +
                 "id=" + id +
-                ", dailyPaymentId=" + dailyPaymentId +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
@@ -85,14 +80,6 @@ public class DailyPaymentOrder {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getDailyPaymentId() {
-        return dailyPaymentId;
-    }
-
-    public void setDailyPaymentId(Integer dailyPaymentId) {
-        this.dailyPaymentId = dailyPaymentId;
     }
 
     public String getCode() {
@@ -186,9 +173,8 @@ public class DailyPaymentOrder {
     public DailyPaymentOrder() {
     }
 
-    public DailyPaymentOrder(Integer id, Integer dailyPaymentId, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String remake, Integer isPrinting) {
+    public DailyPaymentOrder(Integer id, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String remake, Integer isPrinting) {
         this.id = id;
-        this.dailyPaymentId = dailyPaymentId;
         this.code = code;
         this.name = name;
         this.tel = tel;

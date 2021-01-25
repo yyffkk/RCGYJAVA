@@ -1,9 +1,6 @@
 package com.api.manage.dao.chargeManagement;
 
-import com.api.model.chargeManagement.DailyPayment;
-import com.api.model.chargeManagement.DailyPaymentOrder;
-import com.api.model.chargeManagement.UpdateDailyPayment;
-import com.api.model.chargeManagement.SearchDailyPayment;
+import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
@@ -66,4 +63,11 @@ public interface SysDailyPaymentDao {
      * @return 待缴费人信息
      */
     VoPayResident findResidentByEstateId(Integer id);
+
+    /**
+     * 添加缴费订单清单信息（缴费信息 与 缴费订单信息 关联表）
+     * @param dailyPaymentOrderList 日常缴费订单清单信息
+     * @return 影响行数
+     */
+    int insertOrderList(DailyPaymentOrderList dailyPaymentOrderList);
 }

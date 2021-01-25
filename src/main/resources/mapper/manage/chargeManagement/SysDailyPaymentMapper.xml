@@ -16,8 +16,8 @@
         from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su,sys_charges_template_detail as sctd
         where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and su.id =sdp.create_id and sctd.id = sdp.charges_template_detail_id and sdp.is_delete = 1
         ) as a
-        LEFT JOIN sys_daily_payment_order as sdpo
-        on a.id = sdpo.daily_payment_id
+        LEFT JOIN sys_daily_payment_order_list as sdpol on a.id = sdpol.daily_payment_id
+        LEFT JOIN sys_daily_payment_order as sdpo on sdpo.id = sdpol.daily_payment_order_id
         <where>
             <if test="chargesTemplateDetailId != null">
                 and a.charges_template_detail_id = #{chargesTemplateDetailId}
@@ -62,7 +62,6 @@
 
     <insert id="insertOrder" parameterType="com.api.model.chargeManagement.DailyPaymentOrder">
         insert into sys_daily_payment_order(
-            daily_payment_id,
             code,
             name,
             tel,
@@ -72,7 +71,6 @@
             create_date,
             remake
         ) values (
-            #{dailyPaymentId},
             #{code},
             #{name},
             #{tel},
@@ -117,7 +115,8 @@
             payment_price,
             status,
             create_id,
-            create_date
+            create_date,
+            is_delete
         ) values (
             #{buildingUnitEstateId},
             #{chargesTemplateDetailId},
@@ -132,7 +131,8 @@
             #{paymentPrice},
             #{status},
             #{createId},
-            #{createDate}
+            #{createDate},
+            #{isDelete}
         )
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id
@@ -147,6 +147,16 @@
         select ur.* from cpm_resident_estate as cre,user_resident as ur
         where cre.resident_id = ur.id and building_unit_estate_id = #{id} limit 1
     </select>
+
+    <insert id="insertOrderList" parameterType="com.api.model.chargeManagement.DailyPaymentOrderList">
+        insert into sys_daily_payment_order_list(
+            daily_payment_order_id,
+            daily_payment_id
+        )values (
+            #{dailyPaymentOrderId},
+            #{dailyPaymentId}
+        )
+    </insert>
 
 
 </mapper>
