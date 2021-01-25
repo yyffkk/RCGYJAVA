@@ -43,7 +43,7 @@
     </select>
 
     <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppArticleOutVo">
-        select * from user_article_out where user_delete = 1 and resident_id = #{id}
+        select * from user_article_out where user_delete = 1 and resident_id = #{id} order by applicant_date DESC
     </select>
 
     <update id="falseDelete" parameterType="com.api.model.app.UserIdAndArticleOutId">

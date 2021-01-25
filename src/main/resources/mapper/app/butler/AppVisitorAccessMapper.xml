@@ -52,6 +52,7 @@
                 and visitor_status = #{visitorStatus}
             </if>
         </where>
+        order by create_date DESC
     </select>
 
 </mapper>

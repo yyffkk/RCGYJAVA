@@ -20,6 +20,7 @@
         select sab.*,sa.name,sad.code
         from sys_article_borrow as sab,sys_article_detail as sad,sys_article as sa
         where sab.article_detail_id = sad.id and sad.article_id = sa.id and sab.create_id = #{id}
+        ORDER BY sab.create_date DESC
     </select>
 
     <update id="frmLoss" parameterType="com.api.model.app.UserIdAndArticleBorrowId">
