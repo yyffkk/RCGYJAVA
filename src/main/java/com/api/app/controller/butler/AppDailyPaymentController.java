@@ -1,15 +1,14 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppDailyPaymentService;
-import com.api.vo.app.AppAdviceVo;
+import com.api.model.app.AppDailyPaymentOrder;
 import com.api.vo.app.AppDailyPaymentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +39,23 @@ public class AppDailyPaymentController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     *
+     * @param appDailyPaymentOrder app生活缴纳 支付订单信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/pay")
+    public Map<String,Object> pay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder, HttpServletRequest request){
+        //从request获取用户姓名
+        String name = request.getParameter("name");
+        //从request获取用户联系电话
+        String tel = request.getParameter("tel");
+        appDailyPaymentOrder.setName(name);
+        appDailyPaymentOrder.setTel(tel);
+        return appDailyPaymentService.pay(appDailyPaymentOrder);
     }
 
 

@@ -28,4 +28,54 @@
             and sdd.type_name = "sys_charges_template_detail_type" and sdd.show_value = sdp.type
         ) as T where T.group_id = #{groupId} order by MONTH(T.end_date)
     </select>
+
+    <select id="findPaymentPriceById" parameterType="java.util.Arrays" resultType="java.math.BigDecimal">
+        select sum(payment_price) from sys_daily_payment where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertOrder" parameterType="com.api.model.app.AppDailyPaymentOrder">
+        insert into sys_daily_payment_order(
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date
+        ) values (
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertOrderList" parameterType="com.api.model.chargeManagement.DailyPaymentOrderList">
+        insert into sys_daily_payment_order_list(
+            daily_payment_order_id,
+            daily_payment_id
+        )values (
+            #{dailyPaymentOrderId},
+            #{dailyPaymentId}
+        )
+    </insert>
+
+    <update id="updatePaidPriceAndPaymentPrice" parameterType="java.lang.Integer">
+        update sys_daily_payment
+        <set>
+            paid_price = cost_price,
+            payment_price = 0,
+            status = 3
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
