@@ -124,4 +124,11 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> paymentRecord(Integer id, String tel) {
+        map = new HashMap<>();
+
+        return map;
+    }
 }

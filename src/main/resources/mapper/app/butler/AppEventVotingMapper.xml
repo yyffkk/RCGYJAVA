@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppEventVotingDao">
+    <select id="list" resultType="com.api.vo.app.AppEventVotingVo">
+        select * from sys_vote where is_delete = 1 and is_release = 1 order by create_date DESC
+    </select>
+
+    <select id="findVoterIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select voter_id from sys_vote_personnel where vote_id = #{id}
+    </select>
+
+    <select id="voteDetail" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppVoteDetailVo">
+        select * from sys_vote where id = #{voteId}
+    </select>
+
+    <select id="findCandidateByVoteId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppVoteCandidateVo">
+        select * from sys_vote_candidate where vote_id = #{voteId}
+    </select>
+    <select id="findPersonnelByIds" parameterType="com.api.model.app.AppVotePersonnel" resultType="com.api.vo.app.AppVotePersonnelVo">
+        select * from sys_vote_personnel where vote_id = #{voteId} and voter_id = #{voterId}
+    </select>
+
+    <select id="findVoteById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysVote">
+        select * from sys_vote where id = #{voteId}
+    </select>
+
+    <insert id="insertVotePersonnel" parameterType="com.api.model.app.AppVotePersonnel">
+        insert into sys_vote_personnel(
+            vote_id,
+            vote_candidate_id,
+            voter_id,
+            voter_date
+        )values (
+            #{voteId},
+            #{candidateId},
+            #{voterId},
+            #{voterDate}
+        )
+    </insert>
+
+    <update id="voteCandidateAdd" parameterType="com.api.model.app.AppVotePersonnel">
+        update sys_vote_candidate set total = total + 1 where id = #{candidateId} and vote_id =#{voteId}
+    </update>
+
+    <select id="sumTotalByVoteId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select (case sum(total) is null when true then 0 else sum(total) end) as sum_total from sys_vote_candidate where vote_id = #{voteId}
+    </select>
+</mapper>

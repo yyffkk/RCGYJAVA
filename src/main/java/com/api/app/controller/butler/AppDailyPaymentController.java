@@ -58,6 +58,17 @@ public class AppDailyPaymentController {
         return appDailyPaymentService.pay(appDailyPaymentOrder);
     }
 
+    /**
+     * 缴费记录(有问题)
+     * @param id 用户主键id
+     * @param tel 用户联系方式
+     * @return map
+     */
+    @GetMapping("/paymentRecord")
+    public Map<String,Object> paymentRecord(Integer id,String tel){
+        return appDailyPaymentService.paymentRecord(id,tel);
+    }
+
 
 
 }

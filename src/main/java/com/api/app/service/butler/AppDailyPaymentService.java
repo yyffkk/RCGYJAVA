@@ -10,4 +10,6 @@ public interface AppDailyPaymentService {
     List<AppDailyPaymentVo> list(Integer estateId);
 
     Map<String, Object> pay(AppDailyPaymentOrder appDailyPaymentOrder);
+
+    Map<String, Object> paymentRecord(Integer id, String tel);
 }
