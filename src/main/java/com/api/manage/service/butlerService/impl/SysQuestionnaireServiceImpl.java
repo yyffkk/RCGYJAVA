@@ -198,7 +198,7 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
         if (voFindByIdQuestionnaire != null){
             //根据问卷调查主键ID查询题目信息集合
             List<VoFindByIdTopic> voFindByIdTopicList = sysQuestionnaireDao.findTopicByQuestionnaireId(id);
-            if (voFindByIdTopicList != null){
+            if (voFindByIdTopicList != null && voFindByIdTopicList.size()>0){
                 for (VoFindByIdTopic voFindByIdTopic : voFindByIdTopicList) {
                     //判断是否是选择题
                     if (voFindByIdTopic.getType() == 1|| voFindByIdTopic.getType() == 2||voFindByIdTopic.getType() == 3){

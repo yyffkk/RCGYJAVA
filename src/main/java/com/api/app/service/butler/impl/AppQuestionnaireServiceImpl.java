@@ -2,17 +2,17 @@ package com.api.app.service.butler.impl;
 
 import com.api.app.dao.butler.AppQuestionnaireDao;
 import com.api.app.service.butler.AppQuestionnaireService;
+import com.api.vo.app.AppQuestionnaireChoiceVo;
+import com.api.vo.app.AppQuestionnaireDetailVo;
 import com.api.model.app.AppQuestionnairePersonnel;
 import com.api.util.UploadUtil;
+import com.api.vo.app.AppQuestionnaireTopicVo;
 import com.api.vo.app.AppQuestionnaireVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AppQuestionnaireServiceImpl implements AppQuestionnaireService {
@@ -82,5 +82,38 @@ public class AppQuestionnaireServiceImpl implements AppQuestionnaireService {
         }
 
         return list;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer questionnaireId) {
+        map = new HashMap<>();
+        //根据问卷调查主键ID查询问卷调查信息
+        AppQuestionnaireDetailVo questionnaireDetailVo = appQuestionnaireDao.findQuestionnaireById(questionnaireId);
+        if (questionnaireDetailVo != null){
+            //根据问卷调查主键ID查询题目信息集合
+            List<AppQuestionnaireTopicVo> questionnaireTopicVoList = appQuestionnaireDao.findTopicById(questionnaireId);
+            if (questionnaireTopicVoList != null && questionnaireTopicVoList.size()>0){
+                for (AppQuestionnaireTopicVo topicVo : questionnaireTopicVoList) {
+                    //判断是否是选择题
+                    if (topicVo.getType() == 1|| topicVo.getType() == 2||topicVo.getType() == 3) {
+                        //根据题目主键id查询选择项信息集合
+                        List<AppQuestionnaireChoiceVo> questionnaireChoiceVoList = appQuestionnaireDao.findChoiceByTopicId(topicVo.getId());
+                        //传入选择项信息集合
+                        topicVo.setQuestionnaireChoiceVoList(questionnaireChoiceVoList);
+                    }
+                }
+            }
+            //传入题目信息集合
+            questionnaireDetailVo.setQuestionnaireTopicVoList(questionnaireTopicVoList);
+            //传入照片资源
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysQuestionnaire", questionnaireId, "questionnaireImg");
+            questionnaireDetailVo.setVoResourcesImgList(imgByDate);
+        }
+
+        map.put("message","请求成功");
+        map.put("data",questionnaireDetailVo);
+        map.put("status",true);
+        return map;
     }
 }

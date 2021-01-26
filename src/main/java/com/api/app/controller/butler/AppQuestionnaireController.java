@@ -1,6 +1,7 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppQuestionnaireService;
+import com.api.manage.service.butlerService.SysQuestionnaireService;
 import com.api.vo.app.AppQuestionnaireVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -41,6 +42,17 @@ public class AppQuestionnaireController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+
+    /**
+     * 根据问卷id查询问卷详情
+     * @param questionnaireId 问卷id
+     * @return map
+     */
+    @GetMapping("findById")
+    public Map<String,Object> findById(Integer questionnaireId){
+        return appQuestionnaireService.findById(questionnaireId);
     }
 
 

@@ -14,4 +14,16 @@
     <select id="findAnswerIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select answer_id from sys_questionnaire_personnel where questionnaire_id = #{questionnaireId}
     </select>
+
+    <select id="findQuestionnaireById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppQuestionnaireDetailVo">
+        select * from sys_questionnaire where id = #{id} and is_delete = 1 and is_release = 1
+    </select>
+
+    <select id="findTopicById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppQuestionnaireTopicVo">
+        select * from sys_questionnaire_topic where questionnaire_id = #{questionnaireId}
+    </select>
+
+    <select id="findChoiceByTopicId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppQuestionnaireChoiceVo">
+        select * from sys_questionnaire_multiple_choice where questionnaire_topic_id = #{topicId}
+    </select>
 </mapper>
