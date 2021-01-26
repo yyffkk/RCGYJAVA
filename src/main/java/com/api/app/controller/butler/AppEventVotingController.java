@@ -27,12 +27,13 @@ public class AppEventVotingController {
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @param id 用户主键id
+     * @param type 用户类型
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(int pageNum,int size,Integer id){
+    public Map<String,Object> list(int pageNum,int size,Integer id,int type){
         PageHelper.startPage(pageNum,size);
-        List<AppEventVotingVo> appEventVotingVos =appEventVotingService.list(id);
+        List<AppEventVotingVo> appEventVotingVos =appEventVotingService.list(id,type);
         PageInfo<AppEventVotingVo> pageInfo = new PageInfo<>(appEventVotingVos);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());

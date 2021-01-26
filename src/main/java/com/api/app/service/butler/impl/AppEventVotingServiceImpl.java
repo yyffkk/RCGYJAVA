@@ -24,8 +24,8 @@ public class AppEventVotingServiceImpl implements AppEventVotingService {
     private static Map<String,Object> map = null;
 
     @Override
-    public List<AppEventVotingVo> list(Integer id) {
-        List<AppEventVotingVo> list = appEventVotingDao.list();
+    public List<AppEventVotingVo> list(Integer id, Integer type) {
+        List<AppEventVotingVo> list = appEventVotingDao.list(type);
         if (list != null && list.size()>0){
             for (AppEventVotingVo appEventVotingVo : list) {
                 AppVotePersonnel appVotePersonnel = new AppVotePersonnel();

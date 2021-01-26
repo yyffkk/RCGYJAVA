@@ -12,9 +12,10 @@ import java.util.List;
 public interface AppEventVotingDao {
     /**
      * app查询所有活动投票信息
+     * @param type 用户类型
      * @return 活动投票信息集合
      */
-    List<AppEventVotingVo> list();
+    List<AppEventVotingVo> list(Integer type);
 
     /**
      * 根据投票信息id查询相关投票人信息
