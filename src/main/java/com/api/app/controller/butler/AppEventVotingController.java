@@ -31,7 +31,7 @@ public class AppEventVotingController {
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(int pageNum,int size,Integer id,int type){
+    public Map<String,Object> list(int pageNum,int size,Integer id,Integer type){
         PageHelper.startPage(pageNum,size);
         List<AppEventVotingVo> appEventVotingVos =appEventVotingService.list(id,type);
         PageInfo<AppEventVotingVo> pageInfo = new PageInfo<>(appEventVotingVos);
