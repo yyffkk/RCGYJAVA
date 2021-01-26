@@ -25,6 +25,13 @@ public class AppEventVotingServiceImpl implements AppEventVotingService {
 
     @Override
     public List<AppEventVotingVo> list(Integer id, Integer type) {
+        if (type == 3){
+            //因为业主表 3是租户，投票表 2是租户
+            type = 2;
+        }else if (type == 2){
+            //因为业主表 2是亲属，投票表 3是全部，亲属只能看类型为全部的投票信息
+            type = 3;
+        }
         List<AppEventVotingVo> list = appEventVotingDao.list(type);
         if (list != null && list.size()>0){
             for (AppEventVotingVo appEventVotingVo : list) {
