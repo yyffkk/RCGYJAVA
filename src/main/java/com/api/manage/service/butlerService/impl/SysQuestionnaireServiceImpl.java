@@ -484,7 +484,7 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
             }
             //查询出所有题目-答案信息,然后遍历存储
             List<SysQuestionnaireAnswerSubmit> sysQuestionnaireTopicSubmitList = sysQuestionnaireSubmit.getSysQuestionnaireTopicSubmitList();
-            if (sysQuestionnaireTopicSubmitList != null){
+            if (sysQuestionnaireTopicSubmitList != null && sysQuestionnaireTopicSubmitList.size()>0){
                 for (SysQuestionnaireAnswerSubmit answerSubmit : sysQuestionnaireTopicSubmitList) {
                     //根据题目id查询题目信息
                     SysQuestionnaireTopic sysQuestionnaireTopic = sysQuestionnaireDao.findTopicByTopicId(answerSubmit.getTopicId());

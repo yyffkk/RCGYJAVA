@@ -26,4 +26,74 @@
     <select id="findChoiceByTopicId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppQuestionnaireChoiceVo">
         select * from sys_questionnaire_multiple_choice where questionnaire_topic_id = #{topicId}
     </select>
+
+    <update id="accumulationAnswerNum" parameterType="java.lang.Integer">
+        update sys_questionnaire set answer_num = answer_num + 1 where id =#{id}
+    </update>
+
+    <select id="findTopicByTopicId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppQuestionnaireTopicVo">
+        select * from sys_questionnaire_topic where id =#{topicId}
+    </select>
+
+    <insert id="insertChoiceAnswer" parameterType="com.api.model.app.AppQuestionnaireChoiceAnswer">
+        insert into sys_questionnaire_single_multiple_choice_answer(
+            questionnaire_id,
+            questionnaire_topic_id,
+            questionnaire_multiple_choice_id,
+            create_id,
+            create_date
+        ) values (
+            #{questionnaireId},
+            #{questionnaireTopicId},
+            #{questionnaireMultipleChoiceId},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <insert id="insertJudgmentAnswer" parameterType="com.api.model.app.AppQuestionJudgmentAnswer">
+        insert into sys_questionnaire_judgment_answer(
+            questionnaire_id,
+            questionnaire_topic_id,
+            answer,
+            create_id,
+            create_date
+        ) values (
+            #{questionnaireId},
+            #{questionnaireTopicId},
+            #{answer},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <insert id="insertShortAnswer" parameterType="com.api.model.app.AppQuestionnaireShortAnswer">
+        insert into sys_questionnaire_short_answer(
+            questionnaire_id,
+            questionnaire_topic_id,
+            answer,
+            create_id,
+            create_date
+        ) values (
+            #{questionnaireId},
+            #{questionnaireTopicId},
+            #{answer},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <insert id="insertPersonnel" parameterType="com.api.model.app.AppQuestionnairePersonnel">
+        insert into sys_questionnaire_personnel(
+            questionnaire_id,
+            answer_id,
+            answer_date
+        )values (
+            #{questionnaireId},
+            #{answerId},
+            #{answerDate}
+        )
+    </insert>
+
+
 </mapper>

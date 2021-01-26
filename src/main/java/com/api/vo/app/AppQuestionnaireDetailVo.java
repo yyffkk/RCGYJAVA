@@ -2,6 +2,7 @@ package com.api.vo.app;
 
 import com.api.vo.resources.VoResourcesImg;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +22,14 @@ public class AppQuestionnaireDetailVo {
      */
     private String description;
     /**
+     * 答题开始时间
+     */
+    private Date beginDate;
+    /**
+     * 答题结束时间
+     */
+    private Date endDate;
+    /**
      * 题目信息集合
      */
     private List<AppQuestionnaireTopicVo> questionnaireTopicVoList;
@@ -35,6 +44,8 @@ public class AppQuestionnaireDetailVo {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", beginDate=" + beginDate +
+                ", endDate=" + endDate +
                 ", questionnaireTopicVoList=" + questionnaireTopicVoList +
                 ", voResourcesImgList=" + voResourcesImgList +
                 '}';
@@ -64,6 +75,22 @@ public class AppQuestionnaireDetailVo {
         this.description = description;
     }
 
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public List<AppQuestionnaireTopicVo> getQuestionnaireTopicVoList() {
         return questionnaireTopicVoList;
     }
@@ -83,10 +110,12 @@ public class AppQuestionnaireDetailVo {
     public AppQuestionnaireDetailVo() {
     }
 
-    public AppQuestionnaireDetailVo(Integer id, String title, String description, List<AppQuestionnaireTopicVo> questionnaireTopicVoList, List<VoResourcesImg> voResourcesImgList) {
+    public AppQuestionnaireDetailVo(Integer id, String title, String description, Date beginDate, Date endDate, List<AppQuestionnaireTopicVo> questionnaireTopicVoList, List<VoResourcesImg> voResourcesImgList) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.beginDate = beginDate;
+        this.endDate = endDate;
         this.questionnaireTopicVoList = questionnaireTopicVoList;
         this.voResourcesImgList = voResourcesImgList;
     }

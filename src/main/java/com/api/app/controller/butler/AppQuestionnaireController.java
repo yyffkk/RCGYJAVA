@@ -2,14 +2,14 @@ package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppQuestionnaireService;
 import com.api.manage.service.butlerService.SysQuestionnaireService;
+import com.api.model.app.AppQuestionnaireSubmit;
 import com.api.vo.app.AppQuestionnaireVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,5 +55,18 @@ public class AppQuestionnaireController {
         return appQuestionnaireService.findById(questionnaireId);
     }
 
+
+    /**
+     * app问卷调查提交
+     * @param appQuestionnaireSubmit app问卷调查提交信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/submit")
+    public Map<String,Object> submit(@RequestBody AppQuestionnaireSubmit appQuestionnaireSubmit, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return appQuestionnaireService.submit(appQuestionnaireSubmit,id);
+    }
 
 }

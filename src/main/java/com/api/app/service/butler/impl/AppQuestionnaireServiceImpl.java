@@ -2,14 +2,17 @@ package com.api.app.service.butler.impl;
 
 import com.api.app.dao.butler.AppQuestionnaireDao;
 import com.api.app.service.butler.AppQuestionnaireService;
+import com.api.model.app.*;
+import com.api.model.butlerService.*;
 import com.api.vo.app.AppQuestionnaireChoiceVo;
 import com.api.vo.app.AppQuestionnaireDetailVo;
-import com.api.model.app.AppQuestionnairePersonnel;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppQuestionnaireTopicVo;
 import com.api.vo.app.AppQuestionnaireVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -113,6 +116,120 @@ public class AppQuestionnaireServiceImpl implements AppQuestionnaireService {
 
         map.put("message","请求成功");
         map.put("data",questionnaireDetailVo);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> submit(AppQuestionnaireSubmit appQuestionnaireSubmit, Integer id) {
+        map = new HashMap<>();
+        try {
+            //查询该用户是否答题过
+            AppQuestionnairePersonnel appQuestionnairePersonnel = new AppQuestionnairePersonnel();
+            appQuestionnairePersonnel.setQuestionnaireId(appQuestionnaireSubmit.getId());
+            appQuestionnairePersonnel.setAnswerId(id);
+            List<AppQuestionnairePersonnel> personnelList = appQuestionnaireDao.findPersonnelByIds(appQuestionnairePersonnel);
+            if (personnelList != null && personnelList.size()>0){
+                //已投票
+                throw new RuntimeException("已投过票");
+            }else {
+                //查询时间是否处于投票时间
+                Date date = new Date();
+                AppQuestionnaireDetailVo questionnaireVo = appQuestionnaireDao.findQuestionnaireById(appQuestionnaireSubmit.getId());
+                if (date.getTime() < questionnaireVo.getBeginDate().getTime()){
+                    //未开始
+                    throw new RuntimeException("投票未开始");
+                }else if (date.getTime() > questionnaireVo.getEndDate().getTime()){
+                    //已结束
+                    throw new RuntimeException("投票已结束");
+                }
+            }
+
+            //对该问卷的答题人数量加一
+            int update = appQuestionnaireDao.accumulationAnswerNum(appQuestionnaireSubmit.getId());
+            if (update <= 0){
+                throw new RuntimeException("累加答题人数失败");
+            }
+            //添加答题人信息表
+            appQuestionnairePersonnel.setAnswerDate(new Date());
+            int insert = appQuestionnaireDao.insertPersonnel(appQuestionnairePersonnel);
+            if (insert <= 0){
+                throw new RuntimeException("添加答题人信息失败");
+            }
+
+            //查询出所有题目-答案信息,然后遍历存储
+            List<AppQuestionnaireAnswerSubmit> appQuestionnaireAnswerSubmits = appQuestionnaireSubmit.getAppQuestionnaireAnswerSubmits();
+            if (appQuestionnaireAnswerSubmits != null && appQuestionnaireAnswerSubmits.size()>0){
+                for (AppQuestionnaireAnswerSubmit answerSubmit : appQuestionnaireAnswerSubmits) {
+                    //根据题目id查询题目信息
+                    AppQuestionnaireTopicVo appQuestionnaireTopicVo = appQuestionnaireDao.findTopicByTopicId(answerSubmit.getTopicId());
+                    switch (appQuestionnaireTopicVo.getType()){
+                        case 1:
+                            //单选
+                        case 2:
+                            //多选
+                        case 3:
+                            //单选下拉
+                            List<Integer> choiceAnswer = answerSubmit.getChoiceAnswer();
+                            if (choiceAnswer != null && choiceAnswer.size()>0){
+                                for (Integer integer : choiceAnswer) {
+                                    AppQuestionnaireChoiceAnswer questionnaireChoiceAnswer = new AppQuestionnaireChoiceAnswer();
+                                    questionnaireChoiceAnswer.setQuestionnaireId(appQuestionnaireSubmit.getId());
+                                    questionnaireChoiceAnswer.setQuestionnaireTopicId(answerSubmit.getTopicId());
+                                    questionnaireChoiceAnswer.setQuestionnaireMultipleChoiceId(integer);
+                                    questionnaireChoiceAnswer.setCreateId(id);
+                                    questionnaireChoiceAnswer.setCreateDate(new Date());
+                                    appQuestionnaireDao.insertChoiceAnswer(questionnaireChoiceAnswer);
+                                }
+                            }else {
+                                throw new RuntimeException("选择题不能为空");
+                            }
+                            break;
+                        case 4:
+                            //判断题
+                            List<Integer> choiceAnswer2 = answerSubmit.getChoiceAnswer();
+                            if (choiceAnswer2 != null && choiceAnswer2.size()>0){
+                                for (Integer integer : choiceAnswer2) {
+                                    AppQuestionJudgmentAnswer appQuestionJudgmentAnswer = new AppQuestionJudgmentAnswer();
+                                    appQuestionJudgmentAnswer.setQuestionnaireId(appQuestionnaireSubmit.getId());
+                                    appQuestionJudgmentAnswer.setQuestionnaireTopicId(answerSubmit.getTopicId());
+                                    appQuestionJudgmentAnswer.setAnswer(integer);
+                                    appQuestionJudgmentAnswer.setCreateId(id);
+                                    appQuestionJudgmentAnswer.setCreateDate(new Date());
+                                    appQuestionnaireDao.insertJudgmentAnswer(appQuestionJudgmentAnswer);
+                                }
+                            }else {
+                                throw new RuntimeException("判断题不能为空");
+                            }
+                            break;
+                        case 5:
+                            //开放题
+                            AppQuestionnaireShortAnswer appQuestionnaireShortAnswer = new AppQuestionnaireShortAnswer();
+                            appQuestionnaireShortAnswer.setQuestionnaireId(appQuestionnaireSubmit.getId());
+                            appQuestionnaireShortAnswer.setQuestionnaireTopicId(answerSubmit.getTopicId());
+                            appQuestionnaireShortAnswer.setAnswer(answerSubmit.getShortAnswer());
+                            appQuestionnaireShortAnswer.setCreateId(id);
+                            appQuestionnaireShortAnswer.setCreateDate(new Date());
+                            appQuestionnaireDao.insertShortAnswer(appQuestionnaireShortAnswer);
+                            break;
+                        default:
+                            throw new RuntimeException("答题类型有误");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","问卷调查提交成功");
         map.put("status",true);
         return map;
     }
