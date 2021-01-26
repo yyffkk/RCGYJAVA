@@ -3,5 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.butler.AppQuestionnaireDao">
+    <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppQuestionnaireVo">
+        select * from sys_questionnaire where is_delete = 1 and is_release = 1 and answer_type = 1 or answer_type = #{type}
+    </select>
 
+    <select id="findPersonnelByIds" parameterType="com.api.model.app.AppQuestionnairePersonnel" resultType="com.api.model.app.AppQuestionnairePersonnel">
+        select * from sys_questionnaire_personnel where questionnaire_id = #{questionnaireId} and answer_id = #{answerId}
+    </select>
+
+    <select id="findAnswerIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select answer_id from sys_questionnaire_personnel where questionnaire_id = #{questionnaireId}
+    </select>
 </mapper>

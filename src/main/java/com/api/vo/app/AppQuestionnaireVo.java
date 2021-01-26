@@ -6,21 +6,21 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 活动投票Vo
+ * app问卷调查Vo
  */
-public class AppEventVotingVo {
+public class AppQuestionnaireVo {
     /**
      * 主键id
      */
     private Integer id;
     /**
-     * 标题
+     * 问卷标题
      */
     private String title;
     /**
-     * 内容
+     * 问卷说明
      */
-    private String content;
+    private String description;
     /**
      * 投票开始时间
      */
@@ -34,23 +34,28 @@ public class AppEventVotingVo {
      */
     private Integer status;
     /**
+     * 答题人数（初始为0）
+     */
+    private Integer answerNum;
+    /**
      * 照片资源集合
      */
     private List<VoResourcesImg> imgUrls;
     /**
-     * 投票人头像资源集合（取前3）
+     * 答卷人 头像资源集合（取前3）
      */
     private List<VoResourcesImg> headImgURls;
 
     @Override
     public String toString() {
-        return "AppEventVotingVo{" +
+        return "AppQuestionnaireVo{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
+                ", description='" + description + '\'' +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
                 ", status=" + status +
+                ", answerNum=" + answerNum +
                 ", imgUrls=" + imgUrls +
                 ", headImgURls=" + headImgURls +
                 '}';
@@ -72,12 +77,12 @@ public class AppEventVotingVo {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getDescription() {
+        return description;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getBeginDate() {
@@ -104,6 +109,14 @@ public class AppEventVotingVo {
         this.status = status;
     }
 
+    public Integer getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(Integer answerNum) {
+        this.answerNum = answerNum;
+    }
+
     public List<VoResourcesImg> getImgUrls() {
         return imgUrls;
     }
@@ -120,16 +133,17 @@ public class AppEventVotingVo {
         this.headImgURls = headImgURls;
     }
 
-    public AppEventVotingVo() {
+    public AppQuestionnaireVo() {
     }
 
-    public AppEventVotingVo(Integer id, String title, String content, Date beginDate, Date endDate, Integer status, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headImgURls) {
+    public AppQuestionnaireVo(Integer id, String title, String description, Date beginDate, Date endDate, Integer status, Integer answerNum, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headImgURls) {
         this.id = id;
         this.title = title;
-        this.content = content;
+        this.description = description;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.status = status;
+        this.answerNum = answerNum;
         this.imgUrls = imgUrls;
         this.headImgURls = headImgURls;
     }
