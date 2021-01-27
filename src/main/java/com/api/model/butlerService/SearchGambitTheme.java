@@ -50,6 +50,10 @@ public class SearchGambitTheme {
      * 评论人（主题发布人）
      */
     private String themeName;
+    /**
+     * 是否删除（1.非删，0.删除）
+     */
+    private Integer isDelete;
 
     @Override
     public String toString() {
@@ -65,6 +69,7 @@ public class SearchGambitTheme {
                 ", gambitContent='" + gambitContent + '\'' +
                 ", content='" + content + '\'' +
                 ", themeName='" + themeName + '\'' +
+                ", isDelete=" + isDelete +
                 '}';
     }
 
@@ -156,10 +161,18 @@ public class SearchGambitTheme {
         this.themeName = themeName;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     public SearchGambitTheme() {
     }
 
-    public SearchGambitTheme(int pageNum, int size, Date beginDate, Date endDate, String title, String gambitName, String nickName, String summary, String gambitContent, String content, String themeName) {
+    public SearchGambitTheme(int pageNum, int size, Date beginDate, Date endDate, String title, String gambitName, String nickName, String summary, String gambitContent, String content, String themeName, Integer isDelete) {
         this.pageNum = pageNum;
         this.size = size;
         this.beginDate = beginDate;
@@ -171,5 +184,6 @@ public class SearchGambitTheme {
         this.gambitContent = gambitContent;
         this.content = content;
         this.themeName = themeName;
+        this.isDelete = isDelete;
     }
 }

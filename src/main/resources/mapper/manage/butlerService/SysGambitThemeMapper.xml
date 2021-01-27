@@ -63,6 +63,9 @@
             <if test="themeName != null and themeName != ''">
                 and a.theme_name like concat('%',#{themeName},'%')
             </if>
+            <if test="isDelete != null">
+                and a.is_delete = #{isDelete}
+            </if>
         </where>
     </select>
 
