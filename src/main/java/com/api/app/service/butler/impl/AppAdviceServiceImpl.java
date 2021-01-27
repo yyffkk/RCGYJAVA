@@ -196,7 +196,7 @@ public class AppAdviceServiceImpl implements AppAdviceService {
             for (VoProhibitedKeywords voProhibitedKeywords : list) {
                 //替换违禁关键字
                 if (content.contains(voProhibitedKeywords.getKeywords())){
-                    content.replace(voProhibitedKeywords.getKeywords(), voProhibitedKeywords.getReplaces());
+                    content = content.replaceAll(voProhibitedKeywords.getKeywords(), voProhibitedKeywords.getReplaces());
                 }
             }
         }
