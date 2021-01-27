@@ -1,6 +1,5 @@
 package com.api.model.operationManagement;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -33,6 +32,10 @@ public class SysAnnouncementManagement {
      * 上传doc文件路径
      */
     private String fileDocUrl;
+    /**
+     * 上传doc文件名称
+     */
+    private String fileDocName;
     /**
      * 状态（1.未发布，2.已发布）
      */
@@ -75,6 +78,7 @@ public class SysAnnouncementManagement {
                 ", excelFileUrls=" + Arrays.toString(excelFileUrls) +
                 ", content='" + content + '\'' +
                 ", fileDocUrl='" + fileDocUrl + '\'' +
+                ", fileDocName='" + fileDocName + '\'' +
                 ", status=" + status +
                 ", scheduledReleaseTime=" + scheduledReleaseTime +
                 ", readingVolume=" + readingVolume +
@@ -132,6 +136,14 @@ public class SysAnnouncementManagement {
 
     public void setFileDocUrl(String fileDocUrl) {
         this.fileDocUrl = fileDocUrl;
+    }
+
+    public String getFileDocName() {
+        return fileDocName;
+    }
+
+    public void setFileDocName(String fileDocName) {
+        this.fileDocName = fileDocName;
     }
 
     public Integer getStatus() {
@@ -201,13 +213,14 @@ public class SysAnnouncementManagement {
     public SysAnnouncementManagement() {
     }
 
-    public SysAnnouncementManagement(Integer id, String title, Integer pushObject, String[] excelFileUrls, String content, String fileDocUrl, Integer status, Date scheduledReleaseTime, Integer readingVolume, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date releaseDate) {
+    public SysAnnouncementManagement(Integer id, String title, Integer pushObject, String[] excelFileUrls, String content, String fileDocUrl, String fileDocName, Integer status, Date scheduledReleaseTime, Integer readingVolume, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date releaseDate) {
         this.id = id;
         this.title = title;
         this.pushObject = pushObject;
         this.excelFileUrls = excelFileUrls;
         this.content = content;
         this.fileDocUrl = fileDocUrl;
+        this.fileDocName = fileDocName;
         this.status = status;
         this.scheduledReleaseTime = scheduledReleaseTime;
         this.readingVolume = readingVolume;
