@@ -52,6 +52,9 @@
             <if test="repairDateEnd != null">
                 and srr.repair_date <![CDATA[ < ]]> #{repairDateEnd}
             </if>
+            <if test="status != null">
+                and sdl.status = #{status}
+            </if>
         </where>
     </select>
 

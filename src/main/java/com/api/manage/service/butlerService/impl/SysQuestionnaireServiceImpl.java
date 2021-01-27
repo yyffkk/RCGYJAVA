@@ -33,6 +33,7 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
     @Override
     public List<VoQuestionnaire> list(SearchQuestionnaire searchQuestionnaire) {
         //查询所有调查问卷信息 （包含条件搜索）
+        searchQuestionnaire.setNowDate(new Date());
         List<VoQuestionnaire> list = sysQuestionnaireDao.list(searchQuestionnaire);
         if (list != null){
             for (VoQuestionnaire voQuestionnaire : list) {

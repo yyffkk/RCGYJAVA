@@ -128,6 +128,7 @@ public class AppEventVotingServiceImpl implements AppEventVotingService {
         List<AppVoteCandidateVo> appVoteCandidateVos = appEventVotingDao.findCandidateByVoteId(voteId);
         if (appVoteCandidateVos != null && appVoteCandidateVos.size()>0){
             for (AppVoteCandidateVo candidateVo : appVoteCandidateVos) {
+                //查询投票候选人头像信息
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysVoteCandidate", candidateVo.getId(), "voteCandidateImg");
                 candidateVo.setImgUrls(imgByDate);
             }

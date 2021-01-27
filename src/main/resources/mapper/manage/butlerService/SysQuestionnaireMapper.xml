@@ -9,11 +9,18 @@
             <if test="title != null and title != ''">
                 and title like concat('%',#{title},'%')
             </if>
-            <if test="status != null">
-                and status = #{status}
+            <if test="status == 1">
+                and #{nowDate} <![CDATA[ < ]]> begin_date
+            </if>
+            <if test="status == 2">
+                and #{nowDate} <![CDATA[ <= ]]> begin_date
+                and #{nowDate} <![CDATA[ >= ]]> end_date
+            </if>
+            <if test="status == 3">
+                and #{nowDate} <![CDATA[ > ]]> end_date
             </if>
             <if test="answerType != null">
-                and answerType = #{answerType}
+                and answer_type = #{answerType}
             </if>
             and is_delete = 1
         </where>

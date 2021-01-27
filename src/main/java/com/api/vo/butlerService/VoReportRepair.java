@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class VoReportRepair {
     /**
-     * 主键id
+     * 派工单主键id
      */
     private Integer id;
     /**

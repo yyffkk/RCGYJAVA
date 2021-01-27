@@ -47,6 +47,10 @@ public class SearchReportRepair {
      */
     private Date repairDateEnd;
     /**
+     * 状态（1.待分配，2.已分配未接单，3.已分配处理中，4.已处理，5.已确认已完成，6.已关闭，7.已作废，8.已取消）
+     */
+    private Integer status;
+    /**
      * 房间号
      */
     private String roomNumber;
@@ -72,6 +76,7 @@ public class SearchReportRepair {
                 ", operator=" + operator +
                 ", repairDateStart=" + repairDateStart +
                 ", repairDateEnd=" + repairDateEnd +
+                ", status=" + status +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", unitNo=" + unitNo +
                 ", estateNo=" + estateNo +
@@ -158,6 +163,14 @@ public class SearchReportRepair {
         this.repairDateEnd = repairDateEnd;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getRoomNumber() {
         return roomNumber;
     }
@@ -185,7 +198,7 @@ public class SearchReportRepair {
     public SearchReportRepair() {
     }
 
-    public SearchReportRepair(int pageNum, int size, String code, String repairman, String roomName, Integer froms, Integer distributor, Integer operator, Date repairDateStart, Date repairDateEnd, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchReportRepair(int pageNum, int size, String code, String repairman, String roomName, Integer froms, Integer distributor, Integer operator, Date repairDateStart, Date repairDateEnd, Integer status, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
         this.code = code;
@@ -196,6 +209,7 @@ public class SearchReportRepair {
         this.operator = operator;
         this.repairDateStart = repairDateStart;
         this.repairDateEnd = repairDateEnd;
+        this.status = status;
         this.roomNumber = roomNumber;
         this.unitNo = unitNo;
         this.estateNo = estateNo;

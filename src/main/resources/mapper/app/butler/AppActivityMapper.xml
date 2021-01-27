@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppActivityDao">
+    <select id="list" resultType="com.api.vo.app.AppActivityVo">
+        select * from sys_activity_management where is_delete = 1 order by create_date DESC
+    </select>
+
+    <select id="findRegistrationByIds" parameterType="com.api.model.app.AppActivityRegistration" resultType="com.api.model.app.AppActivityRegistration">
+        select * from sys_activity_registration_management where activity_id = #{activityId} and resident_id = #{residentId}
+    </select>
+
+    <select id="findResidentIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select resident_id from sys_activity_registration_management where activity_id = #{activityId}
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppActivityDetailVo">
+        select * from sys_activity_management where id = #{activityId} and is_delete = 1
+    </select>
+
+    <select id="countRegistrationNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+       select count(*) from sys_activity_registration_management where activity_id = #{activityId}
+    </select>
+
+    <insert id="insertRegistration" parameterType="com.api.model.app.AppActivityRegistration">
+        insert into sys_activity_registration_management(
+            activity_id,
+            resident_id,
+            registration_date
+        )values (
+            #{activityId},
+            #{residentId},
+            #{registrationDate}
+        )
+    </insert>
+
+    <select id="participantsList" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppActivityRegistrationVo">
+        select ur.id,ur.name,ur.tel from sys_activity_registration_management as sarm,user_resident as ur
+        where sarm.resident_id = ur.id and sarm.activity_id = #{activityId}
+    </select>
+</mapper>

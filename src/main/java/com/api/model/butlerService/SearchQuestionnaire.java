@@ -1,5 +1,7 @@
 package com.api.model.butlerService;
 
+import java.util.Date;
+
 /**
  * 问卷调查搜索条件
  */
@@ -21,6 +23,10 @@ public class SearchQuestionnaire {
      */
     private Integer status;
     /**
+     * 当前时间（用于判断状态）
+     */
+    private Date nowDate;
+    /**
      * 问卷对象（答题人员类型）【1.无限制，2.业主，3.租户】
      */
     private Integer answerType;
@@ -32,6 +38,7 @@ public class SearchQuestionnaire {
                 ", size=" + size +
                 ", title='" + title + '\'' +
                 ", status=" + status +
+                ", nowDate=" + nowDate +
                 ", answerType=" + answerType +
                 '}';
     }
@@ -68,6 +75,14 @@ public class SearchQuestionnaire {
         this.status = status;
     }
 
+    public Date getNowDate() {
+        return nowDate;
+    }
+
+    public void setNowDate(Date nowDate) {
+        this.nowDate = nowDate;
+    }
+
     public Integer getAnswerType() {
         return answerType;
     }
@@ -79,11 +94,12 @@ public class SearchQuestionnaire {
     public SearchQuestionnaire() {
     }
 
-    public SearchQuestionnaire(Integer pageNum, Integer size, String title, Integer status, Integer answerType) {
+    public SearchQuestionnaire(Integer pageNum, Integer size, String title, Integer status, Date nowDate, Integer answerType) {
         this.pageNum = pageNum;
         this.size = size;
         this.title = title;
         this.status = status;
+        this.nowDate = nowDate;
         this.answerType = answerType;
     }
 }
