@@ -35,13 +35,21 @@ public class SearchUserVisitors {
      */
     private String carNum;
     /**
-     * 预计到访时间
+     * 预计到访时间开始
      */
-    private Date expectedVisitDate;
+    private Date expectedVisitDateStart;
     /**
-     * 实际到访时间
+     * 预计到访时间结束
      */
-    private Date visitDate;
+    private Date expectedVisitDateEnd;
+    /**
+     * 实际到访时间开始
+     */
+    private Date visitDateStart;
+    /**
+     * 实际到访时间结束
+     */
+    private Date visitDateEnd;
     /**
      * 访客状态(1.未到，2.已到,3.已过期，4.作废)
      */
@@ -73,8 +81,10 @@ public class SearchUserVisitors {
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
                 ", carNum='" + carNum + '\'' +
-                ", expectedVisitDate=" + expectedVisitDate +
-                ", visitDate=" + visitDate +
+                ", expectedVisitDateStart=" + expectedVisitDateStart +
+                ", expectedVisitDateEnd=" + expectedVisitDateEnd +
+                ", visitDateStart=" + visitDateStart +
+                ", visitDateEnd=" + visitDateEnd +
                 ", visitorStatus=" + visitorStatus +
                 ", type=" + type +
                 ", roomNumber='" + roomNumber + '\'' +
@@ -139,20 +149,36 @@ public class SearchUserVisitors {
         this.carNum = carNum;
     }
 
-    public Date getExpectedVisitDate() {
-        return expectedVisitDate;
+    public Date getExpectedVisitDateStart() {
+        return expectedVisitDateStart;
     }
 
-    public void setExpectedVisitDate(Date expectedVisitDate) {
-        this.expectedVisitDate = expectedVisitDate;
+    public void setExpectedVisitDateStart(Date expectedVisitDateStart) {
+        this.expectedVisitDateStart = expectedVisitDateStart;
     }
 
-    public Date getVisitDate() {
-        return visitDate;
+    public Date getExpectedVisitDateEnd() {
+        return expectedVisitDateEnd;
     }
 
-    public void setVisitDate(Date visitDate) {
-        this.visitDate = visitDate;
+    public void setExpectedVisitDateEnd(Date expectedVisitDateEnd) {
+        this.expectedVisitDateEnd = expectedVisitDateEnd;
+    }
+
+    public Date getVisitDateStart() {
+        return visitDateStart;
+    }
+
+    public void setVisitDateStart(Date visitDateStart) {
+        this.visitDateStart = visitDateStart;
+    }
+
+    public Date getVisitDateEnd() {
+        return visitDateEnd;
+    }
+
+    public void setVisitDateEnd(Date visitDateEnd) {
+        this.visitDateEnd = visitDateEnd;
     }
 
     public Integer getVisitorStatus() {
@@ -198,7 +224,7 @@ public class SearchUserVisitors {
     public SearchUserVisitors() {
     }
 
-    public SearchUserVisitors(Integer pageNum, Integer size, Integer id, String roomName, String name, Integer sex, String carNum, Date expectedVisitDate, Date visitDate, Integer visitorStatus, Integer type, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchUserVisitors(Integer pageNum, Integer size, Integer id, String roomName, String name, Integer sex, String carNum, Date expectedVisitDateStart, Date expectedVisitDateEnd, Date visitDateStart, Date visitDateEnd, Integer visitorStatus, Integer type, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
         this.id = id;
@@ -206,8 +232,10 @@ public class SearchUserVisitors {
         this.name = name;
         this.sex = sex;
         this.carNum = carNum;
-        this.expectedVisitDate = expectedVisitDate;
-        this.visitDate = visitDate;
+        this.expectedVisitDateStart = expectedVisitDateStart;
+        this.expectedVisitDateEnd = expectedVisitDateEnd;
+        this.visitDateStart = visitDateStart;
+        this.visitDateEnd = visitDateEnd;
         this.visitorStatus = visitorStatus;
         this.type = type;
         this.roomNumber = roomNumber;

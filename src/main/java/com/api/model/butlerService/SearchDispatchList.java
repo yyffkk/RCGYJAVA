@@ -55,6 +55,10 @@ public class SearchDispatchList {
      */
     private Date dispatchTimeEnd;
     /**
+     * 状态（1.待分配，2.已分配未接单，3.已分配处理中，4.已处理，5.已确认已完成，6.已关闭，7.已作废，8.已取消）
+     */
+    private Integer status;
+    /**
      * 房间号
      */
     private String roomNumber;
@@ -82,6 +86,7 @@ public class SearchDispatchList {
                 ", beginDateEnd=" + beginDateEnd +
                 ", dispatchTimeStart=" + dispatchTimeStart +
                 ", dispatchTimeEnd=" + dispatchTimeEnd +
+                ", status=" + status +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", unitNo=" + unitNo +
                 ", estateNo=" + estateNo +
@@ -184,6 +189,14 @@ public class SearchDispatchList {
         this.dispatchTimeEnd = dispatchTimeEnd;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getRoomNumber() {
         return roomNumber;
     }
@@ -211,7 +224,7 @@ public class SearchDispatchList {
     public SearchDispatchList() {
     }
 
-    public SearchDispatchList(int pageNum, int size, String code, Integer type, String roomName, Integer workOrderTimeId, String distributorName, String operatorName, Date beginDateStart, Date beginDateEnd, Date dispatchTimeStart, Date dispatchTimeEnd, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchDispatchList(int pageNum, int size, String code, Integer type, String roomName, Integer workOrderTimeId, String distributorName, String operatorName, Date beginDateStart, Date beginDateEnd, Date dispatchTimeStart, Date dispatchTimeEnd, Integer status, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
         this.code = code;
@@ -224,6 +237,7 @@ public class SearchDispatchList {
         this.beginDateEnd = beginDateEnd;
         this.dispatchTimeStart = dispatchTimeStart;
         this.dispatchTimeEnd = dispatchTimeEnd;
+        this.status = status;
         this.roomNumber = roomNumber;
         this.unitNo = unitNo;
         this.estateNo = estateNo;

@@ -28,11 +28,17 @@
             <if test="carNum != null and carNum != ''">
                 and uv.car_num like concat('%',#{carNum},'%')
             </if>
-            <if test="expectedVisitDate != null">
-                and uv.expected_visit_date = #{expectedVisitDate}
+            <if test="expectedVisitDateStart != null">
+                and uv.expected_visit_date <![CDATA[ >= ]]> #{expectedVisitDateStart}
             </if>
-            <if test="visitDate != null">
-                and uv.visit_date = #{visitDate}
+            <if test="expectedVisitDateEnd != null">
+                and uv.expected_visit_date <![CDATA[ <= ]]> #{expectedVisitDateEnd}
+            </if>
+            <if test="visitDateStart != null">
+                and uv.visit_date <![CDATA[ >= ]]> #{visitDateStart}
+            </if>
+            <if test="visitDateEnd != null">
+                and uv.visit_date <![CDATA[ <= ]]> #{visitDateEnd}
             </if>
             <if test="visitorStatus != null">
                 and uv.visitor_status = #{visitorStatus}

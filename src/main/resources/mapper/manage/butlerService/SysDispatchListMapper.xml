@@ -51,6 +51,9 @@
             <if test="estateNo != null">
                 and a.estate_no like concat('%',#{estateNo},'%')
             </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
         </where>
     </select>
 
