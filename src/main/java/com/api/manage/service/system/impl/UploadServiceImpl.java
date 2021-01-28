@@ -34,6 +34,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_REPAIR;
     @Value("${prop.upload-owners-committee}")
     private String UPLOAD_OWNERS_COMMITTEE;
+    @Value("${prop.upload-gambit-theme}")
+    private String UPLOAD_GAMBIT_THEME;
 
     @Override
     public Map<String, Object> uploadArticle(MultipartFile file) {
@@ -92,6 +94,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadOwnersCommittee(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_OWNERS_COMMITTEE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadGambitTheme(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_GAMBIT_THEME);
         return map;
     }
 

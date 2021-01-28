@@ -28,4 +28,6 @@ public interface UploadService {
     Map<String, Object> uploadRepair(MultipartFile file);
 
     Map<String, Object> uploadOwnersCommittee(MultipartFile file);
+
+    Map<String, Object> uploadGambitTheme(MultipartFile file);
 }

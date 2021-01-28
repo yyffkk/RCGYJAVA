@@ -93,4 +93,14 @@ public class AppUploadController {
         return uploadService.uploadOwnersCommittee(file);
     }
 
+    /**
+     * 上传主题照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadGambitTheme")
+    public Map<String,Object> uploadGambitTheme(MultipartFile file){
+        return uploadService.uploadGambitTheme(file);
+    }
+
 }
