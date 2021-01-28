@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.community.AppGambitDao">
+    <select id="list" resultType="com.api.vo.app.AppGambitThemeVo">
+        select sgt.*,sg.title as gambit_title,ur.name as create_name
+        from user_resident as ur,sys_gambit_theme as sgt
+        LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
+        where ur.id = sgt.create_id and sgt.is_delete = 1
+        order by sgt.create_date DESC
+    </select>
+
+    <select id="findCommentByThemeId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGambitThemeCommentVo">
+        select sgtc1.*,ur1.name as create_name,ur2.name as parent_name
+        from user_resident as ur1 , sys_gambit_theme_comment as sgtc1
+        LEFT JOIN sys_gambit_theme_comment as sgtc2 on sgtc1.parent_id = sgtc2.id
+        LEFT JOIN user_resident as ur2 on sgtc2.create_id = ur2.id
+        where sgtc1.gambit_theme_id = #{ThemeId} and sgtc1.create_id = ur1.id and sgtc1.is_delete = 1
+        order by sgtc1.create_date DESC
+    </select>
+</mapper>
