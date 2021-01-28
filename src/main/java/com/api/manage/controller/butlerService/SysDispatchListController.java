@@ -6,6 +6,7 @@ import com.api.model.butlerService.RevisitWorkOrder;
 import com.api.model.butlerService.SearchDispatchList;
 import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.manage.service.butlerService.SysDispatchListService;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoDispatchList;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -47,13 +48,13 @@ public class SysDispatchListController extends ShiroExceptions {
 
     /**
      * 假删除工单
-     * @param id 订单
+     * @param ids 订单主键Id数组
      * @return map
      */
-    @GetMapping("/falseDelete")
+    @PostMapping("/falseDelete")
     @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
-    public Map<String,Object> falseDelete(Integer id){
-        return sysDispatchListService.falseDelete(id);
+    public Map<String,Object> falseDelete(@RequestBody VoIds ids){
+        return sysDispatchListService.falseDelete(ids.getIds());
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.Map;
 public interface SysDispatchListService {
     List<VoDispatchList> list(SearchDispatchList searchDispatchList);
 
-    Map<String, Object> falseDelete(Integer id);
+    Map<String, Object> falseDelete(int[] ids);
 
     Map<String, Object> cancel(CancelWorkOrder cancelWorkOrder);
 

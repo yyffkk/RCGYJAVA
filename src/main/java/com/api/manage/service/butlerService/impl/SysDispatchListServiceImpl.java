@@ -84,16 +84,29 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
     }
 
     @Override
-    public Map<String, Object> falseDelete(Integer id) {
+    public Map<String, Object> falseDelete(int[] ids) {
         map = new HashMap<>();
-        int update = sysDispatchListDao.falseDelete(id);
-        if (update > 0){
-            map.put("message","工单删除成功");
-            map.put("status",true);
-        }else {
-            map.put("message","工单删除失败");
+
+        try {
+            for (int id : ids) {
+                int update = sysDispatchListDao.falseDelete(id);
+                if (update <= 0){
+                    throw new RuntimeException("工单删除失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","工单删除成功");
+        map.put("status",true);
         return map;
     }
 
