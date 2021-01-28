@@ -55,7 +55,7 @@
                 and a.status = #{status}
             </if>
             <if test="createName != null and createName != ''">
-                and a.create_name like concat('%',{createName},'%')
+                and a.create_name like concat('%',#{createName},'%')
             </if>
         </where>
     </select>
