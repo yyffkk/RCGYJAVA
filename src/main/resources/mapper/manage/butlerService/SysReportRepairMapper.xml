@@ -15,8 +15,7 @@
         on sdl.id = a.dispatch_list_id
         <where>
             sdl.id = srr.dispatch_list_id
-            and srr.repairman = cre.resident_id
-            and cre.building_unit_estate_id = cbue.id
+            and srr.building_unit_estate_id = cbue.id
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
             and ur.id = srr.repairman
