@@ -32,6 +32,10 @@ public class ReportRepair {
      */
     private Integer repairman;
     /**
+     * 房产id
+     */
+    private Integer buildingUnitEstateId;
+    /**
      * 联系方式
      */
     private String tel;
@@ -73,6 +77,7 @@ public class ReportRepair {
                 ", type=" + type +
                 ", reportDetail='" + reportDetail + '\'' +
                 ", repairman=" + repairman +
+                ", buildingUnitEstateId=" + buildingUnitEstateId +
                 ", tel='" + tel + '\'' +
                 ", repairDate=" + repairDate +
                 ", froms=" + froms +
@@ -130,6 +135,14 @@ public class ReportRepair {
 
     public void setRepairman(Integer repairman) {
         this.repairman = repairman;
+    }
+
+    public Integer getBuildingUnitEstateId() {
+        return buildingUnitEstateId;
+    }
+
+    public void setBuildingUnitEstateId(Integer buildingUnitEstateId) {
+        this.buildingUnitEstateId = buildingUnitEstateId;
     }
 
     public String getTel() {
@@ -199,13 +212,14 @@ public class ReportRepair {
     public ReportRepair() {
     }
 
-    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, String tel, Date repairDate, Integer froms, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
+    public ReportRepair(Integer id, String code, Integer dispatchListId, Integer type, String reportDetail, Integer repairman, Integer buildingUnitEstateId, String tel, Date repairDate, Integer froms, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
         this.id = id;
         this.code = code;
         this.dispatchListId = dispatchListId;
         this.type = type;
         this.reportDetail = reportDetail;
         this.repairman = repairman;
+        this.buildingUnitEstateId = buildingUnitEstateId;
         this.tel = tel;
         this.repairDate = repairDate;
         this.froms = froms;

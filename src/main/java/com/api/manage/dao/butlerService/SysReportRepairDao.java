@@ -42,4 +42,11 @@ public interface SysReportRepairDao {
      * @return 影响行数
      */
     int update(ReportRepair reportRepair);
+
+    /**
+     * 根据报修人查询房产id （取第一个）
+     * @param repairman 报修人id
+     * @return 房产id
+     */
+    int findEstateIdByRepairman(Integer repairman);
 }

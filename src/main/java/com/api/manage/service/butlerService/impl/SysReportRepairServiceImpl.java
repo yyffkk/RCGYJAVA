@@ -107,6 +107,9 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
                 throw new RuntimeException("添加工单信息失败");
             }
             //添加报事报修信息
+            //根据报修人查询房产id（取第一个）
+            int estateId = sysReportRepairDao.findEstateIdByRepairman(reportRepair.getRepairman());
+            reportRepair.setBuildingUnitEstateId(estateId);
             //填入创建人
             reportRepair.setCreateId(sysUser.getId());
             //填入创建时间
@@ -178,6 +181,10 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
             //填入创建时间
             reportRepair.setModifyDate(new Date());
             //修改报事报修信息
+            //根据报修人查询房产id（取第一个）
+            int estateId = sysReportRepairDao.findEstateIdByRepairman(reportRepair.getRepairman());
+            reportRepair.setBuildingUnitEstateId(estateId);
+
             int update = sysReportRepairDao.update(reportRepair);
             if (update <= 0){
                 throw new RuntimeException("修改报事报修信息失败");
