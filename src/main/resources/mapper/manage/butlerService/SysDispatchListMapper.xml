@@ -6,11 +6,11 @@
     <select id="list" parameterType="com.api.model.butlerService.SearchDispatchList" resultType="com.api.vo.butlerService.VoDispatchList">
         select a.*,sdld.create_date as dispatch_date,sdld.work_order_time_limit,sdld.remake as remake,su1.actual_name as operator_name,su2.actual_name as distributor_name from
         (
-            select sdl.id,sdl.code,sdl.work_order_type,swot.name as work_order_type_name,sdl.status,ur.name as create_name,ur.tel, srr.building_unit_estate_id,srr.report_detail,sdl.begin_date,sdl.revisit_date,sdl.revisit_detail
-            ,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no
-            from sys_work_order_type as swot,sys_report_repair as srr,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_dispatch_list as sdl left join user_resident as ur
-            on ur.id = sdl.create_id
-            where sdl.work_order_type = swot.id and srr.dispatch_list_id = sdl.id and srr.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id =cb.id
+        select sdl.id,sdl.code,sdl.work_order_type,swot.name as work_order_type_name,sdl.status,ur.name as create_name,ur.tel, srr.building_unit_estate_id,srr.report_detail,sdl.begin_date,sdl.revisit_date,sdl.revisit_detail
+        ,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no
+        from sys_work_order_type as swot,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_dispatch_list as sdl,sys_report_repair as srr left join user_resident as ur
+        on ur.id = srr.repairman
+        where sdl.work_order_type = swot.id and srr.dispatch_list_id = sdl.id and srr.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id =cb.id
         ) as a
         LEFT JOIN sys_dispatch_list_detail as sdld
         on sdld.dispatch_list_id = a.id left JOIN sys_user as su1 on sdld.operator = su1.id LEFT JOIN sys_user as su2 on sdld.create_id = su2.id
@@ -53,6 +53,9 @@
             </if>
             <if test="status != null">
                 and a.status = #{status}
+            </if>
+            <if test="createName != null and createName != ''">
+                and a.create_name like concat('%',createName},'%')
             </if>
         </where>
     </select>

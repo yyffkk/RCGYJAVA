@@ -31,6 +31,10 @@ public class SearchDispatchList {
      */
     private Integer workOrderTimeId;
     /**
+     * 提交人姓名（报修人）
+     */
+    private String createName;
+    /**
      * 分配人
      */
     private String distributorName;
@@ -80,6 +84,7 @@ public class SearchDispatchList {
                 ", type=" + type +
                 ", roomName='" + roomName + '\'' +
                 ", workOrderTimeId=" + workOrderTimeId +
+                ", createName='" + createName + '\'' +
                 ", distributorName='" + distributorName + '\'' +
                 ", operatorName='" + operatorName + '\'' +
                 ", beginDateStart=" + beginDateStart +
@@ -139,6 +144,14 @@ public class SearchDispatchList {
 
     public void setWorkOrderTimeId(Integer workOrderTimeId) {
         this.workOrderTimeId = workOrderTimeId;
+    }
+
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
     }
 
     public String getDistributorName() {
@@ -224,13 +237,14 @@ public class SearchDispatchList {
     public SearchDispatchList() {
     }
 
-    public SearchDispatchList(int pageNum, int size, String code, Integer type, String roomName, Integer workOrderTimeId, String distributorName, String operatorName, Date beginDateStart, Date beginDateEnd, Date dispatchTimeStart, Date dispatchTimeEnd, Integer status, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchDispatchList(int pageNum, int size, String code, Integer type, String roomName, Integer workOrderTimeId, String createName, String distributorName, String operatorName, Date beginDateStart, Date beginDateEnd, Date dispatchTimeStart, Date dispatchTimeEnd, Integer status, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
         this.code = code;
         this.type = type;
         this.roomName = roomName;
         this.workOrderTimeId = workOrderTimeId;
+        this.createName = createName;
         this.distributorName = distributorName;
         this.operatorName = operatorName;
         this.beginDateStart = beginDateStart;
