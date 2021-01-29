@@ -105,4 +105,16 @@ public class AppGambitController {
     }
 
 
+    /**
+     * 假删除主题信息（只能删除自己的）
+     * @param themeId 主题信息主键id
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/falseDelete")
+    public Map<String,Object> falseDelete(Integer themeId,Integer id){
+        return appGambitService.falseDelete(themeId,id);
+    }
+
+
 }

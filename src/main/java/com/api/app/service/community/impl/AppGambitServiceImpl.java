@@ -211,4 +211,21 @@ public class AppGambitServiceImpl implements AppGambitService {
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> falseDelete(Integer themeId, Integer id) {
+        map = new HashMap<>();
+        UserIdAndThemeId userIdAndThemeId = new UserIdAndThemeId();
+        userIdAndThemeId.setThemeId(themeId);
+        userIdAndThemeId.setId(id);
+        int update = appGambitDao.falseDelete(userIdAndThemeId);
+        if (update >0 ){
+            map.put("message","删除成功");
+            map.put("status",true);
+        }else {
+            map.put("message","删除失败");
+            map.put("status",false);
+        }
+        return map;
+    }
 }

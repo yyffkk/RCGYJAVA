@@ -17,4 +17,6 @@ public interface AppGambitService {
     Map<String, Object> GambitThemeDetail(Integer themeId, Integer id);
 
     Map<String, Object> likes(Integer themeId, Integer id);
+
+    Map<String, Object> falseDelete(Integer themeId, Integer id);
 }

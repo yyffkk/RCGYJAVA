@@ -84,5 +84,9 @@
         update sys_gambit_theme set likes = likes - 1 where id = #{themeId}
     </update>
 
+    <update id="falseDelete" parameterType="com.api.model.app.UserIdAndThemeId" >
+        update sys_gambit_theme set is_delete = 0 where id = #{themeId} and create_id = #{id}
+    </update>
+
 
 </mapper>

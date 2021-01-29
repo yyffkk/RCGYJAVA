@@ -8,6 +8,7 @@ import com.api.util.UploadUtil;
 import com.api.vo.app.AppArticleOutQRCodeVo;
 import com.api.vo.app.AppArticleOutVo;
 import com.api.vo.app.AppMovingCompanyVo;
+import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -68,7 +69,15 @@ public class AppArticleOutServiceImpl implements AppArticleOutService {
 
     @Override
     public List<AppArticleOutVo> list(Integer id) {
-        return appArticleOutDao.list(id);
+        List<AppArticleOutVo> list = appArticleOutDao.list(id);
+        if (list != null && list.size()>0){
+            for (AppArticleOutVo appArticleOutVo : list) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("userArticleOut", appArticleOutVo.getId(), "goodsImg");
+                appArticleOutVo.setImgUrl(imgByDate);
+            }
+        }
+        return list;
     }
 
     @Override

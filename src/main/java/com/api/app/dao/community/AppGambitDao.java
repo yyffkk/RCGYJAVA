@@ -111,5 +111,10 @@ public interface AppGambitDao {
     int decrLikesByTheme(Integer themeId);
 
 
-
+    /**
+     * 假删除主题信息（只能删除自己的）
+     * @param userIdAndThemeId 用户id 与 主题主键id
+     * @return 影响行数
+     */
+    int falseDelete(UserIdAndThemeId userIdAndThemeId);
 }

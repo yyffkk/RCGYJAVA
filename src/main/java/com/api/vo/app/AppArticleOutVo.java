@@ -1,6 +1,9 @@
 package com.api.vo.app;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * app 物品出户Vo list 回显
@@ -34,6 +37,10 @@ public class AppArticleOutVo {
      * 搬家公司手机号
      */
     private String movingCompanyTel;
+    /**
+     * 照片资源信息
+     */
+    private List<VoResourcesImg> imgUrl;
 
     @Override
     public String toString() {
@@ -45,6 +52,7 @@ public class AppArticleOutVo {
                 ", approach=" + approach +
                 ", status=" + status +
                 ", movingCompanyTel='" + movingCompanyTel + '\'' +
+                ", imgUrl=" + imgUrl +
                 '}';
     }
 
@@ -104,10 +112,18 @@ public class AppArticleOutVo {
         this.movingCompanyTel = movingCompanyTel;
     }
 
+    public List<VoResourcesImg> getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(List<VoResourcesImg> imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public AppArticleOutVo() {
     }
 
-    public AppArticleOutVo(Integer id, String name, Integer weight, Date expectedTime, Integer approach, Integer status, String movingCompanyTel) {
+    public AppArticleOutVo(Integer id, String name, Integer weight, Date expectedTime, Integer approach, Integer status, String movingCompanyTel, List<VoResourcesImg> imgUrl) {
         this.id = id;
         this.name = name;
         this.weight = weight;
@@ -115,5 +131,6 @@ public class AppArticleOutVo {
         this.approach = approach;
         this.status = status;
         this.movingCompanyTel = movingCompanyTel;
+        this.imgUrl = imgUrl;
     }
 }
