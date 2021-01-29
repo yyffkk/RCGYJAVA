@@ -50,5 +50,39 @@
         where sgt.create_id = ur.id and sgt.is_delete = 1 and sgt.id = #{themeId}
     </select>
 
+    <select id="findGambitIdByThemeId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select gambit_id from sys_gambit_theme where id = #{themeId}
+    </select>
+
+    <select id="findThemeLikeByIds" parameterType="com.api.model.app.UserIdAndThemeId" resultType="com.api.model.app.AppGambitThemeLike">
+        select * from sys_gambit_theme_like where gambit_theme_id = #{themeId} and create_id = #{id}
+    </select>
+
+    <insert id="insertThemeLike" parameterType="com.api.model.app.AppGambitThemeLike">
+        insert into sys_gambit_theme_like(
+            gambit_id,
+            gambit_theme_id,
+            create_id,
+            create_date
+        )values (
+            #{gambitId},
+            #{gambitThemeId},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <delete id="deleteThemeLike" parameterType="java.lang.Integer">
+        delete from sys_gambit_theme_like where id = #{id}
+    </delete>
+
+    <update id="incrLikesByTheme" parameterType="java.lang.Integer">
+        update sys_gambit_theme set likes = likes + 1 where id = #{themeId}
+    </update>
+
+    <update id="decrLikesByTheme" parameterType="java.lang.Integer">
+        update sys_gambit_theme set likes = likes - 1 where id = #{themeId}
+    </update>
+
 
 </mapper>

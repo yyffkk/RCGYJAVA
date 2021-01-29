@@ -93,5 +93,16 @@ public class AppGambitController {
     }
 
 
+    /**
+     * app用户点赞/取消点赞
+     * @param themeId 主题主键id
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/likes")
+    public Map<String,Object> likes(Integer themeId,Integer id){
+        return appGambitService.likes(themeId,id);
+    }
+
 
 }

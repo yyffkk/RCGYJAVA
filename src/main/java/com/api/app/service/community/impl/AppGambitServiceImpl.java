@@ -2,6 +2,8 @@ package com.api.app.service.community.impl;
 
 import com.api.app.dao.community.AppGambitDao;
 import com.api.app.service.community.AppGambitService;
+import com.api.model.app.AppGambitThemeLike;
+import com.api.model.app.UserIdAndThemeId;
 import com.api.vo.app.IdAndName;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppGambitThemeCommentVo;
@@ -10,8 +12,11 @@ import com.api.vo.app.AppGambitVo;
 import com.api.vo.app.AppMyTidingsVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +109,76 @@ public class AppGambitServiceImpl implements AppGambitService {
 
         map.put("message","请求成功");
         map.put("data",appGambitThemeVo);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> likes(Integer themeId, Integer id) {
+        map = new HashMap<>();
+        //操作
+        String operation = "";
+        try {
+            //查询是否已点赞过该主题
+            UserIdAndThemeId userIdAndThemeId = new UserIdAndThemeId();
+            userIdAndThemeId.setId(id);
+            userIdAndThemeId.setThemeId(themeId);
+            AppGambitThemeLike appGambitThemeLike2 = appGambitDao.findThemeLikeByIds(userIdAndThemeId);
+            if (appGambitThemeLike2 != null){
+                //取消点赞
+                //删除点赞信息
+                int delete = appGambitDao.deleteThemeLike(appGambitThemeLike2.getId());
+                if (delete <= 0){
+                    throw new RuntimeException("删除点赞信息失败");
+                }
+                //该主题的点赞数量-1
+                int update = appGambitDao.decrLikesByTheme(themeId);
+                if (update <= 0){
+                    throw new RuntimeException("减少点赞数量失败");
+                }
+                operation = "取消点赞";
+                //0.取消点赞
+                map.put("operation",0);
+            }else {
+                //点赞
+                //添加点赞信息
+                //根据主题主键id 查询 话题id
+                Integer gambitId = appGambitDao.findGambitIdByThemeId(themeId);
+                //添加点赞人信息
+                AppGambitThemeLike appGambitThemeLike = new AppGambitThemeLike();
+                appGambitThemeLike.setGambitId(gambitId);
+                appGambitThemeLike.setGambitThemeId(themeId);
+                appGambitThemeLike.setCreateId(id);
+                appGambitThemeLike.setCreateDate(new Date());
+                int insert = appGambitDao.insertThemeLike(appGambitThemeLike);
+                if (insert <= 0){
+                    throw new RuntimeException("添加点赞信息失败");
+                }
+
+                //该主题的点赞数量+1
+                int update = appGambitDao.incrLikesByTheme(themeId);
+                if (update <= 0){
+                    throw new RuntimeException("添加点赞数量失败");
+                }
+                operation = "点赞";
+                //1.点赞
+                map.put("operation",1);
+            }
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+
+        map.put("message",operation+"操作成功");
         map.put("status",true);
         return map;
     }

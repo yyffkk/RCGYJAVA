@@ -15,4 +15,6 @@ public interface AppGambitService {
     List<AppMyTidingsVo> myTidings(Integer id);
 
     Map<String, Object> GambitThemeDetail(Integer themeId);
+
+    Map<String, Object> likes(Integer themeId, Integer id);
 }

@@ -1,5 +1,7 @@
 package com.api.app.dao.community;
 
+import com.api.model.app.AppGambitThemeLike;
+import com.api.model.app.UserIdAndThemeId;
 import com.api.vo.app.IdAndName;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
@@ -63,4 +65,51 @@ public interface AppGambitDao {
      * @return app最新主题信息Vo list 回显
      */
     AppGambitThemeVo GambitThemeDetail(Integer themeId);
+
+    /**
+     * 根据主题主键id 查询 话题id
+     * @param themeId 主题主键id
+     * @return 话题id
+     */
+    Integer findGambitIdByThemeId(Integer themeId);
+
+    /**
+     * 根据用户id与主题id查询 点赞信息
+     * @param userIdAndThemeId 用户id 与 主题主键id
+     * @return app点赞信息model
+     */
+    AppGambitThemeLike findThemeLikeByIds(UserIdAndThemeId userIdAndThemeId);
+
+
+    /**
+     * 添加点赞人信息
+     * @param appGambitThemeLike app点赞人信息model
+     * @return 影响行数
+     */
+    int insertThemeLike(AppGambitThemeLike appGambitThemeLike);
+
+
+    /**
+     * 删除点赞信息
+     * @param id 点赞信息主键id
+     * @return 影响行数
+     */
+    int deleteThemeLike(Integer id);
+
+    /**
+     * 该主题的点赞数量+1
+     * @param themeId 主题主键id
+     * @return 影响行数
+     */
+    int incrLikesByTheme(Integer themeId);
+
+    /**
+     * 该主题的点赞数量-1
+     * @param themeId 主题主键id
+     * @return 影响行数
+     */
+    int decrLikesByTheme(Integer themeId);
+
+
+
 }
