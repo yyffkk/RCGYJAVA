@@ -5,19 +5,19 @@
 <mapper namespace="com.api.manage.dao.chargeManagement.SysWorkOrderCostDao">
     <select id="list" parameterType="com.api.model.chargeManagement.SearchDailyPayment" resultType="com.api.vo.chargeManagement.VoWorkOrderCost">
         select a.*,sdpo.name as pay_name from (
-        select sdp.*,sctd.name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,su.actual_name as create_name,
-        (case sdp.modify_date is null
-            when true
-            then
-                sdp.create_date
-            else
-                sdp.modify_date
-        end) as update_date
-        from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su,sys_charges_template_detail as sctd
-        where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and su.id =sdp.create_id and sctd.id = sdp.charges_template_detail_id and sdp.charges_template_detail_id = sctd.id and marker = 2 and sdp.is_delete = 1
+            select sdp.*,sctd.name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,su.actual_name as create_name,
+            (case sdp.modify_date is null
+                when true
+                then
+                    sdp.create_date
+                else
+                    sdp.modify_date
+            end) as update_date
+            from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su,sys_charges_template_detail as sctd
+            where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and su.id =sdp.create_id and sctd.id = sdp.charges_template_detail_id and sdp.charges_template_detail_id = sctd.id and sctd.marker = 2 and sdp.is_delete = 1
         ) as a
-        LEFT JOIN sys_daily_payment_order as sdpo
-        on a.id = sdpo.daily_payment_id
+        LEFT JOIN sys_daily_payment_order_list as sdpol on a.id = sdpol.daily_payment_id
+        LEFT JOIN sys_daily_payment_order as sdpo on sdpo.id = sdpol.daily_payment_order_id
         <where>
             <if test="chargesTemplateDetailId != null">
                 and a.charges_template_detail_id = #{chargesTemplateDetailId}

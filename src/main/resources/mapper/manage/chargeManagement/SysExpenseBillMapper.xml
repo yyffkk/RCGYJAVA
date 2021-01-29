@@ -21,8 +21,8 @@
         from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su,sys_charges_template_detail as sctd
         where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and su.id =sdp.create_id and sctd.id = sdp.charges_template_detail_id  and sdp.is_delete = 1
         ) as a
-        LEFT JOIN sys_daily_payment_order as sdpo
-        on a.id = sdpo.daily_payment_id
+        LEFT JOIN sys_daily_payment_order_list as sdpol on a.id = sdpol.daily_payment_id
+        LEFT JOIN sys_daily_payment_order as sdpo on sdpo.id = sdpol.daily_payment_order_id
         <where>
             <if test="chargesTemplateDetailId != null">
                 and a.charges_template_detail_id = #{chargesTemplateDetailId}
@@ -52,7 +52,7 @@
                 and a.status = #{status}
             </if>
         </where>
-        group by id
+        group by a.id
     </select>
 
     <select id="findStatusSNBySV" parameterType="java.lang.Integer" resultType="java.lang.String">
