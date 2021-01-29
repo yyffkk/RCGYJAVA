@@ -32,6 +32,20 @@ public class AppGambitServiceImpl implements AppGambitService {
         List<AppGambitThemeVo> list = appGambitDao.list(id);
         if (list != null && list.size()>0){
             for (AppGambitThemeVo appGambitThemeVo : list) {
+                //查询该用户是否点赞
+                UserIdAndThemeId userIdAndThemeId = new UserIdAndThemeId();
+                userIdAndThemeId.setThemeId(appGambitThemeVo.getId());
+                userIdAndThemeId.setId(id);
+
+                AppGambitThemeLike themeLikeByIds = appGambitDao.findThemeLikeByIds(userIdAndThemeId);
+                if (themeLikeByIds != null){
+                    //1.已点赞
+                    appGambitThemeVo.setIsLike(1);
+                }else {
+                    //0.未点赞
+                    appGambitThemeVo.setIsLike(0);
+                }
+
                 UploadUtil uploadUtil = new UploadUtil();
                 //查询主题照片
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambitTheme", appGambitThemeVo.getId(), "gambitThemeImg");
@@ -87,9 +101,24 @@ public class AppGambitServiceImpl implements AppGambitService {
     }
 
     @Override
-    public Map<String, Object> GambitThemeDetail(Integer themeId) {
+    public Map<String, Object> GambitThemeDetail(Integer themeId, Integer id) {
         map = new HashMap<>();
         AppGambitThemeVo appGambitThemeVo = appGambitDao.GambitThemeDetail(themeId);
+
+        //查询该用户是否点赞
+        UserIdAndThemeId userIdAndThemeId = new UserIdAndThemeId();
+        userIdAndThemeId.setThemeId(appGambitThemeVo.getId());
+        userIdAndThemeId.setId(id);
+
+        AppGambitThemeLike themeLikeByIds = appGambitDao.findThemeLikeByIds(userIdAndThemeId);
+        if (themeLikeByIds != null){
+            //1.已点赞
+            appGambitThemeVo.setIsLike(1);
+        }else {
+            //0.未点赞
+            appGambitThemeVo.setIsLike(0);
+        }
+
         UploadUtil uploadUtil = new UploadUtil();
         //查询主题照片
         List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambitTheme", appGambitThemeVo.getId(), "gambitThemeImg");

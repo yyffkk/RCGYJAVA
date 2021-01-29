@@ -88,8 +88,8 @@ public class AppGambitController {
      * @return map
      */
     @GetMapping("/GambitThemeDetail")
-    public Map<String,Object> GambitThemeDetail(Integer themeId){
-        return appGambitService.GambitThemeDetail(themeId);
+    public Map<String,Object> GambitThemeDetail(Integer themeId,Integer id){
+        return appGambitService.GambitThemeDetail(themeId,id);
     }
 
 
