@@ -84,7 +84,27 @@ public class AppGambitServiceImpl implements AppGambitService {
     @Override
     public Map<String, Object> GambitThemeDetail(Integer themeId) {
         map = new HashMap<>();
+        AppGambitThemeVo appGambitThemeVo = appGambitDao.GambitThemeDetail(themeId);
+        UploadUtil uploadUtil = new UploadUtil();
+        //查询主题照片
+        List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambitTheme", appGambitThemeVo.getId(), "gambitThemeImg");
+        appGambitThemeVo.setImgUrls(imgByDate);
 
+        //查询主题发布人头像
+        List<VoResourcesImg> imgByDate1 = uploadUtil.findImgByDate("userResident", appGambitThemeVo.getCreateId(), "headSculpture");
+        appGambitThemeVo.setHeadSculptureImgUrl(imgByDate1);
+
+        //根据主题主键id查询点赞人信息
+        List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
+        appGambitThemeVo.setLikeNames(idAndNames);
+
+        //根据主题主键id查询主题评论信息
+        List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());
+        appGambitThemeVo.setGambitThemeCommentVoList(gambitThemeCommentVos);
+
+        map.put("message","请求成功");
+        map.put("data",appGambitThemeVo);
+        map.put("status",true);
         return map;
     }
 }

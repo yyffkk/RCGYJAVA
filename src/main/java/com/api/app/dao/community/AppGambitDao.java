@@ -56,4 +56,11 @@ public interface AppGambitDao {
      * @return 点赞人信息
      */
     List<IdAndName> findLikeNames(Integer id);
+
+    /**
+     * 根据主题主键id 查询 主题信息
+     * @param themeId 主题主键id
+     * @return app最新主题信息Vo list 回显
+     */
+    AppGambitThemeVo GambitThemeDetail(Integer themeId);
 }
