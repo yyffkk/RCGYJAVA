@@ -3,12 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.community.AppGambitDao">
-    <select id="list" resultType="com.api.vo.app.AppGambitThemeVo">
-        select sgt.*,sg.title as gambit_title,ur.name as create_name
-        from user_resident as ur,sys_gambit_theme as sgt
-        LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
-        where ur.id = sgt.create_id and sgt.is_delete = 1
-        order by sgt.create_date DESC
+    <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGambitThemeVo">
+        select a.* from (
+            select sgt.*,sg.title as gambit_title,ur.name as create_name
+            from user_resident as ur,sys_gambit_theme as sgt
+            LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
+            where ur.id = sgt.create_id and sgt.is_delete = 1
+            order by sgt.create_date DESC
+        ) as a where a.is_public = 1 or a.create_id = #{id}
     </select>
 
     <select id="findCommentByThemeId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGambitThemeCommentVo">
@@ -18,5 +20,13 @@
         LEFT JOIN user_resident as ur2 on sgtc2.create_id = ur2.id
         where sgtc1.gambit_theme_id = #{ThemeId} and sgtc1.create_id = ur1.id and sgtc1.is_delete = 1
         order by sgtc1.create_date DESC
+    </select>
+
+    <select id="listGambit" resultType="com.api.vo.app.AppGambitVo">
+        select * from sys_gambit where is_public = 1 and is_delete = 1
+    </select>
+
+    <select id="sumLikeNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select sum()
     </select>
 </mapper>

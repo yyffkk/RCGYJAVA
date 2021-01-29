@@ -5,6 +5,7 @@ import com.api.app.service.community.AppGambitService;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
+import com.api.vo.app.AppGambitVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,8 @@ public class AppGambitServiceImpl implements AppGambitService {
     AppGambitDao appGambitDao;
 
     @Override
-    public List<AppGambitThemeVo> list() {
-        List<AppGambitThemeVo> list = appGambitDao.list();
+    public List<AppGambitThemeVo> list(Integer id) {
+        List<AppGambitThemeVo> list = appGambitDao.list(id);
         if (list != null && list.size()>0){
             for (AppGambitThemeVo appGambitThemeVo : list) {
                 UploadUtil uploadUtil = new UploadUtil();
@@ -36,5 +37,24 @@ public class AppGambitServiceImpl implements AppGambitService {
             }
         }
         return list;
+    }
+
+    @Override
+    public List<AppGambitVo> listGambit() {
+        List<AppGambitVo> appGambitVos = appGambitDao.listGambit();
+        if (appGambitVos != null && appGambitVos.size()>0){
+            for (AppGambitVo appGambitVo : appGambitVos) {
+                //查询话题照片资源
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambit", appGambitVo.getId(), "gambitImg");
+                appGambitVo.setImgUrl(imgByDate);
+                //查询热度（活跃度）【点赞数+评论数】
+                //查询点赞数
+                appGambitDao.sumLikeNum(appGambitVo.getId());
+                //查询评论数
+                appGambitDao.sumCommentNum(appGambitVo.getId());
+            }
+        }
+        return appGambitVos;
     }
 }

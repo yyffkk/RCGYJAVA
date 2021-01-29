@@ -19,21 +19,10 @@
                 when 2 then (select udp.nick_name from user_decoration_personnel as udp where udp.id = sg.create_id)
                 when 3 then (select su.nick_name from sys_user as su where su.id = sg.create_id) 	end
             ) as gambit_nick_name,
-            (
-                case sgt.user_type
-                when 1 then (select ur.name from user_resident as ur where ur.id = sg.create_id)
-                when 2 then (select udp.name from user_decoration_personnel as udp where udp.id = sg.create_id)
-                when 3 then (select su.actual_name from sys_user as su where su.id = sg.create_id) 	end
-            ) as theme_name ,
-            (
-                case sgt.user_type
-                when 1 then (select ur.nick_name from user_resident as ur where ur.id = sg.create_id)
-                when 2 then (select udp.nick_name from user_decoration_personnel as udp where udp.id = sg.create_id)
-                when 3 then (select su.nick_name from sys_user as su where su.id = sg.create_id) 	end
-            ) as theme_nick_name,
-            sgt.create_date as theme_create_date,sgt.content as theme_content,sgt.like as like_num,sgt.is_delete
-            from sys_gambit as sg RIGHT JOIN sys_gambit_theme as sgt
+            ur.name as theme_name,ur.nick_name as theme_nick_name,sgt.create_date as theme_create_date,sgt.content as theme_content,sgt.likes as like_num,sgt.is_delete
+            from user_resident as ur,sys_gambit as sg RIGHT JOIN sys_gambit_theme as sgt
             on sg.id = sgt.gambit_id
+            where  ur.id = sgt.create_id
         ) as a
         <where>
             <if test="beginDate != null">
@@ -70,11 +59,11 @@
     </select>
 
     <select id="countLikeNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(distinct user_type,create_id) from sys_gambit_theme_like where gambit_theme_id = #{id}
+        select count(distinct create_id) from sys_gambit_theme_like where gambit_theme_id = #{id}
     </select>
 
     <select id="countCommentNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(distinct user_type,create_id) from sys_gambit_theme_comment where gambit_theme_id = #{id}
+        select count(distinct create_id) from sys_gambit_theme_comment where gambit_theme_id = #{id}
     </select>
 
     <update id="falseDelete" parameterType="java.lang.Integer">
