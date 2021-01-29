@@ -92,4 +92,6 @@ public class AppGambitController {
         return appGambitService.GambitThemeDetail(themeId);
     }
 
+
+
 }

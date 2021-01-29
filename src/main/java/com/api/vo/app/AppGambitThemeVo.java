@@ -18,6 +18,10 @@ public class AppGambitThemeVo {
      */
     private Integer createId;
     /**
+     * 是否可以评论（默认1.可以）（1.可以，0.不可以）
+     */
+    private Integer isComment;
+    /**
      * 发布人
      */
     private String createName;
@@ -55,6 +59,7 @@ public class AppGambitThemeVo {
         return "AppGambitThemeVo{" +
                 "id=" + id +
                 ", createId=" + createId +
+                ", isComment=" + isComment +
                 ", createName='" + createName + '\'' +
                 ", content='" + content + '\'' +
                 ", gambitTitle='" + gambitTitle + '\'' +
@@ -80,6 +85,14 @@ public class AppGambitThemeVo {
 
     public void setCreateId(Integer createId) {
         this.createId = createId;
+    }
+
+    public Integer getIsComment() {
+        return isComment;
+    }
+
+    public void setIsComment(Integer isComment) {
+        this.isComment = isComment;
     }
 
     public String getCreateName() {
@@ -149,9 +162,10 @@ public class AppGambitThemeVo {
     public AppGambitThemeVo() {
     }
 
-    public AppGambitThemeVo(Integer id, Integer createId, String createName, String content, String gambitTitle, Date createDate, List<IdAndName> likeNames, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headSculptureImgUrl, List<AppGambitThemeCommentVo> gambitThemeCommentVoList) {
+    public AppGambitThemeVo(Integer id, Integer createId, Integer isComment, String createName, String content, String gambitTitle, Date createDate, List<IdAndName> likeNames, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headSculptureImgUrl, List<AppGambitThemeCommentVo> gambitThemeCommentVoList) {
         this.id = id;
         this.createId = createId;
+        this.isComment = isComment;
         this.createName = createName;
         this.content = content;
         this.gambitTitle = gambitTitle;
