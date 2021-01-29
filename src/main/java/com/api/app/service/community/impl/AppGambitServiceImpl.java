@@ -2,6 +2,7 @@ package com.api.app.service.community.impl;
 
 import com.api.app.dao.community.AppGambitDao;
 import com.api.app.service.community.AppGambitService;
+import com.api.model.app.AppGambitThemeComment;
 import com.api.model.app.AppGambitThemeLike;
 import com.api.model.app.UserIdAndThemeId;
 import com.api.vo.app.IdAndName;
@@ -224,6 +225,27 @@ public class AppGambitServiceImpl implements AppGambitService {
             map.put("status",true);
         }else {
             map.put("message","删除失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> comment(AppGambitThemeComment appGambitThemeComment) {
+        map = new HashMap<>();
+        //根据主题主键id 查询 话题id
+        Integer gambitId = appGambitDao.findGambitIdByThemeId(appGambitThemeComment.getGambitThemeId());
+        appGambitThemeComment.setGambitId(gambitId);
+        //填入评论时间
+        appGambitThemeComment.setCreateDate(new Date());
+        //填入是否删除,默认为1.非删
+        appGambitThemeComment.setIsDelete(1);
+        int insert = appGambitDao.comment(appGambitThemeComment);
+        if (insert >0){
+            map.put("message","评论成功");
+            map.put("status",true);
+        }else {
+            map.put("message","评论失败");
             map.put("status",false);
         }
         return map;

@@ -1,16 +1,16 @@
 package com.api.app.controller.community;
 
 import com.api.app.service.community.AppGambitService;
+import com.api.model.app.AppGambitThemeComment;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
 import com.api.vo.app.AppMyTidingsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +116,21 @@ public class AppGambitController {
         return appGambitService.falseDelete(themeId,id);
     }
 
+
+    /**
+     * 评论
+     * @param appGambitThemeComment 话题主题评论信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/comment")
+    public Map<String,Object> comment(@RequestBody AppGambitThemeComment appGambitThemeComment, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //填入评论人
+        appGambitThemeComment.setCreateId(id);
+        return appGambitService.comment(appGambitThemeComment);
+    }
 
 
 

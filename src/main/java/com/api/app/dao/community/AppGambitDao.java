@@ -1,5 +1,6 @@
 package com.api.app.dao.community;
 
+import com.api.model.app.AppGambitThemeComment;
 import com.api.model.app.AppGambitThemeLike;
 import com.api.model.app.UserIdAndThemeId;
 import com.api.vo.app.IdAndName;
@@ -117,4 +118,11 @@ public interface AppGambitDao {
      * @return 影响行数
      */
     int falseDelete(UserIdAndThemeId userIdAndThemeId);
+
+    /**
+     * 评论
+     * @param appGambitThemeComment 话题主题评论信息
+     * @return 影响行数
+     */
+    int comment(AppGambitThemeComment appGambitThemeComment);
 }

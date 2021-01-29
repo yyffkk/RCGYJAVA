@@ -88,5 +88,25 @@
         update sys_gambit_theme set is_delete = 0 where id = #{themeId} and create_id = #{id}
     </update>
 
+    <insert id="comment" parameterType="com.api.model.app.AppGambitThemeComment">
+        insert into sys_gambit_theme_comment(
+            parent_id,
+            gambit_id,
+            gambit_theme_id,
+            content,
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{parentId},
+            #{gambitId},
+            #{gambitThemeId},
+            #{content},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+    </insert>
+
 
 </mapper>

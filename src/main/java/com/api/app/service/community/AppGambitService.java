@@ -1,5 +1,6 @@
 package com.api.app.service.community;
 
+import com.api.model.app.AppGambitThemeComment;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
 import com.api.vo.app.AppMyTidingsVo;
@@ -19,4 +20,6 @@ public interface AppGambitService {
     Map<String, Object> likes(Integer themeId, Integer id);
 
     Map<String, Object> falseDelete(Integer themeId, Integer id);
+
+    Map<String, Object> comment(AppGambitThemeComment appGambitThemeComment);
 }
