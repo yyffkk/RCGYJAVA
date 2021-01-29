@@ -143,4 +143,8 @@
         ) as a where a.is_public = 1 or a.create_id = #{id}
     </select>
 
+    <select id="findActivityGambit" resultType="com.api.vo.app.IdAndName">
+
+    </select>
+
 </mapper>

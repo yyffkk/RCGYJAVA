@@ -137,4 +137,11 @@ public interface AppGambitDao {
      * @return app最新主题信息Vo list 回显
      */
     List<AppGambitThemeVo> listByGambitId(UserIdAndGambitId userIdAndGambitId);
+
+    /**
+     * 查询活跃话题（取前4个）
+     * @return 活跃话题id 和 name
+     */
+    List<IdAndName> findActivityGambit();
+
 }

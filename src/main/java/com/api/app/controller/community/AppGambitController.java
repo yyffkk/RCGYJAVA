@@ -170,6 +170,16 @@ public class AppGambitController {
     }
 
 
+    /**
+     * 查询活跃话题（取前4个）
+     * @return map
+     */
+    @GetMapping("/findActivityGambit")
+    public Map<String,Object> findActivityGambit(){
+        return appGambitService.findActivityGambit();
+    }
+
+
 
 
 

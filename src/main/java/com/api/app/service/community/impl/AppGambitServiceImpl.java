@@ -325,4 +325,14 @@ public class AppGambitServiceImpl implements AppGambitService {
         }
         return list;
     }
+
+    @Override
+    public Map<String, Object> findActivityGambit() {
+        map = new HashMap<>();
+        List<IdAndName> idAndNames = appGambitDao.findActivityGambit();
+        map.put("message","请求成功");
+        map.put("data",idAndNames);
+        map.put("status",true);
+        return map;
+    }
 }
