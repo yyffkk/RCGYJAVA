@@ -34,5 +34,9 @@
         select count(*) from sys_gambit_theme_comment where gambit_id = #{id} and is_delete = 1
     </select>
 
+    <select id="myTidings" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppMyTidingsVo">
+        select * from sys_gambit_theme where create_id = #{id} and is_delete =1 order by create_date DESC
+    </select>
+
 
 </mapper>

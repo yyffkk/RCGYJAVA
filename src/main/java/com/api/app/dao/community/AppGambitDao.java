@@ -3,6 +3,7 @@ package com.api.app.dao.community;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
+import com.api.vo.app.AppMyTidingsVo;
 
 import java.util.List;
 
@@ -40,4 +41,11 @@ public interface AppGambitDao {
      * @return 总评论数
      */
     int sumCommentNum(Integer id);
+
+    /**
+     * 我的动态
+     * @param id 用户id
+     * @return 动态信息
+     */
+    List<AppMyTidingsVo> myTidings(Integer id);
 }

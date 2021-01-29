@@ -3,6 +3,7 @@ package com.api.app.controller.community;
 import com.api.app.service.community.AppGambitService;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
+import com.api.vo.app.AppMyTidingsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,5 +62,34 @@ public class AppGambitController {
         return map;
     }
 
+
+    /**
+     * 我的动态
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/myTidings")
+    public Map<String,Object> myTidings(int pageNum,int size,Integer id){
+        PageHelper.startPage(pageNum,size);
+        List<AppMyTidingsVo> appMyTidingsVos =appGambitService.myTidings(id);
+        PageInfo<AppMyTidingsVo> pageInfo = new PageInfo<>(appMyTidingsVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 查询动态主题详情
+     * @param themeId 话题主题主键id
+     * @return map
+     */
+    @GetMapping("/GambitThemeDetail")
+    public Map<String,Object> GambitThemeDetail(Integer themeId){
+        return appGambitService.GambitThemeDetail(themeId);
+    }
 
 }

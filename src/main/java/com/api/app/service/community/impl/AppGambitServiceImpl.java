@@ -6,16 +6,20 @@ import com.api.util.UploadUtil;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
+import com.api.vo.app.AppMyTidingsVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AppGambitServiceImpl implements AppGambitService {
     @Resource
     AppGambitDao appGambitDao;
+    private static Map<String,Object> map = null;
 
     @Override
     public List<AppGambitThemeVo> list(Integer id) {
@@ -57,5 +61,25 @@ public class AppGambitServiceImpl implements AppGambitService {
             }
         }
         return appGambitVos;
+    }
+
+    @Override
+    public List<AppMyTidingsVo> myTidings(Integer id) {
+        List<AppMyTidingsVo> appMyTidingsVos = appGambitDao.myTidings(id);
+        if (appMyTidingsVos != null && appMyTidingsVos.size()>0){
+            for (AppMyTidingsVo appMyTidingsVo : appMyTidingsVos) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambitTheme", appMyTidingsVo.getId(), "gambitThemeImg");
+                appMyTidingsVo.setImgUrl(imgByDate);
+            }
+        }
+        return appMyTidingsVos;
+    }
+
+    @Override
+    public Map<String, Object> GambitThemeDetail(Integer themeId) {
+        map = new HashMap<>();
+
+        return map;
     }
 }

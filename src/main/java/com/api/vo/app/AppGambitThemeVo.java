@@ -2,6 +2,7 @@ package com.api.vo.app;
 
 import com.api.vo.resources.VoResourcesImg;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +30,10 @@ public class AppGambitThemeVo {
      */
     private String gambitTitle;
     /**
+     * 发布时间
+     */
+    private Date createDate;
+    /**
      * 主题照片内容
      */
     private List<VoResourcesImg> imgUrls;
@@ -49,6 +54,7 @@ public class AppGambitThemeVo {
                 ", createName='" + createName + '\'' +
                 ", content='" + content + '\'' +
                 ", gambitTitle='" + gambitTitle + '\'' +
+                ", createDate=" + createDate +
                 ", imgUrls=" + imgUrls +
                 ", headSculptureImgUrl=" + headSculptureImgUrl +
                 ", gambitThemeCommentVoList=" + gambitThemeCommentVoList +
@@ -95,6 +101,14 @@ public class AppGambitThemeVo {
         this.gambitTitle = gambitTitle;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     public List<VoResourcesImg> getImgUrls() {
         return imgUrls;
     }
@@ -122,12 +136,13 @@ public class AppGambitThemeVo {
     public AppGambitThemeVo() {
     }
 
-    public AppGambitThemeVo(Integer id, Integer createId, String createName, String content, String gambitTitle, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headSculptureImgUrl, List<AppGambitThemeCommentVo> gambitThemeCommentVoList) {
+    public AppGambitThemeVo(Integer id, Integer createId, String createName, String content, String gambitTitle, Date createDate, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headSculptureImgUrl, List<AppGambitThemeCommentVo> gambitThemeCommentVoList) {
         this.id = id;
         this.createId = createId;
         this.createName = createName;
         this.content = content;
         this.gambitTitle = gambitTitle;
+        this.createDate = createDate;
         this.imgUrls = imgUrls;
         this.headSculptureImgUrl = headSculptureImgUrl;
         this.gambitThemeCommentVoList = gambitThemeCommentVoList;
