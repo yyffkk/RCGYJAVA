@@ -34,6 +34,10 @@ public class AppGambitThemeVo {
      */
     private Date createDate;
     /**
+     * 点赞人信息
+     */
+    private List<IdAndName> likeNames;
+    /**
      * 主题照片内容
      */
     private List<VoResourcesImg> imgUrls;
@@ -55,6 +59,7 @@ public class AppGambitThemeVo {
                 ", content='" + content + '\'' +
                 ", gambitTitle='" + gambitTitle + '\'' +
                 ", createDate=" + createDate +
+                ", likeNames=" + likeNames +
                 ", imgUrls=" + imgUrls +
                 ", headSculptureImgUrl=" + headSculptureImgUrl +
                 ", gambitThemeCommentVoList=" + gambitThemeCommentVoList +
@@ -109,6 +114,14 @@ public class AppGambitThemeVo {
         this.createDate = createDate;
     }
 
+    public List<IdAndName> getLikeNames() {
+        return likeNames;
+    }
+
+    public void setLikeNames(List<IdAndName> likeNames) {
+        this.likeNames = likeNames;
+    }
+
     public List<VoResourcesImg> getImgUrls() {
         return imgUrls;
     }
@@ -136,13 +149,14 @@ public class AppGambitThemeVo {
     public AppGambitThemeVo() {
     }
 
-    public AppGambitThemeVo(Integer id, Integer createId, String createName, String content, String gambitTitle, Date createDate, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headSculptureImgUrl, List<AppGambitThemeCommentVo> gambitThemeCommentVoList) {
+    public AppGambitThemeVo(Integer id, Integer createId, String createName, String content, String gambitTitle, Date createDate, List<IdAndName> likeNames, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headSculptureImgUrl, List<AppGambitThemeCommentVo> gambitThemeCommentVoList) {
         this.id = id;
         this.createId = createId;
         this.createName = createName;
         this.content = content;
         this.gambitTitle = gambitTitle;
         this.createDate = createDate;
+        this.likeNames = likeNames;
         this.imgUrls = imgUrls;
         this.headSculptureImgUrl = headSculptureImgUrl;
         this.gambitThemeCommentVoList = gambitThemeCommentVoList;

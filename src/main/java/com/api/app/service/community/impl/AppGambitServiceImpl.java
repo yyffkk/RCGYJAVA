@@ -2,6 +2,7 @@ package com.api.app.service.community.impl;
 
 import com.api.app.dao.community.AppGambitDao;
 import com.api.app.service.community.AppGambitService;
+import com.api.vo.app.IdAndName;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
@@ -34,6 +35,10 @@ public class AppGambitServiceImpl implements AppGambitService {
                 //查询主题发布人头像
                 List<VoResourcesImg> imgByDate1 = uploadUtil.findImgByDate("userResident", appGambitThemeVo.getCreateId(), "headSculpture");
                 appGambitThemeVo.setHeadSculptureImgUrl(imgByDate1);
+
+                //根据主题主键id查询点赞人信息
+                List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
+                appGambitThemeVo.setLikeNames(idAndNames);
 
                 //根据主题主键id查询主题评论信息
                 List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());

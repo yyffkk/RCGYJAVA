@@ -1,5 +1,6 @@
 package com.api.app.dao.community;
 
+import com.api.vo.app.IdAndName;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
@@ -48,4 +49,11 @@ public interface AppGambitDao {
      * @return 动态信息
      */
     List<AppMyTidingsVo> myTidings(Integer id);
+
+    /**
+     * 根据主题主键id查询点赞人信息
+     * @param id 主题主键id
+     * @return 点赞人信息
+     */
+    List<IdAndName> findLikeNames(Integer id);
 }

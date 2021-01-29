@@ -38,5 +38,10 @@
         select * from sys_gambit_theme where create_id = #{id} and is_delete =1 order by create_date DESC
     </select>
 
+    <select id="findLikeNames" parameterType="java.lang.Integer" resultType="com.api.vo.app.IdAndName">
+        select ur.id,ur.name from sys_gambit_theme_like as sgtl,user_resident as ur
+        where sgtl.create_id = ur.id and  gambit_theme_id = #{id}
+    </select>
+
 
 </mapper>
