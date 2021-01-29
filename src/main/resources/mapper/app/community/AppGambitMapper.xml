@@ -108,5 +108,39 @@
         )
     </insert>
 
+    <insert id="writePost" parameterType="com.api.model.app.AppGambitTheme">
+        insert into sys_gambit_theme(
+            gambit_id,
+            content,
+            likes,
+            is_comment,
+            is_public,
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{gambitId},
+            #{content},
+            #{likes},
+            #{isComment},
+            #{isPublic},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="listByGambitId" parameterType="com.api.model.app.UserIdAndGambitId" resultType="com.api.vo.app.AppGambitThemeVo">
+        select a.* from (
+            select sgt.*,sg.title as gambit_title,ur.name as create_name
+            from user_resident as ur,sys_gambit_theme as sgt
+            LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
+            where ur.id = sgt.create_id and sgt.is_delete = 1 and sgt.gambit_id = #{gambitId}
+            order by sgt.create_date DESC
+        ) as a where a.is_public = 1 or a.create_id = #{id}
+    </select>
 
 </mapper>

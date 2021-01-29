@@ -1,6 +1,7 @@
 package com.api.app.controller.community;
 
 import com.api.app.service.community.AppGambitService;
+import com.api.model.app.AppGambitTheme;
 import com.api.model.app.AppGambitThemeComment;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
@@ -131,6 +132,44 @@ public class AppGambitController {
         appGambitThemeComment.setCreateId(id);
         return appGambitService.comment(appGambitThemeComment);
     }
+
+
+    /**
+     * 写帖子（添加主题信息）
+     * @param appGambitTheme app主题信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/writePost")
+    public Map<String,Object> writePost(@RequestBody AppGambitTheme appGambitTheme,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //填入发布人
+        appGambitTheme.setCreateId(id);
+        return appGambitService.writePost(appGambitTheme);
+    }
+
+    /**
+     * 查询当前话题下的的所有主题信息
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @param id 用户id
+     * @param gambitId 话题主键id
+     * @return map
+     */
+    @GetMapping("/listByGambitId")
+    public Map<String,Object> listByGambitId(int pageNum,int size,Integer id,int gambitId){
+        PageHelper.startPage(pageNum,size);
+        List<AppGambitThemeVo> appGambitThemeVos =appGambitService.listByGambitId(id,gambitId);
+        PageInfo<AppGambitThemeVo> pageInfo = new PageInfo<>(appGambitThemeVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
 
 
 

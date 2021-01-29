@@ -2,9 +2,7 @@ package com.api.app.service.community.impl;
 
 import com.api.app.dao.community.AppGambitDao;
 import com.api.app.service.community.AppGambitService;
-import com.api.model.app.AppGambitThemeComment;
-import com.api.model.app.AppGambitThemeLike;
-import com.api.model.app.UserIdAndThemeId;
+import com.api.model.app.*;
 import com.api.vo.app.IdAndName;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppGambitThemeCommentVo;
@@ -249,5 +247,82 @@ public class AppGambitServiceImpl implements AppGambitService {
             map.put("status",false);
         }
         return map;
+    }
+
+    @Override
+    public Map<String, Object> writePost(AppGambitTheme appGambitTheme) {
+        map = new HashMap<>();
+        try {
+            //填入点赞数量（默认为0）
+            appGambitTheme.setLikes(0);
+            //填入发布时间
+            appGambitTheme.setCreateDate(new Date());
+            //填入是否删除（默认为 1.非删）
+            appGambitTheme.setIsDelete(1);
+            int insert = appGambitDao.writePost(appGambitTheme);
+            if (insert <= 0){
+                throw new RuntimeException("发布失败");
+            }
+            //将照片传入数据库
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(appGambitTheme.getImgUrls(),"sysGambitTheme",appGambitTheme.getId(),"gambitThemeImg","600",30,20);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","发布成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public List<AppGambitThemeVo> listByGambitId(Integer id, int gambitId) {
+        UserIdAndGambitId userIdAndGambitId = new UserIdAndGambitId();
+        userIdAndGambitId.setGambitId(gambitId);
+        userIdAndGambitId.setId(id);
+        //查询 话题 下的主题信息
+        List<AppGambitThemeVo> list = appGambitDao.listByGambitId(userIdAndGambitId);
+        if (list != null && list.size()>0){
+            for (AppGambitThemeVo appGambitThemeVo : list) {
+                //查询该用户是否点赞
+                UserIdAndThemeId userIdAndThemeId = new UserIdAndThemeId();
+                userIdAndThemeId.setThemeId(appGambitThemeVo.getId());
+                userIdAndThemeId.setId(id);
+
+                AppGambitThemeLike themeLikeByIds = appGambitDao.findThemeLikeByIds(userIdAndThemeId);
+                if (themeLikeByIds != null){
+                    //1.已点赞
+                    appGambitThemeVo.setIsLike(1);
+                }else {
+                    //0.未点赞
+                    appGambitThemeVo.setIsLike(0);
+                }
+
+                UploadUtil uploadUtil = new UploadUtil();
+                //查询主题照片
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambitTheme", appGambitThemeVo.getId(), "gambitThemeImg");
+                appGambitThemeVo.setImgUrls(imgByDate);
+
+                //查询主题发布人头像
+                List<VoResourcesImg> imgByDate1 = uploadUtil.findImgByDate("userResident", appGambitThemeVo.getCreateId(), "headSculpture");
+                appGambitThemeVo.setHeadSculptureImgUrl(imgByDate1);
+
+                //根据主题主键id查询点赞人信息
+                List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
+                appGambitThemeVo.setLikeNames(idAndNames);
+
+                //根据主题主键id查询主题评论信息
+                List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());
+                appGambitThemeVo.setGambitThemeCommentVoList(gambitThemeCommentVos);
+            }
+        }
+        return list;
     }
 }

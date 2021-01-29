@@ -1,8 +1,6 @@
 package com.api.app.dao.community;
 
-import com.api.model.app.AppGambitThemeComment;
-import com.api.model.app.AppGambitThemeLike;
-import com.api.model.app.UserIdAndThemeId;
+import com.api.model.app.*;
 import com.api.vo.app.IdAndName;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
@@ -14,8 +12,8 @@ import java.util.List;
 public interface AppGambitDao {
     /**
      * 查询最新的所有主题信息
+     * @param id 用户id
      * @return 主题信息集合
-     * @param id
      */
     List<AppGambitThemeVo> list(Integer id);
 
@@ -125,4 +123,18 @@ public interface AppGambitDao {
      * @return 影响行数
      */
     int comment(AppGambitThemeComment appGambitThemeComment);
+
+    /**
+     * 写帖子（添加主题信息）
+     * @param appGambitTheme app主题信息
+     * @return 影响行数
+     */
+    int writePost(AppGambitTheme appGambitTheme);
+
+    /**
+     * 查询 话题 下的主题信息
+     * @param userIdAndGambitId 用户id 与 话题id
+     * @return app最新主题信息Vo list 回显
+     */
+    List<AppGambitThemeVo> listByGambitId(UserIdAndGambitId userIdAndGambitId);
 }

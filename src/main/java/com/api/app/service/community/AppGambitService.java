@@ -1,5 +1,6 @@
 package com.api.app.service.community;
 
+import com.api.model.app.AppGambitTheme;
 import com.api.model.app.AppGambitThemeComment;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
@@ -22,4 +23,8 @@ public interface AppGambitService {
     Map<String, Object> falseDelete(Integer themeId, Integer id);
 
     Map<String, Object> comment(AppGambitThemeComment appGambitThemeComment);
+
+    Map<String, Object> writePost(AppGambitTheme appGambitTheme);
+
+    List<AppGambitThemeVo> listByGambitId(Integer id, int gambitId);
 }
