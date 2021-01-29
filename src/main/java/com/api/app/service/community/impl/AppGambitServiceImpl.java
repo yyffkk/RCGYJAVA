@@ -50,9 +50,10 @@ public class AppGambitServiceImpl implements AppGambitService {
                 appGambitVo.setImgUrl(imgByDate);
                 //查询热度（活跃度）【点赞数+评论数】
                 //查询点赞数
-                appGambitDao.sumLikeNum(appGambitVo.getId());
+                int sumLikeNum = appGambitDao.sumLikeNum(appGambitVo.getId());
                 //查询评论数
-                appGambitDao.sumCommentNum(appGambitVo.getId());
+                int sumCommentNum = appGambitDao.sumCommentNum(appGambitVo.getId());
+                appGambitVo.setActivityNum(sumLikeNum+sumCommentNum);
             }
         }
         return appGambitVos;
