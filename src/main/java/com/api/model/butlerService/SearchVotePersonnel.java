@@ -13,11 +13,11 @@ public class SearchVotePersonnel {
      */
     private int size;
     /**
-     * 投票管理主键id
+     * 候选人主键ID
      */
     private Integer id;
     /**
-     * 候选人主键ID
+     * 投票管理主键id
      */
     private Integer voteId;
 

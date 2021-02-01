@@ -162,7 +162,7 @@
     <select id="listVotePersonnel" parameterType="com.api.model.butlerService.SearchVotePersonnel" resultType="com.api.vo.butlerService.VoVotePersonnel">
         select svp.id,svp.voter_id,ur.name,ur.tel,svp.voter_date
         from sys_vote_personnel as svp,user_resident as ur
-        where svp.voter_id = ur.id and svp.id = #{id} and svp.vote_id = #{voteId}
+        where svp.voter_id = ur.id and svp.vote_candidate_id = #{id} and svp.vote_id = #{voteId}
     </select>
 
     <select id="listVoteExpectedTime" resultType="com.api.vo.butlerService.VoVoteExpectedTime">
