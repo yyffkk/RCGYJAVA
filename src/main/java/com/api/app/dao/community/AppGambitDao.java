@@ -39,10 +39,10 @@ public interface AppGambitDao {
 
     /**
      * 查询评论数
-     * @param id 话题主键id
+     * @param gambitId 话题主键id
      * @return 总评论数
      */
-    int sumCommentNum(Integer id);
+    int sumCommentNum(Integer gambitId);
 
     /**
      * 我的动态

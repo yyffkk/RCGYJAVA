@@ -27,11 +27,11 @@
     </select>
 
     <select id="sumLikeNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select SUM(likes) from sys_gambit_theme where gambit_id = 1 and is_delete = 1 group by id
+        select SUM(likes) from sys_gambit_theme where gambit_id = #{id} and is_delete = 1 group by id
     </select>
 
     <select id="sumCommentNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from sys_gambit_theme_comment where gambit_id = #{id} and is_delete = 1
+        select count(*) from sys_gambit_theme_comment where gambit_id = #{gambitId} and is_delete = 1
     </select>
 
     <select id="myTidings" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppMyTidingsVo">
@@ -143,8 +143,11 @@
         ) as a where a.is_public = 1 or a.create_id = #{id}
     </select>
 
+<!--  ?????? -->
     <select id="findActivityGambit" resultType="com.api.vo.app.IdAndName">
-
+        select *
+from (select ((select SUM(likes) from sys_gambit_theme where gambit_id = 1 and is_delete = 1 group by id)
+			+ (select count(*) from sys_gambit_theme_comment where gambit_id = 1 and is_delete = 1)) as activity_num ) as a
     </select>
 
 </mapper>
