@@ -1,6 +1,5 @@
 package com.api.butlerApp.dao.login;
 
-import com.api.model.app.UserLoginToken;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerLoginToken;
 import com.api.model.butlerApp.ButlerUserCode;
