@@ -27,7 +27,7 @@ public class ButlerLoginController {
     }
 
     /**
-     * app用户短信登录
+     * 管家app用户短信登录
      * @param butlerUserCode 管家app用户验证码
      * @return map {message 消息, status 状态}
      */
