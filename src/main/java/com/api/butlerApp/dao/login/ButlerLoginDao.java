@@ -1,4 +1,4 @@
-package com.api.butlerApp.dao;
+package com.api.butlerApp.dao.login;
 
 import com.api.model.app.UserLoginToken;
 import com.api.model.businessManagement.SysUser;

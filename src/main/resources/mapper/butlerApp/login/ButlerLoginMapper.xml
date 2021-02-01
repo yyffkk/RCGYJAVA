@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.api.butlerApp.dao.ButlerLoginDao">
+<mapper namespace="com.api.butlerApp.dao.login.ButlerLoginDao">
     <select id="findUserCodeByTel" parameterType="java.lang.String" resultType="com.api.model.butlerApp.ButlerUserCode">
         select *  from butler_user_code where tel = #{tel}
     </select>

@@ -1,10 +1,7 @@
 package com.api.butlerApp.service.login.impl;
 
-import com.api.butlerApp.dao.ButlerLoginDao;
+import com.api.butlerApp.dao.login.ButlerLoginDao;
 import com.api.butlerApp.service.login.ButlerLoginService;
-import com.api.model.app.UserCode;
-import com.api.model.app.UserLoginToken;
-import com.api.model.basicArchives.UserResident;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerLoginToken;
 import com.api.model.butlerApp.ButlerUserCode;
