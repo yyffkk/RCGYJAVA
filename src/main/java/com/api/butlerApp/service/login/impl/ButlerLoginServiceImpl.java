@@ -164,8 +164,8 @@ public class ButlerLoginServiceImpl implements ButlerLoginService {
     }
 
     @Override
-    public ButlerLoginToken findULTByTokenId(Long tokenId) {
-        return butlerLoginDao.findULTByTokenId(tokenId);
+    public ButlerLoginToken findBLTByTokenId(Long tokenId) {
+        return butlerLoginDao.findBLTByTokenId(tokenId);
     }
 
     @Override

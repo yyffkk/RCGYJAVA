@@ -37,7 +37,7 @@ public class ButlerLoginDetectionFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         //解决外置 tomcat启动Spring Boot程序模式下解决过滤器中 @AutoWired注入bean的空指针问题
         //在相应的业务代码中 使用SpringContextUtil.getBean("xxx") 获取相应的bean组件即可
-        ButlerLoginService butlerLoginService = (ButlerLoginService) ButlerSpringContextUtil.getBean("appLoginServiceImpl");
+        ButlerLoginService butlerLoginService = (ButlerLoginService) ButlerSpringContextUtil.getBean("butlerLoginServiceImpl");
         //转换成httpServletRequest
         HttpServletRequest req = (HttpServletRequest) request;
         //获取token信息
@@ -50,7 +50,7 @@ public class ButlerLoginDetectionFilter implements Filter {
         }
 
         //根据token Id查询登录信息 (butler_login_token)
-        ButlerLoginToken butlerLoginToken = butlerLoginService.findULTByTokenId(Long.valueOf(tokenId));
+        ButlerLoginToken butlerLoginToken = butlerLoginService.findBLTByTokenId(Long.valueOf(tokenId));
         //如果根据tokenId查询登录信息为null，返回失败结果Json数据
         if (butlerLoginToken == null) {
             this.respFail(response);

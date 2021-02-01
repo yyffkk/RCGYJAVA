@@ -47,7 +47,7 @@
         )
     </insert>
 
-    <select id="findULTByTokenId" parameterType="java.lang.Long" resultType="com.api.model.butlerApp.ButlerLoginToken">
+    <select id="findBLTByTokenId" parameterType="java.lang.Long" resultType="com.api.model.butlerApp.ButlerLoginToken">
         select * from butler_login_token where butler_login_session = #{tokenId}
     </select>
 

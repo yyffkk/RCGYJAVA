@@ -11,7 +11,7 @@ public interface ButlerLoginService {
 
     Map<String, Object> loginSMSUser(ButlerUserCode butlerUserCode);
 
-    ButlerLoginToken findULTByTokenId(Long tokenId);
+    ButlerLoginToken findBLTByTokenId(Long tokenId);
 
     SysUser findSysUserById(Integer sysUserId);
 

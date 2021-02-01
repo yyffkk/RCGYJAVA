@@ -60,7 +60,7 @@ public interface ButlerLoginDao {
      * @param tokenId 登录返回的token
      * @return app用户登录login_token Vo
      */
-    ButlerLoginToken findULTByTokenId(Long tokenId);
+    ButlerLoginToken findBLTByTokenId(Long tokenId);
 
     /**
      * 根据主键id查询管家用户信息
