@@ -69,7 +69,7 @@ public class UploadUtil {
         File savePathFile = new File(savePath);
         if (!savePathFile.exists()) {
             //若不存在该目录，则创建目录
-            savePathFile.mkdir();
+            savePathFile.mkdirs();
         }
         //通过UUID生成唯一文件名
         String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
@@ -297,7 +297,7 @@ public class UploadUtil {
         File savePathFile = new File(savePath);
         if (!savePathFile.exists()) {
             //若不存在该目录，则创建目录
-            savePathFile.mkdir();
+            savePathFile.mkdirs();
         }
         //通过UUID生成唯一文件名
         String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
