@@ -46,7 +46,7 @@ public class AppGambitController {
     }
 
     /**
-     * 查询所有的话题
+     * 查询所有的话题(按热度排序)
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @return map

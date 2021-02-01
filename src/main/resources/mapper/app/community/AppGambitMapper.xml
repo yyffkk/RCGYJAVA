@@ -23,7 +23,13 @@
     </select>
 
     <select id="listGambit" resultType="com.api.vo.app.AppGambitVo">
-        select * from sys_gambit where is_public = 1 and is_delete = 1 order by create_date DESC
+        select sg2.*,(case c.activity_num is null when true then 0 else c.activity_num end) as activity_num from sys_gambit as sg2 LEFT JOIN (
+            select a.id,(a.sum2+b.count2) as activity_num from (
+                select sg.id,(case SUM(sgt.likes) is null when true then 0 else SUM(sgt.likes) end) as sum2 from sys_gambit_theme as sgt,sys_gambit as sg where sgt.gambit_id = sg.id and sgt.is_delete = 1 group by sgt.id
+            ) as a LEFT JOIN (
+                select sg.id,(case count(*) is null when true then 0 else count(*) end) as count2 from sys_gambit_theme_comment as sgtc,sys_gambit as sg where sgtc.gambit_id = sg.id  and sgtc.is_delete = 1  group by sg.id
+            ) as b on a.id = b.id
+        ) as c on c.id = sg2.id where sg2.is_public = 1 and sg2.is_delete = 1 and sg2.is_rating = 1 ORDER BY c.activity_num DESC
     </select>
 
     <select id="sumLikeNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -143,11 +149,14 @@
         ) as a where a.is_public = 1 or a.create_id = #{id}
     </select>
 
-<!--  ?????? -->
     <select id="findActivityGambit" resultType="com.api.vo.app.IdAndName">
-        select *
-from (select ((select SUM(likes) from sys_gambit_theme where gambit_id = 1 and is_delete = 1 group by id)
-			+ (select count(*) from sys_gambit_theme_comment where gambit_id = 1 and is_delete = 1)) as activity_num ) as a
+        select c.id,sg2.title as name from (
+            select a.id,(a.sum2+b.count2) as activity_num from (
+                select sg.id,(case SUM(sgt.likes) is null when true then 0 else SUM(sgt.likes) end) as sum2 from sys_gambit_theme as sgt,sys_gambit as sg where sgt.gambit_id = sg.id and sgt.is_delete = 1 group by sgt.id
+            ) as a LEFT JOIN (
+                select sg.id,(case count(*) is null when true then 0 else count(*) end) as count2 from sys_gambit_theme_comment as sgtc,sys_gambit as sg where sgtc.gambit_id = sg.id  and sgtc.is_delete = 1  group by sg.id
+            ) as b on a.id = b.id
+        ) as c,sys_gambit as sg2 where c.id = sg2.id ORDER BY c.activity_num DESC LIMIT 4
     </select>
 
 </mapper>
