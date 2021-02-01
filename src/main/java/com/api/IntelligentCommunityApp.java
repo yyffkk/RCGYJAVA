@@ -8,7 +8,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 //过滤器去掉@Component，在程序启动类加上@ServletComponentScan，过滤器和urlPatterns属性均生效。
 @ServletComponentScan
 @SpringBootApplication
-@MapperScan({"com.api.manage.dao","com.api.app.dao"})
+@MapperScan({"com.api.manage.dao","com.api.app.dao","com.api.butlerApp.dao"})
 public class IntelligentCommunityApp {
     public static void main(String[] args) {
         SpringApplication.run(IntelligentCommunityApp.class,args);

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.ButlerLoginDao">
+    <select id="findUserCodeByTel" parameterType="java.lang.String" resultType="com.api.model.butlerApp.ButlerUserCode">
+        select *  from butler_user_code where tel = #{tel}
+    </select>
+
+    <update id="updateUserCode" parameterType="com.api.model.butlerApp.ButlerUserCode">
+        update butler_user_code set code = #{code},code_send_date = #{codeSendDate} where id = #{id}
+    </update>
+
+    <insert id="insertUserCode" parameterType="com.api.model.butlerApp.ButlerUserCode">
+        insert into butler_user_code(
+            tel,
+            code,
+            code_send_date
+        )values (
+            #{tel},
+            #{code},
+            #{codeSendDate}
+        )
+    </insert>
+
+    <delete id="deleteUserCodeByTel" parameterType="java.lang.String">
+        delete from butler_user_code where tel = #{tel}
+    </delete>
+
+    <select id="findUserResidentByTel" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
+        select * from sys_user where tel = #{tel}
+    </select>
+
+    <delete id="deleteULTByUserId" parameterType="java.lang.Integer">
+         delete from butler_login_token where sys_user_id = #{butlerUserId}
+    </delete>
+
+    <insert id="insertLoginToken" parameterType="com.api.model.butlerApp.ButlerLoginToken">
+        insert into butler_login_token(
+            butler_login_session,
+            sys_user_id,
+            butler_login_date
+        )values (
+            #{butlerLoginSession},
+            #{sysUserId},
+            #{butlerLoginDate}
+        )
+    </insert>
+
+    <select id="findULTByTokenId" parameterType="java.lang.Long" resultType="com.api.model.butlerApp.ButlerLoginToken">
+        select * from butler_login_token where butler_login_session = #{tokenId}
+    </select>
+
+    <select id="findSysUserById" parameterType="java.lang.Integer" resultType="com.api.model.businessManagement.SysUser">
+        select * from sys_user where id = #{id}
+    </select>
+
+    <update id="updateBLTById" parameterType="com.api.model.butlerApp.ButlerLoginToken">
+        update butler_login_token
+        set butler_login_date = #{butlerLoginDate}
+        where id = #{id}
+    </update>
+
+</mapper>
