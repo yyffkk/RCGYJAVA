@@ -27,7 +27,7 @@
         delete from butler_user_code where tel = #{tel}
     </delete>
 
-    <select id="findUserResidentByTel" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
+    <select id="findSysUserByTel" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
         select * from sys_user where tel = #{tel}
     </select>
 

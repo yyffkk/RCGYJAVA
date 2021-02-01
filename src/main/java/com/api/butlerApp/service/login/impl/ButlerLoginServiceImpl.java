@@ -110,7 +110,7 @@ public class ButlerLoginServiceImpl implements ButlerLoginService {
 
 
             //根据手机号查询管家用户信息
-            SysUser sysUser = butlerLoginDao.findUserResidentByTel(butlerUserCode.getTel());
+            SysUser sysUser = butlerLoginDao.findSysUserByTel(butlerUserCode.getTel());
 
 
             if (sysUser != null){

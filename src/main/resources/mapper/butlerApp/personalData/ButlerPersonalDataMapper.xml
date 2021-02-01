@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.personalData.ButlerPersonalDataDao">
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerPersonalDataVo">
+        select * from sys_user where id =#{id}
+    </select>
+
+    <update id="updateNickName" parameterType="java.lang.Integer">
+        update sys_user set nick_name = #{nickName} where id = #{id}
+    </update>
+
+    <select id="findTelUpdateCodeByTel" parameterType="java.lang.String" resultType="com.api.model.butlerApp.ButlerUpdateTel">
+        select * from butler_tel_update_code where new_tel = #{newTel}
+    </select>
+
+    <update id="updateTelUpdateCode" parameterType="com.api.model.butlerApp.ButlerUpdateTel">
+        update butler_tel_update_code
+        set code = #{code},code_send_date = #{codeSendDate}
+        where id = #{id}
+    </update>
+
+    <insert id="insertTelUpdateCode" parameterType="com.api.model.butlerApp.ButlerUpdateTel">
+        insert into butler_tel_update_code(
+            new_tel,
+            code,
+            code_send_date
+        )values (
+            #{newTel},
+            #{code},
+            #{codeSendDate}
+        )
+    </insert>
+
+    <select id="findUserTelUpdateByTel" parameterType="java.lang.String" resultType="com.api.model.butlerApp.ButlerUpdateTel">
+        select * from butler_tel_update_code where new_tel = #{newTel}
+    </select>
+
+    <delete id="deleteUserTelUpdateByTel" parameterType="java.lang.String">
+        delete from butler_tel_update_code where new_tel = #{newTel}
+    </delete>
+
+    <update id="updateTel" parameterType="com.api.model.butlerApp.ButlerUpdateTel">
+        update sys_user set tel = #{newTel} where id = #{id}
+    </update>
+
+
+
+
+</mapper>

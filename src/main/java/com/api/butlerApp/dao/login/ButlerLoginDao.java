@@ -39,7 +39,7 @@ public interface ButlerLoginDao {
      * @param tel 手机号
      * @return 管家用户信息
      */
-    SysUser findUserResidentByTel(String tel);
+    SysUser findSysUserByTel(String tel);
     /**
      * 根据用户id删除登录token信息
      * @param butlerUserId 管家用户id
