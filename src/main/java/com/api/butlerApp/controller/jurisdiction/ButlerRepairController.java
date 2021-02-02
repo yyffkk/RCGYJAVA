@@ -40,4 +40,17 @@ public class ButlerRepairController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+
+    /**
+     * 根据报事报修id查询报修详情
+     * @param repairId 报事报修id
+     * @param id 用户id
+     * @param roleId 用户所拥有的角色id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer repairId,Integer id,String roleId){
+        return butlerRepairService.findById(repairId,id,roleId);
+    }
 }

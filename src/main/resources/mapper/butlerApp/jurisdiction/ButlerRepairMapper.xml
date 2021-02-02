@@ -68,4 +68,59 @@
         from sys_report_repair as srr,sys_dispatch_list as sdl
         where srr.dispatch_list_id = sdl.id and sdl.sys_delete = 1
     </select>
+
+    <select id="findById" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerRepairFindByIdVo">
+        select a.*,ur.name,ur.tel from (
+            select sdl.id as dispatch_id,srr.type,srr.repairman,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id
+            from sys_report_repair as srr,sys_dispatch_list as sdl LEFT JOIN sys_dispatch_list_detail as sdld
+            on sdld.dispatch_list_id = sdl.id
+            <where>
+                srr.dispatch_list_id = sdl.id
+                and sdl.sys_delete = 1
+                and srr.id = #{repairId}
+            </where>
+		) as a
+        LEFT JOIN user_resident as ur
+        on ur.id = a.repairman
+		where a.create_id = -1 or a.create_id = #{id}
+    </select>
+
+    <select id="findDispatchTypeById" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerDispatchTypeVo">
+        select a.*,swotd.name as work_order_subclass_name
+        from (
+                select (case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id,sdld.work_order_type_detail,sdld.type as dispatch_type,swotl.name as work_order_limit_name
+                from sys_report_repair as srr,sys_dispatch_list as sdl
+                LEFT JOIN sys_dispatch_list_detail as sdld
+                on sdld.dispatch_list_id = sdl.id
+                LEFT JOIN sys_work_order_time_limit  as swotl
+                on swotl.id = sdld.work_order_time_limit
+                where
+                        srr.dispatch_list_id = sdl.id
+                        and sdl.sys_delete = 1 and srr.id = #{repairId}
+            ) as a
+        LEFT JOIN sys_work_order_type_detail as swotd
+        on swotd.id = a.work_order_type_detail
+        where a.create_id = -1 or a.create_id = #{id}
+    </select>
+
+    <select id="findProcessRecord" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerProcessRecordVo">
+        select spr.id,spr.operation_type,spr.operation_date
+        from sys_report_repair as srr,sys_dispatch_list as sdl,sys_process_record as spr
+        where srr.dispatch_list_id = sdl.id and spr.dispatch_list_id = sdl.id and sdl.sys_delete =1 and srr.id = #{repairId}
+    </select>
+
+    <select id="findById2" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerRepairFindByIdVo">
+        select srr.id,sdl.id as dispatch_id,ur.name,ur.tel,srr.type,sdl.status from sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld,sys_report_repair as srr
+        LEFT JOIN user_resident as ur
+        on ur.id = srr.repairman
+        where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and srr.id = #{repairId}
+    </select>
+
+    <select id="findDispatchTypeById2" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerDispatchTypeVo">
+        select sdld.type as dispatch_type,swotl.name as work_orderLimit_name,swotd.name as work_order_subclass_name
+        from sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld,sys_report_repair as srr,sys_work_order_time_limit as swotl,sys_work_order_type_detail as swotd
+        where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and swotl.id = sdld.work_order_time_limit and swotd.id = sdld.work_order_type_detail and srr.id = #{repairId}
+    </select>
+
+
 </mapper>
