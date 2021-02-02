@@ -7,7 +7,7 @@
         select * from sys_user where id =#{id}
     </select>
 
-    <update id="updateNickName" parameterType="java.lang.Integer">
+    <update id="updateNickName" parameterType="com.api.model.businessManagement.SysUser">
         update sys_user set nick_name = #{nickName} where id = #{id}
     </update>
 
