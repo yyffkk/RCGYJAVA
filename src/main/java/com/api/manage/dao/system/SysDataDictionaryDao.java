@@ -28,4 +28,6 @@ public interface SysDataDictionaryDao {
     List<VoDataDictionary> findUserResidentType();
 
     List<VoDataDictionary> findSysDailyPaymentType();
+
+    List<VoDataDictionary> findSysDispatchListDetailType();
 }

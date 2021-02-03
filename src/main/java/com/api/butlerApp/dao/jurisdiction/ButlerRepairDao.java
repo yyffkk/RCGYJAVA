@@ -2,10 +2,8 @@ package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerApp.ButlerUserIdAndRepairId;
-import com.api.vo.butlerApp.ButlerDispatchTypeVo;
-import com.api.vo.butlerApp.ButlerProcessRecordVo;
-import com.api.vo.butlerApp.ButlerRepairFindByIdVo;
-import com.api.vo.butlerApp.ButlerRepairVo;
+import com.api.vo.app.IdAndName;
+import com.api.vo.butlerApp.*;
 
 import java.util.List;
 
@@ -86,4 +84,17 @@ public interface ButlerRepairDao {
      * @return 工单类型
      */
     ButlerDispatchTypeVo findDispatchTypeById3(Integer repairId);
+
+    /**
+     * 查询所有的工单时限信息
+     * @return 工单时限id and name
+     */
+    List<IdAndName> findWorkOrderTimeLimit();
+
+    /**
+     * 查询所有的工单类型明细信息（工单子类信息）
+     * @param workOrderTypeId 工单大类主键id
+     * @return 工单子类 id and name
+     */
+    List<IdAndName> findWorkOrderTypeDetail(Integer workOrderTypeId);
 }

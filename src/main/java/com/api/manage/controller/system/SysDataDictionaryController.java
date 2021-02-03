@@ -13,7 +13,7 @@ import java.util.List;
  * 数据字典表
  */
 @RestController
-@RequestMapping("manage/dataDictionary")
+@RequestMapping("system/dataDictionary")
 public class SysDataDictionaryController {
     @Resource
     SysDataDictionaryService sysDataDictionaryService;
@@ -127,6 +127,17 @@ public class SysDataDictionaryController {
     public List<VoDataDictionary> findSysDailyPaymentType(){
         return sysDataDictionaryService.findSysDailyPaymentType();
     }
+
+    /**
+     * 查询派工单详情表-派工类型 sys_dispatch_list_detail
+     * @return List<VoDecoration> 回显字典数据集合
+     */
+    @GetMapping("/findSysDispatchListDetailType")
+    public List<VoDataDictionary> findSysDispatchListDetailType(){
+        return sysDataDictionaryService.findSysDispatchListDetailType();
+    }
+
+
 
 
 }

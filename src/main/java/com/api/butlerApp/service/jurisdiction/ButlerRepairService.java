@@ -10,4 +10,9 @@ public interface ButlerRepairService {
     List<ButlerRepairVo> list(ButlerRepairSearch butlerRepairSearch);
 
     Map<String, Object> findById(Integer repairId, Integer id, String roleId);
+
+    Map<String, Object> findWorkOrderTimeLimit();
+
+    Map<String, Object> findWorkOrderTypeDetail(Integer workOrderTypeId);
+
 }

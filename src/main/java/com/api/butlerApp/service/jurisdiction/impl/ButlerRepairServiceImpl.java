@@ -5,6 +5,7 @@ import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerApp.ButlerUserIdAndRepairId;
 import com.api.util.UploadUtil;
+import com.api.vo.app.IdAndName;
 import com.api.vo.butlerApp.ButlerDispatchTypeVo;
 import com.api.vo.butlerApp.ButlerProcessRecordVo;
 import com.api.vo.butlerApp.ButlerRepairFindByIdVo;
@@ -106,6 +107,26 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
         map.put("processRecord",butlerProcessRecordVo);
         //当前用户角色类型 type:1.派单人 2.维修人 3.其他角色
         map.put("type",type);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findWorkOrderTimeLimit() {
+        map = new HashMap<>();
+        List<IdAndName> workOrderTimeLimit = butlerRepairDao.findWorkOrderTimeLimit();
+        map.put("data",workOrderTimeLimit);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findWorkOrderTypeDetail(Integer workOrderTypeId) {
+        map = new HashMap<>();
+        List<IdAndName> workOrderTypeDetail = butlerRepairDao.findWorkOrderTypeDetail(workOrderTypeId);
+        map.put("data",workOrderTypeDetail);
+        map.put("message","请求成功");
+        map.put("status",true);
         return map;
     }
 

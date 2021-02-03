@@ -53,4 +53,25 @@ public class ButlerRepairController {
     public Map<String,Object> findById(Integer repairId,Integer id,String roleId){
         return butlerRepairService.findById(repairId,id,roleId);
     }
+
+    /**
+     * 查询所有的工单时限信息(id and name)
+     * @return map
+     */
+    @GetMapping("/findWorkOrderTimeLimit")
+    public Map<String,Object> findWorkOrderTimeLimit(){
+        return butlerRepairService.findWorkOrderTimeLimit();
+    }
+
+
+    /**
+     * 查询所有的工单类型明细信息（工单子类信息）
+     * @param workOrderTypeId 工单大类主键id
+     * @return map
+     */
+    @GetMapping("/findWorkOrderTypeDetail")
+    public Map<String,Object> findWorkOrderTypeDetail(Integer workOrderTypeId){
+        return butlerRepairService.findWorkOrderTypeDetail(workOrderTypeId);
+    }
+
 }

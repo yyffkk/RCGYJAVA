@@ -112,4 +112,13 @@
         order by sort
     </select>
 
+    <!--  查询派工单详情表-派工类型  -->
+    <select id="findSysDispatchListDetailType" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'sys_dispatch_list_detail_type' and is_delete = 1
+        order by sort
+    </select>
+
 </mapper>

@@ -139,5 +139,13 @@
         where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and swotl.id = sdld.work_order_time_limit and swotd.id = sdld.work_order_type_detail and sdl.sys_delete = 1 and srr.id = #{repairId}
     </select>
 
+    <select id="findWorkOrderTimeLimit" resultType="com.api.vo.app.IdAndName">
+        select id,name from sys_work_order_time_limit
+    </select>
+
+    <select id="findWorkOrderTypeDetail" parameterType="java.lang.Integer" resultType="com.api.vo.app.IdAndName">
+        select id,name from sys_work_order_type_detail where work_order_type_id =#{workOrderTypeId}
+    </select>
+
 
 </mapper>
