@@ -1,7 +1,11 @@
 package com.api.butlerApp.dao.jurisdiction;
 
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerApp.ButlerUserIdAndRepairId;
+import com.api.model.butlerService.ProcessRecord;
+import com.api.model.butlerService.SysDispatchListDetail;
+import com.api.model.butlerService.UpdateDispatchStatus;
 import com.api.vo.app.IdAndName;
 import com.api.vo.butlerApp.*;
 
@@ -111,4 +115,32 @@ public interface ButlerRepairDao {
      * @return 维修人信息集合
      */
     List<ButlerRepairmanVo> findRepairman(Integer id);
+
+    /**
+     * 添加派工单详情信息 并返回主键id
+     * @param sysDispatchListDetail 派工单详情信息
+     * @return 影响行数
+     */
+    int dispatch(SysDispatchListDetail sysDispatchListDetail);
+
+    /**
+     * 改变工单状态(变为1.待分配)
+     * @param updateDispatchStatus 更改工单状态信息
+     * @return 影响行数
+     */
+    int updateStatus(UpdateDispatchStatus updateDispatchStatus);
+
+    /**
+     * 根据id查询维修人信息
+     * @param operator 维修人主键id（系统用户表）
+     * @return 维修人信息
+     */
+    SysUser findSysUserById(Integer operator);
+
+    /**
+     * 添加处理进程记录
+     * @param processRecord 处理进程记录信息
+     * @return 影响行数
+     */
+    int insertProcessRecord(ProcessRecord processRecord);
 }

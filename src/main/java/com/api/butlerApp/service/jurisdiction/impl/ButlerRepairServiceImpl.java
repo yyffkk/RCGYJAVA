@@ -2,19 +2,22 @@ package com.api.butlerApp.service.jurisdiction.impl;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerApp.ButlerUserIdAndRepairId;
+import com.api.model.butlerService.ProcessRecord;
+import com.api.model.butlerService.SysDispatchListDetail;
+import com.api.model.butlerService.UpdateDispatchStatus;
 import com.api.util.UploadUtil;
 import com.api.vo.app.IdAndName;
 import com.api.vo.butlerApp.*;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ButlerRepairServiceImpl implements ButlerRepairService {
@@ -142,6 +145,70 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
 
         map.put("data",organization);
         map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> dispatch(SysDispatchListDetail sysDispatchListDetail, String roleId) {
+        map = new HashMap<>();
+
+        try {
+            //判断该用户是否有派单权限,type 1.派单 2.接单 3.其他
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("此用户无派单权限");
+            }
+            //生成订单号
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            sysDispatchListDetail.setCode(uuid);
+            //填入创建时间
+            sysDispatchListDetail.setCreateDate(new Date());
+            //填入派工时间
+            sysDispatchListDetail.setDispatchDate(new Date());
+            //添加派工单详情信息
+            int insert = butlerRepairDao.dispatch(sysDispatchListDetail);
+            if (insert <= 0){
+                throw new RuntimeException("派工失败");
+            }
+            //改变工单状态(变为 2.已分配未接单)
+            UpdateDispatchStatus updateDispatchStatus = new UpdateDispatchStatus();
+            //填入工单主键id
+            updateDispatchStatus.setId(sysDispatchListDetail.getDispatchListId());
+            //填入工单状态
+            updateDispatchStatus.setStatus(2);
+            int update = butlerRepairDao.updateStatus(updateDispatchStatus);
+            if (update <= 0){
+                throw new RuntimeException("工单状态更改失败");
+            }
+            //添加处理进程记录
+            ProcessRecord processRecord = new ProcessRecord();
+            processRecord.setDispatchListId(sysDispatchListDetail.getDispatchListId());
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(2);
+            processRecord.setOperator(sysDispatchListDetail.getCreateId());
+            processRecord.setOperatorType(3);
+            //查询维修人信息
+            SysUser byId = butlerRepairDao.findSysUserById(sysDispatchListDetail.getOperator());
+            processRecord.setOperatorContent("报修单指派给"+byId.getActualName());
+            //添加处理进程记录
+            int insert2 = butlerRepairDao.insertProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","派单成功");
         map.put("status",true);
         return map;
     }

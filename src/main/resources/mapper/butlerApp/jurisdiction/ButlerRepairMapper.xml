@@ -155,5 +155,64 @@
         select id,actual_name as name,tel from sys_user where organization_id = #{id}
     </select>
 
+    <insert id="dispatch" parameterType="com.api.model.butlerService.SysDispatchListDetail">
+        insert into sys_dispatch_list_detail(
+            code,
+            dispatch_list_id,
+            work_order_type,
+            work_order_type_detail,
+            work_order_time_limit,
+            type,
+            dispatch_date,
+            operator,
+            remake,
+            create_id,
+            create_date
+        ) values (
+            #{code},
+            #{dispatchListId},
+            #{workOrderType},
+            #{workOrderTypeDetail},
+            #{workOrderTimeLimit},
+            #{type},
+            #{dispatchDate},
+            #{operator},
+            #{remake},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="updateStatus" parameterType="com.api.model.butlerService.UpdateDispatchStatus">
+        update sys_dispatch_list set status = #{status} where id =#{id}
+    </update>
+
+    <select id="findSysUserById" parameterType="java.lang.Integer" resultType="com.api.model.businessManagement.SysUser">
+        select * from sys_user
+        where id = #{id}
+    </select>
+
+    <insert id="insertProcessRecord" parameterType="com.api.model.butlerService.ProcessRecord">
+        insert into sys_process_record(
+            dispatch_list_id,
+            operation_date,
+            operation_type,
+            operator,
+            operator_type,
+            operator_content
+        ) values (
+            #{dispatchListId},
+            #{operationDate},
+            #{operationType},
+            #{operator},
+            #{operatorType},
+            #{operatorContent}
+        )
+    </insert>
+
+
 
 </mapper>

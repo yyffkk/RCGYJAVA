@@ -1,6 +1,7 @@
 package com.api.butlerApp.service.jurisdiction;
 
 import com.api.model.butlerApp.ButlerRepairSearch;
+import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.vo.butlerApp.ButlerRepairVo;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface ButlerRepairService {
     Map<String, Object> findWorkOrderTypeDetail(Integer workOrderTypeId);
 
     Map<String, Object> findRepairOrganization(int repairOrganizationId);
+
+    Map<String, Object> dispatch(SysDispatchListDetail sysDispatchListDetail, String roleId);
 }

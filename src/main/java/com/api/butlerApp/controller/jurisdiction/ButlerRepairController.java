@@ -2,15 +2,15 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
 import com.api.model.butlerApp.ButlerRepairSearch;
+import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.vo.butlerApp.ButlerRepairVo;
 import com.api.vo.butlerApp.ButlerVisitorVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,5 +84,24 @@ public class ButlerRepairController {
         int repairOrganizationId = 6;
         return butlerRepairService.findRepairOrganization(repairOrganizationId);
     }
+
+    /**
+     * 派单
+     * @param sysDispatchListDetail 派工单详情信息
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/dispatch")
+    public Map<String,Object> dispatch(@RequestBody SysDispatchListDetail sysDispatchListDetail, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户组织id
+        String roleId = request.getParameter("roleId");
+        //填入分配人
+        sysDispatchListDetail.setCreateId(id);
+        return butlerRepairService.dispatch(sysDispatchListDetail,roleId);
+    }
+
+
 
 }
