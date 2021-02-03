@@ -77,4 +77,9 @@ public class SysDataDictionaryServiceImpl implements SysDataDictionaryService {
     public List<VoDataDictionary> findSysDispatchListDetailType() {
         return sysDataDictionaryDao.findSysDispatchListDetailType();
     }
+
+    @Override
+    public List<VoDataDictionary> findSysDispatchListDelayedDelayed() {
+        return sysDataDictionaryDao.findSysDispatchListDelayedDelayed();
+    }
 }

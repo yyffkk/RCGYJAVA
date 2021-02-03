@@ -1,6 +1,7 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
+import com.api.model.butlerApp.ButlerApplyDelayed;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.vo.butlerApp.ButlerRepairVo;
@@ -127,6 +128,32 @@ public class ButlerRepairController {
     public Map<String,Object> receivingOrders(Integer dispatchId,Integer id,String roleId){
         return butlerRepairService.receivingOrders(dispatchId,id,roleId);
     }
+
+
+    /**
+     * 申请延时
+     * @param butlerApplyDelayed 管家app 申请延时信息 model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/applyDelayed")
+    public Map<String,Object> applyDelayed(@RequestBody ButlerApplyDelayed butlerApplyDelayed,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return butlerRepairService.applyDelayed(butlerApplyDelayed,id);
+    }
+
+
+    /**
+     * 处理完成
+     * @return map
+     */
+    @PostMapping("/handleResult")
+    public Map<String,Object> handleResult(){
+        return null;
+    }
+
+
 
 
 

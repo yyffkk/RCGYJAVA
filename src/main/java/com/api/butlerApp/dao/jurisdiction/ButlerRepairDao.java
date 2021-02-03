@@ -1,6 +1,7 @@
 package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerApp.ButlerApplyDelayed;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerApp.ButlerUserIdAndRepairId;
 import com.api.model.butlerService.ProcessRecord;
@@ -192,4 +193,18 @@ public interface ButlerRepairDao {
      * @return 维修人id
      */
     Integer findOperatorByDispatchId(Integer dispatchId);
+
+    /**
+     * 根据showValue查询 showName
+     * @param showValue showValue
+     * @return showName
+     */
+    String findDelayedByShowValue(Integer showValue);
+
+    /**
+     * 添加延时信息
+     * @param butlerApplyDelayed 管家app 申请延时信息 model
+     * @return 影响行数
+     */
+    int insertDispatchListDelayed(ButlerApplyDelayed butlerApplyDelayed);
 }

@@ -121,4 +121,12 @@
         order by sort
     </select>
 
+    <select id="findSysDispatchListDelayedDelayed" resultType="com.api.vo.system.VoDataDictionary">
+        select
+        <include refid="field"/>
+        from sys_data_dictionary
+        where type_name = 'sys_dispatch_list_delayed_delayed' and is_delete = 1
+        order by sort
+    </select>
+
 </mapper>

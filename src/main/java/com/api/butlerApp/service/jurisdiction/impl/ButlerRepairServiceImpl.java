@@ -2,7 +2,9 @@ package com.api.butlerApp.service.jurisdiction.impl;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
+import com.api.manage.dao.system.SysDataDictionaryDao;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerApp.ButlerApplyDelayed;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerApp.ButlerUserIdAndRepairId;
 import com.api.model.butlerService.ProcessRecord;
@@ -362,6 +364,67 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
             return map;
         }
         map.put("message","接单成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> applyDelayed(ButlerApplyDelayed butlerApplyDelayed, Integer id) {
+        map = new HashMap<>();
+        try {
+            //根据派工单主键id查询派工单状态
+            int status = butlerRepairDao.findStatusByDispatchId(butlerApplyDelayed.getDispatchListId());
+            //1.待分配
+            if (status != 3){
+                throw new RuntimeException("此订单当前不可延时");
+            }
+
+            //判断是否是该用户的待接订单
+            Integer operator = butlerRepairDao.findOperatorByDispatchId(butlerApplyDelayed.getDispatchListId());
+            if (!id.equals(operator)){
+                throw new RuntimeException("不可操作他人的订单");
+            }
+
+            //添加处理进程记录
+            ProcessRecord processRecord = new ProcessRecord();
+            processRecord.setDispatchListId(butlerApplyDelayed.getDispatchListId());
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(11);
+            processRecord.setOperator(id);
+            processRecord.setOperatorType(3);
+            //查询维修人信息
+            SysUser byId = butlerRepairDao.findSysUserById(id);
+            //查询延长时间
+            String delayedDate = butlerRepairDao.findDelayedByShowValue(butlerApplyDelayed.getDelayedTime());
+            processRecord.setOperatorContent(byId.getActualName()+"申请延时时间-延长"+delayedDate);
+            //添加处理进程记录
+            int insert2 = butlerRepairDao.insertProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+
+            //添加延时信息
+            butlerApplyDelayed.setCreateId(id);
+            butlerApplyDelayed.setCreateDate(new Date());
+            butlerApplyDelayed.setProcessRecordId(processRecord.getId());
+            int insert = butlerRepairDao.insertDispatchListDelayed(butlerApplyDelayed);
+            if (insert <= 0){
+                throw new RuntimeException("添加延时信息失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+
+        map.put("message","申请延时成功");
         map.put("status",true);
         return map;
     }

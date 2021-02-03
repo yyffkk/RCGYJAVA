@@ -137,6 +137,18 @@ public class SysDataDictionaryController {
         return sysDataDictionaryService.findSysDispatchListDetailType();
     }
 
+    /**
+     * 查询派工单延时信息表-延时时间 sys_dispatch_list_delayed_delayed
+     * @return List<VoDecoration> 回显字典数据集合
+     */
+    @GetMapping("/findSysDispatchListDelayedDelayed")
+    public List<VoDataDictionary> findSysDispatchListDelayedDelayed(){
+        return sysDataDictionaryService.findSysDispatchListDelayedDelayed();
+    }
+
+
+
+
 
 
 

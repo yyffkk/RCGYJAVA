@@ -30,4 +30,7 @@ public interface SysDataDictionaryService {
     List<VoDataDictionary> findSysDailyPaymentType();
 
     List<VoDataDictionary> findSysDispatchListDetailType();
+
+    List<VoDataDictionary> findSysDispatchListDelayedDelayed();
+
 }

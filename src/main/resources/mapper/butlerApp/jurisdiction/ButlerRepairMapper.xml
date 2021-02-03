@@ -211,6 +211,9 @@
             #{operatorType},
             #{operatorContent}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <select id="findStatusByDispatchId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -252,5 +255,27 @@
         select operator from sys_dispatch_list_detail where id = #{dispatchId}
     </select>
 
+    <select id="findDelayedByShowValue" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select show_name from sys_data_dictionary
+        where type_name = 'sys_dispatch_list_delayed_delayed' and show_value = #{delayed}
+    </select>
+
+    <insert id="insertDispatchListDelayed" parameterType="com.api.model.butlerApp.ButlerApplyDelayed">
+        insert into sys_dispatch_list_delayed(
+            dispatch_list_id,
+            process_record_id,
+            delayed_time,
+            remake,
+            create_id,
+            create_date
+        )values (
+            #{dispatchListId},
+            #{processRecordId},
+            #{delayedTime},
+            #{remake},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 
 </mapper>
