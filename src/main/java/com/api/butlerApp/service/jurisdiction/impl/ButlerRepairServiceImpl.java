@@ -83,8 +83,11 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
                 butlerDispatchTypeVo = butlerRepairDao.findDispatchTypeById2(butlerUserIdAndRepairId);
                 break;
             case 3:
-                //??
                 //其他人界面
+                //根据用户主键id 和 报事报修主键id 查询报修详情
+                butlerRepairFindByIdVo = butlerRepairDao.findById3(repairId);
+                //根据用户主键id 和 报事报修主键id 查询工单类型
+                butlerDispatchTypeVo = butlerRepairDao.findDispatchTypeById3(repairId);
                 break;
             default:
                 //系统错误

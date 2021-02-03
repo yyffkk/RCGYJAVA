@@ -119,7 +119,24 @@
     <select id="findDispatchTypeById2" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerDispatchTypeVo">
         select sdld.type as dispatch_type,swotl.name as work_orderLimit_name,swotd.name as work_order_subclass_name
         from sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld,sys_report_repair as srr,sys_work_order_time_limit as swotl,sys_work_order_type_detail as swotd
-        where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and swotl.id = sdld.work_order_time_limit and swotd.id = sdld.work_order_type_detail and srr.id = #{repairId}
+        where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and swotl.id = sdld.work_order_time_limit and swotd.id = sdld.work_order_type_detail and sdl.sys_delete =1 and srr.id = #{repairId}
+    </select>
+
+    <select id="findById3" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairFindByIdVo">
+        select T.*,ur.name,ur.tel from (
+            select srr.id,srr.repairman,sdl.id as dispatch_id,srr.type,sdl.status
+            from sys_report_repair as srr,sys_dispatch_list as sdl LEFT JOIN sys_dispatch_list_detail as sdld
+            on sdld.dispatch_list_id = sdl.id
+            where srr.dispatch_list_id = sdl.id  and srr.id = #{repairId}
+        ) as T
+        LEFT JOIN user_resident as ur
+        on ur.id = T.repairman
+    </select>
+
+    <select id="findDispatchTypeById3" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerDispatchTypeVo">
+        select sdld.type as dispatch_type,swotl.name as work_orderLimit_name,swotd.name as work_order_subclass_name
+        from sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld,sys_report_repair as srr,sys_work_order_time_limit as swotl,sys_work_order_type_detail as swotd
+        where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and swotl.id = sdld.work_order_time_limit and swotd.id = sdld.work_order_type_detail and sdl.sys_delete = 1 and srr.id = #{repairId}
     </select>
 
 
