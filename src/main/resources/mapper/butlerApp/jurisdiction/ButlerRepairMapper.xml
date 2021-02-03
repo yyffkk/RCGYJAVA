@@ -242,5 +242,15 @@
         where srr.dispatch_list_id = sdl.id and sdl.sys_delete =1 and srr.id = #{repairId}
     </select>
 
+    <update id="receivingOrders" parameterType="java.lang.Integer">
+        update sys_dispatch_list
+        set status = 3
+        where id = #{dispatchId}
+    </update>
+
+    <select id="findOperatorByDispatchId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select operator from sys_dispatch_list_detail where id = #{dispatchId}
+    </select>
+
 
 </mapper>

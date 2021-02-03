@@ -178,4 +178,18 @@ public interface ButlerRepairDao {
      * @return 评价信息
      */
     ButlerEvaluateInfoVo findEIByRepairId(Integer repairId);
+
+    /**
+     * 接单
+     * @param dispatchId  派工单id
+     * @return 影响行数
+     */
+    int receivingOrders(Integer dispatchId);
+
+    /**
+     * 根据派工单id 查询维修人id
+     * @param dispatchId 派工单id
+     * @return 维修人id
+     */
+    Integer findOperatorByDispatchId(Integer dispatchId);
 }

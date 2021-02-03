@@ -21,4 +21,6 @@ public interface ButlerRepairService {
     Map<String, Object> dispatch(SysDispatchListDetail sysDispatchListDetail, String roleId);
 
     Map<String, Object> reassignment(Integer dispatchListId, Integer operator, String roleId, Integer id);
+
+    Map<String, Object> receivingOrders(Integer dispatchId, Integer id, String roleId);
 }

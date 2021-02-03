@@ -312,6 +312,60 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
         return map;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> receivingOrders(Integer dispatchId, Integer id, String roleId) {
+        map = new HashMap<>();
+        try {
+            //判断该用户是否有接单权限,type 1.派单 2.接单 3.其他
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 2){
+                throw new RuntimeException("此用户无接单权限");
+            }
+
+            //判断是否是该用户的待接订单
+            Integer operator = butlerRepairDao.findOperatorByDispatchId(dispatchId);
+            if (!id.equals(operator)){
+                throw new RuntimeException("不可接取他人的订单");
+            }
+
+            int update = butlerRepairDao.receivingOrders(dispatchId);
+            if (update <= 0){
+                throw new RuntimeException("接单失败");
+            }
+
+            //添加处理进程记录
+            ProcessRecord processRecord = new ProcessRecord();
+            processRecord.setDispatchListId(dispatchId);
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(3);
+            processRecord.setOperator(id);
+            processRecord.setOperatorType(3);
+            //查询维修人信息
+            SysUser byId = butlerRepairDao.findSysUserById(id);
+            processRecord.setOperatorContent(byId.getActualName()+"已接单，并开始处理");
+            //添加处理进程记录
+            int insert2 = butlerRepairDao.insertProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","接单成功");
+        map.put("status",true);
+        return map;
+    }
+
     private int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");
         if (split.length >0){
