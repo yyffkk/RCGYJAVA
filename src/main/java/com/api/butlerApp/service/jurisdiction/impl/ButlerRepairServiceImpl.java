@@ -5,6 +5,7 @@ import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
 import com.api.manage.dao.system.SysDataDictionaryDao;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerApplyDelayed;
+import com.api.model.butlerApp.ButlerHandleCompleteDetail;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerApp.ButlerUserIdAndRepairId;
 import com.api.model.butlerService.ProcessRecord;
@@ -426,6 +427,14 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
 
         map.put("message","申请延时成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> handleResult(ButlerHandleCompleteDetail handleCompleteDetail, Integer id) {
+        map = new HashMap<>();
+        //?????
+
         return map;
     }
 

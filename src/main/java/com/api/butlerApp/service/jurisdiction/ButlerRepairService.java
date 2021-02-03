@@ -1,6 +1,7 @@
 package com.api.butlerApp.service.jurisdiction;
 
 import com.api.model.butlerApp.ButlerApplyDelayed;
+import com.api.model.butlerApp.ButlerHandleCompleteDetail;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.vo.butlerApp.ButlerRepairVo;
@@ -26,4 +27,6 @@ public interface ButlerRepairService {
     Map<String, Object> receivingOrders(Integer dispatchId, Integer id, String roleId);
 
     Map<String, Object> applyDelayed(ButlerApplyDelayed butlerApplyDelayed, Integer id);
+
+    Map<String, Object> handleResult(ButlerHandleCompleteDetail handleCompleteDetail, Integer id);
 }

@@ -2,6 +2,7 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
 import com.api.model.butlerApp.ButlerApplyDelayed;
+import com.api.model.butlerApp.ButlerHandleCompleteDetail;
 import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.vo.butlerApp.ButlerRepairVo;
@@ -145,12 +146,16 @@ public class ButlerRepairController {
 
 
     /**
-     * 处理完成
+     * 处理完成 ???
+     * @param handleCompleteDetail 管家app 处理完成结果详情
+     * @param request butlerApp-admin-token获取的request管家用户信息
      * @return map
      */
     @PostMapping("/handleResult")
-    public Map<String,Object> handleResult(){
-        return null;
+    public Map<String,Object> handleResult(@RequestBody ButlerHandleCompleteDetail handleCompleteDetail,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return butlerRepairService.handleResult(handleCompleteDetail,id);
     }
 
 
