@@ -160,6 +160,20 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
             if (type != 1){
                 throw new RuntimeException("此用户无派单权限");
             }
+            //判断维修人是否有接单权限
+            SysUser sysUserById = butlerRepairDao.findSysUserById(sysDispatchListDetail.getOperator());
+            int type2 = findJurisdictionByUserId(sysUserById.getRoleId());
+            if (type2 != 2){
+                throw new RuntimeException("此维修人无接单权限");
+            }
+
+            //根据派工单主键id查询派工单状态
+            int status = butlerRepairDao.findStatusByDispatchId(sysDispatchListDetail.getDispatchListId());
+            //1.待分配
+            if (status != 1){
+                throw new RuntimeException("此订单当前不可分配");
+            }
+
             //生成订单号
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             sysDispatchListDetail.setCode(uuid);
@@ -209,6 +223,70 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
             return map;
         }
         map.put("message","派单成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> reassignment(Integer dispatchListId, Integer operator, String roleId, Integer id) {
+        map = new HashMap<>();
+
+        try {
+            //判断该用户是否有派单权限,type 1.派单 2.接单 3.其他
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("此用户无改派权限");
+            }
+            //判断维修人是否有接单权限
+            SysUser sysUserById = butlerRepairDao.findSysUserById(operator);
+            int type2 = findJurisdictionByUserId(sysUserById.getRoleId());
+            if (type2 != 2){
+                throw new RuntimeException("此维修人无接单权限");
+            }
+
+            //根据派工单主键id查询派工单状态
+            int status = butlerRepairDao.findStatusByDispatchId(dispatchListId);
+            //1.待分配
+            if (status != 2){
+                throw new RuntimeException("此订单当前不可改派");
+            }
+            SysDispatchListDetail sysDispatchListDetail = new SysDispatchListDetail();
+            sysDispatchListDetail.setDispatchListId(dispatchListId);
+            sysDispatchListDetail.setOperator(operator);
+            sysDispatchListDetail.setModifyId(id);
+            sysDispatchListDetail.setModifyDate(new Date());
+            int update = butlerRepairDao.updateDispatchListDetail(sysDispatchListDetail);
+            if (update <= 0){
+                throw new RuntimeException("改派失败");
+            }
+            //添加处理进程记录
+            ProcessRecord processRecord = new ProcessRecord();
+            processRecord.setDispatchListId(dispatchListId);
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(10);
+            processRecord.setOperator(id);
+            processRecord.setOperatorType(3);
+            //查询维修人信息
+            SysUser byId = butlerRepairDao.findSysUserById(operator);
+            processRecord.setOperatorContent("报修单改派给"+byId.getActualName());
+            //添加处理进程记录
+            int insert2 = butlerRepairDao.insertProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","改派成功");
         map.put("status",true);
         return map;
     }

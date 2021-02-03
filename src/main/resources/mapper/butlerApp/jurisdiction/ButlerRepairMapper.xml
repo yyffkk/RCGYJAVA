@@ -213,6 +213,18 @@
         )
     </insert>
 
+    <select id="findStatusByDispatchId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from sys_dispatch_list where id = #{dispatchListId}
+    </select>
+
+    <update id="updateDispatchListDetail" parameterType="com.api.model.butlerService.SysDispatchListDetail">
+        update sys_dispatch_list_detail
+        set operator = #{operator},
+        modify_id = #{modifyId},
+        modify_date = #{modifyDate}
+        where dispatch_list_id = #{dispatchListId}
+    </update>
+
 
 
 </mapper>

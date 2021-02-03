@@ -143,4 +143,18 @@ public interface ButlerRepairDao {
      * @return 影响行数
      */
     int insertProcessRecord(ProcessRecord processRecord);
+
+    /**
+     * 根据派工单主键id查询派工单状态
+     * @param dispatchListId 派工单主键id
+     * @return 派工单状态
+     */
+    int findStatusByDispatchId(Integer dispatchListId);
+
+    /**
+     * 改派
+     * @param sysDispatchListDetail 改派信息
+     * @return 影响行数
+     */
+    int updateDispatchListDetail(SysDispatchListDetail sysDispatchListDetail);
 }

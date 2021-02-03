@@ -103,5 +103,19 @@ public class ButlerRepairController {
     }
 
 
+    /**
+     * 改派
+     * @param dispatchListId 派工单id
+     * @param operator 操作人（维修人）
+     * @param roleId 用户所拥有的角色id
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/reassignment")
+    public Map<String,Object> reassignment(Integer dispatchListId,Integer operator,String roleId,Integer id){
+        return butlerRepairService.reassignment(dispatchListId,operator,roleId,id);
+    }
+
+
 
 }

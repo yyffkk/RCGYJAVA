@@ -257,6 +257,13 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
+            //根据派工单主键id查询派工单状态
+            int status = sysDispatchListDao.findStatusById(sysDispatchListDetail.getDispatchListId());
+            //1.待分配
+            if (status != 1){
+                throw new RuntimeException("此订单当前不可分配");
+            }
+
             //填入创建人
             sysDispatchListDetail.setCreateId(sysUser.getId());
             //填入创建时间
