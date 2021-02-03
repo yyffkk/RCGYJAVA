@@ -157,4 +157,25 @@ public interface ButlerRepairDao {
      * @return 影响行数
      */
     int updateDispatchListDetail(SysDispatchListDetail sysDispatchListDetail);
+
+    /**
+     * 根据报事报修主键id 查询 处理情况
+     * @param repairId 报事报修主键id
+     * @return 管家app 处理情况Vo findById 回显
+     */
+    ButlerHandlingSituationVo findHSByRepairId(Integer repairId);
+
+    /**
+     * 根据报事报修主键id 查询 费用明细
+     * @param repairId 报事报修主键id
+     * @return 管家app 报事报修费用明细
+     */
+    ButlerRepairCostDetailVo findRCDByRepairId(Integer repairId);
+
+    /**
+     * 根据报事报修主键id 查询 评价信息
+     * @param repairId 报事报修主键id
+     * @return 评价信息
+     */
+    ButlerEvaluateInfoVo findEIByRepairId(Integer repairId);
 }

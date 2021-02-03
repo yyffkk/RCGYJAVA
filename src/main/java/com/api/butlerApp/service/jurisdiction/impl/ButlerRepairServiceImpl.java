@@ -99,12 +99,33 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
             List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", butlerRepairFindByIdVo.getId(), "repairImg");
             butlerRepairFindByIdVo.setImgUrls(imgByDate);
         }
+        //传出报修详情
         map.put("repairDetail",butlerRepairFindByIdVo);
+        //传出工单类型
         map.put("dispatchType",butlerDispatchTypeVo);
 
         //根据报修id查询报修进程
         List<ButlerProcessRecordVo> butlerProcessRecordVo = butlerRepairDao.findProcessRecord(repairId);
+        //传出报修进程
         map.put("processRecord",butlerProcessRecordVo);
+
+        //传出处理情况
+        ButlerHandlingSituationVo butlerHandlingSituationVo = butlerRepairDao.findHSByRepairId(repairId);
+        if (butlerHandlingSituationVo != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysHandleCompleteDetail", butlerHandlingSituationVo.getId(), "maintenanceResultImg");
+            butlerHandlingSituationVo.setImgUrls(imgByDate);
+        }
+        map.put("handlingSituation",butlerHandlingSituationVo);
+
+        //传出费用明细
+        ButlerRepairCostDetailVo costDetailVo = butlerRepairDao.findRCDByRepairId(repairId);
+        map.put("costDetail",costDetailVo);
+
+        //传出评价信息
+        ButlerEvaluateInfoVo evaluateInfoVo = butlerRepairDao.findEIByRepairId(repairId);
+        map.put("evaluateInfo",evaluateInfoVo);
+
         //当前用户角色类型 type:1.派单人 2.维修人 3.其他角色
         map.put("type",type);
         return map;

@@ -225,6 +225,22 @@
         where dispatch_list_id = #{dispatchListId}
     </update>
 
+    <select id="findHSByRepairId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerHandlingSituationVo">
+        select shcd.* from sys_report_repair as srr,sys_dispatch_list as sdl,sys_handle_complete_detail as shcd
+        where srr.dispatch_list_id = sdl.id and shcd.dispatch_list_id = sdl.id and sdl.sys_delete =1 and srr.id = #{repairId}
+    </select>
+
+    <select id="findRCDByRepairId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairCostDetailVo">
+        select shcd.labor_cost,shcd.material_cost,shcd.total_cost
+        from sys_report_repair as srr,sys_dispatch_list as sdl,sys_handle_complete_detail as shcd
+        where srr.dispatch_list_id = sdl.id and shcd.dispatch_list_id = sdl.id and sdl.sys_delete =1 and srr.id = #{repairId}
+    </select>
+
+    <select id="findEIByRepairId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerEvaluateInfoVo">
+        select sdl.evaluation_level,sdl.evaluation_content,sdl.evaluation_date
+        from sys_report_repair as srr,sys_dispatch_list as sdl
+        where srr.dispatch_list_id = sdl.id and sdl.sys_delete =1 and srr.id = #{repairId}
+    </select>
 
 
 </mapper>
