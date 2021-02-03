@@ -74,4 +74,15 @@ public class ButlerRepairController {
         return butlerRepairService.findWorkOrderTypeDetail(workOrderTypeId);
     }
 
+    /**
+     * 查询 维修部组织信息及人员
+     * @return map
+     */
+    @GetMapping("/findRepairOrganization")
+    public Map<String,Object> findRepairOrganization(){
+        //房屋管理维修部 主键id为6
+        int repairOrganizationId = 6;
+        return butlerRepairService.findRepairOrganization(repairOrganizationId);
+    }
+
 }

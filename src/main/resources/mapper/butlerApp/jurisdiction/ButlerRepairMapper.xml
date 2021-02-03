@@ -147,5 +147,13 @@
         select id,name from sys_work_order_type_detail where work_order_type_id =#{workOrderTypeId}
     </select>
 
+    <select id="findRepairOrganization" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairOrganizationVo">
+        select id,name from sys_organization where parent_id = #{repairOrganizationId}
+    </select>
+
+    <select id="findRepairman" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairmanVo">
+        select id,actual_name as name,tel from sys_user where organization_id = #{id}
+    </select>
+
 
 </mapper>

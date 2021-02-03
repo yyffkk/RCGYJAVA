@@ -15,4 +15,5 @@ public interface ButlerRepairService {
 
     Map<String, Object> findWorkOrderTypeDetail(Integer workOrderTypeId);
 
+    Map<String, Object> findRepairOrganization(int repairOrganizationId);
 }

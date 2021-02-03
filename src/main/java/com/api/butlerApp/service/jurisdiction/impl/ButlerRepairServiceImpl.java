@@ -6,10 +6,7 @@ import com.api.model.butlerApp.ButlerRepairSearch;
 import com.api.model.butlerApp.ButlerUserIdAndRepairId;
 import com.api.util.UploadUtil;
 import com.api.vo.app.IdAndName;
-import com.api.vo.butlerApp.ButlerDispatchTypeVo;
-import com.api.vo.butlerApp.ButlerProcessRecordVo;
-import com.api.vo.butlerApp.ButlerRepairFindByIdVo;
-import com.api.vo.butlerApp.ButlerRepairVo;
+import com.api.vo.butlerApp.*;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
@@ -125,6 +122,25 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
         map = new HashMap<>();
         List<IdAndName> workOrderTypeDetail = butlerRepairDao.findWorkOrderTypeDetail(workOrderTypeId);
         map.put("data",workOrderTypeDetail);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findRepairOrganization(int repairOrganizationId) {
+        map = new HashMap<>();
+        //根据父组织查询子组织信息
+        List<ButlerRepairOrganizationVo> organization = butlerRepairDao.findRepairOrganization(repairOrganizationId);
+        if (organization!= null && organization.size()>0){
+            for (ButlerRepairOrganizationVo organizationVo : organization) {
+                //根据组织id查询维修人信息
+                List<ButlerRepairmanVo> butlerRepairmanVos = butlerRepairDao.findRepairman(organizationVo.getId());
+                organizationVo.setRepairmanVos(butlerRepairmanVos);
+            }
+        }
+
+        map.put("data",organization);
         map.put("message","请求成功");
         map.put("status",true);
         return map;

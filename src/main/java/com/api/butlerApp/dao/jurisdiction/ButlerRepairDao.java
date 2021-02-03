@@ -97,4 +97,18 @@ public interface ButlerRepairDao {
      * @return 工单子类 id and name
      */
     List<IdAndName> findWorkOrderTypeDetail(Integer workOrderTypeId);
+
+    /**
+     * 根据父组织查询子组织信息
+     * @param repairOrganizationId 父组织id
+     * @return 管家app 维修部组织 信息Vo 回显
+     */
+    List<ButlerRepairOrganizationVo> findRepairOrganization(int repairOrganizationId);
+
+    /**
+     * 根据组织id查询维修人信息
+     * @param id 组织id
+     * @return 维修人信息集合
+     */
+    List<ButlerRepairmanVo> findRepairman(Integer id);
 }
