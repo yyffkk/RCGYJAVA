@@ -11,5 +11,8 @@ public interface AppDailyPaymentService {
 
     Map<String, Object> pay(AppDailyPaymentOrder appDailyPaymentOrder);
 
+    Map<String, Object> findEstateIsPayment(Integer id);
+
     Map<String, Object> paymentRecord(Integer id, String tel);
+
 }

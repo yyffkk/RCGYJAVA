@@ -59,6 +59,17 @@ public class AppDailyPaymentController {
     }
 
     /**
+     * 查询当前用户的房屋是否缴费
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/findEstateIsPayment")
+    public Map<String,Object> findEstateIsPayment(Integer id){
+        return appDailyPaymentService.findEstateIsPayment(id);
+    }
+
+
+    /**
      * 缴费记录(有问题)
      * @param id 用户主键id
      * @param tel 用户联系方式

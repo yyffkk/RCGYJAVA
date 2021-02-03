@@ -6,10 +6,7 @@ import com.api.model.app.AppDailyPaymentDetail;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.model.chargeManagement.UpdateDailyPayment;
-import com.api.vo.app.AppDailyPaymentDetailedVo;
-import com.api.vo.app.AppDailyPaymentDetailsVo;
-import com.api.vo.app.AppDailyPaymentTypeVo;
-import com.api.vo.app.AppDailyPaymentVo;
+import com.api.vo.app.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -126,9 +123,21 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
     }
 
     @Override
+    public Map<String, Object> findEstateIsPayment(Integer id) {
+        map = new HashMap<>();
+        List<AppDailPaymentChooseEstate> chooseEstateList = appDailyPaymentDao.findEstateIsPayment(id);
+        map.put("data",chooseEstateList);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> paymentRecord(Integer id, String tel) {
         map = new HashMap<>();
 
         return map;
     }
+
+
 }

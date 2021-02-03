@@ -3,10 +3,7 @@ package com.api.app.dao.butler;
 import com.api.model.app.AppDailyPaymentDetail;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
-import com.api.vo.app.AppDailyPaymentDetailedVo;
-import com.api.vo.app.AppDailyPaymentDetailsVo;
-import com.api.vo.app.AppDailyPaymentTypeVo;
-import com.api.vo.app.AppDailyPaymentVo;
+import com.api.vo.app.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -67,4 +64,11 @@ public interface AppDailyPaymentDao {
      * @return 影响行数
      */
     int updatePaidPriceAndPaymentPrice(Integer id);
+
+    /**
+     * 根据当前用户id查询房产缴费信息
+     * @param id 用户id
+     * @return app 日常缴费选择房屋信息
+     */
+    List<AppDailPaymentChooseEstate> findEstateIsPayment(Integer id);
 }
