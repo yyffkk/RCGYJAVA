@@ -1,4 +1,4 @@
-package com.api.butlerApp.service.visitor;
+package com.api.butlerApp.service.butler;
 
 import com.api.model.butlerApp.ButlerVisitorSearch;
 import com.api.vo.butlerApp.ButlerVisitorVo;

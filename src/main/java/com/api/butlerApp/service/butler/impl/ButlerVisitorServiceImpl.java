@@ -1,7 +1,7 @@
-package com.api.butlerApp.service.visitor.impl;
+package com.api.butlerApp.service.butler.impl;
 
-import com.api.butlerApp.dao.visitor.ButlerVisitorDao;
-import com.api.butlerApp.service.visitor.ButlerVisitorService;
+import com.api.butlerApp.dao.butler.ButlerVisitorDao;
+import com.api.butlerApp.service.butler.ButlerVisitorService;
 import com.api.model.butlerApp.ButlerVisitorSearch;
 import com.api.vo.butlerApp.ButlerVisitorVo;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.api.butlerApp.dao.visitor;
+package com.api.butlerApp.dao.butler;
 
 import com.api.model.butlerApp.ButlerVisitorSearch;
 import com.api.vo.butlerApp.ButlerVisitorVo;

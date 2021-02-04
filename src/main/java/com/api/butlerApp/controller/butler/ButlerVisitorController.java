@@ -1,8 +1,7 @@
-package com.api.butlerApp.controller.visitor;
+package com.api.butlerApp.controller.butler;
 
-import com.api.butlerApp.service.visitor.ButlerVisitorService;
+import com.api.butlerApp.service.butler.ButlerVisitorService;
 import com.api.model.butlerApp.ButlerVisitorSearch;
-import com.api.vo.app.AppActivityVo;
 import com.api.vo.butlerApp.ButlerVisitorVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

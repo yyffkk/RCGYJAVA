@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.api.butlerApp.dao.visitor.ButlerVisitorDao">
+<mapper namespace="com.api.butlerApp.dao.butler.ButlerVisitorDao">
     <select id="list" parameterType="com.api.model.butlerApp.ButlerVisitorSearch" resultType="com.api.vo.butlerApp.ButlerVisitorVo">
         select uv.*,concat(cb.no,"幢",cbu.no,"单元",cbue.room_number) as room_name from user_visitors as uv,cpm_building as cb,cpm_building_unit as cbu,cpm_building_unit_estate as cbue
         <where>
