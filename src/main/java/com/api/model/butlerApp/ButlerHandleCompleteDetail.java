@@ -1,6 +1,7 @@
 package com.api.model.butlerApp;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -51,6 +52,10 @@ public class ButlerHandleCompleteDetail {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 照片上传路径数组
+     */
+    private String[] fileUrls;
 
     @Override
     public String toString() {
@@ -66,6 +71,7 @@ public class ButlerHandleCompleteDetail {
                 ", completeDate=" + completeDate +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 '}';
     }
 
@@ -157,10 +163,18 @@ public class ButlerHandleCompleteDetail {
         this.createDate = createDate;
     }
 
+    public String[] getFileUrls() {
+        return fileUrls;
+    }
+
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
+    }
+
     public ButlerHandleCompleteDetail() {
     }
 
-    public ButlerHandleCompleteDetail(Integer id, Integer dispatchListId, String detail, String materialList, BigDecimal laborCost, BigDecimal materialCost, BigDecimal totalCost, Integer repairResult, Date completeDate, Integer createId, Date createDate) {
+    public ButlerHandleCompleteDetail(Integer id, Integer dispatchListId, String detail, String materialList, BigDecimal laborCost, BigDecimal materialCost, BigDecimal totalCost, Integer repairResult, Date completeDate, Integer createId, Date createDate, String[] fileUrls) {
         this.id = id;
         this.dispatchListId = dispatchListId;
         this.detail = detail;
@@ -172,5 +186,6 @@ public class ButlerHandleCompleteDetail {
         this.completeDate = completeDate;
         this.createId = createId;
         this.createDate = createDate;
+        this.fileUrls = fileUrls;
     }
 }

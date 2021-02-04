@@ -1,9 +1,7 @@
 package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.businessManagement.SysUser;
-import com.api.model.butlerApp.ButlerApplyDelayed;
-import com.api.model.butlerApp.ButlerRepairSearch;
-import com.api.model.butlerApp.ButlerUserIdAndRepairId;
+import com.api.model.butlerApp.*;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.model.butlerService.UpdateDispatchStatus;
@@ -182,10 +180,10 @@ public interface ButlerRepairDao {
 
     /**
      * 接单
-     * @param dispatchId  派工单id
+     * @param butlerUpdateStatusAndDate 管家app 修改派工单状态和时间
      * @return 影响行数
      */
-    int receivingOrders(Integer dispatchId);
+    int receivingOrders(ButlerUpdateStatusAndDate butlerUpdateStatusAndDate);
 
     /**
      * 根据派工单id 查询维修人id
@@ -207,4 +205,25 @@ public interface ButlerRepairDao {
      * @return 影响行数
      */
     int insertDispatchListDelayed(ButlerApplyDelayed butlerApplyDelayed);
+
+    /**
+     * 添加完成结果详情
+     * @param handleCompleteDetail 管家app 处理完成结果详情
+     * @return 影响行数
+     */
+    int insertHandleCompleteDetail(ButlerHandleCompleteDetail handleCompleteDetail);
+
+    /**
+     * 根据派工单主键id查询派工类型(1.无偿服务，2.有偿服务)
+     * @param dispatchListId 派工单主键id
+     * @return 派工类型(1.无偿服务，2.有偿服务)
+     */
+    int findTypeByDispatchListId(Integer dispatchListId);
+
+    /**
+     * 修改派工单状态 和 时间（处理结束时间）
+     * @param butlerUpdateStatusAndDate 管家app 修改派工单状态和时间
+     * @return 影响行数
+     */
+    int updateStatusAndDate(ButlerUpdateStatusAndDate butlerUpdateStatusAndDate);
 }

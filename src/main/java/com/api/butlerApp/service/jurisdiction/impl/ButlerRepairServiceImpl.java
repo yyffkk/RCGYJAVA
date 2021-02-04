@@ -2,12 +2,8 @@ package com.api.butlerApp.service.jurisdiction.impl;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
-import com.api.manage.dao.system.SysDataDictionaryDao;
 import com.api.model.businessManagement.SysUser;
-import com.api.model.butlerApp.ButlerApplyDelayed;
-import com.api.model.butlerApp.ButlerHandleCompleteDetail;
-import com.api.model.butlerApp.ButlerRepairSearch;
-import com.api.model.butlerApp.ButlerUserIdAndRepairId;
+import com.api.model.butlerApp.*;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.model.butlerService.UpdateDispatchStatus;
@@ -332,7 +328,12 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
                 throw new RuntimeException("不可接取他人的订单");
             }
 
-            int update = butlerRepairDao.receivingOrders(dispatchId);
+            //改变派工单状态和时间（处理开始时间）
+            ButlerUpdateStatusAndDate butlerUpdateStatusAndDate = new ButlerUpdateStatusAndDate();
+            butlerUpdateStatusAndDate.setDispatchListId(dispatchId);
+            butlerUpdateStatusAndDate.setUpdateDate(new Date());
+            butlerUpdateStatusAndDate.setStatus(3);
+            int update = butlerRepairDao.receivingOrders(butlerUpdateStatusAndDate);
             if (update <= 0){
                 throw new RuntimeException("接单失败");
             }
@@ -431,10 +432,96 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
     }
 
     @Override
-    public Map<String, Object> handleResult(ButlerHandleCompleteDetail handleCompleteDetail, Integer id) {
+    @Transactional
+    public Map<String, Object> handleResult(ButlerHandleCompleteDetail handleCompleteDetail, Integer id, String roleId) {
         map = new HashMap<>();
-        //?????
+        try {
+            //判断该用户是否有接单权限,type 1.派单 2.接单 3.其他
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 2){
+                throw new RuntimeException("此用户无完成权限");
+            }
 
+            //判断是否是该用户的待接订单
+            Integer operator = butlerRepairDao.findOperatorByDispatchId(handleCompleteDetail.getDispatchListId());
+            if (!id.equals(operator)){
+                throw new RuntimeException("不可完成他人的订单");
+            }
+
+            int status = butlerRepairDao.findStatusByDispatchId(handleCompleteDetail.getDispatchListId());
+            if (status != 3){
+                throw new RuntimeException("此订单当前不可执行完成操作");
+            }
+
+            //根据派工单主键id查询派工类型(1.无偿服务，2.有偿服务)
+            int disPatchType = butlerRepairDao.findTypeByDispatchListId(handleCompleteDetail.getDispatchListId());
+            if (disPatchType ==1){
+                //将人工费置为null
+                handleCompleteDetail.setLaborCost(null);
+                //将材料费置为null
+                handleCompleteDetail.setMaterialCost(null);
+                //将总计费置为null
+                handleCompleteDetail.setTotalCost(null);
+            }else if (disPatchType == 2){
+                if (handleCompleteDetail.getLaborCost() == null ||
+                        handleCompleteDetail.getMaterialCost() == null ||
+                        handleCompleteDetail.getTotalCost() == null){
+                    throw new RuntimeException("费用明细不能为空");
+                }
+            }else {
+                throw new RuntimeException("派工类型错误，请联系管理员");
+            }
+
+            //添加完成结果详情
+            handleCompleteDetail.setCreateId(id);
+            handleCompleteDetail.setCreateDate(new Date());
+            handleCompleteDetail.setCompleteDate(new Date());
+            int insert = butlerRepairDao.insertHandleCompleteDetail(handleCompleteDetail);
+            if (insert <= 0){
+                throw new RuntimeException("添加处理完成结果失败");
+            }
+            //添加维修完成照片到数据库
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(handleCompleteDetail.getFileUrls(),"sysHandleCompleteDetail",handleCompleteDetail.getId(),"maintenanceResultImg","600",30,20);
+
+            //改变派工单状态和时间（处理结束时间）
+            ButlerUpdateStatusAndDate butlerUpdateStatusAndDate = new ButlerUpdateStatusAndDate();
+            butlerUpdateStatusAndDate.setDispatchListId(handleCompleteDetail.getDispatchListId());
+            butlerUpdateStatusAndDate.setUpdateDate(new Date());
+            //4.处理完成
+            butlerUpdateStatusAndDate.setStatus(4);
+            int update = butlerRepairDao.updateStatusAndDate(butlerUpdateStatusAndDate);
+            if (update <= 0){
+                throw new RuntimeException("修改派工单状态失败");
+            }
+
+            //添加处理进程记录
+            ProcessRecord processRecord = new ProcessRecord();
+            processRecord.setDispatchListId(handleCompleteDetail.getDispatchListId());
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(4);
+            processRecord.setOperator(id);
+            processRecord.setOperatorType(3);
+            processRecord.setOperatorContent("处理完成");
+            //添加处理进程记录
+            int insert2 = butlerRepairDao.insertProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","处理完成成功");
+        map.put("status",true);
         return map;
     }
 

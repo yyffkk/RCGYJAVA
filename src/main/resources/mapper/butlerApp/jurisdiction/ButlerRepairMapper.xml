@@ -245,14 +245,15 @@
         where srr.dispatch_list_id = sdl.id and sdl.sys_delete =1 and srr.id = #{repairId}
     </select>
 
-    <update id="receivingOrders" parameterType="java.lang.Integer">
+    <update id="receivingOrders" parameterType="com.api.model.butlerApp.ButlerUpdateStatusAndDate">
         update sys_dispatch_list
-        set status = 3
-        where id = #{dispatchId}
+        set status = #{status},
+        begin_date = #{updateDate}
+        where id = #{dispatchListId}
     </update>
 
     <select id="findOperatorByDispatchId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select operator from sys_dispatch_list_detail where id = #{dispatchId}
+        select operator from sys_dispatch_list_detail where dispatch_list_id = #{dispatchId}
     </select>
 
     <select id="findDelayedByShowValue" parameterType="java.lang.Integer" resultType="java.lang.String">
@@ -278,4 +279,55 @@
         )
     </insert>
 
+    <insert id="insertHandleCompleteDetail" parameterType="com.api.model.butlerApp.ButlerHandleCompleteDetail">
+        insert into sys_handle_complete_detail(
+            dispatch_list_id,
+            detail,
+            material_list,
+            <if test="laborCost != null">
+                labor_cost,
+            </if>
+            <if test="materialCost != null">
+                material_cost,
+            </if>
+            <if test="totalCost != null">
+                total_cost,
+            </if>
+            repair_result,
+            complete_date,
+            create_id,
+            create_date
+        )values (
+            #{dispatchListId},
+            #{detail},
+            #{materialList},
+            <if test="laborCost != null">
+                #{laborCost},
+            </if>
+            <if test="materialCost != null">
+                #{materialCost},
+            </if>
+            <if test="totalCost != null">
+                #{totalCost},
+            </if>
+            #{repairResult},
+            #{completeDate},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="findTypeByDispatchListId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select type from sys_dispatch_list_detail where dispatch_list_id = #{dispatchListId}
+    </select>
+
+    <update id="updateStatusAndDate" parameterType="com.api.model.butlerApp.ButlerUpdateStatusAndDate">
+        update sys_dispatch_list
+        set status = #{status},
+        end_date = #{updateDate}
+        where id =#{dispatchListId}
+    </update>
 </mapper>

@@ -97,7 +97,7 @@ public class ButlerRepairController {
     public Map<String,Object> dispatch(@RequestBody SysDispatchListDetail sysDispatchListDetail, HttpServletRequest request){
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
-        //从request获取用户组织id
+        //从request获取用户拥有的角色id
         String roleId = request.getParameter("roleId");
         //填入分配人
         sysDispatchListDetail.setCreateId(id);
@@ -146,7 +146,7 @@ public class ButlerRepairController {
 
 
     /**
-     * 处理完成 ???
+     * 处理完成
      * @param handleCompleteDetail 管家app 处理完成结果详情
      * @param request butlerApp-admin-token获取的request管家用户信息
      * @return map
@@ -155,7 +155,9 @@ public class ButlerRepairController {
     public Map<String,Object> handleResult(@RequestBody ButlerHandleCompleteDetail handleCompleteDetail,HttpServletRequest request){
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
-        return butlerRepairService.handleResult(handleCompleteDetail,id);
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerRepairService.handleResult(handleCompleteDetail,id,roleId);
     }
 
 

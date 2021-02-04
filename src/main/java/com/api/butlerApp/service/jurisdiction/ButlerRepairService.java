@@ -28,5 +28,5 @@ public interface ButlerRepairService {
 
     Map<String, Object> applyDelayed(ButlerApplyDelayed butlerApplyDelayed, Integer id);
 
-    Map<String, Object> handleResult(ButlerHandleCompleteDetail handleCompleteDetail, Integer id);
+    Map<String, Object> handleResult(ButlerHandleCompleteDetail handleCompleteDetail, Integer id, String roleId);
 }
