@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerArticleOutDao">
+    <select id="list" parameterType="com.api.model.butlerApp.ButlerArticleOutSearch" resultType="com.api.vo.butlerApp.ButlerArticleOutVo">
+        select uao.id,uao.status,concat(cb.no,"幢-",cbu.no,"单元",cbue.room_number) as room_name,ur.name as applicant_name,ur.type as identity,uao.name as article_out_name,uao.expected_time
+        from user_article_out as uao,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        <where>
+            uao.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and ur.id = uao.applicant_id
+            <if test="articleOutStatus != null">
+                and uao.status = #{articleOutStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerAOFindByIdVo">
+        select uao.id,uao.status,concat(cb.no,"幢-",cbu.no,"单元",cbue.room_number) as room_name,ur.name as applicant_name,ur.tel as applicant_tel,ur.type as identity
+        ,uao.name as article_out_name,uao.expected_time,uao.weight,uao.approach
+        from user_article_out as uao,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        <where>
+            uao.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and ur.id = uao.applicant_id
+            and uao.id = #{articleOutId}
+        </where>
+    </select>
+</mapper>
