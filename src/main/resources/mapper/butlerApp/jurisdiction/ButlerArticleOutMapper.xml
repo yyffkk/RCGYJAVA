@@ -18,7 +18,7 @@
     </select>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerAOFindByIdVo">
-        select uao.id,uao.status,concat(cb.no,"幢-",cbu.no,"单元",cbue.room_number) as room_name,ur.name as applicant_name,ur.tel as applicant_tel,ur.type as identity
+        select uao.id,uao.export,uao.remarks,uao.review_date,uao.status,concat(cb.no,"幢-",cbu.no,"单元",cbue.room_number) as room_name,ur.name as applicant_name,ur.tel as applicant_tel,ur.type as identity
         ,uao.name as article_out_name,uao.expected_time,uao.weight,uao.approach
         from user_article_out as uao,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
         <where>

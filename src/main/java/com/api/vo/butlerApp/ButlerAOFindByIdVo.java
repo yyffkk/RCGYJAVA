@@ -53,6 +53,18 @@ public class ButlerAOFindByIdVo {
      * 物品照片
      */
     private List<VoResourcesImg> imgUrls;
+    /**
+     * 审核时间【status=2:出门时间，status=3:驳回时间】
+     */
+    private Date reviewDate;
+    /**
+     * 出口(1.东门，2.南门，3.西门，4.北门)【status=2时显示】
+     */
+    private Integer export;
+    /**
+     * 备注（不放行理由，驳回申请时使用）【status=3时显示】
+     */
+    private String remarks;
 
     @Override
     public String toString() {
@@ -68,6 +80,9 @@ public class ButlerAOFindByIdVo {
                 ", weight=" + weight +
                 ", approach=" + approach +
                 ", imgUrls=" + imgUrls +
+                ", reviewDate=" + reviewDate +
+                ", export=" + export +
+                ", remarks='" + remarks + '\'' +
                 '}';
     }
 
@@ -159,10 +174,34 @@ public class ButlerAOFindByIdVo {
         this.imgUrls = imgUrls;
     }
 
+    public Date getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(Date reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
+    public Integer getExport() {
+        return export;
+    }
+
+    public void setExport(Integer export) {
+        this.export = export;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
     public ButlerAOFindByIdVo() {
     }
 
-    public ButlerAOFindByIdVo(Integer id, Integer status, String roomName, String applicantName, Integer identity, String applicantTel, Date expectedTime, String articleOutName, Integer weight, Integer approach, List<VoResourcesImg> imgUrls) {
+    public ButlerAOFindByIdVo(Integer id, Integer status, String roomName, String applicantName, Integer identity, String applicantTel, Date expectedTime, String articleOutName, Integer weight, Integer approach, List<VoResourcesImg> imgUrls, Date reviewDate, Integer export, String remarks) {
         this.id = id;
         this.status = status;
         this.roomName = roomName;
@@ -174,5 +213,8 @@ public class ButlerAOFindByIdVo {
         this.weight = weight;
         this.approach = approach;
         this.imgUrls = imgUrls;
+        this.reviewDate = reviewDate;
+        this.export = export;
+        this.remarks = remarks;
     }
 }
