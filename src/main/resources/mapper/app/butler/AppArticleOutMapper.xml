@@ -5,7 +5,6 @@
 <mapper namespace="com.api.app.dao.butler.AppArticleOutDao">
     <insert id="submit" parameterType="com.api.model.app.AppArticleOut">
         insert into user_article_out(
-            resident_id,
             building_unit_estate_id,
             name,
             weight,
@@ -19,7 +18,6 @@
             applicant_date,
             user_delete
         )values (
-            #{residentId},
             #{buildingUnitEstateId},
             #{name},
             #{weight},

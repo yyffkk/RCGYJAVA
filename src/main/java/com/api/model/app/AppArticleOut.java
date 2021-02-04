@@ -12,10 +12,6 @@ public class AppArticleOut {
      */
     private Integer id;
     /**
-     * 业主id
-     */
-    private Integer residentId;
-    /**
      * 房产id
      */
     private Integer buildingUnitEstateId;
@@ -84,7 +80,6 @@ public class AppArticleOut {
     public String toString() {
         return "AppArticleOut{" +
                 "id=" + id +
-                ", residentId=" + residentId +
                 ", buildingUnitEstateId=" + buildingUnitEstateId +
                 ", name='" + name + '\'' +
                 ", weight=" + weight +
@@ -110,14 +105,6 @@ public class AppArticleOut {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getResidentId() {
-        return residentId;
-    }
-
-    public void setResidentId(Integer residentId) {
-        this.residentId = residentId;
     }
 
     public Integer getBuildingUnitEstateId() {
@@ -251,9 +238,8 @@ public class AppArticleOut {
     public AppArticleOut() {
     }
 
-    public AppArticleOut(Integer id, Integer residentId, Integer buildingUnitEstateId, String name, Integer weight, Integer approach, String movingCompanyTel, Date expectedTime, Date actualTime, Integer export, Integer status, String remarks, Integer applicantId, Date applicantDate, Integer reviewId, Date reviewDate, String[] imgUrls, Integer userDelete) {
+    public AppArticleOut(Integer id, Integer buildingUnitEstateId, String name, Integer weight, Integer approach, String movingCompanyTel, Date expectedTime, Date actualTime, Integer export, Integer status, String remarks, Integer applicantId, Date applicantDate, Integer reviewId, Date reviewDate, String[] imgUrls, Integer userDelete) {
         this.id = id;
-        this.residentId = residentId;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.name = name;
         this.weight = weight;

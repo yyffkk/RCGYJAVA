@@ -55,8 +55,6 @@ public class AppArticleOutController {
     public Map<String,Object> submit(@RequestBody AppArticleOut appArticleOut, HttpServletRequest request){
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
-        //填入业主id ???
-        appArticleOut.setResidentId(id);
         //填入申请人（用户业主表）
         appArticleOut.setApplicantId(id);
         return appArticleOutService.submit(appArticleOut);
