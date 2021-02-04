@@ -52,4 +52,9 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="findOwnerByEstateId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerNameAndTel">
+        select ur.name,ur.tel from cpm_resident_estate as cre,user_resident as ur
+        where cre.resident_id = ur.id and cre.building_unit_estate_id = #{estateId}
+    </select>
 </mapper>

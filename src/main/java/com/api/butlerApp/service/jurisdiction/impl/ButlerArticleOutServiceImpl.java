@@ -9,6 +9,7 @@ import com.api.model.butlerApp.ButlerArticleOutSearch;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.ButlerAOFindByIdVo;
 import com.api.vo.butlerApp.ButlerArticleOutVo;
+import com.api.vo.butlerApp.ButlerNameAndTel;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
@@ -99,6 +100,17 @@ public class ButlerArticleOutServiceImpl implements ButlerArticleOutService {
             map.put("message","操作失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> contactOwner(Integer estateId) {
+        map = new HashMap<>();
+        //根据房产id查询业主name 和 tel
+        List<ButlerNameAndTel> butlerNameAndTelList = butlerArticleOutDao.findOwnerByEstateId(estateId);
+        map.put("data",butlerNameAndTelList);
+        map.put("message","请求成功");
+        map.put("status",true);
         return map;
     }
 

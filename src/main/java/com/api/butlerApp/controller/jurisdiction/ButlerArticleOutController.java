@@ -83,4 +83,14 @@ public class ButlerArticleOutController {
         String roleId = request.getParameter("roleId");
         return butlerArticleOutService.noRelease(articleOutNoRelease,id,roleId);
     }
+
+    /**
+     * 根据房产id查询业主名称和手机号（联系业主）
+     * @param estateId 房产id
+     * @return map
+     */
+    @GetMapping("/contactOwner")
+    public Map<String,Object> contactOwner(Integer estateId){
+        return butlerArticleOutService.contactOwner(estateId);
+    }
 }

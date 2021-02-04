@@ -5,6 +5,7 @@ import com.api.model.butlerApp.ButlerArticleOutRelease;
 import com.api.model.butlerApp.ButlerArticleOutSearch;
 import com.api.vo.butlerApp.ButlerAOFindByIdVo;
 import com.api.vo.butlerApp.ButlerArticleOutVo;
+import com.api.vo.butlerApp.ButlerNameAndTel;
 
 import java.util.List;
 
@@ -36,4 +37,11 @@ public interface ButlerArticleOutDao {
      * @return 影响行数
      */
     int noRelease(ButlerArticleOutNoRelease articleOutNoRelease);
+
+    /**
+     * 根据房产id查询业主name 和 tel
+     * @param estateId 房产id
+     * @return 联系业主 name 和 tel
+     */
+    List<ButlerNameAndTel> findOwnerByEstateId(Integer estateId);
 }

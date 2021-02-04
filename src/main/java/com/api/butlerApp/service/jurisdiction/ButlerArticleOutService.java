@@ -16,4 +16,6 @@ public interface ButlerArticleOutService {
     Map<String, Object> release(ButlerArticleOutRelease articleOutRelease, Integer id, String roleId);
 
     Map<String, Object> noRelease(ButlerArticleOutNoRelease articleOutNoRelease, Integer id, String roleId);
+
+    Map<String, Object> contactOwner(Integer estateId);
 }
