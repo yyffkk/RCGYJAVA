@@ -30,6 +30,8 @@ public class AppArticleOutServiceImpl implements AppArticleOutService {
     public Map<String, Object> submit(AppArticleOut appArticleOut) {
         map = new HashMap<>();
         try {
+            //根据房产id查询业主信息
+//            appArticleOutDao.findOwnerByEstateId(appArticleOut.get);
             //填入状态，初始为1.待出门
             appArticleOut.setStatus(1);
             //填入申请时间
