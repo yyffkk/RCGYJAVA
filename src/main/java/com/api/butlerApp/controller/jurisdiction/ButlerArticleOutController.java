@@ -1,16 +1,17 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerArticleOutService;
+import com.api.model.butlerApp.ButlerArticleOutNoRelease;
+import com.api.model.butlerApp.ButlerArticleOutRelease;
 import com.api.model.butlerApp.ButlerArticleOutSearch;
 import com.api.vo.butlerApp.ButlerArticleOutVo;
 import com.api.vo.butlerApp.ButlerRepairVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,17 +56,31 @@ public class ButlerArticleOutController {
 
     /**
      * 放行
-     * @return
+     * @param articleOutRelease 管家app物品出户 放行model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
      */
-    public Map<String,Object> release(){
-        return null;
+    @PostMapping("/release")
+    public Map<String,Object> release(@RequestBody ButlerArticleOutRelease articleOutRelease, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerArticleOutService.release(articleOutRelease,id,roleId);
     }
 
     /**
      * 不放行
-     * @return
+     * @param articleOutNoRelease 管家app 物品出户 不放行model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
      */
-    public Map<String,Object> noRelease(){
-        return null;
+    @PostMapping("/noRelease")
+    public Map<String,Object> noRelease(@RequestBody ButlerArticleOutNoRelease articleOutNoRelease,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerArticleOutService.noRelease(articleOutNoRelease,id,roleId);
     }
 }

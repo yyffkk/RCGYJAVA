@@ -29,4 +29,27 @@
             and uao.id = #{articleOutId}
         </where>
     </select>
+
+    <update id="release" parameterType="com.api.model.butlerApp.ButlerArticleOutRelease">
+        update user_article_out
+        <set>
+            actual_time = #{actualTime},
+            export = #{export},
+            status = #{status},
+            review_id = #{reviewId},
+            review_date = #{reviewDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="noRelease" parameterType="com.api.model.butlerApp.ButlerArticleOutNoRelease">
+        update user_article_out
+        <set>
+            status = #{status},
+            remarks = #{remarks},
+            review_id = #{reviewId},
+            review_date = #{reviewDate}
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
