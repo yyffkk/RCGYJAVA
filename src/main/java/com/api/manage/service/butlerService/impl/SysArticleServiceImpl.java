@@ -112,6 +112,9 @@ public class SysArticleServiceImpl implements SysArticleService {
                     if (insert2 <= 0){
                         throw new RuntimeException("添加物品明细信息失败");
                     }
+
+                    //上传物品明细照片
+                    uploadUtil.saveUrlToDB(articleDetail.getFileUrls(),"sysArticleDetail",articleDetail.getId(),"sysArticleDetailImg","600",30,20);
                 }
             }
         } catch (RuntimeException e) {
@@ -132,14 +135,20 @@ public class SysArticleServiceImpl implements SysArticleService {
 
     @Override
     public VoFindByIdArticle findById(Integer id) {
+        UploadUtil uploadUtil = new UploadUtil();
         //根据物品主键id查询物品信息
         VoFindByIdArticle voFindByIdArticle = sysArticleDao.findById(id);
         //根据物品主键id查询物品明细信息
         List<VoFindByIdArticleDetail> articleDetail = sysArticleDao.findDetailById(id);
+        if (articleDetail != null && articleDetail.size()>0){
+            for (VoFindByIdArticleDetail voFindByIdArticleDetail : articleDetail) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticleDetail", voFindByIdArticleDetail.getId(), "sysArticleDetailImg");
+                voFindByIdArticleDetail.setImgUrl(imgByDate);
+            }
+        }
         //填入物品明细信息
         voFindByIdArticle.setVoFindByIdArticleDetailList(articleDetail);
         //查询照片信息
-        UploadUtil uploadUtil = new UploadUtil();
         List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticle", id, "articleImg");
         //填入照片信息
         voFindByIdArticle.setImgUrl(imgByDate);
@@ -176,6 +185,9 @@ public class SysArticleServiceImpl implements SysArticleService {
             List<ArticleDetail> articleDetailList = article.getArticleDetailList();
             if (articleDetailList != null && articleDetailList.size()>0){
                 for (ArticleDetail articleDetail : articleDetailList) {
+                    //先删除照片信息
+                    uploadUtil.delete("sysArticleDetail",articleDetail.getId(),"sysArticleDetail");
+
                     //根据id来决定是添加还是更新物品明细信息
                     if (articleDetail.getId() != null){
                         //更新物品明细信息
@@ -201,6 +213,8 @@ public class SysArticleServiceImpl implements SysArticleService {
                             throw new RuntimeException("添加物品明细信息失败");
                         }
                     }
+                    //再添加照片信息
+                    uploadUtil.saveUrlToDB(articleDetail.getFileUrls(),"sysArticleDetail",articleDetail.getId(),"sysArticleDetailImg","600",30,20);
 
                 }
             }

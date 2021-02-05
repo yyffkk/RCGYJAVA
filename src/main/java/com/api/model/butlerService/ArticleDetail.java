@@ -1,5 +1,6 @@
 package com.api.model.butlerService;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -38,6 +39,10 @@ public class ArticleDetail {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 上传文件（照片路径）
+     */
+    private String[] fileUrls;
 
     @Override
     public String toString() {
@@ -50,6 +55,7 @@ public class ArticleDetail {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 '}';
     }
 
@@ -117,10 +123,18 @@ public class ArticleDetail {
         this.modifyDate = modifyDate;
     }
 
+    public String[] getFileUrls() {
+        return fileUrls;
+    }
+
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
+    }
+
     public ArticleDetail() {
     }
 
-    public ArticleDetail(Integer id, Integer articleId, String code, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public ArticleDetail(Integer id, Integer articleId, String code, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
         this.id = id;
         this.articleId = articleId;
         this.code = code;
@@ -129,5 +143,6 @@ public class ArticleDetail {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.fileUrls = fileUrls;
     }
 }

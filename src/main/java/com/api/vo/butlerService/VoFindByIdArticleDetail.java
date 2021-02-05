@@ -1,4 +1,9 @@
 package com.api.vo.butlerService;
+
+import com.api.vo.resources.VoResourcesImg;
+
+import java.util.List;
+
 /**
  * 物品明细管理表 Vo findById 回显
  */
@@ -19,6 +24,10 @@ public class VoFindByIdArticleDetail {
      * 状态
      */
     private Integer status;
+    /**
+     * 照片资源信息集合
+     */
+    private List<VoResourcesImg> imgUrl;
 
     @Override
     public String toString() {
@@ -27,6 +36,7 @@ public class VoFindByIdArticleDetail {
                 ", articleId=" + articleId +
                 ", code='" + code + '\'' +
                 ", status=" + status +
+                ", imgUrl=" + imgUrl +
                 '}';
     }
 
@@ -62,13 +72,22 @@ public class VoFindByIdArticleDetail {
         this.status = status;
     }
 
+    public List<VoResourcesImg> getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(List<VoResourcesImg> imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public VoFindByIdArticleDetail() {
     }
 
-    public VoFindByIdArticleDetail(Integer id, Integer articleId, String code, Integer status) {
+    public VoFindByIdArticleDetail(Integer id, Integer articleId, String code, Integer status, List<VoResourcesImg> imgUrl) {
         this.id = id;
         this.articleId = articleId;
         this.code = code;
         this.status = status;
+        this.imgUrl = imgUrl;
     }
 }
