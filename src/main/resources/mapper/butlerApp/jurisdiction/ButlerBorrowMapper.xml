@@ -16,4 +16,28 @@
         </where>
         order by sab.create_date DESC
     </select>
+
+    <select id="checkItems" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerCheckItemsVo">
+        select sab.*,sa.name as article_name,sad.code
+        from sys_article_borrow as sab,sys_article_detail as sad,sys_article as sa,user_resident as ur
+        where sab.article_detail_id = sad.id and sad.article_id = sa.id and sab.create_id = ur.id and sab.id = #{articleBorrowId}
+    </select>
+
+    <update id="updateSAEByBorrowId" parameterType="com.api.model.butlerApp.ButlerSubmitCheck">
+        update sys_article_borrow
+        set status = #{articleStatus},
+        end_date = #{endDate},
+        borrow_status = #{borrowStatus}
+        where id = #{articleBorrowId}
+    </update>
+
+    <update id="updateStatusByDetailId" parameterType="com.api.model.butlerApp.ButlerSubmitCheck">
+        update sys_article_detail
+        set status = #{articleStatus}
+        where id = #{articleDetailId}
+    </update>
+
+    <select id="findStatusByBorrowId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerBorrowVo">
+        select * from sys_article_borrow where id = #{articleBorrowId}
+    </select>
 </mapper>

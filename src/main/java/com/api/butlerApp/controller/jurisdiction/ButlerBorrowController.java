@@ -2,15 +2,15 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.ButlerBorrowSearch;
+import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,13 +41,28 @@ public class ButlerBorrowController {
         return map;
     }
 
-    public Map<String,Object> findById(){
-        return null;
+    /**
+     * 检查信息
+     * @param articleBorrowId 物品借还管理主键id
+     * @param roleId 当前用户所拥有的角色id
+     * @return map
+     */
+    @GetMapping("/checkItems")
+    public Map<String,Object> checkItems(Integer articleBorrowId,String roleId){
+        return butlerBorrowService.checkItems(articleBorrowId,roleId);
     }
 
-    @GetMapping("/checkItems")
-    public Map<String,Object> checkItems(){
-        return null;
+    /**
+     * 提交检查结果
+     * @param butlerSubmitCheck 管家app 提交检查信息model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/submitCheck")
+    public Map<String,Object> submitCheck(@RequestBody ButlerSubmitCheck butlerSubmitCheck, HttpServletRequest request){
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerBorrowService.submitCheck(butlerSubmitCheck,roleId);
     }
 
 }
