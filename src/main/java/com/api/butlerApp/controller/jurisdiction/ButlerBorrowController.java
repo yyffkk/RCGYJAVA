@@ -40,4 +40,14 @@ public class ButlerBorrowController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    public Map<String,Object> findById(){
+        return null;
+    }
+
+    @GetMapping("/checkItems")
+    public Map<String,Object> checkItems(){
+        return null;
+    }
+
 }

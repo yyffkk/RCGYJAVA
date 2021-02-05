@@ -43,7 +43,7 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
                 }
                 //查询物品照片
                 UploadUtil uploadUtil = new UploadUtil();
-                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticle", butlerBorrowVo.getArticleId(), "articleImg");
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticleDetail", butlerBorrowVo.getArticleDetailId(), "sysArticleDetailImg");
                 butlerBorrowVo.setImgUrls(imgByDate);
             }
         }

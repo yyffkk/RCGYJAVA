@@ -14,9 +14,9 @@ public class ButlerBorrowVo {
      */
     private Integer id;
     /**
-     * 物品管理主键id
+     * 物品明细管理主键id
      */
-    private Integer articleId;
+    private Integer articleDetailId;
     /**
      * 借还物品名称
      */
@@ -62,7 +62,7 @@ public class ButlerBorrowVo {
     public String toString() {
         return "ButlerBorrowVo{" +
                 "id=" + id +
-                ", articleId=" + articleId +
+                ", articleDetailId=" + articleDetailId +
                 ", articleName='" + articleName + '\'' +
                 ", borrowStatus=" + borrowStatus +
                 ", status=" + status +
@@ -84,12 +84,12 @@ public class ButlerBorrowVo {
         this.id = id;
     }
 
-    public Integer getArticleId() {
-        return articleId;
+    public Integer getArticleDetailId() {
+        return articleDetailId;
     }
 
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
+    public void setArticleDetailId(Integer articleDetailId) {
+        this.articleDetailId = articleDetailId;
     }
 
     public String getArticleName() {
@@ -175,9 +175,9 @@ public class ButlerBorrowVo {
     public ButlerBorrowVo() {
     }
 
-    public ButlerBorrowVo(Integer id, Integer articleId, String articleName, Integer borrowStatus, Integer status, Long borrowTime, Date beginDate, Date endDate, String borrowName, String borrowTel, Date createDate, List<VoResourcesImg> imgUrls) {
+    public ButlerBorrowVo(Integer id, Integer articleDetailId, String articleName, Integer borrowStatus, Integer status, Long borrowTime, Date beginDate, Date endDate, String borrowName, String borrowTel, Date createDate, List<VoResourcesImg> imgUrls) {
         this.id = id;
-        this.articleId = articleId;
+        this.articleDetailId = articleDetailId;
         this.articleName = articleName;
         this.borrowStatus = borrowStatus;
         this.status = status;
