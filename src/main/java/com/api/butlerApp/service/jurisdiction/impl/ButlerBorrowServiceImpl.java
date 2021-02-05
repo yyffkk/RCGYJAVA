@@ -10,6 +10,8 @@ import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerCheckItemsVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.api.vo.resources.VoResourcesImg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -19,6 +21,7 @@ import java.util.*;
 
 @Service
 public class ButlerBorrowServiceImpl implements ButlerBorrowService {
+//    private static final Logger log = LoggerFactory.getLogger(ButlerBorrowServiceImpl.class);
     @Resource
     ButlerBorrowDao butlerBorrowDao;
     @Resource
