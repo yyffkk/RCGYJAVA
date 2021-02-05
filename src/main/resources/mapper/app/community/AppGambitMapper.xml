@@ -9,8 +9,8 @@
             from user_resident as ur,sys_gambit_theme as sgt
             LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
             where ur.id = sgt.create_id and sgt.is_delete = 1
-            order by sgt.create_date DESC
         ) as a where a.is_public = 1 or a.create_id = #{id}
+        order by a.create_date DESC
     </select>
 
     <select id="findCommentByThemeId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGambitThemeCommentVo">
