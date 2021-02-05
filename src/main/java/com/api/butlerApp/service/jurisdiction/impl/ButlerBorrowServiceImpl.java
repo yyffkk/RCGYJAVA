@@ -132,7 +132,6 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
 
     private int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");
-        ArrayList<Integer> integers = new ArrayList<>();
         if (split.length >0){
             for (String s : split) {
                 int roleId = Integer.parseInt(s);
