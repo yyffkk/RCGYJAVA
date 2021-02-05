@@ -3,5 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.butlerApp.dao.butler.ButlerActivityDao">
+    <select id="list" resultType="com.api.vo.butlerApp.ButlerActivityVo">
+        select sam.*,ssm.sponsor_unit as sponsor_name
+        from sys_activity_management as sam,sys_sponsor_management as ssm
+        where sam.sponsor_id = ssm.id and sam.is_delete = 1 order by sam.create_date DESC
+    </select>
 
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerActivityFBIdVo">
+        select * from sys_activity_management where id = #{activityId} and is_delete = 1
+    </select>
 </mapper>
