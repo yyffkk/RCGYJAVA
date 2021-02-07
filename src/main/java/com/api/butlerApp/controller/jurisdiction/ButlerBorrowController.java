@@ -102,4 +102,14 @@ public class ButlerBorrowController {
 //        return butlerBorrowService.insertArticle(butlerArticle,roleId);
 //    }
 
+    /**
+     * 根据物品明细id 查询物品信息
+     * @param articleDetailId 物品明细主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer articleDetailId){
+        return butlerBorrowService.findById(articleDetailId);
+    }
+
 }

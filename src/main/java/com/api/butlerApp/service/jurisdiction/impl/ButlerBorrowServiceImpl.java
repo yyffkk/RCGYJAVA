@@ -7,10 +7,7 @@ import com.api.model.butlerApp.ButlerArticle;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.util.UploadUtil;
-import com.api.vo.butlerApp.ButlerArticleVo;
-import com.api.vo.butlerApp.ButlerBorrowVo;
-import com.api.vo.butlerApp.ButlerCheckItemsVo;
-import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
+import com.api.vo.butlerApp.*;
 import com.api.vo.resources.VoResourcesImg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,6 +180,31 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         }
         map.put("message","新增成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer articleDetailId) {
+        map = new HashMap<>();
+        ButlerArticleDetailFBIVo articleDetailFBIVo = butlerBorrowDao.findById(articleDetailId);
+        if (articleDetailFBIVo != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticleDetail", articleDetailFBIVo.getId(), "sysArticleDetailImg");
+            articleDetailFBIVo.setImgUrls(imgByDate);
+
+            //根据物品明细主键id 查询 出借数量
+            int count = butlerBorrowDao.countBorrowByADId(articleDetailFBIVo.getId());
+            if (count >0){
+                //2.已借取
+                articleDetailFBIVo.setBorrowStatus(2);
+            }else {
+                //1.未出借
+                articleDetailFBIVo.setBorrowStatus(1);
+            }
+        }
+        map.put("data",articleDetailFBIVo);
+        map.put("status",true);
+        map.put("message","请求成功");
         return map;
     }
 

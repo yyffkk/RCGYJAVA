@@ -20,4 +20,6 @@ public interface ButlerBorrowService {
     List<ButlerArticleVo> articleList();
 
     Map<String, Object> insertArticle(ButlerArticle butlerArticle, String roleId);
+
+    Map<String, Object> findById(Integer articleDetailId);
 }

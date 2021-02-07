@@ -67,4 +67,12 @@
             #{createDate}
         )
     </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerArticleDetailFBIVo">
+        select * from sys_article_detail where id = #{articleDetailId}
+    </select>
+
+    <select id="countBorrowByADId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_article_borrow where article_detail_id = #{id} and borrow_status = 1
+    </select>
 </mapper>
