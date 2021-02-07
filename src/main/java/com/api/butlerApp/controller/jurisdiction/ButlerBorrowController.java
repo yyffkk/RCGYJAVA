@@ -4,6 +4,7 @@ import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.ButlerArticle;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
+import com.api.vo.butlerApp.ButlerArticleDetailVo;
 import com.api.vo.butlerApp.ButlerArticleVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
@@ -103,6 +104,26 @@ public class ButlerBorrowController {
 //    }
 
     /**
+     * 根据物品主键id查询所有的物品明细信息
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @param articleId 物品主键id
+     * @return map
+     */
+    @GetMapping("/articleDetailList")
+    public Map<String,Object> articleDetailList(int pageNum,int size,Integer articleId){
+        PageHelper.startPage(pageNum,size);
+        List<ButlerArticleDetailVo> butlerArticleDetailVos =butlerBorrowService.articleDetailList(articleId);
+        PageInfo<ButlerArticleDetailVo> pageInfo = new PageInfo<>(butlerArticleDetailVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
+    /**
      * 根据物品明细id 查询物品信息
      * @param articleDetailId 物品明细主键id
      * @return map
@@ -111,5 +132,7 @@ public class ButlerBorrowController {
     public Map<String,Object> findById(Integer articleDetailId){
         return butlerBorrowService.findById(articleDetailId);
     }
+
+
 
 }

@@ -183,6 +183,30 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         return map;
     }
 
+
+    @Override
+    public List<ButlerArticleDetailVo> articleDetailList(Integer articleId) {
+        List<ButlerArticleDetailVo> detailVos = butlerBorrowDao.articleDetailList(articleId);
+        if (detailVos != null && detailVos.size()>0){
+            for (ButlerArticleDetailVo detailVo : detailVos) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticleDetail", detailVo.getId(), "sysArticleDetailImg");
+                detailVo.setImgUrls(imgByDate);
+
+                //根据物品明细主键id 查询 出借数量
+                int count = butlerBorrowDao.countBorrowByADId(detailVo.getId());
+                if (count >0){
+                    //2.已借取
+                    detailVo.setBorrowStatus(2);
+                }else {
+                    //1.未出借
+                    detailVo.setBorrowStatus(1);
+                }
+            }
+        }
+        return detailVos;
+    }
+
     @Override
     public Map<String, Object> findById(Integer articleDetailId) {
         map = new HashMap<>();
@@ -207,6 +231,7 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         map.put("message","请求成功");
         return map;
     }
+
 
 
     private int findJurisdictionByUserId(String roleIds) {

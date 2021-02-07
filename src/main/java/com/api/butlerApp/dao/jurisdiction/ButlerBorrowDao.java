@@ -3,10 +3,7 @@ package com.api.butlerApp.dao.jurisdiction;
 import com.api.model.butlerApp.ButlerArticle;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
-import com.api.vo.butlerApp.ButlerArticleDetailFBIVo;
-import com.api.vo.butlerApp.ButlerArticleVo;
-import com.api.vo.butlerApp.ButlerBorrowVo;
-import com.api.vo.butlerApp.ButlerCheckItemsVo;
+import com.api.vo.butlerApp.*;
 
 import java.util.List;
 
@@ -79,4 +76,11 @@ public interface ButlerBorrowDao {
      * @return 出借数量
      */
     int countBorrowByADId(Integer id);
+
+    /**
+     * 根据物品主键id查询所有的物品明细信息
+     * @param articleId 物品主键id
+     * @return 物品明细信息集合
+     */
+    List<ButlerArticleDetailVo> articleDetailList(Integer articleId);
 }
