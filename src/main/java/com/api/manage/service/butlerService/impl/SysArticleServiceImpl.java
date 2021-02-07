@@ -101,6 +101,10 @@ public class SysArticleServiceImpl implements SysArticleService {
                 for (ArticleDetail articleDetail : articleDetailList) {
                     //填入物品id
                     articleDetail.setArticleId(article.getId());
+                    //如果物品明细名称没填，则系统自动填，与物品总类名称相同
+                    if (articleDetail.getName() == null){
+                        articleDetail.setName(article.getName());
+                    }
                     //填入物品状态
                     articleDetail.setStatus(1);
                     //填入创建人

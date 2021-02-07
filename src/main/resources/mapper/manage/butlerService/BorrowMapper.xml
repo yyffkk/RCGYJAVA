@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.BorrowDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchBorrow" resultType="com.api.vo.butlerService.VoBorrow">
-        select sab.*,sad.code,sa.name,ur.name as borrow_name,ur.tel
+        select sab.*,sad.code,sad.name,ur.name as borrow_name,ur.tel
         from sys_article_borrow as sab,sys_article_detail as sad,sys_article as sa,user_resident as ur
         <where>
             sab.article_detail_id = sad.id

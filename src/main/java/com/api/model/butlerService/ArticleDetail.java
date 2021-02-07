@@ -16,6 +16,10 @@ public class ArticleDetail {
      */
     private Integer articleId;
     /**
+     * 物品明细名称
+     */
+    private String name;
+    /**
      * 物品单号
      */
     private String code;
@@ -49,6 +53,7 @@ public class ArticleDetail {
         return "ArticleDetail{" +
                 "id=" + id +
                 ", articleId=" + articleId +
+                ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
                 ", status=" + status +
                 ", createId=" + createId +
@@ -73,6 +78,14 @@ public class ArticleDetail {
 
     public void setArticleId(Integer articleId) {
         this.articleId = articleId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCode() {
@@ -134,9 +147,10 @@ public class ArticleDetail {
     public ArticleDetail() {
     }
 
-    public ArticleDetail(Integer id, Integer articleId, String code, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
+    public ArticleDetail(Integer id, Integer articleId, String name, String code, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
         this.id = id;
         this.articleId = articleId;
+        this.name = name;
         this.code = code;
         this.status = status;
         this.createId = createId;

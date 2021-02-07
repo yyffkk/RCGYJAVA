@@ -14,11 +14,10 @@
     </select>
 
     <select id="listDetail" parameterType="com.api.model.butlerService.SearchArticleDetail" resultType="com.api.vo.butlerService.VoArticleDetail">
-        select sad.*,sa.name from sys_article_detail as sad, sys_article as sa
+        select sad.* from sys_article_detail as sad
         <where>
-            and sa.id = sad.article_id
             <if test="name != null and name != ''">
-                and sa.name like concat('%',#{name},'%')
+                and sad.name like concat('%',#{name},'%')
             </if>
             <if test="status != null">
                 and sad.status = #{status}
@@ -45,12 +44,14 @@
     <insert id="insertDetail" parameterType="com.api.model.butlerService.ArticleDetail">
         insert into sys_article_detail(
             article_id,
+            name,
             code,
             status,
             create_id,
             create_date
         ) values (
             #{articleId},
+            #{name},
             #{code},
             #{status},
             #{createId},
