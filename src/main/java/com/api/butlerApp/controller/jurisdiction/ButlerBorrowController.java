@@ -1,16 +1,16 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
-import com.api.model.butlerApp.ButlerArticle;
-import com.api.model.butlerApp.ButlerArticleDetail;
-import com.api.model.butlerApp.ButlerBorrowSearch;
-import com.api.model.butlerApp.ButlerSubmitCheck;
+import com.api.model.butlerApp.*;
+import com.api.model.butlerService.BorrowRemind;
 import com.api.vo.butlerApp.ButlerArticleDetailVo;
 import com.api.vo.butlerApp.ButlerArticleVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -148,6 +148,21 @@ public class ButlerBorrowController {
         //从request获取用户拥有的角色id
         String roleId = request.getParameter("roleId");
         return butlerBorrowService.updateArticleDetail(butlerArticleDetail,roleId);
+    }
+
+    /**
+     * 提醒归还(管理员发送)
+     * @param butlerBorrowRemind 管家app 借还提醒信息
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/remind")
+    public Map<String,Object> remind(@RequestBody ButlerBorrowRemind butlerBorrowRemind,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerBorrowService.remind(butlerBorrowRemind,id,roleId);
     }
 
 

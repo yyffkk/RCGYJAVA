@@ -1,9 +1,6 @@
 package com.api.butlerApp.dao.jurisdiction;
 
-import com.api.model.butlerApp.ButlerArticle;
-import com.api.model.butlerApp.ButlerArticleDetail;
-import com.api.model.butlerApp.ButlerBorrowSearch;
-import com.api.model.butlerApp.ButlerSubmitCheck;
+import com.api.model.butlerApp.*;
 import com.api.vo.butlerApp.*;
 
 import java.util.List;
@@ -92,4 +89,24 @@ public interface ButlerBorrowDao {
      */
     int updateArticleDetail(ButlerArticleDetail butlerArticleDetail);
 
+    /**
+     * 添加提醒 消息列表 并返回主键id
+     * @param butlerMessage 消息列表信息
+     * @return 影响行数
+     */
+    int insertMessage(ButlerMessage butlerMessage);
+
+    /**
+     * 根据借还管理主键id来查询借取人id
+     * @param borrowId 借还管理主键id
+     * @return 借取人id
+     */
+    int findBorrowerIdById(Integer borrowId);
+
+    /**
+     * 添加消息接收列表
+     * @param butlerSending 管家app 消息接收列表
+     * @return 影响行数
+     */
+    int insertSending(ButlerSending butlerSending);
 }

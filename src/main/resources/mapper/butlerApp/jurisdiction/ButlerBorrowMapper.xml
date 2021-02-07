@@ -94,4 +94,43 @@
         </set>
         where id = #{id}
     </update>
+
+    <insert id="insertMessage" parameterType="com.api.model.butlerApp.ButlerMessage">
+        insert into sys_message(
+            title,
+            content,
+            generate_date,
+            send_date,
+            sender,
+            type
+        ) values (
+            #{title},
+            #{content},
+            #{generateDate},
+            #{sendDate},
+            #{sender},
+            #{type}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="findBorrowerIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select create_id from sys_article_borrow where id = #{borrowId}
+    </select>
+
+    <insert id="insertSending" parameterType="com.api.model.butlerApp.ButlerSending">
+        insert into sys_sending(
+            message_id,
+            receiver_account,
+            send_status,
+            send_date
+        ) values (
+            #{messageId},
+            #{receiverAccount},
+            #{sendStatus},
+            #{sendDate}
+        )
+    </insert>
 </mapper>

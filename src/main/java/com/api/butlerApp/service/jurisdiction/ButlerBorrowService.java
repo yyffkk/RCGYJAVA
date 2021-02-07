@@ -1,9 +1,6 @@
 package com.api.butlerApp.service.jurisdiction;
 
-import com.api.model.butlerApp.ButlerArticle;
-import com.api.model.butlerApp.ButlerArticleDetail;
-import com.api.model.butlerApp.ButlerBorrowSearch;
-import com.api.model.butlerApp.ButlerSubmitCheck;
+import com.api.model.butlerApp.*;
 import com.api.vo.butlerApp.ButlerArticleDetailVo;
 import com.api.vo.butlerApp.ButlerArticleVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
@@ -28,4 +25,6 @@ public interface ButlerBorrowService {
     Map<String, Object> findById(Integer articleDetailId);
 
     Map<String, Object> updateArticleDetail(ButlerArticleDetail butlerArticleDetail, String roleId);
+
+    Map<String, Object> remind(ButlerBorrowRemind butlerBorrowRemind, Integer id, String roleId);
 }

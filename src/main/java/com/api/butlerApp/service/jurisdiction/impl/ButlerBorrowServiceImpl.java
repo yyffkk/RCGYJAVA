@@ -3,10 +3,9 @@ package com.api.butlerApp.service.jurisdiction.impl;
 import com.api.butlerApp.dao.jurisdiction.ButlerBorrowDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
-import com.api.model.butlerApp.ButlerArticle;
-import com.api.model.butlerApp.ButlerArticleDetail;
-import com.api.model.butlerApp.ButlerBorrowSearch;
-import com.api.model.butlerApp.ButlerSubmitCheck;
+import com.api.model.butlerApp.*;
+import com.api.model.butlerService.SysArticleBorrow;
+import com.api.model.remind.SysSending;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.*;
 import com.api.vo.resources.VoResourcesImg;
@@ -234,6 +233,7 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> updateArticleDetail(ButlerArticleDetail butlerArticleDetail, String roleId) {
         map = new HashMap<>();
         try {
@@ -266,6 +266,77 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
             return map;
         }
         map.put("message","修改成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> remind(ButlerBorrowRemind butlerBorrowRemind, Integer id, String roleId) {
+        map = new HashMap<>();
+        try {
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("当前用户没有该权限");
+            }
+            //根据借还管理主键id查询借还管理Vo信息
+            ButlerBorrowVo butlerBorrowVo = butlerBorrowDao.findStatusByBorrowId(butlerBorrowRemind.getBorrowId());
+            if (butlerBorrowVo.getBorrowStatus() != 1){
+                //1.出借中
+                throw new RuntimeException("该借还状态不可提醒");
+            }
+
+            ButlerMessage butlerMessage = new ButlerMessage();
+            //如果填写标题和内容，则使用填写的内容
+            if (butlerBorrowRemind.getButlerMessage() != null){
+                butlerMessage = butlerBorrowRemind.getButlerMessage();
+            }else {
+                butlerMessage.setTitle("系统借还信息");
+                butlerMessage.setContent("亲，扳手您还在出借当中噢，如果您未使用了，记得归还物业！");
+            }
+            //填入发送人id（系统发送为-1）
+            butlerMessage.setSender(id);
+            //填入创建时间
+            butlerMessage.setGenerateDate(new Date());
+            //填入发送时间
+            butlerMessage.setSendDate(new Date());
+            //填入发送类型（1.系统广播，2.管理员消息）
+            butlerMessage.setType(2);
+            //添加提醒 消息列表 并返回主键id
+            int insert = butlerBorrowDao.insertMessage(butlerMessage);
+            if (insert <= 0){
+                throw new RuntimeException("添加消息列表失败");
+            }
+
+            ButlerSending butlerSending = new ButlerSending();
+            //填入消息id
+            butlerSending.setMessageId(butlerMessage.getId());
+            //根据借还管理主键id来查询借取人id
+            int borrowerId = butlerBorrowDao.findBorrowerIdById(butlerBorrowRemind.getBorrowId());
+            //填入接收人id(借取人id)
+            butlerSending.setReceiverAccount(borrowerId);
+            //填入发送状态（0.未发或不成功1.发送成功，3.已读）[初始为0，用户打开app为1，查看为3]
+            butlerSending.setSendStatus(0);
+            //填入发送日期
+            butlerSending.setSendDate(new Date());
+            //添加消息接收列表
+            int i = butlerBorrowDao.insertSending(butlerSending);
+            if (i <= 0){
+                throw new RuntimeException("添加消息接收列表失败");
+            }
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提醒成功");
         map.put("status",true);
         return map;
     }
