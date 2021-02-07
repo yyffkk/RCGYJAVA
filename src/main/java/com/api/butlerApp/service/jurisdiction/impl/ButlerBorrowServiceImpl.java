@@ -3,6 +3,7 @@ package com.api.butlerApp.service.jurisdiction.impl;
 import com.api.butlerApp.dao.jurisdiction.ButlerBorrowDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
+import com.api.model.butlerApp.ButlerArticle;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.util.UploadUtil;
@@ -152,6 +153,37 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
             }
         }
         return butlerArticleVos;
+    }
+
+    @Override
+    public Map<String, Object> insertArticle(ButlerArticle butlerArticle, String roleId) {
+        map = new HashMap<>();
+        try {
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("当前用户没有该权限");
+            }
+
+            butlerArticle.setCreateDate(new Date());
+            int insert = butlerBorrowDao.insertArticle(butlerArticle);
+            if (insert <= 0){
+                throw new RuntimeException("新增失败");
+            }
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","新增成功");
+        map.put("status",true);
+        return map;
     }
 
 

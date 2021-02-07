@@ -1,5 +1,6 @@
 package com.api.butlerApp.dao.jurisdiction;
 
+import com.api.model.butlerApp.ButlerArticle;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.vo.butlerApp.ButlerArticleVo;
@@ -56,4 +57,11 @@ public interface ButlerBorrowDao {
      * @return 借取数量
      */
     int findBorrowNumById(Integer id);
+
+    /**
+     * 新增总类
+     * @param butlerArticle 管家app 物品管理model
+     * @return 影响行数
+     */
+    int insertArticle(ButlerArticle butlerArticle);
 }

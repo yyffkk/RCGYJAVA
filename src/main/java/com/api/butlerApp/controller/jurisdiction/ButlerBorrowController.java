@@ -1,6 +1,7 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
+import com.api.model.butlerApp.ButlerArticle;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.vo.butlerApp.ButlerArticleVo;
@@ -83,5 +84,22 @@ public class ButlerBorrowController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+
+//    /**
+//     * 新增总类(目前管家app不做此功能)
+//     * @param butlerArticle  管家app 物品管理model
+//     * @param request butlerApp-admin-token获取的request管家用户信息
+//     * @return map
+//     */
+//    @PostMapping("/insertArticle")
+//    public Map<String,Object> insertArticle(@RequestBody ButlerArticle butlerArticle,HttpServletRequest request){
+//        //从request获取用户id
+//        Integer id = Integer.valueOf(request.getParameter("id"));
+//        butlerArticle.setCreateId(id);
+//        //从request获取用户拥有的角色id
+//        String roleId = request.getParameter("roleId");
+//        return butlerBorrowService.insertArticle(butlerArticle,roleId);
+//    }
 
 }

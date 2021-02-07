@@ -53,4 +53,18 @@
         from sys_article_borrow as sab,sys_article_detail as sad
         where sab.article_detail_id = sad.id and borrow_status = 1 and sad.article_id = #{id}
     </select>
+
+    <insert id="insertArticle" parameterType="com.api.model.butlerApp.ButlerArticle">
+        insert into sys_article(
+            name,
+            quantity,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{quantity},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 </mapper>
