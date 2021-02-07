@@ -25,7 +25,7 @@ public class ButlerArticleVo {
      */
     private Integer remainingNum;
     /**
-     * 总数量
+     * 正常物品数量（破损不算）
      */
     private Integer quantity;
     /**
