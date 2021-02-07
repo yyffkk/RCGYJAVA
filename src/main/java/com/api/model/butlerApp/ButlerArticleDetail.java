@@ -1,5 +1,6 @@
 package com.api.model.butlerApp;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -14,6 +15,10 @@ public class ButlerArticleDetail {
      * 物品主键id
      */
     private Integer articleId;
+    /**
+     * 物品明细名称
+     */
+    private String name;
     /**
      * 物品单号（物品编号用于生成二维码）
      */
@@ -38,18 +43,24 @@ public class ButlerArticleDetail {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 照片资源路径数组
+     */
+    private String[] fileUrls;
 
     @Override
     public String toString() {
         return "ButlerArticleDetail{" +
                 "id=" + id +
                 ", articleId=" + articleId +
+                ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
                 ", status=" + status +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", fileUrls=" + Arrays.toString(fileUrls) +
                 '}';
     }
 
@@ -67,6 +78,14 @@ public class ButlerArticleDetail {
 
     public void setArticleId(Integer articleId) {
         this.articleId = articleId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCode() {
@@ -117,17 +136,27 @@ public class ButlerArticleDetail {
         this.modifyDate = modifyDate;
     }
 
+    public String[] getFileUrls() {
+        return fileUrls;
+    }
+
+    public void setFileUrls(String[] fileUrls) {
+        this.fileUrls = fileUrls;
+    }
+
     public ButlerArticleDetail() {
     }
 
-    public ButlerArticleDetail(Integer id, Integer articleId, String code, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public ButlerArticleDetail(Integer id, Integer articleId, String name, String code, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] fileUrls) {
         this.id = id;
         this.articleId = articleId;
+        this.name = name;
         this.code = code;
         this.status = status;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.fileUrls = fileUrls;
     }
 }

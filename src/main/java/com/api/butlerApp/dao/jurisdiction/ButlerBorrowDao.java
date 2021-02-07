@@ -1,6 +1,7 @@
 package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.butlerApp.ButlerArticle;
+import com.api.model.butlerApp.ButlerArticleDetail;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.vo.butlerApp.*;
@@ -83,4 +84,12 @@ public interface ButlerBorrowDao {
      * @return 物品明细信息集合
      */
     List<ButlerArticleDetailVo> articleDetailList(Integer articleId);
+
+    /**
+     * 修改物品明细信息
+     * @param butlerArticleDetail 管家app 物品明细 model
+     * @return 影响行数
+     */
+    int updateArticleDetail(ButlerArticleDetail butlerArticleDetail);
+
 }

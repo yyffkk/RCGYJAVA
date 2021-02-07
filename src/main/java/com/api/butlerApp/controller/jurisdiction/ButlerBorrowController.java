@@ -2,6 +2,7 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.ButlerArticle;
+import com.api.model.butlerApp.ButlerArticleDetail;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.vo.butlerApp.ButlerArticleDetailVo;
@@ -131,6 +132,22 @@ public class ButlerBorrowController {
     @GetMapping("/findById")
     public Map<String,Object> findById(Integer articleDetailId){
         return butlerBorrowService.findById(articleDetailId);
+    }
+
+    /**
+     * 修改物品明细信息
+     * @param butlerArticleDetail 管家app 物品明细 model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/updateArticleDetail")
+    public Map<String,Object> updateArticleDetail(@RequestBody ButlerArticleDetail butlerArticleDetail,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        butlerArticleDetail.setModifyId(id);
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerBorrowService.updateArticleDetail(butlerArticleDetail,roleId);
     }
 
 

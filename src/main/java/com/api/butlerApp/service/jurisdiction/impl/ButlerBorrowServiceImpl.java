@@ -4,6 +4,7 @@ import com.api.butlerApp.dao.jurisdiction.ButlerBorrowDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.ButlerArticle;
+import com.api.model.butlerApp.ButlerArticleDetail;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.util.UploadUtil;
@@ -232,6 +233,42 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> updateArticleDetail(ButlerArticleDetail butlerArticleDetail, String roleId) {
+        map = new HashMap<>();
+        try {
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("当前用户没有该权限");
+            }
+
+            butlerArticleDetail.setModifyDate(new Date());
+            int update = butlerBorrowDao.updateArticleDetail(butlerArticleDetail);
+            if (update <= 0){
+                throw new RuntimeException("修改失败");
+            }
+
+            //先删除照片资源
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.delete("sysArticleDetail",butlerArticleDetail.getId(),"sysArticleDetailImg");
+            //再添加照片资源
+            uploadUtil.saveUrlToDB(butlerArticleDetail.getFileUrls(),"sysArticleDetail",butlerArticleDetail.getId(),"sysArticleDetailImg","600",30,20);
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","修改成功");
+        map.put("status",true);
+        return map;
+    }
 
 
     private int findJurisdictionByUserId(String roleIds) {
