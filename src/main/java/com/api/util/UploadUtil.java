@@ -365,7 +365,7 @@ public class UploadUtil {
         //获取需要剪切的文件
         File file = new File(uploadUtil.UPLOAD + temp + url);
         if (!file.exists()) {
-            //若不存在该目录，则创建目录
+            //若不存在该文件，则返回报错信息
             throw new RuntimeException("照片信息有误，请重新上传");
         }
 
