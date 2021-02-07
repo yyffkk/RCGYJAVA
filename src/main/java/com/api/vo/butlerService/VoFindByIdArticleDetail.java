@@ -17,6 +17,10 @@ public class VoFindByIdArticleDetail {
      */
     private Integer articleId;
     /**
+     * 物品明细名称
+     */
+    private String name;
+    /**
      * 物品单号
      */
     private String code;
@@ -34,6 +38,7 @@ public class VoFindByIdArticleDetail {
         return "VoFindByIdArticleDetail{" +
                 "id=" + id +
                 ", articleId=" + articleId +
+                ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
                 ", status=" + status +
                 ", imgUrl=" + imgUrl +
@@ -54,6 +59,14 @@ public class VoFindByIdArticleDetail {
 
     public void setArticleId(Integer articleId) {
         this.articleId = articleId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCode() {
@@ -83,9 +96,10 @@ public class VoFindByIdArticleDetail {
     public VoFindByIdArticleDetail() {
     }
 
-    public VoFindByIdArticleDetail(Integer id, Integer articleId, String code, Integer status, List<VoResourcesImg> imgUrl) {
+    public VoFindByIdArticleDetail(Integer id, Integer articleId, String name, String code, Integer status, List<VoResourcesImg> imgUrl) {
         this.id = id;
         this.articleId = articleId;
+        this.name = name;
         this.code = code;
         this.status = status;
         this.imgUrl = imgUrl;

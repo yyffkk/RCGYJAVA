@@ -192,6 +192,10 @@ public class SysArticleServiceImpl implements SysArticleService {
                     //先删除照片信息
                     uploadUtil.delete("sysArticleDetail",articleDetail.getId(),"sysArticleDetail");
 
+                    //如果物品明细名称没填，则系统自动填，与物品总类名称相同
+                    if (articleDetail.getName() == null){
+                        articleDetail.setName(article.getName());
+                    }
                     //根据id来决定是添加还是更新物品明细信息
                     if (articleDetail.getId() != null){
                         //更新物品明细信息
@@ -200,7 +204,10 @@ public class SysArticleServiceImpl implements SysArticleService {
                         //填入修改时间
                         articleDetail.setModifyDate(new Date());
                         //更新物品明细信息
-                        sysArticleDao.updateDetail(articleDetail);
+                        int update2 = sysArticleDao.updateDetail(articleDetail);
+                        if (update2 <= 0){
+                            throw new RuntimeException("修改物品明细信息失败");
+                        }
                     }else {
                         //添加物品明细信息
                         //填入物品id
