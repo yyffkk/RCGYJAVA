@@ -9,7 +9,7 @@ import java.util.List;
 public interface AppArticleBorrowDao {
     /**
      * 查询所有可借物品信息
-     * @return app物品所有可借信息集合
+     * @return app物品所有可借信息集合(当前 quantity 为 正常物品数量)
      */
     List<AppArticleBorrowVo> list();
 

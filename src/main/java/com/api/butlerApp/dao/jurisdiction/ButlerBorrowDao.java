@@ -2,6 +2,7 @@ package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
+import com.api.vo.butlerApp.ButlerArticleVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerCheckItemsVo;
 
@@ -42,4 +43,17 @@ public interface ButlerBorrowDao {
      * @return 借还管理状态
      */
     ButlerBorrowVo findStatusByBorrowId(Integer articleBorrowId);
+
+    /**
+     * 查询全部物品
+     * @return 全部物品信息
+     */
+    List<ButlerArticleVo> articleList();
+
+    /**
+     * 根据物品主键id 查询 借取数量
+     * @param id 物品主键id
+     * @return 借取数量
+     */
+    int findBorrowNumById(Integer id);
 }

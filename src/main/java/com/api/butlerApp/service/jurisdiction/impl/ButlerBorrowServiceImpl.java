@@ -6,6 +6,7 @@ import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
 import com.api.util.UploadUtil;
+import com.api.vo.butlerApp.ButlerArticleVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerCheckItemsVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
@@ -130,6 +131,27 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         map.put("message","提交成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public List<ButlerArticleVo> articleList() {
+        List<ButlerArticleVo> butlerArticleVos = butlerBorrowDao.articleList();
+        if (butlerArticleVos != null && butlerArticleVos.size()>0){
+            for (ButlerArticleVo butlerArticleVo : butlerArticleVos) {
+                //填入照片资源
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticle", butlerArticleVo.getId(), "articleImg");
+                butlerArticleVo.setImgUrls(imgByDate);
+
+                //根据物品主键id查询借出数量
+                int borrowNum = butlerBorrowDao.findBorrowNumById(butlerArticleVo.getId());
+                //填入借取数量
+                butlerArticleVo.setBorrowNum(borrowNum);
+                //剩余数量， 总数量减去已借出的
+                butlerArticleVo.setRemainingNum(butlerArticleVo.getQuantity() - borrowNum);
+            }
+        }
+        return butlerArticleVos;
     }
 
 

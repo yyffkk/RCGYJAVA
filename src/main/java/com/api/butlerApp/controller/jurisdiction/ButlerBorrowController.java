@@ -3,6 +3,7 @@ package com.api.butlerApp.controller.jurisdiction;
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.ButlerBorrowSearch;
 import com.api.model.butlerApp.ButlerSubmitCheck;
+import com.api.vo.butlerApp.ButlerArticleVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.github.pagehelper.PageHelper;
@@ -63,6 +64,24 @@ public class ButlerBorrowController {
         //从request获取用户拥有的角色id
         String roleId = request.getParameter("roleId");
         return butlerBorrowService.submitCheck(butlerSubmitCheck,roleId);
+    }
+
+    /**
+     * 查询全部物品
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/articleList")
+    public Map<String,Object> articleList(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<ButlerArticleVo> butlerArticleVos =butlerBorrowService.articleList();
+        PageInfo<ButlerArticleVo> pageInfo = new PageInfo<>(butlerArticleVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 }

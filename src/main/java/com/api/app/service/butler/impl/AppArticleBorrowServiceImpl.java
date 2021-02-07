@@ -23,6 +23,7 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
 
     @Override
     public List<AppArticleBorrowVo> list() {
+        //查询出的quantity 为 正常物品数量
         List<AppArticleBorrowVo> appArticleBorrowVos = appArticleBorrowDao.list();
         if (appArticleBorrowVos != null && appArticleBorrowVos.size()>0){
             for (AppArticleBorrowVo articleBorrowVo : appArticleBorrowVos) {

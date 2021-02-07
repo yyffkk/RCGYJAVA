@@ -40,4 +40,17 @@
     <select id="findStatusByBorrowId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerBorrowVo">
         select * from sys_article_borrow where id = #{articleBorrowId}
     </select>
+
+    <select id="articleList" resultType="com.api.vo.butlerApp.ButlerArticleVo">
+        select sa.id,sa.name,count(article_id) as quantity
+        from sys_article_detail as sad,sys_article as sa
+        where sad.article_id = sa.id
+        GROUP BY sad.article_id
+    </select>
+
+    <select id="findBorrowNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) as num
+        from sys_article_borrow as sab,sys_article_detail as sad
+        where sab.article_detail_id = sad.id and borrow_status = 1 and sad.article_id = #{id}
+    </select>
 </mapper>
