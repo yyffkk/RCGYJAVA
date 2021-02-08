@@ -25,6 +25,10 @@ public class VoUserAdviceDetail {
      */
     private String createName;
     /**
+     * 创建时间
+     */
+    private String createDate;
+    /**
      * 上级id，顶层为0
      */
     private Integer parentId;
@@ -37,6 +41,7 @@ public class VoUserAdviceDetail {
                 ", createId=" + createId +
                 ", createUserType=" + createUserType +
                 ", createName='" + createName + '\'' +
+                ", createDate='" + createDate + '\'' +
                 ", parentId=" + parentId +
                 '}';
     }
@@ -81,6 +86,14 @@ public class VoUserAdviceDetail {
         this.createName = createName;
     }
 
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
     public Integer getParentId() {
         return parentId;
     }
@@ -92,12 +105,13 @@ public class VoUserAdviceDetail {
     public VoUserAdviceDetail() {
     }
 
-    public VoUserAdviceDetail(Integer id, String content, Integer createId, Integer createUserType, String createName, Integer parentId) {
+    public VoUserAdviceDetail(Integer id, String content, Integer createId, Integer createUserType, String createName, String createDate, Integer parentId) {
         this.id = id;
         this.content = content;
         this.createId = createId;
         this.createUserType = createUserType;
         this.createName = createName;
+        this.createDate = createDate;
         this.parentId = parentId;
     }
 }

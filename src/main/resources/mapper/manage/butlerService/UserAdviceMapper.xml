@@ -105,7 +105,8 @@
     </select>
 
     <select id="findByAdviceIdDetail" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserAdviceDetail">
-        select * from sys_advice_detail where advice_id = #{id}
+        select * from sys_advice_detail where advice_id = #{id} and is_delete = 1
+        order by create_date DESC
     </select>
 
     <select id="countAdviceNew" resultType="java.lang.Integer">
