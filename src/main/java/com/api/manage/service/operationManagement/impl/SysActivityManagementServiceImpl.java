@@ -37,6 +37,17 @@ public class SysActivityManagementServiceImpl implements SysActivityManagementSe
                 //填入报名人数
                 int count = sysActivityManagementDao.countRegistrationByActivityId(voActivityManagement.getId());
                 voActivityManagement.setRegistrationNumber(count);
+                //根据当前时间填写状态信息
+                if (new Date().getTime()<voActivityManagement.getRegistrationStartTime().getTime()){
+                    //当 当前时间 小于报名开始时间，则1.未开始
+                    voActivityManagement.setStatus(1);
+                }else if (new Date().getTime()<=voActivityManagement.getActivityEndTime().getTime()){
+                    //当 当前时间 大于等于报名开始时间 小于等于活动结束时间，则2.进行中
+                    voActivityManagement.setStatus(2);
+                }else {
+                    //当 当前时间 大于等于活动结束时间，则3.已结束
+                    voActivityManagement.setStatus(3);
+                }
             }
         }
         return list;

@@ -36,7 +36,7 @@ public class SysActivityManagementController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0501","05"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0501","05"},logical = Logical.AND)
     public Map<String,Object> list(SearchActivityManagement searchActivityManagement){
         PageHelper.startPage(searchActivityManagement.getPageNum(),searchActivityManagement.getSize());
         List<VoActivityManagement> voActivityManagementList = sysActivityManagementService.list(searchActivityManagement);
