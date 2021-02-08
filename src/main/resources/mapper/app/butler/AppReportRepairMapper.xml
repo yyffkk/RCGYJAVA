@@ -7,6 +7,7 @@
         select srr.*,sdl.status
         from sys_report_repair as srr,sys_dispatch_list as sdl
         where srr.dispatch_list_id = sdl.id and sdl.sys_delete = 1 and sdl.user_delete = 1 and srr.repairman = #{id}
+        order by srr.create_date DESC
     </select>
     <select id="findRepairByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppReportRepairVo">
         select srr.*,sdl.status

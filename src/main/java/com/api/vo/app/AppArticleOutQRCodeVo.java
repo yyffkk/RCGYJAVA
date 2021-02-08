@@ -11,9 +11,13 @@ public class AppArticleOutQRCodeVo {
      */
     private Integer id;
     /**
-     * 业主id
+     * 出户房产名称
      */
-    private Integer residentId;
+    private String roomName;
+    /**
+     * 申请出户人id
+     */
+    private Integer applicantId;
     /**
      * 业主姓名
      */
@@ -27,7 +31,8 @@ public class AppArticleOutQRCodeVo {
     public String toString() {
         return "AppArticleOutQRCodeVo{" +
                 "id=" + id +
-                ", residentId=" + residentId +
+                ", roomName='" + roomName + '\'' +
+                ", applicantId=" + applicantId +
                 ", residentName='" + residentName + '\'' +
                 ", effectiveTime=" + effectiveTime +
                 '}';
@@ -41,12 +46,20 @@ public class AppArticleOutQRCodeVo {
         this.id = id;
     }
 
-    public Integer getResidentId() {
-        return residentId;
+    public String getRoomName() {
+        return roomName;
     }
 
-    public void setResidentId(Integer residentId) {
-        this.residentId = residentId;
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public Integer getApplicantId() {
+        return applicantId;
+    }
+
+    public void setApplicantId(Integer applicantId) {
+        this.applicantId = applicantId;
     }
 
     public String getResidentName() {
@@ -68,9 +81,10 @@ public class AppArticleOutQRCodeVo {
     public AppArticleOutQRCodeVo() {
     }
 
-    public AppArticleOutQRCodeVo(Integer id, Integer residentId, String residentName, Date effectiveTime) {
+    public AppArticleOutQRCodeVo(Integer id, String roomName, Integer applicantId, String residentName, Date effectiveTime) {
         this.id = id;
-        this.residentId = residentId;
+        this.roomName = roomName;
+        this.applicantId = applicantId;
         this.residentName = residentName;
         this.effectiveTime = effectiveTime;
     }
