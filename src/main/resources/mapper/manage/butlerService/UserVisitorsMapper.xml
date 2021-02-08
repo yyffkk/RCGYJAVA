@@ -61,9 +61,6 @@
     <update id="update" parameterType="com.api.model.butlerService.UserVisitors">
         update user_visitors
         <set>
-            <if test="buildingUnitEstateId != null">
-                building_unit_estate_id = #{buildingUnitEstateId},
-            </if>
             <if test="name != null and name != ''">
                 name = #{name},
             </if>
