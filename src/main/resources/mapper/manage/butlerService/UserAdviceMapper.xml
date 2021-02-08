@@ -18,8 +18,14 @@
             <if test="releaseDateEnd != null">
                 and sa.create_date <![CDATA[ <= ]]> #{releaseDateEnd}
             </if>
-            <if test="score != null">
-                and sa.score = #{score}
+            <if test="score == 1">
+                and sa.score between 1 and 5
+            </if>
+            <if test="score == 2">
+                and sa.score between 5 and 7
+            </if>
+            <if test="score == 3">
+                and sa.score between 7 and 11
             </if>
             <if test="type != null">
                 and sa.type = #{type}

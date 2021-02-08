@@ -31,7 +31,7 @@ public class SearchUserAdvice {
      */
     private Integer status;
     /**
-     * 评分数1-10分
+     * 评分数1-10分(1.差评（1-4分），2.中评（5-6分），3.好评（7-10分）)
      */
     private Integer score;
     /**
