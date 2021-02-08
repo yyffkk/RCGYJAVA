@@ -23,4 +23,7 @@ public interface SysArticleService {
     VoFindByIdArticle findById(Integer id);
 
     Map<String, Object> update(Article article);
+
+    Map<String, Object> delete(int[] ids);
+
 }

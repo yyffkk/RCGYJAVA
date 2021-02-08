@@ -244,4 +244,35 @@ public class SysArticleServiceImpl implements SysArticleService {
         map.put("status",true);
         return map;
     }
+
+    @Override
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                int delete = sysArticleDao.deleteDetail(id);
+                if (delete <= 0){
+                    throw new RuntimeException("删除物品明细失败");
+                }
+                int delete2 = sysArticleDao.delete(id);
+                if (delete2 <= 0){
+                    throw new RuntimeException("删除物品总类失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
 }

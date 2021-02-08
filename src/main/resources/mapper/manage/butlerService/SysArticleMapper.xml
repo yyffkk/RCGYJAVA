@@ -98,4 +98,8 @@
     <delete id="deleteDetail" parameterType="java.lang.Integer">
         delete from sys_article_detail where article_id = #{id}
     </delete>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_article where id = #{id}
+    </delete>
 </mapper>

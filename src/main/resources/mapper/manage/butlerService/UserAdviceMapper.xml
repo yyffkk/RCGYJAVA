@@ -40,7 +40,6 @@
     <insert id="insertDetail" parameterType="com.api.model.butlerService.SysAdviceDetail">
         insert into sys_advice_detail(
             advice_id,
-            status,
             content,
             is_delete,
             create_id,
@@ -49,7 +48,6 @@
             parent_id
         ) values (
             #{adviceId},
-            #{status},
             #{content},
             #{isDelete},
             #{createId},

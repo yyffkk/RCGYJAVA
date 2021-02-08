@@ -5,6 +5,7 @@ import com.api.model.butlerService.Article;
 import com.api.model.butlerService.SearchArticle;
 import com.api.model.butlerService.SearchArticleDetail;
 import com.api.manage.service.butlerService.SysArticleService;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoArticle;
 import com.api.vo.butlerService.VoArticleDetail;
 import com.api.vo.butlerService.VoFindByIdArticle;
@@ -108,6 +109,17 @@ public class SysArticleController extends ShiroExceptions {
     @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody Article article){
         return sysArticleService.update(article);
+    }
+
+    /**
+     * 删除物品总类
+     * @param ids 物品总类主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+//    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysArticleService.delete(ids.getIds());
     }
 
 //    /**
