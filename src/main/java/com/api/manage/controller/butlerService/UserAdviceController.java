@@ -97,7 +97,7 @@ public class UserAdviceController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return userAdviceService.findById(id);
     }

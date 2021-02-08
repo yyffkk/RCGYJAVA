@@ -17,6 +17,10 @@ public class VoFindByIdAdvice {
      */
     private Integer type;
     /**
+     * 咨询建议内容
+     */
+    private String content;
+    /**
      * 评分数1-10分
      */
     private Integer score;
@@ -34,6 +38,7 @@ public class VoFindByIdAdvice {
         return "VoFindByIdAdvice{" +
                 "id=" + id +
                 ", type=" + type +
+                ", content='" + content + '\'' +
                 ", score=" + score +
                 ", imgUrl=" + imgUrl +
                 ", voUserAdviceDetailList=" + voUserAdviceDetailList +
@@ -54,6 +59,14 @@ public class VoFindByIdAdvice {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Integer getScore() {
@@ -83,9 +96,10 @@ public class VoFindByIdAdvice {
     public VoFindByIdAdvice() {
     }
 
-    public VoFindByIdAdvice(Integer id, Integer type, Integer score, List<VoResourcesImg> imgUrl, List<VoUserAdviceDetail> voUserAdviceDetailList) {
+    public VoFindByIdAdvice(Integer id, Integer type, String content, Integer score, List<VoResourcesImg> imgUrl, List<VoUserAdviceDetail> voUserAdviceDetailList) {
         this.id = id;
         this.type = type;
+        this.content = content;
         this.score = score;
         this.imgUrl = imgUrl;
         this.voUserAdviceDetailList = voUserAdviceDetailList;

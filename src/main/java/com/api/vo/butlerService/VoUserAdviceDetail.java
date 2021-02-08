@@ -1,5 +1,7 @@
 package com.api.vo.butlerService;
 
+import java.util.Date;
+
 /**
  * 反馈内容Vo 回显信息
  */
@@ -27,7 +29,7 @@ public class VoUserAdviceDetail {
     /**
      * 创建时间
      */
-    private String createDate;
+    private Date createDate;
     /**
      * 上级id，顶层为0
      */
@@ -41,7 +43,7 @@ public class VoUserAdviceDetail {
                 ", createId=" + createId +
                 ", createUserType=" + createUserType +
                 ", createName='" + createName + '\'' +
-                ", createDate='" + createDate + '\'' +
+                ", createDate=" + createDate +
                 ", parentId=" + parentId +
                 '}';
     }
@@ -86,11 +88,11 @@ public class VoUserAdviceDetail {
         this.createName = createName;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
@@ -105,7 +107,7 @@ public class VoUserAdviceDetail {
     public VoUserAdviceDetail() {
     }
 
-    public VoUserAdviceDetail(Integer id, String content, Integer createId, Integer createUserType, String createName, String createDate, Integer parentId) {
+    public VoUserAdviceDetail(Integer id, String content, Integer createId, Integer createUserType, String createName, Date createDate, Integer parentId) {
         this.id = id;
         this.content = content;
         this.createId = createId;
