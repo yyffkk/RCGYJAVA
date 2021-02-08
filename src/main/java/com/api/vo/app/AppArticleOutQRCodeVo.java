@@ -19,9 +19,9 @@ public class AppArticleOutQRCodeVo {
      */
     private Integer applicantId;
     /**
-     * 业主姓名
+     * 申请出户人姓名
      */
-    private String residentName;
+    private String applicantName;
     /**
      * 有效时间 = 预计时间 + 24小时
      */
@@ -33,7 +33,7 @@ public class AppArticleOutQRCodeVo {
                 "id=" + id +
                 ", roomName='" + roomName + '\'' +
                 ", applicantId=" + applicantId +
-                ", residentName='" + residentName + '\'' +
+                ", applicantName='" + applicantName + '\'' +
                 ", effectiveTime=" + effectiveTime +
                 '}';
     }
@@ -62,12 +62,12 @@ public class AppArticleOutQRCodeVo {
         this.applicantId = applicantId;
     }
 
-    public String getResidentName() {
-        return residentName;
+    public String getApplicantName() {
+        return applicantName;
     }
 
-    public void setResidentName(String residentName) {
-        this.residentName = residentName;
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
     }
 
     public Date getEffectiveTime() {
@@ -81,11 +81,11 @@ public class AppArticleOutQRCodeVo {
     public AppArticleOutQRCodeVo() {
     }
 
-    public AppArticleOutQRCodeVo(Integer id, String roomName, Integer applicantId, String residentName, Date effectiveTime) {
+    public AppArticleOutQRCodeVo(Integer id, String roomName, Integer applicantId, String applicantName, Date effectiveTime) {
         this.id = id;
         this.roomName = roomName;
         this.applicantId = applicantId;
-        this.residentName = residentName;
+        this.applicantName = applicantName;
         this.effectiveTime = effectiveTime;
     }
 }
