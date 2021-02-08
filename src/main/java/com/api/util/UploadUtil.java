@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.List;
 import java.util.UUID;
 
@@ -359,61 +361,45 @@ public class UploadUtil {
      * @param url 文件路径
      */
     private void shear(String url) {
-
         //临时文件夹目录
         String temp = "/temp";
-        //获取需要剪切的文件
-        File file = new File(uploadUtil.UPLOAD + temp + url);
-        if (!file.exists()) {
+
+//        //获取需要剪切的文件（源File对象）
+        File file1 = new File(uploadUtil.UPLOAD + temp + url);
+        if (!file1.exists()) {
             //若不存在该文件，则返回报错信息
             throw new RuntimeException("照片信息有误，请重新上传");
         }
+        //获取目标目录
+        String dir = url.substring(0, url.lastIndexOf("/"));
+        File dirFile = new File(uploadUtil.UPLOAD +dir);
+        //如果目标目录不存在则创建
+        if (!dirFile.exists()){
+            dirFile.mkdirs();
+        }
 
-        //创建文件流对象
-        FileInputStream fis=null;
-        FileOutputStream fos=null;
-
+        //目标对象
+        File file2 = new File(uploadUtil.UPLOAD + url);
+        byte[] b=new byte[(int)file1.length()];
+        FileInputStream in=null;
+        FileOutputStream out=null;
         try {
-            fis=new FileInputStream(file);
-            fos=new FileOutputStream(new File(uploadUtil.UPLOAD + url));
-
-            //为读取文件做准备
-            byte[] bs=new byte[50];//储存读取的数据
-            int count=0;//储存读取的数据量
-
-            //边读取，边复制
-            while((count=fis.read(bs))!=-1){
-                fos.write(bs, 0, count);
-                fos.flush();
+            in=new FileInputStream(file1);
+            //没有指定文件则会创建
+            out=new FileOutputStream(file2);
+            //read()--int，-1表示读取完毕
+            while(in.read(b)!=-1){
+                out.write(b);
             }
-            //复制完毕，关流
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
+            out.flush();
+            in.close();
+            out.close();
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }finally {
-            if(fis!=null){
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            if(fos!=null){
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
         }
 
         //删除文件
-        file.delete();
+        file1.delete();
     }
 }
 
