@@ -85,13 +85,13 @@ public class AppMessageController {
         return appMessageService.allRead(id);
     }
 
-    /**
-     * 【有问题】???需要改 消息列表 表，添加字段 user_delete 用户端删除
-     * 删除app消息列表
-     * @param ids 消息列表主键id数组
-     * @param request app-admin-token获取的request用户信息
-     * @return map
-     */
+//    /**
+//     * 【有问题】???需要改 消息列表 表，添加字段 user_delete 用户端删除
+//     * 删除app消息列表
+//     * @param ids 消息列表主键id数组
+//     * @param request app-admin-token获取的request用户信息
+//     * @return map
+//     */
 //    @PostMapping("/falseDelete")
 //    public Map<String,Object> falseDelete(@RequestBody VoIds ids, HttpServletRequest request){
 //        //从request获取用户id
