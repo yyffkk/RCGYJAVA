@@ -13,4 +13,8 @@ public interface AppMessageService {
     Map<String, Object> sysMessageDetail(Integer sysMessageId, Integer id);
 
     Map<String, Object> readMessage(Integer sysMessageId, Integer id);
+
+    Map<String, Object> allRead(Integer id);
+
+    Map<String, Object> falseDelete(int[] ids, Integer id);
 }

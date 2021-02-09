@@ -3,13 +3,13 @@ package com.api.app.controller.message;
 import com.api.app.service.message.AppMessageService;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppSysMessageVo;
+import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,5 +73,28 @@ public class AppMessageController {
     @GetMapping("/readMessage")
     public Map<String,Object> readMessage(Integer sysMessageId,Integer id){
         return appMessageService.readMessage(sysMessageId,id);
+    }
+
+    /**
+     * 全部已读
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/allRead")
+    public Map<String,Object> allRead(Integer id){
+        return appMessageService.allRead(id);
+    }
+
+    /**
+     * 删除app消息列表???需要改 消息列表 表，添加字段 user_delete 用户端删除
+     * @param ids 消息列表主键id数组
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/falseDelete")
+    public Map<String,Object> falseDelete(@RequestBody VoIds ids, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return appMessageService.falseDelete(ids.getIds(),id);
     }
 }

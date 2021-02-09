@@ -6,6 +6,8 @@ import com.api.model.app.UserIdAndSysMessageId;
 import com.api.vo.app.AppSysMessageDetail;
 import com.api.vo.app.AppSysMessageVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -64,6 +66,50 @@ public class AppMessageServiceImpl implements AppMessageService {
             map.put("message","阅读失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> allRead(Integer id) {
+        map = new HashMap<>();
+        int update = appMessageDao.allRead(id);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> falseDelete(int[] ids, Integer id) {
+        map = new HashMap<>();
+        try {
+            UserIdAndSysMessageId userIdAndSysMessageId = new UserIdAndSysMessageId();
+            userIdAndSysMessageId.setId(id);
+            for (int messageId : ids) {
+                userIdAndSysMessageId.setSysMessageId(messageId);
+                int update = appMessageDao.falseDelete(userIdAndSysMessageId);
+                if (update <= 0){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
         return map;
     }
 }

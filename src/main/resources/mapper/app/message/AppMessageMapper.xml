@@ -22,4 +22,12 @@
     <update id="readMessage" parameterType="com.api.model.app.UserIdAndSysMessageId">
         update sys_sending set send_status = 3 where message_id = #{sysMessageId} and receiver_account = #{id}
     </update>
+
+    <update id="allRead" parameterType="java.lang.Integer">
+        update sys_sending set send_status = 3 where receiver_account = #{id}
+    </update>
+
+    <update id="falseDelete" parameterType="com.api.model.app.UserIdAndSysMessageId">
+        update sys_sendind set ???????? where message_id = #{sysMessageId} and receiver_account = #{id}
+    </update>
 </mapper>

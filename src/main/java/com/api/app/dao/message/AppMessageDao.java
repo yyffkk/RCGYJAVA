@@ -41,4 +41,18 @@ public interface AppMessageDao {
      * @return 影响行数
      */
     int readMessage(UserIdAndSysMessageId userIdAndSysMessageId);
+
+    /**
+     * 全部已读
+     * @param id 用户id
+     * @return 影响行数
+     */
+    int allRead(Integer id);
+
+    /**
+     * 删除app消息列表
+     * @param userIdAndSysMessageId 用户主键id 和 消息列表主键id
+     * @return 影响行数
+     */
+    int falseDelete(UserIdAndSysMessageId userIdAndSysMessageId);
 }
