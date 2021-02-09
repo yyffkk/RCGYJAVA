@@ -92,10 +92,10 @@ public class AppMessageController {
      * @param request app-admin-token获取的request用户信息
      * @return map
      */
-    @PostMapping("/falseDelete")
-    public Map<String,Object> falseDelete(@RequestBody VoIds ids, HttpServletRequest request){
-        //从request获取用户id
-        Integer id = Integer.valueOf(request.getParameter("id"));
-        return appMessageService.falseDelete(ids.getIds(),id);
-    }
+//    @PostMapping("/falseDelete")
+//    public Map<String,Object> falseDelete(@RequestBody VoIds ids, HttpServletRequest request){
+//        //从request获取用户id
+//        Integer id = Integer.valueOf(request.getParameter("id"));
+//        return appMessageService.falseDelete(ids.getIds(),id);
+//    }
 }
