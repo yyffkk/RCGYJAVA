@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.message.AppMessageDao">
+    <select id="findSysNoReadNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_sending where send_status = 1 and receiver_account = #{id}
+    </select>
+
+    <select id="findNewTitleById" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select sm.title from sys_message as sm,sys_sending as ss where sm.id = ss.message_id and ss.receiver_account = #{id} ORDER BY ss.send_date DESC LIMIT 1
+    </select>
+
+    <select id="sysMessageList" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppSysMessageVo">
+        select sm.id,sm.title,sm.content,ss.send_status as status from sys_message as sm,sys_sending as ss where sm.id = ss.message_id and ss.receiver_account = #{id} ORDER BY ss.send_date DESC
+    </select>
+
+    <select id="sysMessageDetail" parameterType="com.api.model.app.UserIdAndSysMessageId" resultType="com.api.vo.app.AppSysMessageDetail">
+        select sm.id,sm.title,sm.content from sys_message as sm,sys_sending as ss where sm.id = ss.message_id and ss.receiver_account = #{id} and sm.id = #{sysMessageId}
+    </select>
+
+    <update id="readMessage" parameterType="com.api.model.app.UserIdAndSysMessageId">
+        update sys_sending set send_status = 3 where message_id = #{sysMessageId} and receiver_account = #{id}
+    </update>
+</mapper>

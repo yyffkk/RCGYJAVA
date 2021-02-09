@@ -1,0 +1,77 @@
+package com.api.app.controller.message;
+
+import com.api.app.service.message.AppMessageService;
+import com.api.vo.app.AppGambitThemeVo;
+import com.api.vo.app.AppSysMessageVo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * app消息中心
+ */
+@RestController
+@RequestMapping("app/user/message")
+public class AppMessageController {
+    @Resource
+    AppMessageService appMessageService;
+
+    /**
+     * 消息中心
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/messageCenter")
+    public Map<String,Object> messageCenter(Integer id){
+        return appMessageService.messageCenter(id);
+    }
+
+
+    /**
+     * 查询所有的系统通知
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/sysMessageList")
+    public Map<String,Object> sysMessageList(int pageNum,int size,Integer id){
+        PageHelper.startPage(pageNum,size);
+        List<AppSysMessageVo> appSysMessageVos =appMessageService.sysMessageList(id);
+        PageInfo<AppSysMessageVo> pageInfo = new PageInfo<>(appSysMessageVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 根据消息列表主键id和用户主键id查询系统通知消息详情
+     * @param sysMessageId 消息列表主键id
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("sysMessageDetail")
+    public Map<String,Object> sysMessageDetail(Integer sysMessageId,Integer id){
+        return appMessageService.sysMessageDetail(sysMessageId,id);
+    }
+
+    /**
+     * 阅读消息（未读 -> 已读）
+     * @param sysMessageId 消息列表主键id
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/readMessage")
+    public Map<String,Object> readMessage(Integer sysMessageId,Integer id){
+        return appMessageService.readMessage(sysMessageId,id);
+    }
+}
