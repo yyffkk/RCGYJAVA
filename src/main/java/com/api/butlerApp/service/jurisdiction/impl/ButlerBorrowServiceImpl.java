@@ -316,7 +316,7 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
             //填入接收人id(借取人id)
             butlerSending.setReceiverAccount(borrowerId);
             //填入发送状态（0.未发或不成功1.发送成功，3.已读）[初始为0，用户打开app为1，查看为3]
-            butlerSending.setSendStatus(0);
+            butlerSending.setSendStatus(1);
             //填入发送日期
             butlerSending.setSendDate(new Date());
             //添加消息接收列表
