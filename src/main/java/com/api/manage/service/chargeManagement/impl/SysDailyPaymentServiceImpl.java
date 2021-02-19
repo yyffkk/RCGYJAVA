@@ -158,6 +158,7 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             DailyPaymentOrderList dailyPaymentOrderList = new DailyPaymentOrderList();
             dailyPaymentOrderList.setDailyPaymentId(dailyPaymentPayInfo.getDailyPaymentId());
             dailyPaymentOrderList.setDailyPaymentOrderId(dailyPaymentOrder.getId());
+            dailyPaymentOrderList.setDailyPaymentPrice(dailyPaymentPayInfo.getDailyPaymentOrder().getPayPrice());
             int orderList = sysDailyPaymentDao.insertOrderList(dailyPaymentOrderList);
             if (orderList <= 0){
                 throw new RuntimeException("添加缴费订单清单信息失败");

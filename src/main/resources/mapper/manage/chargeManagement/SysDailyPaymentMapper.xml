@@ -151,10 +151,12 @@
     <insert id="insertOrderList" parameterType="com.api.model.chargeManagement.DailyPaymentOrderList">
         insert into sys_daily_payment_order_list(
             daily_payment_order_id,
-            daily_payment_id
+            daily_payment_id,
+            daily_payment_price
         )values (
             #{dailyPaymentOrderId},
-            #{dailyPaymentId}
+            #{dailyPaymentId},
+            #{dailyPaymentPrice}
         )
     </insert>
 
