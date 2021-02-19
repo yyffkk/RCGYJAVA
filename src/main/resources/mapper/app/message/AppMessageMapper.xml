@@ -30,4 +30,14 @@
     <update id="falseDelete" parameterType="com.api.model.app.UserIdAndSysMessageId">
         update sys_sendind set ???????? where message_id = #{sysMessageId} and receiver_account = #{id}
     </update>
+
+    <select id="findCommentNoReadNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_comment_message where send_status = 1 and receiver_account = #{id}
+    </select>
+
+    <select id="findCommentNewTitleById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppCommentMessageVo">
+        select scm.*,ur.name as createName from sys_comment_message as scm,user_resident as ur
+        where scm.create_id = ur.id and scm.receiver_account = #{id}
+        order by create_date DESC limit 1
+    </select>
 </mapper>

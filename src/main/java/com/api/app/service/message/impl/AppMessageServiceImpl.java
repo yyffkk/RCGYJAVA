@@ -3,6 +3,7 @@ package com.api.app.service.message.impl;
 import com.api.app.dao.message.AppMessageDao;
 import com.api.app.service.message.AppMessageService;
 import com.api.model.app.UserIdAndSysMessageId;
+import com.api.vo.app.AppCommentMessageVo;
 import com.api.vo.app.AppSysMessageDetail;
 import com.api.vo.app.AppSysMessageVo;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,26 @@ public class AppMessageServiceImpl implements AppMessageService {
         //根据用户id 查询系统通知最新的第一个消息标题
         String sysTitle = appMessageDao.findNewTitleById(id);
 
+        //查询评论通知
         //根据用户id 查询评论通知未读数量
+        int commentCount = appMessageDao.findCommentNoReadNumById(id);
+        //根据用户id 查询评论通知最新的第一个评论消息
+        AppCommentMessageVo appCommentMessageVo = appMessageDao.findCommentNewTitleById(id);
+        String commentTitle = "暂无消息";
+        if (appCommentMessageVo != null){
+            if (appCommentMessageVo.getType() == 1){
+                commentTitle = appCommentMessageVo.getCreateName() + "评论了你的动态";
+            }else if (appCommentMessageVo.getType() ==2){
+                commentTitle = appCommentMessageVo.getCreateName() + "点赞了你的动态";
+            }
+        }
 
 
         map.put("sysCount",sysCount);
         map.put("sysTitle",sysTitle);
+
+        map.put("commentCount",commentCount);
+        map.put("commentTitle",commentTitle);
         return map;
     }
 

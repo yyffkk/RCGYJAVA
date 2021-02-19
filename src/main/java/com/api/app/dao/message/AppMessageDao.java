@@ -1,6 +1,7 @@
 package com.api.app.dao.message;
 
 import com.api.model.app.UserIdAndSysMessageId;
+import com.api.vo.app.AppCommentMessageVo;
 import com.api.vo.app.AppSysMessageDetail;
 import com.api.vo.app.AppSysMessageVo;
 
@@ -55,4 +56,18 @@ public interface AppMessageDao {
      * @return 影响行数
      */
     int falseDelete(UserIdAndSysMessageId userIdAndSysMessageId);
+
+    /**
+     * 根据用户id 查询评论通知未读数量
+     * @param id 用户id
+     * @return 评论通知未读数量
+     */
+    int findCommentNoReadNumById(Integer id);
+
+    /**
+     * 根据用户id 查询评论通知最新的第一个评论消息
+     * @param id 用户id
+     * @return 评论通知最新的第一个评论消息
+     */
+    AppCommentMessageVo findCommentNewTitleById(Integer id);
 }
