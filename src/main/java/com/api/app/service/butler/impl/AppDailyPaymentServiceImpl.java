@@ -5,7 +5,6 @@ import com.api.app.service.butler.AppDailyPaymentService;
 import com.api.model.app.AppDailyPaymentDetail;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
-import com.api.model.chargeManagement.UpdateDailyPayment;
 import com.api.vo.app.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,11 +132,16 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
     }
 
     @Override
-    public List<AppPaymentRecordVo> paymentRecord(Integer id) {
-        //根据住户id查询房产id集合
-        List<Integer> estateIds = appDailyPaymentDao.findEstateIdByResidentId(id);
+    public List<Integer> findEstateIdByResidentId(Integer id) {
+        return appDailyPaymentDao.findEstateIdByResidentId(id);
+    }
+
+    @Override
+    public List<AppPaymentRecordVo> paymentRecord(List<Integer> estateIds) {
         return appDailyPaymentDao.paymentRecord(estateIds);
     }
+
+
 
 
 }

@@ -32,10 +32,10 @@ public class AppDailyPaymentController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(int pageNum,int size,Integer estateId){
+        Map<String,Object> map = new HashMap<>();
         PageHelper.startPage(pageNum,size);
         List<AppDailyPaymentVo> appDailyPaymentVos =appDailyPaymentService.list(estateId);
         PageInfo<AppDailyPaymentVo> pageInfo = new PageInfo<>(appDailyPaymentVos);
-        Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
@@ -72,15 +72,19 @@ public class AppDailyPaymentController {
 
     /**
      * 缴费记录
+     * @param pageNum 当前页数
+     * @param size 每页记录数
      * @param id 用户主键id
      * @return map
      */
     @GetMapping("/paymentRecord")
     public Map<String,Object> paymentRecord(int pageNum,int size,Integer id){
-        PageHelper.startPage(pageNum,size);
-        List<AppPaymentRecordVo> appPaymentRecordVos = appDailyPaymentService.paymentRecord(id);
-        PageInfo<AppPaymentRecordVo> pageInfo = new PageInfo<>(appPaymentRecordVos);
+        //根据住户id查询房产id集合
+        List<Integer> estateIds = appDailyPaymentService.findEstateIdByResidentId(id);
         Map<String,Object> map = new HashMap<>();
+        PageHelper.startPage(pageNum,size);
+        List<AppPaymentRecordVo> appPaymentRecordVos = appDailyPaymentService.paymentRecord(estateIds);
+        PageInfo<AppPaymentRecordVo> pageInfo = new PageInfo<>(appPaymentRecordVos);
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
