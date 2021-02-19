@@ -71,4 +71,18 @@ public interface AppDailyPaymentDao {
      * @return app 日常缴费选择房屋信息
      */
     List<AppDailPaymentChooseEstate> findEstateIsPayment(Integer id);
+
+    /**
+     * 根据住户id查询房产id集合
+     * @param id 住户id
+     * @return 房产id集合
+     */
+    List<Integer> findEstateIdByResidentId(Integer id);
+
+    /**
+     * 缴费记录
+     * @param estateIds 房产id集合
+     * @return 缴费记录集合信息
+     */
+    List<AppPaymentRecordVo> paymentRecord(List<Integer> estateIds);
 }

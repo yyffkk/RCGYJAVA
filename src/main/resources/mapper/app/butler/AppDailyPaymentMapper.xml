@@ -87,4 +87,21 @@
         where cre.resident_id = ur.id and cbue.id = cre.building_unit_estate_id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and ur.id = #{id}
         GROUP BY cbue.id
     </select>
+
+    <select id="findEstateIdByResidentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select building_unit_estate_id from cpm_resident_estate where resident_id = #{id}
+    </select>
+
+    <select id="paymentRecord" parameterType="java.util.List" resultType="com.api.vo.app.AppPaymentRecordVo">
+        select sdpol.id,sctd.name as charges_template_detail_name,concat(cb.no,"幢",cbu.no,"单元",cbue.room_number) as room_name,YEAR(sdp.create_date) as years,sdpol.daily_payment_price as paid_price,sdpo.create_date,sdpo.pay_type,sdpo.code
+        from sys_daily_payment as sdp,sys_charges_template_detail as sctd,sys_daily_payment_order as sdpo,sys_daily_payment_order_list as sdpol
+        ,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where sdp.charges_template_detail_id = sctd.id and sdp.id = sdpol.daily_payment_id and sdpo.id = sdpol.daily_payment_order_id
+        and sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+        and sdp.building_unit_estate_id in
+        <foreach collection="list" item="estateId" open="(" separator="," close=")">
+            #{estateId}
+        </foreach>
+        order by sdpo.create_date DESC
+    </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.api.app.controller.butler;
 import com.api.app.service.butler.AppDailyPaymentService;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.vo.app.AppDailyPaymentVo;
+import com.api.vo.app.AppPaymentRecordVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -70,14 +71,20 @@ public class AppDailyPaymentController {
 
 
     /**
-     * 缴费记录(有问题)
+     * 缴费记录
      * @param id 用户主键id
-     * @param tel 用户联系方式
      * @return map
      */
     @GetMapping("/paymentRecord")
-    public Map<String,Object> paymentRecord(Integer id,String tel){
-        return appDailyPaymentService.paymentRecord(id,tel);
+    public Map<String,Object> paymentRecord(int pageNum,int size,Integer id){
+        PageHelper.startPage(pageNum,size);
+        List<AppPaymentRecordVo> appPaymentRecordVos = appDailyPaymentService.paymentRecord(id);
+        PageInfo<AppPaymentRecordVo> pageInfo = new PageInfo<>(appPaymentRecordVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 

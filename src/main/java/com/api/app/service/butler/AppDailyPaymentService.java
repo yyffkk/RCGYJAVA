@@ -2,6 +2,7 @@ package com.api.app.service.butler;
 
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.vo.app.AppDailyPaymentVo;
+import com.api.vo.app.AppPaymentRecordVo;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,6 @@ public interface AppDailyPaymentService {
 
     Map<String, Object> findEstateIsPayment(Integer id);
 
-    Map<String, Object> paymentRecord(Integer id, String tel);
+    List<AppPaymentRecordVo> paymentRecord(Integer id);
 
 }

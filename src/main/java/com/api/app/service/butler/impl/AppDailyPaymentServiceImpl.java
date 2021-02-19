@@ -133,10 +133,10 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
     }
 
     @Override
-    public Map<String, Object> paymentRecord(Integer id, String tel) {
-        map = new HashMap<>();
-
-        return map;
+    public List<AppPaymentRecordVo> paymentRecord(Integer id) {
+        //根据住户id查询房产id集合
+        List<Integer> estateIds = appDailyPaymentDao.findEstateIdByResidentId(id);
+        return appDailyPaymentDao.paymentRecord(estateIds);
     }
 
 
