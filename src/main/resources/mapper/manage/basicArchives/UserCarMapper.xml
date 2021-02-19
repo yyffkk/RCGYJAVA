@@ -5,10 +5,11 @@
 <mapper namespace="com.api.manage.dao.basicArchives.UserCarDao">
     <select id="list" parameterType="com.api.model.basicArchives.SearchUserCar" resultType="com.api.vo.basicArchives.VoUserCar">
         select uc.*,cps.code as parking_space_code,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name
-        from user_car as uc,cpm_parking_space as cps,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,
+        user_car as uc left join cpm_parking_space as cps
+        on uc.parking_space_id = cps.id
         <where>
-            uc.parking_space_id = cps.id
-            and cbue.id = uc.building_unit_estate_id
+            cbue.id = uc.building_unit_estate_id
             and cbu.id = cbue.building_unit_id
             and cb.id = cbu.building_id
             <if test="code != null and code != ''">

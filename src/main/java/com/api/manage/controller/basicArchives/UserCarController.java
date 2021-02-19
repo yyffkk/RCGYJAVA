@@ -33,7 +33,7 @@ public class UserCarController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserCar searchUserCar){
         PageHelper.startPage(searchUserCar.getPageNum(),searchUserCar.getSize());
         List<VoUserCar> voUserCarList =userCarService.list(searchUserCar);

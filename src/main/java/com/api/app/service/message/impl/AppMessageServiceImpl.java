@@ -29,6 +29,9 @@ public class AppMessageServiceImpl implements AppMessageService {
         //根据用户id 查询系统通知最新的第一个消息标题
         String sysTitle = appMessageDao.findNewTitleById(id);
 
+        //根据用户id 查询评论通知未读数量
+
+
         map.put("sysCount",sysCount);
         map.put("sysTitle",sysTitle);
         return map;
