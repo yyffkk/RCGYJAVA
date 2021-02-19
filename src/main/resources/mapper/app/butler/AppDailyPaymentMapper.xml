@@ -36,6 +36,10 @@
         </foreach>
     </select>
 
+    <select id="findDailPaymentPriceById" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select payment_price from sys_daily_payment where id = #{id}
+    </select>
+
     <insert id="insertOrder" parameterType="com.api.model.app.AppDailyPaymentOrder">
         insert into sys_daily_payment_order(
             code,
@@ -62,10 +66,12 @@
     <insert id="insertOrderList" parameterType="com.api.model.chargeManagement.DailyPaymentOrderList">
         insert into sys_daily_payment_order_list(
             daily_payment_order_id,
-            daily_payment_id
+            daily_payment_id,
+            daily_payment_price
         )values (
             #{dailyPaymentOrderId},
-            #{dailyPaymentId}
+            #{dailyPaymentId},
+            #{dailyPaymentPrice}
         )
     </insert>
 

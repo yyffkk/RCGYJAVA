@@ -93,6 +93,9 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
                 DailyPaymentOrderList dailyPaymentOrderList = new DailyPaymentOrderList();
                 dailyPaymentOrderList.setDailyPaymentId(id);
                 dailyPaymentOrderList.setDailyPaymentOrderId(appDailyPaymentOrder.getId());
+                //根据缴费主键id查询当前缴费信息的缴费金额
+                BigDecimal dailyPaymentPrice = appDailyPaymentDao.findDailPaymentPriceById(id);
+                dailyPaymentOrderList.setDailyPaymentPrice(dailyPaymentPrice);
                 int orderList = appDailyPaymentDao.insertOrderList(dailyPaymentOrderList);
                 if (orderList <= 0){
                     throw new RuntimeException("添加缴费订单清单信息失败");

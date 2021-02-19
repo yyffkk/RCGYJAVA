@@ -45,6 +45,13 @@ public interface AppDailyPaymentDao {
     BigDecimal findPaymentPriceById(AppDailyPaymentOrder appDailyPaymentOrder);
 
     /**
+     * 根据缴费主键id查询当前缴费信息的缴费金额
+     * @param id 缴费主键id
+     * @return 当前缴费信息的缴费金额
+     */
+    BigDecimal findDailPaymentPriceById(int id);
+
+    /**
      * 添加生活缴费订单信息
      * @param appDailyPaymentOrder app生活缴纳 支付订单信息
      * @return 影响行数
@@ -85,4 +92,6 @@ public interface AppDailyPaymentDao {
      * @return 缴费记录集合信息
      */
     List<AppPaymentRecordVo> paymentRecord(List<Integer> estateIds);
+
+
 }

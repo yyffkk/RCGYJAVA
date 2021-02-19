@@ -1,5 +1,7 @@
 package com.api.model.chargeManagement;
 
+import java.math.BigDecimal;
+
 /**
  * 日常缴费订单清单信息
  */
@@ -16,6 +18,10 @@ public class DailyPaymentOrderList {
      * 缴费主键id
      */
     private Integer dailyPaymentId;
+    /**
+     * 缴费金额
+     */
+    private BigDecimal dailyPaymentPrice;
 
     @Override
     public String toString() {
@@ -23,6 +29,7 @@ public class DailyPaymentOrderList {
                 "id=" + id +
                 ", dailyPaymentOrderId=" + dailyPaymentOrderId +
                 ", dailyPaymentId=" + dailyPaymentId +
+                ", dailyPaymentPrice=" + dailyPaymentPrice +
                 '}';
     }
 
@@ -50,12 +57,21 @@ public class DailyPaymentOrderList {
         this.dailyPaymentId = dailyPaymentId;
     }
 
+    public BigDecimal getDailyPaymentPrice() {
+        return dailyPaymentPrice;
+    }
+
+    public void setDailyPaymentPrice(BigDecimal dailyPaymentPrice) {
+        this.dailyPaymentPrice = dailyPaymentPrice;
+    }
+
     public DailyPaymentOrderList() {
     }
 
-    public DailyPaymentOrderList(Integer id, Integer dailyPaymentOrderId, Integer dailyPaymentId) {
+    public DailyPaymentOrderList(Integer id, Integer dailyPaymentOrderId, Integer dailyPaymentId, BigDecimal dailyPaymentPrice) {
         this.id = id;
         this.dailyPaymentOrderId = dailyPaymentOrderId;
         this.dailyPaymentId = dailyPaymentId;
+        this.dailyPaymentPrice = dailyPaymentPrice;
     }
 }
