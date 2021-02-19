@@ -72,6 +72,11 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
 
     @Override
     public Map<String, Object> update(CpmParkingSpace cpmParkingSpace) {
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        cpmParkingSpace.setModifyId(sysUser.getId());
+        cpmParkingSpace.setModifyDate(new Date());
         int update = cpmParkingSpaceDao.update(cpmParkingSpace);
         if (update >0){
             map.put("message","修改车位信息成功");
