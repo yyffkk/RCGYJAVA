@@ -18,6 +18,8 @@ public interface UserResidentService {
 
     Map<String, Object> findById(Integer id);
 
+    Map<String, Object> findByIdOne(Integer id);
+
     Map<String, Object> findRelativesById(Integer id);
 
     Map<String, Object> findEstateById(Integer id);
@@ -37,4 +39,5 @@ public interface UserResidentService {
     List<VoFindAll> findResidentAll();
 
     List<VoFindAll> findAll();
+
 }

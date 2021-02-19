@@ -200,6 +200,15 @@ public class UserResidentServiceImpl implements UserResidentService {
     }
 
     @Override
+    public Map<String, Object> findByIdOne(Integer id) {
+        map = new HashMap<>();
+        //根据id查询住户信息
+        UserResident userResident = userResidentDao.findById(id);
+        map.put("userResident",userResident);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> findRelativesById(Integer id) {
         map = new HashMap<>();
         //根据id查询住户信息

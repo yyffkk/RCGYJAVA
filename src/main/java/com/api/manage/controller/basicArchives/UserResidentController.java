@@ -65,6 +65,17 @@ public class UserResidentController extends ShiroExceptions {
     }
 
     /**
+     * 根据业主主键id查询业主信息（无关联的房屋信息和车位信息）
+     * @param id 业主主键id
+     * @return map
+     */
+    @GetMapping("/findByIdOne")
+    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    public Map<String,Object> findByIdOne(Integer id){
+        return userResidentService.findByIdOne(id);
+    }
+
+    /**
      * 根据业主(租户)主键id 查询业主(租户)及其亲属信息
      * @return map
      */
