@@ -70,7 +70,7 @@ public class UserResidentController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/findByIdOne")
-    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
     public Map<String,Object> findByIdOne(Integer id){
         return userResidentService.findByIdOne(id);
     }
