@@ -40,4 +40,26 @@
         where scm.create_id = ur.id and scm.receiver_account = #{id}
         order by create_date DESC limit 1
     </select>
+
+    <insert id="insertCommentMessage" parameterType="com.api.model.app.AppCommentMessage">
+        insert into sys_comment_message(
+            gambit_theme_id,
+            respondent_id,
+            type,
+            content,
+            receiver_account,
+            send_status,
+            create_id,
+            create_date
+        )values (
+            #{gambitThemeId},
+            #{respondentId},
+            #{type},
+            #{content},
+            #{receiverAccount},
+            #{sendStatus},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 </mapper>

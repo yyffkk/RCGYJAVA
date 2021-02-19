@@ -1,5 +1,6 @@
 package com.api.app.dao.message;
 
+import com.api.model.app.AppCommentMessage;
 import com.api.model.app.UserIdAndSysMessageId;
 import com.api.vo.app.AppCommentMessageVo;
 import com.api.vo.app.AppSysMessageDetail;
@@ -70,4 +71,11 @@ public interface AppMessageDao {
      * @return 评论通知最新的第一个评论消息
      */
     AppCommentMessageVo findCommentNewTitleById(Integer id);
+
+    /**
+     * 添加评论通知消息列表
+     * @param appCommentMessage 评论通知消息列表
+     * @return 影响行数
+     */
+    int insertCommentMessage(AppCommentMessage appCommentMessage);
 }

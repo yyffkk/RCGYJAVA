@@ -144,4 +144,18 @@ public interface AppGambitDao {
      */
     List<IdAndName> findActivityGambit();
 
+    /**
+     * 根据主题id查询主题发布人（接收人）id
+     * @param themeId 主题id
+     * @return 主题发布人（接收人）id
+     */
+    Integer findCreateIdByThemeId(Integer themeId);
+
+
+    /**
+     * 根据主键id 查询 评论人id(被回复人id)【主题评论信息表】
+     * @param parentId 主题评论信息主键id
+     * @return 评论人id(被回复人id)
+     */
+    int findCreateIdById(Integer parentId);
 }

@@ -159,4 +159,12 @@
         ) as c,sys_gambit as sg2 where c.id = sg2.id ORDER BY c.activity_num DESC LIMIT 4
     </select>
 
+    <select id="findCreateIdByThemeId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select create_id from sys_gambit_theme where id = #{themeId}
+    </select>
+
+    <select id="findCreateIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select create_id from sys_gambit_theme_comment where id = #{gambitThemeId}
+    </select>
+
 </mapper>

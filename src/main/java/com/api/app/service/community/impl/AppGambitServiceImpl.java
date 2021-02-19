@@ -1,6 +1,7 @@
 package com.api.app.service.community.impl;
 
 import com.api.app.dao.community.AppGambitDao;
+import com.api.app.dao.message.AppMessageDao;
 import com.api.app.service.community.AppGambitService;
 import com.api.model.app.*;
 import com.api.vo.app.IdAndName;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class AppGambitServiceImpl implements AppGambitService {
     @Resource
     AppGambitDao appGambitDao;
+    @Resource
+    AppMessageDao appMessageDao;
     private static Map<String,Object> map = null;
 
     @Override
@@ -192,6 +195,26 @@ public class AppGambitServiceImpl implements AppGambitService {
                 operation = "点赞";
                 //1.点赞
                 map.put("operation",1);
+
+
+                //添加进 评论通知消息列表
+                AppCommentMessage appCommentMessage = new AppCommentMessage();
+                appCommentMessage.setGambitThemeId(themeId);
+                //2.点赞
+                appCommentMessage.setType(2);
+                appCommentMessage.setRespondentId(-1);
+                appCommentMessage.setContent("/爱心");
+                //根据主题id查询主题发布人（接收人）id
+                Integer createId = appGambitDao.findCreateIdByThemeId(themeId);
+                appCommentMessage.setReceiverAccount(createId);
+                //1.发送成功（未读）
+                appCommentMessage.setSendStatus(1);
+                appCommentMessage.setCreateId(id);
+                appCommentMessage.setCreateDate(new Date());
+                int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
+                if (insert2 <= 0){
+                    throw new RuntimeException("添加评论通知消息列表失败");
+                }
             }
 
         } catch (Exception e) {
@@ -229,23 +252,72 @@ public class AppGambitServiceImpl implements AppGambitService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> comment(AppGambitThemeComment appGambitThemeComment) {
         map = new HashMap<>();
-        //根据主题主键id 查询 话题id
-        Integer gambitId = appGambitDao.findGambitIdByThemeId(appGambitThemeComment.getGambitThemeId());
-        appGambitThemeComment.setGambitId(gambitId);
-        //填入评论时间
-        appGambitThemeComment.setCreateDate(new Date());
-        //填入是否删除,默认为1.非删
-        appGambitThemeComment.setIsDelete(1);
-        int insert = appGambitDao.comment(appGambitThemeComment);
-        if (insert >0){
-            map.put("message","评论成功");
-            map.put("status",true);
-        }else {
-            map.put("message","评论失败");
+        try {
+            //根据主题主键id 查询 话题id
+            Integer gambitId = appGambitDao.findGambitIdByThemeId(appGambitThemeComment.getGambitThemeId());
+            appGambitThemeComment.setGambitId(gambitId);
+            //填入评论时间
+            appGambitThemeComment.setCreateDate(new Date());
+            //填入是否删除,默认为1.非删
+            appGambitThemeComment.setIsDelete(1);
+            int insert = appGambitDao.comment(appGambitThemeComment);
+            if (insert <= 0){
+                throw new RuntimeException("评论失败");
+            }
+
+            //添加进 评论通知消息列表
+            AppCommentMessage appCommentMessage = new AppCommentMessage();
+            appCommentMessage.setGambitThemeId(appGambitThemeComment.getGambitThemeId());
+            //1.评论
+            appCommentMessage.setType(1);
+            appCommentMessage.setContent(appGambitThemeComment.getContent());
+
+            //1.发送成功（未读）
+            appCommentMessage.setSendStatus(1);
+            //添入评论人/点赞人
+            appCommentMessage.setCreateId(appGambitThemeComment.getCreateId());
+            appCommentMessage.setCreateDate(new Date());
+            //添加被回复人id,没有为-1
+            if (appGambitThemeComment.getParentId() == 0){
+                appCommentMessage.setRespondentId(-1);
+            }else {
+                //根据主键id 查询 评论人id(被回复人id)【主题评论信息表】
+                int createId = appGambitDao.findCreateIdById(appGambitThemeComment.getParentId());
+                appCommentMessage.setRespondentId(createId);
+                //填入接收人id,如果被回复人id不为-1，则被回复人也需要通知【如果被回复人为-1则为1人，反之2人】
+                appCommentMessage.setReceiverAccount(createId);
+                int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
+                if (insert2 <= 0){
+                    throw new RuntimeException("添加评论通知消息列表失败");
+                }
+            }
+
+            //根据主题id查询主题发布人（接收人）id
+            Integer createId = appGambitDao.findCreateIdByThemeId(appGambitThemeComment.getGambitThemeId());
+            //添入接收人id(1-2人),通知话题发布人，【如果被回复人为-1则为1人，反之2人】
+            appCommentMessage.setReceiverAccount(createId);
+
+            int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加评论通知消息列表失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+
+        map.put("message","评论成功");
+        map.put("status",true);
         return map;
     }
 
