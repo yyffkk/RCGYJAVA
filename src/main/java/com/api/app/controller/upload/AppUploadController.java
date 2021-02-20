@@ -36,9 +36,9 @@ public class AppUploadController {
      * @param file 上传文件
      * @return map
      */
-    @PostMapping("/uploadArticle")
-    public Map<String,Object> uploadArticle(MultipartFile file){
-        return uploadService.uploadArticle(file);
+    @PostMapping("/uploadAdvice")
+    public Map<String,Object> uploadAdvice(MultipartFile file){
+        return uploadService.uploadAdvice(file);
     }
 
     /**

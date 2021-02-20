@@ -24,9 +24,29 @@ public class UploadController {
      * @param file 上传文件
      * @return map
      */
+    @PostMapping("/uploadAdvice")
+    public Map<String,Object> uploadAdvice(MultipartFile file){
+        return uploadService.uploadAdvice(file);
+    }
+
+    /**
+     * 上传物品信息照片
+     * @param file 上传文件
+     * @return map
+     */
     @PostMapping("/uploadArticle")
     public Map<String,Object> uploadArticle(MultipartFile file){
         return uploadService.uploadArticle(file);
+    }
+
+    /**
+     * 上传物品信息详情照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadArticleDetail")
+    public Map<String,Object> uploadArticleDetail(MultipartFile file){
+        return uploadService.uploadArticleDetail(file);
     }
 
     /**
@@ -129,7 +149,6 @@ public class UploadController {
     public Map<String,Object> uploadOwnersCommittee(MultipartFile file){
         return uploadService.uploadOwnersCommittee(file);
     }
-
 
 
 }

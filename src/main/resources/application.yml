@@ -61,6 +61,8 @@ prop:
     upload-gambit-theme: /img/gambitTheme/
     #管家服务-物品管理：新增物品信息照片上传路径
     upload-article: /img/article/
+    #管家服务-物品管理：新增物品信息详情照片上传路径
+    upload-article-detail: /img/articleDetail/
     #管家服务-报事报修：新增报事报修照片上传路径
     upload-repair: /img/repair/
     #管家服务-业委会管理：业委会成员照片上传路径
@@ -80,6 +82,9 @@ prop:
 
     #App-个人资料：头像照片上传路径
     upload-app-head-sculpture: /img/headSculpture/
+
+    #ButlerApp-个人资料：头像照片上传路径
+    upload-butler-app-head-sculpture: /img/butlerAppHeadSculpture/
 
 
 

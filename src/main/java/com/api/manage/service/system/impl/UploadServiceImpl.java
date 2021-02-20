@@ -12,8 +12,12 @@ import java.util.Map;
 @Service
 public class UploadServiceImpl implements UploadService {
     private static Map<String,Object> map = null;
+    @Value("${prop.upload-advice}")
+    private String UPLOAD_ADVICE;
     @Value("${prop.upload-article}")
     private String UPLOAD_ARTICLE;
+    @Value("${prop.upload-article-detail}")
+    private String UPLOAD_ARTICLE_DETAIL;
     @Value("${prop.upload-gambit}")
     private String UPLOAD_GAMBIT;
     @Value("${prop.upload-vote-title}")
@@ -38,8 +42,20 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_GAMBIT_THEME;
 
     @Override
+    public Map<String, Object> uploadAdvice(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_ADVICE);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> uploadArticle(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_ARTICLE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadArticleDetail(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_ARTICLE_DETAIL);
         return map;
     }
 

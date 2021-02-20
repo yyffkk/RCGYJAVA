@@ -6,8 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 public interface UploadService {
+    Map<String, Object> uploadAdvice(MultipartFile file);
 
     Map<String, Object> uploadArticle(MultipartFile file);
+
+    Map<String, Object> uploadArticleDetail(MultipartFile file);
 
     Map<String, Object> uploadGambit(MultipartFile file);
 
@@ -30,4 +33,5 @@ public interface UploadService {
     Map<String, Object> uploadOwnersCommittee(MultipartFile file);
 
     Map<String, Object> uploadGambitTheme(MultipartFile file);
+
 }
