@@ -156,6 +156,21 @@ public class AppGambitServiceImpl implements AppGambitService {
             userIdAndThemeId.setId(id);
             userIdAndThemeId.setThemeId(themeId);
             AppGambitThemeLike appGambitThemeLike2 = appGambitDao.findThemeLikeByIds(userIdAndThemeId);
+
+            //添加进 评论通知消息列表
+            AppCommentMessage appCommentMessage = new AppCommentMessage();
+            appCommentMessage.setGambitThemeId(themeId);
+            //2.点赞
+            appCommentMessage.setType(2);
+            appCommentMessage.setRespondentId(-1);
+            appCommentMessage.setContent("/爱心");
+            //根据主题id查询主题发布人（接收人）id
+            Integer createId = appGambitDao.findCreateIdByThemeId(themeId);
+            appCommentMessage.setReceiverAccount(createId);
+            //1.发送成功（未读）
+            appCommentMessage.setSendStatus(1);
+            appCommentMessage.setCreateId(id);
+            appCommentMessage.setCreateDate(new Date());
             if (appGambitThemeLike2 != null){
                 //取消点赞
                 //删除点赞信息
@@ -171,6 +186,11 @@ public class AppGambitServiceImpl implements AppGambitService {
                 operation = "取消点赞";
                 //0.取消点赞
                 map.put("operation",0);
+
+                int insert2 = appMessageDao.deleteCommentMessage(appCommentMessage);
+                if (insert2 <= 0){
+                    throw new RuntimeException("删除点赞通知消息列表失败");
+                }
             }else {
                 //点赞
                 //添加点赞信息
@@ -196,24 +216,9 @@ public class AppGambitServiceImpl implements AppGambitService {
                 //1.点赞
                 map.put("operation",1);
 
-
-                //添加进 评论通知消息列表
-                AppCommentMessage appCommentMessage = new AppCommentMessage();
-                appCommentMessage.setGambitThemeId(themeId);
-                //2.点赞
-                appCommentMessage.setType(2);
-                appCommentMessage.setRespondentId(-1);
-                appCommentMessage.setContent("/爱心");
-                //根据主题id查询主题发布人（接收人）id
-                Integer createId = appGambitDao.findCreateIdByThemeId(themeId);
-                appCommentMessage.setReceiverAccount(createId);
-                //1.发送成功（未读）
-                appCommentMessage.setSendStatus(1);
-                appCommentMessage.setCreateId(id);
-                appCommentMessage.setCreateDate(new Date());
                 int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
                 if (insert2 <= 0){
-                    throw new RuntimeException("添加评论通知消息列表失败");
+                    throw new RuntimeException("添加点赞通知消息列表失败");
                 }
             }
 

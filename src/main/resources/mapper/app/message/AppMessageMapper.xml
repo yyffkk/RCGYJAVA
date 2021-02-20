@@ -62,4 +62,9 @@
             #{createDate}
         )
     </insert>
+
+    <delete id="deleteCommentMessage" parameterType="com.api.model.app.AppCommentMessage">
+        delete from sys_comment_message
+        where gambit_theme_id=#{gambitThemeId} and type = #{type} and receiver_account = #{receiverAccount} and create_id = #{createId}
+    </delete>
 </mapper>

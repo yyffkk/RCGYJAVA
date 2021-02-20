@@ -78,4 +78,11 @@ public interface AppMessageDao {
      * @return 影响行数
      */
     int insertCommentMessage(AppCommentMessage appCommentMessage);
+
+    /**
+     * 根据主题id，类型，接收人id，点赞人 删除点赞通知信息
+     * @param appCommentMessage 评论通知消息列表
+     * @return 影响行数
+     */
+    int deleteCommentMessage(AppCommentMessage appCommentMessage);
 }
