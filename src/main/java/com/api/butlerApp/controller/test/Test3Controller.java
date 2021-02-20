@@ -1,5 +1,6 @@
 package com.api.butlerApp.controller.test;
 
+import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,5 +15,6 @@ public class Test3Controller {
         System.out.println("test");
 //        UploadUtil uploadUtil = new UploadUtil();
 //        uploadUtil.shear("/img/headSculpture/1.jpg");
+        JiguangUtil.push("1","消息测试");
     }
 }
