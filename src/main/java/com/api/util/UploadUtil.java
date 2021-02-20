@@ -364,7 +364,7 @@ public class UploadUtil {
         //临时文件夹目录
         String temp = "/temp";
 
-//        //获取需要剪切的文件（源File对象）
+//        //获取需要复制的文件（源File对象）
         File file1 = new File(uploadUtil.UPLOAD + temp + url);
         if (!file1.exists()) {
             //若不存在该文件，则返回报错信息

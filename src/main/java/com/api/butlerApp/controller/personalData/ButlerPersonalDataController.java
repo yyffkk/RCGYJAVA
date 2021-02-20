@@ -1,19 +1,18 @@
 package com.api.butlerApp.controller.personalData;
 
+import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.personalData.ButlerPersonalDataService;
-import com.api.model.app.AppUserInfo;
-import com.api.model.app.UpdateHeadPortrait;
-import com.api.model.app.UpdateTel;
-import com.api.model.basicArchives.UserResident;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerUpdateHeadPortrait;
 import com.api.model.butlerApp.ButlerUpdateTel;
 import com.api.vo.butlerApp.ButlerPersonalDataVo;
+import com.api.vo.butlerApp.ButlerUserDetailVo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -21,6 +20,8 @@ import java.util.Map;
 public class ButlerPersonalDataController {
     @Resource
     ButlerPersonalDataService butlerPersonalDataService;
+    @Resource
+    ButlerRepairDao butlerRepairDao;
 
     /**
      * 获取用户信息
@@ -30,9 +31,24 @@ public class ButlerPersonalDataController {
     @GetMapping("/getUserDetail")
     public Map<String, Object> getUserDetail(SysUser sysUser){
         Map<String, Object> map = new HashMap<>();
+        ButlerUserDetailVo butlerUserDetailVo = new ButlerUserDetailVo();
+        butlerUserDetailVo.setId(sysUser.getId());
+        butlerUserDetailVo.setNickName(sysUser.getNickName());
+        butlerUserDetailVo.setRoleId(sysUser.getRoleId());
+
+        String[] split = sysUser.getRoleId().split(",");
+        if (split.length >0){
+            for (String s : split) {
+                int roleId = Integer.parseInt(s);
+                //根据角色id查询权限id集合
+                List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
+                butlerUserDetailVo.setJurisdiction(jurisdictionIds);
+            }
+        }
+
         map.put("status", true);
         map.put("message", "请求成功");
-        map.put("data", sysUser);
+        map.put("data", butlerUserDetailVo);
         return map;
     }
 

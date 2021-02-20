@@ -75,7 +75,9 @@
         insert into sys_vote_candidate(
             vote_id,
             name,
-            tel,
+            <if test="tel != null">
+                tel,
+            </if>
             total,
             create_id,
             create_date,
@@ -83,7 +85,9 @@
         ) values (
             #{voteId},
             #{name},
-            #{tel},
+            <if test="tel != null">
+                #{tel},
+            </if>
             #{total},
             #{createId},
             #{createDate},
