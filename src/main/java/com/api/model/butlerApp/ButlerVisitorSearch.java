@@ -1,5 +1,7 @@
 package com.api.model.butlerApp;
 
+import java.util.Date;
+
 /**
  * 管家app访客管理 搜索条件
  */
@@ -16,6 +18,10 @@ public class ButlerVisitorSearch {
      * 访客状态
      */
     private Integer visitorStatus;
+    /**
+     * 当前时间
+     */
+    private Date nowDate;
 
     @Override
     public String toString() {
@@ -23,6 +29,7 @@ public class ButlerVisitorSearch {
                 "pageNum=" + pageNum +
                 ", size=" + size +
                 ", visitorStatus=" + visitorStatus +
+                ", nowDate=" + nowDate +
                 '}';
     }
 
@@ -50,12 +57,21 @@ public class ButlerVisitorSearch {
         this.visitorStatus = visitorStatus;
     }
 
+    public Date getNowDate() {
+        return nowDate;
+    }
+
+    public void setNowDate(Date nowDate) {
+        this.nowDate = nowDate;
+    }
+
     public ButlerVisitorSearch() {
     }
 
-    public ButlerVisitorSearch(int pageNum, int size, Integer visitorStatus) {
+    public ButlerVisitorSearch(int pageNum, int size, Integer visitorStatus, Date nowDate) {
         this.pageNum = pageNum;
         this.size = size;
         this.visitorStatus = visitorStatus;
+        this.nowDate = nowDate;
     }
 }

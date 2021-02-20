@@ -4,13 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.butlerApp.dao.butler.ButlerVisitorDao">
     <select id="list" parameterType="com.api.model.butlerApp.ButlerVisitorSearch" resultType="com.api.vo.butlerApp.ButlerVisitorVo">
-        select uv.*,concat(cb.no,"幢",cbu.no,"单元",cbue.room_number) as room_name from user_visitors as uv,cpm_building as cb,cpm_building_unit as cbu,cpm_building_unit_estate as cbue
+        select uv.*,concat(cb.no,"幢",cbu.no,"单元",cbue.room_number) as room_name
+        from user_visitors as uv,cpm_building as cb,cpm_building_unit as cbu,cpm_building_unit_estate as cbue
         <where>
             uv.building_unit_estate_id = cbue.id
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
-            <if test="visitorStatus != null">
+            <if test="visitorStatus == 1">
+                and uv.visitor_status = 1
+                and #{nowDate} <![CDATA[ < ]]> uv.effective_time
+            </if>
+            <if test="visitorStatus == 2">
                 and uv.visitor_status = #{visitorStatus}
+            </if>
+            <if test="visitorStatus == 3">
+                and uv.visitor_status = 1
+                and #{nowDate} <![CDATA[ > ]]> uv.effective_time
             </if>
         </where>
     </select>

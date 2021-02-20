@@ -17,6 +17,7 @@ public class ButlerVisitorServiceImpl implements ButlerVisitorService {
 
     @Override
     public List<ButlerVisitorVo> list(ButlerVisitorSearch butlerVisitorSearch) {
+        butlerVisitorSearch.setNowDate(new Date());
         List<ButlerVisitorVo> list = butlerVisitorDao.list(butlerVisitorSearch);
         if (list != null && list.size()>0){
             for (ButlerVisitorVo butlerVisitorVo : list) {
