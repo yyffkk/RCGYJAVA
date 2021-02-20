@@ -15,6 +15,12 @@
         select sm.id,sm.title,sm.content,ss.send_status as status from sys_message as sm,sys_sending as ss where sm.id = ss.message_id and ss.receiver_account = #{id} ORDER BY ss.send_date DESC
     </select>
 
+    <select id="sysCommentMessageList" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppCommentMessageVo">
+        select scm.*,ur1.name as create_name,ur2.name as respondent_name from user_resident as ur1,sys_comment_message as scm
+        LEFT JOIN user_resident as ur2 on scm.respondent_id = ur2.id
+        where scm.create_id = ur1.id and scm.receiver_account = #{id}
+    </select>
+
     <select id="sysMessageDetail" parameterType="com.api.model.app.UserIdAndSysMessageId" resultType="com.api.vo.app.AppSysMessageDetail">
         select sm.id,sm.title,sm.content from sys_message as sm,sys_sending as ss where sm.id = ss.message_id and ss.receiver_account = #{id} and sm.id = #{sysMessageId}
     </select>

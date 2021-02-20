@@ -1,6 +1,7 @@
 package com.api.app.controller.message;
 
 import com.api.app.service.message.AppMessageService;
+import com.api.vo.app.AppCommentMessageVo;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppSysMessageVo;
 import com.api.vo.basicArchives.VoIds;
@@ -45,6 +46,25 @@ public class AppMessageController {
         PageHelper.startPage(pageNum,size);
         List<AppSysMessageVo> appSysMessageVos =appMessageService.sysMessageList(id);
         PageInfo<AppSysMessageVo> pageInfo = new PageInfo<>(appSysMessageVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 查询所有的评论通知
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/sysCommentMessageList")
+    public Map<String,Object> sysCommentMessageList(int pageNum,int size,Integer id){
+        PageHelper.startPage(pageNum,size);
+        List<AppCommentMessageVo> appCommentMessageVos =appMessageService.sysCommentMessageList(id);
+        PageInfo<AppCommentMessageVo> pageInfo = new PageInfo<>(appCommentMessageVos);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());

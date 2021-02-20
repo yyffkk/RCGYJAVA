@@ -31,6 +31,13 @@ public interface AppMessageDao {
     List<AppSysMessageVo> sysMessageList(Integer id);
 
     /**
+     * 查询所有的评论通知
+     * @param id 用户id
+     * @return 评论通知集合
+     */
+    List<AppCommentMessageVo> sysCommentMessageList(Integer id);
+
+    /**
      * 根据消息列表主键id查询系统通知消息详情
      * @param userIdAndSysMessageId 用户主键id 和 消息列表主键id
      * @return 系统通知详情
@@ -85,4 +92,5 @@ public interface AppMessageDao {
      * @return 影响行数
      */
     int deleteCommentMessage(AppCommentMessage appCommentMessage);
+
 }

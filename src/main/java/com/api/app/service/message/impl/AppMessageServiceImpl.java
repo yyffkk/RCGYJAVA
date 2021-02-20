@@ -3,9 +3,11 @@ package com.api.app.service.message.impl;
 import com.api.app.dao.message.AppMessageDao;
 import com.api.app.service.message.AppMessageService;
 import com.api.model.app.UserIdAndSysMessageId;
+import com.api.util.UploadUtil;
 import com.api.vo.app.AppCommentMessageVo;
 import com.api.vo.app.AppSysMessageDetail;
 import com.api.vo.app.AppSysMessageVo;
+import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -56,6 +58,19 @@ public class AppMessageServiceImpl implements AppMessageService {
     @Override
     public List<AppSysMessageVo> sysMessageList(Integer id) {
         return appMessageDao.sysMessageList(id);
+    }
+
+    @Override
+    public List<AppCommentMessageVo> sysCommentMessageList(Integer id) {
+        List<AppCommentMessageVo> appCommentMessageVos = appMessageDao.sysCommentMessageList(id);
+        if (appCommentMessageVos != null && appCommentMessageVos.size()>0){
+            for (AppCommentMessageVo appCommentMessageVo : appCommentMessageVos) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambitTheme", appCommentMessageVo.getGambitThemeId(), "gambitThemeImg");
+                appCommentMessageVo.setImgUrls(imgByDate);
+            }
+        }
+        return appCommentMessageVos;
     }
 
     @Override

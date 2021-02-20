@@ -1,6 +1,9 @@
 package com.api.vo.app;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 评论消息Vo list 回显
@@ -17,7 +20,7 @@ public class AppCommentMessageVo {
     /**
      * 被回复人姓名，没有为null
      */
-    private Integer respondentName;
+    private String respondentName;
     /**
      * 类型：1.评论，2.点赞
      */
@@ -42,19 +45,24 @@ public class AppCommentMessageVo {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 照片资源集合
+     */
+    private List<VoResourcesImg> imgUrls;
 
     @Override
     public String toString() {
         return "AppCommentMessageVo{" +
                 "id=" + id +
                 ", gambitThemeId=" + gambitThemeId +
-                ", respondentName=" + respondentName +
+                ", respondentName='" + respondentName + '\'' +
                 ", type=" + type +
                 ", content='" + content + '\'' +
                 ", receiverAccount=" + receiverAccount +
                 ", sendStatus=" + sendStatus +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
+                ", imgUrls=" + imgUrls +
                 '}';
     }
 
@@ -74,11 +82,11 @@ public class AppCommentMessageVo {
         this.gambitThemeId = gambitThemeId;
     }
 
-    public Integer getRespondentName() {
+    public String getRespondentName() {
         return respondentName;
     }
 
-    public void setRespondentName(Integer respondentName) {
+    public void setRespondentName(String respondentName) {
         this.respondentName = respondentName;
     }
 
@@ -130,10 +138,18 @@ public class AppCommentMessageVo {
         this.createDate = createDate;
     }
 
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public AppCommentMessageVo() {
     }
 
-    public AppCommentMessageVo(Integer id, Integer gambitThemeId, Integer respondentName, Integer type, String content, Integer receiverAccount, Integer sendStatus, String createName, Date createDate) {
+    public AppCommentMessageVo(Integer id, Integer gambitThemeId, String respondentName, Integer type, String content, Integer receiverAccount, Integer sendStatus, String createName, Date createDate, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.gambitThemeId = gambitThemeId;
         this.respondentName = respondentName;
@@ -143,5 +159,6 @@ public class AppCommentMessageVo {
         this.sendStatus = sendStatus;
         this.createName = createName;
         this.createDate = createDate;
+        this.imgUrls = imgUrls;
     }
 }
