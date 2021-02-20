@@ -104,10 +104,42 @@ public class AppMessageServiceImpl implements AppMessageService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> allRead(Integer id) {
         map = new HashMap<>();
-        int update = appMessageDao.allRead(id);
-        if (update >0){
+        try {
+            //修改系统通知为已读
+            int update = appMessageDao.allReadSys(id);
+            if (update <=0){
+                throw new RuntimeException("操作失败");
+            }
+            //修改评论通知为已读
+            int update2 = appMessageDao.allReadComment(id);
+            if (update2 <=0){
+                throw new RuntimeException("操作2失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","操作成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> allReadComment(Integer id) {
+        map = new HashMap<>();
+        //修改评论通知为已读
+        int update2 = appMessageDao.allReadComment(id);
+        if (update2 >0){
             map.put("message","操作成功");
             map.put("status",true);
         }else {

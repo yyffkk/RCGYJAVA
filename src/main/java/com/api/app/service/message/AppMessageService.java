@@ -19,6 +19,8 @@ public interface AppMessageService {
 
     Map<String, Object> allRead(Integer id);
 
+    Map<String, Object> allReadComment(Integer id);
+
     Map<String, Object> falseDelete(int[] ids, Integer id);
 
 }

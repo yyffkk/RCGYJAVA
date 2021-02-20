@@ -104,6 +104,16 @@ public class AppMessageController {
         return appMessageService.allRead(id);
     }
 
+    /**
+     * 评论通知全部已读(进入评论通知列表后调用)
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/allReadComment")
+    public Map<String,Object> allReadComment(Integer id){
+        return appMessageService.allReadComment(id);
+    }
+
 //    /**
 //     * 【有问题】???需要改 消息列表 表，添加字段 user_delete 用户端删除
 //     * 删除app消息列表

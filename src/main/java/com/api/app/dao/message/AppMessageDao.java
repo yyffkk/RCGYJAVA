@@ -52,11 +52,18 @@ public interface AppMessageDao {
     int readMessage(UserIdAndSysMessageId userIdAndSysMessageId);
 
     /**
-     * 全部已读
+     * 系统通知全部已读
      * @param id 用户id
      * @return 影响行数
      */
-    int allRead(Integer id);
+    int allReadSys(Integer id);
+
+    /**
+     * 评论通知全部已读
+     * @param id 用户id
+     * @return 影响行数
+     */
+    int allReadComment(Integer id);
 
     /**
      * 删除app消息列表

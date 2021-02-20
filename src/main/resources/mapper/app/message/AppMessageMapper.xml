@@ -29,8 +29,12 @@
         update sys_sending set send_status = 3 where message_id = #{sysMessageId} and receiver_account = #{id}
     </update>
 
-    <update id="allRead" parameterType="java.lang.Integer">
+    <update id="allReadSys" parameterType="java.lang.Integer">
         update sys_sending set send_status = 3 where receiver_account = #{id}
+    </update>
+
+    <update id="allReadComment" parameterType="java.lang.Integer">
+        update sys_comment_message set send_status = 3 where receiver_account = #{id}
     </update>
 
     <update id="falseDelete" parameterType="com.api.model.app.UserIdAndSysMessageId">
