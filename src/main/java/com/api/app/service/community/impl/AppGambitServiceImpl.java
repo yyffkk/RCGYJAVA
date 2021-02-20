@@ -171,6 +171,7 @@ public class AppGambitServiceImpl implements AppGambitService {
             appCommentMessage.setSendStatus(1);
             appCommentMessage.setCreateId(id);
             appCommentMessage.setCreateDate(new Date());
+
             if (appGambitThemeLike2 != null){
                 //取消点赞
                 //删除点赞信息
@@ -186,10 +187,12 @@ public class AppGambitServiceImpl implements AppGambitService {
                 operation = "取消点赞";
                 //0.取消点赞
                 map.put("operation",0);
-
-                int insert2 = appMessageDao.deleteCommentMessage(appCommentMessage);
-                if (insert2 <= 0){
-                    throw new RuntimeException("删除点赞通知消息列表失败");
+                //如果点赞人与主题发布人不是同一个人（自己取消点赞自己发布的主题，收不到点赞通知）
+                if (createId != id) {
+                    int insert2 = appMessageDao.deleteCommentMessage(appCommentMessage);
+                    if (insert2 <= 0) {
+                        throw new RuntimeException("删除点赞通知消息列表失败");
+                    }
                 }
             }else {
                 //点赞
@@ -215,10 +218,12 @@ public class AppGambitServiceImpl implements AppGambitService {
                 operation = "点赞";
                 //1.点赞
                 map.put("operation",1);
-
-                int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
-                if (insert2 <= 0){
-                    throw new RuntimeException("添加点赞通知消息列表失败");
+                //如果点赞人与主题发布人不是同一个人（自己点赞自己发布的主题，收不到点赞通知）
+                if (createId != id){
+                    int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
+                    if (insert2 <= 0){
+                        throw new RuntimeException("添加点赞通知消息列表失败");
+                    }
                 }
             }
 
@@ -285,6 +290,12 @@ public class AppGambitServiceImpl implements AppGambitService {
             //添入评论人/点赞人
             appCommentMessage.setCreateId(appGambitThemeComment.getCreateId());
             appCommentMessage.setCreateDate(new Date());
+
+            //根据主题id查询主题发布人（接收人）id
+            Integer createId2 = appGambitDao.findCreateIdByThemeId(appGambitThemeComment.getGambitThemeId());
+            //添入接收人id(1-2人),通知主题发布人，【如果被回复人为-1则为1人，反之2人】
+            appCommentMessage.setReceiverAccount(createId2);
+
             //添加被回复人id,没有为-1
             if (appGambitThemeComment.getParentId() == 0){
                 appCommentMessage.setRespondentId(-1);
@@ -294,20 +305,25 @@ public class AppGambitServiceImpl implements AppGambitService {
                 appCommentMessage.setRespondentId(createId);
                 //填入接收人id,如果被回复人id不为-1，则被回复人也需要通知【如果被回复人为-1则为1人，反之2人】
                 appCommentMessage.setReceiverAccount(createId);
+                //如果被回复人id与主题发布人id不是同一个人，则被回复人也需通知(防止一个人即是主题发布者，又是被回复者，收到2条通知)
+                if (createId != createId2){
+                    //如果评论人与被回复人不是同一个人（自己回复自己，收不到评论通知）
+                    if (createId != appGambitThemeComment.getCreateId()){
+                        //添加被回复人评论通知信息
+                        int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
+                        if (insert2 <= 0){
+                            throw new RuntimeException("添加评论通知消息列表失败");
+                        }
+                    }
+                }
+            }
+            //如果评论人与主题发布人不是同一个人（自己在自己发布的主题下评论，收不到评论通知）
+            if (createId2 != appGambitThemeComment.getCreateId()){
+                //添加主题发布人评论通知信息
                 int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
                 if (insert2 <= 0){
                     throw new RuntimeException("添加评论通知消息列表失败");
                 }
-            }
-
-            //根据主题id查询主题发布人（接收人）id
-            Integer createId = appGambitDao.findCreateIdByThemeId(appGambitThemeComment.getGambitThemeId());
-            //添入接收人id(1-2人),通知话题发布人，【如果被回复人为-1则为1人，反之2人】
-            appCommentMessage.setReceiverAccount(createId);
-
-            int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
-            if (insert2 <= 0){
-                throw new RuntimeException("添加评论通知消息列表失败");
             }
         } catch (Exception e) {
             //获取抛出的信息
