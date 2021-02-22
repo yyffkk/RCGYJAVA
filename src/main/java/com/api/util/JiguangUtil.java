@@ -23,12 +23,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class JiguangUtil {
     private static final Logger log = LoggerFactory.getLogger(JiguangUtil.class);
-//    private static String masterSecret="fdc1a6df819f7da8096e71ad";
-    @Value("${prop.master-secret}")
-    private String MASTER_SECRET;
-//    private static String appKey="6a2c6507e3e8b3187ac1c9f9";
-    @Value("${prop.app-key}")
-    private String APP_KEY;
+
+    private static String masterSecret;
+    @Value("${jg.masterSecret}")
+    public void setMasterSecret(String masterSecret){
+        this.masterSecret = masterSecret;
+    }
+
+    private static String appKey;
+    @Value("${jg.appKey}")
+    public void setAppKey(String appKey){
+        this.appKey = appKey;
+    }
+
     private static final String ALERT = "推送信息";
     /**
      * 极光推送
@@ -50,7 +57,7 @@ public class JiguangUtil {
      * @param alert 消息
      * @return PushPayload
      */
-    public PushPayload buildPushObject_android_ios_alias_alert(String alias,String alert){
+    public static PushPayload buildPushObject_android_ios_alias_alert(String alias,String alert){
         return PushPayload.newBuilder()
                 .setPlatform(Platform.android_ios())
                 .setAudience(Audience.alias(alias))
@@ -76,9 +83,9 @@ public class JiguangUtil {
      * @param alert 消息
      * @return PushResult
      */
-    public PushResult push(String alias,String alert){
+    public static PushResult push(String alias,String alert){
         ClientConfig clientConfig = ClientConfig.getInstance();
-        JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY, null, clientConfig);
+        JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, clientConfig);
         PushPayload payload = buildPushObject_android_ios_alias_alert(alias,alert);
         try {
             return jpushClient.sendPush(payload);
