@@ -15,6 +15,7 @@ public class Test3Controller {
         System.out.println("test");
 //        UploadUtil uploadUtil = new UploadUtil();
 //        uploadUtil.shear("/img/headSculpture/1.jpg");
-        JiguangUtil.push("1","消息测试");
+        JiguangUtil jiguangUtil = new JiguangUtil();
+        jiguangUtil.push("1","消息测试");
     }
 }

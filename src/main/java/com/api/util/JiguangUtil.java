@@ -14,16 +14,21 @@ import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 
 /**
  * 极光推送 Util工具类
  */
+@Component
 public class JiguangUtil {
     private static final Logger log = LoggerFactory.getLogger(JiguangUtil.class);
-//    @Value("${jg.masterSecret}")
-    private static String masterSecret="fdc1a6df819f7da8096e71ad";
-//    @Value("${jg.appKey}")
-    private static String appKey="6a2c6507e3e8b3187ac1c9f9";
+//    private static String masterSecret="fdc1a6df819f7da8096e71ad";
+    @Value("${prop.master-secret}")
+    private String MASTER_SECRET;
+//    private static String appKey="6a2c6507e3e8b3187ac1c9f9";
+    @Value("${prop.app-key}")
+    private String APP_KEY;
     private static final String ALERT = "推送信息";
     /**
      * 极光推送
@@ -45,7 +50,7 @@ public class JiguangUtil {
      * @param alert 消息
      * @return PushPayload
      */
-    public static PushPayload buildPushObject_android_ios_alias_alert(String alias,String alert){
+    public PushPayload buildPushObject_android_ios_alias_alert(String alias,String alert){
         return PushPayload.newBuilder()
                 .setPlatform(Platform.android_ios())
                 .setAudience(Audience.alias(alias))
@@ -71,9 +76,9 @@ public class JiguangUtil {
      * @param alert 消息
      * @return PushResult
      */
-    public static PushResult push(String alias,String alert){
+    public PushResult push(String alias,String alert){
         ClientConfig clientConfig = ClientConfig.getInstance();
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, clientConfig);
+        JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY, null, clientConfig);
         PushPayload payload = buildPushObject_android_ios_alias_alert(alias,alert);
         try {
             return jpushClient.sendPush(payload);

@@ -66,8 +66,12 @@ public class AppMessageServiceImpl implements AppMessageService {
         if (appCommentMessageVos != null && appCommentMessageVos.size()>0){
             for (AppCommentMessageVo appCommentMessageVo : appCommentMessageVos) {
                 UploadUtil uploadUtil = new UploadUtil();
+                //获取主题照片集合
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambitTheme", appCommentMessageVo.getGambitThemeId(), "gambitThemeImg");
                 appCommentMessageVo.setImgUrls(imgByDate);
+                //获取评论人头像
+                List<VoResourcesImg> headSculptureImgByDate = uploadUtil.findImgByDate("userResident", appCommentMessageVo.getCreateId(), "headSculpture");
+                appCommentMessageVo.setHeadSculpture(headSculptureImgByDate);
             }
         }
         return appCommentMessageVos;

@@ -30,13 +30,13 @@ public class AppCommentMessageVo {
      */
     private String content;
     /**
-     * 接收人id
-     */
-    private Integer receiverAccount;
-    /**
      * 发送状态（0.未发或不成功，1.发送成功（未读），3.已读）
      */
     private Integer sendStatus;
+    /**
+     * 评论人/点赞人 id
+     */
+    private Integer createId;
     /**
      * 评论人/点赞人 姓名
      */
@@ -46,9 +46,13 @@ public class AppCommentMessageVo {
      */
     private Date createDate;
     /**
-     * 照片资源集合
+     * 主题照片资源集合
      */
     private List<VoResourcesImg> imgUrls;
+    /**
+     * 评论人/点赞人 头像集合
+     */
+    private List<VoResourcesImg> headSculpture;
 
     @Override
     public String toString() {
@@ -58,11 +62,12 @@ public class AppCommentMessageVo {
                 ", respondentName='" + respondentName + '\'' +
                 ", type=" + type +
                 ", content='" + content + '\'' +
-                ", receiverAccount=" + receiverAccount +
                 ", sendStatus=" + sendStatus +
+                ", createId=" + createId +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
                 ", imgUrls=" + imgUrls +
+                ", headSculpture=" + headSculpture +
                 '}';
     }
 
@@ -106,20 +111,20 @@ public class AppCommentMessageVo {
         this.content = content;
     }
 
-    public Integer getReceiverAccount() {
-        return receiverAccount;
-    }
-
-    public void setReceiverAccount(Integer receiverAccount) {
-        this.receiverAccount = receiverAccount;
-    }
-
     public Integer getSendStatus() {
         return sendStatus;
     }
 
     public void setSendStatus(Integer sendStatus) {
         this.sendStatus = sendStatus;
+    }
+
+    public Integer getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
     }
 
     public String getCreateName() {
@@ -146,19 +151,28 @@ public class AppCommentMessageVo {
         this.imgUrls = imgUrls;
     }
 
+    public List<VoResourcesImg> getHeadSculpture() {
+        return headSculpture;
+    }
+
+    public void setHeadSculpture(List<VoResourcesImg> headSculpture) {
+        this.headSculpture = headSculpture;
+    }
+
     public AppCommentMessageVo() {
     }
 
-    public AppCommentMessageVo(Integer id, Integer gambitThemeId, String respondentName, Integer type, String content, Integer receiverAccount, Integer sendStatus, String createName, Date createDate, List<VoResourcesImg> imgUrls) {
+    public AppCommentMessageVo(Integer id, Integer gambitThemeId, String respondentName, Integer type, String content, Integer sendStatus, Integer createId, String createName, Date createDate, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headSculpture) {
         this.id = id;
         this.gambitThemeId = gambitThemeId;
         this.respondentName = respondentName;
         this.type = type;
         this.content = content;
-        this.receiverAccount = receiverAccount;
         this.sendStatus = sendStatus;
+        this.createId = createId;
         this.createName = createName;
         this.createDate = createDate;
         this.imgUrls = imgUrls;
+        this.headSculpture = headSculpture;
     }
 }
