@@ -6,6 +6,7 @@ import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.*;
 import com.api.model.butlerService.SysArticleBorrow;
 import com.api.model.remind.SysSending;
+import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.*;
 import com.api.vo.resources.VoResourcesImg;
@@ -324,6 +325,8 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
             if (i <= 0){
                 throw new RuntimeException("添加消息接收列表失败");
             }
+
+            JiguangUtil.push(String.valueOf(butlerSending.getReceiverAccount()),butlerMessage.getTitle());
 
         } catch (RuntimeException e) {
             //获取抛出的信息

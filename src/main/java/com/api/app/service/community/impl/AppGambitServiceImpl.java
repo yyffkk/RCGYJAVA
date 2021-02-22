@@ -4,6 +4,7 @@ import com.api.app.dao.community.AppGambitDao;
 import com.api.app.dao.message.AppMessageDao;
 import com.api.app.service.community.AppGambitService;
 import com.api.model.app.*;
+import com.api.util.JiguangUtil;
 import com.api.vo.app.IdAndName;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppGambitThemeCommentVo;
@@ -227,6 +228,8 @@ public class AppGambitServiceImpl implements AppGambitService {
                 }
             }
 
+            JiguangUtil.push(String.valueOf(createId),"有人点赞了你");
+
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -314,16 +317,21 @@ public class AppGambitServiceImpl implements AppGambitService {
                         if (insert2 <= 0){
                             throw new RuntimeException("添加评论通知消息列表失败");
                         }
+                        JiguangUtil.push(String.valueOf(appCommentMessage.getReceiverAccount()),"有人评论了你");
                     }
                 }
             }
             //如果评论人与主题发布人不是同一个人（自己在自己发布的主题下评论，收不到评论通知）
             if (createId2 != appGambitThemeComment.getCreateId()){
+                //填入接收人id,【接收人为主题发布人】
+                appCommentMessage.setReceiverAccount(appGambitThemeComment.getCreateId());
                 //添加主题发布人评论通知信息
                 int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
                 if (insert2 <= 0){
                     throw new RuntimeException("添加评论通知消息列表失败");
                 }
+                JiguangUtil.push(String.valueOf(appCommentMessage.getReceiverAccount()),"有人评论了你");
+
             }
         } catch (Exception e) {
             //获取抛出的信息
