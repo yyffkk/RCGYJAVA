@@ -7,6 +7,7 @@ import com.api.manage.dao.remind.RemindDao;
 import com.api.model.butlerService.SysArticleBorrow;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
+import com.api.util.JiguangUtil;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -117,6 +118,7 @@ public class SysAutoRemind {
                         if (i <= 0){
                             throw new RuntimeException("添加消息接收列表失败");
                         }
+                        JiguangUtil.push(String.valueOf(sysArticleBorrow.getCreateId()),"借还提醒");
                     }
                 }
             }
@@ -187,6 +189,7 @@ public class SysAutoRemind {
                         if (i <= 0){
                             throw new RuntimeException("添加消息接收列表失败");
                         }
+                        JiguangUtil.push(String.valueOf(residentIds.get(0)),"日常缴费提醒");
                     }else {
                         //如果待缴金额不大于0，则跳过，不发送日常缴费提醒
                     }

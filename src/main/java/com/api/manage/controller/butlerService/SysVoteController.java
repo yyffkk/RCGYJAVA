@@ -87,7 +87,7 @@ public class SysVoteController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysVote sysVote){
         return sysVoteService.update(sysVote);
     }

@@ -212,7 +212,7 @@ public class UploadUtil {
 
 
     /**
-     * 删除上传文件并删除对应数据库资源文件数据
+     * 删除对应数据库资源文件数据（已上传文件保存）
      * @param tableName 表名称
      * @param id 数据所属id
      * @param typeName 类型名称
@@ -231,19 +231,19 @@ public class UploadUtil {
         //根据条件查询图片资源信息
         List<VoResourcesImg> imgByDate = uploadUtil.resourcesImgDao.findImgByDate(resourcesImg);
         if (imgByDate != null && imgByDate.size()>0){
-            for (VoResourcesImg voResourcesImg : imgByDate) {
-                //加上前置路径
-                String savePath = uploadUtil.UPLOAD + voResourcesImg.getUrl();
-                //获取保存路径
-                File savePathFile = new File(savePath);
-                if (savePathFile.exists()){
-                    //删除对应文件
-                    boolean delete = savePathFile.delete();
-                    if (!delete){
-                        throw new RuntimeException("文件删除失败");
-                    }
-                }
-            }
+//            for (VoResourcesImg voResourcesImg : imgByDate) {
+//                //加上前置路径
+//                String savePath = uploadUtil.UPLOAD + voResourcesImg.getUrl();
+//                //获取保存路径
+//                File savePathFile = new File(savePath);
+//                if (savePathFile.exists()){
+//                    //删除对应文件
+//                    boolean delete = savePathFile.delete();
+//                    if (!delete){
+//                        throw new RuntimeException("文件删除失败");
+//                    }
+//                }
+//            }
             //删除数据库数据
             int delete = uploadUtil.resourcesImgDao.deleteImgByDate(resourcesImg);
             if (delete <= 0){
@@ -367,8 +367,15 @@ public class UploadUtil {
 //        //获取需要复制的文件（源File对象）
         File file1 = new File(uploadUtil.UPLOAD + temp + url);
         if (!file1.exists()) {
-            //若不存在该文件，则返回报错信息
-            throw new RuntimeException("照片信息有误，请重新上传");
+            //如果需要复制的文件临时图片库不存在，则去查询正式图片库
+            File file2 = new File(uploadUtil.UPLOAD + url);
+            //如果正式图片库 图片存在，则跳过文件操作环节;不存在，则提示照片信息有误，请重新上传
+            if (file2.exists()){
+                return;
+            }else {
+                //若不存在该文件，则返回报错信息
+                throw new RuntimeException("照片信息有误，请重新上传");
+            }
         }
         //获取目标目录
         String dir = url.substring(0, url.lastIndexOf("/"));

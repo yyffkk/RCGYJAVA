@@ -7,6 +7,7 @@ import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysDailyPaymentService;
+import com.api.util.JiguangUtil;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
 import com.api.vo.chargeManagement.VoPayResident;
@@ -112,6 +113,7 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             if (i <= 0){
                 throw new RuntimeException("推送失败");
             }
+            JiguangUtil.push(String.valueOf(dailyPaymentPush.getReceiverAccountId()),"日常缴纳推送提醒");
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
