@@ -47,6 +47,18 @@
                 and uv.type = #{type}
             </if>
         </where>
+        <if test="appointmentVisitDateSort == 1">
+            order by uv.expected_visit_date DESC
+        </if>
+        <if test="appointmentVisitDateSort == 2">
+            order by uv.expected_visit_date
+        </if>
+        <if test="actualVisitDateSort == 1">
+            order by uv.visit_date DESC
+        </if>
+        <if test="actualVisitDateSort == 2">
+            order by uv.visit_date
+        </if>
     </select>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdVisitors">

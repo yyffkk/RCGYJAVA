@@ -99,7 +99,7 @@
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdRepair">
         select srr.*,ur.name as repair_name,su.actual_name as create_name
         from sys_report_repair as srr,user_resident as ur,sys_user as su
-        where srr.repairman = ur.id and srr.create_id = su.id and srr.id = #{id}
+        where srr.repairman = ur.id and srr.create_id = su.id and srr.dispatch_list_id = #{id}
     </select>
 
     <update id="update" parameterType="com.api.model.butlerService.ReportRepair">

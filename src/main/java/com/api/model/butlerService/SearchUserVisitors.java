@@ -70,6 +70,14 @@ public class SearchUserVisitors {
      * 楼栋编号
      */
     private Integer estateNo;
+    /**
+     * 预约到访时间排序（1.降序，2.升序）
+     */
+    private Integer appointmentVisitDateSort;
+    /**
+     * 实际到访时间排序（1.降序，2.升序）
+     */
+    private Integer actualVisitDateSort;
 
     @Override
     public String toString() {
@@ -90,6 +98,8 @@ public class SearchUserVisitors {
                 ", roomNumber='" + roomNumber + '\'' +
                 ", unitNo=" + unitNo +
                 ", estateNo=" + estateNo +
+                ", appointmentVisitDateSort=" + appointmentVisitDateSort +
+                ", actualVisitDateSort=" + actualVisitDateSort +
                 '}';
     }
 
@@ -221,10 +231,26 @@ public class SearchUserVisitors {
         this.estateNo = estateNo;
     }
 
+    public Integer getAppointmentVisitDateSort() {
+        return appointmentVisitDateSort;
+    }
+
+    public void setAppointmentVisitDateSort(Integer appointmentVisitDateSort) {
+        this.appointmentVisitDateSort = appointmentVisitDateSort;
+    }
+
+    public Integer getActualVisitDateSort() {
+        return actualVisitDateSort;
+    }
+
+    public void setActualVisitDateSort(Integer actualVisitDateSort) {
+        this.actualVisitDateSort = actualVisitDateSort;
+    }
+
     public SearchUserVisitors() {
     }
 
-    public SearchUserVisitors(Integer pageNum, Integer size, Integer id, String roomName, String name, Integer sex, String carNum, Date expectedVisitDateStart, Date expectedVisitDateEnd, Date visitDateStart, Date visitDateEnd, Integer visitorStatus, Integer type, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchUserVisitors(Integer pageNum, Integer size, Integer id, String roomName, String name, Integer sex, String carNum, Date expectedVisitDateStart, Date expectedVisitDateEnd, Date visitDateStart, Date visitDateEnd, Integer visitorStatus, Integer type, String roomNumber, Integer unitNo, Integer estateNo, Integer appointmentVisitDateSort, Integer actualVisitDateSort) {
         this.pageNum = pageNum;
         this.size = size;
         this.id = id;
@@ -241,5 +267,7 @@ public class SearchUserVisitors {
         this.roomNumber = roomNumber;
         this.unitNo = unitNo;
         this.estateNo = estateNo;
+        this.appointmentVisitDateSort = appointmentVisitDateSort;
+        this.actualVisitDateSort = actualVisitDateSort;
     }
 }
