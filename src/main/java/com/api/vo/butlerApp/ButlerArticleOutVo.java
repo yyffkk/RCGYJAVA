@@ -34,6 +34,10 @@ public class ButlerArticleOutVo {
      * 预计出户时间
      */
     private Date expectedTime;
+    /**
+     * 申请时间
+     */
+    private Date applicantDate;
 
     @Override
     public String toString() {
@@ -45,6 +49,7 @@ public class ButlerArticleOutVo {
                 ", identity=" + identity +
                 ", articleOutName='" + articleOutName + '\'' +
                 ", expectedTime=" + expectedTime +
+                ", applicantDate=" + applicantDate +
                 '}';
     }
 
@@ -104,10 +109,18 @@ public class ButlerArticleOutVo {
         this.expectedTime = expectedTime;
     }
 
+    public Date getApplicantDate() {
+        return applicantDate;
+    }
+
+    public void setApplicantDate(Date applicantDate) {
+        this.applicantDate = applicantDate;
+    }
+
     public ButlerArticleOutVo() {
     }
 
-    public ButlerArticleOutVo(Integer id, Integer status, String roomName, String applicantName, Integer identity, String articleOutName, Date expectedTime) {
+    public ButlerArticleOutVo(Integer id, Integer status, String roomName, String applicantName, Integer identity, String articleOutName, Date expectedTime, Date applicantDate) {
         this.id = id;
         this.status = status;
         this.roomName = roomName;
@@ -115,5 +128,6 @@ public class ButlerArticleOutVo {
         this.identity = identity;
         this.articleOutName = articleOutName;
         this.expectedTime = expectedTime;
+        this.applicantDate = applicantDate;
     }
 }
