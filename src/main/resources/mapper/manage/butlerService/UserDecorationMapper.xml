@@ -72,6 +72,30 @@
                 and ud.status = #{status}
             </if>
         </where>
+        <if test="expectedBeginSort == 1">
+            order by ud.expected_begin DESC
+        </if>
+        <if test="expectedBeginSort == 2">
+            order by ud.expected_begin
+        </if>
+        <if test="expectedEndSort == 1">
+            order by ud.expected_end DESC
+        </if>
+        <if test="expectedEndSort == 2">
+            order by ud.expected_end
+        </if>
+        <if test="actualBeginSort == 1">
+            order by ud.actual_begin DESC
+        </if>
+        <if test="actualBeginSort == 2">
+            order by ud.actual_begin
+        </if>
+        <if test="actualEndSort == 1">
+            order by ud.actual_end DESC
+        </if>
+        <if test="actualEndSort == 2">
+            order by ud.actual_end
+        </if>
     </select>
 
     <select id="decorationPersonnelList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationPersonnel">

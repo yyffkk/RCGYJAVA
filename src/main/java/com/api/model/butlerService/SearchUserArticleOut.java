@@ -63,6 +63,14 @@ public class SearchUserArticleOut {
      * 状态(1.待出门，2.已出门，3.驳回申请)
      */
     private Integer status;
+    /**
+     * 预计出门时间排序（1.降序，2.升序）
+     */
+    private Integer expectedTimeSort;
+    /**
+     * 实际出门时间排序（1.降序，2.升序）
+     */
+    private Integer actualTimeSort;
 
     @Override
     public String toString() {
@@ -81,6 +89,8 @@ public class SearchUserArticleOut {
                 ", unitNo=" + unitNo +
                 ", buildingNo=" + buildingNo +
                 ", status=" + status +
+                ", expectedTimeSort=" + expectedTimeSort +
+                ", actualTimeSort=" + actualTimeSort +
                 '}';
     }
 
@@ -196,10 +206,26 @@ public class SearchUserArticleOut {
         this.status = status;
     }
 
+    public Integer getExpectedTimeSort() {
+        return expectedTimeSort;
+    }
+
+    public void setExpectedTimeSort(Integer expectedTimeSort) {
+        this.expectedTimeSort = expectedTimeSort;
+    }
+
+    public Integer getActualTimeSort() {
+        return actualTimeSort;
+    }
+
+    public void setActualTimeSort(Integer actualTimeSort) {
+        this.actualTimeSort = actualTimeSort;
+    }
+
     public SearchUserArticleOut() {
     }
 
-    public SearchUserArticleOut(int pageNum, int size, String roomName, Integer export, String applicantName, String applicantTel, Date actualTimeStart, Date actualTimeEnd, String name, String[] names, String roomNumber, Integer unitNo, Integer buildingNo, Integer status) {
+    public SearchUserArticleOut(int pageNum, int size, String roomName, Integer export, String applicantName, String applicantTel, Date actualTimeStart, Date actualTimeEnd, String name, String[] names, String roomNumber, Integer unitNo, Integer buildingNo, Integer status, Integer expectedTimeSort, Integer actualTimeSort) {
         this.pageNum = pageNum;
         this.size = size;
         this.roomName = roomName;
@@ -214,5 +240,7 @@ public class SearchUserArticleOut {
         this.unitNo = unitNo;
         this.buildingNo = buildingNo;
         this.status = status;
+        this.expectedTimeSort = expectedTimeSort;
+        this.actualTimeSort = actualTimeSort;
     }
 }

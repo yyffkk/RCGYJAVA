@@ -13,6 +13,7 @@ import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFindByIdRepair;
 import com.api.vo.butlerService.VoRepair;
 import com.api.vo.butlerService.VoReportRepair;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -165,7 +166,13 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
 
     @Override
     public VoFindByIdRepair findById(Integer id) {
-        return sysReportRepairDao.findById(id);
+        VoFindByIdRepair byId = sysReportRepairDao.findById(id);
+        if (byId != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", id, "repairImg");
+            byId.setImgUrls(imgByDate);
+        }
+        return byId;
     }
 
     @Override

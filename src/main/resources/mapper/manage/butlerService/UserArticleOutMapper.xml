@@ -50,6 +50,18 @@
             </if>
         </where>
         group by uao.id
+        <if test="expectedTimeSort == 1">
+            order by uao.expected_time DESC
+        </if>
+        <if test="expectedTimeSort == 2">
+            order by uao.expected_time
+        </if>
+        <if test="actualTimeSort == 1">
+            order by uao.actual_time DESC
+        </if>
+        <if test="actualTimeSort == 2">
+            order by uao.actual_time
+        </if>
     </select>
 
     <delete id="delete" parameterType="java.lang.Integer">

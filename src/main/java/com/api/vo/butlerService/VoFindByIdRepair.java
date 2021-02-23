@@ -1,6 +1,9 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 报事报修 Vo findById 回显
@@ -46,6 +49,10 @@ public class VoFindByIdRepair {
      * 录单时间
      */
     private Date createDate;
+    /**
+     * 照片资源集合
+     */
+    private List<VoResourcesImg> imgUrls;
 
     @Override
     public String toString() {
@@ -60,6 +67,7 @@ public class VoFindByIdRepair {
                 ", froms=" + froms +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
+                ", imgUrls=" + imgUrls +
                 '}';
     }
 
@@ -143,10 +151,18 @@ public class VoFindByIdRepair {
         this.createDate = createDate;
     }
 
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public VoFindByIdRepair() {
     }
 
-    public VoFindByIdRepair(Integer id, Integer type, String reportDetail, Integer repairman, String repairName, String tel, Date repairDate, Integer froms, String createName, Date createDate) {
+    public VoFindByIdRepair(Integer id, Integer type, String reportDetail, Integer repairman, String repairName, String tel, Date repairDate, Integer froms, String createName, Date createDate, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.type = type;
         this.reportDetail = reportDetail;
@@ -157,5 +173,6 @@ public class VoFindByIdRepair {
         this.froms = froms;
         this.createName = createName;
         this.createDate = createDate;
+        this.imgUrls = imgUrls;
     }
 }

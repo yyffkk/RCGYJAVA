@@ -90,6 +90,22 @@ public class SearchUserDecoration {
      * 房间号
      */
     private String roomNumber;
+    /**
+     * 预计开始时间排序(1.降序，2.升序)
+     */
+    private Integer expectedBeginSort;
+    /**
+     * 预计结束时间排序(1.降序，2.升序)
+     */
+    private Integer expectedEndSort;
+    /**
+     * 实际开始时间排序(1.降序，2.升序)
+     */
+    private Integer actualBeginSort;
+    /**
+     * 实际结束时间排序(1.降序，2.升序)
+     */
+    private Integer actualEndSort;
 
     @Override
     public String toString() {
@@ -115,6 +131,10 @@ public class SearchUserDecoration {
                 ", buildingNo=" + buildingNo +
                 ", unitNo=" + unitNo +
                 ", roomNumber='" + roomNumber + '\'' +
+                ", expectedBeginSort=" + expectedBeginSort +
+                ", expectedEndSort=" + expectedEndSort +
+                ", actualBeginSort=" + actualBeginSort +
+                ", actualEndSort=" + actualEndSort +
                 '}';
     }
 
@@ -286,10 +306,42 @@ public class SearchUserDecoration {
         this.roomNumber = roomNumber;
     }
 
+    public Integer getExpectedBeginSort() {
+        return expectedBeginSort;
+    }
+
+    public void setExpectedBeginSort(Integer expectedBeginSort) {
+        this.expectedBeginSort = expectedBeginSort;
+    }
+
+    public Integer getExpectedEndSort() {
+        return expectedEndSort;
+    }
+
+    public void setExpectedEndSort(Integer expectedEndSort) {
+        this.expectedEndSort = expectedEndSort;
+    }
+
+    public Integer getActualBeginSort() {
+        return actualBeginSort;
+    }
+
+    public void setActualBeginSort(Integer actualBeginSort) {
+        this.actualBeginSort = actualBeginSort;
+    }
+
+    public Integer getActualEndSort() {
+        return actualEndSort;
+    }
+
+    public void setActualEndSort(Integer actualEndSort) {
+        this.actualEndSort = actualEndSort;
+    }
+
     public SearchUserDecoration() {
     }
 
-    public SearchUserDecoration(Integer pageNum, Integer size, String roomName, String residentName, String residentTel, Date expectedBegin, Date expectedEnd, String emergencyContact, String tel, Date actualBegin, Date actualEnd, Integer approveResults, String approveName, String constructionUnit, String constructionName, String constructionTel, Integer isQualified, Integer status, Integer buildingNo, Integer unitNo, String roomNumber) {
+    public SearchUserDecoration(Integer pageNum, Integer size, String roomName, String residentName, String residentTel, Date expectedBegin, Date expectedEnd, String emergencyContact, String tel, Date actualBegin, Date actualEnd, Integer approveResults, String approveName, String constructionUnit, String constructionName, String constructionTel, Integer isQualified, Integer status, Integer buildingNo, Integer unitNo, String roomNumber, Integer expectedBeginSort, Integer expectedEndSort, Integer actualBeginSort, Integer actualEndSort) {
         this.pageNum = pageNum;
         this.size = size;
         this.roomName = roomName;
@@ -311,5 +363,9 @@ public class SearchUserDecoration {
         this.buildingNo = buildingNo;
         this.unitNo = unitNo;
         this.roomNumber = roomNumber;
+        this.expectedBeginSort = expectedBeginSort;
+        this.expectedEndSort = expectedEndSort;
+        this.actualBeginSort = actualBeginSort;
+        this.actualEndSort = actualEndSort;
     }
 }

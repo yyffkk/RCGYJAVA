@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 装修管理
+ */
 @RestController
 @RequestMapping("manage/userDecoration")
 public class UserDecorationController extends ShiroExceptions {
