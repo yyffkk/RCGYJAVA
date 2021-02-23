@@ -12,12 +12,17 @@ public class VoWorkOrderType {
      * 工单大类名称
      */
     private String name;
+    /**
+     * 备注
+     */
+    private String remake;
 
     @Override
     public String toString() {
         return "VoWorkOrderType{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", remake='" + remake + '\'' +
                 '}';
     }
 
@@ -37,11 +42,20 @@ public class VoWorkOrderType {
         this.name = name;
     }
 
+    public String getRemake() {
+        return remake;
+    }
+
+    public void setRemake(String remake) {
+        this.remake = remake;
+    }
+
     public VoWorkOrderType() {
     }
 
-    public VoWorkOrderType(Integer id, String name) {
+    public VoWorkOrderType(Integer id, String name, String remake) {
         this.id = id;
         this.name = name;
+        this.remake = remake;
     }
 }

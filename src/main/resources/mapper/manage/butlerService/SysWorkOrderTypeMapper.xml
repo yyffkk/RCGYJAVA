@@ -8,15 +8,24 @@
     </select>
 
     <insert id="insert" parameterType="com.api.model.butlerService.SysWorkOrderType">
-        insert into sys_work_order_type(
+        insert into
+        <trim prefix="sys_work_order_type(" suffix=")" suffixOverrides=",">
             name,
             create_id,
-            create_date
-        ) values (
+            create_date,
+            <if test="remake != null and remake != ''">
+                remake,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             #{name},
             #{createId},
-            #{createDate}
-        )
+            #{createDate},
+            <if test="remake != null and remake != ''">
+                #{remake},
+            </if>
+        </trim>
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoWorkOrderType">
@@ -28,6 +37,9 @@
         <set>
             <if test="name != null and  name != ''">
                 name = #{name},
+            </if>
+            <if test="remake != null and remake != ''">
+                remake = #{remake},
             </if>
             modify_id = #{modifyId},
             modify_date = #{modifyDate}

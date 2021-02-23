@@ -30,6 +30,10 @@ public class SysWorkOrderType {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 备注
+     */
+    private String remake;
 
     @Override
     public String toString() {
@@ -40,6 +44,7 @@ public class SysWorkOrderType {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", remake='" + remake + '\'' +
                 '}';
     }
 
@@ -91,15 +96,24 @@ public class SysWorkOrderType {
         this.modifyDate = modifyDate;
     }
 
+    public String getRemake() {
+        return remake;
+    }
+
+    public void setRemake(String remake) {
+        this.remake = remake;
+    }
+
     public SysWorkOrderType() {
     }
 
-    public SysWorkOrderType(Integer id, String name, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public SysWorkOrderType(Integer id, String name, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String remake) {
         this.id = id;
         this.name = name;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.remake = remake;
     }
 }
