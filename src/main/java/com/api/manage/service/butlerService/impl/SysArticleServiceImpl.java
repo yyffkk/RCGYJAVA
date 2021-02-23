@@ -48,6 +48,9 @@ public class SysArticleServiceImpl implements SysArticleService {
                 int num = borrowDao.countBorrowNum(voArticle.getId());
                 //库存 = 数量 - 借取数
                 voArticle.setStock(voArticle.getQuantity() - num);
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticle", voArticle.getId(), "articleImg");
+                voArticle.setImgUrls(imgByDate);
             }
         }
         return list;

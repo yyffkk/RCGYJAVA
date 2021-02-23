@@ -1,5 +1,9 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
+import java.util.List;
+
 /**
  * 查询物品管理信息Vo list 回显
  */
@@ -20,6 +24,10 @@ public class VoArticle {
      * 库存
      */
     private Integer stock;
+    /**
+     * 照片资源集合
+     */
+    private List<VoResourcesImg> imgUrls;
 
     @Override
     public String toString() {
@@ -28,6 +36,7 @@ public class VoArticle {
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +
                 ", stock=" + stock +
+                ", imgUrls=" + imgUrls +
                 '}';
     }
 
@@ -63,13 +72,22 @@ public class VoArticle {
         this.stock = stock;
     }
 
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public VoArticle() {
     }
 
-    public VoArticle(Integer id, String name, Integer quantity, Integer stock) {
+    public VoArticle(Integer id, String name, Integer quantity, Integer stock, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.stock = stock;
+        this.imgUrls = imgUrls;
     }
 }
