@@ -5,7 +5,9 @@ import com.api.model.butlerService.SearchUserArticleOut;
 import com.api.model.butlerService.UserArticleOut;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.UserArticleOutService;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoUserArticleOut;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -58,7 +60,9 @@ public class UserArticleOutServiceImpl implements UserArticleOutService {
         List<VoUserArticleOut> list = userArticleOutDao.list(searchUserArticleOut);
         //处理显示的roomName信息
         for (VoUserArticleOut voUserArticleOut : list) {
-            voUserArticleOut.setRoomName(voUserArticleOut.getBuildingNo()+"-"+voUserArticleOut.getUnitNo()+"-"+voUserArticleOut.getRoomNumber());
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("userArticleOut", voUserArticleOut.getId(), "goodsImg");
+            voUserArticleOut.setGoodsImgUrls(imgByDate);
         }
         return list;
     }

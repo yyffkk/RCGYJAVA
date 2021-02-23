@@ -1,6 +1,9 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 物品出门Vo list
@@ -67,17 +70,9 @@ public class VoUserArticleOut {
      */
     private String remarks;
     /**
-     * 房间号
+     * 物品照片资源集合
      */
-    private String roomNumber;
-    /**
-     * 单元号
-     */
-    private Integer unitNo;
-    /**
-     * 楼栋编号
-     */
-    private Integer buildingNo;
+    private List<VoResourcesImg> goodsImgUrls;
 
     @Override
     public String toString() {
@@ -97,9 +92,7 @@ public class VoUserArticleOut {
                 ", export=" + export +
                 ", status=" + status +
                 ", remarks='" + remarks + '\'' +
-                ", roomNumber='" + roomNumber + '\'' +
-                ", unitNo=" + unitNo +
-                ", buildingNo=" + buildingNo +
+                ", goodsImgUrls=" + goodsImgUrls +
                 '}';
     }
 
@@ -223,34 +216,18 @@ public class VoUserArticleOut {
         this.remarks = remarks;
     }
 
-    public String getRoomNumber() {
-        return roomNumber;
+    public List<VoResourcesImg> getGoodsImgUrls() {
+        return goodsImgUrls;
     }
 
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public Integer getUnitNo() {
-        return unitNo;
-    }
-
-    public void setUnitNo(Integer unitNo) {
-        this.unitNo = unitNo;
-    }
-
-    public Integer getBuildingNo() {
-        return buildingNo;
-    }
-
-    public void setBuildingNo(Integer buildingNo) {
-        this.buildingNo = buildingNo;
+    public void setGoodsImgUrls(List<VoResourcesImg> goodsImgUrls) {
+        this.goodsImgUrls = goodsImgUrls;
     }
 
     public VoUserArticleOut() {
     }
 
-    public VoUserArticleOut(Integer id, String roomName, Integer estateStatus, String residentName, String residentTel, String name, Integer weight, String applicantName, String applicantTel, Integer approach, Date expectedTime, Date actualTime, Integer export, Integer status, String remarks, String roomNumber, Integer unitNo, Integer buildingNo) {
+    public VoUserArticleOut(Integer id, String roomName, Integer estateStatus, String residentName, String residentTel, String name, Integer weight, String applicantName, String applicantTel, Integer approach, Date expectedTime, Date actualTime, Integer export, Integer status, String remarks, List<VoResourcesImg> goodsImgUrls) {
         this.id = id;
         this.roomName = roomName;
         this.estateStatus = estateStatus;
@@ -266,8 +243,6 @@ public class VoUserArticleOut {
         this.export = export;
         this.status = status;
         this.remarks = remarks;
-        this.roomNumber = roomNumber;
-        this.unitNo = unitNo;
-        this.buildingNo = buildingNo;
+        this.goodsImgUrls = goodsImgUrls;
     }
 }

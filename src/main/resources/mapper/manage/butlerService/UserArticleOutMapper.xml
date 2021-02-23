@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.UserArticleOutDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchUserArticleOut" resultType="com.api.vo.butlerService.VoUserArticleOut">
-        select cbue.room_number as room_number,cbu.no as unit_no,cb.no as building_no,cbue.status as estate_status,uao.id,uao.name,uao.weight,ur2.name as applicant_name,ur2.tel as applicant_tel
+        select concat(cb.no,"-",cbu.no,"-",cbue.room_number) as room_name,cbue.status as estate_status,uao.id,uao.name,uao.weight,ur2.name as applicant_name,ur2.tel as applicant_tel
         ,uao.approach,uao.expected_time,uao.actual_time,uao.export,uao.status,uao.remarks,group_concat(ur1.name) as resident_name,group_concat(ur1.tel) as resident_tel
         from user_article_out as uao,cpm_building_unit_estate as cbue,user_resident as ur2,cpm_building_unit as cbu,cpm_building as cb,cpm_resident_estate as cre,user_resident as ur1
             <where>
