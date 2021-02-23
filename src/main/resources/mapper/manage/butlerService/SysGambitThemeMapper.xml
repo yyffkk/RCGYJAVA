@@ -6,7 +6,7 @@
     <select id="list" parameterType="com.api.model.butlerService.SearchGambitTheme" resultType="com.api.vo.butlerService.VoGambitTheme">
         select a.*
         from (
-            select sg.id,sg.title,sg.summary,sg.content as gambit_content,sg.is_public,sg.is_rating,sg.create_date as gambit_create_date,
+            select sgt.id,sg.title,sg.summary,sg.content as gambit_content,sg.is_public,sg.is_rating,sg.create_date as gambit_create_date,
             (
                 case sg.user_type
                 when 1 then (select ur.name from user_resident as ur where ur.id = sg.create_id)
