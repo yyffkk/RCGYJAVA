@@ -70,7 +70,7 @@ public class UserResidentController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/findByIdOne")
-//    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
     public Map<String,Object> findByIdOne(Integer id){
         return userResidentService.findByIdOne(id);
     }
@@ -169,6 +169,22 @@ public class UserResidentController extends ShiroExceptions {
     @GetMapping("/findAll")
     public List<VoFindAll> findAll(){
         return userResidentService.findAll();
+    }
+
+
+    /**
+     * 根据名字模糊查询查询住户的id和name
+     */
+    @GetMapping("/findAllBySearch")
+    public Map<String,Object> findNameBySearch(SearchFindName searchFindName){
+        PageHelper.startPage(searchFindName.getPageNum(),searchFindName.getSize());
+        List<VoFindAll> voFindAllList = userResidentService.findNameBySearch(searchFindName);
+        PageInfo<VoFindAll> pageInfo = new PageInfo<>(voFindAllList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 

@@ -212,6 +212,17 @@
         select id as value,name as label from user_resident where type = 1 or type = 3
     </select>
 
+    <select id="findNameBySearch" parameterType="com.api.model.basicArchives.SearchFindName" resultType="com.api.vo.basicArchives.VoFindAll">
+        select T.* from
+        (select id as value,name as label from user_resident
+        where type = 1 or type = 3) as T
+        <where>
+            <if test="name != null and name != ''">
+                and T.label like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
     <!--   根据住户手机号查询住户信息-->
     <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number

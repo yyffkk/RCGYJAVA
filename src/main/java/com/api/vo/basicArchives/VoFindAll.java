@@ -2,11 +2,11 @@ package com.api.vo.basicArchives;
 
 public class VoFindAll {
     /**
-     * 房产id
+     * id
      */
     private Integer value;
     /**
-     * 房产name
+     * name
      */
     private String label;
 

@@ -114,6 +114,14 @@ public interface UserResidentDao {
      */
     List<VoFindAll> findAll();
 
+
+    /**
+     * 根据名字模糊查询查询住户的id和name
+     * @param searchFindName 搜索条件
+     * @return 住户的id和name
+     */
+    List<VoFindAll> findNameBySearch(SearchFindName searchFindName);
+
     /**
      * 根据业主手机号和证件号码查询业主信息 【住户表-业主】
      * @param userResident 业主信息
@@ -141,4 +149,5 @@ public interface UserResidentDao {
      * @return 住户房产关联表信息
      */
     CpmResidentEstate findByEstateIdAndResidentId(ResidentIdAndEstateId residentIdAndEstateId);
+
 }
