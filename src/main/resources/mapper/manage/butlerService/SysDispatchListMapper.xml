@@ -10,7 +10,7 @@
         ,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no
         from sys_work_order_type as swot,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_dispatch_list as sdl,sys_report_repair as srr left join user_resident as ur
         on ur.id = srr.repairman
-        where sdl.work_order_type = swot.id and srr.dispatch_list_id = sdl.id and srr.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id =cb.id
+        where sdl.work_order_type = swot.id and srr.dispatch_list_id = sdl.id and srr.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id =cb.id and sdl.sys_delete =1
         ) as a
         LEFT JOIN sys_dispatch_list_detail as sdld
         on sdld.dispatch_list_id = a.id left JOIN sys_user as su1 on sdld.operator = su1.id LEFT JOIN sys_user as su2 on sdld.create_id = su2.id

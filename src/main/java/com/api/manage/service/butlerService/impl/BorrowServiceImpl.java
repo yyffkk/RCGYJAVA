@@ -9,6 +9,7 @@ import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.BorrowService;
+import com.api.util.JiguangUtil;
 import com.api.vo.butlerService.VoBorrow;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -92,6 +93,7 @@ public class BorrowServiceImpl implements BorrowService {
             if (i <= 0){
                 throw new RuntimeException("添加消息接收列表失败");
             }
+            JiguangUtil.push(String.valueOf(sysArticleBorrow.getCreateId()),"借还提醒");
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
