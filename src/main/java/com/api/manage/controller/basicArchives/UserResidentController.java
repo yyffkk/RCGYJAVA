@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 业主管理
+ */
 @RequestMapping("manage/userResident")
 @RestController
 public class UserResidentController extends ShiroExceptions {

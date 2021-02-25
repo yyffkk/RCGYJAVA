@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 车位管理
+ */
 @RequestMapping("manage/cpmParkingSpace")
 @RestController
 public class CpmParkingSpaceController extends ShiroExceptions {

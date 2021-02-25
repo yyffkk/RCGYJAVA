@@ -2,11 +2,9 @@ package com.api.manage.dao.butlerService;
 
 import com.api.model.butlerService.SearchUserDecoration;
 import com.api.model.butlerService.UserDecorationAccessCard;
+import com.api.model.butlerService.UserDecorationTrackChecksContent;
 import com.api.model.butlerService.UserDecorationTrackRecordDetail;
-import com.api.vo.butlerService.VoUserDecoration;
-import com.api.vo.butlerService.VoUserDecorationPersonnel;
-import com.api.vo.butlerService.VoUserDecorationTrackRecord;
-import com.api.vo.butlerService.VoUserDecorationTrackRecordDetail;
+import com.api.vo.butlerService.*;
 
 import java.util.List;
 
@@ -128,4 +126,24 @@ public interface UserDecorationDao {
      * @return 装修id
      */
     Integer findIdByEstateId(Integer buildingUnitEstateId);
+
+    /**
+     * 查询所有的检查内容信息
+     * @return 检查内容信息集合
+     */
+    List<VoUserDecorationTrackChecksContent> findAllChecksContent();
+
+    /**
+     * 添加检查内容信息
+     * @param trackChecksContent 装修跟踪检查内容
+     * @return 影响行数
+     */
+    int insertCheckContent(UserDecorationTrackChecksContent trackChecksContent);
+
+    /**
+     * 修改检查内容信息
+     * @param trackChecksContent 装修跟踪检查内容
+     * @return 影响行数
+     */
+    int updateCheckContent(UserDecorationTrackChecksContent trackChecksContent);
 }

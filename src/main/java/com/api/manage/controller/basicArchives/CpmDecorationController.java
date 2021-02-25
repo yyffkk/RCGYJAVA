@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 装修管理（已作废，数据库没有该表）
+ */
 @RequestMapping("manage//decoration")
 @RestController
 public class CpmDecorationController extends ShiroExceptions {

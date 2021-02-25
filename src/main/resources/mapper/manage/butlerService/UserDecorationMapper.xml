@@ -169,4 +169,34 @@
         select id from user_decoration where building_unit_estate_id = #{id} and status = 1
     </select>
 
+    <select id="findAllChecksContent" resultType="com.api.vo.butlerService.VoUserDecorationTrackChecksContent">
+        select id,name,remake from user_decoration_track_checks_content
+    </select>
+
+    <insert id="insertCheckContent" parameterType="com.api.model.butlerService.UserDecorationTrackChecksContent">
+        insert into user_decoration_track_checks_content(
+            name,
+            remake,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{remake},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="updateCheckContent" parameterType="com.api.model.butlerService.UserDecorationTrackChecksContent">
+        update user_decoration_track_checks_content
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

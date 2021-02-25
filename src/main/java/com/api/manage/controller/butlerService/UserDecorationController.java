@@ -4,6 +4,7 @@ import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.QRCodeContent;
 import com.api.model.butlerService.SearchUserDecoration;
 import com.api.model.butlerService.UserDecorationPersonnel;
+import com.api.model.butlerService.UserDecorationTrackChecksContent;
 import com.api.model.resources.ResourcesImg;
 import com.api.manage.service.butlerService.UserDecorationService;
 import com.api.manage.service.resources.ResourcesImgService;
@@ -297,5 +298,34 @@ public class UserDecorationController extends ShiroExceptions {
         return userDecorationService.countPerformed();
     }
 
+
+    /**
+     * 查询所有的检查内容信息
+     * @return map
+     */
+    @GetMapping("/findAllChecksContent")
+    public Map<String,Object> findAllChecksContent(){
+        return userDecorationService.findAllChecksContent();
+    }
+
+    /**
+     * 添加检查内容信息
+     * @param trackChecksContent 装修跟踪检查内容
+     * @return map
+     */
+    @PostMapping("/insertCheckContent")
+    public Map<String,Object> insertCheckContent(@RequestBody UserDecorationTrackChecksContent trackChecksContent){
+        return userDecorationService.insertCheckContent(trackChecksContent);
+    }
+
+    /**
+     * 修改检查内容信息
+     * @param trackChecksContent 装修跟踪检查内容
+     * @return map
+     */
+    @PostMapping("/updateCheckContent")
+    public Map<String,Object> updateCheckContent(@RequestBody UserDecorationTrackChecksContent trackChecksContent){
+        return userDecorationService.updateCheckContent(trackChecksContent);
+    }
 
 }

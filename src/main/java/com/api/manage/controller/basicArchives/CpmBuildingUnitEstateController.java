@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 房产管理
+ */
 @RequestMapping("manage/cpmBuildingUnitEstate")
 @RestController
 public class CpmBuildingUnitEstateController extends ShiroExceptions {
