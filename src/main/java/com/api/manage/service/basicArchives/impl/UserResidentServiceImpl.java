@@ -3,11 +3,8 @@ package com.api.manage.service.basicArchives.impl;
 import com.api.manage.dao.basicArchives.*;
 import com.api.model.basicArchives.*;
 import com.api.model.businessManagement.SysUser;
-import com.api.vo.basicArchives.VoEffectiveTimes;
-import com.api.vo.basicArchives.VoFindAll;
-import com.api.vo.basicArchives.VoRelatives;
+import com.api.vo.basicArchives.*;
 import com.api.manage.service.basicArchives.UserResidentService;
-import com.api.vo.basicArchives.VoUserResident;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -540,6 +537,11 @@ public class UserResidentServiceImpl implements UserResidentService {
     @Override
     public List<VoFindAll> findNameBySearch(SearchFindName searchFindName) {
         return userResidentDao.findNameBySearch(searchFindName);
+    }
+
+    @Override
+    public List<VoFindResidentByName> findResidentNameBySearch(SearchFindName searchFindName) {
+        return userResidentDao.findResidentNameBySearch(searchFindName);
     }
 
 

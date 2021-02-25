@@ -3,6 +3,7 @@ package com.api.manage.controller.basicArchives;
 import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.basicArchives.*;
 import com.api.vo.basicArchives.VoFindAll;
+import com.api.vo.basicArchives.VoFindResidentByName;
 import com.api.vo.basicArchives.VoIds;
 import com.api.manage.service.basicArchives.UserResidentService;
 import com.api.vo.basicArchives.VoUserResident;
@@ -187,7 +188,20 @@ public class UserResidentController extends ShiroExceptions {
         return map;
     }
 
-
+    /**
+     * 根据名字模糊查询查询业主的id和name及房产相关信息
+     */
+    @GetMapping("/findResidentNameBySearch")
+    public Map<String,Object> findResidentNameBySearch(SearchFindName searchFindName){
+        PageHelper.startPage(searchFindName.getPageNum(),searchFindName.getSize());
+        List<VoFindResidentByName> voFindResidentByNameList = userResidentService.findResidentNameBySearch(searchFindName);
+        PageInfo<VoFindResidentByName> pageInfo = new PageInfo<>(voFindResidentByNameList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 
 
 }
