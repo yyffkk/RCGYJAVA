@@ -10,11 +10,13 @@
     <insert id="insert" parameterType="com.api.model.shoppingCenter.Category">
         insert into shop_category(
             parent_id,
+            id_path,
             name,
             create_id,
             create_date
         )values (
             #{parentId},
+            #{idPath},
             #{name},
             #{createId},
             #{createDate}
@@ -27,6 +29,9 @@
             <if test="parentId != null">
                 parent_id = #{parentId},
             </if>
+            <if test="idPath != null and idPath != ''">
+                id_path = #{idPath},
+            </if>
             <if test="name != null and name != ''">
                 name = #{name},
             </if>
@@ -38,5 +43,9 @@
 
     <delete id="delete" parameterType="java.lang.Integer">
         delete from shop_category where id = #{categoryId}
+    </delete>
+
+    <delete id="deleteSon" parameterType="java.lang.Integer">
+        delete from shop_category where id_path like concat('%::',#{categoryId},'::%')
     </delete>
 </mapper>

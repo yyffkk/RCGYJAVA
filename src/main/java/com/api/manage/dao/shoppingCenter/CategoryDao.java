@@ -33,4 +33,11 @@ public interface CategoryDao {
      * @return 影响行数
      */
     int delete(Integer categoryId);
+
+    /**
+     * 删除子类目信息
+     * @param categoryId 类目主键Id
+     * @return 影响行数
+     */
+    int deleteSon(Integer categoryId);
 }

@@ -78,13 +78,16 @@ public class CategoryServiceImpl implements CategoryService {
     public Map<String, Object> delete(Integer categoryId) {
         map = new HashMap<>();
         try {
-            //判断该类目是否存在商品
+            //根据商品分类全路径字段判断该类目存不存在商品信息
 
-            //判断该类目是否存在品牌？？
+            //根据商品分类全路径字段判断该类目存不存在品牌信息？？
 
-            if (categoryId != 0){
 
-            }
+            //存在则不能删除，不存在则删除
+
+
+            //删除子类目
+            categoryDao.deleteSon(categoryId);
 
             int delete = categoryDao.delete(categoryId);
             if (delete < 0){
