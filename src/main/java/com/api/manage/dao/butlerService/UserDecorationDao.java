@@ -1,9 +1,6 @@
 package com.api.manage.dao.butlerService;
 
-import com.api.model.butlerService.SearchUserDecoration;
-import com.api.model.butlerService.UserDecorationAccessCard;
-import com.api.model.butlerService.UserDecorationTrackChecksContent;
-import com.api.model.butlerService.UserDecorationTrackRecordDetail;
+import com.api.model.butlerService.*;
 import com.api.vo.butlerService.*;
 
 import java.util.List;
@@ -146,4 +143,38 @@ public interface UserDecorationDao {
      * @return 影响行数
      */
     int updateCheckContent(UserDecorationTrackChecksContent trackChecksContent);
+
+    /**
+     * 删除检查内容信息
+     * @param checkContentId 检查内容主键id
+     * @return 影响行数
+     */
+    int deleteCheckContent(Integer checkContentId);
+
+    /**
+     * 查询所有的押金管理信息
+     * @return 押金管理信息集合
+     */
+    List<VoUserDecorationDeposit> findAllDeposit();
+
+    /**
+     * 添加押金管理信息
+     * @param userDecorationDeposit 装修押金管理信息
+     * @return 影响行数
+     */
+    int insertDeposit(UserDecorationDeposit userDecorationDeposit);
+
+    /**
+     * 修改押金管理信息
+     * @param userDecorationDeposit 装修押金管理信息
+     * @return 影响行数
+     */
+    int updateDeposit(UserDecorationDeposit userDecorationDeposit);
+
+    /**
+     * 删除押金管理信息
+     * @param depositId 装修押金管理信息
+     * @return 影响行数
+     */
+    int deleteDeposit(Integer depositId);
 }

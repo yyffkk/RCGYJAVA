@@ -1,10 +1,7 @@
 package com.api.manage.controller.butlerService;
 
 import com.api.manage.shiro.ShiroExceptions;
-import com.api.model.butlerService.QRCodeContent;
-import com.api.model.butlerService.SearchUserDecoration;
-import com.api.model.butlerService.UserDecorationPersonnel;
-import com.api.model.butlerService.UserDecorationTrackChecksContent;
+import com.api.model.butlerService.*;
 import com.api.model.resources.ResourcesImg;
 import com.api.manage.service.butlerService.UserDecorationService;
 import com.api.manage.service.resources.ResourcesImgService;
@@ -327,5 +324,55 @@ public class UserDecorationController extends ShiroExceptions {
     public Map<String,Object> updateCheckContent(@RequestBody UserDecorationTrackChecksContent trackChecksContent){
         return userDecorationService.updateCheckContent(trackChecksContent);
     }
+
+    /**
+     * 删除检查内容信息
+     * @param checkContentId 检查内容主键id
+     * @return map
+     */
+    @GetMapping("/deleteCheckContent")
+    public Map<String,Object> deleteCheckContent(Integer checkContentId){
+        return userDecorationService.deleteCheckContent(checkContentId);
+    }
+
+    /**
+     * 查询所有的押金管理信息
+     * @return map
+     */
+    @GetMapping("/findAllDeposit")
+    public Map<String,Object> findAllDeposit(){
+        return userDecorationService.findAllDeposit();
+    }
+
+    /**
+     * 添加押金管理信息
+     * @param userDecorationDeposit 装修押金管理信息
+     * @return map
+     */
+    @PostMapping("/insertDeposit")
+    public Map<String,Object> insertDeposit(@RequestBody UserDecorationDeposit userDecorationDeposit){
+        return userDecorationService.insertDeposit(userDecorationDeposit);
+    }
+
+    /**
+     * 修改押金管理信息
+     * @param userDecorationDeposit 装修押金管理信息
+     * @return map
+     */
+    @PostMapping("/updateDeposit")
+    public Map<String,Object> updateDeposit(@RequestBody UserDecorationDeposit userDecorationDeposit){
+        return userDecorationService.updateDeposit(userDecorationDeposit);
+    }
+
+    /**
+     * 删除押金管理信息
+     * @param depositId 押金管理主键id
+     * @return map
+     */
+    @GetMapping("/deleteDeposit")
+    public Map<String,Object> deleteDeposit(Integer depositId){
+        return userDecorationService.deleteDeposit(depositId);
+    }
+
 
 }

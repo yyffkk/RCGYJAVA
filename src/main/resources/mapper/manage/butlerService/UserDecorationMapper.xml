@@ -199,4 +199,49 @@
         where id = #{id}
     </update>
 
+    <delete id="deleteCheckContent" parameterType="java.lang.Integer">
+        delete from user_decoration_track_checks_content where id = #{checkContentId}
+    </delete>
+
+    <select id="findAllDeposit" resultType="com.api.vo.butlerService.VoUserDecorationDeposit">
+        select id,name,price from user_decoration_deposit_management
+    </select>
+
+    <insert id="insertDeposit" parameterType="com.api.model.butlerService.UserDecorationDeposit">
+        insert into user_decoration_deposit_management(
+            name,
+            price,
+            create_id,
+            create_date,
+            modify_id,
+            modify_date
+        )values (
+            #{name},
+            #{price},
+            #{createId},
+            #{createDate},
+            #{modifyId},
+            #{modifyDate}
+        )
+    </insert>
+
+    <update id="updateDeposit" parameterType="com.api.model.butlerService.UserDecorationDeposit">
+        update user_decoration_deposit_management
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDeposit" parameterType="java.lang.Integer">
+        delete from user_decoration_deposit_management where id = #{depositId}
+    </delete>
+
 </mapper>

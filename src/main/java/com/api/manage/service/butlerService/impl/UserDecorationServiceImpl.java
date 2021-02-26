@@ -371,4 +371,78 @@ public class UserDecorationServiceImpl implements UserDecorationService {
         }
         return map;
     }
+
+    @Override
+    public Map<String, Object> deleteCheckContent(Integer checkContentId) {
+        map = new HashMap<>();
+        int delete = userDecorationDao.deleteCheckContent(checkContentId);
+        if (delete >0){
+            map.put("message","删除成功");
+            map.put("status",true);
+        }else {
+            map.put("message","删除失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findAllDeposit() {
+        map = new HashMap<>();
+        List<VoUserDecorationDeposit> depositList = userDecorationDao.findAllDeposit();
+        map.put("depositList",depositList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> insertDeposit(UserDecorationDeposit userDecorationDeposit) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        userDecorationDeposit.setCreateId(sysUser.getId());
+        userDecorationDeposit.setCreateDate(new Date());
+        int insert = userDecorationDao.insertDeposit(userDecorationDeposit);
+        if (insert >0){
+            map.put("message","添加成功");
+            map.put("status",true);
+        }else {
+            map.put("message","添加失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updateDeposit(UserDecorationDeposit userDecorationDeposit) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        userDecorationDeposit.setModifyId(sysUser.getId());
+        userDecorationDeposit.setModifyDate(new Date());
+        int update = userDecorationDao.updateDeposit(userDecorationDeposit);
+        if (update >0){
+            map.put("message","修改成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> deleteDeposit(Integer depositId) {
+        map = new HashMap<>();
+        int delete = userDecorationDao.deleteDeposit(depositId);
+        if (delete >0){
+            map.put("message","删除成功");
+            map.put("status",true);
+        }else {
+            map.put("message","删除失败");
+            map.put("status",false);
+        }
+        return map;
+    }
 }
