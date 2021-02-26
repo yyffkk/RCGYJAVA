@@ -1,0 +1,49 @@
+#资源路径【注意一定要'/'结尾,前置路径除外】
+prop:
+  #文件上传前置路径 src/main/resources/static 有文件服务器用这个，没有则注释
+  #    upload: classpath:/static
+
+  #管家服务-咨询建议：新增咨询建议照片上传路径
+  upload-advice: /img/advice/
+  #管家服务-投票管理：新增投票标题照片上传路径
+  upload-vote-title: /img/vote/title/
+  #管家服务-投票管理：新增投票候选人照片上传路径
+  upload-vote-candidate: /img/vote/candidate/
+  #管家服务-社区话题：新增话题照片上传路径
+  upload-gambit: /img/gambit/
+  #管家服务-社区主题明细：新增主题照片上传路径
+  upload-gambit-theme: /img/gambitTheme/
+  #管家服务-物品管理：新增物品信息照片上传路径
+  upload-article: /img/article/
+  #管家服务-物品管理：新增物品信息详情照片上传路径
+  upload-article-detail: /img/articleDetail/
+  #管家服务-报事报修：新增报事报修照片上传路径
+  upload-repair: /img/repair/
+  #管家服务-业委会管理：业委会成员照片上传路径
+  upload-owners-committee: /img/ownersCommittee/
+
+  #运营管理-公告管理：新增公告信息照片上传路径
+  upload-announcement: /img/announcement/
+  #运营管理-公告管理：新增公告信息doc,docx文件上传路径
+  upload-announcement-doc: /doc/announcement/
+  #运营管理-主办方管理：新增主办方信息 营业执照照片上传路径
+  upload-sponsor: /img/sponsor/
+  #运营管理-活动管理：新增活动信息 照片上传路径
+  upload-activity: /img/activity/
+
+  #收费管理-固定金额分摊：固定金额分摊缴纳凭证，照片上传路径
+  upload-voucher: /img/voucher/
+
+  #App-个人资料：头像照片上传路径
+  upload-app-head-sculpture: /img/headSculpture/
+
+  #ButlerApp-个人资料：头像照片上传路径
+  upload-butler-app-head-sculpture: /img/butlerAppHeadSculpture/
+
+
+#极光推送
+jg:
+  #极光app密钥
+  appKey: 6a2c6507e3e8b3187ac1c9f9
+  #极光主密钥
+  masterSecret: fdc1a6df819f7da8096e71ad
