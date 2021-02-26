@@ -34,4 +34,5 @@ public interface UploadService {
 
     Map<String, Object> uploadGambitTheme(MultipartFile file);
 
+    Map<String, Object> uploadDecorationNoticeDoc(MultipartFile file);
 }

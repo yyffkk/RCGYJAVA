@@ -150,5 +150,14 @@ public class UploadController {
         return uploadService.uploadOwnersCommittee(file);
     }
 
+    /**
+     * 上传装修须知doc,docx文件
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadDecorationNoticeDoc")
+    public Map<String,Object> uploadDecorationNoticeDoc(MultipartFile file){
+        return uploadService.uploadDecorationNoticeDoc(file);
+    }
 
 }

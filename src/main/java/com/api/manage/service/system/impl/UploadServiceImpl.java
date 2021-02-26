@@ -32,6 +32,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_ANNOUNCEMENT;
     @Value("${prop.upload-announcement-doc}")
     private String UPLOAD_ANNOUNCEMENT_DOC;
+    @Value("${prop.upload-decoration-notice-doc}")
+    private String UPLOAD_DECORATION_NOTICE_DOC;
     @Value("${prop.upload-sponsor}")
     private String UPLOAD_SPONSOR;
     @Value("${prop.upload-repair}")
@@ -116,6 +118,28 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadGambitTheme(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_GAMBIT_THEME);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadDecorationNoticeDoc(MultipartFile file) {
+        map = new HashMap<>();
+        String url = null;
+        try {
+            UploadUtil uploadUtil = new UploadUtil();
+            url = uploadUtil.uploadDoc(file,UPLOAD_DECORATION_NOTICE_DOC);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            map.put("message",message);
+            map.put("url","");
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","上传成功");
+        map.put("url",url);
+        map.put("status",true);
         return map;
     }
 
