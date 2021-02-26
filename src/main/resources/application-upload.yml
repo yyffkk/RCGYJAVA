@@ -41,9 +41,3 @@ prop:
   upload-butler-app-head-sculpture: /img/butlerAppHeadSculpture/
 
 
-#极光推送
-jg:
-  #极光app密钥
-  appKey: 6a2c6507e3e8b3187ac1c9f9
-  #极光主密钥
-  masterSecret: fdc1a6df819f7da8096e71ad
