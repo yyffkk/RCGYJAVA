@@ -335,44 +335,44 @@ public class UserDecorationController extends ShiroExceptions {
         return userDecorationService.deleteCheckContent(checkContentId);
     }
 
-    /**
-     * 查询所有的押金管理信息
-     * @return map
-     */
-    @GetMapping("/findAllDeposit")
-    public Map<String,Object> findAllDeposit(){
-        return userDecorationService.findAllDeposit();
-    }
-
-    /**
-     * 添加押金管理信息
-     * @param userDecorationDeposit 装修押金管理信息
-     * @return map
-     */
-    @PostMapping("/insertDeposit")
-    public Map<String,Object> insertDeposit(@RequestBody UserDecorationDeposit userDecorationDeposit){
-        return userDecorationService.insertDeposit(userDecorationDeposit);
-    }
-
-    /**
-     * 修改押金管理信息
-     * @param userDecorationDeposit 装修押金管理信息
-     * @return map
-     */
-    @PostMapping("/updateDeposit")
-    public Map<String,Object> updateDeposit(@RequestBody UserDecorationDeposit userDecorationDeposit){
-        return userDecorationService.updateDeposit(userDecorationDeposit);
-    }
-
-    /**
-     * 删除押金管理信息
-     * @param depositId 押金管理主键id
-     * @return map
-     */
-    @GetMapping("/deleteDeposit")
-    public Map<String,Object> deleteDeposit(Integer depositId){
-        return userDecorationService.deleteDeposit(depositId);
-    }
+//    /**
+//     * 查询所有的押金管理信息
+//     * @return map
+//     */
+//    @GetMapping("/findAllDeposit")
+//    public Map<String,Object> findAllDeposit(){
+//        return userDecorationService.findAllDeposit();
+//    }
+//
+//    /**
+//     * 添加押金管理信息
+//     * @param userDecorationDeposit 装修押金管理信息
+//     * @return map
+//     */
+//    @PostMapping("/insertDeposit")
+//    public Map<String,Object> insertDeposit(@RequestBody UserDecorationDeposit userDecorationDeposit){
+//        return userDecorationService.insertDeposit(userDecorationDeposit);
+//    }
+//
+//    /**
+//     * 修改押金管理信息
+//     * @param userDecorationDeposit 装修押金管理信息
+//     * @return map
+//     */
+//    @PostMapping("/updateDeposit")
+//    public Map<String,Object> updateDeposit(@RequestBody UserDecorationDeposit userDecorationDeposit){
+//        return userDecorationService.updateDeposit(userDecorationDeposit);
+//    }
+//
+//    /**
+//     * 删除押金管理信息
+//     * @param depositId 押金管理主键id
+//     * @return map
+//     */
+//    @GetMapping("/deleteDeposit")
+//    public Map<String,Object> deleteDeposit(Integer depositId){
+//        return userDecorationService.deleteDeposit(depositId);
+//    }
 
 
 }

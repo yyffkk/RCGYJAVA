@@ -189,22 +189,34 @@ public class SysAnnouncementManagementServiceImpl implements SysAnnouncementMana
     }
 
     @Override
-    public Map<String, Object> release(Integer id) {
+    public Map<String, Object> release(int[] ids) {
         map = new HashMap<>();
-        ReleaseDateAndId releaseDateAndId = new ReleaseDateAndId();
-        //填入主键id
-        releaseDateAndId.setId(id);
-        //填入发布时间
-        releaseDateAndId.setReleaseDate(new Date());
-        //发布公告管理信息
-        int update = sysAnnouncementManagementDao.release(releaseDateAndId);
-        if (update >0){
-            map.put("message","发布成功");
-            map.put("status",true);
-        }else {
-            map.put("message","发布失败");
+        try {
+            for (int id : ids) {
+                ReleaseDateAndId releaseDateAndId = new ReleaseDateAndId();
+                //填入主键id
+                releaseDateAndId.setId(id);
+                //填入发布时间
+                releaseDateAndId.setReleaseDate(new Date());
+                //发布公告管理信息
+                int update = sysAnnouncementManagementDao.release(releaseDateAndId);
+                if (update <= 0){
+                    throw new RuntimeException("发布失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","发布成功");
+        map.put("status",true);
         return map;
     }
 

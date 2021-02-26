@@ -20,7 +20,7 @@ public interface SysAnnouncementManagementService {
 
     Map<String, Object> delete(int[] ids);
 
-    Map<String, Object> release(Integer id);
+    Map<String, Object> release(int[] ids);
 
     VoPreviewAnnouncementManagement preview(Integer id);
 }

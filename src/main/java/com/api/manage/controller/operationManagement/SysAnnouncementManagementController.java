@@ -94,13 +94,13 @@ public class SysAnnouncementManagementController extends ShiroExceptions {
 
     /**
      * 发布公告管理
-     * @param id 主键id
+     * @param ids 主键id数组
      * @return map
      */
-    @GetMapping("/release")
+    @PostMapping("/release")
     @RequiresPermissions(value = {"0506","05"},logical = Logical.AND)
-    public Map<String,Object> release(Integer id){
-        return sysAnnouncementManagementService.release(id);
+    public Map<String,Object> release(@RequestBody VoIds ids){
+        return sysAnnouncementManagementService.release(ids.getIds());
     }
 
     /**
