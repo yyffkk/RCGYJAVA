@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.chargeManagement.SysChargesTemplateDetailDao">
     <select id="list" parameterType="com.api.model.chargeManagement.SearchChargesTemplateDetail" resultType="com.api.vo.chargeManagement.VoChargesTemplateDetail">
-        select sctd.id,sctd.name,sctd.unit_price,sctd.type,sctd.other_fee,(
+        select sctd.id,sctd.name,sctd.unit_price,sctd.type,sctd.marker,(
         case sctd.modify_date is null
             when true
             then
@@ -34,9 +34,6 @@
             <if test="type != null">
                 type,
             </if>
-            <if test="otherFee != null">
-                other_fee,
-            </if>
             create_id,
             create_date,
             marker
@@ -51,13 +48,13 @@
             <if test="type != null">
                 #{type},
             </if>
-            <if test="otherFee != null">
-                #{otherFee},
-            </if>
             #{createId},
             #{createDate},
             #{marker}
         </trim>
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoFindByIdChargesTemplateDetail">
@@ -99,7 +96,23 @@
         where type_name = 'sys_charges_template_status' and show_value = #{status}
     </select>
 
-    <select id="findMarkerById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select market from sys_charges_template_detail where id = #{id}
+    <insert id="insertAdditionCost" parameterType="com.api.model.chargeManagement.SysChargesTemplateAdditionalCost">
+        insert into sys_charges_template_additional_cost(
+            charges_template_detail_id,
+            name,
+            cost
+        )values (
+            #{chargesTemplateDetailId},
+            #{name},
+            #{cost}
+        )
+    </insert>
+
+    <select id="findAdditionalCostById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoChargesTemplateAdditionalCost">
+        select id,name,cost from sys_charges_template_additional_cost where charges_template_detail_id = #{id}
     </select>
+
+    <delete id="deleteAdditionalCost" parameterType="java.lang.Integer">
+        delete from sys_charges_template_additional_cost where charges_template_detail_id = #{id}
+    </delete>
 </mapper>

@@ -51,7 +51,8 @@ public class SysAnnouncementManagementServiceImpl implements SysAnnouncementMana
     }
 
     @Override
-    public VoFindByIdAnnouncementManagement findById(Integer id) {
+    public Map<String,Object> findById(Integer id) {
+        map = new HashMap<>();
         //根据主键id查询公告信息
         VoFindByIdAnnouncementManagement byId = sysAnnouncementManagementDao.findById(id);
         //查询照片信息
@@ -59,7 +60,10 @@ public class SysAnnouncementManagementServiceImpl implements SysAnnouncementMana
         //传入照片信息
         List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysAnnouncementManagement", id, "announcementImg");
         byId.setImgUrls(imgByDate);
-        return byId;
+        map.put("data",byId);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
     }
 
     @Override

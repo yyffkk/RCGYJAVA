@@ -15,7 +15,7 @@ public interface SysChargesTemplateDetailService {
 
     Map<String, Object> insert(SysChargesTemplateDetail sysChargesTemplateDetail);
 
-    VoFindByIdChargesTemplateDetail findById(Integer id);
+    Map<String,Object> findById(Integer id);
 
     Map<String, Object> update(SysChargesTemplateDetail sysChargesTemplateDetail);
 

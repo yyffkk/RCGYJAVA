@@ -12,7 +12,7 @@ import java.util.Map;
 public interface SysAnnouncementManagementService {
     List<VoAnnouncementManagement> list(SearchAnnouncementManagement searchAnnouncementManagement);
 
-    VoFindByIdAnnouncementManagement findById(Integer id);
+    Map<String,Object> findById(Integer id);
 
     Map<String, Object> insert(SysAnnouncementManagement sysAnnouncementManagement);
 

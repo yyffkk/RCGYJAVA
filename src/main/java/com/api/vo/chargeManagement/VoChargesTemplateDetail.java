@@ -2,6 +2,7 @@ package com.api.vo.chargeManagement;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 物业收费标准明细 Vo list 回显
@@ -20,6 +21,10 @@ public class VoChargesTemplateDetail {
      */
     private String name;
     /**
+     * 标记符【费用类型名称】（1.物业管理费，2.维修费（报事报修 唯一）,3.押金，4.活动报名费）
+     */
+    private Integer marker;
+    /**
      * 单价
      */
     private BigDecimal unitPrice;
@@ -30,7 +35,7 @@ public class VoChargesTemplateDetail {
     /**
      * 附加或固定费用
      */
-    private BigDecimal otherFee;
+    private List<VoChargesTemplateAdditionalCost> additionalCostList;
     /**
      * 创建人姓名
      */
@@ -46,9 +51,10 @@ public class VoChargesTemplateDetail {
                 "id=" + id +
                 ", Status=" + Status +
                 ", name='" + name + '\'' +
+                ", marker=" + marker +
                 ", unitPrice=" + unitPrice +
                 ", type=" + type +
-                ", otherFee=" + otherFee +
+                ", additionalCostList=" + additionalCostList +
                 ", createName='" + createName + '\'' +
                 ", modifyDate=" + modifyDate +
                 '}';
@@ -78,6 +84,14 @@ public class VoChargesTemplateDetail {
         this.name = name;
     }
 
+    public Integer getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Integer marker) {
+        this.marker = marker;
+    }
+
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
@@ -94,12 +108,12 @@ public class VoChargesTemplateDetail {
         this.type = type;
     }
 
-    public BigDecimal getOtherFee() {
-        return otherFee;
+    public List<VoChargesTemplateAdditionalCost> getAdditionalCostList() {
+        return additionalCostList;
     }
 
-    public void setOtherFee(BigDecimal otherFee) {
-        this.otherFee = otherFee;
+    public void setAdditionalCostList(List<VoChargesTemplateAdditionalCost> additionalCostList) {
+        this.additionalCostList = additionalCostList;
     }
 
     public String getCreateName() {
@@ -121,13 +135,14 @@ public class VoChargesTemplateDetail {
     public VoChargesTemplateDetail() {
     }
 
-    public VoChargesTemplateDetail(Integer id, Integer status, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee, String createName, Date modifyDate) {
+    public VoChargesTemplateDetail(Integer id, Integer status, String name, Integer marker, BigDecimal unitPrice, Integer type, List<VoChargesTemplateAdditionalCost> additionalCostList, String createName, Date modifyDate) {
         this.id = id;
         Status = status;
         this.name = name;
+        this.marker = marker;
         this.unitPrice = unitPrice;
         this.type = type;
-        this.otherFee = otherFee;
+        this.additionalCostList = additionalCostList;
         this.createName = createName;
         this.modifyDate = modifyDate;
     }

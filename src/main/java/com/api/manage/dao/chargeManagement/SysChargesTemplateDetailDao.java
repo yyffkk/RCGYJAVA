@@ -1,7 +1,9 @@
 package com.api.manage.dao.chargeManagement;
 
 import com.api.model.chargeManagement.SearchChargesTemplateDetail;
+import com.api.model.chargeManagement.SysChargesTemplateAdditionalCost;
 import com.api.model.chargeManagement.SysChargesTemplateDetail;
+import com.api.vo.chargeManagement.VoChargesTemplateAdditionalCost;
 import com.api.vo.chargeManagement.VoChargesTemplateDetail;
 import com.api.vo.chargeManagement.VoFindByIdChargesTemplateDetail;
 
@@ -58,9 +60,23 @@ public interface SysChargesTemplateDetailDao {
     String findStatusShowNameByShowValue(Integer status);
 
     /**
-     * 根据主键id查询标记符
-     * @param id 主键id
-     * @return 标记符
+     * 添加物业收费标准附加费用
+     * @param additionalCost 物业收费标准附加费用
+     * @return 影响行数
      */
-    int findMarkerById(int id);
+    int insertAdditionCost(SysChargesTemplateAdditionalCost additionalCost);
+
+    /**
+     * 根据收费标准明细主键id 查询 收费标准附加费用信息集合
+     * @param id 收费标准明细主键id
+     * @return 收费标准附加费用信息集合
+     */
+    List<VoChargesTemplateAdditionalCost> findAdditionalCostById(Integer id);
+
+    /**
+     * 根据物业收费标准明细主键id,删除收费标准附加费用
+     * @param id 物业收费标准明细主键id
+     * @return 影响行数
+     */
+    int deleteAdditionalCost(int id);
 }

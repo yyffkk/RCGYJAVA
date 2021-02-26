@@ -1,6 +1,7 @@
 package com.api.vo.chargeManagement;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 物业收费标准明细Vo findById 回显
@@ -27,9 +28,13 @@ public class VoFindByIdChargesTemplateDetail {
      */
     private Integer type;
     /**
-     * 附加或固定费用
+     * 附加或固定费用集合
      */
-    private BigDecimal otherFee;
+    private List<VoChargesTemplateAdditionalCost> additionalCostList;
+    /**
+     * 标记符【费用类型名称】（1.物业管理费，2.维修费（报事报修 唯一）,3.押金，4.活动报名费）
+     */
+    private Integer marker;
 
     @Override
     public String toString() {
@@ -39,7 +44,8 @@ public class VoFindByIdChargesTemplateDetail {
                 ", name='" + name + '\'' +
                 ", unitPrice=" + unitPrice +
                 ", type=" + type +
-                ", otherFee=" + otherFee +
+                ", additionalCostList=" + additionalCostList +
+                ", marker=" + marker +
                 '}';
     }
 
@@ -83,23 +89,32 @@ public class VoFindByIdChargesTemplateDetail {
         this.type = type;
     }
 
-    public BigDecimal getOtherFee() {
-        return otherFee;
+    public List<VoChargesTemplateAdditionalCost> getAdditionalCostList() {
+        return additionalCostList;
     }
 
-    public void setOtherFee(BigDecimal otherFee) {
-        this.otherFee = otherFee;
+    public void setAdditionalCostList(List<VoChargesTemplateAdditionalCost> additionalCostList) {
+        this.additionalCostList = additionalCostList;
+    }
+
+    public Integer getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Integer marker) {
+        this.marker = marker;
     }
 
     public VoFindByIdChargesTemplateDetail() {
     }
 
-    public VoFindByIdChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee) {
+    public VoFindByIdChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, List<VoChargesTemplateAdditionalCost> additionalCostList, Integer marker) {
         this.id = id;
         this.chargesTemplateId = chargesTemplateId;
         this.name = name;
         this.unitPrice = unitPrice;
         this.type = type;
-        this.otherFee = otherFee;
+        this.additionalCostList = additionalCostList;
+        this.marker = marker;
     }
 }

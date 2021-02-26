@@ -2,6 +2,7 @@ package com.api.model.chargeManagement;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 物业收费标准明细 信息
@@ -28,9 +29,9 @@ public class SysChargesTemplateDetail {
      */
     private Integer type;
     /**
-     * 附加或固定费用
+     * 附加或固定费用集合
      */
-    private BigDecimal otherFee;
+    private List<SysChargesTemplateAdditionalCost> additionalCostList;
     /**
      * 创建人
      */
@@ -48,7 +49,7 @@ public class SysChargesTemplateDetail {
      */
     private Date modifyDate;
     /**
-     * 标记符（1.日常缴费，2.报事报修（唯一））
+     * 标记符【费用类型名称】（1.物业管理费，2.维修费（报事报修 唯一）,3.押金，4.活动报名费）
      */
     private Integer marker;
 
@@ -60,7 +61,7 @@ public class SysChargesTemplateDetail {
                 ", name='" + name + '\'' +
                 ", unitPrice=" + unitPrice +
                 ", type=" + type +
-                ", otherFee=" + otherFee +
+                ", additionalCostList=" + additionalCostList +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
@@ -109,12 +110,12 @@ public class SysChargesTemplateDetail {
         this.type = type;
     }
 
-    public BigDecimal getOtherFee() {
-        return otherFee;
+    public List<SysChargesTemplateAdditionalCost> getAdditionalCostList() {
+        return additionalCostList;
     }
 
-    public void setOtherFee(BigDecimal otherFee) {
-        this.otherFee = otherFee;
+    public void setAdditionalCostList(List<SysChargesTemplateAdditionalCost> additionalCostList) {
+        this.additionalCostList = additionalCostList;
     }
 
     public Integer getCreateId() {
@@ -160,13 +161,13 @@ public class SysChargesTemplateDetail {
     public SysChargesTemplateDetail() {
     }
 
-    public SysChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, BigDecimal otherFee, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer marker) {
+    public SysChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, List<SysChargesTemplateAdditionalCost> additionalCostList, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer marker) {
         this.id = id;
         this.chargesTemplateId = chargesTemplateId;
         this.name = name;
         this.unitPrice = unitPrice;
         this.type = type;
-        this.otherFee = otherFee;
+        this.additionalCostList = additionalCostList;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;

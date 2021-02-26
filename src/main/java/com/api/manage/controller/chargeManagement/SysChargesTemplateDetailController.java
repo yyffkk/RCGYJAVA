@@ -66,7 +66,7 @@ public class SysChargesTemplateDetailController extends ShiroExceptions {
      */
     @GetMapping("/findById")
     @RequiresPermissions(value = {"0402","04"},logical = Logical.AND)
-    public VoFindByIdChargesTemplateDetail findById(Integer id){
+    public Map<String,Object> findById(Integer id){
         return sysChargesTemplateDetailService.findById(id);
     }
 

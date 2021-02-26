@@ -65,7 +65,7 @@ public class SysAnnouncementManagementController extends ShiroExceptions {
      */
     @GetMapping("/findById")
     @RequiresPermissions(value = {"0502","05"},logical = Logical.AND)
-    public VoFindByIdAnnouncementManagement findById(Integer id){
+    public Map<String,Object> findById(Integer id){
         return sysAnnouncementManagementService.findById(id);
     }
 

@@ -2,16 +2,19 @@ package com.api.manage.service.chargeManagement.impl;
 
 import com.api.manage.dao.chargeManagement.SysChargesTemplateDetailDao;
 import com.api.model.chargeManagement.SearchChargesTemplateDetail;
+import com.api.model.chargeManagement.SysChargesTemplateAdditionalCost;
 import com.api.model.chargeManagement.SysChargesTemplateDetail;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysChargesTemplateDetailService;
 import com.api.util.ExcelUtil;
+import com.api.vo.chargeManagement.VoChargesTemplateAdditionalCost;
 import com.api.vo.chargeManagement.VoChargesTemplateDetail;
 import com.api.vo.chargeManagement.VoFindByIdChargesTemplateDetail;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -33,36 +36,71 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
 
     @Override
     public List<VoChargesTemplateDetail> list(SearchChargesTemplateDetail searchChargesTemplateDetail) {
-        return sysChargesTemplateDetailDao.list(searchChargesTemplateDetail);
+        List<VoChargesTemplateDetail> list = sysChargesTemplateDetailDao.list(searchChargesTemplateDetail);
+        if (list != null && list.size() >0){
+            for (VoChargesTemplateDetail templateDetail : list) {
+                List<VoChargesTemplateAdditionalCost> additionalCostList = sysChargesTemplateDetailDao.findAdditionalCostById(templateDetail.getId());
+                templateDetail.setAdditionalCostList(additionalCostList);
+            }
+        }
+        return list;
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(SysChargesTemplateDetail sysChargesTemplateDetail) {
         map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        //填入创建人
-        sysChargesTemplateDetail.setCreateId(sysUser.getId());
-        //填入创建时间
-        sysChargesTemplateDetail.setCreateDate(new Date());
-        //添加标记符 1.日常缴费
-        sysChargesTemplateDetail.setMarker(1);
-        //添加物业收费标准明细信息
-        int insert = sysChargesTemplateDetailDao.insert(sysChargesTemplateDetail);
-        if (insert >0) {
-            map.put("message","添加物业收费标准明细信息成功");
-            map.put("status",true);
-        }else {
-            map.put("message","添加物业收费标准明细信息失败");
+        try {
+            //填入创建人
+            sysChargesTemplateDetail.setCreateId(sysUser.getId());
+            //填入创建时间
+            sysChargesTemplateDetail.setCreateDate(new Date());
+            //添加标记符 1.日常缴费
+            sysChargesTemplateDetail.setMarker(1);
+            //添加物业收费标准明细信息
+            int insert = sysChargesTemplateDetailDao.insert(sysChargesTemplateDetail);
+            if (insert <= 0) {
+                throw new RuntimeException("添加物业收费标准明细信息失败");
+            }
+            if (sysChargesTemplateDetail.getAdditionalCostList() != null && sysChargesTemplateDetail.getAdditionalCostList().size()>0){
+                for (SysChargesTemplateAdditionalCost additionalCost : sysChargesTemplateDetail.getAdditionalCostList()) {
+                    additionalCost.setChargesTemplateDetailId(sysChargesTemplateDetail.getId());
+                    //添加物业收费标准附加费用
+                    int insert2 = sysChargesTemplateDetailDao.insertAdditionCost(additionalCost);
+                    if (insert2 <= 0) {
+                        throw new RuntimeException("添加物业收费标准附加费用失败");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","添加物业收费标准明细信息成功");
+        map.put("status",true);
         return map;
     }
 
     @Override
-    public VoFindByIdChargesTemplateDetail findById(Integer id) {
-        return sysChargesTemplateDetailDao.findById(id);
+    public Map<String,Object> findById(Integer id) {
+        map = new HashMap<>();
+        VoFindByIdChargesTemplateDetail byId = sysChargesTemplateDetailDao.findById(id);
+        List<VoChargesTemplateAdditionalCost> additionalCostById = sysChargesTemplateDetailDao.findAdditionalCostById(byId.getId());
+        if (additionalCostById != null){
+            byId.setAdditionalCostList(additionalCostById);
+        }
+        map.put("byId",byId);
+        return map;
     }
 
     @Override
@@ -93,11 +131,8 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
         try {
             if (ids.length>0){
                 for (int id : ids) {
-                    //根据主键id查询标记符
-                    int marker = sysChargesTemplateDetailDao.findMarkerById(id);
-                    if (marker == 2){
-                        throw new RuntimeException("此为默认收费项目，不可删除");
-                    }
+                    //根据物业收费标准明细主键id,删除收费标准附加费用
+                    sysChargesTemplateDetailDao.deleteAdditionalCost(id);
                     //根据物业收费标准明细主键id 删除物业收费标准明细信息
                     int delete = sysChargesTemplateDetailDao.delete(id);
                     if (delete <= 0){
@@ -157,12 +192,12 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
             String typeShowName = sysChargesTemplateDetailDao.findTypeShowNameByShowValue(voChargesTemplateDetail.getType());
             content[i][2] = voChargesTemplateDetail.getUnitPrice().toString()+typeShowName;
 
-            //传入附加/固定费用
-            if (voChargesTemplateDetail.getOtherFee() != null){
-                content[i][3] = voChargesTemplateDetail.getOtherFee().toString();
-            }else {
-                content[i][3] = "/";
-            }
+            //传入附加/固定费用???
+//            if (voChargesTemplateDetail.getOtherFee() != null){
+//                content[i][3] = voChargesTemplateDetail.getOtherFee().toString();
+//            }else {
+//                content[i][3] = "/";
+//            }
             //传入状态
             //查询状态显示名称
             String statusShowName = sysChargesTemplateDetailDao.findStatusShowNameByShowValue(voChargesTemplateDetail.getStatus());
