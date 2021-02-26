@@ -93,6 +93,11 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
         try {
             if (ids.length>0){
                 for (int id : ids) {
+                    //根据主键id查询标记符
+                    int marker = sysChargesTemplateDetailDao.findMarkerById(id);
+                    if (marker == 2){
+                        throw new RuntimeException("此为默认收费项目，不可删除");
+                    }
                     //根据物业收费标准明细主键id 删除物业收费标准明细信息
                     int delete = sysChargesTemplateDetailDao.delete(id);
                     if (delete <= 0){

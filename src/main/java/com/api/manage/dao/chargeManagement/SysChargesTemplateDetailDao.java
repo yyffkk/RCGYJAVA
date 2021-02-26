@@ -56,4 +56,11 @@ public interface SysChargesTemplateDetailDao {
      * @return 状态显示名称
      */
     String findStatusShowNameByShowValue(Integer status);
+
+    /**
+     * 根据主键id查询标记符
+     * @param id 主键id
+     * @return 标记符
+     */
+    int findMarkerById(int id);
 }

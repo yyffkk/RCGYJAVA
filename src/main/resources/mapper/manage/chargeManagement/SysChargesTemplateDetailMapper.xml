@@ -98,4 +98,8 @@
         select show_name from sys_data_dictionary
         where type_name = 'sys_charges_template_status' and show_value = #{status}
     </select>
+
+    <select id="findMarkerById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select market from sys_charges_template_detail where id = #{id}
+    </select>
 </mapper>
