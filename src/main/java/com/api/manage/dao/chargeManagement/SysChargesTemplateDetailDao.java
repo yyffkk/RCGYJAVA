@@ -108,4 +108,11 @@ public interface SysChargesTemplateDetailDao {
      * @return 影响行数
      */
     int enable(Integer id);
+
+    /**
+     * 根据收费标准模版主键id查询收费标准明细id集合
+     * @param id 收费标准模版主键id
+     * @return 收费标准明细id集合
+     */
+    List<Integer> findCTDIdByCTId(int id);
 }

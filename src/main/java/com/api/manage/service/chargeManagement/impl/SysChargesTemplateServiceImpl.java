@@ -44,6 +44,8 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
+            //查询创建时间最近的物业收费标准模版的明细信息集合
+            List<VoFindByIdChargesTemplateDetail> chargesTemplateDetailList = sysChargesTemplateDao.findChargesTemplateFromNow();
             //添加物业收费标准模版信息
             //填入创建人
             chargesTemplate.setCreateId(sysUser.getId());
@@ -56,9 +58,7 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
             if (insert <= 0){
                 throw new RuntimeException("添加收费标准模版信息失败");
             }
-//？？？？
-            //查询创建时间最近的物业收费标准模版的明细信息集合
-            List<VoFindByIdChargesTemplateDetail> chargesTemplateDetailList = sysChargesTemplateDao.findChargesTemplateFromNow();
+            //判断是否有默认模版
             if (chargesTemplateDetailList != null && chargesTemplateDetailList.size()>0){
                 for (VoFindByIdChargesTemplateDetail templateDetail : chargesTemplateDetailList) {
                     //添加默认的物业收费标准明细信息
@@ -123,17 +123,24 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
     public Map<String, Object> delete(int[] ids) {
         map = new HashMap<>();
         try {
-            if (ids.length>0){
-                for (int id : ids) {
-                    //根据收费标准模版主键id删除收费标准模版信息
-                    int delete = sysChargesTemplateDao.delete(id);
-                    if (delete <= 0){
-                        throw new RuntimeException("删除收费标准模版信息失败");
-                    }
+            for (int id : ids) {
+                //根据收费标准模版主键id查询状态信息（1.启用，0.未启用）
+                int status = sysChargesTemplateDao.findStatusById(id);
+                if (status == 1){
+                    throw new RuntimeException("该模版已启用,无法删除");
                 }
-            }else {
-                throw new RuntimeException("请勾选要删除的版本");
+                //根据收费标准模版主键id查询收费标准明细id集合
+                List<Integer> chargesTemplateDetailIds = sysChargesTemplateDetailDao.findCTDIdByCTId(id);
+                //查询日常缴费是否存在关联收费标准
+                //查询押金管理是否存在关联收费标准
+
+                //根据收费标准模版主键id删除收费标准模版信息
+                int delete = sysChargesTemplateDao.delete(id);
+                if (delete <= 0){
+                    throw new RuntimeException("删除收费标准模版信息失败");
+                }
             }
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();

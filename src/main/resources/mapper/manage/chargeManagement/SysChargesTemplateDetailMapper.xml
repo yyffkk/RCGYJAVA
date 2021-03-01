@@ -130,4 +130,8 @@
     <update id="enable" parameterType="java.lang.Integer">
         update sys_charges_template_detail set status = 1 where id = #{id}
     </update>
+
+    <select id="findCTDIdByCTId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from sys_charges_template_detail where charges_template_id = #{id}
+    </select>
 </mapper>
