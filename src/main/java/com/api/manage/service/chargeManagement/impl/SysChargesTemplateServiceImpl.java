@@ -3,10 +3,13 @@ package com.api.manage.service.chargeManagement.impl;
 import com.api.manage.dao.chargeManagement.SysChargesTemplateDao;
 import com.api.manage.dao.chargeManagement.SysChargesTemplateDetailDao;
 import com.api.model.chargeManagement.ChargesTemplate;
+import com.api.model.chargeManagement.SysChargesTemplateAdditionalCost;
 import com.api.model.chargeManagement.SysChargesTemplateDetail;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysChargesTemplateService;
 import com.api.vo.chargeManagement.VoChargesTemplate;
+import com.api.vo.chargeManagement.VoChargesTemplateAdditionalCost;
+import com.api.vo.chargeManagement.VoFindByIdChargesTemplateDetail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,7 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
+            //添加物业收费标准模版信息
             //填入创建人
             chargesTemplate.setCreateId(sysUser.getId());
             //填入创建时间
@@ -52,26 +56,52 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
             if (insert <= 0){
                 throw new RuntimeException("添加收费标准模版信息失败");
             }
-            //添加默认的报事报修项目
-            SysChargesTemplateDetail sysChargesTemplateDetail = new SysChargesTemplateDetail();
-            //填入模版id
-            sysChargesTemplateDetail.setChargesTemplateId(chargesTemplate.getId());
-            //填入收费名称
-            sysChargesTemplateDetail.setName("报事报修");
-            //填入单价
-            sysChargesTemplateDetail.setUnitPrice(BigDecimal.valueOf(200));
-            //填入收费类型（1.元/月 平方米，2.元/ 立方米，3.元/ 次）
-            sysChargesTemplateDetail.setType(3);
-            //填入创建人
-            sysChargesTemplateDetail.setCreateId(sysUser.getId());
-            //填入创建日期
-            sysChargesTemplateDetail.setCreateDate(new Date());
-            //填入标记符 2.报事报修
-            sysChargesTemplateDetail.setMarker(2);
-            //添加默认的报事报修项目
-            int insert1 = sysChargesTemplateDetailDao.insert(sysChargesTemplateDetail);
-            if (insert1 <= 0){
-                throw new RuntimeException("创建默认报事报修失败");
+//？？？？
+            //查询创建时间最近的物业收费标准模版的明细信息集合
+            List<VoFindByIdChargesTemplateDetail> chargesTemplateDetailList = sysChargesTemplateDao.findChargesTemplateFromNow();
+            if (chargesTemplateDetailList != null && chargesTemplateDetailList.size()>0){
+                for (VoFindByIdChargesTemplateDetail templateDetail : chargesTemplateDetailList) {
+                    //添加默认的物业收费标准明细信息
+                    SysChargesTemplateDetail sysChargesTemplateDetail = new SysChargesTemplateDetail();
+                    //填入模版id
+                    sysChargesTemplateDetail.setChargesTemplateId(chargesTemplate.getId());
+                    //填入收费名称
+                    sysChargesTemplateDetail.setName(templateDetail.getName());
+                    //填入状态（1.启用，0.未启用）
+                    sysChargesTemplateDetail.setStatus(templateDetail.getStatus());
+                    //填入单价
+                    sysChargesTemplateDetail.setUnitPrice(templateDetail.getUnitPrice());
+                    //填入收费类型（1.元/月 平方米，2.元/ 立方米，3.元/ 次）
+                    sysChargesTemplateDetail.setType(templateDetail.getType());
+                    //填入创建人
+                    sysChargesTemplateDetail.setCreateId(sysUser.getId());
+                    //填入创建日期
+                    sysChargesTemplateDetail.setCreateDate(new Date());
+                    //填入标记符【费用类型名称】（1.物业管理费，2.维修费（报事报修 唯一）,3.装修押金（装修押金 唯一），4.活动报名费）
+                    sysChargesTemplateDetail.setMarker(templateDetail.getMarker());
+                    //添加默认的物业收费标准明细信息
+                    int insert1 = sysChargesTemplateDetailDao.insert(sysChargesTemplateDetail);
+                    if (insert1 <= 0){
+                        throw new RuntimeException("创建默认标准明细信息失败");
+                    }
+
+                    //查询对应的物业收费标准附加费用信息集合
+                    List<VoChargesTemplateAdditionalCost> additionalCostById = sysChargesTemplateDetailDao.findAdditionalCostById(templateDetail.getId());
+                    if (additionalCostById != null && additionalCostById.size()>0){
+                        for (VoChargesTemplateAdditionalCost additionalCostVo : additionalCostById) {
+                            //添加默认的物业收费标准附加费用信息
+                            SysChargesTemplateAdditionalCost additionalCost = new SysChargesTemplateAdditionalCost();
+                            additionalCost.setChargesTemplateDetailId(sysChargesTemplateDetail.getId());
+                            additionalCost.setName(additionalCostVo.getName());
+                            additionalCost.setCost(additionalCostVo.getCost());
+                            int insert2 = sysChargesTemplateDetailDao.insertAdditionCost(additionalCost);
+                            if (insert2 <= 0){
+                                throw new RuntimeException("创建默认标准附加费用信息失败");
+                            }
+                        }
+                    }
+                }
+
             }
         } catch (RuntimeException e) {
             //获取抛出的信息

@@ -95,8 +95,8 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
     public Map<String,Object> findById(Integer id) {
         map = new HashMap<>();
         VoFindByIdChargesTemplateDetail byId = sysChargesTemplateDetailDao.findById(id);
-        List<VoChargesTemplateAdditionalCost> additionalCostById = sysChargesTemplateDetailDao.findAdditionalCostById(byId.getId());
-        if (additionalCostById != null){
+        if (byId != null){
+            List<VoChargesTemplateAdditionalCost> additionalCostById = sysChargesTemplateDetailDao.findAdditionalCostById(byId.getId());
             byId.setAdditionalCostList(additionalCostById);
         }
         map.put("byId",byId);

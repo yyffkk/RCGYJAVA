@@ -20,7 +20,7 @@ public class VoFindByIdChargesTemplateDetail {
      */
     private String name;
     /**
-     * 状态（1.启用，0.未启用）
+     * 物业收费标准明细 状态（1.启用，0.未启用）
      */
     private Integer status;
     /**

@@ -2,6 +2,7 @@ package com.api.manage.dao.chargeManagement;
 
 import com.api.model.chargeManagement.ChargesTemplate;
 import com.api.vo.chargeManagement.VoChargesTemplate;
+import com.api.vo.chargeManagement.VoFindByIdChargesTemplateDetail;
 
 import java.util.List;
 
@@ -66,4 +67,10 @@ public interface SysChargesTemplateDao {
      * @return 状态（1.启用，0.未启用）
      */
     int findStatusById(Integer id);
+
+    /**
+     * 查询创建时间最近的物业收费标准模版的明细信息集合
+     * @return 物业收费标准明细集合
+     */
+    List<VoFindByIdChargesTemplateDetail> findChargesTemplateFromNow();
 }

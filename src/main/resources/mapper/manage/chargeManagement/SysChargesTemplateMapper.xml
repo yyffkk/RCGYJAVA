@@ -60,4 +60,8 @@
         select status from sys_charges_template where id = #{id}
     </select>
 
+    <select id="findChargesTemplateFromNow" resultType="com.api.vo.chargeManagement.VoFindByIdChargesTemplateDetail">
+        select * from sys_charges_template_detail where charges_template_id = (select id from sys_charges_template order by create_date DESC limit 1)
+    </select>
+
 </mapper>
