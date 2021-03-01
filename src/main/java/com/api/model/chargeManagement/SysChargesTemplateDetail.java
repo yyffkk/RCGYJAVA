@@ -21,6 +21,10 @@ public class SysChargesTemplateDetail {
      */
     private String name;
     /**
+     * 物业收费标准明细 状态（1.启用，0.未启用）
+     */
+    private Integer status;
+    /**
      * 单价
      */
     private BigDecimal unitPrice;
@@ -59,6 +63,7 @@ public class SysChargesTemplateDetail {
                 "id=" + id +
                 ", chargesTemplateId=" + chargesTemplateId +
                 ", name='" + name + '\'' +
+                ", status=" + status +
                 ", unitPrice=" + unitPrice +
                 ", type=" + type +
                 ", additionalCostList=" + additionalCostList +
@@ -92,6 +97,14 @@ public class SysChargesTemplateDetail {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public BigDecimal getUnitPrice() {
@@ -161,10 +174,11 @@ public class SysChargesTemplateDetail {
     public SysChargesTemplateDetail() {
     }
 
-    public SysChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, List<SysChargesTemplateAdditionalCost> additionalCostList, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer marker) {
+    public SysChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, Integer status, BigDecimal unitPrice, Integer type, List<SysChargesTemplateAdditionalCost> additionalCostList, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer marker) {
         this.id = id;
         this.chargesTemplateId = chargesTemplateId;
         this.name = name;
+        this.status = status;
         this.unitPrice = unitPrice;
         this.type = type;
         this.additionalCostList = additionalCostList;

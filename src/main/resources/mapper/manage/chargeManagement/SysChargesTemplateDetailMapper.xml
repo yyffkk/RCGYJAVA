@@ -12,7 +12,7 @@
             else
                 sctd.modify_date
         end
-        ) as modify_date,su.actual_name as create_name,sct.status from sys_charges_template_detail as sctd,sys_user as su,sys_charges_template as sct
+        ) as modify_date,su.actual_name as create_name,sctd.status from sys_charges_template_detail as sctd,sys_user as su,sys_charges_template as sct
         <where>
             sct.id = #{chargesTemplateId}
             and sctd.charges_template_id = sct.id
@@ -28,6 +28,7 @@
         <trim prefix="sys_charges_template_detail(" suffix=")" suffixOverrides=",">
             charges_template_id,
             name,
+            status,
             <if test="unitPrice != null">
                 unit_price,
             </if>
@@ -42,6 +43,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             #{chargesTemplateId},
             #{name},
+            #{status},
             <if test="unitPrice != null">
                 #{unitPrice},
             </if>
@@ -73,13 +75,10 @@
             <if test="type != null">
                 type = #{type},
             </if>
-            <if test="otherFee != null">
-                other_fee = #{otherFee},
-            </if>
             modify_id = #{modifyId},
             modify_date = #{modifyDate},
         </set>
-        where id = #{id}
+        where id = #{id} and charges_template_id = #{chargesTemplateId}
     </update>
 
     <delete id="delete" parameterType="java.lang.Integer">
@@ -115,4 +114,8 @@
     <delete id="deleteAdditionalCost" parameterType="java.lang.Integer">
         delete from sys_charges_template_additional_cost where charges_template_detail_id = #{id}
     </delete>
+
+    <select id="findStatusByChargesTemplateDetailId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from sys_charges_template_detail where id = #{id}
+    </select>
 </mapper>

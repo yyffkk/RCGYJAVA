@@ -13,13 +13,13 @@ public class VoChargesTemplateDetail {
      */
     private Integer id;
     /**
-     * 物业收费标准模版 状态
-     */
-    private Integer Status;
-    /**
      * 收费名称
      */
     private String name;
+    /**
+     * 物业收费标准明细 状态（1.启用，0.未启用）
+     */
+    private Integer Status;
     /**
      * 标记符【费用类型名称】（1.物业管理费，2.维修费（报事报修 唯一）,3.押金，4.活动报名费）
      */

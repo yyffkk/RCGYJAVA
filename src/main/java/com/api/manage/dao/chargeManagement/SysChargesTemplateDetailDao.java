@@ -79,4 +79,12 @@ public interface SysChargesTemplateDetailDao {
      * @return 影响行数
      */
     int deleteAdditionalCost(int id);
+
+
+    /**
+     * 根据物业收费标准明细主键id查询状态
+     * @param id 物业收费标准明细主键id
+     * @return 状态(1.启用,0.未启用)
+     */
+    int findStatusByChargesTemplateDetailId(int id);
 }

@@ -20,6 +20,10 @@ public class VoFindByIdChargesTemplateDetail {
      */
     private String name;
     /**
+     * 状态（1.启用，0.未启用）
+     */
+    private Integer status;
+    /**
      * 单价
      */
     private BigDecimal unitPrice;
@@ -42,6 +46,7 @@ public class VoFindByIdChargesTemplateDetail {
                 "id=" + id +
                 ", chargesTemplateId=" + chargesTemplateId +
                 ", name='" + name + '\'' +
+                ", status=" + status +
                 ", unitPrice=" + unitPrice +
                 ", type=" + type +
                 ", additionalCostList=" + additionalCostList +
@@ -71,6 +76,14 @@ public class VoFindByIdChargesTemplateDetail {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public BigDecimal getUnitPrice() {
@@ -108,10 +121,11 @@ public class VoFindByIdChargesTemplateDetail {
     public VoFindByIdChargesTemplateDetail() {
     }
 
-    public VoFindByIdChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, BigDecimal unitPrice, Integer type, List<VoChargesTemplateAdditionalCost> additionalCostList, Integer marker) {
+    public VoFindByIdChargesTemplateDetail(Integer id, Integer chargesTemplateId, String name, Integer status, BigDecimal unitPrice, Integer type, List<VoChargesTemplateAdditionalCost> additionalCostList, Integer marker) {
         this.id = id;
         this.chargesTemplateId = chargesTemplateId;
         this.name = name;
+        this.status = status;
         this.unitPrice = unitPrice;
         this.type = type;
         this.additionalCostList = additionalCostList;

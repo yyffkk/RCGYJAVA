@@ -58,8 +58,8 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
             sysChargesTemplateDetail.setCreateId(sysUser.getId());
             //填入创建时间
             sysChargesTemplateDetail.setCreateDate(new Date());
-            //添加标记符 1.日常缴费
-            sysChargesTemplateDetail.setMarker(1);
+            //新添加的默认为未启用
+            sysChargesTemplateDetail.setStatus(0);
             //添加物业收费标准明细信息
             int insert = sysChargesTemplateDetailDao.insert(sysChargesTemplateDetail);
             if (insert <= 0) {
@@ -104,43 +104,73 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
     }
 
     @Override
+    @Transactional
     public Map<String, Object> update(SysChargesTemplateDetail sysChargesTemplateDetail) {
         map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        //填入修改人
-        sysChargesTemplateDetail.setModifyId(sysUser.getId());
-        //填入修改日期
-        sysChargesTemplateDetail.setModifyDate(new Date());
-        //更新物业收费标准明细信息
-        int update = sysChargesTemplateDetailDao.update(sysChargesTemplateDetail);
-        if (update >0){
-            map.put("message","更新物业收费标准明细信息成功");
-            map.put("stats",true);
-        }else {
-            map.put("message","更新物业收费标准明细信息失败");
-            map.put("stats",false);
+        try {
+            //填入修改人
+            sysChargesTemplateDetail.setModifyId(sysUser.getId());
+            //填入修改日期
+            sysChargesTemplateDetail.setModifyDate(new Date());
+            //更新物业收费标准明细信息
+            int update = sysChargesTemplateDetailDao.update(sysChargesTemplateDetail);
+            if (update <= 0){
+                throw new RuntimeException("更新物业收费标准明细信息失败");
+            }
+
+            //更新物业收费标准附加费用
+            //先根据物业收费标准明细主键id,删除收费标准附加费用
+            sysChargesTemplateDetailDao.deleteAdditionalCost(sysChargesTemplateDetail.getId());
+            //再添加收费标准附加费用
+            List<SysChargesTemplateAdditionalCost> additionalCostList = sysChargesTemplateDetail.getAdditionalCostList();
+            if (additionalCostList != null && additionalCostList.size()>0){
+                for (SysChargesTemplateAdditionalCost additionalCost : additionalCostList) {
+                    additionalCost.setChargesTemplateDetailId(sysChargesTemplateDetail.getId());
+                    //再添加收费标准附加费用
+                    int insert = sysChargesTemplateDetailDao.insertAdditionCost(additionalCost);
+                    if (insert <= 0){
+                        throw new RuntimeException("更新物业收费标准附加费用失败");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
         }
+        map.put("message","更新物业收费标准明细信息成功");
+        map.put("stats",true);
         return map;
     }
 
     @Override
+    @Transactional
     public Map<String, Object> delete(int[] ids) {
         map = new HashMap<>();
         try {
-            if (ids.length>0){
-                for (int id : ids) {
-                    //根据物业收费标准明细主键id,删除收费标准附加费用
-                    sysChargesTemplateDetailDao.deleteAdditionalCost(id);
-                    //根据物业收费标准明细主键id 删除物业收费标准明细信息
-                    int delete = sysChargesTemplateDetailDao.delete(id);
-                    if (delete <= 0){
-                        throw new RuntimeException("删除物业收费标准明细信息失败");
-                    }
+            for (int id : ids) {
+                //根据物业收费标准明细主键id查询状态
+                int status = sysChargesTemplateDetailDao.findStatusByChargesTemplateDetailId(id);
+                //如果已启用则无法删除
+                if (status == 1){
+                    throw new RuntimeException("该费用已启用,无法删除");
                 }
-            }else {
-                throw new RuntimeException("请选择至少一项");
+                //根据物业收费标准明细主键id,删除收费标准附加费用
+                sysChargesTemplateDetailDao.deleteAdditionalCost(id);
+                //根据物业收费标准明细主键id 删除物业收费标准明细信息
+                int delete = sysChargesTemplateDetailDao.delete(id);
+                if (delete <= 0){
+                    throw new RuntimeException("删除物业收费标准明细信息失败");
+                }
             }
         } catch (RuntimeException e) {
             //获取抛出的信息
@@ -192,12 +222,16 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
             String typeShowName = sysChargesTemplateDetailDao.findTypeShowNameByShowValue(voChargesTemplateDetail.getType());
             content[i][2] = voChargesTemplateDetail.getUnitPrice().toString()+typeShowName;
 
-            //传入附加/固定费用???
-//            if (voChargesTemplateDetail.getOtherFee() != null){
-//                content[i][3] = voChargesTemplateDetail.getOtherFee().toString();
-//            }else {
-//                content[i][3] = "/";
-//            }
+            //传入附加/固定费用
+            List<VoChargesTemplateAdditionalCost> additionalCostList = sysChargesTemplateDetailDao.findAdditionalCostById(voChargesTemplateDetail.getId());
+            if (additionalCostList != null && additionalCostList.size()>0){
+                content[i][3] = "";
+                for (VoChargesTemplateAdditionalCost additionalCost : additionalCostList) {
+                    content[i][3] += additionalCost.getName()+":"+additionalCost.getCost()+"/r/n";
+                }
+            }else {
+                content[i][3] = "/";
+            }
             //传入状态
             //查询状态显示名称
             String statusShowName = sysChargesTemplateDetailDao.findStatusShowNameByShowValue(voChargesTemplateDetail.getStatus());
