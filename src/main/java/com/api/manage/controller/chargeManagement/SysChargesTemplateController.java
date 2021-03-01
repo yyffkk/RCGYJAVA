@@ -78,26 +78,14 @@ public class SysChargesTemplateController extends ShiroExceptions {
     }
 
     /**
-     * 根据物业收费标准模版主键id启用物业收费标准模版
+     * 根据物业收费标准模版主键id 启用/禁用 物业收费标准模版
      * @param id 物业收费标准模版主键id
      * @return map
      */
-    @GetMapping("/enable")
+    @GetMapping("/isEnable")
     @RequiresPermissions(value = {"0406","04"},logical = Logical.AND)
-    public Map<String,Object> enable(Integer id){
-        return sysChargesTemplateService.enable(id);
-    }
-
-
-    /**
-     * 根据物业收费标准模版主键id禁用物业收费标准模版
-     * @param id 物业收费标准模版主键id
-     * @return map
-     */
-    @GetMapping("/disable")
-    @RequiresPermissions(value = {"0406","04"},logical = Logical.AND)
-    public Map<String,Object> disable(Integer id){
-        return sysChargesTemplateService.disable(id);
+    public Map<String,Object> isEnable(Integer id){
+        return sysChargesTemplateService.isEnable(id);
     }
 
 

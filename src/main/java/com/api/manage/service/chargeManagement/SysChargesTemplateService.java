@@ -17,7 +17,5 @@ public interface SysChargesTemplateService {
 
     Map<String, Object> update(ChargesTemplate chargesTemplate);
 
-    Map<String, Object> enable(Integer id);
-
-    Map<String, Object> disable(Integer id);
+    Map<String, Object> isEnable(Integer id);
 }

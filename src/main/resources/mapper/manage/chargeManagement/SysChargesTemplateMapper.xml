@@ -56,4 +56,8 @@
         update sys_charges_template set status = 0 where id =#{id}
     </update>
 
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from sys_charges_template where id = #{id}
+    </select>
+
 </mapper>

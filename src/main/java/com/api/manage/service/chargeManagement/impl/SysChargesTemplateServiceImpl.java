@@ -148,15 +148,27 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
     }
 
     @Override
-    public Map<String, Object> enable(Integer id) {
+    @Transactional
+    public Map<String, Object> isEnable(Integer id) {
         map = new HashMap<>();
+        //根据物业收费标准模版主键id查询状态（1.启用，0.未启用）
+        int status = sysChargesTemplateDao.findStatusById(id);
         try {
-            //先禁用所有的物业收费标准模版
-            sysChargesTemplateDao.disableAll();
-            //根据物业收费标准模版主键id启用物业收费标准模版
-            int update2 = sysChargesTemplateDao.enable(id);
-            if (update2 <= 0){
-                throw new RuntimeException("启用收费标准模版失败");
+            if (status == 1){
+                //禁用
+                int update = sysChargesTemplateDao.disable(id);
+                if (update <= 0){
+                    throw new RuntimeException("禁用收费标准模版失败");
+                }
+            }else {
+                //启用
+                //先禁用所有的物业收费标准模版
+                sysChargesTemplateDao.disableAll();
+                //根据物业收费标准模版主键id启用物业收费标准模版
+                int update2 = sysChargesTemplateDao.enable(id);
+                if (update2 <= 0){
+                    throw new RuntimeException("启用收费标准模版失败");
+                }
             }
         } catch (RuntimeException e) {
             //获取抛出的信息
@@ -169,22 +181,12 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
             map.put("status",false);
             return map;
         }
-        map.put("message","启用收费标准模版成功");
-        map.put("status",true);
-        return map;
-    }
-
-    @Override
-    public Map<String, Object> disable(Integer id) {
-        map = new HashMap<>();
-        int update = sysChargesTemplateDao.disable(id);
-        if (update >0){
+        if (status == 1){
             map.put("message","禁用收费标准模版成功");
-            map.put("status",true);
         }else {
-            map.put("message","禁用收费标准模版失败");
-            map.put("status",false);
+            map.put("message","启用收费标准模版成功");
         }
+        map.put("status",true);
         return map;
     }
 }

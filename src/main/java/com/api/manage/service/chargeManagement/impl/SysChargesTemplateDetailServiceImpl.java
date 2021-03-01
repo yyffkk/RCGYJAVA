@@ -259,6 +259,56 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
         }
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> isEnable(Integer id) {
+        map = new HashMap<>();
+        //根据物业收费标准明细主键id查询物业收费标准明细信息（1.启用，0.未启用）
+        VoFindByIdChargesTemplateDetail byId = sysChargesTemplateDetailDao.findById(id);
+        try {
+            if (byId.getStatus() == 1){
+                //禁用
+                //判断是否为报事报修（唯一）和装修押金（唯一），如果是则无法禁用
+                if (byId.getMarker() == 2 || byId.getMarker() == 3){
+                    throw new RuntimeException("该费用类型无法禁用，请先启用其他相同类型的费用");
+                }
+                int update = sysChargesTemplateDetailDao.disable(id);
+                if (update <= 0){
+                    throw new RuntimeException("禁用收费标准明细失败");
+                }
+            }else {
+                //启用
+                //判断是否为报事报修（唯一）和装修押金（唯一），如果是则先禁用同一个模版的其他的相同类型的物业收费标准模版
+                if (byId.getMarker() == 2 || byId.getMarker() == 3){
+                    //先禁用同一个模版的其他的相同类型的物业收费标准模版
+                    sysChargesTemplateDetailDao.disableAll(byId);
+                }
+                //根据物业收费标准明细主键id启用物业收费标准模版
+                int update2 = sysChargesTemplateDetailDao.enable(id);
+                if (update2 <= 0){
+                    throw new RuntimeException("启用收费标准明细失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        if (byId.getStatus() == 1){
+            map.put("message","禁用收费标准明细成功");
+        }else {
+            map.put("message","启用收费标准明细成功");
+        }
+        map.put("status",true);
+        return map;
+    }
+
     //发送响应流方法
     public void setResponseHeader(HttpServletResponse response, String fileName) {
         try {

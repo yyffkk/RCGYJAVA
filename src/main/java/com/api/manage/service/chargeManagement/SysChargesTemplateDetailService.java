@@ -22,4 +22,6 @@ public interface SysChargesTemplateDetailService {
     Map<String, Object> delete(int[] ids);
 
     void export(HttpServletRequest request, HttpServletResponse response,Integer chargesTemplateId);
+
+    Map<String, Object> isEnable(Integer id);
 }

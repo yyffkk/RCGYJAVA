@@ -87,4 +87,25 @@ public interface SysChargesTemplateDetailDao {
      * @return 状态(1.启用,0.未启用)
      */
     int findStatusByChargesTemplateDetailId(int id);
+
+    /**
+     * 禁用物业收费标准明细
+     * @param id 物业收费标准明细主键id
+     * @return 影响行数
+     */
+    int disable(Integer id);
+
+    /**
+     * 禁用同一个模版的其他的相同类型的物业收费标准模版
+     * @param byId 物业收费标准明细Vo findById 回显
+     * @return 影响行数
+     */
+    int disableAll(VoFindByIdChargesTemplateDetail byId);
+
+    /**
+     * 根据物业收费标准明细主键id启用物业收费标准模版
+     * @param id 物业收费标准明细主键id
+     * @return 影响行数
+     */
+    int enable(Integer id);
 }
