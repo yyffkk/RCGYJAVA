@@ -151,30 +151,4 @@ public interface UserDecorationDao {
      */
     int deleteCheckContent(Integer checkContentId);
 
-    /**
-     * 查询所有的押金管理信息
-     * @return 押金管理信息集合
-     */
-    List<VoUserDecorationDeposit> findAllDeposit();
-
-    /**
-     * 添加押金管理信息
-     * @param userDecorationDeposit 装修押金管理信息
-     * @return 影响行数
-     */
-    int insertDeposit(UserDecorationDeposit userDecorationDeposit);
-
-    /**
-     * 修改押金管理信息
-     * @param userDecorationDeposit 装修押金管理信息
-     * @return 影响行数
-     */
-    int updateDeposit(UserDecorationDeposit userDecorationDeposit);
-
-    /**
-     * 删除押金管理信息
-     * @param depositId 装修押金管理信息
-     * @return 影响行数
-     */
-    int deleteDeposit(Integer depositId);
 }

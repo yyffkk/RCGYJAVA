@@ -46,12 +46,4 @@ public interface UserDecorationService {
     Map<String, Object> updateCheckContent(UserDecorationTrackChecksContent trackChecksContent);
 
     Map<String, Object> deleteCheckContent(Integer checkContentId);
-
-    Map<String, Object> findAllDeposit();
-
-    Map<String, Object> insertDeposit(UserDecorationDeposit userDecorationDeposit);
-
-    Map<String, Object> updateDeposit(UserDecorationDeposit userDecorationDeposit);
-
-    Map<String, Object> deleteDeposit(Integer depositId);
 }
