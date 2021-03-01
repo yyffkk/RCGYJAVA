@@ -1,11 +1,9 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.DecorationApplicationService;
+import com.api.model.app.SearchAppDecoration;
 import com.api.model.app.UserDecoration;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -18,6 +16,25 @@ import java.util.Map;
 public class DecorationApplicationController {
     @Resource
     DecorationApplicationService decorationApplicationService;
+
+    /**
+     * 查询装修列表
+     * @return map
+     */
+    @GetMapping("/list")
+    public Map<String,Object> list(SearchAppDecoration searchAppDecoration){
+        return decorationApplicationService.list(searchAppDecoration);
+    }
+
+    /**
+     * 装修费用详情回显
+     * @return map
+     */
+    @GetMapping("/decorationCostDetail")
+    public Map<String,Object> decorationCostDetail(){
+        return decorationApplicationService.decorationCostDetail();
+    }
+
 
     /**
      * 提交装修申请

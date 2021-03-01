@@ -3,5 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.butler.DecorationApplicationDao">
+    <select id="list" parameterType="com.api.model.app.SearchAppDecoration" resultType="com.api.vo.app.AppDecorationVo">
+        select ud.id,ud.application_date,ud.status,CONCAT(cb.no,"-",cbu.no,"-",cbue.room_number) as room_name from user_decoration as ud,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where ud.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cbue.id = #{estateId}
+    </select>
+    <select id="findDecorationDeposit" resultType="com.api.vo.app.AppDecorationCostVo">
+        select sctd.id,sctd.name,sctd.unit_price from sys_charges_template as sct,sys_charges_template_detail as sctd
+        where sct.id = sctd.charges_template_id and sct.status = 1 and sctd.status = 1 and sctd.marker = 3
+    </select>
 
+    <select id="findDecorationAdditionalCost" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDecorationAdditionalCostVo">
+        select id,name,cost from sys_charges_template_additional_cost where charges_template_detail_id = #{id}
+    </select>
+
+    <select id="findDecorationDocUrl" resultType="java.lang.String">
+        select url from user_decoration_doc limit 1
+    </select>
 </mapper>
