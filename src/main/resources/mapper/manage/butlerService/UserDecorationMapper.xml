@@ -202,4 +202,26 @@
     <delete id="deleteCheckContent" parameterType="java.lang.Integer">
         delete from user_decoration_track_checks_content where id = #{checkContentId}
     </delete>
+
+    <delete id="deleteAllDoc">
+        delete from user_decoration_doc
+    </delete>
+
+    <insert id="insertDoc" parameterType="com.api.model.butlerService.UserDecorationDoc">
+        insert into user_decoration_doc(
+            name,
+            url,
+            create_id,
+            create_date
+        ) values (
+            #{name},
+            #{url},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findDocUrl" resultType="java.lang.String">
+        select url from user_decoration_doc
+    </select>
 </mapper>

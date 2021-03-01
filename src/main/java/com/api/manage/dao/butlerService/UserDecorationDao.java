@@ -151,4 +151,23 @@ public interface UserDecorationDao {
      */
     int deleteCheckContent(Integer checkContentId);
 
+    /**
+     * 删除全部装修须知doc文件
+     * @return 影响行数
+     */
+    int deleteAllDoc();
+
+    /**
+     * 添加装修须知doc文件
+     * @param userDecorationDoc 装修须知Doc文件
+     * @return 影响行数
+     */
+    int insertDoc(UserDecorationDoc userDecorationDoc);
+
+    /**
+     * 查询装修须知doc路径
+     * @return doc路径集合
+     */
+    List<String> findDocUrl();
+
 }

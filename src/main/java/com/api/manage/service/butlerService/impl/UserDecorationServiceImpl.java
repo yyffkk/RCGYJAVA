@@ -329,8 +329,16 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     @Override
     public Map<String, Object> findAllChecksContent() {
         map = new HashMap<>();
+        //查询所有的检查内容信息
         List<VoUserDecorationTrackChecksContent> trackChecksContentList = userDecorationDao.findAllChecksContent();
         map.put("trackChecksContentList",trackChecksContentList);
+        //查询装修须知doc路径
+        List<String> urls = userDecorationDao.findDocUrl();
+        String url = "";
+        if (urls != null && urls.size()>0){
+            url = urls.get(0);
+        }
+        map.put("url",url);
         return map;
     }
 

@@ -1,11 +1,18 @@
 package com.api.manage.service.system.impl;
 
+import com.api.manage.dao.butlerService.UserDecorationDao;
 import com.api.manage.service.system.UploadService;
+import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerService.UserDecorationDoc;
 import com.api.util.UploadUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +49,9 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_OWNERS_COMMITTEE;
     @Value("${prop.upload-gambit-theme}")
     private String UPLOAD_GAMBIT_THEME;
+
+    @Resource
+    UserDecorationDao userDecorationDao;
 
     @Override
     public Map<String, Object> uploadAdvice(MultipartFile file) {
@@ -128,6 +138,21 @@ public class UploadServiceImpl implements UploadService {
         try {
             UploadUtil uploadUtil = new UploadUtil();
             url = uploadUtil.uploadDoc(file,UPLOAD_DECORATION_NOTICE_DOC);
+            //先删除全部装修须知doc文件
+            userDecorationDao.deleteAllDoc();
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+            //再添加装修须知doc文件
+            UserDecorationDoc userDecorationDoc = new UserDecorationDoc();
+            userDecorationDoc.setName("装修须知");
+            userDecorationDoc.setUrl(url);
+            userDecorationDoc.setCreateId(sysUser.getId());
+            userDecorationDoc.setCreateDate(new Date());
+            int insert = userDecorationDao.insertDoc(userDecorationDoc);
+            if (insert <= 0){
+                throw new RuntimeException("添加数据库失败");
+            }
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
