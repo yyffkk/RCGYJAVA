@@ -134,4 +134,17 @@
     <select id="findCTDIdByCTId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select id from sys_charges_template_detail where charges_template_id = #{id}
     </select>
+
+    <select id="findDailyPaymentIsRelation" parameterType="java.util.List" resultType="java.lang.Integer">
+        select count(*) from sys_daily_payment where charges_template_detail_id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+    <select id="findDepositManagementIsRelation" parameterType="java.util.List" resultType="java.lang.Integer">
+        select count(*) from sys_deposit_management where charges_template_detail_id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

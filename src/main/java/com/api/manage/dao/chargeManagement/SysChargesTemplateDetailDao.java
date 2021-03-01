@@ -115,4 +115,18 @@ public interface SysChargesTemplateDetailDao {
      * @return 收费标准明细id集合
      */
     List<Integer> findCTDIdByCTId(int id);
+
+    /**
+     * 查询日常缴费是否存在关联收费标准明细
+     * @param chargesTemplateDetailIds 收费标准明细id集合
+     * @return 关联数量
+     */
+    int findDailyPaymentIsRelation(List<Integer> chargesTemplateDetailIds);
+
+    /**
+     * 查询押金管理是否存在关联收费标准明细
+     * @param chargesTemplateDetailIds 收费标准明细id集合
+     * @return 关联数量
+     */
+    int findDepositManagementIsRelation(List<Integer> chargesTemplateDetailIds);
 }

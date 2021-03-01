@@ -120,6 +120,7 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
     }
 
     @Override
+    @Transactional
     public Map<String, Object> delete(int[] ids) {
         map = new HashMap<>();
         try {
@@ -131,14 +132,28 @@ public class SysChargesTemplateServiceImpl implements SysChargesTemplateService 
                 }
                 //根据收费标准模版主键id查询收费标准明细id集合
                 List<Integer> chargesTemplateDetailIds = sysChargesTemplateDetailDao.findCTDIdByCTId(id);
-                //查询日常缴费是否存在关联收费标准
-                //查询押金管理是否存在关联收费标准
-
+                //查询日常缴费是否存在关联收费标准明细
+                int count1 = sysChargesTemplateDetailDao.findDailyPaymentIsRelation(chargesTemplateDetailIds);
+                if (count1 > 0){
+                    throw new RuntimeException("已关联日常缴费信息,删除失败");
+                }
+                //查询押金管理是否存在关联收费标准明细
+                int count2 = sysChargesTemplateDetailDao.findDepositManagementIsRelation(chargesTemplateDetailIds);
+                if (count2 >0){
+                    throw new RuntimeException("已关联押金管理信息,删除失败");
+                }
                 //根据收费标准模版主键id删除收费标准模版信息
                 int delete = sysChargesTemplateDao.delete(id);
                 if (delete <= 0){
                     throw new RuntimeException("删除收费标准模版信息失败");
                 }
+                if (chargesTemplateDetailIds != null){
+                    for (Integer templateDetailId : chargesTemplateDetailIds) {
+                        sysChargesTemplateDetailDao.deleteAdditionalCost(templateDetailId);
+                        sysChargesTemplateDetailDao.delete(templateDetailId);
+                    }
+                }
+
             }
 
         } catch (RuntimeException e) {

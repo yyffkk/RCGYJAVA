@@ -23,10 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDetailService {
@@ -163,6 +160,18 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
                 //如果已启用则无法删除
                 if (status == 1){
                     throw new RuntimeException("该费用已启用,无法删除");
+                }
+                ArrayList<Integer> chargesTemplateDetailIds = new ArrayList<>();
+                chargesTemplateDetailIds.add(id);
+                //查询日常缴费是否存在关联收费标准明细
+                int count1 = sysChargesTemplateDetailDao.findDailyPaymentIsRelation(chargesTemplateDetailIds);
+                if (count1 > 0){
+                    throw new RuntimeException("已关联日常缴费信息,删除失败");
+                }
+                //查询押金管理是否存在关联收费标准明细
+                int count2 = sysChargesTemplateDetailDao.findDepositManagementIsRelation(chargesTemplateDetailIds);
+                if (count2 >0){
+                    throw new RuntimeException("已关联押金管理信息,删除失败");
                 }
                 //根据物业收费标准明细主键id,删除收费标准附加费用
                 sysChargesTemplateDetailDao.deleteAdditionalCost(id);
