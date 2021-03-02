@@ -3,6 +3,7 @@ package com.api.app.controller.butler;
 import com.api.app.service.butler.DecorationApplicationService;
 import com.api.model.app.SearchAppDecoration;
 import com.api.model.app.UserDecoration;
+import com.api.model.app.UserIdAndEstateId;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,15 +36,34 @@ public class DecorationApplicationController {
         return decorationApplicationService.decorationCostDetail();
     }
 
+    /**
+     * 申请装修
+     * @param userIdAndEstateId 用户id和房产id
+     * @return map
+     */
+    @GetMapping("/applicationDecoration")
+    public Map<String,Object> applicationDecoration(UserIdAndEstateId userIdAndEstateId){
+        return decorationApplicationService.applicationDecoration(userIdAndEstateId);
+    }
 
     /**
-     * 提交装修申请
+     * 修改或完善装修申请
      * @param userDecoration 装修信息表
      * @return map
      */
-    @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody UserDecoration userDecoration){
-        return null;
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody UserDecoration userDecoration){
+        return decorationApplicationService.update(userDecoration);
+    }
+
+    /**
+     * 查询申请装修信息
+     * @param id 装修主键id
+     * @return map
+     */
+    @GetMapping("/findApplicationDecoration")
+    public Map<String,Object> findApplicationDecoration(Integer id){
+        return decorationApplicationService.findApplicationDecoration(id);
     }
 
 }

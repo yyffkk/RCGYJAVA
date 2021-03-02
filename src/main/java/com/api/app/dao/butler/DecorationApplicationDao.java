@@ -1,7 +1,10 @@
 package com.api.app.dao.butler;
 
 import com.api.model.app.SearchAppDecoration;
+import com.api.model.app.UserDecoration;
+import com.api.model.app.UserIdAndEstateId;
 import com.api.vo.app.AppDecorationAdditionalCostVo;
+import com.api.vo.app.AppDecorationApplicationVo;
 import com.api.vo.app.AppDecorationCostVo;
 import com.api.vo.app.AppDecorationVo;
 
@@ -33,4 +36,39 @@ public interface DecorationApplicationDao {
      * @return 装修须知doc路径
      */
     String findDecorationDocUrl();
+
+    /**
+     * 根据用户id和房产id查询该用户有无该房产的使用权
+     * @param userIdAndEstateId 用户id和房产id
+     * @return 关联数量
+     */
+    int applicationDecoration(UserIdAndEstateId userIdAndEstateId);
+
+    /**
+     * 根据用户id查询用户类型
+     * @param id 用户id
+     * @return 用户类型
+     */
+    int findUserTypeByUserId(Integer id);
+
+    /**
+     * 添加装修申请信息
+     * @param userDecoration 装修信息表 model
+     * @return 影响行数
+     */
+    int insertDecorationApplication(UserDecoration userDecoration);
+
+    /**
+     * 修改或完善装修申请
+     * @param userDecoration 装修信息表 model
+     * @return 影响行数
+     */
+    int update(UserDecoration userDecoration);
+
+    /**
+     * 查询申请装修信息
+     * @param id 装修主键id
+     * @return 申请装修信息Vo 回显
+     */
+    AppDecorationApplicationVo findApplicationDecoration(Integer id);
 }

@@ -2,6 +2,7 @@ package com.api.model.app;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 装修信息表 model
@@ -16,47 +17,55 @@ public class UserDecoration {
      */
     private Integer buildingUnitEstateId;
     /**
-     * 业主id
+     * 申请人id
      */
     private Integer residentId;
     /**
-     * 装修公司
+     * 申请人类型（1.业主，3.租客）
      */
-    private String constructionUnit;
-    /**
-     * 状态(1.未开始，2.装修中，3.装修结束-未退押金，4.装修结束-已退押金，5.已结束，6.已作废)
-     */
-    private Integer status;
-    /**
-     * 紧急联系人
-     */
-    private String emergencyContact;
-    /**
-     * 紧急联系人电话
-     */
-    private String tel;
-    /**
-     * 装修押金（元）【最开始填入信息】
-     */
-    private BigDecimal decorationDeposit;
-    /**
-     * 装修垃圾清理费(初始为0)
-     */
-    private BigDecimal cleanCost;
-    /**
-     * 公共设施修复费(初始为0）
-     */
-    private BigDecimal serviceCost;
+    private Integer residentType;
     /**
      * 申请时间
      */
     private Date applicationDate;
     /**
-     * 预计开始时间
+     * 装修公司【装修最开始填入信息】
+     */
+    private String constructionUnit;
+    /**
+     * 装修负责人【装修最开始填入信息】
+     */
+    private String director;
+    /**
+     * 装修负责人联系电话【装修最开始填入信息】
+     */
+    private String directorTel;
+    /**
+     * 状态(-1.申请中，-2.申请不通过，-3.申请通过，1.未开始，2.装修中，3.装修结束-未退押金，4.装修结束-已退押金，6.已作废)
+     */
+    private Integer status;
+    /**
+     * 紧急联系人【装修最开始填入信息】
+     */
+    private String emergencyContact;
+    /**
+     * 紧急联系人电话【装修最开始填入信息】
+     */
+    private String tel;
+    /**
+     * 装修押金（元）【装修最开始填入信息】
+     */
+    private BigDecimal decorationDeposit;
+    /**
+     * 装修额外费用集合【装修最开始填入信息】
+     */
+    List<UserDecorationAdditionalCost> additionalCostList;
+    /**
+     * 预计开始时间【装修最开始填入信息】
      */
     private Date expectedBegin;
     /**
-     * 预计结束时间
+     * 预计结束时间【装修最开始填入信息】
      */
     private Date expectedEnd;
     /**
@@ -68,19 +77,19 @@ public class UserDecoration {
      */
     private BigDecimal actualEnd;
     /**
-     * 退还押金（初始为0）
+     * 退还押金（null为未退还押金）
      */
     private BigDecimal refundDeposit;
     /**
-     * 审批结果
+     * 租户审核结果（1.业主同意，2.业主不同意）
      */
     private Integer approveResults;
     /**
-     * 审批人
+     * 租户审核人（业主端同意则为-1）
      */
     private Integer approveId;
     /**
-     * 审批时间
+     * 租户审核时间
      */
     private Date approveDate;
     /**
@@ -92,7 +101,7 @@ public class UserDecoration {
      */
     private Integer isQualified;
     /**
-     * 是否退还门禁卡，0未退还，1退还 （初始为0.未退还）
+     * 是否退还门禁卡，0未退还，1退还 （null为未发放）
      */
     private Integer isReturnAccessCard;
 
@@ -102,14 +111,16 @@ public class UserDecoration {
                 "id=" + id +
                 ", buildingUnitEstateId=" + buildingUnitEstateId +
                 ", residentId=" + residentId +
+                ", residentType=" + residentType +
+                ", applicationDate=" + applicationDate +
                 ", constructionUnit='" + constructionUnit + '\'' +
+                ", director='" + director + '\'' +
+                ", directorTel='" + directorTel + '\'' +
                 ", status=" + status +
                 ", emergencyContact='" + emergencyContact + '\'' +
                 ", tel='" + tel + '\'' +
                 ", decorationDeposit=" + decorationDeposit +
-                ", cleanCost=" + cleanCost +
-                ", serviceCost=" + serviceCost +
-                ", applicationDate=" + applicationDate +
+                ", additionalCostList=" + additionalCostList +
                 ", expectedBegin=" + expectedBegin +
                 ", expectedEnd=" + expectedEnd +
                 ", actualBegin=" + actualBegin +
@@ -148,12 +159,44 @@ public class UserDecoration {
         this.residentId = residentId;
     }
 
+    public Integer getResidentType() {
+        return residentType;
+    }
+
+    public void setResidentType(Integer residentType) {
+        this.residentType = residentType;
+    }
+
+    public Date getApplicationDate() {
+        return applicationDate;
+    }
+
+    public void setApplicationDate(Date applicationDate) {
+        this.applicationDate = applicationDate;
+    }
+
     public String getConstructionUnit() {
         return constructionUnit;
     }
 
     public void setConstructionUnit(String constructionUnit) {
         this.constructionUnit = constructionUnit;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getDirectorTel() {
+        return directorTel;
+    }
+
+    public void setDirectorTel(String directorTel) {
+        this.directorTel = directorTel;
     }
 
     public Integer getStatus() {
@@ -188,28 +231,12 @@ public class UserDecoration {
         this.decorationDeposit = decorationDeposit;
     }
 
-    public BigDecimal getCleanCost() {
-        return cleanCost;
+    public List<UserDecorationAdditionalCost> getAdditionalCostList() {
+        return additionalCostList;
     }
 
-    public void setCleanCost(BigDecimal cleanCost) {
-        this.cleanCost = cleanCost;
-    }
-
-    public BigDecimal getServiceCost() {
-        return serviceCost;
-    }
-
-    public void setServiceCost(BigDecimal serviceCost) {
-        this.serviceCost = serviceCost;
-    }
-
-    public Date getApplicationDate() {
-        return applicationDate;
-    }
-
-    public void setApplicationDate(Date applicationDate) {
-        this.applicationDate = applicationDate;
+    public void setAdditionalCostList(List<UserDecorationAdditionalCost> additionalCostList) {
+        this.additionalCostList = additionalCostList;
     }
 
     public Date getExpectedBegin() {
@@ -303,18 +330,20 @@ public class UserDecoration {
     public UserDecoration() {
     }
 
-    public UserDecoration(Integer id, Integer buildingUnitEstateId, Integer residentId, String constructionUnit, Integer status, String emergencyContact, String tel, BigDecimal decorationDeposit, BigDecimal cleanCost, BigDecimal serviceCost, Date applicationDate, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard) {
+    public UserDecoration(Integer id, Integer buildingUnitEstateId, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, BigDecimal decorationDeposit, List<UserDecorationAdditionalCost> additionalCostList, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.residentId = residentId;
+        this.residentType = residentType;
+        this.applicationDate = applicationDate;
         this.constructionUnit = constructionUnit;
+        this.director = director;
+        this.directorTel = directorTel;
         this.status = status;
         this.emergencyContact = emergencyContact;
         this.tel = tel;
         this.decorationDeposit = decorationDeposit;
-        this.cleanCost = cleanCost;
-        this.serviceCost = serviceCost;
-        this.applicationDate = applicationDate;
+        this.additionalCostList = additionalCostList;
         this.expectedBegin = expectedBegin;
         this.expectedEnd = expectedEnd;
         this.actualBegin = actualBegin;

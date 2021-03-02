@@ -19,4 +19,64 @@
     <select id="findDecorationDocUrl" resultType="java.lang.String">
         select url from user_decoration_doc limit 1
     </select>
+
+    <select id="applicationDecoration" parameterType="com.api.model.app.UserIdAndEstateId" resultType="java.lang.Integer">
+        select count(*) from user_resident as ur,cpm_resident_estate as cre
+        where ur.id = cre.resident_id and ur.id = #{id} and cre.building_unit_estate_id = #{estateId}
+    </select>
+
+    <select id="findUserTypeByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select type from user_resident where id = #{id}
+    </select>
+
+    <insert id="insertDecorationApplication" parameterType="com.api.model.app.UserDecoration">
+        insert into user_decoration(
+            building_unit_estate_id,
+            resident_id,
+            resident_type,
+            application_date,
+            status
+        ) values (
+            #{buildingUnitEstateId},
+            #{residentId},
+            #{residentType},
+            #{applicationDate},
+            #{status}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="com.api.model.app.UserDecoration">
+        update user_decoration
+        <set>
+            <if test="constructionUnit != null and constructionUnit != ''">
+                construction_unit = #{constructionUnit},
+            </if>
+            <if test="director != null and director != ''">
+                director = #{director},
+            </if>
+            <if test="directorTel != null and directorTel != ''">
+                director_tel = #{directorTel},
+            </if>
+            <if test="emergencyContact != null and emergencyContact != ''">
+                emergency_contact = #{emergencyContact},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="expectedBegin != null">
+                expected_begin = #{expectedBegin},
+            </if>
+            <if test="expectedEnd != null">
+                expected_end = #{expectedEnd},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findApplicationDecoration" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDecorationApplicationVo">
+        select * from user_decoration where id = #{id}
+    </select>
 </mapper>
