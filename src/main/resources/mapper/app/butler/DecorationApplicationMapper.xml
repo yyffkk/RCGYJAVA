@@ -29,7 +29,7 @@
         select type from user_resident where id = #{id}
     </select>
 
-    <insert id="insertDecorationApplication" parameterType="com.api.model.app.UserDecoration">
+    <insert id="insertDecorationApplication" parameterType="com.api.model.app.AppUserDecoration">
         insert into user_decoration(
             building_unit_estate_id,
             resident_id,
@@ -48,7 +48,7 @@
         </selectKey>
     </insert>
 
-    <update id="update" parameterType="com.api.model.app.UserDecoration">
+    <update id="update" parameterType="com.api.model.app.AppUserDecoration">
         update user_decoration
         <set>
             <if test="constructionUnit != null and constructionUnit != ''">
@@ -79,4 +79,53 @@
     <select id="findApplicationDecoration" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDecorationApplicationVo">
         select * from user_decoration where id = #{id}
     </select>
+
+    <insert id="insertDepositManagement" parameterType="com.api.model.app.AppDepositManagement">
+        insert into sys_deposit_management(
+            user_decoration_id,
+            order_code,
+            charges_template_detail_id,
+            pay_date,
+            deposit_price,
+            status,
+            froms,
+            pay_type,
+            <if test="remake != null and remake != ''">
+                remake,
+            </if>
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{userDecorationId},
+            #{orderCode},
+            #{chargesTemplateDetailId},
+            #{payDate},
+            #{depositPrice},
+            #{status},
+            #{froms},
+            #{payType},
+            <if test="remake != null and remake != ''">
+                #{remake},
+            </if>
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertDepositAdditionalCost" parameterType="com.api.model.app.AppDepositAdditionalCost">
+        insert into sys_deposit_management_additional_cost(
+            sys_deposit_management_id,
+            name,
+            cost
+        ) values (
+            #{sysDepositManagementId},
+            #{name},
+            #{cost}
+        )
+    </insert>
 </mapper>

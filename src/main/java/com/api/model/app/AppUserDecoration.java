@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 装修信息表 model
  */
-public class UserDecoration {
+public class AppUserDecoration {
     /**
      * 主键id
      */
@@ -52,14 +52,6 @@ public class UserDecoration {
      * 紧急联系人电话【装修最开始填入信息】
      */
     private String tel;
-    /**
-     * 装修押金（元）【装修最开始填入信息】
-     */
-    private BigDecimal decorationDeposit;
-    /**
-     * 装修额外费用集合【装修最开始填入信息】
-     */
-    List<UserDecorationAdditionalCost> additionalCostList;
     /**
      * 预计开始时间【装修最开始填入信息】
      */
@@ -119,8 +111,6 @@ public class UserDecoration {
                 ", status=" + status +
                 ", emergencyContact='" + emergencyContact + '\'' +
                 ", tel='" + tel + '\'' +
-                ", decorationDeposit=" + decorationDeposit +
-                ", additionalCostList=" + additionalCostList +
                 ", expectedBegin=" + expectedBegin +
                 ", expectedEnd=" + expectedEnd +
                 ", actualBegin=" + actualBegin +
@@ -223,22 +213,6 @@ public class UserDecoration {
         this.tel = tel;
     }
 
-    public BigDecimal getDecorationDeposit() {
-        return decorationDeposit;
-    }
-
-    public void setDecorationDeposit(BigDecimal decorationDeposit) {
-        this.decorationDeposit = decorationDeposit;
-    }
-
-    public List<UserDecorationAdditionalCost> getAdditionalCostList() {
-        return additionalCostList;
-    }
-
-    public void setAdditionalCostList(List<UserDecorationAdditionalCost> additionalCostList) {
-        this.additionalCostList = additionalCostList;
-    }
-
     public Date getExpectedBegin() {
         return expectedBegin;
     }
@@ -327,10 +301,10 @@ public class UserDecoration {
         this.isReturnAccessCard = isReturnAccessCard;
     }
 
-    public UserDecoration() {
+    public AppUserDecoration() {
     }
 
-    public UserDecoration(Integer id, Integer buildingUnitEstateId, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, BigDecimal decorationDeposit, List<UserDecorationAdditionalCost> additionalCostList, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard) {
+    public AppUserDecoration(Integer id, Integer buildingUnitEstateId, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.residentId = residentId;
@@ -342,8 +316,6 @@ public class UserDecoration {
         this.status = status;
         this.emergencyContact = emergencyContact;
         this.tel = tel;
-        this.decorationDeposit = decorationDeposit;
-        this.additionalCostList = additionalCostList;
         this.expectedBegin = expectedBegin;
         this.expectedEnd = expectedEnd;
         this.actualBegin = actualBegin;

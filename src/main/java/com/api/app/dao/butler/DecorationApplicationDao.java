@@ -1,8 +1,6 @@
 package com.api.app.dao.butler;
 
-import com.api.model.app.SearchAppDecoration;
-import com.api.model.app.UserDecoration;
-import com.api.model.app.UserIdAndEstateId;
+import com.api.model.app.*;
 import com.api.vo.app.AppDecorationAdditionalCostVo;
 import com.api.vo.app.AppDecorationApplicationVo;
 import com.api.vo.app.AppDecorationCostVo;
@@ -56,14 +54,14 @@ public interface DecorationApplicationDao {
      * @param userDecoration 装修信息表 model
      * @return 影响行数
      */
-    int insertDecorationApplication(UserDecoration userDecoration);
+    int insertDecorationApplication(AppUserDecoration userDecoration);
 
     /**
      * 修改或完善装修申请
      * @param userDecoration 装修信息表 model
      * @return 影响行数
      */
-    int update(UserDecoration userDecoration);
+    int update(AppUserDecoration userDecoration);
 
     /**
      * 查询申请装修信息
@@ -71,4 +69,18 @@ public interface DecorationApplicationDao {
      * @return 申请装修信息Vo 回显
      */
     AppDecorationApplicationVo findApplicationDecoration(Integer id);
+
+    /**
+     * 添加押金管理信息
+     * @param appDepositManagement app押金管理model
+     * @return 影响行数
+     */
+    int insertDepositManagement(AppDepositManagement appDepositManagement);
+
+    /**
+     * 添加押金附加费用
+     * @param additionalCost app押金额外费用
+     * @return 影响行数
+     */
+    int insertDepositAdditionalCost(AppDepositAdditionalCost additionalCost);
 }

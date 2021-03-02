@@ -383,6 +383,14 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     @Override
     public Map<String, Object> deleteCheckContent(Integer checkContentId) {
         map = new HashMap<>();
+        //查询是否关联检查内容
+        int count = userDecorationDao.isRelationCheckContent(checkContentId);
+        if (count >0){
+            map.put("message","已被使用，无法删除");
+            map.put("status",false);
+            return map;
+        }
+
         int delete = userDecorationDao.deleteCheckContent(checkContentId);
         if (delete >0){
             map.put("message","删除成功");

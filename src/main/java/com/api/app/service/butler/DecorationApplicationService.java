@@ -1,8 +1,6 @@
 package com.api.app.service.butler;
 
-import com.api.model.app.SearchAppDecoration;
-import com.api.model.app.UserDecoration;
-import com.api.model.app.UserIdAndEstateId;
+import com.api.model.app.*;
 
 import java.util.Map;
 
@@ -13,7 +11,11 @@ public interface DecorationApplicationService {
 
     Map<String, Object> applicationDecoration(UserIdAndEstateId userIdAndEstateId);
 
-    Map<String, Object> update(UserDecoration userDecoration);
+    Map<String, Object> update(AppUserDecoration userDecoration);
 
     Map<String, Object> findApplicationDecoration(Integer id);
+
+    Map<String, Object> applicationPay(AppDepositManagement appDepositManagement);
+
+    Map<String, Object> insertDecorationPerson(AppUserDecorationSubmit decorationSubmit);
 }

@@ -3,17 +3,17 @@ package com.api.model.app;
 import java.math.BigDecimal;
 
 /**
- * 装修额外费用
+ * app押金额外费用
  */
-public class UserDecorationAdditionalCost {
+public class AppDepositAdditionalCost {
     /**
      * 主键id
      */
     private Integer id;
     /**
-     * 装修信息表主键id
+     * 押金管理主键id
      */
-    private Integer userDecorationId;
+    private Integer sysDepositManagementId;
     /**
      * 附加费用名称
      */
@@ -25,9 +25,9 @@ public class UserDecorationAdditionalCost {
 
     @Override
     public String toString() {
-        return "UserDecorationAdditional{" +
+        return "AppDepositAdditionalCost{" +
                 "id=" + id +
-                ", userDecorationId=" + userDecorationId +
+                ", sysDepositManagementId=" + sysDepositManagementId +
                 ", name='" + name + '\'' +
                 ", cost=" + cost +
                 '}';
@@ -41,12 +41,12 @@ public class UserDecorationAdditionalCost {
         this.id = id;
     }
 
-    public Integer getUserDecorationId() {
-        return userDecorationId;
+    public Integer getSysDepositManagementId() {
+        return sysDepositManagementId;
     }
 
-    public void setUserDecorationId(Integer userDecorationId) {
-        this.userDecorationId = userDecorationId;
+    public void setSysDepositManagementId(Integer sysDepositManagementId) {
+        this.sysDepositManagementId = sysDepositManagementId;
     }
 
     public String getName() {
@@ -65,12 +65,12 @@ public class UserDecorationAdditionalCost {
         this.cost = cost;
     }
 
-    public UserDecorationAdditionalCost() {
+    public AppDepositAdditionalCost() {
     }
 
-    public UserDecorationAdditionalCost(Integer id, Integer userDecorationId, String name, BigDecimal cost) {
+    public AppDepositAdditionalCost(Integer id, Integer sysDepositManagementId, String name, BigDecimal cost) {
         this.id = id;
-        this.userDecorationId = userDecorationId;
+        this.sysDepositManagementId = sysDepositManagementId;
         this.name = name;
         this.cost = cost;
     }

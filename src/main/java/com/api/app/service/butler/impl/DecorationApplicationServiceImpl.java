@@ -2,21 +2,17 @@ package com.api.app.service.butler.impl;
 
 import com.api.app.dao.butler.DecorationApplicationDao;
 import com.api.app.service.butler.DecorationApplicationService;
-import com.api.model.app.SearchAppDecoration;
-import com.api.model.app.UserDecoration;
-import com.api.model.app.UserIdAndEstateId;
+import com.api.model.app.*;
 import com.api.vo.app.AppDecorationAdditionalCostVo;
 import com.api.vo.app.AppDecorationApplicationVo;
 import com.api.vo.app.AppDecorationCostVo;
 import com.api.vo.app.AppDecorationVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DecorationApplicationServiceImpl implements DecorationApplicationService {
@@ -57,7 +53,7 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
         if (count >0){
             //根据用户id查询用户类型
             int type = decorationApplicationDao.findUserTypeByUserId(userIdAndEstateId.getId());
-            UserDecoration userDecoration = new UserDecoration();
+            AppUserDecoration userDecoration = new AppUserDecoration();
             if (type == 1){
                 map.put("message","申请通过");
                 map.put("status",true);
@@ -87,7 +83,7 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
     }
 
     @Override
-    public Map<String, Object> update(UserDecoration userDecoration) {
+    public Map<String, Object> update(AppUserDecoration userDecoration) {
         map = new HashMap<>();
         int update = decorationApplicationDao.update(userDecoration);
         if (update >0){
@@ -108,5 +104,63 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
         map.put("data",applicationVo);
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> applicationPay(AppDepositManagement appDepositManagement) {
+        map = new HashMap<>();
+        try {
+            //调用支付宝接口,返回订单号，当前为UUid自动生成订单号
+            String uuid = UUID.randomUUID().toString().replace("-", "");
+
+            //填入订单号
+            appDepositManagement.setOrderCode(uuid);
+            //填入缴费时间
+            appDepositManagement.setPayDate(new Date());
+            //填入来源：1.app,2.线下
+            appDepositManagement.setFroms(2);
+            //填入创建时间
+            appDepositManagement.setCreateDate(new Date());
+            //填入是否删除，默认为1.非删
+            appDepositManagement.setIsDelete(1);
+            //填入状态，默认为1.未退
+            appDepositManagement.setStatus(1);
+
+            //添加押金管理信息
+            int insert = decorationApplicationDao.insertDepositManagement(appDepositManagement);
+            if (insert <= 0){
+                throw new RuntimeException("添加订单失败");
+            }
+            //添加押金附加费用
+            List<AppDepositAdditionalCost> depositAdditionalCostList = appDepositManagement.getDepositAdditionalCostList();
+            if (depositAdditionalCostList != null && depositAdditionalCostList.size() >0){
+                for (AppDepositAdditionalCost additionalCost : depositAdditionalCostList) {
+                    additionalCost.setSysDepositManagementId(appDepositManagement.getId());
+                    int insert2 = decorationApplicationDao.insertDepositAdditionalCost(additionalCost);
+                    if (insert2 <= 0){
+                        throw new RuntimeException("添加附加费用失败");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","付款成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> insertDecorationPerson(AppUserDecorationSubmit decorationSubmit) {
+        return null;
     }
 }
