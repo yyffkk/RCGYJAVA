@@ -1,11 +1,16 @@
 package com.api.model.app;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * 装修公司提交信息
  */
 public class AppUserDecorationSubmit {
+    /**
+     * 装修单号
+     */
+    private String code;
     /**
      * 装修公司
      */
@@ -15,37 +20,46 @@ public class AppUserDecorationSubmit {
      */
     private List<AppUserDecorationPerson> decorationPersonList;
     /**
-     * 营业执照 照片路径
+     * 营业执照 照片路径数组
      */
-    private String businessLicenseUrl;
+    private String[] businessLicenseUrl;
     /**
-     * 资质证书 照片路径
+     * 资质证书 照片路径数组
      */
-    private String qualificationCertificate;
+    private String[] qualificationCertificate;
     /**
-     * 装修图纸 照片路径
+     * 装修图纸 照片路径数组
      */
-    private String decorationDrawings;
+    private String[] decorationDrawings;
     /**
-     * 装修申请表
+     * 装修申请表 照片路径数组
      */
-    private String decorationApplicationForm;
+    private String[] decorationApplicationForm;
     /**
-     * 装修承诺书
+     * 装修承诺书 照片路径数组
      */
-    private String decorationCommitment;
+    private String[] decorationCommitment;
 
     @Override
     public String toString() {
         return "AppUserDecorationSubmit{" +
-                "constructionUnit='" + constructionUnit + '\'' +
+                "code='" + code + '\'' +
+                ", constructionUnit='" + constructionUnit + '\'' +
                 ", decorationPersonList=" + decorationPersonList +
-                ", businessLicenseUrl='" + businessLicenseUrl + '\'' +
-                ", qualificationCertificate='" + qualificationCertificate + '\'' +
-                ", decorationDrawings='" + decorationDrawings + '\'' +
-                ", decorationApplicationForm='" + decorationApplicationForm + '\'' +
-                ", decorationCommitment='" + decorationCommitment + '\'' +
+                ", businessLicenseUrl=" + Arrays.toString(businessLicenseUrl) +
+                ", qualificationCertificate=" + Arrays.toString(qualificationCertificate) +
+                ", decorationDrawings=" + Arrays.toString(decorationDrawings) +
+                ", decorationApplicationForm=" + Arrays.toString(decorationApplicationForm) +
+                ", decorationCommitment=" + Arrays.toString(decorationCommitment) +
                 '}';
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getConstructionUnit() {
@@ -64,50 +78,51 @@ public class AppUserDecorationSubmit {
         this.decorationPersonList = decorationPersonList;
     }
 
-    public String getBusinessLicenseUrl() {
+    public String[] getBusinessLicenseUrl() {
         return businessLicenseUrl;
     }
 
-    public void setBusinessLicenseUrl(String businessLicenseUrl) {
+    public void setBusinessLicenseUrl(String[] businessLicenseUrl) {
         this.businessLicenseUrl = businessLicenseUrl;
     }
 
-    public String getQualificationCertificate() {
+    public String[] getQualificationCertificate() {
         return qualificationCertificate;
     }
 
-    public void setQualificationCertificate(String qualificationCertificate) {
+    public void setQualificationCertificate(String[] qualificationCertificate) {
         this.qualificationCertificate = qualificationCertificate;
     }
 
-    public String getDecorationDrawings() {
+    public String[] getDecorationDrawings() {
         return decorationDrawings;
     }
 
-    public void setDecorationDrawings(String decorationDrawings) {
+    public void setDecorationDrawings(String[] decorationDrawings) {
         this.decorationDrawings = decorationDrawings;
     }
 
-    public String getDecorationApplicationForm() {
+    public String[] getDecorationApplicationForm() {
         return decorationApplicationForm;
     }
 
-    public void setDecorationApplicationForm(String decorationApplicationForm) {
+    public void setDecorationApplicationForm(String[] decorationApplicationForm) {
         this.decorationApplicationForm = decorationApplicationForm;
     }
 
-    public String getDecorationCommitment() {
+    public String[] getDecorationCommitment() {
         return decorationCommitment;
     }
 
-    public void setDecorationCommitment(String decorationCommitment) {
+    public void setDecorationCommitment(String[] decorationCommitment) {
         this.decorationCommitment = decorationCommitment;
     }
 
     public AppUserDecorationSubmit() {
     }
 
-    public AppUserDecorationSubmit(String constructionUnit, List<AppUserDecorationPerson> decorationPersonList, String businessLicenseUrl, String qualificationCertificate, String decorationDrawings, String decorationApplicationForm, String decorationCommitment) {
+    public AppUserDecorationSubmit(String code, String constructionUnit, List<AppUserDecorationPerson> decorationPersonList, String[] businessLicenseUrl, String[] qualificationCertificate, String[] decorationDrawings, String[] decorationApplicationForm, String[] decorationCommitment) {
+        this.code = code;
         this.constructionUnit = constructionUnit;
         this.decorationPersonList = decorationPersonList;
         this.businessLicenseUrl = businessLicenseUrl;

@@ -83,4 +83,39 @@ public interface DecorationApplicationDao {
      * @return 影响行数
      */
     int insertDepositAdditionalCost(AppDepositAdditionalCost additionalCost);
+
+    /**
+     * 根据装修主键id查询装修单号
+     * @param decorationId 装修主键id
+     * @return 装修单号
+     */
+    String findDecorationCodeById(Integer decorationId);
+
+    /**
+     * 根据装修单号查询装修主键id
+     * @param code 装修单号
+     * @return 装修主键id
+     */
+    int findDecorationIdByCode(String code);
+
+    /**
+     * 添加装修人员信息
+     * @param decorationPerson 装修人员信息
+     * @return 影响行数
+     */
+    int insertDecorationPerson(AppUserDecorationPerson decorationPerson);
+
+    /**
+     * 先删除装修人员信息
+     * @param decorationId 装修主键id
+     * @return 影响行数
+     */
+    int delete(int decorationId);
+
+    /**
+     * 根据装修主键id修改装修状态
+     * @param appUserDecoration 装修信息表 model
+     * @return 影响行数
+     */
+    int updateStatusById(AppUserDecoration appUserDecoration);
 }

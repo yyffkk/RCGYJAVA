@@ -17,6 +17,10 @@ public class AppUserDecoration {
      */
     private Integer buildingUnitEstateId;
     /**
+     * 装修单号
+     */
+    private String code;
+    /**
      * 申请人id
      */
     private Integer residentId;
@@ -99,9 +103,10 @@ public class AppUserDecoration {
 
     @Override
     public String toString() {
-        return "UserDecoration{" +
+        return "AppUserDecoration{" +
                 "id=" + id +
                 ", buildingUnitEstateId=" + buildingUnitEstateId +
+                ", code='" + code + '\'' +
                 ", residentId=" + residentId +
                 ", residentType=" + residentType +
                 ", applicationDate=" + applicationDate +
@@ -139,6 +144,14 @@ public class AppUserDecoration {
 
     public void setBuildingUnitEstateId(Integer buildingUnitEstateId) {
         this.buildingUnitEstateId = buildingUnitEstateId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getResidentId() {
@@ -304,9 +317,10 @@ public class AppUserDecoration {
     public AppUserDecoration() {
     }
 
-    public AppUserDecoration(Integer id, Integer buildingUnitEstateId, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard) {
+    public AppUserDecoration(Integer id, Integer buildingUnitEstateId, String code, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
+        this.code = code;
         this.residentId = residentId;
         this.residentType = residentType;
         this.applicationDate = applicationDate;

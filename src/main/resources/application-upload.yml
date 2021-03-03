@@ -23,6 +23,16 @@ prop:
   upload-owners-committee: /img/ownersCommittee/
   #管家服务-装修管理：装修须知doc,docx文件上传路径
   upload-decoration-notice-doc: /doc/decorationNotice/
+  #管家服务-装修管理：营业执照照片上传路径
+  upload-decoration-business-license: img/decoration/businessLicense/
+  #管家服务-装修管理：资质证书照片上传路径
+  upload-decoration-qualification-certificate: img/decoration/qualificationCertificate/
+  #管家服务-装修管理：装修图纸照片上传路径
+  upload-decoration-decoration-drawings: img/decoration/decorationDrawings/
+  #管家服务-装修管理：装修申请表上传路径
+  upload-decoration-decoration-application-form: img/decoration/decorationApplicationForm/
+  #管家服务-装修管理：装修承诺书上传路径
+  upload-decoration-decoration-commitment: img/decoration/decorationCommitment/
 
   #运营管理-公告管理：新增公告信息照片上传路径
   upload-announcement: /img/announcement/

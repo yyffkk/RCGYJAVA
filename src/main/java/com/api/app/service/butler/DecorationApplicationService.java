@@ -7,7 +7,7 @@ import java.util.Map;
 public interface DecorationApplicationService {
     Map<String, Object> list(SearchAppDecoration searchAppDecoration);
 
-    Map<String, Object> decorationCostDetail();
+    Map<String, Object> decorationCostDetail(Integer decorationId);
 
     Map<String, Object> applicationDecoration(UserIdAndEstateId userIdAndEstateId);
 
@@ -18,4 +18,6 @@ public interface DecorationApplicationService {
     Map<String, Object> applicationPay(AppDepositManagement appDepositManagement);
 
     Map<String, Object> insertDecorationPerson(AppUserDecorationSubmit decorationSubmit);
+
+    Map<String, Object> findDetailById(Integer decorationId);
 }

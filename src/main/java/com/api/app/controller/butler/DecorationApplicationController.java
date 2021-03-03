@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
- * app装修申请(缺少显示页面)
+ * app装修申请
  */
 @RestController
 @RequestMapping("app/user/decorationApplication")
@@ -28,11 +28,12 @@ public class DecorationApplicationController {
 
     /**
      * 装修费用详情回显
+     * @param decorationId 装修主键id
      * @return map
      */
     @GetMapping("/decorationCostDetail")
-    public Map<String,Object> decorationCostDetail(){
-        return decorationApplicationService.decorationCostDetail();
+    public Map<String,Object> decorationCostDetail(Integer decorationId){
+        return decorationApplicationService.decorationCostDetail(decorationId);
     }
 
     /**
@@ -81,11 +82,9 @@ public class DecorationApplicationController {
         return decorationApplicationService.applicationPay(appDepositManagement);
     }
 
-    //回显支付结果页面
-
 
     /**
-     * 添加装修人员信息(H5页面接口提交)？？？？
+     * 添加装修人员信息(app提交)
      * @param decorationSubmit 装修公司提交信息
      * @return map
      */
@@ -93,6 +92,17 @@ public class DecorationApplicationController {
     public Map<String,Object> insertDecorationPerson(@RequestBody AppUserDecorationSubmit decorationSubmit){
         return decorationApplicationService.insertDecorationPerson(decorationSubmit);
     }
+
+    /**
+     * 根据装修主键id查询装修详情
+     * @param decorationId 装修主键id
+     * @return map
+     */
+    public Map<String,Object> findDetailById(Integer decorationId){
+        return decorationApplicationService.findDetailById(decorationId);
+    }
+
+
 
 
 

@@ -35,4 +35,14 @@ public interface UploadService {
     Map<String, Object> uploadGambitTheme(MultipartFile file);
 
     Map<String, Object> uploadDecorationNoticeDoc(MultipartFile file);
+
+    Map<String, Object> uploadBusinessLicense(MultipartFile file);
+
+    Map<String, Object> uploadQualificationCertificate(MultipartFile file);
+
+    Map<String, Object> uploadDecorationDrawings(MultipartFile file);
+
+    Map<String, Object> uploadDecorationApplicationForm(MultipartFile file);
+
+    Map<String, Object> uploadDecorationCommitment(MultipartFile file);
 }

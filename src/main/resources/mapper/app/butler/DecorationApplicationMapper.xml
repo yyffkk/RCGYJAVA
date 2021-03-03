@@ -32,12 +32,14 @@
     <insert id="insertDecorationApplication" parameterType="com.api.model.app.AppUserDecoration">
         insert into user_decoration(
             building_unit_estate_id,
+            code,
             resident_id,
             resident_type,
             application_date,
             status
         ) values (
             #{buildingUnitEstateId},
+            #{code},
             #{residentId},
             #{residentType},
             #{applicationDate},
@@ -128,4 +130,41 @@
             #{cost}
         )
     </insert>
+    <select id="findDecorationCodeById" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select code from user_decoration where id = #{decorationId}
+    </select>
+
+    <select id="findDecorationIdByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select id from user_decoration where code = #{code}
+    </select>
+
+    <insert id="insertDecorationPerson" parameterType="com.api.model.app.AppUserDecorationPerson">
+        insert into user_decoration_personnel(
+            decoration_id,
+            name,
+            identity,
+            card_type,
+            card_code,
+            tel,
+            address
+        ) values (
+            #{decorationId},
+            #{name},
+            #{identity},
+            #{cardType},
+            #{cardCode},
+            #{tel},
+            #{address}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from user_decoration_personnel where decoration_id = #{decorationId}
+    </delete>
+
+    <update id="updateStatusById" parameterType="com.api.model.app.AppUserDecoration" >
+        update user_decoration set status = #{status} where id= #{id}
+    </update>
+
+
 </mapper>

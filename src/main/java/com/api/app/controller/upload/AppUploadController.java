@@ -103,4 +103,54 @@ public class AppUploadController {
         return uploadService.uploadGambitTheme(file);
     }
 
+    /**
+     * 上传营业执照照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadBusinessLicense")
+    public Map<String,Object> uploadBusinessLicense(MultipartFile file){
+        return uploadService.uploadBusinessLicense(file);
+    }
+
+    /**
+     * 上传资质证书照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadQualificationCertificate")
+    public Map<String,Object> uploadQualificationCertificate(MultipartFile file){
+        return uploadService.uploadQualificationCertificate(file);
+    }
+
+    /**
+     * 上传装修图纸照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadDecorationDrawings")
+    public Map<String,Object> uploadDecorationDrawings(MultipartFile file){
+        return uploadService.uploadDecorationDrawings(file);
+    }
+
+    /**
+     * 上传装修申请表照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadDecorationApplicationForm")
+    public Map<String,Object> uploadDecorationApplicationForm(MultipartFile file){
+        return uploadService.uploadDecorationApplicationForm(file);
+    }
+
+    /**
+     * 上传装修承诺书照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadDecorationCommitment")
+    public Map<String,Object> uploadDecorationCommitment(MultipartFile file){
+        return uploadService.uploadDecorationCommitment(file);
+    }
+
 }

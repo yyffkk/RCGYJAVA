@@ -49,6 +49,17 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_OWNERS_COMMITTEE;
     @Value("${prop.upload-gambit-theme}")
     private String UPLOAD_GAMBIT_THEME;
+    @Value("${prop.upload-decoration-business-license}")
+    private String UPLOAD_DECORATION_BUSINESS_LICENSE;
+    @Value("${prop.upload-decoration-qualification-certificate}")
+    private String UPLOAD_DECORATION_QUALIFICATION_CERTIFICATE;
+    @Value("${prop.upload-decoration-decoration-drawings}")
+    private String UPLOAD_DECORATION_DECORATION_DRAWINGS;
+    @Value("${prop.upload-decoration-decoration-application-form}")
+    private String UPLOAD_DECORATION_DECORATION_APPLICATION_FORM;
+    @Value("${prop.upload-decoration-decoration-commitment}")
+    private String UPLOAD_DECORATION_DECORATION_COMMITMENT;
+
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -165,6 +176,36 @@ public class UploadServiceImpl implements UploadService {
         map.put("message","上传成功");
         map.put("url",url);
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadBusinessLicense(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_DECORATION_BUSINESS_LICENSE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadQualificationCertificate(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_DECORATION_QUALIFICATION_CERTIFICATE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadDecorationDrawings(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_DECORATION_DECORATION_DRAWINGS);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadDecorationApplicationForm(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_DECORATION_DECORATION_APPLICATION_FORM);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadDecorationCommitment(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_DECORATION_DECORATION_COMMITMENT);
         return map;
     }
 

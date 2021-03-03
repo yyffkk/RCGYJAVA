@@ -361,6 +361,9 @@ public class UploadUtil {
      * @param url 文件路径
      */
     private void shear(String url) {
+        //传入真实路径
+        setRealPath();
+
         //临时文件夹目录
         String temp = "/temp";
 

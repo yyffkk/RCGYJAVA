@@ -21,7 +21,7 @@ public class AppUserDecorationPerson {
      */
     private Integer identity;
     /**
-     * 证件类型
+     * 证件类型(1.身份证)
      */
     private Integer cardType;
     /**
