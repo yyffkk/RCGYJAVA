@@ -19,6 +19,10 @@ public class AppDecorationFBIVo {
      */
     private String code;
     /**
+     * 申请人id
+     */
+    private Integer residentId;
+    /**
      * 装修公司
      */
     private String constructionUnit;
@@ -30,6 +34,14 @@ public class AppDecorationFBIVo {
      * 装修负责人联系电话
      */
     private String directorTel;
+    /**
+     * 状态(-1.申请中，-2.申请不通过，-3.申请通过，1.未开始（已付押金），2.装修中，3.装修结束-未退押金，4.装修结束-已退押金，6.已作废)
+     */
+    private Integer status;
+    /**
+     * 实际开始时间
+     */
+    private Date actualBegin;
     /**
      * 预计开始时间
      */
@@ -45,9 +57,12 @@ public class AppDecorationFBIVo {
                 "id=" + id +
                 ", roomName='" + roomName + '\'' +
                 ", code='" + code + '\'' +
+                ", residentId=" + residentId +
                 ", constructionUnit='" + constructionUnit + '\'' +
                 ", director='" + director + '\'' +
                 ", directorTel='" + directorTel + '\'' +
+                ", status=" + status +
+                ", actualBegin=" + actualBegin +
                 ", expectedBegin=" + expectedBegin +
                 ", expectedEnd=" + expectedEnd +
                 '}';
@@ -77,6 +92,14 @@ public class AppDecorationFBIVo {
         this.code = code;
     }
 
+    public Integer getResidentId() {
+        return residentId;
+    }
+
+    public void setResidentId(Integer residentId) {
+        this.residentId = residentId;
+    }
+
     public String getConstructionUnit() {
         return constructionUnit;
     }
@@ -101,6 +124,22 @@ public class AppDecorationFBIVo {
         this.directorTel = directorTel;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Date getActualBegin() {
+        return actualBegin;
+    }
+
+    public void setActualBegin(Date actualBegin) {
+        this.actualBegin = actualBegin;
+    }
+
     public Date getExpectedBegin() {
         return expectedBegin;
     }
@@ -120,13 +159,16 @@ public class AppDecorationFBIVo {
     public AppDecorationFBIVo() {
     }
 
-    public AppDecorationFBIVo(Integer id, String roomName, String code, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd) {
+    public AppDecorationFBIVo(Integer id, String roomName, String code, Integer residentId, String constructionUnit, String director, String directorTel, Integer status, Date actualBegin, Date expectedBegin, Date expectedEnd) {
         this.id = id;
         this.roomName = roomName;
         this.code = code;
+        this.residentId = residentId;
         this.constructionUnit = constructionUnit;
         this.director = director;
         this.directorTel = directorTel;
+        this.status = status;
+        this.actualBegin = actualBegin;
         this.expectedBegin = expectedBegin;
         this.expectedEnd = expectedEnd;
     }

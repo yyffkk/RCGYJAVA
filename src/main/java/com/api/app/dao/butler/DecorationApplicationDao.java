@@ -114,7 +114,7 @@ public interface DecorationApplicationDao {
      * @param appUserDecoration 装修信息表 model
      * @return 影响行数
      */
-    int updateStatusById(AppUserDecoration appUserDecoration);
+    int updateStatus(AppUserDecoration appUserDecoration);
 
     /**
      * 根据装修主键id查询装修信息

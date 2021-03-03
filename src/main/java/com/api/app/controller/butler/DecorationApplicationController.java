@@ -104,6 +104,18 @@ public class DecorationApplicationController {
     }
 
 
+    /**
+     * 开始装修
+     * @param decorationId 装修主键id
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/startDecoration")
+    public Map<String,Object> startDecoration(Integer decorationId,Integer id){
+        return decorationApplicationService.startDecoration(decorationId,id);
+    }
+
+
 
 
 

@@ -153,7 +153,7 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
             //填入状态，1.未开始（已付押金）
             appUserDecoration.setStatus(1);
             //更改装修状态
-            int update = decorationApplicationDao.updateStatusById(appUserDecoration);
+            int update = decorationApplicationDao.updateStatus(appUserDecoration);
             if (update <= 0){
                 throw new RuntimeException("修改装修状态失败");
             }
@@ -276,6 +276,30 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
         }
         map.put("appDecorationFBIVo",appDecorationFBIVo);
         map.put("appDepositVo",appDepositVo);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> startDecoration(Integer decorationId, Integer id) {
+        map = new HashMap<>();
+        //根据装修主键id查询装修信息
+        AppDecorationFBIVo decorationById = decorationApplicationDao.findDecorationById(decorationId);
+        if (decorationById.getResidentId() != id){
+            map.put("message","不可操作他人的装修单");
+            map.put("status",false);
+        }
+        AppUserDecoration appUserDecoration = new AppUserDecoration();
+        appUserDecoration.setId(decorationId);
+        //填入状态，2.装修中
+        appUserDecoration.setStatus(2);
+        int updateStatus = decorationApplicationDao.updateStatus(appUserDecoration);
+        if (updateStatus > 0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
         return map;
     }
 

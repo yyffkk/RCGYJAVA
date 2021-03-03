@@ -20,4 +20,6 @@ public interface DecorationApplicationService {
     Map<String, Object> insertDecorationPerson(AppUserDecorationSubmit decorationSubmit);
 
     Map<String, Object> findDetailById(Integer decorationId);
+
+    Map<String, Object> startDecoration(Integer decorationId, Integer id);
 }

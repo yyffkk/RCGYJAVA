@@ -162,7 +162,7 @@
         delete from user_decoration_personnel where decoration_id = #{decorationId}
     </delete>
 
-    <update id="updateStatusById" parameterType="com.api.model.app.AppUserDecoration" >
+    <update id="updateStatus" parameterType="com.api.model.app.AppUserDecoration" >
         update user_decoration set status = #{status} where id= #{id}
     </update>
 
