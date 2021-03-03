@@ -1,10 +1,7 @@
 package com.api.app.dao.butler;
 
 import com.api.model.app.*;
-import com.api.vo.app.AppDecorationAdditionalCostVo;
-import com.api.vo.app.AppDecorationApplicationVo;
-import com.api.vo.app.AppDecorationCostVo;
-import com.api.vo.app.AppDecorationVo;
+import com.api.vo.app.*;
 
 import java.util.List;
 
@@ -118,4 +115,32 @@ public interface DecorationApplicationDao {
      * @return 影响行数
      */
     int updateStatusById(AppUserDecoration appUserDecoration);
+
+    /**
+     * 根据装修主键id查询装修信息
+     * @param decorationId 装修主键id
+     * @return 装修信息
+     */
+    AppDecorationFBIVo findDecorationById(Integer decorationId);
+
+    /**
+     * 根据装修主键id查询装修押金信息
+     * @param decorationId 装修主键id
+     * @return 装修押金信息
+     */
+    AppDepositVo findDepositById(Integer decorationId);
+
+    /**
+     * 根据押金管理主键id查询押金信息
+     * @param id 押金管理主键id
+     * @return 押金信息集合
+     */
+    List<AppDepositAdditionalCostVo> findDACostByDId(Integer id);
+
+    /**
+     * 查询根据装修主键id装修公司人员信息是否填写
+     * @param decorationId 装修主键id
+     * @return 填写的装修人员人数
+     */
+    int findPersonByDecorationId(Integer decorationId);
 }

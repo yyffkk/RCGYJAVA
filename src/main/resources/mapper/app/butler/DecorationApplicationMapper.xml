@@ -166,5 +166,22 @@
         update user_decoration set status = #{status} where id= #{id}
     </update>
 
+    <select id="findDecorationById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDecorationFBIVo">
+        select ud.*,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from user_decoration as ud,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where ud.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and ud.id = #{decorationId}
+    </select>
+
+    <select id="findDepositById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDepositVo">
+        select * from sys_deposit_management where user_decoration_id = #{decorationId}
+    </select>
+
+    <select id="findDACostByDId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDepositAdditionalCostVo">
+        select * from sys_deposit_management_additional_cost where sys_deposit_management_id = #{id}
+    </select>
+
+    <select id="findPersonByDecorationId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from user_decoration_personnel where decoration_id = #{decorationId}
+    </select>
 
 </mapper>

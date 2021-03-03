@@ -4,10 +4,7 @@ import com.api.app.dao.butler.DecorationApplicationDao;
 import com.api.app.service.butler.DecorationApplicationService;
 import com.api.model.app.*;
 import com.api.util.UploadUtil;
-import com.api.vo.app.AppDecorationAdditionalCostVo;
-import com.api.vo.app.AppDecorationApplicationVo;
-import com.api.vo.app.AppDecorationCostVo;
-import com.api.vo.app.AppDecorationVo;
+import com.api.vo.app.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -262,11 +259,23 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
     public Map<String, Object> findDetailById(Integer decorationId) {
         map = new HashMap<>();
         //根据装修主键id查询装修信息
-//        decorationApplicationDao.findDecorationById(decorationId);
+        AppDecorationFBIVo appDecorationFBIVo = decorationApplicationDao.findDecorationById(decorationId);
         //根据装修主键id查询装修押金信息
-//        decorationApplicationDao.findDepositById(decorationId);
-        //根据装修主键id查询装修公司信息
-//        decorationApplicationDao.findCompanyById(decorationId);
+        AppDepositVo appDepositVo = decorationApplicationDao.findDepositById(decorationId);
+        if (appDepositVo != null){
+            //根据押金管理主键id查询押金信息
+            List<AppDepositAdditionalCostVo> additionalCostVos = decorationApplicationDao.findDACostByDId(appDepositVo.getId());
+            appDepositVo.setAdditionalCostVos(additionalCostVos);
+        }
+        //查询根据装修主键id装修公司人员信息是否完善
+        int count = decorationApplicationDao.findPersonByDecorationId(decorationId);
+        if (count >0){
+            map.put("isPerfect",true);
+        }else {
+            map.put("isPerfect",false);
+        }
+        map.put("appDecorationFBIVo",appDecorationFBIVo);
+        map.put("appDepositVo",appDepositVo);
         return map;
     }
 

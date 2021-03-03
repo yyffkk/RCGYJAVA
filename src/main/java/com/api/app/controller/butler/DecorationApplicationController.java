@@ -98,6 +98,7 @@ public class DecorationApplicationController {
      * @param decorationId 装修主键id
      * @return map
      */
+    @GetMapping("/findDetailById")
     public Map<String,Object> findDetailById(Integer decorationId){
         return decorationApplicationService.findDetailById(decorationId);
     }
