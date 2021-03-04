@@ -151,7 +151,7 @@ public class DecorationApplicationController {
     }
 
     /**
-     * 完成装修
+     * 完工检查申请/再次完工检查申请
      * @param decorationId 装修主键id
      * @return map
      */
@@ -159,6 +159,34 @@ public class DecorationApplicationController {
     public Map<String,Object> finishDecoration(Integer decorationId,Integer id){
         return decorationApplicationService.finishDecoration(decorationId,id);
     }
+
+    /**
+     * 申请退款
+     * @param decorationId 装修主键id
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/applicationRefund")
+    public Map<String,Object> applicationRefund(Integer decorationId,Integer id){
+        return decorationApplicationService.applicationRefund(decorationId,id);
+    }
+
+    /**
+     * 查询退款进度详情
+     * @param decorationId 装修主键id
+     * @return map
+     */
+    @GetMapping("/findRefundDetail")
+    public Map<String,Object> findRefundDetail(Integer decorationId){
+        return decorationApplicationService.findRefundDetail(decorationId);
+    }
+
+
+
+
+
+
+
 
 
 

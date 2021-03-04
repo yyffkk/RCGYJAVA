@@ -207,4 +207,19 @@
         extend_date = #{extendDate}
         where id = #{decorationId}
     </update>
+
+    <update id="applicationRefund" parameterType="com.api.model.app.AppUserDecoration" >
+        update user_decoration
+        set status = #{status},
+        application_refund_date = #{applicationRefundDate}
+        where id= #{id}
+    </update>
+
+    <select id="findRefundByDecorationId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDepositRefundOrderVo">
+        select ud.id,ud.status,sdm.deposit_price,ud.application_refund_date,sdmro.refund_date,sdmro.code
+        from user_decoration as ud,sys_deposit_management as sdm
+        LEFT JOIN sys_deposit_management_refund_order as sdmro
+        on sdmro.id = sdm.user_decoration_id
+        where ud.id = sdm.user_decoration_id and ud.id = #{decorationId}
+    </select>
 </mapper>

@@ -171,4 +171,18 @@ public interface DecorationApplicationDao {
      * @return 影响行数
      */
     int extendDecorationTime(AppExtendDecoration appExtendDecoration);
+
+    /**
+     * 申请退款
+     * @param appUserDecoration 装修信息表 model
+     * @return 影响行数
+     */
+    int applicationRefund(AppUserDecoration appUserDecoration);
+
+    /**
+     * 根据装修主键id查询退款单信息
+     * @param decorationId 装修主键id
+     * @return 退款单信息
+     */
+    AppDepositRefundOrderVo findRefundByDecorationId(Integer decorationId);
 }

@@ -381,6 +381,11 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
             map.put("status",false);
             return map;
         }
+        if (decorationById.getStatus() != 2 && decorationById.getStatus() != 4){
+            map.put("message","不可操作该状态");
+            map.put("status",false);
+            return map;
+        }
 
         AppUserDecoration appUserDecoration = new AppUserDecoration();
         appUserDecoration.setId(decorationId);
@@ -394,6 +399,56 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
             map.put("message","操作失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> applicationRefund(Integer decorationId, Integer id) {
+        map = new HashMap<>();
+        //根据装修主键id查询装修信息
+        AppDecorationFBIVo decorationById = decorationApplicationDao.findDecorationById(decorationId);
+        if (decorationById.getResidentId() != id){
+            map.put("message","不可操作他人的装修单");
+            map.put("status",false);
+            return map;
+        }
+        if (decorationById.getStatus() != 5){
+            map.put("message","不可操作该状态");
+            map.put("status",false);
+            return map;
+        }
+
+        //退款支付宝接口
+
+        //修改押金状态
+
+        //添加退款信息
+
+        //修改装修状态
+        AppUserDecoration appUserDecoration = new AppUserDecoration();
+        appUserDecoration.setId(decorationId);
+        //填入状态，6.申请退款中
+        appUserDecoration.setStatus(6);
+        //填入申请退款时间
+        appUserDecoration.setApplicationRefundDate(new Date());
+        //申请退款
+        int update = decorationApplicationDao.applicationRefund(appUserDecoration);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findRefundDetail(Integer decorationId) {
+        map = new HashMap<>();
+        //根据装修主键id查询退款单信息
+        AppDepositRefundOrderVo refundOrderVo = decorationApplicationDao.findRefundByDecorationId(decorationId);
+        map.put("refundOrderVo",refundOrderVo);
         return map;
     }
 

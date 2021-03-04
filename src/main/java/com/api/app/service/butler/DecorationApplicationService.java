@@ -30,4 +30,8 @@ public interface DecorationApplicationService {
     Map<String, Object> extendDecorationTime(AppExtendDecoration appExtendDecoration, Integer id);
 
     Map<String, Object> finishDecoration(Integer decorationId, Integer id);
+
+    Map<String, Object> applicationRefund(Integer decorationId, Integer id);
+
+    Map<String, Object> findRefundDetail(Integer decorationId);
 }

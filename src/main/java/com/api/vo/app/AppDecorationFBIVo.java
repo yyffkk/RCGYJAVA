@@ -51,9 +51,13 @@ public class AppDecorationFBIVo {
      */
     private Date expectedEnd;
     /**
-     * 延长预计结束时间
+     * 延长预计结束时间(用来判断是否有延长记录)
      */
     private Date extendDate;
+    /**
+     * 申请退款时间（用来判断是否有退款申请）
+     */
+    private Date applicationRefundDate;
 
     @Override
     public String toString() {
@@ -70,6 +74,7 @@ public class AppDecorationFBIVo {
                 ", expectedBegin=" + expectedBegin +
                 ", expectedEnd=" + expectedEnd +
                 ", extendDate=" + extendDate +
+                ", applicationRefundDate=" + applicationRefundDate +
                 '}';
     }
 
@@ -169,10 +174,18 @@ public class AppDecorationFBIVo {
         this.extendDate = extendDate;
     }
 
+    public Date getApplicationRefundDate() {
+        return applicationRefundDate;
+    }
+
+    public void setApplicationRefundDate(Date applicationRefundDate) {
+        this.applicationRefundDate = applicationRefundDate;
+    }
+
     public AppDecorationFBIVo() {
     }
 
-    public AppDecorationFBIVo(Integer id, String roomName, String code, Integer residentId, String constructionUnit, String director, String directorTel, Integer status, Date actualBegin, Date expectedBegin, Date expectedEnd, Date extendDate) {
+    public AppDecorationFBIVo(Integer id, String roomName, String code, Integer residentId, String constructionUnit, String director, String directorTel, Integer status, Date actualBegin, Date expectedBegin, Date expectedEnd, Date extendDate, Date applicationRefundDate) {
         this.id = id;
         this.roomName = roomName;
         this.code = code;
@@ -185,5 +198,6 @@ public class AppDecorationFBIVo {
         this.expectedBegin = expectedBegin;
         this.expectedEnd = expectedEnd;
         this.extendDate = extendDate;
+        this.applicationRefundDate = applicationRefundDate;
     }
 }

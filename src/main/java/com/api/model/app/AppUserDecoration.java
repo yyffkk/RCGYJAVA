@@ -100,6 +100,10 @@ public class AppUserDecoration {
      * 是否退还门禁卡，0未退还，1退还 （null为未发放）
      */
     private Integer isReturnAccessCard;
+    /**
+     * 申请退款时间
+     */
+    private Date applicationRefundDate;
 
     @Override
     public String toString() {
@@ -127,6 +131,7 @@ public class AppUserDecoration {
                 ", remakes2='" + remakes2 + '\'' +
                 ", isQualified=" + isQualified +
                 ", isReturnAccessCard=" + isReturnAccessCard +
+                ", applicationRefundDate=" + applicationRefundDate +
                 '}';
     }
 
@@ -314,10 +319,18 @@ public class AppUserDecoration {
         this.isReturnAccessCard = isReturnAccessCard;
     }
 
+    public Date getApplicationRefundDate() {
+        return applicationRefundDate;
+    }
+
+    public void setApplicationRefundDate(Date applicationRefundDate) {
+        this.applicationRefundDate = applicationRefundDate;
+    }
+
     public AppUserDecoration() {
     }
 
-    public AppUserDecoration(Integer id, Integer buildingUnitEstateId, String code, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard) {
+    public AppUserDecoration(Integer id, Integer buildingUnitEstateId, String code, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard, Date applicationRefundDate) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.code = code;
@@ -341,5 +354,6 @@ public class AppUserDecoration {
         this.remakes2 = remakes2;
         this.isQualified = isQualified;
         this.isReturnAccessCard = isReturnAccessCard;
+        this.applicationRefundDate = applicationRefundDate;
     }
 }
