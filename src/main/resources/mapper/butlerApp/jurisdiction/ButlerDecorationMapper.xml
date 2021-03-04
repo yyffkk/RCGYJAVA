@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerDecorationDao">
+    <select id="list" parameterType="com.api.model.butlerApp.ButlerDecorationSearch" resultType="com.api.vo.butlerApp.ButlerDecorationVo">
+        select ud.*,concat(cb.no,'幢-',cbu.no,'单元-',cbue.room_number) as room_name
+        from user_decoration as ud,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        <where>
+            ud.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="operationStatus == 1">
+                and ud.tracker is NULL
+                and ud.status >1
+            </if>
+            <if test="operationStatus == 2">
+                and ud.tracker is not NULL
+                and ud.status <![CDATA[ < ]]> 5
+            </if>
+            <if test="operationStatus == 3">
+                and ud.tracker is not NULL
+                and ud.status <![CDATA[ >= ]]> 5
+            </if>
+            <if test="operationStatus == 4">
+                and ud.status >1
+            </if>
+        </where>
+    </select>
+</mapper>
