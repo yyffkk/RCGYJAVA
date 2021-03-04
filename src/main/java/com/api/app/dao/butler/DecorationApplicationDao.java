@@ -143,4 +143,32 @@ public interface DecorationApplicationDao {
      * @return 填写的装修人员人数
      */
     int findPersonByDecorationId(Integer decorationId);
+
+    /**
+     * 查看全部详情信息
+     * @param decorationId 装修主键id
+     * @return app装修管理 查询全部详情信息 回显
+     */
+    AppDecorationFindAllDetailVo findAllDetail(Integer decorationId);
+
+    /**
+     * 查询跟踪检查记录
+     * @param decorationId 装修主键id
+     * @return app装修跟踪记录Vo list 回显
+     */
+    List<AppTrackRecordVo> findTrackRecord(Integer decorationId);
+
+    /**
+     * 查询跟踪检查记录明细
+     * @param id 装修主键id
+     * @return app装修跟踪记录明细Vo 回显
+     */
+    List<AppTrackRecordDetailVo> findTrackRecordDetail(Integer id);
+
+    /**
+     * 延长装修时间
+     * @param appExtendDecoration app延长装修信息
+     * @return 影响行数
+     */
+    int extendDecorationTime(AppExtendDecoration appExtendDecoration);
 }

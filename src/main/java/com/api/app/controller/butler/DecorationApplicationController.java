@@ -116,6 +116,53 @@ public class DecorationApplicationController {
     }
 
 
+    /**
+     * 查看全部详情信息
+     * @param decorationId 装修主键id
+     * @return map
+     */
+    @GetMapping("/findAllDetail")
+    public Map<String,Object> findAllDetail(Integer decorationId){
+        return decorationApplicationService.findAllDetail(decorationId);
+    }
+
+    /**
+     * 查询检查结果（跟踪记录）信息
+     * @param decorationId 装修主键id
+     * @return map
+     */
+    @GetMapping("/findTrackRecord")
+    public Map<String,Object> findTrackRecord(Integer decorationId){
+        return decorationApplicationService.findTrackRecord(decorationId);
+    }
+
+
+    /**
+     * 延长装修时间信息
+     * @param appExtendDecoration app延长装修信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/extendDecorationTime")
+    public Map<String,Object> extendDecorationTime(@RequestBody AppExtendDecoration appExtendDecoration, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return decorationApplicationService.extendDecorationTime(appExtendDecoration,id);
+    }
+
+    /**
+     * 完成装修
+     * @param decorationId 装修主键id
+     * @return map
+     */
+    @GetMapping("/finishDecoration")
+    public Map<String,Object> finishDecoration(Integer decorationId,Integer id){
+        return decorationApplicationService.finishDecoration(decorationId,id);
+    }
+
+
+
+
 
 
 

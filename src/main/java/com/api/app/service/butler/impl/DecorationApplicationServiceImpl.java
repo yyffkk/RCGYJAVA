@@ -287,6 +287,7 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
         if (decorationById.getResidentId() != id){
             map.put("message","不可操作他人的装修单");
             map.put("status",false);
+            return map;
         }
         AppUserDecoration appUserDecoration = new AppUserDecoration();
         appUserDecoration.setId(decorationId);
@@ -294,6 +295,99 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
         appUserDecoration.setStatus(2);
         int updateStatus = decorationApplicationDao.updateStatus(appUserDecoration);
         if (updateStatus > 0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findAllDetail(Integer decorationId) {
+        map = new HashMap<>();
+        AppDecorationFindAllDetailVo allDetailVo = decorationApplicationDao.findAllDetail(decorationId);
+        map.put("data",allDetailVo);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findTrackRecord(Integer decorationId) {
+        map = new HashMap<>();
+        //查询跟踪检查记录
+        List<AppTrackRecordVo> trackRecordVos = decorationApplicationDao.findTrackRecord(decorationId);
+        if (trackRecordVos != null && trackRecordVos.size()>0){
+            for (AppTrackRecordVo trackRecordVo : trackRecordVos) {
+                //查询跟踪检查记录明细
+                List<AppTrackRecordDetailVo> trackRecordDetailVos = decorationApplicationDao.findTrackRecordDetail(trackRecordVo.getId());
+                trackRecordVo.setRecordDetailVoList(trackRecordDetailVos);
+            }
+        }
+        //查询是否有延长过时间
+
+
+        map.put("trackRecordVos",trackRecordVos);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> extendDecorationTime(AppExtendDecoration appExtendDecoration, Integer id) {
+        map = new HashMap<>();
+        //根据装修主键id查询装修信息
+        AppDecorationFBIVo decorationById = decorationApplicationDao.findDecorationById(appExtendDecoration.getDecorationId());
+        if (decorationById.getResidentId() != id){
+            map.put("message","不可操作他人的装修单");
+            map.put("status",false);
+            return map;
+        }
+        if (decorationById.getExtendDate() != null){
+            map.put("message","只可延长一次装修时间");
+            map.put("status",false);
+            return map;
+        }
+
+        GregorianCalendar calendar = new GregorianCalendar();
+        //填入预计结束时间
+        calendar.setTime(decorationById.getExpectedEnd());
+        //预计结束时间向后延长？天
+        calendar.add(calendar.DATE,appExtendDecoration.getExtendTime());
+        //获取延长后的时间
+        Date time = calendar.getTime();
+        appExtendDecoration.setExtendDate(time);
+        //添加延长时间记录
+        int update = decorationApplicationDao.extendDecorationTime(appExtendDecoration);
+        if (update >0){
+            map.put("message","延长成功");
+            map.put("status",true);
+        }else {
+            map.put("message","延长失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> finishDecoration(Integer decorationId, Integer id) {
+        map = new HashMap<>();
+        //根据装修主键id查询装修信息
+        AppDecorationFBIVo decorationById = decorationApplicationDao.findDecorationById(decorationId);
+        if (decorationById.getResidentId() != id){
+            map.put("message","不可操作他人的装修单");
+            map.put("status",false);
+            return map;
+        }
+
+        AppUserDecoration appUserDecoration = new AppUserDecoration();
+        appUserDecoration.setId(decorationId);
+        //填入状态，3.完工检查申请中
+        appUserDecoration.setStatus(3);
+        int update = decorationApplicationDao.updateStatus(appUserDecoration);
+        if (update >0){
             map.put("message","操作成功");
             map.put("status",true);
         }else {

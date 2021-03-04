@@ -184,4 +184,27 @@
         select count(*) from user_decoration_personnel where decoration_id = #{decorationId}
     </select>
 
+    <select id="findAllDetail" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDecorationFindAllDetailVo">
+        select ud.*,su.actual_name as tracker_name,su.tel as tracker_tel,concat(cb.no,'幢',cbu.no,'单元',cbue.room_number) as room_name
+        from user_decoration as ud,sys_user as su,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where ud.resident_id = su.id and ud.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and ud.id = #{decorationId}
+    </select>
+
+    <select id="findTrackRecord" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppTrackRecordVo">
+        select * from user_decoration_track_record where decoration_id = #{decorationId}
+    </select>
+
+    <select id="findTrackRecordDetail" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppTrackRecordDetailVo">
+        select udtrd.id,udtrd.is_qualified,udtcc.name as checks_content
+        from user_decoration_track_record_detail as udtrd,user_decoration_track_checks_content as udtcc
+        where udtrd.decoration_track_checks_content_id = udtcc.id and udtrd.decoration_track_record_id = #{id}
+    </select>
+
+    <update id="extendDecorationTime" parameterType="com.api.model.app.AppExtendDecoration">
+        update user_decoration
+        set extend_time = #{extendTime},
+        extend_reasons = #{extendReasons},
+        extend_date = #{extendDate}
+        where id = #{decorationId}
+    </update>
 </mapper>

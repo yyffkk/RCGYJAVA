@@ -3,25 +3,17 @@ package com.api.vo.app;
 import java.util.Date;
 
 /**
- * app装修管理Vo findById 回显
+ * app装修管理 查询全部详情信息 回显
  */
-public class AppDecorationFBIVo {
+public class AppDecorationFindAllDetailVo {
     /**
      * 主键id
      */
     private Integer id;
     /**
-     * 房屋名称
+     * 房屋姓名
      */
     private String roomName;
-    /**
-     * 装修单号
-     */
-    private String code;
-    /**
-     * 申请人id
-     */
-    private Integer residentId;
     /**
      * 装修公司
      */
@@ -35,13 +27,9 @@ public class AppDecorationFBIVo {
      */
     private String directorTel;
     /**
-     * 状态(-1.申请中，-2.申请不通过，-3.申请通过，1.未开始（已付押金），2.装修中，3.完工检查申请中，4.完工检查不通过，5.完工检查通过，6.申请退款中，7.装修结束（已退押金），8.已作废)
+     * 申报时间
      */
-    private Integer status;
-    /**
-     * 实际开始时间
-     */
-    private Date actualBegin;
+    private Date applicationDate;
     /**
      * 预计开始时间
      */
@@ -51,24 +39,46 @@ public class AppDecorationFBIVo {
      */
     private Date expectedEnd;
     /**
+     * 实际开始时间
+     */
+    private Date actualBegin;
+    /**
+     * 跟踪人姓名
+     */
+    private String trackerName;
+    /**
+     * 跟踪人联系电话
+     */
+    private String trackerTel;
+    /**
+     * 延长时间（单位为天）
+     */
+    private Integer extendTime;
+    /**
+     * 延长原因
+     */
+    private String extendReasons;
+    /**
      * 延长预计结束时间
      */
     private Date extendDate;
 
     @Override
     public String toString() {
-        return "AppDecorationFBIVo{" +
+        return "AppDecorationFindAllDetailVo{" +
                 "id=" + id +
                 ", roomName='" + roomName + '\'' +
-                ", code='" + code + '\'' +
-                ", residentId=" + residentId +
                 ", constructionUnit='" + constructionUnit + '\'' +
                 ", director='" + director + '\'' +
                 ", directorTel='" + directorTel + '\'' +
-                ", status=" + status +
-                ", actualBegin=" + actualBegin +
+                ", applicationDate=" + applicationDate +
                 ", expectedBegin=" + expectedBegin +
                 ", expectedEnd=" + expectedEnd +
+                ", actualBegin=" + actualBegin +
+                ", trackerName='" + trackerName + '\'' +
+                ", trackerTel='" + trackerTel + '\'' +
+                ", extendTime=" + extendTime +
+                ", extendReasons='" + extendReasons + '\'' +
                 ", extendDate=" + extendDate +
                 '}';
     }
@@ -87,22 +97,6 @@ public class AppDecorationFBIVo {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Integer getResidentId() {
-        return residentId;
-    }
-
-    public void setResidentId(Integer residentId) {
-        this.residentId = residentId;
     }
 
     public String getConstructionUnit() {
@@ -129,20 +123,12 @@ public class AppDecorationFBIVo {
         this.directorTel = directorTel;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Date getApplicationDate() {
+        return applicationDate;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getActualBegin() {
-        return actualBegin;
-    }
-
-    public void setActualBegin(Date actualBegin) {
-        this.actualBegin = actualBegin;
+    public void setApplicationDate(Date applicationDate) {
+        this.applicationDate = applicationDate;
     }
 
     public Date getExpectedBegin() {
@@ -161,6 +147,46 @@ public class AppDecorationFBIVo {
         this.expectedEnd = expectedEnd;
     }
 
+    public Date getActualBegin() {
+        return actualBegin;
+    }
+
+    public void setActualBegin(Date actualBegin) {
+        this.actualBegin = actualBegin;
+    }
+
+    public String getTrackerName() {
+        return trackerName;
+    }
+
+    public void setTrackerName(String trackerName) {
+        this.trackerName = trackerName;
+    }
+
+    public String getTrackerTel() {
+        return trackerTel;
+    }
+
+    public void setTrackerTel(String trackerTel) {
+        this.trackerTel = trackerTel;
+    }
+
+    public Integer getExtendTime() {
+        return extendTime;
+    }
+
+    public void setExtendTime(Integer extendTime) {
+        this.extendTime = extendTime;
+    }
+
+    public String getExtendReasons() {
+        return extendReasons;
+    }
+
+    public void setExtendReasons(String extendReasons) {
+        this.extendReasons = extendReasons;
+    }
+
     public Date getExtendDate() {
         return extendDate;
     }
@@ -169,21 +195,23 @@ public class AppDecorationFBIVo {
         this.extendDate = extendDate;
     }
 
-    public AppDecorationFBIVo() {
+    public AppDecorationFindAllDetailVo() {
     }
 
-    public AppDecorationFBIVo(Integer id, String roomName, String code, Integer residentId, String constructionUnit, String director, String directorTel, Integer status, Date actualBegin, Date expectedBegin, Date expectedEnd, Date extendDate) {
+    public AppDecorationFindAllDetailVo(Integer id, String roomName, String constructionUnit, String director, String directorTel, Date applicationDate, Date expectedBegin, Date expectedEnd, Date actualBegin, String trackerName, String trackerTel, Integer extendTime, String extendReasons, Date extendDate) {
         this.id = id;
         this.roomName = roomName;
-        this.code = code;
-        this.residentId = residentId;
         this.constructionUnit = constructionUnit;
         this.director = director;
         this.directorTel = directorTel;
-        this.status = status;
-        this.actualBegin = actualBegin;
+        this.applicationDate = applicationDate;
         this.expectedBegin = expectedBegin;
         this.expectedEnd = expectedEnd;
+        this.actualBegin = actualBegin;
+        this.trackerName = trackerName;
+        this.trackerTel = trackerTel;
+        this.extendTime = extendTime;
+        this.extendReasons = extendReasons;
         this.extendDate = extendDate;
     }
 }

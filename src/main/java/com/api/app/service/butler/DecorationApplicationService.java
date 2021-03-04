@@ -22,4 +22,12 @@ public interface DecorationApplicationService {
     Map<String, Object> findDetailById(Integer decorationId);
 
     Map<String, Object> startDecoration(Integer decorationId, Integer id);
+
+    Map<String, Object> findAllDetail(Integer decorationId);
+
+    Map<String, Object> findTrackRecord(Integer decorationId);
+
+    Map<String, Object> extendDecorationTime(AppExtendDecoration appExtendDecoration, Integer id);
+
+    Map<String, Object> finishDecoration(Integer decorationId, Integer id);
 }
