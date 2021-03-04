@@ -42,4 +42,15 @@ public class ButlerDecorationController {
         return map;
     }
 
+    /**
+     * 根据装修主键id查询装修详情
+     * @param decorationId 装修主键id
+     * @return map
+     */
+    public Map<String,Object> findById(Integer decorationId){
+        return butlerDecorationService.findById(decorationId);
+    }
+
+
+
 }

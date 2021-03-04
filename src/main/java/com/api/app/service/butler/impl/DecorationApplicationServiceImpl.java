@@ -294,7 +294,9 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
         appUserDecoration.setId(decorationId);
         //填入状态，2.装修中
         appUserDecoration.setStatus(2);
-        int updateStatus = decorationApplicationDao.updateStatus(appUserDecoration);
+        //填入实际开始时间（开始装修）
+        appUserDecoration.setActualBegin(new Date());
+        int updateStatus = decorationApplicationDao.startDecoration(appUserDecoration);
         if (updateStatus > 0){
             map.put("message","操作成功");
             map.put("status",true);

@@ -67,11 +67,11 @@ public class AppUserDecoration {
     /**
      * 实际开始时间
      */
-    private BigDecimal actualBegin;
+    private Date actualBegin;
     /**
      * 实际结束时间
      */
-    private BigDecimal actualEnd;
+    private Date actualEnd;
     /**
      * 退还押金（null为未退还押金）
      */
@@ -247,19 +247,19 @@ public class AppUserDecoration {
         this.expectedEnd = expectedEnd;
     }
 
-    public BigDecimal getActualBegin() {
+    public Date getActualBegin() {
         return actualBegin;
     }
 
-    public void setActualBegin(BigDecimal actualBegin) {
+    public void setActualBegin(Date actualBegin) {
         this.actualBegin = actualBegin;
     }
 
-    public BigDecimal getActualEnd() {
+    public Date getActualEnd() {
         return actualEnd;
     }
 
-    public void setActualEnd(BigDecimal actualEnd) {
+    public void setActualEnd(Date actualEnd) {
         this.actualEnd = actualEnd;
     }
 
@@ -330,7 +330,7 @@ public class AppUserDecoration {
     public AppUserDecoration() {
     }
 
-    public AppUserDecoration(Integer id, Integer buildingUnitEstateId, String code, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, Date expectedBegin, Date expectedEnd, BigDecimal actualBegin, BigDecimal actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard, Date applicationRefundDate) {
+    public AppUserDecoration(Integer id, Integer buildingUnitEstateId, String code, Integer residentId, Integer residentType, Date applicationDate, String constructionUnit, String director, String directorTel, Integer status, String emergencyContact, String tel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, BigDecimal refundDeposit, Integer approveResults, Integer approveId, Date approveDate, String remakes2, Integer isQualified, Integer isReturnAccessCard, Date applicationRefundDate) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.code = code;

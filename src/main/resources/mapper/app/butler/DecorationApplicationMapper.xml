@@ -222,4 +222,11 @@
         on sdmro.id = sdm.user_decoration_id
         where ud.id = sdm.user_decoration_id and ud.id = #{decorationId}
     </select>
+
+    <update id="startDecoration" parameterType="com.api.model.app.AppUserDecoration" >
+        update user_decoration
+        set status = #{status},
+        actual_begin = #{actualBegin}
+        where id= #{id}
+    </update>
 </mapper>
