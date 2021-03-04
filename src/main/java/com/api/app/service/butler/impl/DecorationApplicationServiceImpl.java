@@ -118,6 +118,7 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
             //调用支付宝接口,返回订单号，当前为UUid自动生成订单号
             String uuid = UUID.randomUUID().toString().replace("-", "");
 
+
             //填入订单号
             appDepositManagement.setOrderCode(uuid);
             //填入缴费时间
@@ -417,12 +418,6 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
             map.put("status",false);
             return map;
         }
-
-        //退款支付宝接口
-
-        //修改押金状态
-
-        //添加退款信息
 
         //修改装修状态
         AppUserDecoration appUserDecoration = new AppUserDecoration();

@@ -16,6 +16,10 @@ public class AppDepositRefundOrderVo {
      */
     private Integer status;
     /**
+     * 退款账户（支付账户）
+     */
+    private String payAccount;
+    /**
      * 押金金额（退款金额）
      */
     private BigDecimal depositPrice;
@@ -37,6 +41,7 @@ public class AppDepositRefundOrderVo {
         return "AppDepositRefundOrderVo{" +
                 "id=" + id +
                 ", status=" + status +
+                ", payAccount='" + payAccount + '\'' +
                 ", depositPrice=" + depositPrice +
                 ", applicationRefundDate=" + applicationRefundDate +
                 ", refundDate=" + refundDate +
@@ -58,6 +63,14 @@ public class AppDepositRefundOrderVo {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getPayAccount() {
+        return payAccount;
+    }
+
+    public void setPayAccount(String payAccount) {
+        this.payAccount = payAccount;
     }
 
     public BigDecimal getDepositPrice() {
@@ -95,9 +108,10 @@ public class AppDepositRefundOrderVo {
     public AppDepositRefundOrderVo() {
     }
 
-    public AppDepositRefundOrderVo(Integer id, Integer status, BigDecimal depositPrice, Date applicationRefundDate, Integer refundDate, String code) {
+    public AppDepositRefundOrderVo(Integer id, Integer status, String payAccount, BigDecimal depositPrice, Date applicationRefundDate, Integer refundDate, String code) {
         this.id = id;
         this.status = status;
+        this.payAccount = payAccount;
         this.depositPrice = depositPrice;
         this.applicationRefundDate = applicationRefundDate;
         this.refundDate = refundDate;

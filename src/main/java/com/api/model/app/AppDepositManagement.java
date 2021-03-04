@@ -49,6 +49,10 @@ public class AppDepositManagement {
      */
     private Integer payType;
     /**
+     * 支付账户
+     */
+    private String payAccount;
+    /**
      * 备注
      */
     private String remake;
@@ -78,6 +82,7 @@ public class AppDepositManagement {
                 ", status=" + status +
                 ", froms=" + froms +
                 ", payType=" + payType +
+                ", payAccount='" + payAccount + '\'' +
                 ", remake='" + remake + '\'' +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -165,6 +170,14 @@ public class AppDepositManagement {
         this.payType = payType;
     }
 
+    public String getPayAccount() {
+        return payAccount;
+    }
+
+    public void setPayAccount(String payAccount) {
+        this.payAccount = payAccount;
+    }
+
     public String getRemake() {
         return remake;
     }
@@ -200,7 +213,7 @@ public class AppDepositManagement {
     public AppDepositManagement() {
     }
 
-    public AppDepositManagement(Integer id, Integer userDecorationId, String orderCode, Integer chargesTemplateDetailId, Date payDate, BigDecimal depositPrice, List<AppDepositAdditionalCost> depositAdditionalCostList, Integer status, Integer froms, Integer payType, String remake, Integer createId, Date createDate, Integer isDelete) {
+    public AppDepositManagement(Integer id, Integer userDecorationId, String orderCode, Integer chargesTemplateDetailId, Date payDate, BigDecimal depositPrice, List<AppDepositAdditionalCost> depositAdditionalCostList, Integer status, Integer froms, Integer payType, String payAccount, String remake, Integer createId, Date createDate, Integer isDelete) {
         this.id = id;
         this.userDecorationId = userDecorationId;
         this.orderCode = orderCode;
@@ -211,6 +224,7 @@ public class AppDepositManagement {
         this.status = status;
         this.froms = froms;
         this.payType = payType;
+        this.payAccount = payAccount;
         this.remake = remake;
         this.createId = createId;
         this.createDate = createDate;
