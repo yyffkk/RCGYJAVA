@@ -84,4 +84,11 @@ public interface ButlerDecorationDao {
      * @return 影响行数
      */
     int insertTrackRecordDetail(ButlerTrackRecordDetail trackRecordDetail);
+
+    /**
+     * 更新装修表的【最后一次完工检查是否合格】字段
+     * @param butlerTrackRecord 跟踪记录信息
+     * @return 影响行数
+     */
+    int updateIsQualified(ButlerTrackRecord butlerTrackRecord);
 }

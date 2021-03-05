@@ -39,7 +39,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserDecoration searchUserDecoration){
         PageHelper.startPage(searchUserDecoration.getPageNum(),searchUserDecoration.getSize());
         List<VoUserDecoration> voUserDecorationList =userDecorationService.list(searchUserDecoration);

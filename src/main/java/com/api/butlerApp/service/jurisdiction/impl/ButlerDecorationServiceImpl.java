@@ -220,6 +220,14 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
                     }
                 }
             }
+
+            //如果是完工检查提交，则更新装修表的【最后一次完工检查是否合格】字段
+            if (butlerTrackRecord.getType() == 2){
+                int update = butlerDecorationDao.updateIsQualified(butlerTrackRecord);
+                if (update <= 0){
+                    throw new RuntimeException("更新最后一次完工检查提交失败");
+                }
+            }
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

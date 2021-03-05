@@ -126,4 +126,8 @@
             #{createDate}
         )
     </insert>
+
+    <update id="updateIsQualified" parameterType="com.api.model.butlerApp.ButlerTrackRecord">
+        update user_decoration set is_qualified = #{result} where id = #{decorationId}
+    </update>
 </mapper>
