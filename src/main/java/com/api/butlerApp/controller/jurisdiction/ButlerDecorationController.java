@@ -2,16 +2,14 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerDecorationService;
 import com.api.model.butlerApp.ButlerDecorationSearch;
-import com.api.vo.butlerApp.ButlerBorrowVo;
+import com.api.model.butlerApp.ButlerTrackInspectionCycle;
 import com.api.vo.butlerApp.ButlerDecorationVo;
-import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +48,21 @@ public class ButlerDecorationController {
     @GetMapping("/findById")
     public Map<String,Object> findById(Integer decorationId){
         return butlerDecorationService.findById(decorationId);
+    }
+
+    /**
+     * 立即安排（指派）
+     * @param trackInspectionCycle 管家app 跟踪检查周期信息
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/appoint")
+    public Map<String,Object> appoint(@RequestBody ButlerTrackInspectionCycle trackInspectionCycle, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerDecorationService.appoint(trackInspectionCycle,id,roleId);
     }
 
 

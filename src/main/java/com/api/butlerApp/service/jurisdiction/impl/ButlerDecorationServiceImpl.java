@@ -4,11 +4,13 @@ import com.api.butlerApp.dao.jurisdiction.ButlerDecorationDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerDecorationService;
 import com.api.model.butlerApp.ButlerDecorationSearch;
+import com.api.model.butlerApp.ButlerTrackInspectionCycle;
 import com.api.vo.butlerApp.ButlerChecksContentVo;
 import com.api.vo.butlerApp.ButlerDecorationFBIVo;
 import com.api.vo.butlerApp.ButlerDecorationVo;
 import com.api.vo.butlerApp.ButlerTrackInspectionFBIVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -58,6 +60,7 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
         ButlerDecorationFBIVo decorationFBIVo = butlerDecorationDao.findById(decorationId);
         ButlerTrackInspectionFBIVo trackInspectionFBIVo = null;
         List<ButlerChecksContentVo> checksContentVos = null;
+        //判断是否已有跟踪人员
         if (decorationFBIVo.getTracker() != null){
             //根据装修主键id查询检查周期信息
             trackInspectionFBIVo = butlerDecorationDao.findInspectionById(decorationId);
@@ -68,10 +71,40 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
             checksContentVos = butlerDecorationDao.findChecksContent();
         }
 
+        //装修信息
         map.put("decorationFBIVo",decorationFBIVo);
+        //跟踪检查周期信息
         map.put("trackInspectionFBIVo",trackInspectionFBIVo);
+        //跟踪检查内容信息
         map.put("checksContentVos",checksContentVos);
+        return map;
+    }
 
+    @Override
+    public Map<String, Object> appoint(ButlerTrackInspectionCycle trackInspectionCycle, Integer id, String roleId) {
+        map = new HashMap<>();
+        try {
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 2){
+                throw new RuntimeException("当前用户没有该权限");
+            }
+            //修改装修表 跟踪人id
+            //添加 装修跟踪检查周期表信息
+            //添加 装修跟踪检查内容表（关联表）信息
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+
+        map.put("message","指派成功");
+        map.put("status",true);
         return map;
     }
 
@@ -83,10 +116,11 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
                 //根据角色id查询权限id集合
                 List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
                 if (jurisdictionIds != null && jurisdictionIds.size()>0){
-                    //59.装修派工
                     if (jurisdictionIds.contains(59)){
+                        //59.装修派工（管家）
                         return 1;
                     }else if (jurisdictionIds.contains(60)){
+                        //60.跟踪执行（跟踪人）
                         return 2;
                     }
                 }
