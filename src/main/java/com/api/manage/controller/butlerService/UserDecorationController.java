@@ -311,7 +311,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/insertCheckContent")
-    public Map<String,Object> insertCheckContent(@RequestBody UserDecorationTrackChecksContent trackChecksContent){
+    public Map<String,Object> insertCheckContent(@RequestBody UserDecorationChecksContent trackChecksContent){
         return userDecorationService.insertCheckContent(trackChecksContent);
     }
 
@@ -321,7 +321,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/updateCheckContent")
-    public Map<String,Object> updateCheckContent(@RequestBody UserDecorationTrackChecksContent trackChecksContent){
+    public Map<String,Object> updateCheckContent(@RequestBody UserDecorationChecksContent trackChecksContent){
         return userDecorationService.updateCheckContent(trackChecksContent);
     }
 

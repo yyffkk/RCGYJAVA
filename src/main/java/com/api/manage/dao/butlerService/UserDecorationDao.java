@@ -128,21 +128,21 @@ public interface UserDecorationDao {
      * 查询所有的检查内容信息
      * @return 检查内容信息集合
      */
-    List<VoUserDecorationTrackChecksContent> findAllChecksContent();
+    List<VoUserDecorationChecksContent> findAllChecksContent();
 
     /**
      * 添加检查内容信息
-     * @param trackChecksContent 装修跟踪检查内容
+     * @param checksContent 装修检查内容
      * @return 影响行数
      */
-    int insertCheckContent(UserDecorationTrackChecksContent trackChecksContent);
+    int insertCheckContent(UserDecorationChecksContent checksContent);
 
     /**
      * 修改检查内容信息
-     * @param trackChecksContent 装修跟踪检查内容
+     * @param checksContent 装修检查内容
      * @return 影响行数
      */
-    int updateCheckContent(UserDecorationTrackChecksContent trackChecksContent);
+    int updateCheckContent(UserDecorationChecksContent checksContent);
 
     /**
      * 删除检查内容信息

@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * 装修跟踪检查内容
  */
-public class UserDecorationTrackChecksContent {
+public class UserDecorationChecksContent {
     /**
      * 主键id
      */
@@ -104,10 +104,10 @@ public class UserDecorationTrackChecksContent {
         this.modifyDate = modifyDate;
     }
 
-    public UserDecorationTrackChecksContent() {
+    public UserDecorationChecksContent() {
     }
 
-    public UserDecorationTrackChecksContent(Integer id, String name, String remake, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public UserDecorationChecksContent(Integer id, String name, String remake, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
         this.id = id;
         this.name = name;
         this.remake = remake;

@@ -330,8 +330,8 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     public Map<String, Object> findAllChecksContent() {
         map = new HashMap<>();
         //查询所有的检查内容信息
-        List<VoUserDecorationTrackChecksContent> trackChecksContentList = userDecorationDao.findAllChecksContent();
-        map.put("trackChecksContentList",trackChecksContentList);
+        List<VoUserDecorationChecksContent> checksContentList = userDecorationDao.findAllChecksContent();
+        map.put("checksContentList",checksContentList);
         //查询装修须知doc路径
         List<String> urls = userDecorationDao.findDocUrl();
         String url = "";
@@ -343,14 +343,14 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     }
 
     @Override
-    public Map<String, Object> insertCheckContent(UserDecorationTrackChecksContent trackChecksContent) {
+    public Map<String, Object> insertCheckContent(UserDecorationChecksContent checksContent) {
         map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        trackChecksContent.setCreateId(sysUser.getId());
-        trackChecksContent.setCreateDate(new Date());
-        int insert = userDecorationDao.insertCheckContent(trackChecksContent);
+        checksContent.setCreateId(sysUser.getId());
+        checksContent.setCreateDate(new Date());
+        int insert = userDecorationDao.insertCheckContent(checksContent);
         if (insert >0){
             map.put("message","添加成功");
             map.put("status",true);
@@ -362,14 +362,14 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     }
 
     @Override
-    public Map<String, Object> updateCheckContent(UserDecorationTrackChecksContent trackChecksContent) {
+    public Map<String, Object> updateCheckContent(UserDecorationChecksContent checksContent) {
         map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        trackChecksContent.setModifyId(sysUser.getId());
-        trackChecksContent.setModifyDate(new Date());
-        int insert = userDecorationDao.updateCheckContent(trackChecksContent);
+        checksContent.setModifyId(sysUser.getId());
+        checksContent.setModifyDate(new Date());
+        int insert = userDecorationDao.updateCheckContent(checksContent);
         if (insert >0){
             map.put("message","修改成功");
             map.put("status",true);

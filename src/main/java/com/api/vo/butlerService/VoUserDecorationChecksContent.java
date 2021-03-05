@@ -3,7 +3,7 @@ package com.api.vo.butlerService;
 /**
  * 装修跟踪检查内容Vo list 回显
  */
-public class VoUserDecorationTrackChecksContent {
+public class VoUserDecorationChecksContent {
     /**
      * 主键id
      */
@@ -50,10 +50,10 @@ public class VoUserDecorationTrackChecksContent {
         this.remake = remake;
     }
 
-    public VoUserDecorationTrackChecksContent() {
+    public VoUserDecorationChecksContent() {
     }
 
-    public VoUserDecorationTrackChecksContent(Integer id, String name, String remake) {
+    public VoUserDecorationChecksContent(Integer id, String name, String remake) {
         this.id = id;
         this.name = name;
         this.remake = remake;

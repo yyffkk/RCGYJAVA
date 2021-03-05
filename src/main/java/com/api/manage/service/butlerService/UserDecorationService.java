@@ -1,9 +1,8 @@
 package com.api.manage.service.butlerService;
 
 import com.api.model.butlerService.SearchUserDecoration;
-import com.api.model.butlerService.UserDecorationDeposit;
 import com.api.model.butlerService.UserDecorationPersonnel;
-import com.api.model.butlerService.UserDecorationTrackChecksContent;
+import com.api.model.butlerService.UserDecorationChecksContent;
 import com.api.vo.butlerService.VoUserAccessCard;
 import com.api.vo.butlerService.VoUserDecoration;
 import com.api.vo.butlerService.VoUserDecorationPersonnel;
@@ -41,9 +40,9 @@ public interface UserDecorationService {
 
     Map<String, Object> findAllChecksContent();
 
-    Map<String, Object> insertCheckContent(UserDecorationTrackChecksContent trackChecksContent);
+    Map<String, Object> insertCheckContent(UserDecorationChecksContent trackChecksContent);
 
-    Map<String, Object> updateCheckContent(UserDecorationTrackChecksContent trackChecksContent);
+    Map<String, Object> updateCheckContent(UserDecorationChecksContent trackChecksContent);
 
     Map<String, Object> deleteCheckContent(Integer checkContentId);
 }
