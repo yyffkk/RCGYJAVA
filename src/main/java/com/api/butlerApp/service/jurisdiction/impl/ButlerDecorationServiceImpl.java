@@ -69,8 +69,8 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
         List<AppTrackRecordVo> trackRecordVos = null;
         //判断是否已有跟踪人员
         if (decorationFBIVo.getTracker() != null){
-            //如果type为1.装修派工（管家），则显示检查周期信息
-            if (type == 1){
+            //如果type不为跟踪执行（跟踪人）），则显示检查周期信息
+            if (type != 2){
                 //根据装修主键id查询检查周期信息
                 trackInspectionFBIVo = butlerDecorationDao.findInspectionById(decorationId);
                 //查询跟踪检查内容信息（关联表）
