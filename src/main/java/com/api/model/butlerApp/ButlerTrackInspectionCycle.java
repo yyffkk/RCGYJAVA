@@ -35,6 +35,14 @@ public class ButlerTrackInspectionCycle {
      * 跟踪检查内容信息集合
      */
     private List<ButlerTrackChecksContent> trackChecksContentList;
+    /**
+     * 创建人
+     */
+    private Integer createId;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
 
     @Override
     public String toString() {
@@ -46,6 +54,8 @@ public class ButlerTrackInspectionCycle {
                 ", inspectionCycle=" + inspectionCycle +
                 ", inspectionDateNext=" + inspectionDateNext +
                 ", trackChecksContentList=" + trackChecksContentList +
+                ", createId=" + createId +
+                ", createDate=" + createDate +
                 '}';
     }
 
@@ -105,10 +115,26 @@ public class ButlerTrackInspectionCycle {
         this.trackChecksContentList = trackChecksContentList;
     }
 
+    public Integer getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     public ButlerTrackInspectionCycle() {
     }
 
-    public ButlerTrackInspectionCycle(Integer id, Integer decorationId, Integer trackId, Date startDate, Integer inspectionCycle, Date inspectionDateNext, List<ButlerTrackChecksContent> trackChecksContentList) {
+    public ButlerTrackInspectionCycle(Integer id, Integer decorationId, Integer trackId, Date startDate, Integer inspectionCycle, Date inspectionDateNext, List<ButlerTrackChecksContent> trackChecksContentList, Integer createId, Date createDate) {
         this.id = id;
         this.decorationId = decorationId;
         this.trackId = trackId;
@@ -116,5 +142,7 @@ public class ButlerTrackInspectionCycle {
         this.inspectionCycle = inspectionCycle;
         this.inspectionDateNext = inspectionDateNext;
         this.trackChecksContentList = trackChecksContentList;
+        this.createId = createId;
+        this.createDate = createDate;
     }
 }

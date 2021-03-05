@@ -4,12 +4,14 @@ import com.api.butlerApp.dao.jurisdiction.ButlerDecorationDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerDecorationService;
 import com.api.model.butlerApp.ButlerDecorationSearch;
+import com.api.model.butlerApp.ButlerTrackChecksContent;
 import com.api.model.butlerApp.ButlerTrackInspectionCycle;
 import com.api.vo.butlerApp.ButlerChecksContentVo;
 import com.api.vo.butlerApp.ButlerDecorationFBIVo;
 import com.api.vo.butlerApp.ButlerDecorationVo;
 import com.api.vo.butlerApp.ButlerTrackInspectionFBIVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -81,16 +83,54 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> appoint(ButlerTrackInspectionCycle trackInspectionCycle, Integer id, String roleId) {
         map = new HashMap<>();
         try {
+            //根据装修主键id查询是否有指派的人
+            int count = butlerDecorationDao.countInspectionCycle(trackInspectionCycle.getDecorationId());
+            if (count >0){
+                throw new RuntimeException("已有指派人");
+            }
+            //查询权限信息
             int type = findJurisdictionByUserId(roleId);
-            if (type != 2){
+            if (type != 1){
                 throw new RuntimeException("当前用户没有该权限");
             }
             //修改装修表 跟踪人id
+            int update = butlerDecorationDao.updateTrackerById(trackInspectionCycle);
+            if (update <= 0){
+                throw new RuntimeException("修改装修表失败");
+            }
+            //填入创建人
+            trackInspectionCycle.setCreateId(id);
+            //填入创建时间
+            trackInspectionCycle.setCreateDate(new Date());
+            //填入开始时间
+            trackInspectionCycle.setStartDate(new Date());
+            //填入下一次检查日期
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date());
+            calendar.add(calendar.DATE,trackInspectionCycle.getInspectionCycle());
+            Date date = calendar.getTime();
+            trackInspectionCycle.setInspectionDateNext(date);
             //添加 装修跟踪检查周期表信息
+            int insert = butlerDecorationDao.insertInspectionCycle(trackInspectionCycle);
+            if (insert <= 0){
+                throw new RuntimeException("添加装修跟踪检查周期表失败");
+            }
             //添加 装修跟踪检查内容表（关联表）信息
+            List<ButlerTrackChecksContent> checksContentList = trackInspectionCycle.getTrackChecksContentList();
+            if (checksContentList != null && checksContentList.size()>0){
+                for (ButlerTrackChecksContent checksContent : checksContentList) {
+                    checksContent.setDecorationId(trackInspectionCycle.getDecorationId());
+                    int insert2 = butlerDecorationDao.insertTrackChecksContent(checksContent);
+                    if (insert2 <= 0){
+                        throw new RuntimeException("添加装修跟踪检查内容表（关联表）信息失败");
+                    }
+                }
+            }
+
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

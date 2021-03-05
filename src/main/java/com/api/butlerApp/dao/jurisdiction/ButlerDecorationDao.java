@@ -1,6 +1,8 @@
 package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.butlerApp.ButlerDecorationSearch;
+import com.api.model.butlerApp.ButlerTrackChecksContent;
+import com.api.model.butlerApp.ButlerTrackInspectionCycle;
 import com.api.vo.butlerApp.ButlerChecksContentVo;
 import com.api.vo.butlerApp.ButlerDecorationFBIVo;
 import com.api.vo.butlerApp.ButlerDecorationVo;
@@ -42,4 +44,32 @@ public interface ButlerDecorationDao {
      * @return 跟踪检查内容信息集合
      */
     List<ButlerChecksContentVo> findTrackChecksContent(Integer decorationId);
+
+    /**
+     * 修改装修表 跟踪人id
+     * @param trackInspectionCycle 跟踪检查周期信息
+     * @return 影响行数
+     */
+    int updateTrackerById(ButlerTrackInspectionCycle trackInspectionCycle);
+
+    /**
+     * 添加 装修跟踪检查周期表信息
+     * @param trackInspectionCycle 跟踪检查周期信息
+     * @return 影响行数
+     */
+    int insertInspectionCycle(ButlerTrackInspectionCycle trackInspectionCycle);
+
+    /**
+     * 添加装修跟踪检查内容表（关联表）信息失败
+     * @param checksContent 管家app 跟踪检查内容信息
+     * @return 影响行数
+     */
+    int insertTrackChecksContent(ButlerTrackChecksContent checksContent);
+
+    /**
+     * 根据装修主键id查询是否有指派的人
+     * @param decorationId 装修主键id
+     * @return 跟踪人数量
+     */
+    int countInspectionCycle(Integer decorationId);
 }

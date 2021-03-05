@@ -47,4 +47,42 @@
     <select id="findTrackChecksContent" resultType="com.api.vo.butlerApp.ButlerChecksContentVo">
         select id,name from user_decoration_track_checks_content where decoration_id = #{decorationId}
     </select>
+
+    <update id="updateTrackerById" parameterType="com.api.model.butlerApp.ButlerTrackInspectionCycle">
+        update user_decoration set tracker = #{trackId}  where id = #{decorationId}
+    </update>
+
+    <insert id="insertInspectionCycle" parameterType="com.api.model.butlerApp.ButlerTrackInspectionCycle">
+        insert into user_decoration_track_inspection_cycle(
+            decoration_id,
+            track_id,
+            start_date,
+            inspection_cycle,
+            inspection_date_next,
+            create_id,
+            create_date
+        )values (
+            #{decorationId},
+            #{trackId},
+            #{startDate},
+            #{inspectionCycle},
+            #{inspectionDateNext},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <insert id="insertTrackChecksContent" parameterType="com.api.model.butlerApp.ButlerTrackChecksContent">
+        insert into user_decoration_track_checks_content(
+            decoration_id,
+            name
+        )values (
+            #{decorationId},
+            #{name}
+        )
+    </insert>
+
+    <select id="countInspectionCycle" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from user_decoration_track_inspection_cycle where decoration_id = #{decorationId}
+    </select>
 </mapper>
