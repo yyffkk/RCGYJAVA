@@ -4,14 +4,14 @@ import com.api.butlerApp.dao.jurisdiction.ButlerDecorationDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerDecorationService;
 import com.api.model.butlerApp.ButlerDecorationSearch;
+import com.api.vo.butlerApp.ButlerChecksContentVo;
+import com.api.vo.butlerApp.ButlerDecorationFBIVo;
 import com.api.vo.butlerApp.ButlerDecorationVo;
+import com.api.vo.butlerApp.ButlerTrackInspectionFBIVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ButlerDecorationServiceImpl implements ButlerDecorationService {
@@ -26,6 +26,7 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
     public List<ButlerDecorationVo> list(ButlerDecorationSearch decorationSearch) {
         int type = findJurisdictionByUserId(decorationSearch.getRoleId());
         List<ButlerDecorationVo> butlerDecorationVos = butlerDecorationDao.list(decorationSearch);
+        List<ButlerDecorationVo> butlerDecorationVos2 = new ArrayList<>();
         if (butlerDecorationVos != null && butlerDecorationVos.size()>0){
             for (ButlerDecorationVo decorationVo : butlerDecorationVos) {
                 if (decorationVo.getTracker() != null){
@@ -36,22 +37,36 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
                         //3.已完成【装修状态为>=5】
                         decorationVo.setOperationStatus(3);
                     }
+                    butlerDecorationVos2.add(decorationVo);
                 }else {
                     //1.待指派【当检查跟踪人为null且装修状态为>1】查询出来的数据默认装修状态>1，所以不用判断
                     decorationVo.setOperationStatus(1);
-                    if (type == 2 || type == 3){
-                        //当为跟踪人员和其他 时，不能显示待指派状态 ？？？？？
+                    if (type == 1){
+                        //当为待指派 时，显示待指派状态
+                        butlerDecorationVos2.add(decorationVo);
                     }
                 }
             }
         }
-        return butlerDecorationVos;
+        return butlerDecorationVos2;
     }
 
     @Override
     public Map<String, Object> findById(Integer decorationId) {
         map = new HashMap<>();
+        //根据装修主键id查询装修信息
+        ButlerDecorationFBIVo decorationFBIVo = butlerDecorationDao.findById(decorationId);
+        ButlerTrackInspectionFBIVo trackInspectionFBIVo = null;
+        if (decorationFBIVo.getTracker() != null){
+            //根据装修主键id查询检查周期信息
+            trackInspectionFBIVo = butlerDecorationDao.findInspectionById(decorationId);
+        }
+        //查询检查内容信息
+        List<ButlerChecksContentVo> checksContentVos = butlerDecorationDao.findChecksContent();
 
+        map.put("decorationFBIVo",decorationFBIVo);
+        map.put("trackInspectionFBIVo",trackInspectionFBIVo);
+        map.put("checksContentVos",checksContentVos);
 
         return map;
     }

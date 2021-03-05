@@ -47,9 +47,12 @@ public class ButlerDecorationController {
      * @param decorationId 装修主键id
      * @return map
      */
+    @GetMapping("/findById")
     public Map<String,Object> findById(Integer decorationId){
         return butlerDecorationService.findById(decorationId);
     }
+
+
 
 
 

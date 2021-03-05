@@ -27,4 +27,20 @@
             </if>
         </where>
     </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerDecorationFBIVo">
+        select ud.*,concat(cb.no,'幢-',cbu.no,'单元-',cbue.room_number) as room_name,ur.name as resident_name,ur.tel as resident_tel
+        from user_decoration as ud,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        where ud.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and ud.resident_id = ur.id and ud.id = #{decorationId}
+    </select>
+
+    <select id="findInspectionById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerTrackInspectionFBIVo">
+        select udtic.*,su.actual_name as track_name
+        from user_decoration_track_inspection_cycle as udtic,sys_user as su
+        where udtic.track_id = su.id and udtic.decoration_id = #{decorationId}
+    </select>
+
+    <select id="findChecksContent" resultType="com.api.vo.butlerApp.ButlerChecksContentVo">
+        select id,name from user_decoration_track_checks_content
+    </select>
 </mapper>
