@@ -1,8 +1,6 @@
 package com.api.butlerApp.dao.jurisdiction;
 
-import com.api.model.butlerApp.ButlerDecorationSearch;
-import com.api.model.butlerApp.ButlerTrackChecksContent;
-import com.api.model.butlerApp.ButlerTrackInspectionCycle;
+import com.api.model.butlerApp.*;
 import com.api.vo.butlerApp.ButlerChecksContentVo;
 import com.api.vo.butlerApp.ButlerDecorationFBIVo;
 import com.api.vo.butlerApp.ButlerDecorationVo;
@@ -72,4 +70,18 @@ public interface ButlerDecorationDao {
      * @return 跟踪人数量
      */
     int countInspectionCycle(Integer decorationId);
+
+    /**
+     * 添加装修跟踪记录
+     * @param butlerTrackRecord 管家app 跟踪记录信息
+     * @return 影响行数
+     */
+    int insertTrackRecord(ButlerTrackRecord butlerTrackRecord);
+
+    /**
+     * 添加装修跟踪记录明细
+     * @param trackRecordDetail 管家app 跟踪记录信息详情
+     * @return 影响行数
+     */
+    int insertTrackRecordDetail(ButlerTrackRecordDetail trackRecordDetail);
 }

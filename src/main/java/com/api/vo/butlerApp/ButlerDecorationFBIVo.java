@@ -39,6 +39,10 @@ public class ButlerDecorationFBIVo {
      */
     private Date actualBegin;
     /**
+     * 预计结束时间
+     */
+    private Date expectedEnd;
+    /**
      * 检查跟踪人（物业表）
      */
     private Integer tracker;
@@ -54,6 +58,7 @@ public class ButlerDecorationFBIVo {
                 ", director='" + director + '\'' +
                 ", directorTel='" + directorTel + '\'' +
                 ", actualBegin=" + actualBegin +
+                ", expectedEnd=" + expectedEnd +
                 ", tracker=" + tracker +
                 '}';
     }
@@ -122,6 +127,14 @@ public class ButlerDecorationFBIVo {
         this.actualBegin = actualBegin;
     }
 
+    public Date getExpectedEnd() {
+        return expectedEnd;
+    }
+
+    public void setExpectedEnd(Date expectedEnd) {
+        this.expectedEnd = expectedEnd;
+    }
+
     public Integer getTracker() {
         return tracker;
     }
@@ -133,7 +146,7 @@ public class ButlerDecorationFBIVo {
     public ButlerDecorationFBIVo() {
     }
 
-    public ButlerDecorationFBIVo(Integer id, String roomName, String residentName, String residentTel, String constructionUnit, String director, String directorTel, Date actualBegin, Integer tracker) {
+    public ButlerDecorationFBIVo(Integer id, String roomName, String residentName, String residentTel, String constructionUnit, String director, String directorTel, Date actualBegin, Date expectedEnd, Integer tracker) {
         this.id = id;
         this.roomName = roomName;
         this.residentName = residentName;
@@ -142,6 +155,7 @@ public class ButlerDecorationFBIVo {
         this.director = director;
         this.directorTel = directorTel;
         this.actualBegin = actualBegin;
+        this.expectedEnd = expectedEnd;
         this.tracker = tracker;
     }
 }

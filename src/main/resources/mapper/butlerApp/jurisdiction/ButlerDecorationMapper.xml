@@ -85,4 +85,45 @@
     <select id="countInspectionCycle" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from user_decoration_track_inspection_cycle where decoration_id = #{decorationId}
     </select>
+
+    <insert id="insertTrackRecord" parameterType="com.api.model.butlerApp.ButlerTrackRecord">
+        insert into user_decoration_track_record(
+            decoration_id,
+            track_id,
+            track_date,
+            type,
+            description,
+            result,
+            create_id,
+            create_date
+        )values (
+            #{decorationId},
+            #{trackId},
+            #{trackDate},
+            #{type},
+            #{description},
+            #{result},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertTrackRecordDetail" parameterType="com.api.model.butlerApp.ButlerTrackRecordDetail">
+        insert into user_decoration_track_record_detail(
+            decoration_track_record_id,
+            decoration_track_checks_content_id,
+            is_qualified,
+            create_id,
+            create_date
+        )values (
+            #{decorationTrackRecordId},
+            #{decorationTrackChecksContentId},
+            #{isQualified},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 </mapper>

@@ -1,11 +1,12 @@
 package com.api.butlerApp.service.jurisdiction.impl;
 
+import com.api.app.dao.butler.DecorationApplicationDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerDecorationDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerDecorationService;
-import com.api.model.butlerApp.ButlerDecorationSearch;
-import com.api.model.butlerApp.ButlerTrackChecksContent;
-import com.api.model.butlerApp.ButlerTrackInspectionCycle;
+import com.api.model.butlerApp.*;
+import com.api.vo.app.AppTrackRecordDetailVo;
+import com.api.vo.app.AppTrackRecordVo;
 import com.api.vo.butlerApp.ButlerChecksContentVo;
 import com.api.vo.butlerApp.ButlerDecorationFBIVo;
 import com.api.vo.butlerApp.ButlerDecorationVo;
@@ -19,6 +20,8 @@ import java.util.*;
 
 @Service
 public class ButlerDecorationServiceImpl implements ButlerDecorationService {
+    @Resource
+    DecorationApplicationDao decorationApplicationDao;
     @Resource
     ButlerDecorationDao butlerDecorationDao;
     @Resource
@@ -56,21 +59,39 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
     }
 
     @Override
-    public Map<String, Object> findById(Integer decorationId) {
+    public Map<String, Object> findById(Integer decorationId, String roleId) {
         map = new HashMap<>();
+        int type = findJurisdictionByUserId(roleId);
         //根据装修主键id查询装修信息
         ButlerDecorationFBIVo decorationFBIVo = butlerDecorationDao.findById(decorationId);
         ButlerTrackInspectionFBIVo trackInspectionFBIVo = null;
         List<ButlerChecksContentVo> checksContentVos = null;
+        List<AppTrackRecordVo> trackRecordVos = null;
         //判断是否已有跟踪人员
         if (decorationFBIVo.getTracker() != null){
-            //根据装修主键id查询检查周期信息
-            trackInspectionFBIVo = butlerDecorationDao.findInspectionById(decorationId);
-            //查询跟踪检查内容信息（关联表）
-            checksContentVos = butlerDecorationDao.findTrackChecksContent(decorationId);
+            //如果type为1.装修派工（管家），则显示检查周期信息
+            if (type == 1){
+                //根据装修主键id查询检查周期信息
+                trackInspectionFBIVo = butlerDecorationDao.findInspectionById(decorationId);
+                //查询跟踪检查内容信息（关联表）
+                checksContentVos = butlerDecorationDao.findTrackChecksContent(decorationId);
+            }
+
+            //查询执行信息(调用app的 查询跟踪检查记录Dao接口)
+            trackRecordVos = decorationApplicationDao.findTrackRecord(decorationId);
+            if (trackRecordVos != null && trackRecordVos.size()>0){
+                for (AppTrackRecordVo trackRecordVo : trackRecordVos) {
+                    //查询跟踪检查记录明细
+                    List<AppTrackRecordDetailVo> trackRecordDetailVos = decorationApplicationDao.findTrackRecordDetail(trackRecordVo.getId());
+                    trackRecordVo.setRecordDetailVoList(trackRecordDetailVos);
+                }
+            }
         }else {
-            //查询检查内容信息（标准表）
-            checksContentVos = butlerDecorationDao.findChecksContent();
+            //如果type为1.装修派工（管家），则显示检查周期信息
+            if (type == 1) {
+                //查询检查内容信息（标准表）
+                checksContentVos = butlerDecorationDao.findChecksContent();
+            }
         }
 
         //装修信息
@@ -79,6 +100,8 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
         map.put("trackInspectionFBIVo",trackInspectionFBIVo);
         //跟踪检查内容信息
         map.put("checksContentVos",checksContentVos);
+        //查询执行信息(调用app的 查询跟踪检查记录Dao接口)
+        map.put("trackRecordVos",trackRecordVos);
         return map;
     }
 
@@ -144,6 +167,71 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
         }
 
         map.put("message","指派成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findTrackChecksDetail(Integer decorationId) {
+        map = new HashMap<>();
+        List<ButlerChecksContentVo> trackChecksContent = butlerDecorationDao.findTrackChecksContent(decorationId);
+        map.put("trackChecksContent",trackChecksContent);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> submitTrackExecution(ButlerTrackRecord butlerTrackRecord, Integer id, String roleId) {
+        map = new HashMap<>();
+        try {
+            //查询权限信息
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 2){
+                throw new RuntimeException("当前用户没有该权限");
+            }
+
+            //填入跟踪检查时间
+            butlerTrackRecord.setTrackDate(new Date());
+            //填入创建人
+            butlerTrackRecord.setCreateId(id);
+            //填入创建时间
+            butlerTrackRecord.setCreateDate(new Date());
+            //添加装修跟踪记录
+            int insert = butlerDecorationDao.insertTrackRecord(butlerTrackRecord);
+            if (insert <= 0){
+                throw new RuntimeException("添加装修跟踪记录失败");
+            }
+
+            List<ButlerTrackRecordDetail> trackRecordDetails = butlerTrackRecord.getTrackRecordDetails();
+            if (trackRecordDetails != null && trackRecordDetails.size() > 0){
+                for (ButlerTrackRecordDetail trackRecordDetail : trackRecordDetails) {
+                    //填入装修跟踪记录主键id
+                    trackRecordDetail.setDecorationTrackRecordId(butlerTrackRecord.getId());
+                    //填入创建人
+                    trackRecordDetail.setCreateId(id);
+                    //填入创建时间
+                    trackRecordDetail.setCreateDate(new Date());
+                    //添加装修跟踪记录明细
+                    int insert2 = butlerDecorationDao.insertTrackRecordDetail(trackRecordDetail);
+                    if (insert2 <= 0){
+                        throw new RuntimeException("添加装修跟踪记录明细失败");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交成功");
         map.put("status",true);
         return map;
     }

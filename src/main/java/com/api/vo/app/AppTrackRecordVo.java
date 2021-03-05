@@ -16,6 +16,10 @@ public class AppTrackRecordVo {
      */
     private Date trackDate;
     /**
+     * 类型：1.周期检查，2.完工检查
+     */
+    private Integer type;
+    /**
      * 跟踪描述
      */
     private String description;
@@ -33,6 +37,7 @@ public class AppTrackRecordVo {
         return "AppTrackRecordVo{" +
                 "id=" + id +
                 ", trackDate=" + trackDate +
+                ", type=" + type +
                 ", description='" + description + '\'' +
                 ", result=" + result +
                 ", recordDetailVoList=" + recordDetailVoList +
@@ -53,6 +58,14 @@ public class AppTrackRecordVo {
 
     public void setTrackDate(Date trackDate) {
         this.trackDate = trackDate;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -82,9 +95,10 @@ public class AppTrackRecordVo {
     public AppTrackRecordVo() {
     }
 
-    public AppTrackRecordVo(Integer id, Date trackDate, String description, Integer result, List<AppTrackRecordDetailVo> recordDetailVoList) {
+    public AppTrackRecordVo(Integer id, Date trackDate, Integer type, String description, Integer result, List<AppTrackRecordDetailVo> recordDetailVoList) {
         this.id = id;
         this.trackDate = trackDate;
+        this.type = type;
         this.description = description;
         this.result = result;
         this.recordDetailVoList = recordDetailVoList;

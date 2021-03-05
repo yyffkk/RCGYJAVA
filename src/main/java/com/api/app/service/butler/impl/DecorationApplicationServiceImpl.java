@@ -329,8 +329,6 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
                 trackRecordVo.setRecordDetailVoList(trackRecordDetailVos);
             }
         }
-        //查询是否有延长过时间
-
 
         map.put("trackRecordVos",trackRecordVos);
         map.put("message","请求成功");
