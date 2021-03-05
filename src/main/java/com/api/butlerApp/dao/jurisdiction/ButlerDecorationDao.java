@@ -31,8 +31,15 @@ public interface ButlerDecorationDao {
     ButlerTrackInspectionFBIVo findInspectionById(Integer decorationId);
 
     /**
-     * 查询检查内容信息
+     * 查询检查内容信息（标准表）
      * @return 检查内容信息集合
      */
     List<ButlerChecksContentVo> findChecksContent();
+
+    /**
+     * 查询跟踪检查内容信息（关联表）
+     * @param decorationId 装修主键id
+     * @return 跟踪检查内容信息集合
+     */
+    List<ButlerChecksContentVo> findTrackChecksContent(Integer decorationId);
 }

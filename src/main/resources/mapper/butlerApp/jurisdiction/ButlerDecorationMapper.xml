@@ -43,4 +43,8 @@
     <select id="findChecksContent" resultType="com.api.vo.butlerApp.ButlerChecksContentVo">
         select id,name from user_decoration_checks_content
     </select>
+
+    <select id="findTrackChecksContent" resultType="com.api.vo.butlerApp.ButlerChecksContentVo">
+        select id,name from user_decoration_track_checks_content where decoration_id = #{decorationId}
+    </select>
 </mapper>

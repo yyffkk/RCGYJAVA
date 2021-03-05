@@ -57,12 +57,16 @@ public class ButlerDecorationServiceImpl implements ButlerDecorationService {
         //根据装修主键id查询装修信息
         ButlerDecorationFBIVo decorationFBIVo = butlerDecorationDao.findById(decorationId);
         ButlerTrackInspectionFBIVo trackInspectionFBIVo = null;
+        List<ButlerChecksContentVo> checksContentVos = null;
         if (decorationFBIVo.getTracker() != null){
             //根据装修主键id查询检查周期信息
             trackInspectionFBIVo = butlerDecorationDao.findInspectionById(decorationId);
+            //查询跟踪检查内容信息（关联表）
+            checksContentVos = butlerDecorationDao.findTrackChecksContent(decorationId);
+        }else {
+            //查询检查内容信息（标准表）
+            checksContentVos = butlerDecorationDao.findChecksContent();
         }
-        //查询检查内容信息
-        List<ButlerChecksContentVo> checksContentVos = butlerDecorationDao.findChecksContent();
 
         map.put("decorationFBIVo",decorationFBIVo);
         map.put("trackInspectionFBIVo",trackInspectionFBIVo);
