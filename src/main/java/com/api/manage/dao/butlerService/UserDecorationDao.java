@@ -169,11 +169,4 @@ public interface UserDecorationDao {
      * @return doc路径集合
      */
     List<String> findDocUrl();
-
-    /**
-     * 查询是否关联检查内容
-     * @param checkContentId 检查内容主键id
-     * @return 关联记录数
-     */
-    int isRelationCheckContent(Integer checkContentId);
 }

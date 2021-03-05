@@ -225,8 +225,4 @@
         select url from user_decoration_doc
     </select>
 
-    <select id="isRelationCheckContent" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from user_decoration_track_record_detail
-        where decoration_track_checks_content_id = #{checkContentId}
-    </select>
 </mapper>
