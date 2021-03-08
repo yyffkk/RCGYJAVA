@@ -4,17 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.chargeManagement.SysDepositManagementDao">
     <select id="list" parameterType="com.api.model.chargeManagement.SearchDepositManagement" resultType="com.api.vo.chargeManagement.VoDepositManagement">
-        select sdm.*,sctd.name as charges_template_detail_name,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,ur.name as deposit_name,
-            (case sdm.create_id when -1 then ur.name else (select actual_name from sys_user where id = sdm.create_id) end) as create_name,
-            (case sdm.modify_date is null when true then sdm.create_date else sdm.modify_date end) as update_date
-        from sys_deposit_management as sdm,sys_charges_template_detail as sctd
-            ,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        select ud.id,sctd.name as charges_template_detail_name,sdmro.code as orderCode,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        ,ur.name as deposit_name,ur.tel as tel,sdm.pay_date,sdm.deposit_price,sdm.status,sdm.froms,sdm.pay_type,ud.actual_begin as renovation_date_start
+        ,ud.actual_end as renovation_date_end,sdm.remake,su.actual_name as create_name
+        from sys_deposit_management as sdm,sys_charges_template_detail as sctd,user_decoration as ud,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        ,user_resident as ur,sys_user as su,sys_deposit_management_refund_order as sdmro
         <where>
             sdm.charges_template_detail_id = sctd.id
-            and sdm.building_unit_estate_id = cbue.id
-            and cbue.building_unit_id  = cbu.id
+            and sdm.user_decoration_id = ud.id
+            and ud.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
-            and sdm.resident_id = ur.id
+            and ud.resident_id = ur.id
+            and ur.create_id = su.id
+            and sdmro.deposit_management_id = sdm.id
             <if test="chargesTemplateDetailId != null and chargesTemplateDetailId != ''">
                 and sdm.charges_template_detail_id = #{chargesTemplateDetailId}
             </if>

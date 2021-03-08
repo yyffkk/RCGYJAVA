@@ -67,10 +67,6 @@ public class VoDepositManagement {
      * 创建人
      */
     private String createName;
-    /**
-     * 更新时间
-     */
-    private Date updateDate;
 
     @Override
     public String toString() {
@@ -90,7 +86,6 @@ public class VoDepositManagement {
                 ", renovationDateEnd=" + renovationDateEnd +
                 ", remake='" + remake + '\'' +
                 ", createName='" + createName + '\'' +
-                ", updateDate=" + updateDate +
                 '}';
     }
 
@@ -214,18 +209,10 @@ public class VoDepositManagement {
         this.createName = createName;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
     public VoDepositManagement() {
     }
 
-    public VoDepositManagement(Integer id, String chargesTemplateDetailName, String orderCode, String roomName, String depositName, String tel, Date payDate, BigDecimal depositPrice, Integer status, Integer froms, Integer payType, Date renovationDateStart, Date renovationDateEnd, String remake, String createName, Date updateDate) {
+    public VoDepositManagement(Integer id, String chargesTemplateDetailName, String orderCode, String roomName, String depositName, String tel, Date payDate, BigDecimal depositPrice, Integer status, Integer froms, Integer payType, Date renovationDateStart, Date renovationDateEnd, String remake, String createName) {
         this.id = id;
         this.chargesTemplateDetailName = chargesTemplateDetailName;
         this.orderCode = orderCode;
@@ -241,6 +228,5 @@ public class VoDepositManagement {
         this.renovationDateEnd = renovationDateEnd;
         this.remake = remake;
         this.createName = createName;
-        this.updateDate = updateDate;
     }
 }

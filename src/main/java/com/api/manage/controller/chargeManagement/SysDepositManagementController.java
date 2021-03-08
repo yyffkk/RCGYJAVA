@@ -35,7 +35,7 @@ public class SysDepositManagementController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> list(SearchDepositManagement searchDepositManagement){
         PageHelper.startPage(searchDepositManagement.getPageNum(),searchDepositManagement.getSize());
         List<VoDepositManagement> voDepositManagementList = sysDepositManagementService.list(searchDepositManagement);
