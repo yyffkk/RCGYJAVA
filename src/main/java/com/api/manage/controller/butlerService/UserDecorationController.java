@@ -98,6 +98,18 @@ public class UserDecorationController extends ShiroExceptions {
         return map;
     }
 
+
+    /**
+     * 根据装修主键id查询装修公司资料
+     * @param id 装修主键id
+     * @return 装修公司资料
+     */
+    @GetMapping("/decorationData")
+//    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    public Map<String,Object> decorationData(Integer id){
+        return null;
+    }
+
     /**
      * 显示所有门禁卡信息
      * @param id 装修主键id
@@ -171,7 +183,7 @@ public class UserDecorationController extends ShiroExceptions {
 
 
     /**
-     * 批量删除装修人员信息？？
+     * 批量删除装修人员信息
      * @param ids 装修人员主键id数组
      * @return map
      */

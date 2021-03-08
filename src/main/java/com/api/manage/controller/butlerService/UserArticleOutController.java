@@ -4,7 +4,6 @@ import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchUserArticleOut;
 import com.api.model.resources.ResourcesImg;
 import com.api.manage.service.butlerService.UserArticleOutService;
-import com.api.manage.service.resources.ResourcesImgService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoUserArticleOut;
 import com.api.vo.resources.VoResourcesImg;
@@ -29,8 +28,6 @@ public class UserArticleOutController extends ShiroExceptions {
 
     @Resource
     UserArticleOutService userArticleOutService;
-    @Resource
-    ResourcesImgService resourcesImgService;
 
     /**
      * 查询所有物品出门信息（包含条件搜索）

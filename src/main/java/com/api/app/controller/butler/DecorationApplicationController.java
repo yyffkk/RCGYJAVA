@@ -182,16 +182,4 @@ public class DecorationApplicationController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 }

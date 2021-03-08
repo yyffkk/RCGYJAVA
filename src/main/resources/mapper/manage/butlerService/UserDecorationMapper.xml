@@ -150,7 +150,7 @@
     </select>
 
     <update id="invalid" parameterType="java.lang.Integer">
-        update user_decoration set status = 6 where id = #{id}
+        update user_decoration set status = 8 where id = #{id}
     </update>
 
     <select id="countDecorationNow" resultType="java.lang.Integer">
@@ -158,7 +158,7 @@
     </select>
 
     <select id="countPerformed" resultType="java.lang.Integer">
-        select count(*) from user_decoration where status = 1
+        select count(*) from user_decoration where status <![CDATA[ <= ]]> 1
     </select>
 
     <select id="findIdByEstateId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
