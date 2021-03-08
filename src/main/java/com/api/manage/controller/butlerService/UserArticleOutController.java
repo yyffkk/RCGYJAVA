@@ -52,48 +52,6 @@ public class UserArticleOutController extends ShiroExceptions {
 
 
     /**
-     * 查询物品照片
-     * @param id 物品出门主键id
-     * @return map
-     */
-    @GetMapping("/findGoodsImgById")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
-    public Map<String,Object> findGoodsImgById(Integer id){
-        map = new HashMap<>();
-        ResourcesImg resourcesImg = new ResourcesImg();
-        //填入数据所属id
-        resourcesImg.setDateId(id);
-        //填入所属表名称
-        resourcesImg.setTableName("userArticleOut");
-        //填入资源类型名称
-        resourcesImg.setTypeName("goodsImg");
-        List<VoResourcesImg> resourcesImgList = resourcesImgService.findImgByDate(resourcesImg);
-        map.put("resourcesImgList",resourcesImgList);
-        return map;
-    }
-
-//    /**
-//     * 查询出门照片(去掉该照片，此需求删除)
-//     * @param id 物品出门主键id
-//     * @return map
-//     */
-//    @GetMapping("/findGoOutImgById")
-//    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
-//    public Map<String,Object> findGoOutImgById(Integer id){
-//        map = new HashMap<>();
-//        ResourcesImg resourcesImg = new ResourcesImg();
-//        //填入数据所属id
-//        resourcesImg.setDateId(id);
-//        //填入所属表名称
-//        resourcesImg.setTableName("userArticleOut");
-//        //填入资源类型名称
-//        resourcesImg.setTypeName("goOutImg");
-//        List<VoResourcesImg> resourcesImgList = resourcesImgService.findImgByDate(resourcesImg);
-//        map.put("resourcesImgList",resourcesImgList);
-//        return map;
-//    }
-
-    /**
      * 批量删除物品出门信息
      * @param ids 物品出门主键id数组
      * @return map

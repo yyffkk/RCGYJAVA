@@ -2,22 +2,16 @@ package com.api.manage.controller.butlerService;
 
 import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.*;
-import com.api.model.resources.ResourcesImg;
 import com.api.manage.service.butlerService.UserDecorationService;
-import com.api.manage.service.resources.ResourcesImgService;
-import com.api.util.QRCodeUtil;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.*;
-import com.api.vo.resources.VoResourcesImg;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +24,6 @@ import java.util.Map;
 public class UserDecorationController extends ShiroExceptions {
     @Resource
     UserDecorationService userDecorationService;
-    @Resource
-    ResourcesImgService resourcesImgService;
 
     /**
      * 查询装修信息（包含条件搜索）
@@ -209,48 +201,6 @@ public class UserDecorationController extends ShiroExceptions {
     @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> updateDecorationPersonnel(@RequestBody UserDecorationPersonnel userDecorationPersonnel){
         return userDecorationService.updateDecorationPersonnel(userDecorationPersonnel);
-    }
-
-    /**
-     * 根据跟踪检查记录id查询装修跟踪检查记录结果照片
-     * @param id 跟踪检查记录id
-     * @return map
-     */
-    @GetMapping("/findTrackImg")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
-    public Map<String,Object> findTrackImg(Integer id){
-        Map<String,Object> map = new HashMap<>();
-        ResourcesImg resourcesImg = new ResourcesImg();
-        //填入数据所属id
-        resourcesImg.setDateId(id);
-        //填入所属表名称
-        resourcesImg.setTableName("userDecorationTrackRecord");
-        //填入资源类型名称
-        resourcesImg.setTypeName("trackImg");
-        List<VoResourcesImg> resourcesImgList = resourcesImgService.findImgByDate(resourcesImg);
-        map.put("resourcesImgList",resourcesImgList);
-        return map;
-    }
-
-    /**
-     * 根据完工检查记录id查询装修完工检查记录结果照片
-     * @param id 完工检查记录id
-     * @return map
-     */
-    @GetMapping("/findCheckImg")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
-    public Map<String,Object> findCheckImg(Integer id){
-        Map<String,Object> map = new HashMap<>();
-        ResourcesImg resourcesImg = new ResourcesImg();
-        //填入数据所属id
-        resourcesImg.setDateId(id);
-        //填入所属表名称
-        resourcesImg.setTableName("userDecorationTrackRecord");
-        //填入资源类型名称
-        resourcesImg.setTypeName("checkImg");
-        List<VoResourcesImg> resourcesImgList = resourcesImgService.findImgByDate(resourcesImg);
-        map.put("resourcesImgList",resourcesImgList);
-        return map;
     }
 
     /**
