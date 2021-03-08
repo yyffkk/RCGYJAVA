@@ -54,10 +54,6 @@ public class UserDecorationPersonnel {
      * 修改时间
      */
     private Date modifyDate;
-    /**
-     * 添加方式（业主，物业，装修公司）
-     */
-    private Integer addWay;
 
     @Override
     public String toString() {
@@ -74,7 +70,6 @@ public class UserDecorationPersonnel {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
-                ", addWay=" + addWay +
                 '}';
     }
 
@@ -174,18 +169,10 @@ public class UserDecorationPersonnel {
         this.modifyDate = modifyDate;
     }
 
-    public Integer getAddWay() {
-        return addWay;
-    }
-
-    public void setAddWay(Integer addWay) {
-        this.addWay = addWay;
-    }
-
     public UserDecorationPersonnel() {
     }
 
-    public UserDecorationPersonnel(Integer id, Integer decorationId, String name, Integer identity, Integer cardType, String cardCode, String tel, String address, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer addWay) {
+    public UserDecorationPersonnel(Integer id, Integer decorationId, String name, Integer identity, Integer cardType, String cardCode, String tel, String address, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
         this.id = id;
         this.decorationId = decorationId;
         this.name = name;
@@ -198,6 +185,5 @@ public class UserDecorationPersonnel {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
-        this.addWay = addWay;
     }
 }

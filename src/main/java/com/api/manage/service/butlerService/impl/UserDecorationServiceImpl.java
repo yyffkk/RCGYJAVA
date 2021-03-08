@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -60,11 +61,32 @@ public class UserDecorationServiceImpl implements UserDecorationService {
         }
         List<VoUserDecoration> list = userDecorationDao.list(searchUserDecoration);
         for (VoUserDecoration voUserDecoration : list) {
-            //填入房屋信息
-            voUserDecoration.setRoomName(voUserDecoration.getBuildingNo()+"-"+voUserDecoration.getUnitNo()+"-"+voUserDecoration.getRoomNumber());
             //填入门禁卡数量
             int num = userAccessCardDao.countCardNum(voUserDecoration.getId());
             voUserDecoration.setUserAccessCardNum(num);
+            //填入装修押金信息
+            VoDepositPriceAndId voDepositPriceAndId = userDecorationDao.findDepositById(voUserDecoration.getId());
+            if (voDepositPriceAndId != null){
+                voUserDecoration.setDepositPrice(voDepositPriceAndId.getDepositPrice());
+                //填入装修附加费用
+                List<VoDepositAdditionalCost> voDepositAdditionalCosts = userDecorationDao.findDepositAdditionalCost(voDepositPriceAndId.getId());
+                voUserDecoration.setVoDepositAdditionalCosts(voDepositAdditionalCosts);
+            }
+            //填入是否退还押金
+            BigDecimal refundDeposit = userDecorationDao.findRefundDeposit(voUserDecoration.getId());
+            if (refundDeposit != null){
+                voUserDecoration.setRefundDeposit(refundDeposit);
+            }
+            //填入是否退还门禁卡(1.归还，0.未归还)
+            //根据装修主键id查询未归还门禁卡数量
+            int count = userDecorationDao.findNoReturnAccessCard(voUserDecoration.getId());
+            if (count >0){
+                //如果未归还门禁卡数量大于0，则填入0.未归还
+                voUserDecoration.setIsReturnAccessCard(0);
+            }else {
+                //如果未null或未归还门禁卡数量等于0，则填入1.归还
+                voUserDecoration.setIsReturnAccessCard(1);
+            }
         }
         return list;
     }

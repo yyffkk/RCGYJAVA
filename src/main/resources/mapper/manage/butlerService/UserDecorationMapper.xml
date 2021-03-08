@@ -4,24 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.UserDecorationDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchUserDecoration" resultType="com.api.vo.butlerService.VoUserDecoration">
-        select ud.id,ud.emergency_contact,ud.tel,ud.construction_unit,ud.decoration_deposit,ud.application_date,ud.clean_cost,ud.service_cost,ud.expected_begin,ud.expected_end,ud.actual_begin,ud.actual_end,
-        ud.refund_deposit,ud.is_return_access_card,ud.status,ud.approve_results,ud.approve_date,ud.is_qualified,ud.remarks2,ur2.name as approve_name,
-        cb.no as buildingNo,cbu.no as unitNo,cbue.room_number as roomNumber,ur.name as resident_name,ur.tel as residentTel,
-        udp.name as construction_name,udp.tel as construction_tel
-        from user_decoration as ud,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,user_decoration_personnel as udp,user_resident as ur2
+        select ud.id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,ud.code,ur1.name as application_name,ud.resident_type as application_type,ur1.tel as application_tel
+        ,a.resident_name,a.resident_tel,ud.emergency_contact,ud.tel,ud.construction_unit,ud.director,ud.director_tel,ud.application_date
+        ,ud.expected_begin,ud.expected_end,ud.actual_begin,ud.actual_end,ud.status,ud.extend_time,ud.extend_reasons,ud.is_qualified
+        from user_decoration as ud,user_resident as ur1,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,
+        (
+        select cbue.id,ur2.name as resident_name,ur2.tel as resident_tel
+        from cpm_building_unit_estate as cbue,cpm_resident_estate as cre,user_resident as ur2
+        where cbue.id = cre.building_unit_estate_id and cre.resident_id = ur2.id and ur2.type = 1 and cbue.id = 1 limit 1
+        ) as a
         <where>
-            ud.building_unit_estate_id = cbue.id
+            ud.resident_id = ur1.id
+            and cbue.id = ud.building_unit_estate_id
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
-            and ud.resident_id = ur.id
-            and ur2.id = ud.approve_id
-            and udp.decoration_id = ud.id
-            and udp.identity = 1
+            and a.id = cbue.id
             <if test="residentName != null and residentName != ''">
-                and ur.name like concat('%',#{residentName},'%')
+                and a.resident_name like concat('%',#{residentName},'%')
             </if>
             <if test="residentTel != null and residentTel != ''">
-                and ur.tel like concat('%',#{residentTel},'%')
+                and a.resident_tel like concat('%',#{residentTel},'%')
             </if>
             <if test="expectedBegin != null">
                 and ud.expected_begin = #{expectedBegin}
@@ -40,12 +42,6 @@
             </if>
             <if test="actualEnd != null">
                 and ud.actual_end = #{actualEnd}
-            </if>
-            <if test="approveResults != null">
-                and ud.approve_results = #{approveResults}
-            </if>
-            <if test="approveName != null and approveName != ''">
-                and ur2.name like concat('%',#{approveName},'%')
             </if>
             <if test="constructionUnit != null and constructionUnit != ''">
                 and ud.construction_unit like concat('%',#{constructionUnit},'%')
@@ -106,19 +102,19 @@
     <select id="decorationTrackRecordList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecord">
         select udtr.*,su.actual_name as track_name
         from user_decoration_track_record as udtr,sys_user as su
-        where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 2
+        where udtr.track_id = su.id and udtr.decoration_id = #{id} and udtr.type = 1
     </select>
 
     <select id="decorationFinishRecordList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecord">
         select udtr.*,su.actual_name as track_name
         from user_decoration_track_record as udtr,sys_user as su
-        where udtr.track_id = su.id and udtr.decoration_id = #{id} and su.role_id = 3
+        where udtr.track_id = su.id and udtr.decoration_id = #{id} and udtr.type = 2
     </select>
 
     <select id="decorationTrackRecordDetailList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoUserDecorationTrackRecordDetail">
-        select id,review,is_qualified
-        from user_decoration_track_record_detail
-        where decoration_track_record_id = #{id}
+        select udtrd.id,udtcc.name as review,udtrd.is_qualified
+        from user_decoration_track_record_detail as udtrd,user_decoration_track_checks_content as udtcc
+        where udtrd.decoration_track_checks_content_id = udtcc.id and udtrd.decoration_track_record_id = #{id}
     </select>
 
     <delete id="delete" parameterType="java.lang.Integer">
@@ -225,4 +221,19 @@
         select url from user_decoration_doc
     </select>
 
+    <select id="findDepositById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoDepositPriceAndId">
+        select id,deposit_price from sys_deposit_management where user_decoration_id = #{id}
+    </select>
+
+    <select id="findDepositAdditionalCost" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoDepositAdditionalCost">
+        select id,name,cost from sys_deposit_management_additional_cost where sys_deposit_management_id = #{id}
+    </select>
+
+    <select id="findRefundDeposit" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select deposit_price from sys_deposit_management where user_decoration_id = #{id}
+    </select>
+
+    <select id="findNoReturnAccessCard" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from user_decoration_access_card where decoration_id = #{id} and id_return = 0
+    </select>
 </mapper>

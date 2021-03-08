@@ -2,6 +2,7 @@ package com.api.vo.butlerService;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 装修管理 Vo list回显
@@ -15,6 +16,18 @@ public class VoUserDecoration {
      * 房屋信息
      */
     private String roomName;
+    /**
+     * 申请人姓名
+     */
+    private String applicationName;
+    /**
+     * 身份
+     */
+    private Integer applicationType;
+    /**
+     * 申请人联系方式
+     */
+    private String applicationTel;
     /**
      * 业主
      */
@@ -42,15 +55,19 @@ public class VoUserDecoration {
     /**
      * 负责人
      */
-    private String constructionName;
+    private String director;
     /**
      * 负责人联系电话
      */
-    private String constructionTel;
+    private String directorTel;
     /**
      * 装修押金
      */
-    private BigDecimal decorationDeposit;
+    private BigDecimal depositPrice;
+    /**
+     * 装修押金附加费用集合
+     */
+    private List<VoDepositAdditionalCost> voDepositAdditionalCosts;
     /**
      * 申请时间
      */
@@ -72,19 +89,11 @@ public class VoUserDecoration {
      */
     private Date actualEnd;
     /**
-     * 装修垃圾清运费
-     */
-    private BigDecimal cleanCost;
-    /**
-     * 公用设施修复费
-     */
-    private BigDecimal serviceCost;
-    /**
      * 退还押金
      */
     private BigDecimal refundDeposit;
     /**
-     * 是否退还门禁卡
+     * 是否退还全部门禁卡
      */
     private Integer isReturnAccessCard;
     /**
@@ -92,70 +101,52 @@ public class VoUserDecoration {
      */
     private Integer status;
     /**
-     * 审批结果
+     * 延长时间
      */
-    private Integer approveResults;
+    private Integer extendTime;
     /**
-     * 审批人
+     * 延长原因
      */
-    private String approveName;
+    private String extendReasons;
     /**
-     * 审批时间
-     */
-    private Date approveDate;
-    /**
-     * 最后一次完工检查情况
+     * 最后一次完工检查是否合格（1.合格，0.不合格）
      */
     private Integer isQualified;
     /**
      * 备注
      */
     private String remarks2;
-    /**
-     * 楼栋编号
-     */
-    private Integer buildingNo;
-    /**
-     * 单元号
-     */
-    private Integer unitNo;
-    /**
-     * 房间号
-     */
-    private String roomNumber;
 
     @Override
     public String toString() {
         return "VoUserDecoration{" +
                 "id=" + id +
                 ", roomName='" + roomName + '\'' +
+                ", applicationName='" + applicationName + '\'' +
+                ", applicationType=" + applicationType +
+                ", applicationTel='" + applicationTel + '\'' +
                 ", residentName='" + residentName + '\'' +
                 ", residentTel='" + residentTel + '\'' +
                 ", emergencyContact='" + emergencyContact + '\'' +
                 ", tel='" + tel + '\'' +
                 ", constructionUnit='" + constructionUnit + '\'' +
                 ", userAccessCardNum=" + userAccessCardNum +
-                ", constructionName='" + constructionName + '\'' +
-                ", constructionTel='" + constructionTel + '\'' +
-                ", decorationDeposit=" + decorationDeposit +
+                ", director='" + director + '\'' +
+                ", directorTel='" + directorTel + '\'' +
+                ", depositPrice=" + depositPrice +
+                ", voDepositAdditionalCosts=" + voDepositAdditionalCosts +
                 ", applicationDate=" + applicationDate +
                 ", expectedBegin=" + expectedBegin +
                 ", expectedEnd=" + expectedEnd +
                 ", actualBegin=" + actualBegin +
                 ", actualEnd=" + actualEnd +
-                ", cleanCost=" + cleanCost +
-                ", serviceCost=" + serviceCost +
                 ", refundDeposit=" + refundDeposit +
                 ", isReturnAccessCard=" + isReturnAccessCard +
                 ", status=" + status +
-                ", approveResults=" + approveResults +
-                ", approveName='" + approveName + '\'' +
-                ", approveDate=" + approveDate +
+                ", extendTime=" + extendTime +
+                ", extendReasons='" + extendReasons + '\'' +
                 ", isQualified=" + isQualified +
                 ", remarks2='" + remarks2 + '\'' +
-                ", buildingNo=" + buildingNo +
-                ", unitNo=" + unitNo +
-                ", roomNumber='" + roomNumber + '\'' +
                 '}';
     }
 
@@ -173,6 +164,30 @@ public class VoUserDecoration {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
+    public Integer getApplicationType() {
+        return applicationType;
+    }
+
+    public void setApplicationType(Integer applicationType) {
+        this.applicationType = applicationType;
+    }
+
+    public String getApplicationTel() {
+        return applicationTel;
+    }
+
+    public void setApplicationTel(String applicationTel) {
+        this.applicationTel = applicationTel;
     }
 
     public String getResidentName() {
@@ -223,28 +238,36 @@ public class VoUserDecoration {
         this.userAccessCardNum = userAccessCardNum;
     }
 
-    public String getConstructionName() {
-        return constructionName;
+    public String getDirector() {
+        return director;
     }
 
-    public void setConstructionName(String constructionName) {
-        this.constructionName = constructionName;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
-    public String getConstructionTel() {
-        return constructionTel;
+    public String getDirectorTel() {
+        return directorTel;
     }
 
-    public void setConstructionTel(String constructionTel) {
-        this.constructionTel = constructionTel;
+    public void setDirectorTel(String directorTel) {
+        this.directorTel = directorTel;
     }
 
-    public BigDecimal getDecorationDeposit() {
-        return decorationDeposit;
+    public BigDecimal getDepositPrice() {
+        return depositPrice;
     }
 
-    public void setDecorationDeposit(BigDecimal decorationDeposit) {
-        this.decorationDeposit = decorationDeposit;
+    public void setDepositPrice(BigDecimal depositPrice) {
+        this.depositPrice = depositPrice;
+    }
+
+    public List<VoDepositAdditionalCost> getVoDepositAdditionalCosts() {
+        return voDepositAdditionalCosts;
+    }
+
+    public void setVoDepositAdditionalCosts(List<VoDepositAdditionalCost> voDepositAdditionalCosts) {
+        this.voDepositAdditionalCosts = voDepositAdditionalCosts;
     }
 
     public Date getApplicationDate() {
@@ -287,22 +310,6 @@ public class VoUserDecoration {
         this.actualEnd = actualEnd;
     }
 
-    public BigDecimal getCleanCost() {
-        return cleanCost;
-    }
-
-    public void setCleanCost(BigDecimal cleanCost) {
-        this.cleanCost = cleanCost;
-    }
-
-    public BigDecimal getServiceCost() {
-        return serviceCost;
-    }
-
-    public void setServiceCost(BigDecimal serviceCost) {
-        this.serviceCost = serviceCost;
-    }
-
     public BigDecimal getRefundDeposit() {
         return refundDeposit;
     }
@@ -327,28 +334,20 @@ public class VoUserDecoration {
         this.status = status;
     }
 
-    public Integer getApproveResults() {
-        return approveResults;
+    public Integer getExtendTime() {
+        return extendTime;
     }
 
-    public void setApproveResults(Integer approveResults) {
-        this.approveResults = approveResults;
+    public void setExtendTime(Integer extendTime) {
+        this.extendTime = extendTime;
     }
 
-    public String getApproveName() {
-        return approveName;
+    public String getExtendReasons() {
+        return extendReasons;
     }
 
-    public void setApproveName(String approveName) {
-        this.approveName = approveName;
-    }
-
-    public Date getApproveDate() {
-        return approveDate;
-    }
-
-    public void setApproveDate(Date approveDate) {
-        this.approveDate = approveDate;
+    public void setExtendReasons(String extendReasons) {
+        this.extendReasons = extendReasons;
     }
 
     public Integer getIsQualified() {
@@ -367,62 +366,36 @@ public class VoUserDecoration {
         this.remarks2 = remarks2;
     }
 
-    public Integer getBuildingNo() {
-        return buildingNo;
-    }
-
-    public void setBuildingNo(Integer buildingNo) {
-        this.buildingNo = buildingNo;
-    }
-
-    public Integer getUnitNo() {
-        return unitNo;
-    }
-
-    public void setUnitNo(Integer unitNo) {
-        this.unitNo = unitNo;
-    }
-
-    public String getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
     public VoUserDecoration() {
     }
 
-    public VoUserDecoration(Integer id, String roomName, String residentName, String residentTel, String emergencyContact, String tel, String constructionUnit, Integer userAccessCardNum, String constructionName, String constructionTel, BigDecimal decorationDeposit, Date applicationDate, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, BigDecimal cleanCost, BigDecimal serviceCost, BigDecimal refundDeposit, Integer isReturnAccessCard, Integer status, Integer approveResults, String approveName, Date approveDate, Integer isQualified, String remarks2, Integer buildingNo, Integer unitNo, String roomNumber) {
+    public VoUserDecoration(Integer id, String roomName, String applicationName, Integer applicationType, String applicationTel, String residentName, String residentTel, String emergencyContact, String tel, String constructionUnit, Integer userAccessCardNum, String director, String directorTel, BigDecimal depositPrice, List<VoDepositAdditionalCost> voDepositAdditionalCosts, Date applicationDate, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, BigDecimal refundDeposit, Integer isReturnAccessCard, Integer status, Integer extendTime, String extendReasons, Integer isQualified, String remarks2) {
         this.id = id;
         this.roomName = roomName;
+        this.applicationName = applicationName;
+        this.applicationType = applicationType;
+        this.applicationTel = applicationTel;
         this.residentName = residentName;
         this.residentTel = residentTel;
         this.emergencyContact = emergencyContact;
         this.tel = tel;
         this.constructionUnit = constructionUnit;
         this.userAccessCardNum = userAccessCardNum;
-        this.constructionName = constructionName;
-        this.constructionTel = constructionTel;
-        this.decorationDeposit = decorationDeposit;
+        this.director = director;
+        this.directorTel = directorTel;
+        this.depositPrice = depositPrice;
+        this.voDepositAdditionalCosts = voDepositAdditionalCosts;
         this.applicationDate = applicationDate;
         this.expectedBegin = expectedBegin;
         this.expectedEnd = expectedEnd;
         this.actualBegin = actualBegin;
         this.actualEnd = actualEnd;
-        this.cleanCost = cleanCost;
-        this.serviceCost = serviceCost;
         this.refundDeposit = refundDeposit;
         this.isReturnAccessCard = isReturnAccessCard;
         this.status = status;
-        this.approveResults = approveResults;
-        this.approveName = approveName;
-        this.approveDate = approveDate;
+        this.extendTime = extendTime;
+        this.extendReasons = extendReasons;
         this.isQualified = isQualified;
         this.remarks2 = remarks2;
-        this.buildingNo = buildingNo;
-        this.unitNo = unitNo;
-        this.roomNumber = roomNumber;
     }
 }

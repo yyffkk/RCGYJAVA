@@ -51,14 +51,6 @@ public class SearchUserDecoration {
      */
     private Date actualEnd;
     /**
-     * 审批结果
-     */
-    private Integer approveResults;
-    /**
-     * 审批人
-     */
-    private String approveName;
-    /**
      * 施工单位
      */
     private String constructionUnit;
@@ -75,7 +67,7 @@ public class SearchUserDecoration {
      */
     private Integer isQualified;
     /**
-     * 装修状态(1.未开始，2.装修中，3.装修结束-未退押金，4.装修结束-已退押金，5.已结束，6.已作废)
+     * 状态(-1.申请中，-2.申请不通过，-3.申请通过，1.未开始（已付押金），2.装修中，3.完工检查申请中，4.完工检查不通过，5.完工检查通过，6.申请退款中，7.装修结束（已退押金），8.已作废)
      */
     private Integer status;
     /**
@@ -121,8 +113,6 @@ public class SearchUserDecoration {
                 ", tel='" + tel + '\'' +
                 ", actualBegin=" + actualBegin +
                 ", actualEnd=" + actualEnd +
-                ", approveResults=" + approveResults +
-                ", approveName='" + approveName + '\'' +
                 ", constructionUnit='" + constructionUnit + '\'' +
                 ", constructionName='" + constructionName + '\'' +
                 ", constructionTel='" + constructionTel + '\'' +
@@ -226,22 +216,6 @@ public class SearchUserDecoration {
         this.actualEnd = actualEnd;
     }
 
-    public Integer getApproveResults() {
-        return approveResults;
-    }
-
-    public void setApproveResults(Integer approveResults) {
-        this.approveResults = approveResults;
-    }
-
-    public String getApproveName() {
-        return approveName;
-    }
-
-    public void setApproveName(String approveName) {
-        this.approveName = approveName;
-    }
-
     public String getConstructionUnit() {
         return constructionUnit;
     }
@@ -341,7 +315,7 @@ public class SearchUserDecoration {
     public SearchUserDecoration() {
     }
 
-    public SearchUserDecoration(Integer pageNum, Integer size, String roomName, String residentName, String residentTel, Date expectedBegin, Date expectedEnd, String emergencyContact, String tel, Date actualBegin, Date actualEnd, Integer approveResults, String approveName, String constructionUnit, String constructionName, String constructionTel, Integer isQualified, Integer status, Integer buildingNo, Integer unitNo, String roomNumber, Integer expectedBeginSort, Integer expectedEndSort, Integer actualBeginSort, Integer actualEndSort) {
+    public SearchUserDecoration(Integer pageNum, Integer size, String roomName, String residentName, String residentTel, Date expectedBegin, Date expectedEnd, String emergencyContact, String tel, Date actualBegin, Date actualEnd, String constructionUnit, String constructionName, String constructionTel, Integer isQualified, Integer status, Integer buildingNo, Integer unitNo, String roomNumber, Integer expectedBeginSort, Integer expectedEndSort, Integer actualBeginSort, Integer actualEndSort) {
         this.pageNum = pageNum;
         this.size = size;
         this.roomName = roomName;
@@ -353,8 +327,6 @@ public class SearchUserDecoration {
         this.tel = tel;
         this.actualBegin = actualBegin;
         this.actualEnd = actualEnd;
-        this.approveResults = approveResults;
-        this.approveName = approveName;
         this.constructionUnit = constructionUnit;
         this.constructionName = constructionName;
         this.constructionTel = constructionTel;

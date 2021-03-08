@@ -39,7 +39,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/list")
-//    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserDecoration searchUserDecoration){
         PageHelper.startPage(searchUserDecoration.getPageNum(),searchUserDecoration.getSize());
         List<VoUserDecoration> voUserDecorationList =userDecorationService.list(searchUserDecoration);
@@ -51,40 +51,40 @@ public class UserDecorationController extends ShiroExceptions {
         return map;
     }
 
-    /**
-     * 生成二维码
-     * @param qrCodeContent 二维码参数
-     * @return map （二维码路径）
-     */
-    @PostMapping("/createQRCode")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
-    public Map<String,Object> insert(@RequestBody QRCodeContent qrCodeContent){
-        Map<String,Object> map = new HashMap<>();
-        try {
-            //二维码内容
-            //https://mobile.baidu.com/item?docid=27624327&source=s1001
-            String text = "http://www.baidu.com?qrCodeContent="+qrCodeContent;
-            //不含Logo，不指定二维码图片名
-            //content:内容  logoPath:LOGO地址   destPath：存放目录  needCompress：是否压缩LOGO
-            //QRCodeUtil.encode(text, null, "e:\\", true);
-            //含Logo，不指定二维码图片名
-            //content:内容  logoPath:LOGO地址   destPath：存放目录  needCompress：是否压缩LOGO
-            //QRCodeUtil.encode(text, "e:\\csdn.jpg", "e:\\", true);
-            //含Logo，指定二维码图片名
-            //content:内容  logoPath:LOGO地址   destPath：存放目录  fileName：二维码文件名  needCompress：是否压缩LOGO
-
-            // 获取项目同级目录，传入static中
-            String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
-
-            QRCodeUtil.encode(text, realPath+"/img/logo/QRCode.png", realPath+"/img/QRCode", "qrcode", true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("imgUrl","二维码生成失败");
-            return map;
-        }
-        map.put("imgUrl","/img/QRCode/qrcode.jpg");
-        return map;
-    }
+//    /**
+//     * 生成二维码
+//     * @param qrCodeContent 二维码参数
+//     * @return map （二维码路径）
+//     */
+//    @PostMapping("/createQRCode")
+//    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+//    public Map<String,Object> insert(@RequestBody QRCodeContent qrCodeContent){
+//        Map<String,Object> map = new HashMap<>();
+//        try {
+//            //二维码内容
+//            //https://mobile.baidu.com/item?docid=27624327&source=s1001
+//            String text = "http://www.baidu.com?qrCodeContent="+qrCodeContent;
+//            //不含Logo，不指定二维码图片名
+//            //content:内容  logoPath:LOGO地址   destPath：存放目录  needCompress：是否压缩LOGO
+//            //QRCodeUtil.encode(text, null, "e:\\", true);
+//            //含Logo，不指定二维码图片名
+//            //content:内容  logoPath:LOGO地址   destPath：存放目录  needCompress：是否压缩LOGO
+//            //QRCodeUtil.encode(text, "e:\\csdn.jpg", "e:\\", true);
+//            //含Logo，指定二维码图片名
+//            //content:内容  logoPath:LOGO地址   destPath：存放目录  fileName：二维码文件名  needCompress：是否压缩LOGO
+//
+//            // 获取项目同级目录，传入static中
+//            String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
+//
+//            QRCodeUtil.encode(text, realPath+"/img/logo/QRCode.png", realPath+"/img/QRCode", "qrcode", true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            map.put("imgUrl","二维码生成失败");
+//            return map;
+//        }
+//        map.put("imgUrl","/img/QRCode/qrcode.jpg");
+//        return map;
+//    }
 
     /**
      * 装修人员情况list
@@ -147,7 +147,7 @@ public class UserDecorationController extends ShiroExceptions {
     }
 
     /**
-     * 查询所有完工检查记录（检查人在sys_user里，sys_role里的主键id是3）
+     * 查询所有完工检查记录（检查人在sys_user里）
      * @param id 装修主键id
      * @param pageNum 当前页数
      * @param size 每页记录数
@@ -172,7 +172,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/insertDecorationPersonnel")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertDecorationPersonnel(@RequestBody UserDecorationPersonnel userDecorationPersonnel){
         return userDecorationService.insertDecorationPersonnel(userDecorationPersonnel);
     }

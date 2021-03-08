@@ -11,7 +11,7 @@ public class VoUserDecorationTrackRecordDetail {
     /**
      * 跟踪检查类型（1.电路，2.水路，3.墙面，4.门窗，5.安防）
      */
-    private Integer review;
+    private String review;
     /**
      * 是否合格（1.合格，0.不合格）
      */
@@ -21,7 +21,7 @@ public class VoUserDecorationTrackRecordDetail {
     public String toString() {
         return "VoUserDecorationTrackRecordDetail{" +
                 "id=" + id +
-                ", review=" + review +
+                ", review='" + review + '\'' +
                 ", isQualified=" + isQualified +
                 '}';
     }
@@ -34,11 +34,11 @@ public class VoUserDecorationTrackRecordDetail {
         this.id = id;
     }
 
-    public Integer getReview() {
+    public String getReview() {
         return review;
     }
 
-    public void setReview(Integer review) {
+    public void setReview(String review) {
         this.review = review;
     }
 
@@ -53,7 +53,7 @@ public class VoUserDecorationTrackRecordDetail {
     public VoUserDecorationTrackRecordDetail() {
     }
 
-    public VoUserDecorationTrackRecordDetail(Integer id, Integer review, Integer isQualified) {
+    public VoUserDecorationTrackRecordDetail(Integer id, String review, Integer isQualified) {
         this.id = id;
         this.review = review;
         this.isQualified = isQualified;

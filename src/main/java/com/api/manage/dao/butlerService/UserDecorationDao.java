@@ -3,6 +3,7 @@ package com.api.manage.dao.butlerService;
 import com.api.model.butlerService.*;
 import com.api.vo.butlerService.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface UserDecorationDao {
@@ -169,4 +170,32 @@ public interface UserDecorationDao {
      * @return doc路径集合
      */
     List<String> findDocUrl();
+
+    /**
+     * 根据装修主键id查询装修押金
+     * @param id 装修主键id
+     * @return 装修押金
+     */
+    VoDepositPriceAndId findDepositById(Integer id);
+
+    /**
+     * 根据押金管理主键id查询装修附加费用
+     * @param id 押金管理主键id
+     * @return 装修附加费用集合
+     */
+    List<VoDepositAdditionalCost> findDepositAdditionalCost(Integer id);
+
+    /**
+     * 根据装修主键id查询退还押金
+     * @param id 装修主键id
+     * @return 退还押金
+     */
+    BigDecimal findRefundDeposit(Integer id);
+
+    /**
+     * 根据装修主键id查询未归还门禁卡数量
+     * @param id 装修主键id
+     * @return 未归还门禁卡数量
+     */
+    int findNoReturnAccessCard(Integer id);
 }
