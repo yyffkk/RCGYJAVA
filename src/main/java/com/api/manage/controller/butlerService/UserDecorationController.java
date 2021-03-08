@@ -179,12 +179,12 @@ public class UserDecorationController extends ShiroExceptions {
 
 
     /**
-     * 批量删除装修人员信息
+     * 批量删除装修人员信息？？
      * @param ids 装修人员主键id数组
      * @return map
      */
     @PostMapping("/deleteDecorationPersonnel")
-//    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> deleteDecorationPersonnel(@RequestBody VoIds ids){
         return userDecorationService.deleteDecorationPersonnel(ids.getIds());
     }
