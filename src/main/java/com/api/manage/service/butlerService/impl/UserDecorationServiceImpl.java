@@ -143,14 +143,6 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     @Override
     public Map<String, Object> insertDecorationPersonnel(UserDecorationPersonnel userDecorationPersonnel) {
         map = new HashMap<>();
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-        //填入创建人
-        userDecorationPersonnel.setCreateId(sysUser.getId());
-        //填入创建时间
-        userDecorationPersonnel.setCreateDate(new Date());
-
         //添加装修人员信息
         int insert = userDecorationPersonnelDao.insertDecorationPersonnel(userDecorationPersonnel);
 
@@ -202,13 +194,6 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     @Override
     public Map<String, Object> updateDecorationPersonnel(UserDecorationPersonnel userDecorationPersonnel) {
         map = new HashMap<>();
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-        //填入修改人
-        userDecorationPersonnel.setModifyId(sysUser.getId());
-        //填入修改时间
-        userDecorationPersonnel.setModifyDate(new Date());
         //修改装修人员信息
         int update = userDecorationPersonnelDao.updateDecorationPersonnel(userDecorationPersonnel);
         if (update>0){

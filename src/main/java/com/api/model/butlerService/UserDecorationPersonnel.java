@@ -23,7 +23,7 @@ public class UserDecorationPersonnel {
      */
     private Integer identity;
     /**
-     * 证件类型
+     * 证件类型（1身份证，2营业执照，3.军人证）
      */
     private Integer cardType;
     /**
@@ -38,22 +38,6 @@ public class UserDecorationPersonnel {
      * 联系地址
      */
     private String address;
-    /**
-     * 创建人（业主，物业，装修公司）
-     */
-    private Integer createId;
-    /**
-     * 创建时间
-     */
-    private Date createDate;
-    /**
-     * 修改人（业主，物业，装修公司）
-     */
-    private Integer modifyId;
-    /**
-     * 修改时间
-     */
-    private Date modifyDate;
 
     @Override
     public String toString() {
@@ -66,10 +50,6 @@ public class UserDecorationPersonnel {
                 ", cardCode='" + cardCode + '\'' +
                 ", tel='" + tel + '\'' +
                 ", address='" + address + '\'' +
-                ", createId=" + createId +
-                ", createDate=" + createDate +
-                ", modifyId=" + modifyId +
-                ", modifyDate=" + modifyDate +
                 '}';
     }
 
@@ -137,42 +117,10 @@ public class UserDecorationPersonnel {
         this.address = address;
     }
 
-    public Integer getCreateId() {
-        return createId;
-    }
-
-    public void setCreateId(Integer createId) {
-        this.createId = createId;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Integer getModifyId() {
-        return modifyId;
-    }
-
-    public void setModifyId(Integer modifyId) {
-        this.modifyId = modifyId;
-    }
-
-    public Date getModifyDate() {
-        return modifyDate;
-    }
-
-    public void setModifyDate(Date modifyDate) {
-        this.modifyDate = modifyDate;
-    }
-
     public UserDecorationPersonnel() {
     }
 
-    public UserDecorationPersonnel(Integer id, Integer decorationId, String name, Integer identity, Integer cardType, String cardCode, String tel, String address, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public UserDecorationPersonnel(Integer id, Integer decorationId, String name, Integer identity, Integer cardType, String cardCode, String tel, String address) {
         this.id = id;
         this.decorationId = decorationId;
         this.name = name;
@@ -181,9 +129,5 @@ public class UserDecorationPersonnel {
         this.cardCode = cardCode;
         this.tel = tel;
         this.address = address;
-        this.createId = createId;
-        this.createDate = createDate;
-        this.modifyId = modifyId;
-        this.modifyDate = modifyDate;
     }
 }

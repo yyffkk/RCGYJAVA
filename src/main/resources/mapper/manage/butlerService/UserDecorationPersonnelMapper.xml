@@ -11,10 +11,7 @@
             card_type,
             card_code,
             tel,
-            address,
-            create_id,
-            create_date,
-            add_way
+            address
         ) values (
             #{decorationId},
             #{name},
@@ -22,10 +19,7 @@
             #{cardType},
             #{cardCode},
             #{tel},
-            #{address},
-            #{createId},
-            #{createDate},
-            #{addWay}
+            #{address}
         )
     </insert>
 
