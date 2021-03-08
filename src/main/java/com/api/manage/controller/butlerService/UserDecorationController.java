@@ -172,7 +172,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/insertDecorationPersonnel")
-//    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertDecorationPersonnel(@RequestBody UserDecorationPersonnel userDecorationPersonnel){
         return userDecorationService.insertDecorationPersonnel(userDecorationPersonnel);
     }
@@ -184,7 +184,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/deleteDecorationPersonnel")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> deleteDecorationPersonnel(@RequestBody VoIds ids){
         return userDecorationService.deleteDecorationPersonnel(ids.getIds());
     }
