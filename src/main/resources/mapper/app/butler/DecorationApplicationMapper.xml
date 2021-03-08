@@ -92,6 +92,7 @@
             status,
             froms,
             pay_type,
+            pay_account,
             <if test="remake != null and remake != ''">
                 remake,
             </if>
@@ -107,6 +108,7 @@
             #{status},
             #{froms},
             #{payType},
+            #{payAccount},
             <if test="remake != null and remake != ''">
                 #{remake},
             </if>

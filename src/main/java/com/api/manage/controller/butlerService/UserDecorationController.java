@@ -328,7 +328,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/insertDecoration")
-//    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertDecoration(@RequestBody UserDecoration userDecoration){
         return userDecorationService.insertDecoration(userDecoration);
     }
@@ -339,7 +339,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/decorationCostDetail")
-    //    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> decorationCostDetail(Integer decorationId){
         //调用app的装修费用详情回显
         return decorationApplicationService.decorationCostDetail(decorationId);
@@ -350,7 +350,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/applicationPay")
-//    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> applicationPay(@RequestBody AppDepositManagement appDepositManagement){
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
@@ -361,12 +361,12 @@ public class UserDecorationController extends ShiroExceptions {
     }
 
     /**
-     * 添加装修人员信息(后台提交)
+     * 添加装修人员信息(第三步，后台提交)
      * @param decorationSubmit 装修公司提交信息
      * @return map
      */
     @PostMapping("/insertDecorationPerson")
-    //    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertDecorationPerson(@RequestBody AppUserDecorationSubmit decorationSubmit){
         return decorationApplicationService.insertDecorationPerson(decorationSubmit);
     }
