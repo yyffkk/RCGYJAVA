@@ -105,9 +105,9 @@ public class UserDecorationController extends ShiroExceptions {
      * @return 装修公司资料
      */
     @GetMapping("/decorationData")
-//    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> decorationData(Integer id){
-        return null;
+        return userDecorationService.decorationData(id);
     }
 
     /**

@@ -16,6 +16,8 @@ public interface UserDecorationService {
 
     List<VoUserDecorationPersonnel> decorationPersonnelList(Integer id);
 
+    Map<String, Object> decorationData(Integer id);
+
     List<VoUserAccessCard> userAccessCardList(Integer id);
 
     List<VoUserDecorationTrackRecord> decorationTrackRecordList(Integer id);
@@ -45,4 +47,5 @@ public interface UserDecorationService {
     Map<String, Object> updateCheckContent(UserDecorationChecksContent trackChecksContent);
 
     Map<String, Object> deleteCheckContent(Integer checkContentId);
+
 }

@@ -6,7 +6,9 @@ import com.api.manage.dao.butlerService.UserDecorationPersonnelDao;
 import com.api.model.butlerService.*;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.UserDecorationService;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerService.*;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -94,6 +96,28 @@ public class UserDecorationServiceImpl implements UserDecorationService {
     @Override
     public List<VoUserDecorationPersonnel> decorationPersonnelList(Integer id) {
         return userDecorationDao.decorationPersonnelList(id);
+    }
+
+    @Override
+    public Map<String, Object> decorationData(Integer id) {
+        map = new HashMap<>();
+        UploadUtil uploadUtil = new UploadUtil();
+        //查询营业执照
+        List<VoResourcesImg> businessLicenseList = uploadUtil.findImgByDate("userDecoration", id, "businessLicense");
+        //查询资质证书
+        List<VoResourcesImg> qualificationCertificateList = uploadUtil.findImgByDate("userDecoration", id, "qualificationCertificate");
+        //查询装修图纸
+        List<VoResourcesImg> decorationDrawingsList = uploadUtil.findImgByDate("userDecoration", id, "decorationDrawings");
+        //查询装修申请表
+        List<VoResourcesImg> decorationApplicationFormList = uploadUtil.findImgByDate("userDecoration", id, "decorationApplicationForm");
+        //查询装修承诺书
+        List<VoResourcesImg> decorationCommitmentList = uploadUtil.findImgByDate("userDecoration", id, "decorationCommitment");
+        map.put("businessLicenseList",businessLicenseList);
+        map.put("qualificationCertificateList",qualificationCertificateList);
+        map.put("decorationDrawingsList",decorationDrawingsList);
+        map.put("decorationApplicationFormList",decorationApplicationFormList);
+        map.put("decorationCommitmentList",decorationCommitmentList);
+        return map;
     }
 
     @Override
@@ -401,4 +425,6 @@ public class UserDecorationServiceImpl implements UserDecorationService {
         }
         return map;
     }
+
+
 }
