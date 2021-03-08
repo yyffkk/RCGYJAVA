@@ -1,6 +1,7 @@
 package com.api.manage.service.butlerService;
 
 import com.api.model.butlerService.SearchUserDecoration;
+import com.api.model.butlerService.UserDecoration;
 import com.api.model.butlerService.UserDecorationPersonnel;
 import com.api.model.butlerService.UserDecorationChecksContent;
 import com.api.vo.butlerService.VoUserAccessCard;
@@ -48,4 +49,5 @@ public interface UserDecorationService {
 
     Map<String, Object> deleteCheckContent(Integer checkContentId);
 
+    Map<String, Object> updateDecoration(UserDecoration userDecoration);
 }

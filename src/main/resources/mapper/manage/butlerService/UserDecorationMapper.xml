@@ -236,4 +236,17 @@
     <select id="findNoReturnAccessCard" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from user_decoration_access_card where decoration_id = #{id} and id_return = 0
     </select>
+
+    <update id="update" parameterType="com.api.model.butlerService.UserDecoration">
+        update user_decoration
+        <set>
+            <if test="emergencyContact != null and emergencyContact != ''">
+                emergency_contact = #{emergencyContact},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

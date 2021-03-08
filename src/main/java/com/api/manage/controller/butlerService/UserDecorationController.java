@@ -263,6 +263,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/findAllChecksContent")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> findAllChecksContent(){
         return userDecorationService.findAllChecksContent();
     }
@@ -273,6 +274,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/insertCheckContent")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertCheckContent(@RequestBody UserDecorationChecksContent trackChecksContent){
         return userDecorationService.insertCheckContent(trackChecksContent);
     }
@@ -283,6 +285,7 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/updateCheckContent")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> updateCheckContent(@RequestBody UserDecorationChecksContent trackChecksContent){
         return userDecorationService.updateCheckContent(trackChecksContent);
     }
@@ -293,8 +296,21 @@ public class UserDecorationController extends ShiroExceptions {
      * @return map
      */
     @GetMapping("/deleteCheckContent")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> deleteCheckContent(Integer checkContentId){
         return userDecorationService.deleteCheckContent(checkContentId);
+    }
+
+
+    /**
+     * 修改装修信息
+     * @param userDecoration 装修model信息
+     * @return map
+     */
+    @PostMapping("/updateDecoration")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    public Map<String,Object> updateDecoration(@RequestBody UserDecoration userDecoration){
+        return userDecorationService.updateDecoration(userDecoration);
     }
 
 

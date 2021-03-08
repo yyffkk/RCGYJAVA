@@ -426,5 +426,19 @@ public class UserDecorationServiceImpl implements UserDecorationService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> updateDecoration(UserDecoration userDecoration) {
+        map = new HashMap<>();
+        int update = userDecorationDao.update(userDecoration);
+        if (update >0){
+            map.put("message","更新成功");
+            map.put("status",true);
+        }else {
+            map.put("message","更新失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
 
 }

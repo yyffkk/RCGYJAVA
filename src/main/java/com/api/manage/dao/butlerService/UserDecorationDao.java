@@ -198,4 +198,11 @@ public interface UserDecorationDao {
      * @return 未归还门禁卡数量
      */
     int findNoReturnAccessCard(Integer id);
+
+    /**
+     * 修改装修信息
+     * @param userDecoration 装修model信息
+     * @return 影响行数
+     */
+    int update(UserDecoration userDecoration);
 }
