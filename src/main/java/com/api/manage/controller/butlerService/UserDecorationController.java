@@ -1,14 +1,20 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.app.service.butler.DecorationApplicationService;
 import com.api.manage.shiro.ShiroExceptions;
+import com.api.model.app.AppDepositManagement;
+import com.api.model.app.AppUserDecorationSubmit;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.*;
 import com.api.manage.service.butlerService.UserDecorationService;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,6 +30,8 @@ import java.util.Map;
 public class UserDecorationController extends ShiroExceptions {
     @Resource
     UserDecorationService userDecorationService;
+    @Resource
+    DecorationApplicationService decorationApplicationService;
 
     /**
      * 查询装修信息（包含条件搜索）
@@ -312,6 +320,57 @@ public class UserDecorationController extends ShiroExceptions {
     public Map<String,Object> updateDecoration(@RequestBody UserDecoration userDecoration){
         return userDecorationService.updateDecoration(userDecoration);
     }
+
+
+    /**
+     * 添加装修信息(第一步)
+     * @param userDecoration 装修model信息
+     * @return map
+     */
+    @PostMapping("/insertDecoration")
+//    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    public Map<String,Object> insertDecoration(@RequestBody UserDecoration userDecoration){
+        return userDecorationService.insertDecoration(userDecoration);
+    }
+
+    /**
+     * 装修费用详情回显(第二步回显信息)
+     * @param decorationId 装修主键id
+     * @return map
+     */
+    @GetMapping("/decorationCostDetail")
+    //    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    public Map<String,Object> decorationCostDetail(Integer decorationId){
+        //调用app的装修费用详情回显
+        return decorationApplicationService.decorationCostDetail(decorationId);
+    }
+
+    /**
+     * 交装修押金,申请付款(第二步)
+     * @return map
+     */
+    @PostMapping("/applicationPay")
+//    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    public Map<String,Object> applicationPay(@RequestBody AppDepositManagement appDepositManagement){
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        //填入创建人
+        appDepositManagement.setCreateId(sysUser.getId());
+        return decorationApplicationService.applicationPay(appDepositManagement);
+    }
+
+    /**
+     * 添加装修人员信息(后台提交)
+     * @param decorationSubmit 装修公司提交信息
+     * @return map
+     */
+    @PostMapping("/insertDecorationPerson")
+    //    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    public Map<String,Object> insertDecorationPerson(@RequestBody AppUserDecorationSubmit decorationSubmit){
+        return decorationApplicationService.insertDecorationPerson(decorationSubmit);
+    }
+
 
 
 

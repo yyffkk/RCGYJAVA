@@ -205,4 +205,11 @@ public interface UserDecorationDao {
      * @return 影响行数
      */
     int update(UserDecoration userDecoration);
+
+    /**
+     * 添加装修信息
+     * @param userDecoration 装修model信息
+     * @return 影响行数
+     */
+    int insert(UserDecoration userDecoration);
 }

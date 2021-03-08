@@ -115,16 +115,21 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
     public Map<String, Object> applicationPay(AppDepositManagement appDepositManagement) {
         map = new HashMap<>();
         try {
-            //调用支付宝接口,返回订单号，当前为UUid自动生成订单号
-            String uuid = UUID.randomUUID().toString().replace("-", "");
+            if (appDepositManagement.getOrderCode() == null){
+                //调用支付宝接口,返回订单号，当前为UUid自动生成订单号
+                String uuid = UUID.randomUUID().toString().replace("-", "");
+
+                //填入订单号
+                appDepositManagement.setOrderCode(uuid);
+            }
 
 
-            //填入订单号
-            appDepositManagement.setOrderCode(uuid);
             //填入缴费时间
             appDepositManagement.setPayDate(new Date());
-            //填入来源：1.app,2.线下
-            appDepositManagement.setFroms(2);
+            if (appDepositManagement.getFroms() == null){
+                //填入来源：1.app,2.线下
+                appDepositManagement.setFroms(2);
+            }
             //填入创建时间
             appDepositManagement.setCreateDate(new Date());
             //填入是否删除，默认为1.非删

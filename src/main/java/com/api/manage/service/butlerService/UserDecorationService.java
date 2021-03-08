@@ -50,4 +50,7 @@ public interface UserDecorationService {
     Map<String, Object> deleteCheckContent(Integer checkContentId);
 
     Map<String, Object> updateDecoration(UserDecoration userDecoration);
+
+    Map<String, Object> insertDecoration(UserDecoration userDecoration);
+
 }

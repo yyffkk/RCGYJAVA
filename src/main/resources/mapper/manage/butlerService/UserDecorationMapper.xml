@@ -249,4 +249,62 @@
         </set>
         where id = #{id}
     </update>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.UserDecoration">
+        insert into
+        <trim prefix="user_decoration(" suffix=")" suffixOverrides=",">
+            building_unit_estate_id,
+            code,
+            resident_id,
+            resident_type,
+            application_date,
+            <if test="constructionUnit != null and constructionUnit != ''">
+                construction_unit,
+            </if>
+            director,
+            director_tel,
+            status,
+            <if test="emergencyContact != null and emergencyContact != ''">
+                emergency_contact,
+            </if>
+            <if test="tel != null and tel != ''">
+                tel,
+            </if>
+            <if test="expectedBegin != null">
+                expected_begin,
+            </if>
+            <if test="expectedEnd != null">
+                expected_end
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{buildingUnitEstateId},
+            #{code},
+            #{residentId},
+            #{residentType},
+            #{applicationDate},
+            <if test="constructionUnit != null and constructionUnit != ''">
+                #{constructionUnit},
+            </if>
+            #{director},
+            #{directorTel},
+            #{status},
+            <if test="emergencyContact != null and emergencyContact != ''">
+                #{emergencyContact},
+            </if>
+            <if test="tel != null and tel != ''">
+                #{tel},
+            </if>
+            <if test="expectedBegin != null">
+                #{expectedBegin},
+            </if>
+            <if test="expectedEnd != null">
+                #{expectedEnd}
+            </if>
+        </trim>
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 </mapper>

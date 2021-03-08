@@ -18,10 +18,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserDecorationServiceImpl implements UserDecorationService {
@@ -435,6 +432,37 @@ public class UserDecorationServiceImpl implements UserDecorationService {
             map.put("status",true);
         }else {
             map.put("message","更新失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> insertDecoration(UserDecoration userDecoration) {
+        map = new HashMap<>();
+        //填入装修单号
+        userDecoration.setCode(UUID.randomUUID().toString().replace("-","").trim());
+        //填入申请时间
+        userDecoration.setApplicationDate(new Date());
+        if (userDecoration.getResidentType() == 1){
+            map.put("message","申请通过");
+            map.put("status",true);
+            //填入状态，-3.申请通过
+            userDecoration.setStatus(-3);
+        }else{
+            map.put("message","申请成功，请等待业主同意");
+            map.put("status",false);
+            //填入状态，-1.申请中
+            userDecoration.setStatus(-1);
+        }
+
+        int insert = userDecorationDao.insert(userDecoration);
+        if (insert >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+            map.put("key",userDecoration.getId());
+        }else {
+            map.put("message","操作失败");
             map.put("status",false);
         }
         return map;
