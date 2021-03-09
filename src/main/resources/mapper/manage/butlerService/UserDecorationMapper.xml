@@ -307,4 +307,10 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+
+    <update id="updateStatus" parameterType="com.api.model.butlerService.UserDecoration">
+        update user_decoration
+        set status = #{status},application_refund_date = #{applicationRefundDate}
+        where id = #{id}
+    </update>
 </mapper>

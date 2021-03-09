@@ -2,6 +2,7 @@ package com.api.manage.service.chargeManagement.impl;
 
 import com.api.manage.dao.butlerService.UserDecorationDao;
 import com.api.manage.dao.chargeManagement.SysDepositManagementDao;
+import com.api.model.butlerService.UserDecoration;
 import com.api.model.chargeManagement.SearchDepositManagement;
 import com.api.model.chargeManagement.SysDepositManagement;
 import com.api.model.chargeManagement.SysDepositManagementOrder;
@@ -186,8 +187,10 @@ public class SysDepositManagementServiceImpl implements SysDepositManagementServ
             sysDepositManagementOrder.setCreateId(sysUser.getId());
             //填入创建时间
             sysDepositManagementOrder.setCreateDate(new Date());
-            //填入退款单号
+            //填入退款单号，支付宝退款单号
             sysDepositManagementOrder.setCode(UUID.randomUUID().toString().replaceAll("-",""));
+            //填入退款时间
+            sysDepositManagementOrder.setRefundDate(new Date());
             //添加押金退款单
             int insert = sysDepositManagementDao.refund(sysDepositManagementOrder);
             if (insert <=0){
@@ -196,7 +199,17 @@ public class SysDepositManagementServiceImpl implements SysDepositManagementServ
             //根据押金管理主键id修改押金管理信息的状态 1.未退 --> 2.已退
             int update = sysDepositManagementDao.updateStatusById(sysDepositManagementOrder.getDepositManagementId());
             if (update <= 0){
-                throw new RuntimeException("状态修改失败");
+                throw new RuntimeException("押金管理状态修改失败");
+            }
+
+            //修改装修状态，修改为 7.装修结束（已退押金）
+            UserDecoration userDecoration = new UserDecoration();
+            userDecoration.setId(sysDepositManagementOrder.getDecorationId());
+            userDecoration.setStatus(7);
+            userDecoration.setApplicationDate(new Date());
+            int update2 = userDecorationDao.updateStatus(userDecoration);
+            if (update2 <= 0){
+                throw new RuntimeException("装修状态修改失败");
             }
         } catch (RuntimeException e) {
             //获取抛出的信息

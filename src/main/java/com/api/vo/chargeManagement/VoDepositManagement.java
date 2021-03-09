@@ -12,6 +12,10 @@ public class VoDepositManagement {
      */
     private Integer id;
     /**
+     * 装修主键id
+     */
+    private Integer decorationId;
+    /**
      * 费用名称
      */
     private String chargesTemplateDetailName;
@@ -72,6 +76,7 @@ public class VoDepositManagement {
     public String toString() {
         return "VoDepositManagement{" +
                 "id=" + id +
+                ", decorationId=" + decorationId +
                 ", chargesTemplateDetailName='" + chargesTemplateDetailName + '\'' +
                 ", orderCode='" + orderCode + '\'' +
                 ", roomName='" + roomName + '\'' +
@@ -95,6 +100,14 @@ public class VoDepositManagement {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDecorationId() {
+        return decorationId;
+    }
+
+    public void setDecorationId(Integer decorationId) {
+        this.decorationId = decorationId;
     }
 
     public String getChargesTemplateDetailName() {
@@ -212,8 +225,9 @@ public class VoDepositManagement {
     public VoDepositManagement() {
     }
 
-    public VoDepositManagement(Integer id, String chargesTemplateDetailName, String orderCode, String roomName, String depositName, String tel, Date payDate, BigDecimal depositPrice, Integer status, Integer froms, Integer payType, Date renovationDateStart, Date renovationDateEnd, String remake, String createName) {
+    public VoDepositManagement(Integer id, Integer decorationId, String chargesTemplateDetailName, String orderCode, String roomName, String depositName, String tel, Date payDate, BigDecimal depositPrice, Integer status, Integer froms, Integer payType, Date renovationDateStart, Date renovationDateEnd, String remake, String createName) {
         this.id = id;
+        this.decorationId = decorationId;
         this.chargesTemplateDetailName = chargesTemplateDetailName;
         this.orderCode = orderCode;
         this.roomName = roomName;

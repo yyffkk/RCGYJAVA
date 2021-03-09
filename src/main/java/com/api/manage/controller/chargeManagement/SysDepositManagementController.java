@@ -47,28 +47,28 @@ public class SysDepositManagementController extends ShiroExceptions {
         return map;
     }
 
-    /**
-     * 添加押金管理信息
-     * @param sysDepositManagement 押金管理信息
-     * @return map
-     */
-    @PostMapping("/insert")
-    @RequiresPermissions(value = {"0403","04"},logical = Logical.AND)
-    public Map<String,Object> insert(@RequestBody SysDepositManagement sysDepositManagement){
-        return sysDepositManagementService.insert(sysDepositManagement);
-    }
+//    /**
+//     * 添加押金管理信息
+//     * @param sysDepositManagement 押金管理信息
+//     * @return map
+//     */
+//    @PostMapping("/insert")
+//    @RequiresPermissions(value = {"0403","04"},logical = Logical.AND)
+//    public Map<String,Object> insert(@RequestBody SysDepositManagement sysDepositManagement){
+//        return sysDepositManagementService.insert(sysDepositManagement);
+//    }
 
 
-    /**
-     * 根据押金主键id查询押金信息
-     * @param id 押金主键id
-     * @return map
-     */
-    @GetMapping("/findById")
-    @RequiresPermissions(value = {"0402","04"},logical = Logical.AND)
-    public VoFindByIdDepositManagement findById(Integer id){
-        return sysDepositManagementService.findById(id);
-    }
+//    /**
+//     * 根据押金主键id查询押金信息
+//     * @param id 押金主键id
+//     * @return map
+//     */
+//    @GetMapping("/findById")
+//    @RequiresPermissions(value = {"0402","04"},logical = Logical.AND)
+//    public VoFindByIdDepositManagement findById(Integer id){
+//        return sysDepositManagementService.findById(id);
+//    }
 
     /**
      * 批量删除押金管理信息
@@ -82,16 +82,16 @@ public class SysDepositManagementController extends ShiroExceptions {
     }
 
 
-    /**
-     * 修改押金管理
-     * @param sysDepositManagement 押金管理信息
-     * @return map
-     */
-    @PostMapping("/update")
-    @RequiresPermissions(value = {"0405","04"},logical = Logical.AND)
-    public Map<String,Object> update(@RequestBody SysDepositManagement sysDepositManagement){
-        return sysDepositManagementService.update(sysDepositManagement);
-    }
+//    /**
+//     * 修改押金管理
+//     * @param sysDepositManagement 押金管理信息
+//     * @return map
+//     */
+//    @PostMapping("/update")
+//    @RequiresPermissions(value = {"0405","04"},logical = Logical.AND)
+//    public Map<String,Object> update(@RequestBody SysDepositManagement sysDepositManagement){
+//        return sysDepositManagementService.update(sysDepositManagement);
+//    }
 
     /**
      * 根据押金管理主键id查询押金退款装修情况（点击退款按钮触发的请求）
@@ -110,7 +110,7 @@ public class SysDepositManagementController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/refund")
-    @RequiresPermissions(value = {"0408","04"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0408","04"},logical = Logical.AND)
     public Map<String,Object> refund(@RequestBody SysDepositManagementOrder sysDepositManagementOrder){
         return sysDepositManagementService.refund(sysDepositManagementOrder);
     }

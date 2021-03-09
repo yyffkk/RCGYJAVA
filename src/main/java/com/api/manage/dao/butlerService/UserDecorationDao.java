@@ -212,4 +212,11 @@ public interface UserDecorationDao {
      * @return 影响行数
      */
     int insert(UserDecoration userDecoration);
+
+    /**
+     * 修改装修状态
+     * @param userDecoration 装修model信息
+     * @return 影响行数
+     */
+    int updateStatus(UserDecoration userDecoration);
 }

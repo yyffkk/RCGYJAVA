@@ -12,6 +12,10 @@ public class SysDepositManagementOrder {
      */
     private Integer id;
     /**
+     * 装修主键id
+     */
+    private Integer decorationId;
+    /**
      * 押金管理主键id
      */
     private Integer depositManagementId;
@@ -52,6 +56,7 @@ public class SysDepositManagementOrder {
     public String toString() {
         return "SysDepositManagementOrder{" +
                 "id=" + id +
+                ", decorationId=" + decorationId +
                 ", depositManagementId=" + depositManagementId +
                 ", code='" + code + '\'' +
                 ", depositPrice=" + depositPrice +
@@ -70,6 +75,14 @@ public class SysDepositManagementOrder {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDecorationId() {
+        return decorationId;
+    }
+
+    public void setDecorationId(Integer decorationId) {
+        this.decorationId = decorationId;
     }
 
     public Integer getDepositManagementId() {
@@ -147,8 +160,9 @@ public class SysDepositManagementOrder {
     public SysDepositManagementOrder() {
     }
 
-    public SysDepositManagementOrder(Integer id, Integer depositManagementId, String code, BigDecimal depositPrice, BigDecimal depositDeduction, Integer refundType, Date refundDate, BigDecimal refundPrice, Integer createId, Date createDate) {
+    public SysDepositManagementOrder(Integer id, Integer decorationId, Integer depositManagementId, String code, BigDecimal depositPrice, BigDecimal depositDeduction, Integer refundType, Date refundDate, BigDecimal refundPrice, Integer createId, Date createDate) {
         this.id = id;
+        this.decorationId = decorationId;
         this.depositManagementId = depositManagementId;
         this.code = code;
         this.depositPrice = depositPrice;
