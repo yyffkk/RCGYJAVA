@@ -192,4 +192,18 @@ public interface DecorationApplicationDao {
      * @return 影响行数
      */
     int startDecoration(AppUserDecoration appUserDecoration);
+
+    /**
+     * 根据装修主键id查询装修状态
+     * @param id 装修主键id
+     * @return 装修状态
+     */
+    int findStatusById(Integer id);
+
+    /**
+     * 添加审核结果信息
+     * @param appUserDecoration 装修信息表 model
+     * @return 影响行数
+     */
+    int applicationReview(AppUserDecoration appUserDecoration);
 }

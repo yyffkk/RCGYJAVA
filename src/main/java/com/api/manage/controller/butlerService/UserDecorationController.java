@@ -3,6 +3,7 @@ package com.api.manage.controller.butlerService;
 import com.api.app.service.butler.DecorationApplicationService;
 import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.app.AppDepositManagement;
+import com.api.model.app.AppUserDecoration;
 import com.api.model.app.AppUserDecorationSubmit;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.*;
@@ -18,6 +19,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -369,6 +371,36 @@ public class UserDecorationController extends ShiroExceptions {
     @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insertDecorationPerson(@RequestBody AppUserDecorationSubmit decorationSubmit){
         return decorationApplicationService.insertDecorationPerson(decorationSubmit);
+    }
+
+    /**
+     * 业主 同意/不同意 租户申请审核(后台操作)
+     * @param decorationId 装修主键id
+     * @param review 审核，1.同意，2.不同意
+     * @return map
+     */
+    @GetMapping("/applicationReview")
+    public Map<String,Object> applicationReview(Integer decorationId,Integer review){
+        AppUserDecoration appUserDecoration = new AppUserDecoration();
+        //填入装修主键id
+        appUserDecoration.setId(decorationId);
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        //填入租户审核人（业主端为-1）
+        appUserDecoration.setApproveId(sysUser.getId());
+        //填入租户审核时间
+        appUserDecoration.setApproveDate(new Date());
+        //填入租户审核结果
+        appUserDecoration.setApproveResults(review);
+        if (review == 1){
+            //业主同意
+            appUserDecoration.setStatus(-3);
+        }else {
+            //业主不同意
+            appUserDecoration.setStatus(-2);
+        }
+        return decorationApplicationService.applicationReview(appUserDecoration);
     }
 
 

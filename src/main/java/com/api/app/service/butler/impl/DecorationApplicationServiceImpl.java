@@ -452,5 +452,27 @@ public class DecorationApplicationServiceImpl implements DecorationApplicationSe
         return map;
     }
 
+    @Override
+    public Map<String, Object> applicationReview(AppUserDecoration appUserDecoration) {
+        map = new HashMap<>();
+        //根据装修主键id查询装修状态
+        int status = decorationApplicationDao.findStatusById(appUserDecoration.getId());
+        if (status != -1){
+            map.put("message","当前装修状态不可进行此操作");
+            map.put("status",false);
+            return map;
+        }
+        //添加审核结果信息
+        int update = decorationApplicationDao.applicationReview(appUserDecoration);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
 
 }

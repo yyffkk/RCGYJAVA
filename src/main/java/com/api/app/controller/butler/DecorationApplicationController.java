@@ -2,10 +2,12 @@ package com.api.app.controller.butler;
 
 import com.api.app.service.butler.DecorationApplicationService;
 import com.api.model.app.*;
+import com.api.model.butlerService.UserDecoration;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -181,5 +183,30 @@ public class DecorationApplicationController {
         return decorationApplicationService.findRefundDetail(decorationId);
     }
 
-
+    /**
+     * 业主 同意/不同意 租户申请审核(app操作)
+     * @param decorationId 装修主键id
+     * @param review 审核，1.同意，2.不同意
+     * @return map
+     */
+    @GetMapping("/applicationReview")
+    public Map<String,Object> applicationReview(Integer decorationId,Integer review){
+        AppUserDecoration appUserDecoration = new AppUserDecoration();
+        //填入装修主键id
+        appUserDecoration.setId(decorationId);
+        //填入租户审核人（业主端为-1）
+        appUserDecoration.setApproveId(-1);
+        //填入租户审核时间
+        appUserDecoration.setApproveDate(new Date());
+        //填入租户审核结果
+        appUserDecoration.setApproveResults(review);
+        if (review == 1){
+            //业主同意
+            appUserDecoration.setStatus(-3);
+        }else {
+            //业主不同意
+            appUserDecoration.setStatus(-2);
+        }
+        return decorationApplicationService.applicationReview(appUserDecoration);
+    }
 }

@@ -34,4 +34,6 @@ public interface DecorationApplicationService {
     Map<String, Object> applicationRefund(Integer decorationId, Integer id);
 
     Map<String, Object> findRefundDetail(Integer decorationId);
+
+    Map<String, Object> applicationReview(AppUserDecoration appUserDecoration);
 }

@@ -231,4 +231,18 @@
         actual_begin = #{actualBegin}
         where id= #{id}
     </update>
+
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from user_decoration where id =#{id}
+    </select>
+
+    <update id="applicationReview" parameterType="com.api.model.app.AppUserDecoration">
+        update user_decoration
+        set status = #{status},
+        approve_results = #{approveResults},
+        approve_id = #{approveId},
+        approve_date = #{approveDate}
+        where id =#{id}
+    </update>
+
 </mapper>
