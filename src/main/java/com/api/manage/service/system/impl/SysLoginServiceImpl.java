@@ -1,8 +1,10 @@
 package com.api.manage.service.system.impl;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.api.manage.dao.system.SysLoginDao;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.system.SysLoginService;
+import com.api.util.SmsSendUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -191,7 +193,14 @@ public class SysLoginServiceImpl implements SysLoginService {
         }
 
         // 发送短信工具类
-//        SmsSendUtil.send(CAPTCHA, MOBILE);
+        try {
+            SmsSendUtil.sendSms(CAPTCHA, MOBILE);
+        } catch (ClientException e) {
+//            e.printStackTrace();
+            map.put("message","验证码发送失败");
+            map.put("status",false);
+            return map;
+        }
         map.put("code",CAPTCHA);
         map.put("message","验证码发送成功");
         map.put("status",true);

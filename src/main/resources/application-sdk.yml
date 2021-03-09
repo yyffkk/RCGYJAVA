@@ -4,3 +4,14 @@ jg:
   appKey: 6a2c6507e3e8b3187ac1c9f9
   #极光主密钥
   masterSecret: fdc1a6df819f7da8096e71ad
+
+
+aliyun:
+  sms:
+    #产品名称:云通信短信API产品,开发者无需替换
+    product: "Dysmsapi"
+    #产品域名,开发者无需替换
+    domain: "dysmsapi.aliyuncs.com"
+    #此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
+    accessKeyId: "LTAI4G6LU5rUvAxwhqR3wudp"
+    accessKeySecret: "GxDBSA9BmfPRHKZcVl1nGoDUdkYmCx"

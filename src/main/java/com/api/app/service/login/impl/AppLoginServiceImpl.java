@@ -1,5 +1,6 @@
 package com.api.app.service.login.impl;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.service.login.AppLoginService;
 import com.api.manage.dao.basicArchives.UserResidentDao;
@@ -9,6 +10,7 @@ import com.api.model.app.UserRegister;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.util.IdWorker;
+import com.api.util.SmsSendUtil;
 import com.api.vo.app.UserLoginTokenVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,7 +79,15 @@ public class AppLoginServiceImpl implements AppLoginService {
         }
 
         // 发送短信工具类
-//        SmsSendUtil.send(CAPTCHA, MOBILE);
+        try {
+            SmsSendUtil.sendSms(CAPTCHA, MOBILE);
+        } catch (ClientException e) {
+//            e.printStackTrace();
+            map.put("message","验证码发送失败");
+            map.put("status",false);
+            return map;
+        }
+
         map.put("code",CAPTCHA);
         map.put("message","验证码发送成功");
         map.put("status",true);

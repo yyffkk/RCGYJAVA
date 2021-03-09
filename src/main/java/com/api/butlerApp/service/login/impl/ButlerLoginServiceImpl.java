@@ -1,11 +1,13 @@
 package com.api.butlerApp.service.login.impl;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.api.butlerApp.dao.login.ButlerLoginDao;
 import com.api.butlerApp.service.login.ButlerLoginService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerLoginToken;
 import com.api.model.butlerApp.ButlerUserCode;
 import com.api.util.IdWorker;
+import com.api.util.SmsSendUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -70,7 +72,14 @@ public class ButlerLoginServiceImpl implements ButlerLoginService {
         }
 
         // 发送短信工具类
-//        SmsSendUtil.send(CAPTCHA, MOBILE);
+        try {
+            SmsSendUtil.sendSms(CAPTCHA, MOBILE);
+        } catch (ClientException e) {
+//            e.printStackTrace();
+            map.put("message","验证码发送失败");
+            map.put("status",false);
+            return map;
+        }
         map.put("code",CAPTCHA);
         map.put("message","验证码发送成功");
         map.put("status",true);
