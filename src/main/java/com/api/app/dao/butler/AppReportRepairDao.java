@@ -80,4 +80,11 @@ public interface AppReportRepairDao {
      * @return 影响行数
      */
     int evaluate(AppRepairEvaluate appRepairEvaluate);
+
+    /**
+     * 根据报事报修主键id查询报修人
+     * @param repairId 报事报修主键id
+     * @return 报修人
+     */
+    int findRepairmanByRepairId(Integer repairId);
 }

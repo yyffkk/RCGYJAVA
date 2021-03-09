@@ -60,4 +60,7 @@
         </set>
         where id = (select dispatch_list_id from sys_report_repair where id = #{repairId} and repairman = #{id})
     </update>
+    <select id="findRepairmanByRepairId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select repairman from sys_report_repair where id = #{repairId}
+    </select>
 </mapper>

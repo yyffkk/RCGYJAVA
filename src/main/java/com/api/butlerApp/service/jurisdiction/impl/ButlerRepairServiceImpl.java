@@ -1,12 +1,14 @@
 package com.api.butlerApp.service.jurisdiction.impl;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
+import com.api.butlerApp.dao.message.ButlerAppMessageDao;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.*;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.SysDispatchListDetail;
 import com.api.model.butlerService.UpdateDispatchStatus;
+import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.vo.app.IdAndName;
 import com.api.vo.butlerApp.*;
@@ -22,6 +24,8 @@ import java.util.*;
 public class ButlerRepairServiceImpl implements ButlerRepairService {
     @Resource
     ButlerRepairDao butlerRepairDao;
+    @Resource
+    ButlerAppMessageDao butlerAppMessageDao;
     private static Map<String,Object> map = null;
 
     @Override
@@ -231,6 +235,21 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
             if (insert2 <= 0){
                 throw new RuntimeException("添加处理进程记录失败");
             }
+
+            //根据派工单主键id 查询报事报修主键id
+            int repairId = butlerRepairDao.findRepairIdByDispatchListId(sysDispatchListDetail.getDispatchListId());
+            ButlerAppSysMessage butlerAppSysMessage = new ButlerAppSysMessage();
+            butlerAppSysMessage.setType(1);
+            butlerAppSysMessage.setRelationId(repairId);
+            butlerAppSysMessage.setReceiverAccount(sysDispatchListDetail.getOperator());
+            butlerAppSysMessage.setSendStatus(1);
+            butlerAppSysMessage.setSendDate(new Date());
+            //添加系统消息
+            int insert3 = butlerAppMessageDao.insertSysMessage(butlerAppSysMessage);
+            if (insert3 <= 0){
+                throw new RuntimeException("添加系统消息失败");
+            }
+            JiguangUtil.push(String.valueOf(sysDispatchListDetail.getOperator()), "你有一条新的报事报修，请立即查看");
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

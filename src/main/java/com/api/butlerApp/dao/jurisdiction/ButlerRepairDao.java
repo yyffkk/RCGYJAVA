@@ -226,4 +226,11 @@ public interface ButlerRepairDao {
      * @return 影响行数
      */
     int updateStatusAndDate(ButlerUpdateStatusAndDate butlerUpdateStatusAndDate);
+
+    /**
+     * 根据派工单主键id 查询报事报修主键id
+     * @param dispatchListId 派工单主键id
+     * @return 报事报修主键id
+     */
+    int findRepairIdByDispatchListId(Integer dispatchListId);
 }

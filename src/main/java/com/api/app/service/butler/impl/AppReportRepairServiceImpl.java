@@ -1,15 +1,19 @@
 package com.api.app.service.butler.impl;
 
+import cn.jpush.api.push.PushResult;
 import com.api.app.dao.butler.AppReportRepairDao;
 import com.api.app.service.butler.AppReportRepairService;
+import com.api.butlerApp.dao.message.ButlerAppMessageDao;
 import com.api.manage.dao.butlerService.SysDispatchListDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
 import com.api.manage.dao.butlerService.SysReportRepairDao;
 import com.api.model.app.AppRepairEvaluate;
 import com.api.model.app.UserIdAndRepairId;
+import com.api.model.butlerApp.ButlerAppCommentMessage;
 import com.api.model.butlerService.DispatchList;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.ReportRepair;
+import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppDispatchListVo;
 import com.api.vo.app.AppMaintenanceResultVo;
@@ -33,6 +37,8 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
     SysReportRepairDao sysReportRepairDao;
     @Resource
     SysProcessRecordDao sysProcessRecordDao;
+    @Resource
+    ButlerAppMessageDao butlerAppMessageDao;
     private static Map<String,Object> map = null;
 
     @Override
@@ -313,17 +319,41 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
     @Override
     public Map<String, Object> evaluate(AppRepairEvaluate appRepairEvaluate) {
         map = new HashMap<>();
-        //填入评价时间
-        appRepairEvaluate.setEvaluationDate(new Date());
-        //用户评价
-        int update = appReportRepairDao.evaluate(appRepairEvaluate);
-        if (update > 0){
-            map.put("message","评价成功");
-            map.put("status",true);
-        }else {
-            map.put("message","评价失败");
+        try {
+            //填入评价时间
+            appRepairEvaluate.setEvaluationDate(new Date());
+            //用户评价
+            int update = appReportRepairDao.evaluate(appRepairEvaluate);
+            if (update <= 0){
+                throw new RuntimeException("评价失败");
+            }
+            //根据报事报修主键id查询报修人
+            int repairman = appReportRepairDao.findRepairmanByRepairId(appRepairEvaluate.getRepairId());
+            ButlerAppCommentMessage butlerAppCommentMessage = new ButlerAppCommentMessage();
+            butlerAppCommentMessage.setType(1);
+            butlerAppCommentMessage.setRelationId(appRepairEvaluate.getRepairId());
+            butlerAppCommentMessage.setReceiverAccount(repairman);
+            butlerAppCommentMessage.setSendStatus(1);
+            butlerAppCommentMessage.setSendDate(new Date());
+            //添加系统消息信息
+            int insert = butlerAppMessageDao.insert(butlerAppCommentMessage);
+            if (insert <= 0){
+                throw new RuntimeException("消息添加失败");
+            }
+            JiguangUtil.push(String.valueOf(repairman), "你有一条新的评论回复，请立即查看");
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","评价成功");
+        map.put("status",true);
         return map;
     }
 }

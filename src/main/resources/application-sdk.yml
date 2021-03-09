@@ -4,6 +4,10 @@ jg:
   appKey: 6a2c6507e3e8b3187ac1c9f9
   #极光主密钥
   masterSecret: fdc1a6df819f7da8096e71ad
+  #管家app密钥
+  butlerAppKey: 99067fe33fa04aad88c3acac
+  #管家app主密钥
+  butlerMasterSecret: 1ff54194fa6d5d6e09eb7ec0
 
 
 aliyun:

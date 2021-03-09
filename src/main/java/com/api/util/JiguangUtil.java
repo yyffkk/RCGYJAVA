@@ -36,20 +36,36 @@ public class JiguangUtil {
         this.appKey = appKey;
     }
 
-    private static final String ALERT = "推送信息";
-    /**
-     * 极光推送
-     */
-    public void jiguangPush(){
-        String alias = "123456";//声明别名
-        log.info("对别名" + alias + "的用户推送信息");
-        PushResult result = push(String.valueOf(alias),ALERT);
-        if(result != null && result.isResultOK()){
-            log.info("针对别名" + alias + "的信息推送成功！");
-        }else{
-            log.info("针对别名" + alias + "的信息推送失败！");
-        }
+    private static String butlerMasterSecret;
+    @Value("${jg.butlerMasterSecret}")
+    public void setButlerMasterSecret(String butlerMasterSecret) {
+        this.butlerMasterSecret = butlerMasterSecret;
     }
+
+
+
+    private static String butlerAppKey;
+    @Value("${jg.butlerAppKey}")
+    public void setButlerAppKey(String butlerAppKey) {
+        this.butlerAppKey = butlerAppKey;
+    }
+
+
+
+//    private static final String ALERT = "推送信息";
+//    /**
+//     * 极光推送
+//     */
+//    public void jiguangPush(){
+//        String alias = "123456";//声明别名
+//        log.info("对别名" + alias + "的用户推送信息");
+//        PushResult result = push(String.valueOf(alias),ALERT);
+//        if(result != null && result.isResultOK()){
+//            log.info("针对别名" + alias + "的信息推送成功！");
+//        }else{
+//            log.info("针对别名" + alias + "的信息推送失败！");
+//        }
+//    }
 
     /**
      * 生成极光推送对象PushPayload（采用java SDK）
@@ -78,7 +94,7 @@ public class JiguangUtil {
                 .build();
     }
     /**
-     * 极光推送方法(采用java SDK)
+     * app 极光推送方法(采用java SDK)
      * @param alias 别名
      * @param alert 消息
      * @return PushResult
@@ -86,6 +102,31 @@ public class JiguangUtil {
     public static PushResult push(String alias,String alert){
         ClientConfig clientConfig = ClientConfig.getInstance();
         JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, clientConfig);
+        PushPayload payload = buildPushObject_android_ios_alias_alert(alias,alert);
+        try {
+            return jpushClient.sendPush(payload);
+        } catch (APIConnectionException e) {
+            log.error("Connection error. Should retry later. ", e);
+            return null;
+        } catch (APIRequestException e) {
+            log.error("Error response from JPush server. Should review and fix it. ", e);
+            log.info("HTTP Status: " + e.getStatus());
+            log.info("Error Code: " + e.getErrorCode());
+            log.info("Error Message: " + e.getErrorMessage());
+            log.info("Msg ID: " + e.getMsgId());
+            return null;
+        }
+    }
+
+    /**
+     * 管家app 极光推送方法(采用java SDK)
+     * @param alias 别名
+     * @param alert 消息
+     * @return PushResult
+     */
+    public static PushResult butlerPush(String alias,String alert){
+        ClientConfig clientConfig = ClientConfig.getInstance();
+        JPushClient jpushClient = new JPushClient(butlerMasterSecret, butlerAppKey, null, clientConfig);
         PushPayload payload = buildPushObject_android_ios_alias_alert(alias,alert);
         try {
             return jpushClient.sendPush(payload);

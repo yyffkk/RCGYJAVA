@@ -330,4 +330,8 @@
         end_date = #{updateDate}
         where id =#{dispatchListId}
     </update>
+
+    <select id="findRepairIdByDispatchListId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from sys_report_repair where dispatch_list_id = #{dispatchListId}
+    </select>
 </mapper>

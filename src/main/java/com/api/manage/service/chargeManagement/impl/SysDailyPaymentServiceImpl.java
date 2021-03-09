@@ -104,7 +104,7 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             sysSending.setMessageId(sysMessage.getId());
             //填入接收人id
             sysSending.setReceiverAccount(dailyPaymentPush.getReceiverAccountId());
-            //填入发送状态（0.未发或不成功1.发送成功（未读），3.已读）[初始为0，用户打开app为1，查看为3]
+            //填入发送状态（0.未发或不成功1.发送成功（未读），3.已读）[初始为1，查看为3]
             sysSending.setSendStatus(1);
             //填入发送日期
             sysSending.setSendDate(new Date());
