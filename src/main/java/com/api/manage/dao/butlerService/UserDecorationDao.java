@@ -219,4 +219,11 @@ public interface UserDecorationDao {
      * @return 影响行数
      */
     int updateStatus(UserDecoration userDecoration);
+
+    /**
+     * 根据装修主键id查询装修状态
+     * @param decorationId 装修主键id
+     * @return 装修状态
+     */
+    int findStatusById(Integer decorationId);
 }

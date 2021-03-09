@@ -178,6 +178,13 @@ public class SysDepositManagementServiceImpl implements SysDepositManagementServ
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
+            //根据装修主键id查询装修状态
+            int status = userDecorationDao.findStatusById(sysDepositManagementOrder.getDecorationId());
+            //如果装修状态不为 6.申请退款 则无法退款
+            if (status != 6){
+                throw new RuntimeException("当前装修状态不可退款");
+            }
+
             //根据押金管理主键id查询该押金管理是否已有退款信息
             int count = sysDepositManagementDao.countOrderByDMI(sysDepositManagementOrder.getDepositManagementId());
             if (count >0 ){

@@ -313,4 +313,8 @@
         set status = #{status},application_refund_date = #{applicationRefundDate}
         where id = #{id}
     </update>
+
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from user_decoration where id = #{decorationId}
+    </select>
 </mapper>

@@ -110,7 +110,7 @@ public class SysDepositManagementController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/refund")
-//    @RequiresPermissions(value = {"0408","04"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0408","04"},logical = Logical.AND)
     public Map<String,Object> refund(@RequestBody SysDepositManagementOrder sysDepositManagementOrder){
         return sysDepositManagementService.refund(sysDepositManagementOrder);
     }
