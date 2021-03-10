@@ -30,6 +30,9 @@ public class AppAnnouncementServiceImpl implements AppAnnouncementService {
         }else if (type == 3){
             //因为业主表 3.租户 社区管理表 2.租户
             type = 2;
+        }else {
+            //没登录 查 3.全部
+            type = 3;
         }
         TypeAndNowDate typeAndNowDate = new TypeAndNowDate();
         typeAndNowDate.setType(type);
@@ -55,6 +58,9 @@ public class AppAnnouncementServiceImpl implements AppAnnouncementService {
         }else if (type == 3){
             //因为业主表 3.租户 社区管理表 2.租户
             type = 2;
+        }else {
+            //没登录 查 3.全部
+            type = 3;
         }
         TypeAndAnnouncementId typeAndAnnouncementId = new TypeAndAnnouncementId();
         typeAndAnnouncementId.setType(type);
