@@ -249,7 +249,7 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
             if (insert3 <= 0){
                 throw new RuntimeException("添加系统消息失败");
             }
-            JiguangUtil.push(String.valueOf(sysDispatchListDetail.getOperator()), "你有一条新的报事报修，请立即查看");
+            JiguangUtil.butlerPush(String.valueOf(sysDispatchListDetail.getOperator()), "你有一条新的报事报修，请立即查看");
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

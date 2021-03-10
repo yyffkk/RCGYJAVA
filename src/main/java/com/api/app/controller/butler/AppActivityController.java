@@ -19,7 +19,7 @@ import java.util.Map;
  * app社区活动
  */
 @RestController
-@RequestMapping("app/user/activity")
+@RequestMapping("app")
 public class AppActivityController {
     @Resource
     AppActivityService appActivityService;
@@ -31,7 +31,7 @@ public class AppActivityController {
      * @param id 用户id
      * @return map
      */
-    @GetMapping("/list")
+    @GetMapping("/activity/list")
     public Map<String,Object> list(int pageNum,int size,Integer id){
         PageHelper.startPage(pageNum,size);
         List<AppActivityVo> activityVoList =appActivityService.list(id);
@@ -49,7 +49,7 @@ public class AppActivityController {
      * @param activityId 社区活动主键id
      * @return 社区活动详情
      */
-    @GetMapping("/findById")
+    @GetMapping("/activity/findById")
     public Map<String,Object> findById(Integer activityId){
         return appActivityService.findById(activityId);
     }
@@ -61,7 +61,7 @@ public class AppActivityController {
      * @param activityId 活动id
      * @return map
      */
-    @GetMapping("/signUp")
+    @GetMapping("/user/activity/signUp")
     public Map<String,Object> signUp(Integer id,Integer activityId){
         return appActivityService.signUp(id,activityId);
     }
@@ -73,7 +73,7 @@ public class AppActivityController {
      * @param activityId 活动id
      * @return map
      */
-    @GetMapping("/participantsList")
+    @GetMapping("/activity/participantsList")
     public Map<String,Object> participantsList(int pageNum,int size,Integer activityId){
         PageHelper.startPage(pageNum,size);
         List<AppActivityRegistrationVo> registrationVoList =appActivityService.participantsList(activityId);

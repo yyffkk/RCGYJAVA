@@ -340,7 +340,7 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
             if (insert <= 0){
                 throw new RuntimeException("消息添加失败");
             }
-            JiguangUtil.push(String.valueOf(repairman), "你有一条新的评论回复，请立即查看");
+            JiguangUtil.butlerPush(String.valueOf(repairman), "你有一条新的评论回复，请立即查看");
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

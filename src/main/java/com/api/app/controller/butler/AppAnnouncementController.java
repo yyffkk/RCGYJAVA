@@ -18,7 +18,7 @@ import java.util.Map;
  * app社区公告
  */
 @RestController
-@RequestMapping("app/user/announcement")
+@RequestMapping("app/announcement")
 public class AppAnnouncementController {
     @Resource
     AppAnnouncementService appAnnouncementService;
