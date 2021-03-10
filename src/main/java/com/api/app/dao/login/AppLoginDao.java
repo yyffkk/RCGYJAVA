@@ -4,6 +4,7 @@ import com.api.model.app.UserCode;
 import com.api.model.app.UserLoginToken;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
+import com.api.model.my.MyHouse;
 import com.api.vo.app.UserLoginTokenVo;
 
 public interface AppLoginDao {
@@ -51,10 +52,10 @@ public interface AppLoginDao {
 
     /**
      * 添加住户房产审核信息
-     * @param residentIdAndEstateId 房产id 和 业主id
+     * @param myHouse 房产认证model
      * @return 影响行数
      */
-    int insertResidentEstateExamine(ResidentIdAndEstateId residentIdAndEstateId);
+    int insertResidentEstateExamine(MyHouse myHouse);
 
     /**
      * 根据token Id查询登录信息 (user_login_token)

@@ -43,14 +43,37 @@
         )
     </insert>
 
-    <insert id="insertResidentEstateExamine" parameterType="com.api.model.basicArchives.ResidentIdAndEstateId">
-        insert into cpm_resident_estate_examine(
+    <insert id="insertResidentEstateExamine" parameterType="com.api.model.my.MyHouse">
+        insert into
+        <trim prefix="cpm_resident_estate_examine(" suffix=")" suffixOverrides=",">
             building_unit_estate_id,
-            resident_id
-        )values (
+            resident_id,
+            type,
+            status,
+            <if test="effectiveTimeStart != null">
+                effective_time_start,
+            </if>
+            <if test="effectiveTimeEnd != null">
+                effective_time_end,
+            </if>
+            is_delete,
+            create_date
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             #{estateId},
-            #{residentId}
-        )
+            #{residentId},
+            #{type},
+            #{status},
+            <if test="effectiveTimeStart != null">
+                #{effectiveTimeStart},
+            </if>
+            <if test="effectiveTimeEnd != null">
+                #{effectiveTimeEnd},
+            </if>
+            #{isDelete},
+            #{createDate}
+        </trim>
     </insert>
 
     <select id="findULTByTokenId" parameterType="java.lang.Long" resultType="com.api.vo.app.UserLoginTokenVo">

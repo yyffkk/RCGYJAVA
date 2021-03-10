@@ -9,6 +9,7 @@ import com.api.model.app.UserLoginToken;
 import com.api.model.app.UserRegister;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
+import com.api.model.my.MyHouse;
 import com.api.util.IdWorker;
 import com.api.util.SmsSendUtil;
 import com.api.vo.app.UserLoginTokenVo;
@@ -198,8 +199,8 @@ public class AppLoginServiceImpl implements AppLoginService {
             UserResident userResident = new UserResident();
             //填入住户名称
             userResident.setName(userRegister.getName());
-            //填入住户类型（1业主，2亲属，3租客）
-            userResident.setType(userRegister.getType());
+            //填入住户类型，未审核为4.游客
+            userResident.setType(4);
             //填入联系电话
             userResident.setTel(userRegister.getTel());
             //填入证件类型（1身份证，2营业执照，3.军人证）
@@ -219,13 +220,21 @@ public class AppLoginServiceImpl implements AppLoginService {
             }
 
             //添加房产审核信息
-            ResidentIdAndEstateId residentIdAndEstateId = new ResidentIdAndEstateId();
+            MyHouse myHouse = new MyHouse();
             //添加房产id
-            residentIdAndEstateId.setEstateId(userRegister.getEstateId());
+            myHouse.setEstateId(userRegister.getEstateId());
             //添加住户id
-            residentIdAndEstateId.setResidentId(userResident.getId());
+            myHouse.setResidentId(userResident.getId());
+            //添加住户类型（1 审核业主，2审核亲属，3审核租客）
+            myHouse.setType(userRegister.getType());
+            //添加审核状态（1.未审核，3.审核失败，4.审核成功）
+            myHouse.setStatus(1);
+            //填入是否删除，1.非删 0.删除 默认为1.非删
+            myHouse.setIsDelete(1);
+            //填入创建时间
+            myHouse.setCreateDate(new Date());
             //添加住户房产审核信息
-            int insert2 = appLoginDao.insertResidentEstateExamine(residentIdAndEstateId);
+            int insert2 = appLoginDao.insertResidentEstateExamine(myHouse);
             if (insert2 <= 0){
                 throw new RuntimeException("添加住户房产审核信息");
             }
