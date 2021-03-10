@@ -22,4 +22,8 @@
     <select id="countNotReviewed" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from cpm_resident_estate_examine where resident_id = #{residentId} and status = 1
     </select>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update cpm_resident_estate_examine set is_delete = 0 where id = #{id}
+    </update>
 </mapper>

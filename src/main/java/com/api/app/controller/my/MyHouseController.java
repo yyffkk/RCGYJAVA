@@ -5,6 +5,7 @@ import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.my.MyHouse;
 import com.api.vo.app.AppAdviceVo;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.my.MyHouseVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -60,6 +61,16 @@ public class MyHouseController {
         //填入用户id
         myHouse.setResidentId(id);
         return myHouseService.authentication(myHouse,type);
+    }
+
+    /**
+     * 假删除审核信息
+     * @param voIds 审核主键id数组
+     * @return map
+     */
+    @PostMapping("/falseDelete")
+    public Map<String,Object> falseDelete(@RequestBody VoIds voIds){
+        return myHouseService.falseDelete(voIds.getIds());
     }
 
 }

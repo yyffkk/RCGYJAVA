@@ -12,4 +12,6 @@ public interface MyHouseService {
     List<MyHouseVo> list(Integer id);
 
     Map<String, Object> authentication(MyHouse myHouse, Integer type);
+
+    Map<String, Object> falseDelete(int[] ids);
 }

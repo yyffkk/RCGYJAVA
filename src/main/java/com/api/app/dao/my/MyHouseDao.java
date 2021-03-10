@@ -26,4 +26,11 @@ public interface MyHouseDao {
      * @return 未审核记录数量
      */
     int countNotReviewed(Integer residentId);
+
+    /**
+     * 假删除审核信息
+     * @param id 审核主键id
+     * @return 影响行数
+     */
+    int falseDelete(int id);
 }
