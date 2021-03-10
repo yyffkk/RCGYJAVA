@@ -48,8 +48,17 @@ public class LoginDetectionFilter implements Filter {
 
         //如果tokenId为null，则返回失败json
         if (tokenId == null || "".equals(tokenId) || tokenId.isEmpty()) {
-            this.respFail(response);
-            return;
+//            this.respFail(response);
+//            return;
+            //如果token为''，则表示 没登录通行状态。
+            //创建一个重新包装的Request请求
+            ParameterRequestWrapper requestWrapper = new ParameterRequestWrapper(req);
+            UserResident userResident = new UserResident();
+            userResident.setId(0);
+            userResident.setType(0);
+            //往Request请求中添加新的对象信息
+            requestWrapper.addObject(userResident);
+            chain.doFilter(requestWrapper, response);
         }
 
         //根据token Id查询登录信息 (user_login_token)
