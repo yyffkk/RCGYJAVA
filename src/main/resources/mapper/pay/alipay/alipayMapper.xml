@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.alipay.dao.AlipayDao">
+    <insert id="createAlipayMentOrder" parameterType="com.api.model.alipay.AliPaymentOrder">
+        insert into alipay_order(
+            club_order_id,
+            out_trade_no,
+            total_amount,
+            receipt_amount,
+            invoice_amount,
+            buyer_pay_amount,
+            refund_fee
+        ) values (
+            #{clubOrderId},
+            #{outTradeNo},
+            #{totalAmount},
+            #{receiptAmount},
+            #{invoiceAmount},
+            #{buyerPayAmount},
+            #{refundFee}
+        )
+    </insert>
+
+    <select id="selectByOutTradeNo" parameterType="java.lang.Integer" resultType="com.api.model.alipay.AliPaymentOrder">
+        select * from alipay_order where out_trade_no = #{outTradeNo}
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="com.api.model.alipay.AliPaymentOrder">
+        update alipay_order
+        <set>
+            notity_time = #{notityTime},
+            gmt_create = #{gmtCreate},
+            gmt_payment = #{gmtPayment},
+            gmt_refund = #{gmtRefund},
+            gmt_close = #{gmtClose},
+            trade_no = #{tradeNo},
+            out_biz_no = #{outBizNo},
+            buyer_logon_id = #{buyerLogonId},
+            seller_id = #{sellerId},
+            seller_email = #{sellerEmail},
+            total_amount = #{totalAmount},
+            receipt_amount = #{receiptAmount},
+            invoice_amount = #{invoiceAmount},
+            buyer_pay_amount = #{buyerPayAmount}
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
