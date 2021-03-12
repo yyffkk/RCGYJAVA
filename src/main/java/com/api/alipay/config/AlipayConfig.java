@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class AlipayConfig {
-    // 1.商户appid（可以不传）
+    // 1.商户appid（可以传随意固定值）
     public static String APPID = "2017...";
 
     //2.私钥 pkcs8格式的

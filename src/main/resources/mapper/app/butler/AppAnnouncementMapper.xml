@@ -10,6 +10,6 @@
     </select>
 
     <select id="findById" parameterType="com.api.model.app.TypeAndAnnouncementId" resultType="com.api.vo.app.AppAnnouncementDetailVo">
-        select *,(case scheduled_release_time is null when true then create_date else scheduled_release_time end) as release_time from sys_announcement_management where id = #{announcementId} and push_object = 3 or push_object = #{type}
+        select *,(case scheduled_release_time is null when true then create_date else scheduled_release_time end) as release_time from sys_announcement_management where id = #{announcementId} and push_object in (3,#{type})
     </select>
 </mapper>
