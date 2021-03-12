@@ -11,6 +11,10 @@ public class SDSysAdviceVo {
      */
     private Integer type;
     /**
+     * 状态（3.已反馈）
+     */
+    private Integer status;
+    /**
      * 咨询建议内容
      */
     private String content;
@@ -23,6 +27,7 @@ public class SDSysAdviceVo {
     public String toString() {
         return "SDSysAdviceVo{" +
                 "type=" + type +
+                ", status=" + status +
                 ", content='" + content + '\'' +
                 ", createDate=" + createDate +
                 '}';
@@ -34,6 +39,14 @@ public class SDSysAdviceVo {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getContent() {
@@ -55,8 +68,9 @@ public class SDSysAdviceVo {
     public SDSysAdviceVo() {
     }
 
-    public SDSysAdviceVo(Integer type, String content, Date createDate) {
+    public SDSysAdviceVo(Integer type, Integer status, String content, Date createDate) {
         this.type = type;
+        this.status = status;
         this.content = content;
         this.createDate = createDate;
     }

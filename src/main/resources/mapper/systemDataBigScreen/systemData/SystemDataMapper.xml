@@ -3,5 +3,54 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.systemDataBigScreen.dao.SystemDataDao">
+    <select id="findNowAddNum" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list where DAY(create_date) = DAY(#{date})
+    </select>
 
+    <select id="findNowSolveNum" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list where DAY(end_date) = DAY(#{date})
+    </select>
+
+    <select id="findNoDistributionNum" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list where status = 1
+    </select>
+
+    <select id="findProcessingNum" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list where status = 3
+    </select>
+
+    <select id="sysAdviceList" resultType="com.api.vo.systemDataBigScreen.SDSysAdviceVo">
+        select type,status,content,create_date from sys_advice where is_delete = 1 and status = 3
+    </select>
+
+    <select id="sysAnnouncementList" resultType="com.api.vo.systemDataBigScreen.SDSysAnnouncementVo">
+        select title,status,release_date from sys_announcement_management where status = 2
+    </select>
+    <select id="findBuildingNum" resultType="java.lang.Integer">
+        select count(*) from cpm_building
+    </select>
+
+    <select id="findEstateNum" resultType="java.lang.Integer">
+        select count(*) from cpm_building_unit_estate where is_delete = 1
+    </select>
+
+    <select id="findCheckInEstateNum" resultType="java.lang.Integer">
+        select count(*) from cpm_building_unit_estate where is_delete = 1 and status in (1,5)
+    </select>
+
+    <select id="findParkingNum" resultType="java.lang.Integer">
+        select count(*) from cpm_parking_space
+    </select>
+
+    <select id="findSoldParkingParkingNum" resultType="java.lang.Integer">
+        select count(*) from cpm_parking_space where status = 1
+    </select>
+
+    <select id="findRentedParkingNum" resultType="java.lang.Integer">
+        select count(*) from cpm_parking_space where status = 2
+    </select>
+
+    <select id="findUserCar" resultType="java.lang.Integer">
+        select count(distinct code) from user_car
+    </select>
 </mapper>
