@@ -93,7 +93,7 @@ public class SystemDataController {
     }
 
     /**
-     * 查询日活跃
+     * 查询日活跃（搜索条件，范围搜索）
      * @param dailyActivitySearch 日活跃搜索条件
      * @return map
      */
