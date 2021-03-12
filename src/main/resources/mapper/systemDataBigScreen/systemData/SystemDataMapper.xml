@@ -19,6 +19,12 @@
         select count(*) from sys_dispatch_list where status = 3
     </select>
 
+    <select id="userVisitorsList" resultType="com.api.vo.systemDataBigScreen.SDUserVisitorsVo">
+        select CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,uv.name,uv.tel,ur.name as invite_name,uv.expected_visit_date,uv.visit_date
+        from user_visitors as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        where uv.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and uv.invite_people_id = ur.id
+    </select>
+
     <select id="sysAdviceList" resultType="com.api.vo.systemDataBigScreen.SDSysAdviceVo">
         select type,status,content,create_date from sys_advice where is_delete = 1 and status = 3
     </select>

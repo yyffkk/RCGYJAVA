@@ -4,6 +4,7 @@ import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
 import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
+import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,24 @@ public class SystemDataController {
     @GetMapping("/sysDispatchList")
     public Map<String,Object> sysDispatchList(){
         return systemDataService.sysDispatchList();
+    }
+
+    /**
+     * 查询访客记录信息集合（预计到访时间、实际到访时间、访客姓名、手机号、邀请人姓名、房间号【楼栋号-单元号-房产号】）
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/userVisitorsList")
+    public Map<String,Object> userVisitorsList(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<SDUserVisitorsVo> sdUserVisitorsVos =systemDataService.userVisitorsList();
+        PageInfo<SDUserVisitorsVo> pageInfo = new PageInfo<>(sdUserVisitorsVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
     /**

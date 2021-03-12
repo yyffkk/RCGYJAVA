@@ -2,6 +2,7 @@ package com.api.systemDataBigScreen.dao;
 
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
 import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
+import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,13 @@ public interface SystemDataDao {
      * @return 处理中报修单数量
      */
     int findProcessingNum();
+
+    /**
+     * 查询访客记录信息集合
+     * @return 系统数据 访客记录Vo list 回显
+     */
+    List<SDUserVisitorsVo> userVisitorsList();
+
     /**
      * 查询投诉表扬信息集合
      * @return 投诉表扬信息集合
@@ -85,4 +93,5 @@ public interface SystemDataDao {
      * @return 登记车辆总数
      */
     int findUserCar();
+
 }

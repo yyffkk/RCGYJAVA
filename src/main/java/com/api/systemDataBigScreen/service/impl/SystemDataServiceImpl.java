@@ -4,6 +4,7 @@ import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
 import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
+import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,6 +36,11 @@ public class SystemDataServiceImpl implements SystemDataService {
         map.put("noDistributionNum",noDistributionNum);
         map.put("processingNum",processingNum);
         return map;
+    }
+
+    @Override
+    public List<SDUserVisitorsVo> userVisitorsList() {
+        return systemDataDao.userVisitorsList();
     }
 
     @Override
