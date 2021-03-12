@@ -17,6 +17,10 @@ public class OrderTest {
      */
     private String subject;
     /**
+     * 商家订单主键
+     */
+    private Integer clubOrderId;
+    /**
      * 商户订单号(自动生成)
      */
     private String outTradeNo;
@@ -35,6 +39,7 @@ public class OrderTest {
                 "id=" + id +
                 ", body='" + body + '\'' +
                 ", subject='" + subject + '\'' +
+                ", clubOrderId=" + clubOrderId +
                 ", outTradeNo='" + outTradeNo + '\'' +
                 ", timeoutExpress='" + timeoutExpress + '\'' +
                 ", totalAmount='" + totalAmount + '\'' +
@@ -65,6 +70,14 @@ public class OrderTest {
         this.subject = subject;
     }
 
+    public Integer getClubOrderId() {
+        return clubOrderId;
+    }
+
+    public void setClubOrderId(Integer clubOrderId) {
+        this.clubOrderId = clubOrderId;
+    }
+
     public String getOutTradeNo() {
         return outTradeNo;
     }
@@ -92,10 +105,11 @@ public class OrderTest {
     public OrderTest() {
     }
 
-    public OrderTest(Integer id, String body, String subject, String outTradeNo, String timeoutExpress, String totalAmount) {
+    public OrderTest(Integer id, String body, String subject, Integer clubOrderId, String outTradeNo, String timeoutExpress, String totalAmount) {
         this.id = id;
         this.body = body;
         this.subject = subject;
+        this.clubOrderId = clubOrderId;
         this.outTradeNo = outTradeNo;
         this.timeoutExpress = timeoutExpress;
         this.totalAmount = totalAmount;

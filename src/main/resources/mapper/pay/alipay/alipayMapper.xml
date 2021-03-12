@@ -7,6 +7,7 @@
         insert into alipay_order(
             club_order_id,
             out_trade_no,
+            trade_status,
             total_amount,
             receipt_amount,
             invoice_amount,
@@ -15,6 +16,7 @@
         ) values (
             #{clubOrderId},
             #{outTradeNo},
+            #{tradeStatus},
             #{totalAmount},
             #{receiptAmount},
             #{invoiceAmount},

@@ -91,7 +91,7 @@ public class ButlerLoginServiceImpl implements ButlerLoginService {
     public Map<String, Object> loginSMSUser(ButlerUserCode butlerUserCode) {
         map = new HashMap<>();
         try {
-            if (!(butlerUserCode.getTel().equals("137386114465") && butlerUserCode.getCode().equals("888888"))) {
+            if (!(butlerUserCode.getTel().equals("13738611465") && butlerUserCode.getCode().equals("888888"))) {
                 //根据手机号查询手机验证码信息
                 ButlerUserCode userCodeByTel = butlerLoginDao.findUserCodeByTel(butlerUserCode.getTel());
                 if (userCodeByTel == null){

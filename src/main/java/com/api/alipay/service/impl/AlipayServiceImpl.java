@@ -46,7 +46,7 @@ public class AlipayServiceImpl implements AlipayService {
 
         //创建商户支付宝订单(因为需要记录每次支付宝支付的记录信息，单独存一个表跟商户订单表关联，以便以后查证)
         AliPaymentOrder aliPaymentOrder=new AliPaymentOrder();
-        aliPaymentOrder.setClubOrderId(orderTest.getId().toString());//商家订单主键
+        aliPaymentOrder.setClubOrderId(orderTest.getClubOrderId().toString());//商家订单主键
         aliPaymentOrder.setOutTradeNo(orderTest.getOutTradeNo());//商户订单号
         aliPaymentOrder.setTradeStatus((byte) 0);//交易状态
         aliPaymentOrder.setTotalAmount(BigDecimal.valueOf(Double.parseDouble(orderTest.getTotalAmount())));//订单金额
