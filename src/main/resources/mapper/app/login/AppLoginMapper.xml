@@ -93,4 +93,26 @@
     <delete id="deleteULTByResidentId" parameterType="java.lang.Integer">
         delete from user_login_token where resident_id = #{residentId}
     </delete>
+
+    <select id="findRequestLog" parameterType="com.api.model.app.AppRequestLog" resultType="com.api.model.app.AppRequestLog">
+        select * from sys_resident_request_log where resident_id = #{residentId} and DATE(last_date) = DATE(#{lastDate})
+    </select>
+
+    <update id="updateRequestLog" parameterType="com.api.model.app.AppRequestLog">
+        update sys_resident_request_log
+        set request_num = request_num + 1,
+        last_date = #{lastDate}
+        where id = #{id}
+    </update>
+    <insert id="insertRequestLog" parameterType="com.api.model.app.AppRequestLog">
+        insert into sys_resident_request_log(
+            resident_id,
+            request_num,
+            last_date
+        )values (
+            #{residentId},
+            #{requestNum},
+            #{lastDate}
+        )
+    </insert>
 </mapper>

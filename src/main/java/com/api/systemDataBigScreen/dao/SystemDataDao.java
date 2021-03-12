@@ -1,9 +1,13 @@
 package com.api.systemDataBigScreen.dao;
 
+import com.api.model.systemDataBigScreen.DailyActivity;
+import com.api.model.systemDataBigScreen.DailyActivitySearch;
+import com.api.vo.systemDataBigScreen.SDDailyActivityVo;
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
 import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
 import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -94,4 +98,74 @@ public interface SystemDataDao {
      */
     int findUserCar();
 
+    /**
+     * 查询业主数量
+     * @return 业主数量
+     */
+    int findResidentNum();
+
+    /**
+     * 查询租户数量
+     * @return 租户数量
+     */
+    int findTenantNum();
+
+    /**
+     * 查询今年应缴物业费总户数
+     * @param date 当前时间
+     * @return 今年应缴物业费总户数
+     */
+    int findThisYearPayableNum(Date date);
+
+    /**
+     * 查询今年应缴物业费总金额
+     * @param date 当前时间
+     * @return 今年应缴物业费总金额
+     */
+    BigDecimal findThisYearPayablePrice(Date date);
+
+    /**
+     * 查询已缴物业费总户数
+     * @return 已交物业费总户数
+     */
+    int findPaidNum();
+
+    /**
+     * 查询已缴物业费总金额
+     * @return 已交物业费总金额
+     */
+    BigDecimal findPaidPrice();
+
+    /**
+     * 查询未缴物业费总户数
+     * @return 未交物业费总户数
+     */
+    int findUnPaidNum();
+
+    /**
+     * 查询未缴物业费总金额
+     * @return 未交物业费总金额
+     */
+    BigDecimal findUnPaidPrice();
+
+    /**
+     * 查询日活跃量
+     * @param dailyActivitySearch 日活跃搜索条件
+     * @return 日活跃量
+     */
+    List<SDDailyActivityVo> findDailyActivity(DailyActivitySearch dailyActivitySearch);
+
+    /**
+     * 查询本日 日活跃量
+     * @param date 本日
+     * @return 日活跃量
+     */
+    int findTodayDailyActivity(Date date);
+
+    /**
+     * 将日活跃量 添加进数据库
+     * @param dailyActivity 日活跃量
+     * @return 影响行数
+     */
+    int insertDailyActivity(DailyActivity dailyActivity);
 }

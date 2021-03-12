@@ -3,6 +3,7 @@ package com.api.app.filter;
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.service.login.AppLoginService;
 import com.api.app.service.login.impl.AppLoginServiceImpl;
+import com.api.model.app.AppRequestLog;
 import com.api.model.app.UserLoginToken;
 import com.api.model.basicArchives.UserResident;
 import com.api.vo.app.UserLoginTokenVo;
@@ -76,6 +77,27 @@ public class LoginDetectionFilter implements Filter {
         }
         //根据主键id查询住户信息
         UserResident userResident = appLoginService.findUserResidentById(userLoginTokenVo.getResidentId());
+
+        //写入用户请求日志,用于日活跃查询
+        //根据住户id,和当前时间查询是否有当天日志存入
+        AppRequestLog appRequestLog1 = new AppRequestLog();
+        //填入住户id
+        appRequestLog1.setResidentId(userResident.getId());
+        //填入当前时间
+        appRequestLog1.setLastDate(new Date());
+        //根据住户id和当前时间查询今日是否有操作记录
+        AppRequestLog appRequestLog = appLoginService.findRequestLog(appRequestLog1);
+        if (appRequestLog != null){
+            //填入主键id
+            appRequestLog1.setId(appRequestLog.getId());
+            //更新当日用户请求日志
+            appLoginService.updateRequestLog(appRequestLog1);
+        }else {
+            //填入请求次数，初始为1
+            appRequestLog1.setRequestNum(1);
+            //添加当日用户请求日志
+            appLoginService.insertRequestLog(appRequestLog1);
+        }
 
 
         //每次请求更新一次登录user_login_token时间

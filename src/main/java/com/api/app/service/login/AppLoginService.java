@@ -1,5 +1,6 @@
 package com.api.app.service.login;
 
+import com.api.model.app.AppRequestLog;
 import com.api.model.app.UserCode;
 import com.api.model.app.UserRegister;
 import com.api.model.basicArchives.UserResident;
@@ -19,4 +20,10 @@ public interface AppLoginService {
     UserResident findUserResidentById(Integer residentId);
 
     int updateULTById(UserLoginTokenVo userLoginTokenVo);
+
+    AppRequestLog findRequestLog(AppRequestLog appRequestLog1);
+
+    void updateRequestLog(AppRequestLog appRequestLog1);
+
+    void insertRequestLog(AppRequestLog appRequestLog1);
 }

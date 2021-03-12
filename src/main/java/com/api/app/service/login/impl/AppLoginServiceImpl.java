@@ -4,6 +4,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.service.login.AppLoginService;
 import com.api.manage.dao.basicArchives.UserResidentDao;
+import com.api.model.app.AppRequestLog;
 import com.api.model.app.UserCode;
 import com.api.model.app.UserLoginToken;
 import com.api.model.app.UserRegister;
@@ -290,5 +291,20 @@ public class AppLoginServiceImpl implements AppLoginService {
     @Override
     public int updateULTById(UserLoginTokenVo userLoginTokenVo) {
         return appLoginDao.updateULTById(userLoginTokenVo);
+    }
+
+    @Override
+    public AppRequestLog findRequestLog(AppRequestLog appRequestLog1) {
+        return appLoginDao.findRequestLog(appRequestLog1);
+    }
+
+    @Override
+    public void updateRequestLog(AppRequestLog appRequestLog1) {
+        appLoginDao.updateRequestLog(appRequestLog1);
+    }
+
+    @Override
+    public void insertRequestLog(AppRequestLog appRequestLog1) {
+        appLoginDao.insertRequestLog(appRequestLog1);
     }
 }

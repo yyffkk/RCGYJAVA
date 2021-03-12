@@ -59,4 +59,74 @@
     <select id="findUserCar" resultType="java.lang.Integer">
         select count(distinct code) from user_car
     </select>
+
+    <select id="findResidentNum" resultType="java.lang.Integer">
+        select count(*) from user_resident where type = 1
+    </select>
+
+    <select id="findTenantNum" resultType="java.lang.Integer">
+        select count(*) from user_resident where type = 3
+    </select>
+
+    <select id="findThisYearPayableNum" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select count(sdp.id)
+        from sys_daily_payment as sdp,sys_charges_template_detail as sctd
+        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date}) and sctd.marker = 1
+    </select>
+
+    <select id="findThisYearPayablePrice" parameterType="java.util.Date" resultType="java.math.BigDecimal">
+        select sum(total_price)
+        from sys_daily_payment as sdp,sys_charges_template_detail as sctd
+        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date}) and sctd.marker = 1
+    </select>
+
+    <select id="findPaidNum" resultType="java.lang.Integer">
+        select count(sdp.id)
+        from sys_daily_payment as sdp,sys_charges_template_detail as sctd
+        where sdp.charges_template_detail_id = sctd.id  and sctd.marker = 1 and sdp.status = 3
+    </select>
+
+    <select id="findPaidPrice" resultType="java.math.BigDecimal">
+        select sum(paid_price)
+        from sys_daily_payment as sdp,sys_charges_template_detail as sctd
+        where sdp.charges_template_detail_id = sctd.id  and sctd.marker = 1 and sdp.status = 3
+    </select>
+
+    <select id="findUnPaidNum" resultType="java.lang.Integer">
+        select count(sdp.id)
+        from sys_daily_payment as sdp,sys_charges_template_detail as sctd
+        where sdp.charges_template_detail_id = sctd.id  and sctd.marker = 1 and sdp.status = 1
+    </select>
+
+    <select id="findUnPaidPrice" resultType="java.math.BigDecimal">
+        select sum(payment_price)
+        from sys_daily_payment as sdp,sys_charges_template_detail as sctd
+        where sdp.charges_template_detail_id = sctd.id  and sctd.marker = 1 and sdp.status = 1
+    </select>
+
+    <select id="findDailyActivity" parameterType="com.api.model.systemDataBigScreen.DailyActivitySearch" resultType="com.api.vo.systemDataBigScreen.SDDailyActivityVo">
+        select daily_activity_num,create_date from sys_daily_activity_log
+        <where>
+            <if test="beginDate != null">
+                and create_date <![CDATA[ >= ]]> #{beginDate}
+            </if>
+            <if test="endDate != null">
+                and create_date <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="findTodayDailyActivity" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select count(*) from sys_resident_request_log where DATE(last_date) = DATE(#{date})
+    </select>
+
+    <insert id="insertDailyActivity" parameterType="com.api.model.systemDataBigScreen.DailyActivity">
+        insert into sys_daily_activity_log(
+            daily_activity_num,
+            create_date
+        ) values (
+            #{dailyActivityNum},
+            #{createDate}
+        )
+    </insert>
 </mapper>

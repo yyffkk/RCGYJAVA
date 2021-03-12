@@ -7,8 +7,11 @@ import com.api.manage.dao.remind.RemindDao;
 import com.api.model.butlerService.SysArticleBorrow;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
+import com.api.model.systemDataBigScreen.DailyActivity;
+import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.util.JiguangUtil;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -58,6 +61,7 @@ import java.util.List;
  */
 @Configuration
 @EnableScheduling
+@Slf4j
 public class SysAutoRemind {
     @Resource
     BorrowDao borrowDao;
@@ -67,6 +71,8 @@ public class SysAutoRemind {
     SysDailyPaymentDao sysDailyPaymentDao;
     @Resource
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
+    @Resource
+    SystemDataDao systemDataDao;
 
     /**
      * 后台系统借还提醒，每隔一天进行校对数据库，如果出借时长超过7天则系统自动发出提醒
@@ -207,6 +213,26 @@ public class SysAutoRemind {
         }
         //打印日志地方
         System.out.println("已到月初，发送日常缴费提醒");
+    }
+
+    /**
+     * 每日23时59分 统计日活跃量 进数据库
+     */
+    @Scheduled(cron = "0 59 23 1/1 * ? ")
+    private void dailyActivity(){
+        Date date = new Date();
+        //查询本日 日活跃量
+        int count = systemDataDao.findTodayDailyActivity(date);
+        DailyActivity dailyActivity = new DailyActivity();
+        dailyActivity.setDailyActivityNum(count);
+        dailyActivity.setCreateDate(date);
+        //将日活跃量 添加进数据库
+        int insert = systemDataDao.insertDailyActivity(dailyActivity);
+        if (insert >0){
+            log.info("统计日活跃量成功");
+        }else {
+            log.info("统计日活跃量失败");
+        }
     }
 
     @Scheduled(cron = "0 43 * * * ?")

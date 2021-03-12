@@ -1,5 +1,6 @@
 package com.api.systemDataBigScreen.controller;
 
+import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +55,7 @@ public class SystemDataController {
         return map;
     }
 
+
     /**
      * 查询投诉表扬信息集合（创建时间、类型、内容）
      * @param pageNum 当前页数
@@ -89,6 +93,16 @@ public class SystemDataController {
     }
 
     /**
+     * 查询日活跃
+     * @param dailyActivitySearch 日活跃搜索条件
+     * @return map
+     */
+    @GetMapping("/findDailyActivity")
+    public Map<String,Object> findDailyActivity(DailyActivitySearch dailyActivitySearch){
+        return systemDataService.findDailyActivity(dailyActivitySearch);
+    }
+
+    /**
      * 基础数据:(楼栋数、房屋总数、已入住房屋数)
      * @return map
      */
@@ -115,12 +129,23 @@ public class SystemDataController {
         return systemDataService.sysCar();
     }
 
+    /**
+     * 查询住户信息（业主数量、租户数量）
+     * @return map
+     */
+    @GetMapping("/userResident")
+    public Map<String,Object> userResident(){
+        return systemDataService.userResident();
+    }
 
-
-
-
-
-
+    /**
+     * 查询日常缴费信息（今年应缴物业费总户数/总金额，已交物业费总户数/总金额，未交物业费总户数/总金额）
+     * @return map
+     */
+    @GetMapping("/sysDailyPayment")
+    public Map<String,Object> sysDailyPayment(){
+        return systemDataService.sysDailyPayment();
+    }
 
 
 }

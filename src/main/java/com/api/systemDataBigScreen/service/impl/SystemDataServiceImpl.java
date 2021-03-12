@@ -1,13 +1,16 @@
 package com.api.systemDataBigScreen.service.impl;
 
+import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
+import com.api.vo.systemDataBigScreen.SDDailyActivityVo;
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
 import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
 import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +92,51 @@ public class SystemDataServiceImpl implements SystemDataService {
         //登记车辆总数
         int carNum = systemDataDao.findUserCar();
         map.put("carNum",carNum);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> userResident() {
+        map = new HashMap<>();
+        //查询业主数量,1.业主
+        int residentNum = systemDataDao.findResidentNum();
+        //查询租户数量,3.租户
+        int tenantNum = systemDataDao.findTenantNum();
+        map.put("residentNum",residentNum);
+        map.put("tenantNum",tenantNum);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysDailyPayment() {
+        map = new HashMap<>();
+        Date date = new Date();
+        //查询今年应缴物业费总户数
+        int thisYearPayableNum = systemDataDao.findThisYearPayableNum(date);
+        //查询今年应缴物业费总金额
+        BigDecimal thisYearPayablePrice = systemDataDao.findThisYearPayablePrice(date);
+        //查询已缴物业费总户数
+        int paidNum = systemDataDao.findPaidNum();
+        //查询已缴物业费总金额
+        BigDecimal paidPrice = systemDataDao.findPaidPrice();
+        //查询未缴物业费总户数
+        int unPaidNum = systemDataDao.findUnPaidNum();
+        //查询未缴物业费总金额
+        BigDecimal unPaidPrice = systemDataDao.findUnPaidPrice();
+        map.put("thisYearPayableNum",thisYearPayableNum);
+        map.put("thisYearPayablePrice",thisYearPayablePrice);
+        map.put("paidNum",paidNum);
+        map.put("paidPrice",paidPrice);
+        map.put("unPaidNum",unPaidNum);
+        map.put("unPaidPrice",unPaidPrice);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findDailyActivity(DailyActivitySearch dailyActivitySearch) {
+        map = new HashMap<>();
+        List<SDDailyActivityVo> sdDailyActivityVos = systemDataDao.findDailyActivity(dailyActivitySearch);
+        map.put("dailyActivityList",sdDailyActivityVos);
         return map;
     }
 

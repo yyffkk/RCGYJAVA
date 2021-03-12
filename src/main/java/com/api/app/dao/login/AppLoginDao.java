@@ -1,5 +1,6 @@
 package com.api.app.dao.login;
 
+import com.api.model.app.AppRequestLog;
 import com.api.model.app.UserCode;
 import com.api.model.app.UserLoginToken;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
@@ -84,4 +85,23 @@ public interface AppLoginDao {
      * @return 影响行数
      */
     int deleteULTByResidentId(Integer residentId);
+
+    /**
+     * 根据住户id和当前时间查询今日是否有操作记录
+     * @param appRequestLog1 app用户请求日志
+     * @return app用户请求日志
+     */
+    AppRequestLog findRequestLog(AppRequestLog appRequestLog1);
+
+    /**
+     * 更新当日用户请求日志
+     * @param appRequestLog1 app用户请求日志
+     */
+    void updateRequestLog(AppRequestLog appRequestLog1);
+
+    /**
+     * 添加当日用户请求日志
+     * @param appRequestLog1 app用户请求日志
+     */
+    void insertRequestLog(AppRequestLog appRequestLog1);
 }
