@@ -1,12 +1,10 @@
 package com.api.systemDataBigScreen.service.impl;
 
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
+import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
-import com.api.vo.systemDataBigScreen.SDDailyActivityVo;
-import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
-import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
-import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
+import com.api.vo.systemDataBigScreen.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,19 +21,30 @@ public class SystemDataServiceImpl implements SystemDataService {
     private static Map<String,Object> map = null;
 
     @Override
+    public Map<String, Object> findNowAddNum(DispatchListSearch dispatchListSearch) {
+        map = new HashMap<>();
+        //当日新增报修单数量
+        List<SDDispatchNumListVo> nowAddNums = systemDataDao.findNowAddNum(dispatchListSearch);
+        map.put("data",nowAddNums);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findNowSolveNum(DispatchListSearch dispatchListSearch) {
+        map = new HashMap<>();
+        //当日解决报修单数量
+        List<SDDispatchNumListVo> nowSolveNums = systemDataDao.findNowSolveNum(dispatchListSearch);
+        map.put("data",nowSolveNums);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> sysDispatchList() {
         map = new HashMap<>();
-        Date date = new Date();
-        //当日新增报修单数量
-        int nowAddNum = systemDataDao.findNowAddNum(date);
-        //当日解决报修单数量
-        int nowSolveNum = systemDataDao.findNowSolveNum(date);
         //待分配报修单数量
         int noDistributionNum = systemDataDao.findNoDistributionNum();
         //处理中报修单数量
         int processingNum = systemDataDao.findProcessingNum();
-        map.put("nowAddNum",nowAddNum);
-        map.put("nowSolveNum",nowSolveNum);
         map.put("noDistributionNum",noDistributionNum);
         map.put("processingNum",processingNum);
         return map;

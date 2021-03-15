@@ -215,26 +215,6 @@ public class SysAutoRemind {
         System.out.println("已到月初，发送日常缴费提醒");
     }
 
-    /**
-     * 每日23时59分 统计日活跃量 进数据库
-     */
-    @Scheduled(cron = "0 59 23 1/1 * ? ")
-    private void dailyActivity(){
-        Date date = new Date();
-        //查询本日 日活跃量
-        int count = systemDataDao.findTodayDailyActivity(date);
-        DailyActivity dailyActivity = new DailyActivity();
-        dailyActivity.setDailyActivityNum(count);
-        dailyActivity.setCreateDate(date);
-        //将日活跃量 添加进数据库
-        int insert = systemDataDao.insertDailyActivity(dailyActivity);
-        if (insert >0){
-            log.info("统计日活跃量成功");
-        }else {
-            log.info("统计日活跃量失败");
-        }
-    }
-
     @Scheduled(cron = "0 43 * * * ?")
     public void test(){
         System.out.println("测试定时任务");

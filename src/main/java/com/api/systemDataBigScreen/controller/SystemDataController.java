@@ -1,6 +1,7 @@
 package com.api.systemDataBigScreen.controller;
 
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
+import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
@@ -27,7 +28,27 @@ public class SystemDataController {
     SystemDataService systemDataService;
 
     /**
-     * 查询派工单报修信息集合（每日新增/解决报修单的数量、当前待分配/处理中报修单数量）
+     * 查询每日新增的报修单数量
+     * @param dispatchListSearch 报修单搜索条件
+     * @return map
+     */
+    @GetMapping("/findNowAddNum")
+    public Map<String,Object> findNowAddNum(DispatchListSearch dispatchListSearch){
+        return systemDataService.findNowAddNum(dispatchListSearch);
+    }
+
+    /**
+     * 查询每日解决的报修单数量
+     * @param dispatchListSearch 报修单搜索条件
+     * @return map
+     */
+    @GetMapping("/findNowSolveNum")
+    public Map<String,Object> findNowSolveNum(DispatchListSearch dispatchListSearch){
+        return systemDataService.findNowSolveNum(dispatchListSearch);
+    }
+
+    /**
+     * 查询派工单报修信息集合（当前待分配/处理中报修单数量）
      * @return map
      */
     @GetMapping("/sysDispatchList")

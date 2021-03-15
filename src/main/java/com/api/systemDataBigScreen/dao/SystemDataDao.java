@@ -2,10 +2,8 @@ package com.api.systemDataBigScreen.dao;
 
 import com.api.model.systemDataBigScreen.DailyActivity;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
-import com.api.vo.systemDataBigScreen.SDDailyActivityVo;
-import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
-import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
-import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
+import com.api.model.systemDataBigScreen.DispatchListSearch;
+import com.api.vo.systemDataBigScreen.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,17 +12,17 @@ import java.util.List;
 public interface SystemDataDao {
     /**
      * 查询当日新增报修单数量
-     * @param date 当天时间
+     * @param dispatchListSearch 报修单搜索条件
      * @return 当日新增报修单数量
      */
-    int findNowAddNum(Date date);
+    List<SDDispatchNumListVo> findNowAddNum(DispatchListSearch dispatchListSearch);
 
     /**
      * 查询当日解决报修单数量
-     * @param date 当天时间
+     * @param dispatchListSearch 报修单搜索条件
      * @return 当日解决报修单数量
      */
-    int findNowSolveNum(Date date);
+    List<SDDispatchNumListVo> findNowSolveNum(DispatchListSearch dispatchListSearch);
 
     /**
      * 查询待分配报修单数量,1.待分配

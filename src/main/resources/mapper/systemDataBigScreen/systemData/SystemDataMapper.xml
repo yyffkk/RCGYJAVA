@@ -3,12 +3,33 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.systemDataBigScreen.dao.SystemDataDao">
-    <select id="findNowAddNum" parameterType="java.util.Date" resultType="java.lang.Integer">
-        select count(*) from sys_dispatch_list where DAY(create_date) = DAY(#{date})
+    <select id="findNowAddNum" parameterType="com.api.model.systemDataBigScreen.DispatchListSearch" resultType="com.api.vo.systemDataBigScreen.SDDispatchNumListVo">
+        select date(create_date) as one_day,count(id) as num
+        from sys_dispatch_list
+        <where>
+            <if test="beginDate != null">
+                create_date <![CDATA[ >= ]]> date_format(#{beginDate},'%Y%m%d')
+            </if>
+            <if test="endDate != null">
+                and create_date <![CDATA[ <= ]]> date_format(#{endDate},'%Y%m%d')
+            </if>
+        </where>
+        GROUP BY one_day ORDER BY one_day desc
     </select>
 
-    <select id="findNowSolveNum" parameterType="java.util.Date" resultType="java.lang.Integer">
-        select count(*) from sys_dispatch_list where DAY(end_date) = DAY(#{date})
+    <select id="findNowSolveNum" parameterType="java.util.Date" resultType="com.api.vo.systemDataBigScreen.SDDispatchNumListVo">
+        select date(end_date) as one_day,count(id) as num
+        from sys_dispatch_list
+        <where>
+            <if test="beginDate != null">
+                end_date <![CDATA[ >= ]]> date_format(#{beginDate},'%Y%m%d')
+            </if>
+            <if test="endDate != null">
+                and end_date <![CDATA[ <= ]]> date_format(#{endDate},'%Y%m%d')
+            </if>
+            and end_date is not null
+        </where>
+        GROUP BY one_day ORDER BY one_day desc
     </select>
 
     <select id="findNoDistributionNum" resultType="java.lang.Integer">
@@ -105,15 +126,17 @@
     </select>
 
     <select id="findDailyActivity" parameterType="com.api.model.systemDataBigScreen.DailyActivitySearch" resultType="com.api.vo.systemDataBigScreen.SDDailyActivityVo">
-        select daily_activity_num,create_date from sys_daily_activity_log
+        select date(last_date) as createDate,count(id) as daily_activity_num
+        from sys_resident_request_log
         <where>
             <if test="beginDate != null">
-                and create_date <![CDATA[ >= ]]> #{beginDate}
+                and last_date <![CDATA[ >= ]]> date_format(#{beginDate},'%Y%m%d')
             </if>
             <if test="endDate != null">
-                and create_date <![CDATA[ <= ]]> #{endDate}
+                and last_date <![CDATA[ <= ]]> date_format(#{endDate},'%Y%m%d')
             </if>
         </where>
+        GROUP BY createDate ORDER BY createDate desc
     </select>
 
     <select id="findTodayDailyActivity" parameterType="java.util.Date" resultType="java.lang.Integer">
