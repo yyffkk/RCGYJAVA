@@ -137,7 +137,7 @@ public class SystemDataServiceImpl implements SystemDataService {
         map = new HashMap<>();
         //根据搜索条件 查询日活跃
         List<SDDailyActivityVo> sdDailyActivityVos = systemDataDao.findDailyActivity(dailyActivitySearch);
-        map.put("dailyActivityList",sdDailyActivityVos);
+        map.put("data",sdDailyActivityVos);
         return map;
     }
 
