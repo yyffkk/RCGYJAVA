@@ -47,10 +47,8 @@ public class LoginDetectionFilter implements Filter {
         //获取token信息
         String tokenId = req.getHeader("app-admin-token");
 
-        //如果tokenId为null，则返回失败json
+        ////如果token为''，则表示 没登录通行状态【游客状态】。
         if (tokenId == null || "".equals(tokenId) || tokenId.isEmpty()) {
-//            this.respFail(response);
-//            return;
             //如果token为''，则表示 没登录通行状态。
             //创建一个重新包装的Request请求
             ParameterRequestWrapper requestWrapper = new ParameterRequestWrapper(req);
@@ -59,6 +57,7 @@ public class LoginDetectionFilter implements Filter {
             userResident.setType(0);
             //往Request请求中添加新的对象信息
             requestWrapper.addObject(userResident);
+            //通行
             chain.doFilter(requestWrapper, response);
         }
 

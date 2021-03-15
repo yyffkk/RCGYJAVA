@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.butler.ButlerAnnouncementDao">
+    <select id="list" parameterType="com.api.model.app.TypeAndNowDate" resultType="com.api.vo.butlerApp.ButlerAnnouncementVo">
+        select *,(case scheduled_release_time is null when true then create_date else scheduled_release_time end) as release_time from sys_announcement_management
+        where #{nowDate} <![CDATA[ > ]]> (case scheduled_release_time is null when true then create_date else scheduled_release_time end) and push_object = #{type}
+        order by (case scheduled_release_time is null when true then create_date else scheduled_release_time end) DESC
+    </select>
+
+    <select id="findById" parameterType="com.api.model.app.TypeAndAnnouncementId" resultType="com.api.vo.butlerApp.ButlerAnnouncementDetailVo">
+        select *,(case scheduled_release_time is null when true then create_date else scheduled_release_time end) as release_time from sys_announcement_management where id = #{announcementId} and push_object = #{type}
+    </select>
+</mapper>
