@@ -30,7 +30,7 @@
     </select>
 
     <select id="sysAnnouncementList" resultType="com.api.vo.systemDataBigScreen.SDSysAnnouncementVo">
-        select title,status,release_date from sys_announcement_management where status = 2
+        select title,content,status,release_date from sys_announcement_management where status = 2
     </select>
     <select id="findBuildingNum" resultType="java.lang.Integer">
         select count(*) from cpm_building

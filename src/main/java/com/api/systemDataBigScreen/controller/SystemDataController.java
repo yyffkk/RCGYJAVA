@@ -73,7 +73,7 @@ public class SystemDataController {
     }
 
     /**
-     * 查询公共资讯信息集合（发布时间、标题）
+     * 查询公共资讯信息集合（发布时间、标题、内容）
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @return map

@@ -11,6 +11,10 @@ public class SDSysAnnouncementVo {
      */
     private String title;
     /**
+     * 公告内容
+     */
+    private String content;
+    /**
      * 状态（2.已发布）
      */
     private Integer status;
@@ -23,6 +27,7 @@ public class SDSysAnnouncementVo {
     public String toString() {
         return "SDSysAnnouncementVo{" +
                 "title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 ", status=" + status +
                 ", releaseDate=" + releaseDate +
                 '}';
@@ -34,6 +39,14 @@ public class SDSysAnnouncementVo {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Integer getStatus() {
@@ -55,8 +68,9 @@ public class SDSysAnnouncementVo {
     public SDSysAnnouncementVo() {
     }
 
-    public SDSysAnnouncementVo(String title, Integer status, Date releaseDate) {
+    public SDSysAnnouncementVo(String title, String content, Integer status, Date releaseDate) {
         this.title = title;
+        this.content = content;
         this.status = status;
         this.releaseDate = releaseDate;
     }
