@@ -39,4 +39,39 @@
             and uao.status = 1
         </where>
     </select>
+
+    <select id="findUnProcessedNum1" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list where status = 1 and sys_delete = 1
+    </select>
+
+    <select id="findProcessingNum1" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list where status in (2,3) and sys_delete = 1
+    </select>
+
+    <select id="findProcessedNum1" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list where status >= 4 and sys_delete = 1
+    </select>
+
+    <select id="findUnProcessedNum2" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld
+        where sdl.id = sdld.dispatch_list_id and sdl.status = 2 and sdl.sys_delete = 1 and sdld.operator = #{id}
+    </select>
+
+    <select id="findProcessingNum2" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld
+        where sdl.id = sdld.dispatch_list_id and sdl.status = 3 and sdl.sys_delete = 1 and sdld.operator = #{id}
+    </select>
+
+    <select id="findProcessedNum2" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld
+        where sdl.id = sdld.dispatch_list_id and sdl.status >= 4 and sdl.sys_delete = 1 and sdld.operator = #{id}
+    </select>
+
+    <select id="findUnProcessedNum3" resultType="java.lang.Integer">
+        select count(*) from user_article_out where status = 1
+    </select>
+
+    <select id="findProcessedNum3" resultType="java.lang.Integer">
+        select count(*) from user_article_out where status >= 2
+    </select>
 </mapper>

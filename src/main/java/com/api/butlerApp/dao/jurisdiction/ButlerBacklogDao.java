@@ -28,4 +28,55 @@ public interface ButlerBacklogDao {
     List<ButlerArticleOutVo> backlogReleasedList();
 
 
+    /**
+     * 查询派单人待处理事项数量
+     * @return 派单人待处理事项数量
+     */
+    int findUnProcessedNum1();
+
+    /**
+     * 查询派单人处理中事项数量
+     * @return 派单人处理中事项数量
+     */
+    int findProcessingNum1();
+
+    /**
+     * 查询派单人已处理事项数量
+     * @return 派单人已处理事项数量
+     */
+    int findProcessedNum1();
+
+    /**
+     * 查询接单人未处理事项
+     * @param id 用户主键id
+     * @return 接单人未处理事项
+     */
+    int findUnProcessedNum2(int id);
+
+    /**
+     * 查询接单人处理中事项
+     * @param id 用户主键id
+     * @return 接单人处理中事项
+     */
+    int findProcessingNum2(int id);
+
+    /**
+     * 查询接单人已处理事项
+     * @param id 用户主键id
+     * @return 接单人已处理事项
+     */
+    int findProcessedNum2(int id);
+
+    /**
+     * 查询放行人未处理事项
+     * @return 放行人未处理事项
+     */
+    int findUnProcessedNum3();
+
+
+    /**
+     * 查询放行人已处理事项
+     * @return 放行人已处理事项
+     */
+    int findProcessedNum3();
 }

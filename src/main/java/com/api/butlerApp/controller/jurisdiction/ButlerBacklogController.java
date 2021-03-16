@@ -1,10 +1,7 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerBacklogService;
-import com.api.vo.butlerApp.ButlerArticleOutVo;
 import com.api.vo.butlerApp.ButlerBacklogVo;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,21 +22,26 @@ public class ButlerBacklogController {
 
     /**
      * 查询所有的待办事务
-     * @param pageNum 当前页数
-     * @param size 每页记录数
      * @param roleId 当前用户所拥有的角色id
      * @param id 用户主键id
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(int pageNum,int size,String roleId,int id){
-        PageHelper.startPage(pageNum,size);
-        List<ButlerBacklogVo> butlerBacklogVos =butlerBacklogService.list(roleId,id);
-        PageInfo<ButlerBacklogVo> pageInfo = new PageInfo<>(butlerBacklogVos);
+    public Map<String,Object> list(String roleId,int id){
         Map<String,Object> map = new HashMap<>();
-        map.put("tableList",pageInfo.getList());
-        map.put("rowCount",pageInfo.getTotal());
-        map.put("pageCount",pageInfo.getPages());
+        List<ButlerBacklogVo> butlerBacklogVos =butlerBacklogService.list(roleId,id);
+        map.put("data",butlerBacklogVos);
         return map;
+    }
+
+    /**
+     * 查询处理事项的数量
+     * @param roleId 当前用户所拥有的角色id
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/findItemNum")
+    public Map<String,Object> findItemNum(String roleId,int id){
+        return butlerBacklogService.findItemNum(roleId,id);
     }
 }

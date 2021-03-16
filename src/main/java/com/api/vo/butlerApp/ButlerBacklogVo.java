@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class ButlerBacklogVo<T> {
     /**
-     * 数据集合
+     * 数据
      */
-    private List<T> dataList;
+    private T dataList;
     /**
      * 返回数据类型，1.报事报修，2.物品出门
      */
@@ -25,11 +25,11 @@ public class ButlerBacklogVo<T> {
                 '}';
     }
 
-    public List<T> getDataList() {
+    public T getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<T> dataList) {
+    public void setDataList(T dataList) {
         this.dataList = dataList;
     }
 
@@ -44,7 +44,7 @@ public class ButlerBacklogVo<T> {
     public ButlerBacklogVo() {
     }
 
-    public ButlerBacklogVo(List<T> dataList, Integer type) {
+    public ButlerBacklogVo(T dataList, Integer type) {
         this.dataList = dataList;
         this.type = type;
     }
