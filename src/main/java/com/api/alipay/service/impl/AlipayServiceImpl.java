@@ -134,7 +134,9 @@ public class AlipayServiceImpl implements AlipayService {
 
             //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
             AliPaymentOrder aliPaymentOrder=this.selectByOutTradeNo(outTradeNo);
-            if(aliPaymentOrder!=null&&totalAmount.equals(aliPaymentOrder.getTotalAmount().toString())&&AlipayConfig.APPID.equals(appId)){
+            //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
+            if(aliPaymentOrder!=null && totalAmount.equals(aliPaymentOrder.getTotalAmount().toString()) && AlipayConfig.APPID.equals(appId)){
+                //执行业务操作
                 //修改数据库支付宝订单表(因为要保存每次支付宝返回的信息到数据库里，以便以后查证)
                 aliPaymentOrder.setNotifyTime(dateFormat(notifyTime));
                 aliPaymentOrder.setGmtCreate(dateFormat(gmtCreate));
@@ -170,7 +172,6 @@ public class AlipayServiceImpl implements AlipayService {
                 int returnResult=this.updateByPrimaryKey(aliPaymentOrder);    //更新交易表中状态
 
                 if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
-
                     if(returnResult>0){
                         return "success";
                     }else{
@@ -207,15 +208,15 @@ public class AlipayServiceImpl implements AlipayService {
                     "}");
             AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
             if(alipayTradeQueryResponse.isSuccess()){
-
+                //根据out_trade_no【商户系统的唯一订单号】查询订单信息
                 AliPaymentOrder alipaymentOrder=this.selectByOutTradeNo(outTradeNo);
                 //修改数据库支付宝订单表
-                alipaymentOrder.setTradeNo(alipayTradeQueryResponse.getTradeNo());
-                alipaymentOrder.setBuyerLogonId(alipayTradeQueryResponse.getBuyerLogonId());
-                alipaymentOrder.setTotalAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getTotalAmount())) );
-                alipaymentOrder.setReceiptAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getReceiptAmount())));
-                alipaymentOrder.setInvoiceAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getInvoiceAmount())));
-                alipaymentOrder.setBuyerPayAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getBuyerPayAmount())));
+                alipaymentOrder.setTradeNo(alipayTradeQueryResponse.getTradeNo());//支付宝的交易号
+                alipaymentOrder.setBuyerLogonId(alipayTradeQueryResponse.getBuyerLogonId());//买家支付宝账号
+                alipaymentOrder.setTotalAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getTotalAmount())) );//订单金额
+                alipaymentOrder.setReceiptAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getReceiptAmount())));//实收金额
+                alipaymentOrder.setInvoiceAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getInvoiceAmount())));//开票金额
+                alipaymentOrder.setBuyerPayAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getBuyerPayAmount())));//付款金额
                 switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
                 {
                     case "TRADE_FINISHED": // 交易结束并不可退款
@@ -234,7 +235,7 @@ public class AlipayServiceImpl implements AlipayService {
                         break;
                 }
                 this.updateByPrimaryKey(alipaymentOrder); //更新表记录
-                return alipaymentOrder.getTradeStatus();
+                return alipaymentOrder.getTradeStatus(); //交易状态
             } else {
                 log.info("==================调用支付宝查询接口失败！");
             }

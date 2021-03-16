@@ -33,7 +33,7 @@ public class AlipayController {
     }
 
     /**
-     * 支付宝支付成功后.异步请求该接口
+     * 支付宝支付成功后.异步请求该接口（一直请求，直到返回success）
      * @param request request
      * @return 状态
      * @throws IOException io异常
