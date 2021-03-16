@@ -3,5 +3,40 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerBacklogDao">
+    <select id="backlogDispatchList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairVo">
+        select * from (
+        select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id
+        from sys_report_repair as srr,sys_dispatch_list as sdl LEFT JOIN sys_dispatch_list_detail as sdld
+        on sdld.dispatch_list_id = sdl.id
+        <where>
+            srr.dispatch_list_id = sdl.id
+            and sdl.sys_delete = 1
+            and sdl.status = 1
+        </where>
+        ) as a where a.create_id = -1 or a.create_id = #{id}
+    </select>
 
+    <select id="backlogReceivingList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairVo">
+        select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status
+        from sys_report_repair as srr,sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld
+        <where>
+            srr.dispatch_list_id = sdl.id
+            and sdld.dispatch_list_id = sdl.id
+            and sdld.create_id = #{id}
+            and sdl.sys_delete = 1
+            and sdl.status = 2
+        </where>
+    </select>
+
+    <select id="backlogReleasedList" resultType="com.api.vo.butlerApp.ButlerArticleOutVo">
+        select uao.id,uao.status,concat(cb.no,"幢-",cbu.no,"单元",cbue.room_number) as room_name,ur.name as applicant_name,ur.type as identity,uao.name as article_out_name,uao.expected_time,uao.applicant_date
+        from user_article_out as uao,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
+        <where>
+            uao.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and ur.id = uao.applicant_id
+            and uao.status = 1
+        </where>
+    </select>
 </mapper>

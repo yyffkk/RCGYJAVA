@@ -1,13 +1,17 @@
 package com.api.vo.butlerApp;
 
+import org.apache.poi.hssf.record.formula.functions.T;
+
+import java.util.List;
+
 /**
- * 待办事项Vo list 回显
+ * 待办事项Vo list 回显<泛型>
  */
-public class ButlerBacklogVo {
+public class ButlerBacklogVo<T> {
     /**
-     * 数据
+     * 数据集合
      */
-    private Object data;
+    private List<T> dataList;
     /**
      * 返回数据类型，1.报事报修，2.物品出门
      */
@@ -16,17 +20,17 @@ public class ButlerBacklogVo {
     @Override
     public String toString() {
         return "ButlerBacklogVo{" +
-                "data=" + data +
+                "dataList=" + dataList +
                 ", type=" + type +
                 '}';
     }
 
-    public Object getData() {
-        return data;
+    public List<T> getDataList() {
+        return dataList;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    public void setDataList(List<T> dataList) {
+        this.dataList = dataList;
     }
 
     public Integer getType() {
@@ -40,8 +44,8 @@ public class ButlerBacklogVo {
     public ButlerBacklogVo() {
     }
 
-    public ButlerBacklogVo(Object data, Integer type) {
-        this.data = data;
+    public ButlerBacklogVo(List<T> dataList, Integer type) {
+        this.dataList = dataList;
         this.type = type;
     }
 }

@@ -5,5 +5,5 @@ import com.api.vo.butlerApp.ButlerBacklogVo;
 import java.util.List;
 
 public interface ButlerBacklogService {
-    List<ButlerBacklogVo> list(String roleId);
+    List<ButlerBacklogVo> list(String roleId, int id);
 }
