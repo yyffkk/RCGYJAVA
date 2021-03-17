@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysInspectionPointDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchInspectionPoint" resultType="com.api.vo.butlerService.VoInspectionPoint">
+        select id,code,name,type,create_date from sys_inspection_point
+        <where>
+            <if test="code != null and code != ''">
+                and code = #{code}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            and is_delete = 1
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.SysInspectionPoint">
+        insert into sys_inspection_point(
+            code,
+            name,
+            type,
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{code},
+            #{name},
+            #{type},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertCheckItems" parameterType="com.api.model.butlerService.SysInspectionCheckItems">
+        insert into sys_inspection_check_items(
+            inspection_point_id,
+            name,
+            type
+        )values (
+            #{inspectionPointId},
+            #{name},
+            #{type}
+        )
+    </insert>
+</mapper>

@@ -15,15 +15,15 @@ public class Test3Controller {
 
     @GetMapping("/test2")
     public void test() throws InterruptedException {
-        System.out.println("test");
-        Timer timer = new Timer();
-        MyTimerTask myTask = new MyTimerTask("哈哈");
-        timer.schedule(myTask,2000L,1000L);
-        //使用puge 打印当前已取消的任务数
-        System.out.println("current canceled task number is "+timer.purge());
-        //休眠5秒
-        Thread.sleep(5000);
-        myTask.cancel();//task的cancel方法
-        System.out.println("current canceled task number is "+timer.purge());
+//        System.out.println("test");
+//        Timer timer = new Timer();
+//        MyTimerTask myTask = new MyTimerTask("哈哈");
+//        timer.schedule(myTask,2000L,1000L);
+//        //使用puge 打印当前已取消的任务数
+//        System.out.println("current canceled task number is "+timer.purge());
+//        //休眠5秒
+//        Thread.sleep(5000);
+//        myTask.cancel();//task的cancel方法
+//        System.out.println("current canceled task number is "+timer.purge());
     }
 }
