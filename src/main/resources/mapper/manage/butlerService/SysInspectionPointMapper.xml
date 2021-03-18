@@ -48,4 +48,35 @@
             #{type}
         )
     </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBIInspectionPoint">
+        select id,code,name,type from sys_inspection_point where id = #{id} and is_delete = 1
+    </select>
+
+    <select id="findByIdCheckItems" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBIInspectionCheckItems">
+        select id,name,type from sys_inspection_check_items where inspection_point_id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.butlerService.SysInspectionPoint">
+        update sys_inspection_point
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCheckItems" parameterType="java.lang.Integer">
+        delete from sys_inspection_check_items where inspection_point_id = #{id}
+    </delete>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_inspection_point set is_delete = 0 where id = #{id}
+    </update>
 </mapper>

@@ -3,6 +3,7 @@ package com.api.manage.controller.butlerService;
 import com.api.manage.service.butlerService.SysInspectionPointService;
 import com.api.model.butlerService.SearchInspectionPoint;
 import com.api.model.butlerService.SysInspectionPoint;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoBorrow;
 import com.api.vo.butlerService.VoInspectionPoint;
 import com.github.pagehelper.PageHelper;
@@ -49,5 +50,35 @@ public class SysInspectionPointController {
     @PostMapping("/insert")
     public Map<String,Object> insert(@RequestBody SysInspectionPoint sysInspectionPoint){
         return sysInspectionPointService.insert(sysInspectionPoint);
+    }
+
+    /**
+     * 根据巡检点主键id查询巡检点信息
+     * @param id 巡检点主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer id){
+        return sysInspectionPointService.findById(id);
+    }
+
+    /**
+     * 更新巡检点信息
+     * @param sysInspectionPoint 巡检点model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysInspectionPoint sysInspectionPoint){
+        return sysInspectionPointService.update(sysInspectionPoint);
+    }
+
+    /**
+     * 假删除巡检点
+     * @param voIds 巡检点主键数组
+     * @return map
+     */
+    @PostMapping("/falseDelete")
+    public Map<String,Object> falseDelete(@RequestBody VoIds voIds){
+        return sysInspectionPointService.falseDelete(voIds.getIds());
     }
 }

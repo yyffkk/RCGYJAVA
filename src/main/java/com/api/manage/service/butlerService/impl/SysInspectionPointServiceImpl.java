@@ -6,6 +6,8 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SearchInspectionPoint;
 import com.api.model.butlerService.SysInspectionCheckItems;
 import com.api.model.butlerService.SysInspectionPoint;
+import com.api.vo.butlerService.VoFBIInspectionCheckItems;
+import com.api.vo.butlerService.VoFBIInspectionPoint;
 import com.api.vo.butlerService.VoInspectionPoint;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -68,6 +70,89 @@ public class SysInspectionPointServiceImpl implements SysInspectionPointService 
             return map;
         }
         map.put("message","添加成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
+        VoFBIInspectionPoint voPoint = sysInspectionPointDao.findById(id);
+        if (voPoint != null){
+            List<VoFBIInspectionCheckItems> voItemsList = sysInspectionPointDao.findByIdCheckItems(voPoint.getId());
+            voPoint.setCheckItemsList(voItemsList);
+        }
+        map.put("data",voPoint);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> update(SysInspectionPoint sysInspectionPoint) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        try {
+            sysInspectionPoint.setModifyId(sysUser.getId());
+            sysInspectionPoint.setModifyDate(new Date());
+            int update = sysInspectionPointDao.update(sysInspectionPoint);
+            if (update <= 0){
+                throw new RuntimeException("修改巡检点信息失败");
+            }
+            //先删除巡检点选择项
+            sysInspectionPointDao.deleteCheckItems(sysInspectionPoint.getId());
+            //再添加巡检点选择项
+            if (sysInspectionPoint.getItemsList() != null && sysInspectionPoint.getItemsList().size()>0){
+                for (SysInspectionCheckItems checkItems : sysInspectionPoint.getItemsList()) {
+                    checkItems.setInspectionPointId(sysInspectionPoint.getId());
+                    int insert = sysInspectionPointDao.insertCheckItems(checkItems);
+                    if (insert <= 0){
+                        throw new RuntimeException("修改巡检点检查项失败");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","修改成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> falseDelete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                int update = sysInspectionPointDao.falseDelete(id);
+                if (update <= 0){
+                    throw new RuntimeException("删除巡检点失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除巡检点成功");
         map.put("status",true);
         return map;
     }

@@ -11,4 +11,10 @@ public interface SysInspectionPointService {
     List<VoInspectionPoint> list(SearchInspectionPoint searchInspectionPoint);
 
     Map<String, Object> insert(SysInspectionPoint sysInspectionPoint);
+
+    Map<String, Object> findById(Integer id);
+
+    Map<String, Object> update(SysInspectionPoint sysInspectionPoint);
+
+    Map<String, Object> falseDelete(int[] ids);
 }
