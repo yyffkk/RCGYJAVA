@@ -3,6 +3,7 @@ package com.api.manage.service.butlerService.impl;
 import com.api.manage.dao.butlerService.SysInspectionRouteDao;
 import com.api.manage.service.butlerService.SysInspectionRouteService;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerService.RouteIdAndStatus;
 import com.api.model.butlerService.SearchInspectionPoint;
 import com.api.model.butlerService.SysInspectionPointRoute;
 import com.api.model.butlerService.SysInspectionRoute;
@@ -159,6 +160,41 @@ public class SysInspectionRouteServiceImpl implements SysInspectionRouteService 
         }
         map.put("message","删除巡检路线成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> isEnable(Integer id) {
+        map = new HashMap<>();
+        try {
+            //根据巡检路线主键id查询启用状态
+            int status = sysInspectionRouteDao.findStatusById(id);
+            String msg = "";
+            if (status == 1){
+                msg = "停用";
+                status =2;
+            }else{
+                msg = "启用";
+                status =1;
+            }
+            RouteIdAndStatus routeIdAndStatus = new RouteIdAndStatus();
+            routeIdAndStatus.setId(id);
+            routeIdAndStatus.setStatus(status);
+            //修改启用状态
+            int update = sysInspectionRouteDao.updateStatusById(routeIdAndStatus);
+            if (update > 0){
+                map.put("message",msg+"成功");
+                map.put("status",true);
+            }else {
+                map.put("message",msg+"失败");
+                map.put("status",false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("message","数据有误");
+            map.put("status",false);
+            return map;
+        }
         return map;
     }
 }

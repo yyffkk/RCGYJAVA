@@ -17,4 +17,6 @@ public interface SysInspectionRouteService {
     Map<String, Object> update(SysInspectionRoute sysInspectionRoute);
 
     Map<String, Object> falseDelete(int[] ids);
+
+    Map<String, Object> isEnable(Integer id);
 }

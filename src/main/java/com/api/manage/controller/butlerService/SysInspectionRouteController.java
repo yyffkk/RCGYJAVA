@@ -81,6 +81,15 @@ public class SysInspectionRouteController {
         return sysInspectionRouteService.falseDelete(voIds.getIds());
     }
 
+    /**
+     * 启用/停用巡检路线
+     * @param id 巡检路线主键id
+     * @return map
+     */
+    @GetMapping("/isEnable")
+    public Map<String,Object> isEnable(Integer id){
+        return sysInspectionRouteService.isEnable(id);
+    }
 
 
 

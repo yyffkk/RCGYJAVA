@@ -1,5 +1,6 @@
 package com.api.manage.dao.butlerService;
 
+import com.api.model.butlerService.RouteIdAndStatus;
 import com.api.model.butlerService.SearchInspectionPoint;
 import com.api.model.butlerService.SysInspectionPointRoute;
 import com.api.model.butlerService.SysInspectionRoute;
@@ -64,4 +65,18 @@ public interface SysInspectionRouteDao {
      * @return 影响行数
      */
     int falseDelete(int id);
+
+    /**
+     * 根据巡检路线主键id查询启用状态
+     * @param id 巡检路线主键id
+     * @return 启用状态
+     */
+    int findStatusById(Integer id);
+
+    /**
+     * 修改启用状态
+     * @param routeIdAndStatus 巡检路线主键id 和 启用状态
+     * @return 影响行数
+     */
+    int updateStatusById(RouteIdAndStatus routeIdAndStatus);
 }
