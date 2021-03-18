@@ -1,21 +1,21 @@
 package com.api.vo.butlerService;
 
 /**
- * 巡检点检查项Vo findById 回显
+ * 巡检路线-点 Vo findById 回显
  */
-public class VoFBIInspectionCheckItems {
+public class VoFBIInspectionRoutePoint {
     /**
-     * 主键id
+     *  主键id
      */
     private Integer id;
     /**
-     * 检查项名称
+     * 巡检点名称
      */
     private String name;
 
     @Override
     public String toString() {
-        return "VoFBIInspectionCheckItems{" +
+        return "VoFBIInspectionRoutePoint{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
@@ -37,10 +37,10 @@ public class VoFBIInspectionCheckItems {
         this.name = name;
     }
 
-    public VoFBIInspectionCheckItems() {
+    public VoFBIInspectionRoutePoint() {
     }
 
-    public VoFBIInspectionCheckItems(Integer id, String name) {
+    public VoFBIInspectionRoutePoint(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

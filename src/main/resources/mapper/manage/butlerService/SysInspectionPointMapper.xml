@@ -40,12 +40,10 @@
     <insert id="insertCheckItems" parameterType="com.api.model.butlerService.SysInspectionCheckItems">
         insert into sys_inspection_check_items(
             inspection_point_id,
-            name,
-            type
+            name
         )values (
             #{inspectionPointId},
-            #{name},
-            #{type}
+            #{name}
         )
     </insert>
 
@@ -54,7 +52,7 @@
     </select>
 
     <select id="findByIdCheckItems" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBIInspectionCheckItems">
-        select id,name,type from sys_inspection_check_items where inspection_point_id = #{id}
+        select id,name from sys_inspection_check_items where inspection_point_id = #{id}
     </select>
 
     <update id="update" parameterType="com.api.model.butlerService.SysInspectionPoint">

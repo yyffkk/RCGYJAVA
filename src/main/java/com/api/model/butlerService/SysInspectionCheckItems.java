@@ -16,10 +16,6 @@ public class SysInspectionCheckItems {
      * 检查项名称
      */
     private String name;
-    /**
-     * 录入项（1.抄表值，2.备注）【2选1，或者不填】
-     */
-    private Integer type;
 
     @Override
     public String toString() {
@@ -27,7 +23,6 @@ public class SysInspectionCheckItems {
                 "id=" + id +
                 ", inspectionPointId=" + inspectionPointId +
                 ", name='" + name + '\'' +
-                ", type=" + type +
                 '}';
     }
 
@@ -55,21 +50,12 @@ public class SysInspectionCheckItems {
         this.name = name;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
     public SysInspectionCheckItems() {
     }
 
-    public SysInspectionCheckItems(Integer id, Integer inspectionPointId, String name, Integer type) {
+    public SysInspectionCheckItems(Integer id, Integer inspectionPointId, String name) {
         this.id = id;
         this.inspectionPointId = inspectionPointId;
         this.name = name;
-        this.type = type;
     }
 }

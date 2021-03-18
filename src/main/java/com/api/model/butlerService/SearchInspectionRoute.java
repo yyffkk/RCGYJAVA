@@ -1,9 +1,9 @@
 package com.api.model.butlerService;
 
 /**
- * 巡检点搜索条件
+ * 巡检路线搜索条件
  */
-public class SearchInspectionPoint {
+public class SearchInspectionRoute {
     /**
      * 当前页数
      */
@@ -23,7 +23,7 @@ public class SearchInspectionPoint {
 
     @Override
     public String toString() {
-        return "SearchInspectionPoint{" +
+        return "SearchInspectionRoute{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
                 ", code='" + code + '\'' +
@@ -63,10 +63,10 @@ public class SearchInspectionPoint {
         this.name = name;
     }
 
-    public SearchInspectionPoint() {
+    public SearchInspectionRoute() {
     }
 
-    public SearchInspectionPoint(int pageNum, int size, String code, String name) {
+    public SearchInspectionRoute(int pageNum, int size, String code, String name) {
         this.pageNum = pageNum;
         this.size = size;
         this.code = code;

@@ -1,10 +1,18 @@
 package com.api.manage.controller.butlerService;
 
 import com.api.manage.service.butlerService.SysInspectionRouteService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.api.model.butlerService.SearchInspectionPoint;
+import com.api.model.butlerService.SysInspectionRoute;
+import com.api.vo.butlerService.VoBorrow;
+import com.api.vo.butlerService.VoInspectionRoute;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 巡检路线管理
@@ -14,4 +22,54 @@ import javax.annotation.Resource;
 public class SysInspectionRouteController {
     @Resource
     SysInspectionRouteService sysInspectionRouteService;
+
+    /**
+     * 查询所有的巡检路线信息（包含条件搜索）
+     * @param searchInspectionPoint 搜索条件
+     * @return map
+     */
+    @GetMapping("/list")
+    public Map<String,Object> list(SearchInspectionPoint searchInspectionPoint){
+        PageHelper.startPage(searchInspectionPoint.getPageNum(),searchInspectionPoint.getSize());
+        List<VoInspectionRoute> voInspectionRouteList = sysInspectionRouteService.list(searchInspectionPoint);
+        PageInfo<VoInspectionRoute> pageInfo = new PageInfo<>(voInspectionRouteList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 添加巡检路线信息
+     * @param sysInspectionRoute 巡检路线model
+     * @return map
+     */
+    @PostMapping("/insert")
+    public Map<String,Object> insert(@RequestBody SysInspectionRoute sysInspectionRoute){
+        return sysInspectionRouteService.insert(sysInspectionRoute);
+    }
+
+    /**
+     * 根据巡检路线主键id查询巡检路线信息
+     * @param id 巡检路线主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer id){
+        return sysInspectionRouteService.findById(id);
+    }
+
+    /**
+     * 修改巡检路线信息
+     * @param sysInspectionRoute 巡检路线model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysInspectionRoute sysInspectionRoute){
+        return sysInspectionRouteService.update(sysInspectionRoute);
+    }
+
+
+
 }
