@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.SysInspectionRouteDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchInspectionRoute" resultType="com.api.vo.butlerService.VoInspectionRoute">
-        select id,code,name,status,space_time,create_date from sys_inspection_route
+        select id,code,name,status,space_time,create_date from sys_inspection_route and is_delete = 1
     </select>
     <insert id="insert" parameterType="com.api.model.butlerService.SysInspectionRoute">
         insert into sys_inspection_route(
@@ -39,7 +39,7 @@
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBIInspectionRoute">
-        select id,name,describes,space_time from sys_inspection_route where id = #{id}
+        select id,name,describes,space_time from sys_inspection_route where id = #{id} and is_delete = 1
     </select>
 
     <select id="findByIdRoutePoint" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBIInspectionRoutePoint">
@@ -68,6 +68,10 @@
     <delete id="deleteRoutePoint" parameterType="java.lang.Integer">
         delete from sys_inspection_point_route where inspection_route_id = #{id}
     </delete>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_inspection_route set is_delete = 0 where id = #{id}
+    </update>
 
 
 </mapper>

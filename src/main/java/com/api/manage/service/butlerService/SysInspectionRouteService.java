@@ -15,4 +15,6 @@ public interface SysInspectionRouteService {
     Map<String, Object> findById(Integer id);
 
     Map<String, Object> update(SysInspectionRoute sysInspectionRoute);
+
+    Map<String, Object> falseDelete(int[] ids);
 }

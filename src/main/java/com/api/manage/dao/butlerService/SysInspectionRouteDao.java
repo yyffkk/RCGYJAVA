@@ -57,4 +57,11 @@ public interface SysInspectionRouteDao {
      * @param id 巡检路线主键id
      */
     void deleteRoutePoint(Integer id);
+
+    /**
+     * 假删除巡检路线信息
+     * @param id 巡检路线主键id
+     * @return 影响行数
+     */
+    int falseDelete(int id);
 }

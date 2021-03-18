@@ -3,6 +3,7 @@ package com.api.manage.controller.butlerService;
 import com.api.manage.service.butlerService.SysInspectionRouteService;
 import com.api.model.butlerService.SearchInspectionPoint;
 import com.api.model.butlerService.SysInspectionRoute;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoBorrow;
 import com.api.vo.butlerService.VoInspectionRoute;
 import com.github.pagehelper.PageHelper;
@@ -69,6 +70,17 @@ public class SysInspectionRouteController {
     public Map<String,Object> update(@RequestBody SysInspectionRoute sysInspectionRoute){
         return sysInspectionRouteService.update(sysInspectionRoute);
     }
+
+    /**
+     * 假删除巡检路线信息
+     * @param voIds 巡检路线主键数组
+     * @return map
+     */
+    @PostMapping("/falseDelete")
+    public Map<String,Object> falseDelete(@RequestBody VoIds voIds){
+        return sysInspectionRouteService.falseDelete(voIds.getIds());
+    }
+
 
 
 
