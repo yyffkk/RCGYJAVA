@@ -79,4 +79,11 @@
             #{endDate}
         )
     </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBIInspectionPlan">
+        select sip.id,sir.name as route_name,sir.code as route_code,sip.inspection_route_id as route_id,sip.name,so.name as organization_name,sip.organization_id,
+        su.actual_name as inspector_name,sip.inspector as inspector_id,sip.plan_begin_date,sip.is_sort,sip.check_rate_type
+        from sys_inspection_plan as sip,sys_inspection_route as sir,sys_organization as so,sys_user as su
+        where sip.inspection_route_id = sir.id and sip.organization_id = so.id and sip.inspector = su.id and sip.id = #{id}
+    </select>
 </mapper>

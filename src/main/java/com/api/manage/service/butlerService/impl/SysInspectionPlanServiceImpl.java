@@ -7,6 +7,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SearchInspectionPlan;
 import com.api.model.butlerService.SysInspectionExecute;
 import com.api.model.butlerService.SysInspectionPlan;
+import com.api.vo.butlerService.VoFBIInspectionPlan;
 import com.api.vo.butlerService.VoInspectionPlan;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -78,6 +79,17 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
             return map;
         }
         map.put("message","添加成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
+        //根据巡检计划主键id查询巡检计划信息
+        VoFBIInspectionPlan voFBIInspectionPlan = sysInspectionPlanDao.findById(id);
+        map.put("data",voFBIInspectionPlan);
+        map.put("message","请求成功");
         map.put("status",true);
         return map;
     }

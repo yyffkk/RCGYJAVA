@@ -11,4 +11,6 @@ public interface SysInspectionPlanService {
     List<VoInspectionPlan> list(SearchInspectionPlan searchInspectionPlan);
 
     Map<String, Object> insert(SysInspectionPlan sysInspectionPlan);
+
+    Map<String, Object> findById(Integer id);
 }

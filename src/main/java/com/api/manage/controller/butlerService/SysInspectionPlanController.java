@@ -50,4 +50,15 @@ public class SysInspectionPlanController {
     public Map<String,Object> insert(@RequestBody SysInspectionPlan sysInspectionPlan){
         return sysInspectionPlanService.insert(sysInspectionPlan);
     }
+
+
+    /**
+     * 根据巡检计划主键id查询巡检计划信息
+     * @param id 巡检计划主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer id){
+        return sysInspectionPlanService.findById(id);
+    }
 }

@@ -3,6 +3,7 @@ package com.api.manage.dao.butlerService;
 import com.api.model.butlerService.SearchInspectionPlan;
 import com.api.model.butlerService.SysInspectionExecute;
 import com.api.model.butlerService.SysInspectionPlan;
+import com.api.vo.butlerService.VoFBIInspectionPlan;
 import com.api.vo.butlerService.VoInspectionPlan;
 
 import java.util.List;
@@ -28,4 +29,11 @@ public interface SysInspectionPlanDao {
      * @return 影响行数
      */
     int insertExecute(SysInspectionExecute sysInspectionExecute);
+
+    /**
+     * 根据巡检计划主键id查询巡检计划信息
+     * @param id 巡检计划主键id
+     * @return 巡检计划信息
+     */
+    VoFBIInspectionPlan findById(Integer id);
 }
