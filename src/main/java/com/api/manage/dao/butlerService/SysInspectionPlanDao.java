@@ -1,5 +1,6 @@
 package com.api.manage.dao.butlerService;
 
+import com.api.model.butlerService.PlanIdAndStatus;
 import com.api.model.butlerService.SearchInspectionPlan;
 import com.api.model.butlerService.SysInspectionExecute;
 import com.api.model.butlerService.SysInspectionPlan;
@@ -36,4 +37,25 @@ public interface SysInspectionPlanDao {
      * @return 巡检计划信息
      */
     VoFBIInspectionPlan findById(Integer id);
+
+    /**
+     * 假删除巡检计划
+     * @param id 巡检计划主键id
+     * @return 影响行数
+     */
+    int falseDelete(int id);
+
+    /**
+     * 根据巡检路线主键id查询巡检状态
+     * @param id 巡检路线主键id
+     * @return 巡检状态
+     */
+    int findStatusById(Integer id);
+
+    /**
+     * 修改启用状态
+     * @param planIdAndStatus 巡检计划主键id 和 状态
+     * @return 影响行数
+     */
+    int updateStatus(PlanIdAndStatus planIdAndStatus);
 }

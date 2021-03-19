@@ -4,6 +4,7 @@ import com.api.manage.service.butlerService.SysInspectionPlanService;
 import com.api.manage.service.butlerService.SysInspectionPointService;
 import com.api.model.butlerService.SearchInspectionPlan;
 import com.api.model.butlerService.SysInspectionPlan;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoBorrow;
 import com.api.vo.butlerService.VoInspectionPlan;
 import com.github.pagehelper.PageHelper;
@@ -53,7 +54,7 @@ public class SysInspectionPlanController {
 
 
     /**
-     * 根据巡检计划主键id查询巡检计划信息
+     * 根据巡检计划主键id查询巡检计划信息（不允许修改）
      * @param id 巡检计划主键id
      * @return map
      */
@@ -61,4 +62,28 @@ public class SysInspectionPlanController {
     public Map<String,Object> findById(Integer id){
         return sysInspectionPlanService.findById(id);
     }
+
+    /**
+     * 假删除巡检计划
+     * @param ids 巡检计划主键id数组
+     * @return map
+     */
+    @PostMapping("/falseDelete")
+    public Map<String,Object> falseDelete(@RequestBody VoIds ids){
+        return sysInspectionPlanService.falseDelete(ids.getIds());
+    }
+
+    /**
+     * 启用/停用 巡检计划
+     * @param id 巡检计划主键id
+     * @return map
+     */
+    @GetMapping("/isEnable")
+    public Map<String,Object> isEnable(Integer id){
+        return sysInspectionPlanService.isEnable(id);
+    }
+
+
+
+
 }

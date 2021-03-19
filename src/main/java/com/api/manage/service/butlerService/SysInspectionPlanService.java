@@ -13,4 +13,8 @@ public interface SysInspectionPlanService {
     Map<String, Object> insert(SysInspectionPlan sysInspectionPlan);
 
     Map<String, Object> findById(Integer id);
+
+    Map<String, Object> falseDelete(int[] ids);
+
+    Map<String, Object> isEnable(Integer id);
 }

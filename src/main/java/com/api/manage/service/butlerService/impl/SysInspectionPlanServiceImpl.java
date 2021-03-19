@@ -4,6 +4,7 @@ import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.butlerService.SysInspectionRouteDao;
 import com.api.manage.service.butlerService.SysInspectionPlanService;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerService.PlanIdAndStatus;
 import com.api.model.butlerService.SearchInspectionPlan;
 import com.api.model.butlerService.SysInspectionExecute;
 import com.api.model.butlerService.SysInspectionPlan;
@@ -91,6 +92,67 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
         map.put("data",voFBIInspectionPlan);
         map.put("message","请求成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> falseDelete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                //假删除巡检计划
+                int update = sysInspectionPlanDao.falseDelete(id);
+                if (update <= 0){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> isEnable(Integer id) {
+        map = new HashMap<>();
+        try {
+            //根据巡检路线主键id查询巡检状态
+            int status = sysInspectionPlanDao.findStatusById(id);
+            String msg = "";
+            if (status == 1){
+                status = 2;
+                msg = "停用";
+            }else {
+                status = 1;
+                msg = "启用";
+            }
+            PlanIdAndStatus planIdAndStatus = new PlanIdAndStatus();
+            planIdAndStatus.setPlanId(id);
+            planIdAndStatus.setStatus(status);
+            int update = sysInspectionPlanDao.updateStatus(planIdAndStatus);
+            if (update>0){
+                map.put("message",msg+"成功");
+                map.put("status",true);
+            }else {
+                map.put("message",msg+"失败");
+                map.put("status",false);
+            }
+        } catch (Exception e) {
+            map.put("message","数据有误");
+            map.put("status",false);
+            return map;
+        }
         return map;
     }
 }
