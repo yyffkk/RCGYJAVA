@@ -8,6 +8,8 @@ import com.api.vo.butlerService.VoBorrow;
 import com.api.vo.butlerService.VoInspectionPoint;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class SysInspectionPointController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
     public Map<String,Object> list(SearchInspectionPoint searchInspectionPoint){
         PageHelper.startPage(searchInspectionPoint.getPageNum(),searchInspectionPoint.getSize());
         List<VoInspectionPoint> voInspectionPoints = sysInspectionPointService.list(searchInspectionPoint);
@@ -48,6 +51,7 @@ public class SysInspectionPointController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysInspectionPoint sysInspectionPoint){
         return sysInspectionPointService.insert(sysInspectionPoint);
     }
@@ -58,6 +62,7 @@ public class SysInspectionPointController {
      * @return map
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return sysInspectionPointService.findById(id);
     }
@@ -68,6 +73,7 @@ public class SysInspectionPointController {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysInspectionPoint sysInspectionPoint){
         return sysInspectionPointService.update(sysInspectionPoint);
     }
@@ -78,6 +84,7 @@ public class SysInspectionPointController {
      * @return map
      */
     @PostMapping("/falseDelete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds voIds){
         return sysInspectionPointService.falseDelete(voIds.getIds());
     }
