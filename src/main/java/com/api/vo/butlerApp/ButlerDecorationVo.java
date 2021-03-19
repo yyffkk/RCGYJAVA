@@ -1,5 +1,7 @@
 package com.api.vo.butlerApp;
 
+import java.util.Date;
+
 /**
  * 管家app 装修管理Vo list 回显
  */
@@ -28,6 +30,10 @@ public class ButlerDecorationVo {
      * 跟踪人id
      */
     private Integer tracker;
+    /**
+     * 申请时间
+     */
+    private Date applicationDate;
 
     @Override
     public String toString() {
@@ -38,6 +44,7 @@ public class ButlerDecorationVo {
                 ", operationStatus=" + operationStatus +
                 ", status=" + status +
                 ", tracker=" + tracker +
+                ", applicationDate=" + applicationDate +
                 '}';
     }
 
@@ -89,15 +96,24 @@ public class ButlerDecorationVo {
         this.tracker = tracker;
     }
 
+    public Date getApplicationDate() {
+        return applicationDate;
+    }
+
+    public void setApplicationDate(Date applicationDate) {
+        this.applicationDate = applicationDate;
+    }
+
     public ButlerDecorationVo() {
     }
 
-    public ButlerDecorationVo(Integer id, String roomName, String constructionUnit, Integer operationStatus, Integer status, Integer tracker) {
+    public ButlerDecorationVo(Integer id, String roomName, String constructionUnit, Integer operationStatus, Integer status, Integer tracker, Date applicationDate) {
         this.id = id;
         this.roomName = roomName;
         this.constructionUnit = constructionUnit;
         this.operationStatus = operationStatus;
         this.status = status;
         this.tracker = tracker;
+        this.applicationDate = applicationDate;
     }
 }

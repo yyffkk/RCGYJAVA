@@ -1,6 +1,7 @@
 package com.api.manage.dao.butlerService;
 
 import com.api.model.butlerService.SearchInspectionPlan;
+import com.api.model.butlerService.SysInspectionExecute;
 import com.api.model.butlerService.SysInspectionPlan;
 import com.api.vo.butlerService.VoInspectionPlan;
 
@@ -20,4 +21,11 @@ public interface SysInspectionPlanDao {
      * @return 影响行数
      */
     int insert(SysInspectionPlan sysInspectionPlan);
+
+    /**
+     * 添加第一次执行巡检信息
+     * @param sysInspectionExecute 巡检执行情况
+     * @return 影响行数
+     */
+    int insertExecute(SysInspectionExecute sysInspectionExecute);
 }

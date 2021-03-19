@@ -81,5 +81,9 @@
         update sys_inspection_route set status = #{status} where id = #{id}
     </update>
 
+    <select id="findSpaceTimeById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select space_time from sys_inspection_route where id = #{inspectionRouteId}
+    </select>
+
 
 </mapper>

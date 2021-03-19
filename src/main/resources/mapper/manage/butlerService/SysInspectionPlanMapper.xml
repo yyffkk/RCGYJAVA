@@ -67,4 +67,16 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+
+    <insert id="insertExecute" parameterType="com.api.model.butlerService.SysInspectionExecute">
+        insert into sys_inspection_execute(
+            inspection_plan_id,
+            begin_date,
+            end_date
+        )values (
+            #{inspectionPlanId},
+            #{beginDate},
+            #{endDate}
+        )
+    </insert>
 </mapper>

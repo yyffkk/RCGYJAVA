@@ -79,4 +79,11 @@ public interface SysInspectionRouteDao {
      * @return 影响行数
      */
     int updateStatusById(RouteIdAndStatus routeIdAndStatus);
+
+    /**
+     * 根据巡检路线主键id查询持续时间信息
+     * @param inspectionRouteId 巡检路线主键id
+     * @return 持续时间
+     */
+    int findSpaceTimeById(Integer inspectionRouteId);
 }
