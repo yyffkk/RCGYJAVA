@@ -3,5 +3,68 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.SysInspectionPlanDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchInspectionPlan" resultType="com.api.vo.butlerService.VoInspectionPlan">
+        select sip.id,sip.code,sir.code as route_code,sip.name,sip.plan_begin_date,sip.actual_begin_date,so.name as organization_name,su.actual_name as inspector_name
+        from sys_inspection_plan as sip,sys_inspection_route as sir,sys_user as su,sys_organization as so
+        <where>
+            sip.inspection_route_id = sir.id
+            and sip.inspector = su.id
+            and sip.organization_id = so.id
+            and sip.is_delete = 1
+            <if test="code != null and code != ''">
+                and sip.code = #{code}
+            </if>
+            <if test="name != null and name != ''">
+                and sip.name = #{name}
+            </if>
+            <if test="inspectionRouteId != null">
+                and sip.inspection_route_id = #{inspectionRouteId}
+            </if>
+            <if test="planBeginDateStart != null">
+                and sip.plan_begin_date <![CDATA[ >= ]]> #{planBeginDateStart}
+            </if>
+            <if test="planBeginDateEnd != null">
+                and sip.plan_begin_date <![CDATA[ <= ]]> #{planBeginDateEnd}
+            </if>
+            <if test="actualBeginDateStart != null">
+                and sip.actual_begin_date <![CDATA[ >= ]]> #{actualBeginDateStart}
+            </if>
+            <if test="actualBeginDateEnd != null">
+                and sip.actual_begin_date <![CDATA[ <= ]]> #{actualBeginDateEnd}
+            </if>
+        </where>
+    </select>
 
+    <insert id="insert" parameterType="com.api.model.butlerService.SysInspectionPlan">
+        insert into sys_inspection_plan(
+            inspection_route_id,
+            code,
+            name,
+            status,
+            organization_id,
+            inspector,
+            plan_begin_date,
+            is_sort,
+            check_rate_type,
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{inspectionRouteId},
+            #{code},
+            #{name},
+            #{status},
+            #{organizationId},
+            #{inspector},
+            #{planBeginDate},
+            #{isSort},
+            #{checkRateType},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 </mapper>
