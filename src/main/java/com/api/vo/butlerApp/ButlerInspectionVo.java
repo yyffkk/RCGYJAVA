@@ -17,7 +17,7 @@ public class ButlerInspectionVo {
      */
     private String name;
     /**
-     * 状态（1.待巡检（计划当次巡检开始时间为null），2.已巡检(计划当次巡检开始时间不为null)）
+     * 状态（1.待巡检（实际当次巡检结束时间为null），2.已巡检(实际当次巡检结束时间不为null)）
      */
     private Integer status;
 
