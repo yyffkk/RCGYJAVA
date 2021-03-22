@@ -84,7 +84,7 @@ public class ButlerInspectionController {
 
 
     /**
-     * 扫码二维码查询巡检信息
+     * 扫码二维码查询巡检执行点信息
      * @param executeId 巡检执行情况主键id
      * @param executePointId 巡检执行点主键id（二维码携带内容）
      * @param roleId 当前用户所拥有的角色id
@@ -96,7 +96,7 @@ public class ButlerInspectionController {
     }
 
     /**
-     * 提交巡检点信息
+     * 提交巡检执行点信息
      * @param executePointSubmit 执行巡检点提交信息
      * @param request butlerApp-admin-token获取的request管家用户信息
      * @return map
@@ -107,6 +107,18 @@ public class ButlerInspectionController {
         String roleId = request.getParameter("roleId");
         return butlerInspectionService.submitPointDetail(executePointSubmit,roleId);
     }
+
+
+    /**
+     * 查询巡检执行点信息（点击已巡检）
+     * @param executePointId 巡检执行点主键id
+     * @return map
+     */
+    @GetMapping("/findCheckDetailById")
+    public Map<String,Object> findCheckDetailById(Integer executePointId){
+        return butlerInspectionService.findCheckDetailById(executePointId);
+    }
+
 
 
 

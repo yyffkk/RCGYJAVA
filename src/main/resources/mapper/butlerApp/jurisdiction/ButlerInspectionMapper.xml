@@ -114,4 +114,12 @@
         set actual_end_date = #{actualEndDate}
         where id = #{executeId}
     </update>
+
+    <select id="findExecutePointById2" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecutePointFBIVo">
+        select * from sys_inspection_execute_point where id = #{executePointId}
+    </select>
+
+    <select id="findExecuteCheckByPointId2" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteCheckFBIVo">
+        select * from sys_inspection_execute_check_items where execute_point_id = #{executePointId}
+    </select>
 </mapper>

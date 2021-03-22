@@ -6,6 +6,7 @@ import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
 import com.api.model.butlerApp.*;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.*;
+import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -240,6 +241,29 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
             return map;
         }
         map.put("message","提交成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findCheckDetailById(Integer executePointId) {
+        map = new HashMap<>();
+        //根据巡检执行点主键id查询巡检执行点信息
+        ButlerExecutePointFBIVo executePointFBIVo = butlerInspectionDao.findExecutePointById2(executePointId);
+        if (executePointFBIVo != null){
+            //根据巡检执行点主键id查询巡检执行检查项
+            List<ButlerExecuteCheckFBIVo> checkFBIVoList = butlerInspectionDao.findExecuteCheckByPointId2(executePointId);
+            executePointFBIVo.setCheckFBIVoList(checkFBIVoList);
+            UploadUtil uploadUtil = new UploadUtil();
+            //查询巡更人员自拍人脸
+            List<VoResourcesImg> byDate1 = uploadUtil.findImgByDate("sysInspectionExecutePoint", executePointId, "inspectionFace");
+            executePointFBIVo.setFaceImg(byDate1);
+            //查询巡更人员拍摄现场
+            List<VoResourcesImg> byDate2 = uploadUtil.findImgByDate("sysInspectionExecutePoint", executePointId, "inspectionSpace");
+            executePointFBIVo.setSpaceImg(byDate2);
+        }
+        map.put("data",executePointFBIVo);
+        map.put("message","请求成功");
         map.put("status",true);
         return map;
     }

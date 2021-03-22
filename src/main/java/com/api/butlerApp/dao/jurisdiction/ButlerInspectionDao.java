@@ -139,4 +139,18 @@ public interface ButlerInspectionDao {
      * @return 影响行数
      */
     int updateExecute(ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate);
+
+    /**
+     * 根据巡检执行点主键id查询巡检执行点信息
+     * @param executePointId 巡检执行点主键id
+     * @return 巡检执行点信息
+     */
+    ButlerExecutePointFBIVo findExecutePointById2(Integer executePointId);
+
+    /**
+     * 根据巡检执行点主键id查询巡检执行检查项
+     * @param executePointId 巡检执行点主键id
+     * @return 巡检执行检查项集合
+     */
+    List<ButlerExecuteCheckFBIVo> findExecuteCheckByPointId2(Integer executePointId);
 }
