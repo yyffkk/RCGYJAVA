@@ -59,7 +59,10 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_DECORATION_DECORATION_APPLICATION_FORM;
     @Value("${prop.upload-decoration-decoration-commitment}")
     private String UPLOAD_DECORATION_DECORATION_COMMITMENT;
-
+    @Value("${prop.upload-butler-app-inspection-face}")
+    private String UPLOAD_BUTLER_APP_INSPECTION_FACE;
+    @Value("${prop.upload-butler-app-inspection-space}")
+    private String UPLOAD_BUTLER_APP_INSPECTION_SPACE;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -206,6 +209,18 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadDecorationCommitment(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_DECORATION_DECORATION_COMMITMENT);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadInspectionFace(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_BUTLER_APP_INSPECTION_FACE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadInspectionSpace(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_BUTLER_APP_INSPECTION_SPACE);
         return map;
     }
 

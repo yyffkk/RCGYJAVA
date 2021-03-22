@@ -150,7 +150,7 @@
     </select>
 
     <select id="findActivityGambit" resultType="com.api.vo.app.IdAndName">
-        select c.id,sg2.title as name from (
+        select c.id,sg2.summary as name from (
             select a.id,(a.sum2+b.count2) as activity_num from (
                 select sg.id,(case SUM(sgt.likes) is null when true then 0 else SUM(sgt.likes) end) as sum2 from sys_gambit_theme as sgt,sys_gambit as sg where sgt.gambit_id = sg.id and sgt.is_delete = 1 group by sgt.id
             ) as a LEFT JOIN (

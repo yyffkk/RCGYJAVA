@@ -51,7 +51,10 @@ prop:
 
   #ButlerApp-个人资料：头像照片上传路径
   upload-butler-app-head-sculpture: /img/butlerAppHeadSculpture/
-
+  #ButlerApp-巡检管理：巡更人员自拍人脸
+  upload-butler-app-inspection-face: /img/inspectionFace/
+  #ButlerApp-巡检管理：巡更人员拍摄现场
+  upload-butler-app-inspection-space: /img/inspectionSpace/
 
 
 

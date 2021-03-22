@@ -3,10 +3,7 @@ package com.api.butlerApp.service.jurisdiction.impl;
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
-import com.api.model.butlerApp.ButlerExecuteCheck;
-import com.api.model.butlerApp.ButlerExecuteIdAndBeginDate;
-import com.api.model.butlerApp.ButlerExecutePoint;
-import com.api.model.butlerApp.ButlerInspectionSearch;
+import com.api.model.butlerApp.*;
 import com.api.vo.butlerApp.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -182,6 +179,11 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
             map.put("status",false);
         }
         return map;
+    }
+
+    @Override
+    public Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId) {
+        return null;
     }
 
     private int findJurisdictionByUserId(String roleIds) {

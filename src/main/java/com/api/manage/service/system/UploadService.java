@@ -45,4 +45,8 @@ public interface UploadService {
     Map<String, Object> uploadDecorationApplicationForm(MultipartFile file);
 
     Map<String, Object> uploadDecorationCommitment(MultipartFile file);
+
+    Map<String, Object> uploadInspectionFace(MultipartFile file);
+
+    Map<String, Object> uploadInspectionSpace(MultipartFile file);
 }

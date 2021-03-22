@@ -61,4 +61,24 @@ public class ButlerAppUploadController {
         return uploadService.uploadArticleDetail(file);
     }
 
+    /**
+     * 上传巡更人员自拍人脸
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadInspectionFace")
+    public Map<String,Object> uploadInspectionFace(MultipartFile file){
+        return uploadService.uploadInspectionFace(file);
+    }
+
+    /**
+     * 上传巡更人员拍摄现场
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadInspectionSpace")
+    public Map<String,Object> uploadInspectionSpace(MultipartFile file){
+        return uploadService.uploadInspectionSpace(file);
+    }
+
 }

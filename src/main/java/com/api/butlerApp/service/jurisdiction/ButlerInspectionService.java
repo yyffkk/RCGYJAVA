@@ -1,5 +1,6 @@
 package com.api.butlerApp.service.jurisdiction;
 
+import com.api.model.butlerApp.ButlerExecutePointSubmit;
 import com.api.model.butlerApp.ButlerInspectionSearch;
 import com.api.vo.butlerApp.ButlerInspectionVo;
 
@@ -18,4 +19,6 @@ public interface ButlerInspectionService {
     Map<String, Object> startInspection(Integer executeId, String roleId);
 
     Map<String, Object> findCheckDetailByQR(Integer executeId, Integer executePointId, String roleId);
+
+    Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId);
 }

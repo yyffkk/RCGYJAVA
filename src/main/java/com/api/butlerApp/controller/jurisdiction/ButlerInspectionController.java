@@ -1,15 +1,15 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
+import com.api.model.butlerApp.ButlerExecutePointSubmit;
 import com.api.model.butlerApp.ButlerInspectionSearch;
 import com.api.vo.butlerApp.ButlerInspectionVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +93,19 @@ public class ButlerInspectionController {
     @GetMapping("/findCheckDetailByQR")
     public Map<String,Object> findCheckDetailByQR(Integer executeId,Integer executePointId,String roleId){
         return butlerInspectionService.findCheckDetailByQR(executeId,executePointId,roleId);
+    }
+
+    /**
+     * 提交巡检点信息
+     * @param executePointSubmit 执行巡检点提交信息
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/submitPointDetail")
+    public Map<String,Object> submitPointDetail(@RequestBody ButlerExecutePointSubmit executePointSubmit, HttpServletRequest request){
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerInspectionService.submitPointDetail(executePointSubmit,roleId);
     }
 
 }
