@@ -88,17 +88,17 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
             //判断是否可以点击开始巡检
             //根据巡检执行情况主键id查询巡检执行情况信息
             ButlerInspectionFDBIVo detailById = butlerInspectionDao.findDetailById(executeId);
-            if (detailById.getActualBeginDate() != null){
-                throw new RuntimeException("已开始巡检，操作失败");
-            }
-
-            if (new Date().getTime() < detailById.getBeginDate().getTime()){
-                throw new RuntimeException("巡检未开始");
-            }
-
-            if (new Date().getTime() > detailById.getEndDate().getTime()){
-                throw new RuntimeException("巡检已结束");
-            }
+//            if (detailById.getActualBeginDate() != null){
+//                throw new RuntimeException("已开始巡检，操作失败");
+//            }
+//
+//            if (new Date().getTime() < detailById.getBeginDate().getTime()){
+//                throw new RuntimeException("巡检未开始");
+//            }
+//
+//            if (new Date().getTime() > detailById.getEndDate().getTime()){
+//                throw new RuntimeException("巡检已结束");
+//            }
 
             //查询计划巡检点信息，返回主键id
             List<ButlerExecutePoint> butlerExecutePointList = butlerInspectionDao.findPlanInspectionPoint(executeId);
@@ -128,14 +128,25 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
 
                 }
             }
+            //修改当前巡检执行情况的实际开始时间
             ButlerExecuteIdAndBeginDate butlerExecuteIdAndBeginDate = new ButlerExecuteIdAndBeginDate();
             butlerExecuteIdAndBeginDate.setExecuteId(executeId);
             butlerExecuteIdAndBeginDate.setActualBeginDate(new Date());
-            //修改当前巡检执行情况的实际开始时间
             int update = butlerInspectionDao.updateActualBeginDateById(butlerExecuteIdAndBeginDate);
             if (update <= 0){
                 throw new RuntimeException("修改当前巡检执行情况失败");
             }
+            if (detailById.getSort() ==1){
+                //修改当前巡检计划的实际开始时间
+                ButlerPlanIdAndActualBeginDate planIdAndActualBeginDate = new ButlerPlanIdAndActualBeginDate();
+                planIdAndActualBeginDate.setPlanId(detailById.getInspectionPlanId());
+                planIdAndActualBeginDate.setActualBeginDate(new Date());
+                int update2 = butlerInspectionDao.updatePlanByPlanId(planIdAndActualBeginDate);
+                if (update2 <= 0){
+                    throw new RuntimeException("修改当前巡检计划的实际开始时间失败");
+                }
+            }
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();

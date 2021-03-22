@@ -15,7 +15,7 @@
     </select>
 
     <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerInspectionFDBIVo">
-        select sie.id,sie.inspection_plan_id,concat(sip.code,'-',sie.sort) as code,sip.name,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date
+        select sie.id,sie.inspection_plan_id,concat(sip.code,'-',sie.sort) as code,sip.name,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date,sie.sort
         from sys_inspection_execute as sie,sys_inspection_plan as sip
         where sie.inspection_plan_id = sip.id and sie.id = #{executeId}
     </select>
@@ -122,4 +122,10 @@
     <select id="findExecuteCheckByPointId2" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteCheckFBIVo">
         select * from sys_inspection_execute_check_items where execute_point_id = #{executePointId}
     </select>
+
+    <update id="updatePlanByPlanId" parameterType="com.api.model.butlerApp.ButlerPlanIdAndActualBeginDate">
+        update sys_inspection_plan
+        set actual_begin_date = #{actualBeginDate}
+        where id = #{planId}
+    </update>
 </mapper>

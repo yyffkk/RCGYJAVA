@@ -38,6 +38,10 @@ public class ButlerInspectionFDBIVo {
      * 巡检执行情况实际结束时间
      */
     private Date actualEndDate;
+    /**
+     * 排序，巡检计划的第几次执行
+     */
+    private Integer sort;
 
     @Override
     public String toString() {
@@ -50,6 +54,7 @@ public class ButlerInspectionFDBIVo {
                 ", endDate=" + endDate +
                 ", actualBeginDate=" + actualBeginDate +
                 ", actualEndDate=" + actualEndDate +
+                ", sort=" + sort +
                 '}';
     }
 
@@ -117,10 +122,18 @@ public class ButlerInspectionFDBIVo {
         this.actualEndDate = actualEndDate;
     }
 
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
     public ButlerInspectionFDBIVo() {
     }
 
-    public ButlerInspectionFDBIVo(Integer id, Integer inspectionPlanId, String code, String name, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate) {
+    public ButlerInspectionFDBIVo(Integer id, Integer inspectionPlanId, String code, String name, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate, Integer sort) {
         this.id = id;
         this.inspectionPlanId = inspectionPlanId;
         this.code = code;
@@ -129,5 +142,6 @@ public class ButlerInspectionFDBIVo {
         this.endDate = endDate;
         this.actualBeginDate = actualBeginDate;
         this.actualEndDate = actualEndDate;
+        this.sort = sort;
     }
 }

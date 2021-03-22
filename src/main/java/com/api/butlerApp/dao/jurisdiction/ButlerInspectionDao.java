@@ -3,7 +3,6 @@ package com.api.butlerApp.dao.jurisdiction;
 import com.api.model.butlerApp.*;
 import com.api.vo.butlerApp.*;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ButlerInspectionDao {
@@ -153,4 +152,11 @@ public interface ButlerInspectionDao {
      * @return 巡检执行检查项集合
      */
     List<ButlerExecuteCheckFBIVo> findExecuteCheckByPointId2(Integer executePointId);
+
+    /**
+     * 修改当前巡检计划的实际开始时间
+     * @param planIdAndActualBeginDate 巡检计划主键id 和 实际开始时间
+     * @return 影响行数
+     */
+    int updatePlanByPlanId(ButlerPlanIdAndActualBeginDate planIdAndActualBeginDate);
 }
