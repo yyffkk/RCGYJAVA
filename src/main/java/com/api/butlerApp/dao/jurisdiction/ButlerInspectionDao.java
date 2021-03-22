@@ -106,4 +106,11 @@ public interface ButlerInspectionDao {
      * @return 巡检执行检查项集合
      */
     List<ButlerExecuteCheckVo> findExecuteCheckByPointId(Integer id);
+
+    /**
+     * 修改巡检执行点检查项信息
+     * @param executeCheck 巡检执行检查项
+     * @return 影响行数
+     */
+    int updateExecuteCheck(ButlerExecuteCheck executeCheck);
 }

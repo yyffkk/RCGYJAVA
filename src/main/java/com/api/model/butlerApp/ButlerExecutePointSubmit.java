@@ -8,6 +8,10 @@ import java.util.List;
  */
 public class ButlerExecutePointSubmit {
     /**
+     * 巡检执行点主键id
+     */
+    private Integer executePointId;
+    /**
      * 巡检执行检查项集合
      */
     private List<ButlerExecuteCheck> executeCheckList;
@@ -23,10 +27,19 @@ public class ButlerExecutePointSubmit {
     @Override
     public String toString() {
         return "ButlerExecutePointSubmit{" +
-                "executeCheckList=" + executeCheckList +
+                "executePointId=" + executePointId +
+                ", executeCheckList=" + executeCheckList +
                 ", inspectionFaceImg=" + Arrays.toString(inspectionFaceImg) +
                 ", inspectionSpaceImg=" + Arrays.toString(inspectionSpaceImg) +
                 '}';
+    }
+
+    public Integer getExecutePointId() {
+        return executePointId;
+    }
+
+    public void setExecutePointId(Integer executePointId) {
+        this.executePointId = executePointId;
     }
 
     public List<ButlerExecuteCheck> getExecuteCheckList() {
@@ -56,7 +69,8 @@ public class ButlerExecutePointSubmit {
     public ButlerExecutePointSubmit() {
     }
 
-    public ButlerExecutePointSubmit(List<ButlerExecuteCheck> executeCheckList, String[] inspectionFaceImg, String[] inspectionSpaceImg) {
+    public ButlerExecutePointSubmit(Integer executePointId, List<ButlerExecuteCheck> executeCheckList, String[] inspectionFaceImg, String[] inspectionSpaceImg) {
+        this.executePointId = executePointId;
         this.executeCheckList = executeCheckList;
         this.inspectionFaceImg = inspectionFaceImg;
         this.inspectionSpaceImg = inspectionSpaceImg;

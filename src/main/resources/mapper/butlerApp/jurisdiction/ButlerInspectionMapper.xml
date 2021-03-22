@@ -89,4 +89,9 @@
     <select id="findExecuteCheckByPointId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteCheckVo">
         select * from sys_inspection_execute_check_items where execute_point_id = #{id}
     </select>
+    <update id="updateExecuteCheck" parameterType="com.api.model.butlerApp.ButlerExecuteCheck">
+        update sys_inspection_execute_check_items
+        set status = #{status},remakes = #{remakes}
+        where id = #{id}
+    </update>
 </mapper>

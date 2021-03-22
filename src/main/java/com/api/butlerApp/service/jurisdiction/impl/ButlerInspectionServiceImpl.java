@@ -4,6 +4,7 @@ import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
 import com.api.model.butlerApp.*;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -182,8 +183,40 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId) {
-        return null;
+        map = new HashMap<>();
+        try {
+            //修改巡检执行点检查项
+            List<ButlerExecuteCheck> executeCheckList = executePointSubmit.getExecuteCheckList();
+            if (executeCheckList != null && executeCheckList.size()>0){
+                for (ButlerExecuteCheck executeCheck : executeCheckList) {
+                    executeCheck.setExecutePointId(executePointSubmit.getExecutePointId());
+                    int update = butlerInspectionDao.updateExecuteCheck(executeCheck);
+                    if (update <=0){
+                        throw new RuntimeException("修改巡检执行点检查项失败");
+                    }
+                }
+            }
+            UploadUtil uploadUtil = new UploadUtil();
+            //上传自拍照片
+            uploadUtil.saveUrlToDB(executePointSubmit.getInspectionFaceImg(),"sysInspectionExecutePoint",executePointSubmit.getExecutePointId(),"inspectionFace","600",30,20);
+            //上传现场照片
+            uploadUtil.saveUrlToDB(executePointSubmit.getInspectionSpaceImg(),"sysInspectionExecutePoint",executePointSubmit.getExecutePointId(),"inspectionSpace","600",30,20);
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交成功");
+        map.put("status",true);
+        return map;
     }
 
     private int findJurisdictionByUserId(String roleIds) {
