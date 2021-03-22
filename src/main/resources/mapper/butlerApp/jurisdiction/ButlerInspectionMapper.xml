@@ -13,4 +13,68 @@
             </if>
         </where>
     </select>
+
+    <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerInspectionFDBIVo">
+        select sie.id,sie.inspection_plan_id,concat(sip.code,'-',sie.sort) as code,sip.name,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date
+        from sys_inspection_execute as sie,sys_inspection_plan as sip
+        where sie.inspection_plan_id = sip.id and sie.id = #{executeId}
+    </select>
+
+    <select id="findPointByPlanId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerPointVo">
+        select sipo.id,sipo.name
+        from sys_inspection_plan as sipl,sys_inspection_route as sir,sys_inspection_point_route as sipr,sys_inspection_point as sipo
+        where sipl.inspection_route_id = sir.id and sipr.inspection_point_id = sipo.id and sipr.inspection_route_id and sipo.is_delete = 1 and sipl.id = #{planId}
+    </select>
+
+    <select id="countCheckNumByPointId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_inspection_check_items as sici where inspection_point_id = #{id}
+    </select>
+
+    <select id="findPointByExecuteId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerPointVo">
+        select id,name,complete_date from sys_inspection_execute_point where execute_id = #{executeId}
+    </select>
+
+    <select id="countCheckNumByPointId2" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_inspection_execute_check_items where execute_point_id = #{id}
+    </select>
+
+    <select id="findPlanInspectionPoint" parameterType="java.lang.Integer" resultType="com.api.model.butlerApp.ButlerExecutePoint">
+        select sipo.id,sipo.code,sipo.name,sipo.type
+        from sys_inspection_execute as sie,sys_inspection_plan as sipl,sys_inspection_route as sir,sys_inspection_point_route as sipr,sys_inspection_point as sipo
+        where sie.inspection_plan_id = sipl.id and sipl.inspection_route_id = sir.id and sipr.inspection_point_id = sipo.id and sipr.inspection_route_id and sir.is_delete = 1 and sipo.is_delete = 1 and sie.id = #{executeId}
+    </select>
+
+    <insert id="insertExecutePoint" parameterType="com.api.model.butlerApp.ButlerExecutePoint">
+        insert into sys_inspection_execute_point(
+            execute_id,
+            code,
+            name,
+            type
+        )values (
+            #{executeId},
+            #{code},
+            #{name},
+            #{type}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="findPlanPointCheck" parameterType="java.lang.Integer" resultType="com.api.model.butlerApp.ButlerExecuteCheck">
+        select name from sys_inspection_check_items where inspection_point_id = #{id}
+    </select>
+
+    <insert id="insertExecuteCheck" parameterType="com.api.model.butlerApp.ButlerExecuteCheck">
+        insert into sys_inspection_execute_check_items(
+            execute_point_id,
+            name
+        )values (
+            #{executePointId},
+            #{name}
+        )
+    </insert>
+    <update id="updateActualBeginDateById" parameterType="com.api.model.butlerApp.ButlerExecuteIdAndBeginDate">
+        update sys_inspection_execute set actual_begin_date = #{actualBeginDate} where id = #{executeId}
+    </update>
 </mapper>

@@ -39,4 +39,46 @@ public class ButlerInspectionController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+
+    /**
+     * 根据巡检执行情况主键id查询巡检详情
+     * @param executeId 巡检执行情况主键id
+     * @return map
+     */
+    @GetMapping("/findDetailById")
+    public Map<String,Object> findDetailById(Integer executeId){
+        return butlerInspectionService.findDetailById(executeId);
+    }
+
+    /**
+     * 根据巡检计划主键id查询巡检点部分信息（开始巡检前调用）
+     * @param planId 巡检计划主键id
+     * @return map
+     */
+    @GetMapping("/findPointByPlanId")
+    public Map<String,Object> findPointByPlanId(Integer planId){
+        return butlerInspectionService.findPointByPlanId(planId);
+    }
+
+    /**
+     * 根据巡检执行情况主键id查询巡检点部分信息（开始巡检后调用）
+     * @param executeId 巡检执行情况主键id
+     * @return map
+     */
+    @GetMapping("/findPointByExecuteId")
+    public Map<String,Object> findPointByExecuteId(Integer executeId){
+        return butlerInspectionService.findPointByExecuteId(executeId);
+    }
+
+    /**
+     * 开始巡检
+     * @param executeId 巡检执行情况主键id
+     * @return map
+     */
+    @GetMapping("/startInspection")
+    public Map<String,Object> startInspection(Integer executeId){
+        return butlerInspectionService.startInspection(executeId);
+    }
+
 }
