@@ -2,6 +2,7 @@ package com.api.butlerApp.service.jurisdiction.impl;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
+import com.api.model.butlerApp.ButlerInspectionSearch;
 import com.api.vo.butlerApp.ButlerInspectionVo;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
 
 
     @Override
-    public List<ButlerInspectionVo> list(int status) {
-        return null;
+    public List<ButlerInspectionVo> list(ButlerInspectionSearch butlerInspectionSearch) {
+        return butlerInspectionDao.list(butlerInspectionSearch);
     }
 }

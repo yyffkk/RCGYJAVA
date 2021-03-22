@@ -1,7 +1,7 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
-import com.api.vo.butlerApp.ButlerArticleOutVo;
+import com.api.model.butlerApp.ButlerInspectionSearch;
 import com.api.vo.butlerApp.ButlerInspectionVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,15 +25,13 @@ public class ButlerInspectionController {
 
     /**
      * 查询所有的巡检管理信息（包含条件搜索）
-     * @param pageNum 当前页数
-     * @param size 每页记录数
-     * @param status 状态
+     * @param butlerInspectionSearch 搜索条件
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(int pageNum,int size,int status){
-        PageHelper.startPage(pageNum,size);
-        List<ButlerInspectionVo> butlerInspectionVoList = butlerInspectionService.list(status);
+    public Map<String,Object> list(ButlerInspectionSearch butlerInspectionSearch){
+        PageHelper.startPage(butlerInspectionSearch.getPageNum(),butlerInspectionSearch.getSize());
+        List<ButlerInspectionVo> butlerInspectionVoList = butlerInspectionService.list(butlerInspectionSearch);
         PageInfo<ButlerInspectionVo> pageInfo = new PageInfo<>(butlerInspectionVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
