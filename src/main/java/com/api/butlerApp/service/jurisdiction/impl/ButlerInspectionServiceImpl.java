@@ -7,9 +7,7 @@ import com.api.model.butlerApp.ButlerExecuteCheck;
 import com.api.model.butlerApp.ButlerExecuteIdAndBeginDate;
 import com.api.model.butlerApp.ButlerExecutePoint;
 import com.api.model.butlerApp.ButlerInspectionSearch;
-import com.api.vo.butlerApp.ButlerInspectionFDBIVo;
-import com.api.vo.butlerApp.ButlerInspectionVo;
-import com.api.vo.butlerApp.ButlerPointVo;
+import com.api.vo.butlerApp.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -152,6 +150,37 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
         }
         map.put("message","开始巡检成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findCheckDetailByQR(Integer executeId, Integer executePointId, String roleId) {
+        map = new HashMap<>();
+        //查询用户所属权限,type:1.巡检人员 3.其他角色
+        int type = findJurisdictionByUserId(roleId);
+        if (type != 1){
+            map.put("data",null);
+            map.put("message","无权限操作");
+            map.put("status",false);
+            return map;
+        }
+        //根据巡检执行情况主键id查询巡检点主键id
+        List<Integer> ids = butlerInspectionDao.findPointIdByExecuteId(executeId);
+        if (ids.contains(executePointId)){
+            //显示信息
+            ButlerExecutePointVo executePointVo = butlerInspectionDao.findExecutePointById(executePointId);
+            if (executePointVo != null){
+                List<ButlerExecuteCheckVo> checkVoList = butlerInspectionDao.findExecuteCheckByPointId(executePointVo.getId());
+                executePointVo.setCheckVoList(checkVoList);
+            }
+            map.put("data",executePointVo);
+            map.put("message","请求成功");
+            map.put("status",true);
+        }else {
+            map.put("data",null);
+            map.put("message","所扫二维码信息与执行任务不符合");
+            map.put("status",false);
+        }
         return map;
     }
 

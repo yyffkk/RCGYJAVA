@@ -4,9 +4,7 @@ import com.api.model.butlerApp.ButlerExecuteCheck;
 import com.api.model.butlerApp.ButlerExecuteIdAndBeginDate;
 import com.api.model.butlerApp.ButlerExecutePoint;
 import com.api.model.butlerApp.ButlerInspectionSearch;
-import com.api.vo.butlerApp.ButlerInspectionFDBIVo;
-import com.api.vo.butlerApp.ButlerInspectionVo;
-import com.api.vo.butlerApp.ButlerPointVo;
+import com.api.vo.butlerApp.*;
 
 import java.util.List;
 
@@ -87,4 +85,25 @@ public interface ButlerInspectionDao {
      * @return 影响行数
      */
     int updateActualBeginDateById(ButlerExecuteIdAndBeginDate butlerExecuteIdAndBeginDate);
+
+    /**
+     * 根据巡检执行情况主键id查询巡检点主键id
+     * @param executeId 巡检执行情况主键id
+     * @return 巡检点主键ids数组
+     */
+    List<Integer> findPointIdByExecuteId(Integer executeId);
+
+    /**
+     * 根据巡检执行点主键id查询巡检执行点信息
+     * @param executePointId 执行巡检点主键id
+     * @return 巡检执行点信息
+     */
+    ButlerExecutePointVo findExecutePointById(Integer executePointId);
+
+    /**
+     * 根据巡检执行点主键id查询巡检执行检查项
+     * @param id 巡检执行点主键id
+     * @return 巡检执行检查项集合
+     */
+    List<ButlerExecuteCheckVo> findExecuteCheckByPointId(Integer id);
 }

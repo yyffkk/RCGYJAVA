@@ -77,4 +77,16 @@
     <update id="updateActualBeginDateById" parameterType="com.api.model.butlerApp.ButlerExecuteIdAndBeginDate">
         update sys_inspection_execute set actual_begin_date = #{actualBeginDate} where id = #{executeId}
     </update>
+
+    <select id="findPointIdByExecuteId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from sys_inspection_execute_point where execute_id = #{executeId}
+    </select>
+
+    <select id="findExecutePointById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecutePointVo">
+        select * from sys_inspection_execute_point where id = #{executePointId}
+    </select>
+
+    <select id="findExecuteCheckByPointId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteCheckVo">
+        select * from sys_inspection_execute_check_items where execute_point_id = #{id}
+    </select>
 </mapper>
