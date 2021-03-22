@@ -46,9 +46,9 @@ public interface SysInspectionPlanDao {
     int falseDelete(int id);
 
     /**
-     * 根据巡检路线主键id查询巡检状态
-     * @param id 巡检路线主键id
-     * @return 巡检状态
+     * 根据巡检计划主键id查询巡检计划状态
+     * @param id 巡检计划主键id
+     * @return 巡检计划状态
      */
     int findStatusById(Integer id);
 

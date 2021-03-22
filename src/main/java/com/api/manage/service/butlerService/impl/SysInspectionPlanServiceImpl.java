@@ -102,6 +102,11 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
         map = new HashMap<>();
         try {
             for (int id : ids) {
+                //根据巡检计划主键id查询巡检计划状态
+                int status = sysInspectionPlanDao.findStatusById(id);
+                if (status == 1){
+                    throw new RuntimeException("请先禁用该计划，才可删除");
+                }
                 //假删除巡检计划
                 int update = sysInspectionPlanDao.falseDelete(id);
                 if (update <= 0){

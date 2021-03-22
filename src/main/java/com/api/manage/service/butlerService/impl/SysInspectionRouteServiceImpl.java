@@ -142,6 +142,11 @@ public class SysInspectionRouteServiceImpl implements SysInspectionRouteService 
         map = new HashMap<>();
         try {
             for (int id : ids) {
+                //根据巡检路线主键id查询巡检路线是否启用
+                int status = sysInspectionRouteDao.findStatusById(id);
+                if (status == 1){//1.启用，无法删除
+                    throw new RuntimeException("请先禁用该路线，才可删除");
+                }
                 int update = sysInspectionRouteDao.falseDelete(id);
                 if (update <= 0){
                     throw new RuntimeException("删除巡检路线失败");
@@ -171,6 +176,11 @@ public class SysInspectionRouteServiceImpl implements SysInspectionRouteService 
             int status = sysInspectionRouteDao.findStatusById(id);
             String msg = "";
             if (status == 1){
+                //根据巡检路线主键id查询巡检计划是否启用
+                Integer status2 = sysInspectionRouteDao.findPlanStatusById(id);
+                if (status2 > 0){ //大于0，巡检计划启用,巡检路线无法删除
+                    throw new RuntimeException("请先禁用巡检计划");
+                }
                 msg = "停用";
                 status =2;
             }else{

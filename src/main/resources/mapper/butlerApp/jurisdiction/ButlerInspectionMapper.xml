@@ -128,4 +128,20 @@
         set actual_begin_date = #{actualBeginDate}
         where id = #{planId}
     </update>
+
+    <select id="findExecuteByExecuteId" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysInspectionExecute">
+        select * from sys_inspection_execute where id =#{executeId}
+    </select>
+
+    <select id="findPlanById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysInspectionPlan">
+        select * from sys_inspection_plan where id = #{inspectionPlanId}
+    </select>
+
+    <select id="findSpaceTimeById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select space_time from sys_inspection_route where id = #{inspectionRouteId}
+    </select>
+
+    <select id="countExecuteNumByPlanId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_inspection_execute where inspection_plan_id = #{inspectionPlanId}
+    </select>
 </mapper>

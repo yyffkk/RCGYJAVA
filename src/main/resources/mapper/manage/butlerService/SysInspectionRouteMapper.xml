@@ -85,5 +85,11 @@
         select space_time from sys_inspection_route where id = #{inspectionRouteId}
     </select>
 
+    <select id="findPlanStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select sum(case sip.status when 1 then 1 else 0 end) as sum
+        from sys_inspection_plan as sip,sys_inspection_route as sir
+        where sip.inspection_route_id = sir.id and sir.id = #{id}
+    </select>
+
 
 </mapper>

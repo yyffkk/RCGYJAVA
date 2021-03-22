@@ -1,6 +1,8 @@
 package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.butlerApp.*;
+import com.api.model.butlerService.SysInspectionExecute;
+import com.api.model.butlerService.SysInspectionPlan;
 import com.api.vo.butlerApp.*;
 
 import java.util.List;
@@ -159,4 +161,33 @@ public interface ButlerInspectionDao {
      * @return 影响行数
      */
     int updatePlanByPlanId(ButlerPlanIdAndActualBeginDate planIdAndActualBeginDate);
+
+    /**
+     * 根据巡检执行情况主键id 查询 巡检执行情况
+     * @param executeId 巡检执行情况主键id
+     * @return 巡检执行情况
+     */
+    SysInspectionExecute findExecuteByExecuteId(Integer executeId);
+
+    /**
+     * 根据巡检计划主键id 查询巡检计划信息
+     * @param inspectionPlanId 巡检计划主键id
+     * @return 巡检计划信息
+     */
+    SysInspectionPlan findPlanById(Integer inspectionPlanId);
+
+    /**
+     * 根据巡检路线主键id查询 持续时间
+     * @param inspectionRouteId 巡检路线主键id
+     * @return 持续时间
+     */
+    Integer findSpaceTimeById(Integer inspectionRouteId);
+
+    /**
+     * 根据巡检计划主键id查询巡检执行数量
+     * @param inspectionPlanId 巡检计划主键id
+     * @return 巡检执行数量
+     */
+    int countExecuteNumByPlanId(Integer inspectionPlanId);
+
 }

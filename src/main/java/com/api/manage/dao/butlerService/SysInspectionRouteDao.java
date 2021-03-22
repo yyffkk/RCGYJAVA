@@ -86,4 +86,11 @@ public interface SysInspectionRouteDao {
      * @return 持续时间
      */
     int findSpaceTimeById(Integer inspectionRouteId);
+
+    /**
+     * 根据巡检路线主键id查询巡检计划启用状态
+     * @param id 巡检路线主键id
+     * @return 巡检计划启用状态
+     */
+    Integer findPlanStatusById(Integer id);
 }

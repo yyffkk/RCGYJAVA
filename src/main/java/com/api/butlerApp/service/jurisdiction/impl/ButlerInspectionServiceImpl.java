@@ -3,7 +3,10 @@ package com.api.butlerApp.service.jurisdiction.impl;
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
+import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.model.butlerApp.*;
+import com.api.model.butlerService.SysInspectionExecute;
+import com.api.model.butlerService.SysInspectionPlan;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.*;
 import com.api.vo.resources.VoResourcesImg;
@@ -12,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ButlerInspectionServiceImpl implements ButlerInspectionService {
@@ -23,6 +23,8 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     ButlerInspectionDao butlerInspectionDao;
     @Resource
     ButlerRepairDao butlerRepairDao;
+    @Resource
+    SysInspectionPlanDao sysInspectionPlanDao;
     private static Map<String,Object> map = null;
 
 
@@ -239,6 +241,50 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
                 if (update3 <= 0){
                     throw new RuntimeException("修改当次巡检情况实际结束时间失败");
                 }
+                //根据巡检执行情况主键id 查询 巡检执行情况
+                SysInspectionExecute sysInspectionExecute = butlerInspectionDao.findExecuteByExecuteId(butlerExecutePoint.getExecuteId());
+                //根据巡检计划主键id 查询 巡检计划情况
+                SysInspectionPlan sysInspectionPlan = butlerInspectionDao.findPlanById(sysInspectionExecute.getInspectionPlanId());
+                if (sysInspectionPlan.getStatus() ==1){ //启用
+                    //添加下一条巡检计划
+                    SysInspectionExecute sysInspectionExecute2 = new SysInspectionExecute();
+                    sysInspectionExecute2.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(sysInspectionPlan.getPlanBeginDate());
+                    switch (sysInspectionPlan.getCheckRateType()){
+                        case 1:
+                            calendar.add(Calendar.DAY_OF_MONTH,1);
+                            break;
+                        case 2:
+                            calendar.add(Calendar.DAY_OF_MONTH,7);
+                            break;
+                        case 3:
+                            calendar.add(Calendar.MONTH,1);
+                            break;
+                        default:
+                            throw new RuntimeException("数据异常");
+                    }
+                    Date time = calendar.getTime();
+                    sysInspectionExecute2.setBeginDate(time); //填入计划当次巡检开始时间
+                    //根据巡检路线主键id查询 持续时间
+                    Integer spaceTime = butlerInspectionDao.findSpaceTimeById(sysInspectionPlan.getInspectionRouteId());
+                    if (spaceTime == null){
+                        throw new RuntimeException("数据异常2");
+                    }
+                    calendar.setTime(time);
+                    calendar.add(Calendar.MINUTE,spaceTime);
+                    Date time2 = calendar.getTime();
+                    sysInspectionExecute2.setEndDate(time2); //填入计划当次巡检结束时间
+                    //根据巡检计划主键id查询巡检执行数量
+                    int count2 = butlerInspectionDao.countExecuteNumByPlanId(sysInspectionExecute.getInspectionPlanId());
+                    sysInspectionExecute2.setSort(count2+1); //填入排序默认为1
+                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute);
+                    if (insert2 <=0){
+                        map.put("message","添加第一次执行巡检信息失败");
+                    }
+                }
+
+
             }
         } catch (RuntimeException e) {
             //获取抛出的信息
