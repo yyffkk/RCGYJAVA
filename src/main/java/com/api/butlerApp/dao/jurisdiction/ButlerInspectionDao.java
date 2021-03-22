@@ -5,6 +5,7 @@ import com.api.model.butlerService.SysInspectionExecute;
 import com.api.model.butlerService.SysInspectionPlan;
 import com.api.vo.butlerApp.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ButlerInspectionDao {
@@ -190,4 +191,10 @@ public interface ButlerInspectionDao {
      */
     int countExecuteNumByPlanId(Integer inspectionPlanId);
 
+    /**
+     * 根据当前时间，查询计划当次巡检开始时间小于当天的 并实际当次巡检结束时间为null的巡检执行情况数据
+     * @param date 当前时间
+     * @return 巡检执行情况数据集合
+     */
+    List<SysInspectionExecute> findOldExecuteByToday(Date date);
 }

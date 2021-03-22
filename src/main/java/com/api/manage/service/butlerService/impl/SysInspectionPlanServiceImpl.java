@@ -132,14 +132,17 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
     @Override
     public Map<String, Object> isEnable(Integer id) {
         map = new HashMap<>();
+        String msg = "";
         try {
             //根据巡检路线主键id查询巡检状态
             int status = sysInspectionPlanDao.findStatusById(id);
-            String msg = "";
             if (status == 1){
                 status = 2;
                 msg = "停用";
             }else {
+                //判断是否需要添加巡检执行情况信息？？？
+
+                //？？？
                 status = 1;
                 msg = "启用";
             }
@@ -147,18 +150,22 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
             planIdAndStatus.setPlanId(id);
             planIdAndStatus.setStatus(status);
             int update = sysInspectionPlanDao.updateStatus(planIdAndStatus);
-            if (update>0){
-                map.put("message",msg+"成功");
-                map.put("status",true);
-            }else {
-                map.put("message",msg+"失败");
-                map.put("status",false);
+            if (update <= 0){
+                throw new RuntimeException(msg+"失败");
             }
         } catch (Exception e) {
-            map.put("message","数据有误");
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
             return map;
         }
+        map.put("message",msg+"成功");
+        map.put("status",true);
         return map;
     }
 }

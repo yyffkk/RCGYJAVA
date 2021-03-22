@@ -90,17 +90,17 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
             //判断是否可以点击开始巡检
             //根据巡检执行情况主键id查询巡检执行情况信息
             ButlerInspectionFDBIVo detailById = butlerInspectionDao.findDetailById(executeId);
-//            if (detailById.getActualBeginDate() != null){
-//                throw new RuntimeException("已开始巡检，操作失败");
-//            }
-//
-//            if (new Date().getTime() < detailById.getBeginDate().getTime()){
-//                throw new RuntimeException("巡检未开始");
-//            }
-//
-//            if (new Date().getTime() > detailById.getEndDate().getTime()){
-//                throw new RuntimeException("巡检已结束");
-//            }
+            if (detailById.getActualBeginDate() != null){
+                throw new RuntimeException("已开始巡检，操作失败");
+            }
+
+            if (new Date().getTime() < detailById.getBeginDate().getTime()){
+                throw new RuntimeException("巡检未开始");
+            }
+
+            if (new Date().getTime() > detailById.getEndDate().getTime()){
+                throw new RuntimeException("巡检已结束");
+            }
 
             //查询计划巡检点信息，返回主键id
             List<ButlerExecutePoint> butlerExecutePointList = butlerInspectionDao.findPlanInspectionPoint(executeId);
@@ -283,7 +283,6 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
                         map.put("message","添加第一次执行巡检信息失败");
                     }
                 }
-
 
             }
         } catch (RuntimeException e) {

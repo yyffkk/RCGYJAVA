@@ -1,10 +1,16 @@
 package com.api.manage.config;
 
+import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.butlerService.BorrowDao;
+import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
 import com.api.manage.dao.remind.RemindDao;
+import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
+import com.api.model.butlerApp.ButlerPlanIdAndActualBeginDate;
 import com.api.model.butlerService.SysArticleBorrow;
+import com.api.model.butlerService.SysInspectionExecute;
+import com.api.model.butlerService.SysInspectionPlan;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.systemDataBigScreen.DailyActivity;
@@ -19,6 +25,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +79,10 @@ public class SysAutoRemind {
     @Resource
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
     @Resource
-    SystemDataDao systemDataDao;
+    ButlerInspectionDao butlerInspectionDao;
+    @Resource
+    SysInspectionPlanDao sysInspectionPlanDao;
+
 
     /**
      * 后台系统借还提醒，每隔一天进行校对数据库，如果出借时长超过7天则系统自动发出提醒
@@ -136,10 +146,10 @@ public class SysAutoRemind {
             TransactionAspectSupport.currentTransactionStatus()
                     .setRollbackOnly();
             //打印日志地方
-            System.out.println(message);
+            log.info(message);
         }
         //打印日志地方
-        System.out.println("更新成功");
+        log.info("更新成功");
     }
 
 
@@ -209,15 +219,88 @@ public class SysAutoRemind {
             TransactionAspectSupport.currentTransactionStatus()
                     .setRollbackOnly();
             //打印日志地方
-            System.out.println(message);
+            log.info(message);
         }
         //打印日志地方
-        System.out.println("已到月初，发送日常缴费提醒");
+        log.info("已到月初，发送日常缴费提醒");
     }
+
+    /**
+     * 0 0 0 1/1 * ?
+     * 自动更新巡检信息（当天巡检还处于待巡检状态：本次巡检过期，结束时间填写为现在，并添加下一次巡检执行情况）
+     */
+    @Scheduled(cron = "0/5 * * * * ? ")
+    public void autoInspection(){
+        Date date = new Date();
+        //根据当前时间，查询计划当次巡检开始时间小于当天的 并实际当次巡检结束时间为null的巡检执行情况数据
+        List<SysInspectionExecute> sysInspectionExecuteList = butlerInspectionDao.findOldExecuteByToday(date);
+        if (sysInspectionExecuteList != null && sysInspectionExecuteList.size()>0){
+            for (SysInspectionExecute sysInspectionExecute : sysInspectionExecuteList) {
+                //根据巡检计划主键id 查询 巡检计划情况
+                SysInspectionPlan sysInspectionPlan = butlerInspectionDao.findPlanById(sysInspectionExecute.getInspectionPlanId());
+                if (sysInspectionPlan.getStatus() ==1){ //启用
+                    //添加下一条巡检计划
+                    SysInspectionExecute sysInspectionExecute2 = new SysInspectionExecute();
+                    sysInspectionExecute2.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(sysInspectionPlan.getPlanBeginDate());
+                    switch (sysInspectionPlan.getCheckRateType()){
+                        case 1:
+                            calendar.add(Calendar.DAY_OF_MONTH,1);
+                            break;
+                        case 2:
+                            calendar.add(Calendar.DAY_OF_MONTH,7);
+                            break;
+                        case 3:
+                            calendar.add(Calendar.MONTH,1);
+                            break;
+                        default:
+                            log.info("数据异常,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                            continue;
+                    }
+                    Date time = calendar.getTime();
+                    sysInspectionExecute2.setBeginDate(time); //填入计划当次巡检开始时间
+                    //根据巡检路线主键id查询 持续时间
+                    Integer spaceTime = butlerInspectionDao.findSpaceTimeById(sysInspectionPlan.getInspectionRouteId());
+                    if (spaceTime == null){
+                        log.info("数据异常2,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                        continue;
+                    }
+                    calendar.setTime(time);
+                    calendar.add(Calendar.MINUTE,spaceTime);
+                    Date time2 = calendar.getTime();
+                    sysInspectionExecute2.setEndDate(time2); //填入计划当次巡检结束时间
+                    //根据巡检计划主键id查询巡检执行数量
+                    int count2 = butlerInspectionDao.countExecuteNumByPlanId(sysInspectionExecute.getInspectionPlanId());
+                    sysInspectionExecute2.setSort(count2+1); //填入排序默认为1
+                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute);
+                    if (insert2 <=0){
+                        log.info("添加执行巡检信息失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                        continue;
+                    }
+                    log.info("添加执行巡检信息成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                    //修改当次巡检情况实际结束时间
+                    ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate = new ButlerExecuteIdAndActualEndDate();
+                    executeIdAndActualEndDate.setExecuteId(sysInspectionExecute.getId());
+                    executeIdAndActualEndDate.setActualEndDate(new Date());
+                    int update3 = butlerInspectionDao.updateExecute(executeIdAndActualEndDate);
+                    if (update3 <= 0){
+                        log.info("修改当次巡检情况实际结束时间失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                        continue;
+                    }
+                    log.info("修改当次巡检情况实际结束时间成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                }
+            }
+        }else {
+            log.info("本次执行没有处理对象");
+        }
+    }
+
 
     @Scheduled(cron = "0 43 * * * ?")
     public void test(){
         System.out.println("测试定时任务");
 
     }
+
 }

@@ -144,4 +144,9 @@
     <select id="countExecuteNumByPlanId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from sys_inspection_execute where inspection_plan_id = #{inspectionPlanId}
     </select>
+
+    <select id="findOldExecuteByToday" parameterType="java.util.Date" resultType="com.api.model.butlerService.SysInspectionExecute">
+        select * from sys_inspection_execute
+        where DATE_FORMAT(begin_date,'%Y-%m-%d') <![CDATA[ < ]]> DATE_FORMAT(#{date},'%Y-%m-%d') and begin_date is null
+    </select>
 </mapper>
