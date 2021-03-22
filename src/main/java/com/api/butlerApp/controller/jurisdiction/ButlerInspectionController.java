@@ -74,11 +74,24 @@ public class ButlerInspectionController {
     /**
      * 开始巡检
      * @param executeId 巡检执行情况主键id
+     * @param roleId 当前用户所拥有的角色id
      * @return map
      */
     @GetMapping("/startInspection")
-    public Map<String,Object> startInspection(Integer executeId){
-        return butlerInspectionService.startInspection(executeId);
+    public Map<String,Object> startInspection(Integer executeId,String roleId){
+        return butlerInspectionService.startInspection(executeId,roleId);
+    }
+
+
+    /**
+     * 扫码二维码查询巡检
+     * @param executePointId 巡检执行点主键id
+     * @param roleId 当前用户所拥有的角色id
+     * @return map
+     */
+    @GetMapping("/findCheckDetailByQR")
+    public Map<String,Object> findCheckDetailByQR(Integer executePointId,String roleId){
+        return null;
     }
 
 }

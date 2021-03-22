@@ -8,6 +8,7 @@ import com.api.model.butlerService.SysAdvice;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoProhibitedKeywords;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -24,6 +25,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     SysProhibitedKeywordsDao sysProhibitedKeywordsDao;
 
     @Override
+    @Transactional
     public Map<String, Object> submit(SysAdvice sysAdvice) {
         map = new HashMap<>();
         try {

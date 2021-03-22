@@ -15,5 +15,5 @@ public interface ButlerInspectionService {
 
     Map<String, Object> findPointByExecuteId(Integer executeId);
 
-    Map<String, Object> startInspection(Integer executeId);
+    Map<String, Object> startInspection(Integer executeId, String roleId);
 }

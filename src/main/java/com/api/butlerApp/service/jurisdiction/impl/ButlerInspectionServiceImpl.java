@@ -1,6 +1,7 @@
 package com.api.butlerApp.service.jurisdiction.impl;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
+import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
 import com.api.model.butlerApp.ButlerExecuteCheck;
 import com.api.model.butlerApp.ButlerExecuteIdAndBeginDate;
@@ -23,6 +24,8 @@ import java.util.Map;
 public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     @Resource
     ButlerInspectionDao butlerInspectionDao;
+    @Resource
+    ButlerRepairDao butlerRepairDao;
     private static Map<String,Object> map = null;
 
 
@@ -77,9 +80,14 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
 
     @Override
     @Transactional
-    public Map<String, Object> startInspection(Integer executeId) {
+    public Map<String, Object> startInspection(Integer executeId, String roleId) {
         map = new HashMap<>();
         try {
+            //查询用户所属权限,type:1.巡检人员 3.其他角色
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("无权限操作");
+            }
             //判断是否可以点击开始巡检
             //根据巡检执行情况主键id查询巡检执行情况信息
             ButlerInspectionFDBIVo detailById = butlerInspectionDao.findDetailById(executeId);
@@ -145,5 +153,23 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
         map.put("message","开始巡检成功");
         map.put("status",true);
         return map;
+    }
+
+    private int findJurisdictionByUserId(String roleIds) {
+        String[] split = roleIds.split(",");
+        if (split.length >0){
+            for (String s : split) {
+                int roleId = Integer.parseInt(s);
+                //根据角色id查询权限id集合
+                List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
+                if (jurisdictionIds != null && jurisdictionIds.size()>0){
+                    //63.巡检操作
+                    if (jurisdictionIds.contains(63)){
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 3;
     }
 }

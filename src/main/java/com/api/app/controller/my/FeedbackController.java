@@ -45,6 +45,8 @@ public class FeedbackController {
         sysAdvice.setType(2);
         //填入是否删除 ，默认1.非删
         sysAdvice.setIsDelete(1);
+        //填入用户端是否删除 ，默认1.非删
+        sysAdvice.setUserDelete(1);
         return feedbackService.submit(sysAdvice);
     }
 }
