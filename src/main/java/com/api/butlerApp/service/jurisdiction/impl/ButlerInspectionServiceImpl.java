@@ -187,6 +187,11 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     public Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId) {
         map = new HashMap<>();
         try {
+            //查询该巡检点是否已被执行
+            ButlerExecutePoint butlerExecutePoint = butlerInspectionDao.findCompleteDateById(executePointSubmit.getExecutePointId());
+            if (butlerExecutePoint.getCompleteDate() != null){
+                throw new RuntimeException("该巡检点已执行");
+            }
             //修改巡检执行点检查项
             List<ButlerExecuteCheck> executeCheckList = executePointSubmit.getExecuteCheckList();
             if (executeCheckList != null && executeCheckList.size()>0){
@@ -203,6 +208,26 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
             uploadUtil.saveUrlToDB(executePointSubmit.getInspectionFaceImg(),"sysInspectionExecutePoint",executePointSubmit.getExecutePointId(),"inspectionFace","600",30,20);
             //上传现场照片
             uploadUtil.saveUrlToDB(executePointSubmit.getInspectionSpaceImg(),"sysInspectionExecutePoint",executePointSubmit.getExecutePointId(),"inspectionSpace","600",30,20);
+            ButlerPointIdAndCompleteDate pointIdAndCompleteDate = new ButlerPointIdAndCompleteDate();
+            pointIdAndCompleteDate.setPointId(executePointSubmit.getExecutePointId());
+            pointIdAndCompleteDate.setCompleteDate(new Date());
+            //更新巡检点完成时间
+            int update = butlerInspectionDao.updateExecutePoint(pointIdAndCompleteDate);
+            if (update <= 0){
+                throw new RuntimeException("修改巡检点完成时间失败");
+            }
+            //判断巡检点是否全部完成
+            int count = butlerInspectionDao.countExecutePoint(butlerExecutePoint.getExecuteId());
+            if (count == 0){
+                //修改当次巡检情况实际结束时间
+                ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate = new ButlerExecuteIdAndActualEndDate();
+                executeIdAndActualEndDate.setExecuteId(butlerExecutePoint.getExecuteId());
+                executeIdAndActualEndDate.setActualEndDate(new Date());
+                int update3 = butlerInspectionDao.updateExecute(executeIdAndActualEndDate);
+                if (update3 <= 0){
+                    throw new RuntimeException("修改当次巡检情况实际结束时间失败");
+                }
+            }
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();

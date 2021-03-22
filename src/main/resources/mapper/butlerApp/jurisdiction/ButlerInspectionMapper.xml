@@ -94,4 +94,24 @@
         set status = #{status},remakes = #{remakes}
         where id = #{id}
     </update>
+
+    <update id="updateExecutePoint" parameterType="com.api.model.butlerApp.ButlerPointIdAndCompleteDate">
+        update sys_inspection_execute_point
+        set complete_date = #{completeDate}
+        where id = #{pointId}
+    </update>
+
+    <select id="findCompleteDateById" parameterType="java.lang.Integer" resultType="com.api.model.butlerApp.ButlerExecutePoint">
+        select * from sys_inspection_execute_point where id = #{executePointId}
+    </select>
+
+    <select id="countExecutePoint" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_inspection_execute_point where execute_id = #{executeId} and complete_date is null
+    </select>
+
+    <update id="updateExecute" parameterType="com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate">
+        update sys_inspection_execute
+        set actual_end_date = #{actualEndDate}
+        where id = #{executeId}
+    </update>
 </mapper>

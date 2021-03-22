@@ -1,11 +1,9 @@
 package com.api.butlerApp.dao.jurisdiction;
 
-import com.api.model.butlerApp.ButlerExecuteCheck;
-import com.api.model.butlerApp.ButlerExecuteIdAndBeginDate;
-import com.api.model.butlerApp.ButlerExecutePoint;
-import com.api.model.butlerApp.ButlerInspectionSearch;
+import com.api.model.butlerApp.*;
 import com.api.vo.butlerApp.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ButlerInspectionDao {
@@ -113,4 +111,32 @@ public interface ButlerInspectionDao {
      * @return 影响行数
      */
     int updateExecuteCheck(ButlerExecuteCheck executeCheck);
+
+    /**
+     * 更新巡检点完成时间
+     * @param pointIdAndCompleteDate 巡检执行点主键id 和 巡检点完成时间
+     * @return 影响行数
+     */
+    int updateExecutePoint(ButlerPointIdAndCompleteDate pointIdAndCompleteDate);
+
+    /**
+     * 根据巡检执行点主键id查询完成时间
+     * @param executePointId 巡检执行点主键id
+     * @return 完成时间
+     */
+    ButlerExecutePoint findCompleteDateById(Integer executePointId);
+
+    /**
+     * 查询未完成的巡检点数量
+     * @param executeId
+     * @return
+     */
+    int countExecutePoint(Integer executeId);
+
+    /**
+     * 修改当次巡检情况实际结束时间
+     * @param executeIdAndActualEndDate 巡检执行情况主键id 和 实际当次巡检结束时间
+     * @return 影响行数
+     */
+    int updateExecute(ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate);
 }
