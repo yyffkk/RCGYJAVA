@@ -63,6 +63,7 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
             calendar.add(Calendar.MINUTE,spaceTime);
             Date time = calendar.getTime();
             sysInspectionExecute.setEndDate(time);//填入计划当次巡检结束时间
+            sysInspectionExecute.setSort(1);//填入排序默认为1
             //添加第一次执行巡检信息
             int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute);
             if (insert2 <=0){

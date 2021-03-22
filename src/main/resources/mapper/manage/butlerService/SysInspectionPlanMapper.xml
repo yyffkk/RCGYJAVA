@@ -72,11 +72,13 @@
         insert into sys_inspection_execute(
             inspection_plan_id,
             begin_date,
-            end_date
+            end_date,
+            sort
         )values (
             #{inspectionPlanId},
             #{beginDate},
-            #{endDate}
+            #{endDate},
+            #{sort}
         )
     </insert>
 

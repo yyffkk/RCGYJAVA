@@ -30,6 +30,10 @@ public class SysInspectionExecute {
      * 实际当次巡检结束时间
      */
     private Date actualEndDate;
+    /**
+     * 排序,第几次巡检
+     */
+    private Integer sort;
 
     @Override
     public String toString() {
@@ -40,6 +44,7 @@ public class SysInspectionExecute {
                 ", endDate=" + endDate +
                 ", actualBeginDate=" + actualBeginDate +
                 ", actualEndDate=" + actualEndDate +
+                ", sort=" + sort +
                 '}';
     }
 
@@ -91,15 +96,24 @@ public class SysInspectionExecute {
         this.actualEndDate = actualEndDate;
     }
 
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
     public SysInspectionExecute() {
     }
 
-    public SysInspectionExecute(Integer id, Integer inspectionPlanId, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate) {
+    public SysInspectionExecute(Integer id, Integer inspectionPlanId, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate, Integer sort) {
         this.id = id;
         this.inspectionPlanId = inspectionPlanId;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.actualBeginDate = actualBeginDate;
         this.actualEndDate = actualEndDate;
+        this.sort = sort;
     }
 }
