@@ -230,21 +230,23 @@ public class SysAutoRemind {
      * 0/5 * * * * ?
      * 自动更新巡检信息（当天巡检还处于待巡检状态：本次巡检过期，结束时间填写为现在，并添加下一次巡检执行情况）
      */
-    @Scheduled(cron = "0/5 * * * * ? ")
+    @Scheduled(cron = "0 0 0 1/1 * ? ")
     public void autoInspection(){
         Date date = new Date();
         //根据当前时间，查询计划当次巡检开始时间小于当天的 并实际当次巡检结束时间为null的巡检执行情况数据
         List<SysInspectionExecute> sysInspectionExecuteList = butlerInspectionDao.findOldExecuteByToday(date);
         if (sysInspectionExecuteList != null && sysInspectionExecuteList.size()>0){
             for (SysInspectionExecute sysInspectionExecute : sysInspectionExecuteList) {
+                //查询最新的一次计划当次巡检开始时间
+                SysInspectionExecute sysInspectionExecute2 = sysInspectionPlanDao.findNewPlan(sysInspectionExecute.getInspectionPlanId());
                 //根据巡检计划主键id 查询 巡检计划情况
                 SysInspectionPlan sysInspectionPlan = butlerInspectionDao.findPlanById(sysInspectionExecute.getInspectionPlanId());
                 if (sysInspectionPlan.getStatus() ==1){ //启用
                     //添加下一条巡检计划
-                    SysInspectionExecute sysInspectionExecute2 = new SysInspectionExecute();
-                    sysInspectionExecute2.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
+                    SysInspectionExecute sysInspectionExecute3 = new SysInspectionExecute();
+                    sysInspectionExecute3.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(sysInspectionPlan.getPlanBeginDate());
+                    calendar.setTime(sysInspectionExecute2.getBeginDate());
                     switch (sysInspectionPlan.getCheckRateType()){
                         case 1:
                             calendar.add(Calendar.DAY_OF_MONTH,1);
@@ -260,7 +262,7 @@ public class SysAutoRemind {
                             continue;
                     }
                     Date time = calendar.getTime();
-                    sysInspectionExecute2.setBeginDate(time); //填入计划当次巡检开始时间
+                    sysInspectionExecute3.setBeginDate(time); //填入计划当次巡检开始时间
                     //根据巡检路线主键id查询 持续时间
                     Integer spaceTime = butlerInspectionDao.findSpaceTimeById(sysInspectionPlan.getInspectionRouteId());
                     if (spaceTime == null){
@@ -270,11 +272,11 @@ public class SysAutoRemind {
                     calendar.setTime(time);
                     calendar.add(Calendar.MINUTE,spaceTime);
                     Date time2 = calendar.getTime();
-                    sysInspectionExecute2.setEndDate(time2); //填入计划当次巡检结束时间
+                    sysInspectionExecute3.setEndDate(time2); //填入计划当次巡检结束时间
                     //根据巡检计划主键id查询巡检执行数量
                     int count2 = butlerInspectionDao.countExecuteNumByPlanId(sysInspectionExecute.getInspectionPlanId());
-                    sysInspectionExecute2.setSort(count2+1); //填入排序默认为1
-                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute2);
+                    sysInspectionExecute3.setSort(count2+1); //填入排序默认为1
+                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute3);
                     if (insert2 <=0){
                         log.info("添加执行巡检信息失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
                         continue;
