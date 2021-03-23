@@ -58,4 +58,11 @@ public interface SysInspectionPlanDao {
      * @return 影响行数
      */
     int updateStatus(PlanIdAndStatus planIdAndStatus);
+
+    /**
+     * 查询最新的一次计划当次巡检开始时间
+     * @param id 巡检计划主键id
+     * @return 巡检计划信息
+     */
+    SysInspectionExecute findNewPlan(Integer id);
 }

@@ -250,7 +250,7 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
                     SysInspectionExecute sysInspectionExecute2 = new SysInspectionExecute();
                     sysInspectionExecute2.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(sysInspectionPlan.getPlanBeginDate());
+                    calendar.setTime(sysInspectionExecute.getBeginDate());
                     switch (sysInspectionPlan.getCheckRateType()){
                         case 1:
                             calendar.add(Calendar.DAY_OF_MONTH,1);
@@ -278,7 +278,7 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
                     //根据巡检计划主键id查询巡检执行数量
                     int count2 = butlerInspectionDao.countExecuteNumByPlanId(sysInspectionExecute.getInspectionPlanId());
                     sysInspectionExecute2.setSort(count2+1); //填入排序默认为1
-                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute);
+                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute2);
                     if (insert2 <=0){
                         map.put("message","添加第一次执行巡检信息失败");
                     }

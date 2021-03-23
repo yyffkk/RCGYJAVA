@@ -100,4 +100,8 @@
     <update id="updateStatus" parameterType="com.api.model.butlerService.PlanIdAndStatus">
         update sys_inspection_plan set status = #{status} where id = #{planId}
     </update>
+
+    <select id="findNewPlan" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysInspectionExecute">
+        select * from sys_inspection_execute where inspection_plan_id = #{id} order by sort desc limit 1
+    </select>
 </mapper>
