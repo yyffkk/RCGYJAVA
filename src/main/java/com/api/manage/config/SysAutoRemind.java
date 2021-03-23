@@ -302,8 +302,7 @@ public class SysAutoRemind {
 
     @Scheduled(cron = "0 43 * * * ?")
     public void test(){
-        System.out.println("测试定时任务");
-
+        log.info("测试定时任务");
     }
 
 }

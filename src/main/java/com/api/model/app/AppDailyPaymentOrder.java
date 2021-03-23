@@ -38,6 +38,10 @@ public class AppDailyPaymentOrder {
      */
     private BigDecimal payPrice;
     /**
+     * 付款状态:1.待支付，2.支付成功，3.支付失败
+     */
+    private Integer status;
+    /**
      * 创建人
      */
     private Integer createId;
@@ -50,24 +54,17 @@ public class AppDailyPaymentOrder {
     @Override
     public String toString() {
         return "AppDailyPaymentOrder{" +
-                "ids=" + Arrays.toString(ids) +
-                ", id=" + id +
+                "id=" + id +
+                ", ids=" + Arrays.toString(ids) +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
                 ", payType=" + payType +
                 ", payPrice=" + payPrice +
+                ", status=" + status +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 '}';
-    }
-
-    public int[] getIds() {
-        return ids;
-    }
-
-    public void setIds(int[] ids) {
-        this.ids = ids;
     }
 
     public Integer getId() {
@@ -76,6 +73,14 @@ public class AppDailyPaymentOrder {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public int[] getIds() {
+        return ids;
+    }
+
+    public void setIds(int[] ids) {
+        this.ids = ids;
     }
 
     public String getCode() {
@@ -118,6 +123,14 @@ public class AppDailyPaymentOrder {
         this.payPrice = payPrice;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -137,14 +150,15 @@ public class AppDailyPaymentOrder {
     public AppDailyPaymentOrder() {
     }
 
-    public AppDailyPaymentOrder(int[] ids, Integer id, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate) {
-        this.ids = ids;
+    public AppDailyPaymentOrder(Integer id, int[] ids, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer status, Integer createId, Date createDate) {
         this.id = id;
+        this.ids = ids;
         this.code = code;
         this.name = name;
         this.tel = tel;
         this.payType = payType;
         this.payPrice = payPrice;
+        this.status = status;
         this.createId = createId;
         this.createDate = createDate;
     }

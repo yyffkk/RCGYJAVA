@@ -9,7 +9,7 @@
 
     <select id="listType" parameterType="com.api.model.app.AppDailyPaymentDetail" resultType="com.api.vo.app.AppDailyPaymentTypeVo">
         select DISTINCT sctd.id,sctd.name from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id and sdp.building_unit_estate_id = #{estateId} and year(sdp.end_date) = #{years} and status != 3
+        where sdp.charges_template_detail_id = sctd.id and sdp.building_unit_estate_id = #{estateId} and year(sdp.end_date) = #{years} and sdp.status != 3
     </select>
 
     <select id="listDetailed" parameterType="com.api.model.app.AppDailyPaymentDetail" resultType="com.api.vo.app.AppDailyPaymentDetailedVo">
@@ -48,7 +48,8 @@
             pay_type,
             pay_price,
             create_id,
-            create_date
+            create_date,
+            status
         ) values (
             #{code},
             #{name},
@@ -56,7 +57,8 @@
             #{payType},
             #{payPrice},
             #{createId},
-            #{createDate}
+            #{createDate},
+            #{status}
         )
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id

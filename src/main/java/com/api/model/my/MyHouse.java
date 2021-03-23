@@ -6,7 +6,7 @@ import java.util.Date;
  */
 public class MyHouse {
     /**
-     * 业主id
+     * 住户id
      */
     private Integer residentId;
     /**
