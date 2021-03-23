@@ -42,7 +42,7 @@ public class SmsSendUtil {
         this.accessKeySecret = accessKeySecret;
     }
 
-    public static SendSmsResponse sendSms(String telephone, String code) throws ClientException {
+    public static SendSmsResponse sendSms(String code, String telephone) throws ClientException {
 
         // 可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -60,7 +60,7 @@ public class SmsSendUtil {
         // 必填:短信签名-可在短信控制台中找到
         request.setSignName("深圳市凯达来科技有限公司"); //  改这里
         // 必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode("登录确认验证码");  //  改这里
+        request.setTemplateCode("SMS_212970091");  //  改这里
         // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的用户,您的验证码为${code}"时,此处的值为
         request.setTemplateParam("{\"code\":\"" + code + "\"}");
 
