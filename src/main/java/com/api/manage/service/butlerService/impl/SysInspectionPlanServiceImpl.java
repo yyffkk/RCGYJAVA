@@ -153,22 +153,27 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
                     //添加下一条巡检计划
                     SysInspectionExecute sysInspectionExecute2 = new SysInspectionExecute();
                     sysInspectionExecute2.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
+
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(sysInspectionExecute.getBeginDate());
-                    switch (sysInspectionPlan.getCheckRateType()){
-                        case 1:
-                            calendar.add(Calendar.DAY_OF_MONTH,1);
-                            break;
-                        case 2:
-                            calendar.add(Calendar.DAY_OF_MONTH,7);
-                            break;
-                        case 3:
-                            calendar.add(Calendar.MONTH,1);
-                            break;
-                        default:
-                            throw new RuntimeException("数据异常");
+                    Date time = sysInspectionExecute.getBeginDate();
+                    while (time.getTime() <= new Date().getTime()){ //获取离当前时间最近的计划开始时间，当计划开始时间大于当前时间，跳出当前循环
+                        calendar.setTime(time);
+                        switch (sysInspectionPlan.getCheckRateType()){
+                            case 1:
+                                calendar.add(Calendar.DAY_OF_MONTH,1);
+                                break;
+                            case 2:
+                                calendar.add(Calendar.DAY_OF_MONTH,7);
+                                break;
+                            case 3:
+                                calendar.add(Calendar.MONTH,1);
+                                break;
+                            default:
+                                throw new RuntimeException("数据异常");
+                        }
+                        time = calendar.getTime();
                     }
-                    Date time = calendar.getTime();
+
                     sysInspectionExecute2.setBeginDate(time); //填入计划当次巡检开始时间
                     //根据巡检路线主键id查询 持续时间
                     Integer spaceTime = butlerInspectionDao.findSpaceTimeById(sysInspectionPlan.getInspectionRouteId());

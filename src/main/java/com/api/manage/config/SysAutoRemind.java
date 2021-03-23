@@ -227,9 +227,10 @@ public class SysAutoRemind {
 
     /**
      * 0 0 0 1/1 * ?
+     * 0/5 * * * * ?
      * 自动更新巡检信息（当天巡检还处于待巡检状态：本次巡检过期，结束时间填写为现在，并添加下一次巡检执行情况）
      */
-    @Scheduled(cron = "0 0 0 1/1 * ? ")
+    @Scheduled(cron = "0/5 * * * * ? ")
     public void autoInspection(){
         Date date = new Date();
         //根据当前时间，查询计划当次巡检开始时间小于当天的 并实际当次巡检结束时间为null的巡检执行情况数据
@@ -273,7 +274,7 @@ public class SysAutoRemind {
                     //根据巡检计划主键id查询巡检执行数量
                     int count2 = butlerInspectionDao.countExecuteNumByPlanId(sysInspectionExecute.getInspectionPlanId());
                     sysInspectionExecute2.setSort(count2+1); //填入排序默认为1
-                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute);
+                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute2);
                     if (insert2 <=0){
                         log.info("添加执行巡检信息失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
                         continue;
