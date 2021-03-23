@@ -112,4 +112,12 @@
         </foreach>
         order by sdpo.create_date DESC
     </select>
+
+    <select id="findDailPaymentOrderByCode" parameterType="java.lang.String" resultType="com.api.model.app.AppDailyPaymentOrder">
+        select * from sys_daily_payment_order where code = #{outTradeNo}
+    </select>
+
+    <update id="updateDPOrderStatusByCode" parameterType="com.api.model.app.AppDailyPaymentOrder">
+        update sys_daily_payment_order set status = #{status} where code = #{code}
+    </update>
 </mapper>

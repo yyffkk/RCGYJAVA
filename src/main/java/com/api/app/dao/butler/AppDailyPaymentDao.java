@@ -94,4 +94,17 @@ public interface AppDailyPaymentDao {
     List<AppPaymentRecordVo> paymentRecord(List<Integer> estateIds);
 
 
+    /**
+     * 根据支付单号查询缴费订单信息
+     * @param outTradeNo 支付单号
+     * @return 缴费订单信息
+     */
+    AppDailyPaymentOrder findDailPaymentOrderByCode(String outTradeNo);
+
+    /**
+     * 根据支付单号更新订单状态
+     * @param aliPaymentOrder 支付订单信息
+     * @return 影响行数
+     */
+    int updateDPOrderStatusByCode(AppDailyPaymentOrder aliPaymentOrder);
 }

@@ -299,17 +299,17 @@ public class AlipayServiceImpl implements AlipayService {
 
             //填写支付单号(正式为支付宝或微信返回的订单号)
             appDailyPaymentOrder.setCode(UUID.randomUUID().toString().replace("-","").trim());
-//            //填写创建人 app为-1
-//            appDailyPaymentOrder.setCreateId(-1);
-//            //填入创建时间
-//            appDailyPaymentOrder.setCreateDate(new Date());
-//            //填入付款状态，1.待支付
-//            appDailyPaymentOrder.setStatus(1);
-//            //添加缴费订单信息
-//            int i = appDailyPaymentDao.insertOrder(appDailyPaymentOrder);
-//            if (i<=0){
-//                throw new RuntimeException("添加缴费订单信息失败");
-//            }
+            //填写创建人 app为-1
+            appDailyPaymentOrder.setCreateId(-1);
+            //填入创建时间
+            appDailyPaymentOrder.setCreateDate(new Date());
+            //填入付款状态，1.待支付
+            appDailyPaymentOrder.setStatus(1);
+            //添加缴费订单信息
+            int i = appDailyPaymentDao.insertOrder(appDailyPaymentOrder);
+            if (i<=0){
+                throw new RuntimeException("添加缴费订单信息失败");
+            }
 //            //获取所有的缴费主键id
 //            int[] ids = appDailyPaymentOrder.getIds();
 //            for (int id : ids) {
@@ -403,26 +403,66 @@ public class AlipayServiceImpl implements AlipayService {
         try {
             //调用SDK验证签名
             signVerified = AlipaySignature.rsaCheckV1(params, RSA_ALIPAY_PUBLIC_KEY, ALIPAY_CHARSET, SIGN_TYPE);
-            if(signVerified) {
-                // 验证通知后执行自己项目需要的业务操作
-                // 一般需要判断支付状态是否为TRADE_SUCCESS
-                // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
-
-                log.info("异步调用成功");
-                // 成功要返回success，不然支付宝会不断发送通知。
-                return "success";
-            }
-
-            // 验签失败  笔者在这里是输出log，可以根据需要做一些其他操作
-            log.info("异步调用失败");
-
-            // 失败要返回fail，不然支付宝会不断发送通知。
-            return "fail";
         } catch (AlipayApiException e) {
             e.printStackTrace();
             // 验签异常  笔者在这里是输出log，可以根据需要做一些其他操作
             log.info("异步调用失败");
 
+            return "fail";
+        }
+        if(signVerified) {
+            //验签通过
+            //获取需要保存的数据
+            String appId=params.get("app_id");//支付宝分配给开发者的应用Id
+            String outTradeNo = params.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
+            String buyerPayAmount=params.get("buyer_pay_amount");//付款金额:用户在交易中支付的金额
+            String tradeStatus = params.get("trade_status");// 获取交易状态
+            // 验证通知后执行自己项目需要的业务操作
+            // 一般需要判断支付状态是否为TRADE_SUCCESS
+            // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
+            //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+            AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
+            //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
+            if(aliPaymentOrder!=null && buyerPayAmount.equals(aliPaymentOrder.getPayPrice().toString()) && AlipayConfig.APPID.equals(appId)){
+                switch (tradeStatus) // 判断交易结果
+                {
+                    case "TRADE_FINISHED": // 交易结束并不可退款
+                        aliPaymentOrder.setStatus(3);
+                        break;
+                    case "TRADE_SUCCESS": // 交易支付成功
+                        aliPaymentOrder.setStatus(2);
+                        break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        aliPaymentOrder.setStatus(1);
+                        break;
+                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+                        aliPaymentOrder.setStatus(0);
+                        break;
+                    default:
+                        break;
+                }
+                //更新表的状态
+                int returnResult = appDailyPaymentDao.updateDPOrderStatusByCode(aliPaymentOrder);
+                if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
+                    if(returnResult>0){
+                        log.info("异步调用成功");
+                        // 成功要返回success，不然支付宝会不断发送通知。
+                        return "success";
+                    }else{
+                        return "fail";
+                    }
+                }else{
+                    return "fail";
+                }
+            }else{
+                log.info("==================支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
+                return"fail";
+            }
+        }else {
+            // 验签失败  笔者在这里是输出log，可以根据需要做一些其他操作
+            log.info("=========验签不通过！");
+
+            // 失败要返回fail，不然支付宝会不断发送通知。
             return "fail";
         }
     }
