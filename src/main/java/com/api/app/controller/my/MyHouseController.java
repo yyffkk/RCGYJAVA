@@ -63,6 +63,17 @@ public class MyHouseController {
         return myHouseService.authentication(myHouse,type);
     }
 
+
+    /**
+     * 再次认证回显数据
+     * @param estateExamineId 房产审核表主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer estateExamineId){
+        return myHouseService.findById(estateExamineId);
+    }
+
     /**
      * 假删除审核信息
      * @param voIds 审核主键id数组

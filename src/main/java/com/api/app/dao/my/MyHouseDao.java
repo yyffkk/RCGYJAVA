@@ -1,6 +1,7 @@
 package com.api.app.dao.my;
 
 import com.api.model.basicArchives.UserResident;
+import com.api.vo.my.MyHouseFBIVo;
 import com.api.vo.my.MyHouseVo;
 
 import java.util.List;
@@ -33,4 +34,11 @@ public interface MyHouseDao {
      * @return 影响行数
      */
     int falseDelete(int id);
+
+    /**
+     * 再次认证回显数据,根据房产审核表主键id查询房产审核信息
+     * @param estateExamineId 房产审核表主键id
+     * @return 房产审核信息
+     */
+    MyHouseFBIVo findById(Integer estateExamineId);
 }

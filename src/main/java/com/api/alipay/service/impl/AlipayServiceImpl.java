@@ -293,6 +293,9 @@ public class AlipayServiceImpl implements AlipayService {
 //            if (paymentPrice.compareTo(appDailyPaymentOrder.getPayPrice()) != 0){
 //                throw new RuntimeException("支付金额有误，请重新支付");
 //            }
+//            if (paymentPrice.equals(BigDecimal.ZERO)){
+//                throw new RuntimeException("支付金额不可为0");
+//            }
             //填写付款金额
             appDailyPaymentOrder.setPayPrice(paymentPrice);
 
@@ -303,8 +306,8 @@ public class AlipayServiceImpl implements AlipayService {
             appDailyPaymentOrder.setCreateId(-1);
             //填入创建时间
             appDailyPaymentOrder.setCreateDate(new Date());
-            //填入付款状态，1.待支付
-            appDailyPaymentOrder.setStatus(1);
+            //填入付款状态，0.交易创建并等待买家付款
+            appDailyPaymentOrder.setStatus(0);
             //添加缴费订单信息
             int i = appDailyPaymentDao.insertOrder(appDailyPaymentOrder);
             if (i<=0){

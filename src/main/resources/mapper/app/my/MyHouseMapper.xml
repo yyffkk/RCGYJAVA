@@ -26,4 +26,10 @@
     <update id="falseDelete" parameterType="java.lang.Integer">
         update cpm_resident_estate_examine set is_delete = 0 where id = #{id}
     </update>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.my.MyHouseFBIVo">
+        select cree.id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,cree.building_unit_estate_id as estate_id,cree.type,ur.name,ur.id_type,ur.id_number
+        from cpm_resident_estate_examine as cree,user_resident as ur,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where cree.resident_id = ur.id and cree.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cree.is_delete = 1 and cree.id = #{estateExamineId}
+    </select>
 </mapper>

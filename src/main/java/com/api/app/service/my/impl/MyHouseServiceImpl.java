@@ -5,6 +5,7 @@ import com.api.app.dao.my.MyHouseDao;
 import com.api.app.service.my.MyHouseService;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.my.MyHouse;
+import com.api.vo.my.MyHouseFBIVo;
 import com.api.vo.my.MyHouseVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,6 +109,17 @@ public class MyHouseServiceImpl implements MyHouseService {
             return map;
         }
         map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer estateExamineId) {
+        map = new HashMap<>();
+        //根据房产审核表主键id查询再次认证回显信息
+        MyHouseFBIVo myHouseFBIVo = myHouseDao.findById(estateExamineId);
+        map.put("data",myHouseFBIVo);
+        map.put("message","请求成功");
         map.put("status",true);
         return map;
     }
