@@ -41,4 +41,11 @@ public interface MyHouseDao {
      * @return 房产审核信息
      */
     MyHouseFBIVo findById(Integer estateExamineId);
+
+    /**
+     * 根据房产审核表主键id查询审核状态
+     * @param id 房产审核表主键id
+     * @return 审核状态
+     */
+    int findStatusById(int id);
 }

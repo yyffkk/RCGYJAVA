@@ -32,4 +32,8 @@
         from cpm_resident_estate_examine as cree,user_resident as ur,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         where cree.resident_id = ur.id and cree.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cree.is_delete = 1 and cree.id = #{estateExamineId}
     </select>
+
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from cpm_resident_estate_examine where id = #{id}
+    </select>
 </mapper>

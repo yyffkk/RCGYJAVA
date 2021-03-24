@@ -15,7 +15,7 @@ public class MyHouseVo {
      */
     private String roomName;
     /**
-     * 审核状态（1.未审核，3.审核失败，4.审核成功）
+     * 审核状态（1.审核中，3.审核失败，4.审核成功）
      */
     private Integer status;
     /**

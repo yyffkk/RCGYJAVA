@@ -35,7 +35,7 @@ public class MyHouseServiceImpl implements MyHouseService {
     public Map<String, Object> authentication(MyHouse myHouse, Integer type) {
         map =  new HashMap<>();
         try {
-            //判断不是游客后的身份信息
+            //当既不是游客，用户类型又不相等时，抛出错误；是游客继续执行，类型相等继续执行
             if (type != 4 && myHouse.getType() != type){
                 throw new RuntimeException("身份信息不对");
             }
@@ -92,6 +92,11 @@ public class MyHouseServiceImpl implements MyHouseService {
         map = new HashMap<>();
         try {
             for (int id : ids) {
+                //判断是否是审核中状态
+                int status = myHouseDao.findStatusById(id);
+                if (status == 1){
+                    throw new RuntimeException("审核中，无法删除");
+                }
                 int update = myHouseDao.falseDelete(id);
                 if (update <= 0){
                     throw new RuntimeException("删除失败");
