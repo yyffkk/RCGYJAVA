@@ -4,12 +4,25 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao">
     <select id="list" parameterType="com.api.model.butlerApp.ButlerInspectionSearch" resultType="com.api.vo.butlerApp.ButlerInspectionVo">
-        select sie.id,concat(sip.code,'-',sie.sort) as code,sip.name,(case sie.actual_end_date is null when true then 1 else 0 end) as status
+        select sie.id,concat(sip.code,'-',sie.sort) as code,sip.name,sie.begin_date,sie.actual_begin_date,sie.actual_end_date
         from sys_inspection_execute as sie,sys_inspection_plan as sip
         <where>
             sie.inspection_plan_id = sip.id
-            <if test="inspectionStatus != null">
-                and (case sie.actual_end_date is null when true then 1 else 0 end) = #{inspectionStatus}
+            <if test="inspectionStatus == 1">
+                and sie.actual_begin_date is null
+                and sie.actual_end_date is null
+            </if>
+            <if test="inspectionStatus == 2">
+                and sie.actual_begin_date is not null
+                and sie.actual_end_date is not null
+            </if>
+            <if test="inspectionStatus == 3">
+                and sie.actual_begin_date is not null
+                and sie.actual_end_date is null
+            </if>
+            <if test="inspectionStatus == 4">
+                and sie.actual_begin_date is null
+                and sie.actual_end_date is not null
             </if>
         </where>
     </select>

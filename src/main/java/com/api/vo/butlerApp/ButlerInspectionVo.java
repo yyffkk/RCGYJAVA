@@ -1,5 +1,7 @@
 package com.api.vo.butlerApp;
 
+import java.util.Date;
+
 /**
  * 管家app 巡检管理Vo list 回显
  */
@@ -17,6 +19,22 @@ public class ButlerInspectionVo {
      */
     private String name;
     /**
+     * 计划当次巡检开始时间
+     */
+    private Date beginDate;
+    /**
+     * 计划当次巡检结束时间
+     */
+    private Date endDate;
+    /**
+     * 实际当次巡检开始时间
+     */
+    private Date actualBeginDate;
+    /**
+     * 实际当次巡检结束时间
+     */
+    private Date actualEndDate;
+    /**
      * 状态（1.待巡检（实际当次巡检结束时间为null），2.已巡检(实际当次巡检结束时间不为null)）
      */
     private Integer status;
@@ -27,6 +45,10 @@ public class ButlerInspectionVo {
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", beginDate=" + beginDate +
+                ", endDate=" + endDate +
+                ", actualBeginDate=" + actualBeginDate +
+                ", actualEndDate=" + actualEndDate +
                 ", status=" + status +
                 '}';
     }
@@ -55,6 +77,38 @@ public class ButlerInspectionVo {
         this.name = name;
     }
 
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getActualBeginDate() {
+        return actualBeginDate;
+    }
+
+    public void setActualBeginDate(Date actualBeginDate) {
+        this.actualBeginDate = actualBeginDate;
+    }
+
+    public Date getActualEndDate() {
+        return actualEndDate;
+    }
+
+    public void setActualEndDate(Date actualEndDate) {
+        this.actualEndDate = actualEndDate;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -66,10 +120,14 @@ public class ButlerInspectionVo {
     public ButlerInspectionVo() {
     }
 
-    public ButlerInspectionVo(Integer id, String code, String name, Integer status) {
+    public ButlerInspectionVo(Integer id, String code, String name, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate, Integer status) {
         this.id = id;
         this.code = code;
         this.name = name;
+        this.beginDate = beginDate;
+        this.endDate = endDate;
+        this.actualBeginDate = actualBeginDate;
+        this.actualEndDate = actualEndDate;
         this.status = status;
     }
 }

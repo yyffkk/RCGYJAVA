@@ -30,7 +30,29 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
 
     @Override
     public List<ButlerInspectionVo> list(ButlerInspectionSearch butlerInspectionSearch) {
-        return butlerInspectionDao.list(butlerInspectionSearch);
+        List<ButlerInspectionVo> list = butlerInspectionDao.list(butlerInspectionSearch);
+        if (list != null && list.size()>0){
+            for (ButlerInspectionVo butlerInspectionVo : list) {
+                //判断实际开始时间是否为null
+                if (butlerInspectionVo.getActualBeginDate() != null){
+                    //判断实际结束时间是否为null
+                    if (butlerInspectionVo.getActualEndDate() != null){
+                        butlerInspectionVo.setStatus(2); //实际开始时间与实际结束时间都不为null，2.已巡检
+                    }else {
+                        butlerInspectionVo.setStatus(3); //实际开始时间不为null,实际结束时间为null，3.巡检中
+                    }
+                }else {
+                    //判断实际结束时间是否为null
+                    if (butlerInspectionVo.getActualEndDate() != null){
+                        butlerInspectionVo.setStatus(4); //实际开始时间为null,实际结束时间不为null，4.未巡检
+                    }else {
+                        //实际开始时间与实际结束时间都为null，1.待巡检
+                        butlerInspectionVo.setStatus(1);
+                    }
+                }
+            }
+        }
+        return list;
     }
 
     @Override
