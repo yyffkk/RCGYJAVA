@@ -219,60 +219,7 @@ public class AlipayServiceImpl implements AlipayService {
 //        }
 //
 //    }
-//
-//    @Override
-//    public Byte checkAlipay(String outTradeNo) {
-//        log.info("==================向支付宝发起查询，查询商户订单号为："+outTradeNo);
-//
-//        try {
-//            //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
-//            AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID,
-//                    AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET,
-//                    AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
-//            AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
-//            alipayTradeQueryRequest.setBizContent("{" +
-//                    "\"out_trade_no\":\""+outTradeNo+"\"" +
-//                    "}");
-//            AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
-//            if(alipayTradeQueryResponse.isSuccess()){
-//                //根据out_trade_no【商户系统的唯一订单号】查询订单信息
-//                AliPaymentOrder alipaymentOrder=this.selectByOutTradeNo(outTradeNo);
-//                //修改数据库支付宝订单表
-//                alipaymentOrder.setTradeNo(alipayTradeQueryResponse.getTradeNo());//支付宝的交易号
-//                alipaymentOrder.setBuyerLogonId(alipayTradeQueryResponse.getBuyerLogonId());//买家支付宝账号
-//                alipaymentOrder.setTotalAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getTotalAmount())) );//订单金额
-//                alipaymentOrder.setReceiptAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getReceiptAmount())));//实收金额
-//                alipaymentOrder.setInvoiceAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getInvoiceAmount())));//开票金额
-//                alipaymentOrder.setBuyerPayAmount(BigDecimal.valueOf(Double.parseDouble(alipayTradeQueryResponse.getBuyerPayAmount())));//付款金额
-//                switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
-//                {
-//                    case "TRADE_FINISHED": // 交易结束并不可退款
-//                        alipaymentOrder.setTradeStatus((byte) 3);
-//                        break;
-//                    case "TRADE_SUCCESS": // 交易支付成功
-//                        alipaymentOrder.setTradeStatus((byte) 2);
-//                        break;
-//                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
-//                        alipaymentOrder.setTradeStatus((byte) 1);
-//                        break;
-//                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
-//                        alipaymentOrder.setTradeStatus((byte) 0);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                this.updateByPrimaryKey(alipaymentOrder); //更新表记录
-//                return alipaymentOrder.getTradeStatus(); //交易状态
-//            } else {
-//                log.info("==================调用支付宝查询接口失败！");
-//            }
-//        } catch (AlipayApiException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        return 0;
-//
-//    }
+
 
     @Override
     @Transactional
@@ -353,6 +300,8 @@ public class AlipayServiceImpl implements AlipayService {
             alipayRequest.setBizModel(model);
             // 支付成功后支付宝异步通知的接收地址url
             alipayRequest.setNotifyUrl(NOTIFY_URL);
+            //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
 
             // 注意：每个请求的相应对象不同，与请求对象是对应。
             AlipayTradeAppPayResponse alipayResponse = null;
@@ -470,47 +419,53 @@ public class AlipayServiceImpl implements AlipayService {
         }
     }
 
-//    /**
-//     * 转换时间格式
-//     * @param notifyTime 字符串格式的时间
-//     * @return date格式的时间
-//     */
-//    private Date dateFormat(String notifyTime) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        Date parse = null;
-//        try {
-//            parse = dateFormat.parse(notifyTime);
-//        } catch (ParseException e) {
-//            log.info("==================时间转换代码有误 ！");
-//            e.printStackTrace();
-//        }
-//        return parse;
-//    }
-//
-//    /**
-//     * 根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
-//     * @param outTradeNo 商户系统的唯一订单号
-//     * @return 支付宝订单信息
-//     */
-//    private AliPaymentOrder selectByOutTradeNo(String outTradeNo) {
-//        return alipayDao.selectByOutTradeNo(outTradeNo);
-//    }
-//
-//    /**
-//     * 创建 数据库支付宝信息
-//     * @param aliPaymentOrder 支付宝订单
-//     */
-//    private void createAlipayMentOrder(AliPaymentOrder aliPaymentOrder) {
-//        alipayDao.createAlipayMentOrder(aliPaymentOrder);
-//    }
-//
-//    /**
-//     * 根据主键修改 数据库支付宝信息
-//     * @param aliPaymentOrder 支付宝订单
-//     * @return 影响行数
-//     */
-//    private int updateByPrimaryKey(AliPaymentOrder aliPaymentOrder) {
-//        return alipayDao.updateByPrimaryKey(aliPaymentOrder);
-//    }
+
+
+    @Override
+    public Integer checkAlipay(String outTradeNo) {
+        log.info("==================向支付宝发起查询，查询商户订单号为："+outTradeNo);
+
+        try {
+            //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
+            alipayTradeQueryRequest.setBizContent("{" +
+                    "\"out_trade_no\":\""+outTradeNo+"\"" +
+                    "}");
+            AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
+            if(alipayTradeQueryResponse.isSuccess()){
+                //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+                AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
+                //修改数据库支付宝订单表
+                switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
+                {
+                    case "TRADE_FINISHED": // 交易结束并不可退款
+                        aliPaymentOrder.setStatus(3);
+                        break;
+                    case "TRADE_SUCCESS": // 交易支付成功
+                        aliPaymentOrder.setStatus(2);
+                        break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        aliPaymentOrder.setStatus(1);
+                        break;
+                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+                        aliPaymentOrder.setStatus(0);
+                        break;
+                    default:
+                        break;
+                }
+                //更新表的状态
+                appDailyPaymentDao.updateDPOrderStatusByCode(aliPaymentOrder);
+                return aliPaymentOrder.getStatus(); //交易状态
+            } else {
+                log.info("==================调用支付宝查询接口失败！");
+            }
+        } catch (AlipayApiException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
+
+    }
 
 }

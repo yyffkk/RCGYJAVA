@@ -10,10 +10,10 @@ public interface AlipayService {
 //    String getAliPayOrderStr(OrderTest orderTest);
 //
 //    String notify(Map<String, String> conversionParams);
-//
-//    Byte checkAlipay(String outTradeNo);
 
     Map<String,Object> alipay(AppDailyPaymentOrder appDailyPaymentOrder);
 
     String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request);
+
+    Integer checkAlipay(String outTradeNo);
 }

@@ -73,17 +73,7 @@ public class AlipayController {
 //        String status=alipayService.notify(conversionParams);
 //        return status;
 //    }
-//
-//    /**
-//     * 向支付宝发起订单查询请求
-//     * @param outTradeNo 商户订单号
-//     * @return map
-//     */
-//    @PostMapping("/checkAlipay")
-//    public Byte checkAlipay(@RequestBody String outTradeNo){
-//        return alipayService.checkAlipay(outTradeNo);
-//    }
-//
+
 
     /**
      * app支付
@@ -99,7 +89,7 @@ public class AlipayController {
     }
 
     /**
-     * 接收支付宝异步通知消息
+     * 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
      * @param request
      * @param response
      * @return
@@ -111,6 +101,16 @@ public class AlipayController {
         // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
         request.setCharacterEncoding("UTF-8");
         return alipayService.getAlipayNotifyInfoOfCombinedPayment(request);
+    }
+
+    /**
+     * 向支付宝发起订单查询请求
+     * @param outTradeNo 商户订单号
+     * @return map
+     */
+    @PostMapping("/checkAlipay")
+    public Integer checkAlipay(@RequestBody String outTradeNo){
+        return alipayService.checkAlipay(outTradeNo);
     }
 
 
