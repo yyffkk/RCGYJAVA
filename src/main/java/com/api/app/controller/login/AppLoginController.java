@@ -45,7 +45,7 @@ public class AppLoginController {
     }
 
     /**
-     * app用户注册
+     * app用户注册（刚注册的用户为游客身份）
      * @param userRegister 用户注册信息
      * @return map
      */

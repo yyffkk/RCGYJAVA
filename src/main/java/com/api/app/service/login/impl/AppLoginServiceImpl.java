@@ -194,22 +194,22 @@ public class AppLoginServiceImpl implements AppLoginService {
             }
 
             //根据业主证件号码查询是否已有业主信息
-            UserResident userResident2 = userResidentDao.findByIdNumber(userRegister.getIdNumber());
-            if (userResident2 != null){
-                throw new RuntimeException("用户证件号码已存在");
-            }
+//            UserResident userResident2 = userResidentDao.findByIdNumber(userRegister.getIdNumber());
+//            if (userResident2 != null){
+//                throw new RuntimeException("用户证件号码已存在");
+//            }
 
             UserResident userResident = new UserResident();
-            //填入住户名称
-            userResident.setName(userRegister.getName());
+//            //填入住户名称
+//            userResident.setName(userRegister.getName());
             //填入住户类型，未审核为4.游客
             userResident.setType(4);
             //填入联系电话
             userResident.setTel(userRegister.getTel());
-            //填入证件类型（1身份证，2营业执照，3.军人证）
-            userResident.setIdType(userRegister.getIdType());
-            //填入证件号码
-            userResident.setIdNumber(userRegister.getIdNumber());
+//            //填入证件类型（1身份证，2营业执照，3.军人证）
+//            userResident.setIdType(userRegister.getIdType());
+//            //填入证件号码
+//            userResident.setIdNumber(userRegister.getIdNumber());
             //填入创建人
             userResident.setCreateId(-1);
             //填入创建时间
@@ -217,30 +217,30 @@ public class AppLoginServiceImpl implements AppLoginService {
             //填入昵称
             userResident.setNickName(userRegister.getNickName());
             //添加用户信息
-            int insert1 = userResidentDao.insert(userResident);
+            int insert1 = userResidentDao.insert2(userResident);
             if (insert1 <= 0){
                 throw new RuntimeException("添加用户信息失败");
             }
 
             //添加房产审核信息
-            MyHouse myHouse = new MyHouse();
-            //添加房产id
-            myHouse.setEstateId(userRegister.getEstateId());
-            //添加住户id
-            myHouse.setResidentId(userResident.getId());
-            //添加住户类型（1 审核业主，2审核亲属，3审核租客）
-            myHouse.setType(userRegister.getType());
-            //添加审核状态（1.未审核，3.审核失败，4.审核成功）
-            myHouse.setStatus(1);
-            //填入是否删除，1.非删 0.删除 默认为1.非删
-            myHouse.setIsDelete(1);
-            //填入创建时间
-            myHouse.setCreateDate(new Date());
-            //添加住户房产审核信息
-            int insert2 = appLoginDao.insertResidentEstateExamine(myHouse);
-            if (insert2 <= 0){
-                throw new RuntimeException("添加住户房产审核信息");
-            }
+//            MyHouse myHouse = new MyHouse();
+//            //添加房产id
+//            myHouse.setEstateId(userRegister.getEstateId());
+//            //添加住户id
+//            myHouse.setResidentId(userResident.getId());
+//            //添加住户类型（1 审核业主，2审核亲属，3审核租客）
+//            myHouse.setType(userRegister.getType());
+//            //添加审核状态（1.未审核，3.审核失败，4.审核成功）
+//            myHouse.setStatus(1);
+//            //填入是否删除，1.非删 0.删除 默认为1.非删
+//            myHouse.setIsDelete(1);
+//            //填入创建时间
+//            myHouse.setCreateDate(new Date());
+//            //添加住户房产审核信息
+//            int insert2 = appLoginDao.insertResidentEstateExamine(myHouse);
+//            if (insert2 <= 0){
+//                throw new RuntimeException("添加住户房产审核信息");
+//            }
 
 
             //注册成功，去登录

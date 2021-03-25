@@ -77,6 +77,25 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+    <insert id="insert2" parameterType="com.api.model.basicArchives.UserResident">
+        insert into user_resident(
+            type,
+            tel,
+            nick_name,
+            create_id,
+            create_date
+        ) values (
+            #{type},
+            #{tel},
+            #{nickName},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
     <!--    添加业主亲属关联-->
     <insert id="insertResidentRelatives" parameterType="com.api.model.basicArchives.UserResidentRelatives">
         insert into user_resident_relatives(resident_id,relatives_id,identity)

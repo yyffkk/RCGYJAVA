@@ -26,6 +26,14 @@ public interface UserResidentDao {
     int insert(UserResident userResident);
 
     /**
+     * 添加游客信息[住户表]
+     * @param userResident 住户信息
+     * @return 影响行数
+     */
+    int insert2(UserResident userResident);
+
+
+    /**
      * 添加住户亲属关联 【住户亲属关联表】
      * @param userResidentRelatives 业主亲属关联表信息model
      * @return 影响行数
@@ -157,4 +165,5 @@ public interface UserResidentDao {
      * @return 根据业主姓名查询业主信息及房产信息集合
      */
     List<VoFindResidentByName> findResidentNameBySearch(SearchFindName searchFindName);
+
 }
