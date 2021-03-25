@@ -62,6 +62,10 @@ public class UserResident {
      * 昵称
      */
     private String nickName;
+    /**
+     * app审核界面当前选中的房产id
+     */
+    private Integer nowEstateId;
 
     @Override
     public String toString() {
@@ -80,6 +84,7 @@ public class UserResident {
                 ", identity=" + identity +
                 ", roomStatus=" + roomStatus +
                 ", nickName='" + nickName + '\'' +
+                ", nowEstateId=" + nowEstateId +
                 '}';
     }
 
@@ -195,10 +200,18 @@ public class UserResident {
         this.nickName = nickName;
     }
 
+    public Integer getNowEstateId() {
+        return nowEstateId;
+    }
+
+    public void setNowEstateId(Integer nowEstateId) {
+        this.nowEstateId = nowEstateId;
+    }
+
     public UserResident() {
     }
 
-    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName) {
+    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName, Integer nowEstateId) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -213,5 +226,6 @@ public class UserResident {
         this.identity = identity;
         this.roomStatus = roomStatus;
         this.nickName = nickName;
+        this.nowEstateId = nowEstateId;
     }
 }
