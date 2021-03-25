@@ -1,5 +1,7 @@
 package com.api.vo.my;
 
+import java.util.Date;
+
 /**
  * 我的车位Vo list  回显
  */
@@ -9,15 +11,20 @@ public class MyParkingSpaceVo {
      */
     private String code;
     /**
-     * 审核状态（1.审核中，3.审核失败，4.审核成功）
+     * 车位类型（1.产权车位，2.临时车位）
      */
-    private Integer status;
+    private Integer type;
+    /**
+     * 有效时间结束（仅出租）
+     */
+    private Date effectiveTimeEnd;
 
     @Override
     public String toString() {
         return "MyParkingSpaceVo{" +
                 "code='" + code + '\'' +
-                ", status=" + status +
+                ", type=" + type +
+                ", effectiveTimeEnd=" + effectiveTimeEnd +
                 '}';
     }
 
@@ -29,19 +36,28 @@ public class MyParkingSpaceVo {
         this.code = code;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getType() {
+        return type;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Date getEffectiveTimeEnd() {
+        return effectiveTimeEnd;
+    }
+
+    public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
+        this.effectiveTimeEnd = effectiveTimeEnd;
     }
 
     public MyParkingSpaceVo() {
     }
 
-    public MyParkingSpaceVo(String code, Integer status) {
+    public MyParkingSpaceVo(String code, Integer type, Date effectiveTimeEnd) {
         this.code = code;
-        this.status = status;
+        this.type = type;
+        this.effectiveTimeEnd = effectiveTimeEnd;
     }
 }

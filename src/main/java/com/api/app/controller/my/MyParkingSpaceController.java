@@ -24,7 +24,7 @@ public class MyParkingSpaceController {
     MyParkingSpaceService myParkingSpaceService;
 
     /**
-     * 查询所有的车位审核信息
+     * 查询所有的车位
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @param id 用户主键id
@@ -40,29 +40,6 @@ public class MyParkingSpaceController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
-    }
-
-    /**
-     * 车位认证
-     * @param myParkingSpace 我的车位审核model
-     * @param request app-admin-token获取的request用户信息
-     * @return map
-     */
-    @PostMapping("/authentication")
-    public Map<String,Object> authentication(@RequestBody MyParkingSpace myParkingSpace, HttpServletRequest request){
-        Integer id = Integer.valueOf(request.getParameter("id")); //从request获取用户id
-        myParkingSpace.setResidentId(id); //填入用户id
-        return myParkingSpaceService.authentication(myParkingSpace);
-    }
-
-    /**
-     * 假删除车位审核信息
-     * @param voIds 车位审核主键id数组
-     * @return map
-     */
-    @PostMapping("/falseDelete")
-    public Map<String,Object> falseDelete(@RequestBody VoIds voIds){
-        return myParkingSpaceService.falseDelete(voIds.getIds());
     }
 
 }

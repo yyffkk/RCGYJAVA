@@ -4,47 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.my.MyParkingSpaceDao">
     <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.my.MyParkingSpaceVo">
-        select cps.code,cpse.status
-        from cpm_parking_space as cps,cpm_parking_space_examine as cpse
-        where cpse.parking_space_id = cps.id and cps.resident_id = #{id}
+        select code,type,effective_time_end
+        from cpm_parking_space
+        where resident_id = #{id} or user_id = #{id}
     </select>
-    <select id="countNotReviewed" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from cpm_parking_space_examine where status = 1 and resident_id = #{residentId} and is_delete = 1
-    </select>
-
-    <insert id="insertParkingSpaceExamine" parameterType="com.api.model.my.MyParkingSpace">
-        insert into cpm_parking_space_examine(
-            parking_space_id,
-            resident_id,
-            status,
-            <if test="effectiveTimeStart != null">
-                effective_time_start,
-            </if>
-            <if test="effectiveTimeEnd != null">
-                effective_time_end,
-            </if>
-            is_delete,
-            create_date
-        ) values (
-            #{parkingSpaceId},
-            #{residentId},
-            #{status},
-            <if test="effectiveTimeStart != null">
-                #{effectiveTimeStart},
-            </if>
-            <if test="effectiveTimeEnd != null">
-                #{effectiveTimeEnd},
-            </if>
-            #{isDelete},
-            #{createDate}
-        )
-    </insert>
-
-    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select status from cpm_parking_space_examine where id = #{id}
-    </select>
-
-    <update id="falseDelete" parameterType="java.lang.Integer">
-        update cpm_parking_space_examine set is_delete = 0 where id = #{id}
-    </update>
 </mapper>

@@ -8,8 +8,4 @@ import java.util.Map;
 
 public interface MyParkingSpaceService {
     List<MyParkingSpaceVo> list(Integer id);
-
-    Map<String, Object> authentication(MyParkingSpace myParkingSpace);
-
-    Map<String, Object> falseDelete(int[] ids);
 }
