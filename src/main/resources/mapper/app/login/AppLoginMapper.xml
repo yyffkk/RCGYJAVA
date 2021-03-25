@@ -56,8 +56,6 @@
             <if test="effectiveTimeEnd != null">
                 effective_time_end,
             </if>
-            is_delete,
-            create_date,
             <if test="name != null and name != ''">
                 name,
             </if>
@@ -67,6 +65,11 @@
             <if test="idNumber != null and idNumber != ''">
                 id_number,
             </if>
+            <if test="reviewer != null">
+                reviewer,
+            </if>
+            is_delete,
+            create_date,
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -80,8 +83,6 @@
             <if test="effectiveTimeEnd != null">
                 #{effectiveTimeEnd},
             </if>
-            #{isDelete},
-            #{createDate},
             <if test="name != null and name != ''">
                 #{name},
             </if>
@@ -91,6 +92,11 @@
             <if test="idNumber != null and idNumber != ''">
                 #{idNumber},
             </if>
+            <if test="reviewer != null">
+                #{reviewer},
+            </if>
+            #{isDelete},
+            #{createDate},
         </trim>
     </insert>
 

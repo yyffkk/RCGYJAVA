@@ -18,7 +18,7 @@ public interface MyHouseDao {
     List<MyHouseVo> list(Integer id);
 
     /**
-     * 根据用户主键id 查询该用户的未审核记录数量
+     * 根据用户主键id 查询该用户的审核中记录数量
      * @param residentId 用户主键Id
      * @return 未审核记录数量
      */

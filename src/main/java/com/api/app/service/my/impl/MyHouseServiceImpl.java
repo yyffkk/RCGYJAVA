@@ -75,6 +75,8 @@ public class MyHouseServiceImpl implements MyHouseService {
                 myHouse.setEffectiveTimeEnd(estateInfoVo.getEffectiveTimeEnd());
                 //添加审核状态（1.未审核，3.审核失败，4.审核成功）
                 myHouse.setStatus(4);
+                //填写审核人id（系统自动审核成功为-1）
+                myHouse.setReviewer(-1);
                 //填入是否删除，1.非删 0.删除 默认为1.非删
                 myHouse.setIsDelete(1);
                 //填入创建时间
@@ -88,6 +90,8 @@ public class MyHouseServiceImpl implements MyHouseService {
                 //系统自动审核失败
                 //添加审核状态（1.未审核，3.审核失败，4.审核成功）
                 myHouse.setStatus(1);
+                //填写审核人id（系统自动审核失败为null）
+                myHouse.setReviewer(null);
                 //填入是否删除，1.非删 0.删除 默认为1.非删
                 myHouse.setIsDelete(1);
                 //填入创建时间
