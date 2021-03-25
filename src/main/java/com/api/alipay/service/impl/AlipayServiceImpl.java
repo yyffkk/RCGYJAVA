@@ -236,7 +236,7 @@ public class AlipayServiceImpl implements AlipayService {
         // 此处是相关业务代码
         try {
             //计算出所需支付总金额
-            BigDecimal paymentPrice = appDailyPaymentDao.findPaymentPriceById(appDailyPaymentOrder);
+//            BigDecimal paymentPrice = appDailyPaymentDao.findPaymentPriceById(appDailyPaymentOrder);
 //            if (paymentPrice.compareTo(appDailyPaymentOrder.getPayPrice()) != 0){
 //                throw new RuntimeException("支付金额有误，请重新支付");
 //            }
@@ -244,10 +244,10 @@ public class AlipayServiceImpl implements AlipayService {
 //                throw new RuntimeException("支付金额不可为0");
 //            }
             //填写付款金额
-            appDailyPaymentOrder.setPayPrice(paymentPrice);
+//            appDailyPaymentOrder.setPayPrice(paymentPrice);
+            appDailyPaymentOrder.setPayPrice(BigDecimal.valueOf(0.01));
 
-
-            //填写支付单号(正式为支付宝或微信返回的订单号)
+            //填写支付单号(自动生成订单号)
             appDailyPaymentOrder.setCode(UUID.randomUUID().toString().replace("-","").trim());
             //填写创建人 app为-1
             appDailyPaymentOrder.setCreateId(-1);

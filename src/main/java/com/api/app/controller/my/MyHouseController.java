@@ -47,7 +47,7 @@ public class MyHouseController {
     }
 
     /**
-     * 房屋认证
+     * 房屋认证(新增房屋)
      * @param myHouse 房产认证model
      * @param request app-admin-token获取的request用户信息
      * @return map
@@ -77,11 +77,14 @@ public class MyHouseController {
     /**
      * 假删除审核信息
      * @param voIds 审核主键id数组
+     * @param request app-admin-token获取的request用户信息
      * @return map
      */
     @PostMapping("/falseDelete")
-    public Map<String,Object> falseDelete(@RequestBody VoIds voIds){
-        return myHouseService.falseDelete(voIds.getIds());
+    public Map<String,Object> falseDelete(@RequestBody VoIds voIds, HttpServletRequest request){
+        //从request获取用户id
+        Integer residentId = Integer.valueOf(request.getParameter("id"));
+        return myHouseService.falseDelete(voIds.getIds(),residentId);
     }
 
 }

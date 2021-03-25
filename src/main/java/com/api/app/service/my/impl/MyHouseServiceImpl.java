@@ -3,8 +3,10 @@ package com.api.app.service.my.impl;
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.dao.my.MyHouseDao;
 import com.api.app.service.my.MyHouseService;
+import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.my.MyHouse;
+import com.api.vo.my.MyHouseEstateInfoVo;
 import com.api.vo.my.MyHouseFBIVo;
 import com.api.vo.my.MyHouseVo;
 import org.springframework.stereotype.Service;
@@ -40,35 +42,70 @@ public class MyHouseServiceImpl implements MyHouseService {
                 throw new RuntimeException("身份信息不对");
             }
 
-            //判断该用户是否已有待审核记录存在
+            //判断该用户是否已有审核中记录存在
             int count = myHouseDao.countNotReviewed(myHouse.getResidentId());
             if (count >0){
-                throw new RuntimeException("已有待审核记录，请等待完成");
-            }
-            UserResident userResident = new UserResident();
-            userResident.setType(myHouse.getType());
-            userResident.setName(myHouse.getName());
-            userResident.setIdType(myHouse.getIdType());
-            userResident.setIdNumber(myHouse.getIdNumber());
-            userResident.setId(myHouse.getResidentId());
-            //根据用户主键id 改变当前用户的住户类型,名称，证件类型，证件号码
-            int update = myHouseDao.updateBaseInfoById(userResident);
-            if (update <= 0){
-                throw new RuntimeException("修改基础信息失败");
+                throw new RuntimeException("已有审核中记录，请等待完成");
             }
 
-            //添加审核状态（1.未审核，3.审核失败，4.审核成功）
-            myHouse.setStatus(1);
-            //填入是否删除，1.非删 0.删除 默认为1.非删
-            myHouse.setIsDelete(1);
-            //填入创建时间
-            myHouse.setCreateDate(new Date());
-            //添加住户房产审核信息
-            int insert2 = appLoginDao.insertResidentEstateExamine(myHouse);
-            if (insert2 <= 0){
-                throw new RuntimeException("添加住户房产审核信息");
+            //判断是否已有审核成功的房产id
+            List<Integer> ids2 = myHouseDao.countSuccessReviewed(myHouse.getResidentId());
+            if (ids2.contains(myHouse.getEstateId())){
+                throw new RuntimeException("已有该房产的审核成功并且没有删除的记录");
             }
 
+            //当数据库存在该房屋信息时，直接审核成功
+            //根据用户主键id查询数据库存在的关联的房房产id集合
+            List<Integer> ids = myHouseDao.findDBEstaIdByResidentId(myHouse.getResidentId());
+            if (ids.contains(myHouse.getEstateId())){
+                //系统自动审核成功
+                //根据用户主键id和房产id查询房产信息
+                ResidentIdAndEstateId residentIdAndEstateId = new ResidentIdAndEstateId();
+                residentIdAndEstateId.setResidentId(myHouse.getResidentId());
+                residentIdAndEstateId.setEstateId(myHouse.getEstateId());
+                MyHouseEstateInfoVo estateInfoVo = myHouseDao.findEstateInfoByResidentId(residentIdAndEstateId);
+                //添加有效时间开始（只限租客）
+                myHouse.setEffectiveTimeStart(estateInfoVo.getEffectiveTimeStart());
+                //添加有效时间结束（只限租客）
+                myHouse.setEffectiveTimeEnd(estateInfoVo.getEffectiveTimeEnd());
+                //添加审核状态（1.未审核，3.审核失败，4.审核成功）
+                myHouse.setStatus(4);
+                //填入是否删除，1.非删 0.删除 默认为1.非删
+                myHouse.setIsDelete(1);
+                //填入创建时间
+                myHouse.setCreateDate(new Date());
+                //添加住户房产审核信息
+                int insert2 = appLoginDao.insertResidentEstateExamine(myHouse);
+                if (insert2 <= 0){
+                    throw new RuntimeException("添加住户房产审核信息失败");
+                }
+            }else {
+                //系统自动审核失败
+//                UserResident userResident = new UserResident();
+//                userResident.setType(myHouse.getType());
+//                userResident.setName(myHouse.getName());
+//                userResident.setIdType(myHouse.getIdType());
+//                userResident.setIdNumber(myHouse.getIdNumber());
+//                userResident.setId(myHouse.getResidentId());
+//                //根据用户主键id 改变当前用户的住户类型,名称，证件类型，证件号码
+//                int update = myHouseDao.updateBaseInfoById(userResident);
+//                if (update <= 0){
+//                    throw new RuntimeException("修改基础信息失败");
+//                }
+
+                //添加审核状态（1.未审核，3.审核失败，4.审核成功）
+                myHouse.setStatus(1);
+                //填入是否删除，1.非删 0.删除 默认为1.非删
+                myHouse.setIsDelete(1);
+                //填入创建时间
+                myHouse.setCreateDate(new Date());
+                //添加住户房产审核信息
+                int insert2 = appLoginDao.insertResidentEstateExamine(myHouse);
+                if (insert2 <= 0){
+                    throw new RuntimeException("添加住户房产审核信息失败");
+                }
+
+            }
 
         } catch (Exception e) {
             //获取抛出的信息
@@ -88,15 +125,32 @@ public class MyHouseServiceImpl implements MyHouseService {
 
     @Override
     @Transactional
-    public Map<String, Object> falseDelete(int[] ids) {
+    public Map<String, Object> falseDelete(int[] ids,Integer residentId) {
         map = new HashMap<>();
         try {
             for (int id : ids) {
+                int residentIdById = myHouseDao.findResidentIdById(id);
+                //判断用户是否是该审核用户
+                if (residentIdById != residentId){
+                    throw new RuntimeException("登录用户错误");
+                }
                 //判断是否是审核中状态
                 int status = myHouseDao.findStatusById(id);
-                if (status == 1){
+                if (status == 1){ //审核中
                     throw new RuntimeException("审核中，无法删除");
                 }
+
+                if (status == 4) { //审核成功
+                    //根据房产审核表主键id查询审核房产id
+                    Integer estateId = myHouseDao.findEstateIdById(id);
+                    //根据住户id查询app当前选中的房产id
+                    Integer nowEstateId = myHouseDao.findNowEstateIdByResidentId(residentId);
+                    //判断该用户的当前选择的房产id是否是该审核成功的房产id
+                    if (estateId.equals(nowEstateId)){
+                        throw new RuntimeException("该房屋已选中，不可删除");
+                    }
+                }
+
                 int update = myHouseDao.falseDelete(id);
                 if (update <= 0){
                     throw new RuntimeException("删除失败");

@@ -13,7 +13,7 @@ public interface MyHouseService {
 
     Map<String, Object> authentication(MyHouse myHouse, Integer type);
 
-    Map<String, Object> falseDelete(int[] ids);
+    Map<String, Object> falseDelete(int[] ids,Integer residentId);
 
     Map<String, Object> findById(Integer estateExamineId);
 }
