@@ -4,6 +4,7 @@ import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.vo.my.MyHouseEstateInfoVo;
 import com.api.vo.my.MyHouseFBIVo;
+import com.api.vo.my.MyHouseResidentInfoVo;
 import com.api.vo.my.MyHouseVo;
 
 import java.util.List;
@@ -15,13 +16,6 @@ public interface MyHouseDao {
      * @return 我的房屋Vo list 回显
      */
     List<MyHouseVo> list(Integer id);
-
-    /**
-     * 根据用户主键id 改变当前用户的住户类型,名称，证件类型，证件号码
-     * @param userResident 住户信息表
-     * @return 影响行数
-     */
-    int updateBaseInfoById(UserResident userResident);
 
     /**
      * 根据用户主键id 查询该用户的未审核记录数量
@@ -92,4 +86,11 @@ public interface MyHouseDao {
      * @return 审核成功并且没有删除的房产id集合
      */
     List<Integer> countSuccessReviewed(Integer residentId);
+
+    /**
+     * 根据用户主键id查询数据库住户信息
+     * @param residentId 用户主键id
+     * @return 数据库住户信息
+     */
+    MyHouseResidentInfoVo findSBResidentInfoByResidentId(Integer residentId);
 }

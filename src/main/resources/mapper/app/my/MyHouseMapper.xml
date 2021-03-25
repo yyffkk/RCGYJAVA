@@ -10,15 +10,6 @@
         order by cree.create_date DESC
     </select>
 
-    <update id="updateBaseInfoById" parameterType="com.api.model.basicArchives.UserResident">
-        update user_resident
-        set name = #{name},
-        type = #{type},
-        id_type = #{idType},
-        id_number = #{idNumber}
-        where id = #{id}
-    </update>
-
     <select id="countNotReviewed" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from cpm_resident_estate_examine where resident_id = #{residentId} and status = 1
     </select>
@@ -53,6 +44,9 @@
     </select>
     <select id="countSuccessReviewed" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select building_unit_estate_id from cpm_resident_estate_examine where resident_id = #{residentId} and is_delete = 1 and status = 4
+    </select>
+    <select id="findSBResidentInfoByResidentId" parameterType="java.lang.Integer" resultType="com.api.vo.my.MyHouseResidentInfoVo">
+        select id,name,id_type,id_number from user_resident where id = #{residentId}
     </select>
 
 </mapper>

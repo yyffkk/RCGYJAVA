@@ -8,6 +8,7 @@ import com.api.model.basicArchives.UserResident;
 import com.api.model.my.MyHouse;
 import com.api.vo.my.MyHouseEstateInfoVo;
 import com.api.vo.my.MyHouseFBIVo;
+import com.api.vo.my.MyHouseResidentInfoVo;
 import com.api.vo.my.MyHouseVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +58,11 @@ public class MyHouseServiceImpl implements MyHouseService {
             //当数据库存在该房屋信息时，直接审核成功
             //根据用户主键id查询数据库存在的关联的房房产id集合
             List<Integer> ids = myHouseDao.findDBEstaIdByResidentId(myHouse.getResidentId());
-            if (ids.contains(myHouse.getEstateId())){
+            //根据用户主键id查询数据库住户信息
+            MyHouseResidentInfoVo residentInfoVo = myHouseDao.findSBResidentInfoByResidentId(myHouse.getResidentId());
+            //判断填入数据与数据库已知数据是否相同
+            if (ids.contains(myHouse.getEstateId()) && residentInfoVo.getIdNumber().equals(myHouse.getIdNumber())
+                    && residentInfoVo.getName().equals(myHouse.getName()) && residentInfoVo.getIdType().equals(myHouse.getIdType())){
                 //系统自动审核成功
                 //根据用户主键id和房产id查询房产信息
                 ResidentIdAndEstateId residentIdAndEstateId = new ResidentIdAndEstateId();
@@ -81,18 +86,6 @@ public class MyHouseServiceImpl implements MyHouseService {
                 }
             }else {
                 //系统自动审核失败
-//                UserResident userResident = new UserResident();
-//                userResident.setType(myHouse.getType());
-//                userResident.setName(myHouse.getName());
-//                userResident.setIdType(myHouse.getIdType());
-//                userResident.setIdNumber(myHouse.getIdNumber());
-//                userResident.setId(myHouse.getResidentId());
-//                //根据用户主键id 改变当前用户的住户类型,名称，证件类型，证件号码
-//                int update = myHouseDao.updateBaseInfoById(userResident);
-//                if (update <= 0){
-//                    throw new RuntimeException("修改基础信息失败");
-//                }
-
                 //添加审核状态（1.未审核，3.审核失败，4.审核成功）
                 myHouse.setStatus(1);
                 //填入是否删除，1.非删 0.删除 默认为1.非删

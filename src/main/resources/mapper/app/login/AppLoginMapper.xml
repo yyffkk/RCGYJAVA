@@ -57,7 +57,16 @@
                 effective_time_end,
             </if>
             is_delete,
-            create_date
+            create_date,
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="idType != null">
+                id_type,
+            </if>
+            <if test="idNumber != null and idNumber != ''">
+                id_number,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -72,7 +81,16 @@
                 #{effectiveTimeEnd},
             </if>
             #{isDelete},
-            #{createDate}
+            #{createDate},
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="idType != null">
+                #{idType},
+            </if>
+            <if test="idNumber != null and idNumber != ''">
+                #{idNumber},
+            </if>
         </trim>
     </insert>
 
