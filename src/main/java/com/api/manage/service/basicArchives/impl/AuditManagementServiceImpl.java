@@ -7,6 +7,7 @@ import com.api.util.UploadUtil;
 import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.basicArchives.VoCheckAuditById;
 import com.api.vo.basicArchives.VoFBIAuditManagement;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -190,6 +191,11 @@ public class AuditManagementServiceImpl implements AuditManagementService {
         map = new HashMap<>();
         map = new HashMap<>();
         VoCheckAuditById voCheckAuditById = auditManagementDao.checkById(estateExamineId);
+        if (voCheckAuditById != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("cpmResidentEstateExamine", voCheckAuditById.getId(), "review");
+            voCheckAuditById.setImgList(imgByDate);
+        }
         map.put("data",voCheckAuditById);
         map.put("message","请求成功");
         map.put("status",true);
