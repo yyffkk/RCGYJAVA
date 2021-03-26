@@ -42,13 +42,13 @@
         </where>
     </select>
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.basicArchives.VoFBIAuditManagement">
-        select cree.id,cree.name,cree.type,ur1.tel,cree.id_type,cree.id_number,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,
-        cree.effective_time_start,cree.effective_time_end,T.resident_name,T.resident_tel,cree.create_date
+        select cree.id,cree.resident_id as applicant_id,cree.name,cree.type,cree.status,ur1.tel,cree.id_type,cree.id_number,cree.building_unit_estate_id as estate_id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,
+        cree.effective_time_start,cree.effective_time_end,T.resident_id,T.resident_name,T.resident_tel,cree.create_date
 
         from user_resident as ur1,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,
         cpm_resident_estate_examine as cree
         LEFT JOIN (
-            select cre.building_unit_estate_id,GROUP_CONCAT(ur2.name) as resident_name,GROUP_CONCAT(ur2.tel) as resident_tel from cpm_resident_estate as cre,user_resident as ur2
+            select cre.building_unit_estate_id,GROUP_CONCAT(ur2.id) as resident_id,GROUP_CONCAT(ur2.name) as resident_name,GROUP_CONCAT(ur2.tel) as resident_tel from cpm_resident_estate as cre,user_resident as ur2
             where cre.resident_id = ur2.id GROUP BY cre.building_unit_estate_id
         ) as T
         on cree.building_unit_estate_id = T.building_unit_estate_id
@@ -66,5 +66,82 @@
         set status = #{status},remakes = #{remakes}
         where id = #{id}
     </update>
+
+    <insert id="insertResidentEstate" parameterType="com.api.model.basicArchives.CpmResidentEstate">
+        insert into
+        <trim prefix="cpm_resident_estate(" suffix=")" suffixOverrides=",">
+            building_unit_estate_id,
+            resident_id,
+            <if test="effectiveTimeStart != null">
+                effective_time_start,
+            </if>
+            <if test="effectiveTimeEnd != null">
+                effective_time_end,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{buildingUnitEstateId},
+            #{residentId},
+            <if test="effectiveTimeStart != null">
+                #{effectiveTimeStart},
+            </if>
+            <if test="effectiveTimeEnd != null">
+                #{effectiveTimeEnd},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertResidentRelatives" parameterType="com.api.model.basicArchives.UserResidentRelatives">
+        insert into user_resident_relatves(
+            resident_id,
+            relatives_id,
+            identity
+        )values (
+            #{residentId},
+            #{relativesId},
+            #{identity}
+        )
+    </insert>
+
+    <update id="updateResident" parameterType="com.api.model.basicArchives.UserResident">
+        update user_resident
+        set name = #{name},
+        type = #{type},
+        id_type = #{idType},
+        id_number = #{idNumber}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteByRIDAndEID" parameterType="com.api.model.basicArchives.ResidentIdAndEstateId">
+        delete from cpm_resident_estate
+        where building_unit_estate_id = #{estateId} and resident_id = #{residentId}
+    </delete>
+    <delete id="deleteByRIDAndRID" parameterType="com.api.model.basicArchives.ResidentIdAndRelativesId">
+        delete from user_resident_relatives
+        where resident_id = #{ResidentId} and relatives_id = #{RelativesId}
+    </delete>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from cpm_resident_estate_examine where id = #{id}
+    </delete>
+
+    <select id="checkById" parameterType="java.lang.Integer" resultType="com.api.vo.basicArchives.VoCheckAuditById">
+        select cree.id,cree.resident_id as applicant_id,cree.name,cree.type,cree.status,ur1.tel,cree.id_type,cree.id_number,cree.building_unit_estate_id as estate_id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,
+        cree.effective_time_start,cree.effective_time_end,T.resident_id,T.resident_name,T.resident_tel,cree.create_date
+
+        from user_resident as ur1,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,
+        cpm_resident_estate_examine as cree
+        LEFT JOIN (
+        select cre.building_unit_estate_id,GROUP_CONCAT(ur2.id) as resident_id,GROUP_CONCAT(ur2.name) as resident_name,GROUP_CONCAT(ur2.tel) as resident_tel from cpm_resident_estate as cre,user_resident as ur2
+        where cre.resident_id = ur2.id GROUP BY cre.building_unit_estate_id
+        ) as T
+        on cree.building_unit_estate_id = T.building_unit_estate_id
+        <where>
+            cree.resident_id = ur1.id
+            and cree.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and cree.id = #{estateExamineId}
+        </where>
+    </select>
 
 </mapper>

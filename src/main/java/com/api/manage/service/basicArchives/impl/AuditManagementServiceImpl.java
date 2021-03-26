@@ -2,10 +2,10 @@ package com.api.manage.service.basicArchives.impl;
 
 import com.api.manage.dao.basicArchives.AuditManagementDao;
 import com.api.manage.service.basicArchives.AuditManagementService;
-import com.api.model.basicArchives.AuditManagementSearch;
-import com.api.model.basicArchives.Review;
+import com.api.model.basicArchives.*;
 import com.api.util.UploadUtil;
 import com.api.vo.basicArchives.VoAuditManagement;
+import com.api.vo.basicArchives.VoCheckAuditById;
 import com.api.vo.basicArchives.VoFBIAuditManagement;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -68,15 +68,71 @@ public class AuditManagementServiceImpl implements AuditManagementService {
     public Map<String, Object> review(Review review) {
         map = new HashMap<>();
         try {
+            VoFBIAuditManagement byId = auditManagementDao.findById(review.getId());
+            if (byId == null){
+                throw new RuntimeException("该审核信息不存在");
+            }
+            if (byId.getStatus() != 1){
+                throw new RuntimeException("当前审核信息不处于审核中状态，无法审核操作");
+            }
             //将审核相关照片上传至数据库
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(review.getReviewFiles(),"cpmResidentEstateExamine",review.getId(),"review","600",30,20);
             if (review.getStatus() == 1){//审核通过
                 review.setStatus(4); //审核表：4.审核成功
                 //审核成功判断是业主、租客还是亲属
-                //??????
+                if (byId.getType() == 1 || byId.getType() == 3){ //1.审核业主，3.审核租客
+                    //删除原本存在的住户房产关联记录
+                    ResidentIdAndEstateId residentIdAndEstateId = new ResidentIdAndEstateId();
+                    residentIdAndEstateId.setResidentId(byId.getApplicantId()); //填入住户id
+                    residentIdAndEstateId.setEstateId(byId.getEstateId()); //填入房产id
+                    auditManagementDao.deleteByRIDAndEID(residentIdAndEstateId);
 
+                    //添加住户房产关联表
+                    CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
+                    cpmResidentEstate.setBuildingUnitEstateId(byId.getEstateId()); //填入房产id
+                    cpmResidentEstate.setResidentId(byId.getApplicantId()); //填入住户id
+                    cpmResidentEstate.setEffectiveTimeStart(byId.getEffectiveTimeStart()); //填入有效时间开始（只限租客）
+                    cpmResidentEstate.setEffectiveTimeEnd(byId.getEffectiveTimeEnd()); //填入有效时间结束（只限租客）
+                    int insert = auditManagementDao.insertResidentEstate(cpmResidentEstate);
+                    if (insert <=0){
+                        throw new RuntimeException("添加住户房产关联失败");
+                    }
+                }else if (byId.getType() == 2){ //2.审核亲属
+                    String residentId = byId.getResidentId(); //获取业主id
+                    String[] split = residentId.split(",");
+                    for (String id : split) {
+                        //删除原本存在的住户亲属关联表
+                        ResidentIdAndRelativesId residentIdAndRelativesId = new ResidentIdAndRelativesId();
+                        residentIdAndRelativesId.setRelativesId(byId.getApplicantId()); //添加亲属id
+                        residentIdAndRelativesId.setResidentId(Integer.valueOf(id)); //添加业主id
+                        auditManagementDao.deleteByRIDAndRID(residentIdAndRelativesId);
 
+                        //添加住户亲属关联表
+                        UserResidentRelatives userResidentRelatives = new UserResidentRelatives();
+                        userResidentRelatives.setRelativesId(byId.getApplicantId()); //添加亲属id
+                        userResidentRelatives.setResidentId(Integer.valueOf(id)); //添加业主id
+                        userResidentRelatives.setIdentity(3);
+                        int insert2 = auditManagementDao.insertResidentRelatives(userResidentRelatives);
+                        if (insert2 <=0){
+                            throw new RuntimeException("添加住户亲属关联失败");
+                        }
+                    }
+                }else {
+                    throw new RuntimeException("数据异常");
+                }
+
+                //修改住户资料信息
+                UserResident userResident = new UserResident();
+                userResident.setId(byId.getApplicantId()); //填入住户主键id
+                userResident.setIdType(byId.getIdType()); //填入证件类型
+                userResident.setIdNumber(byId.getIdNumber()); //填入证件号码
+                userResident.setName(byId.getName()); //填入住户姓名
+                userResident.setType(byId.getType()); //填入住户类型
+                int update = auditManagementDao.updateResident(userResident);
+                if (update <=0){
+                    throw new RuntimeException("住户信息修改失败");
+                }
             }else if (review.getStatus() == 2){//审核不通过
                 review.setStatus(3); //审核表：3.审核失败
             }else {
@@ -99,6 +155,43 @@ public class AuditManagementServiceImpl implements AuditManagementService {
             return map;
         }
         map.put("message","操作成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                int delete = auditManagementDao.delete(id);
+                if (delete <=0){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> checkById(Integer estateExamineId) {
+        map = new HashMap<>();
+        map = new HashMap<>();
+        VoCheckAuditById voCheckAuditById = auditManagementDao.checkById(estateExamineId);
+        map.put("data",voCheckAuditById);
+        map.put("message","请求成功");
         map.put("status",true);
         return map;
     }

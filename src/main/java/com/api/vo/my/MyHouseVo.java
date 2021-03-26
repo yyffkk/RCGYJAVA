@@ -15,6 +15,10 @@ public class MyHouseVo {
      */
     private String roomName;
     /**
+     * 住户类型（1 审核业主，2审核亲属，3审核租客）
+     */
+    private Integer type;
+    /**
      * 审核状态（1.审核中，3.审核失败，4.审核成功）
      */
     private Integer status;
@@ -32,6 +36,7 @@ public class MyHouseVo {
         return "MyHouseVo{" +
                 "id=" + id +
                 ", roomName='" + roomName + '\'' +
+                ", type=" + type +
                 ", status=" + status +
                 ", effectiveTimeStart=" + effectiveTimeStart +
                 ", effectiveTimeEnd=" + effectiveTimeEnd +
@@ -52,6 +57,14 @@ public class MyHouseVo {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getStatus() {
@@ -81,9 +94,10 @@ public class MyHouseVo {
     public MyHouseVo() {
     }
 
-    public MyHouseVo(Integer id, String roomName, Integer status, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public MyHouseVo(Integer id, String roomName, Integer type, Integer status, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.roomName = roomName;
+        this.type = type;
         this.status = status;
         this.effectiveTimeStart = effectiveTimeStart;
         this.effectiveTimeEnd = effectiveTimeEnd;

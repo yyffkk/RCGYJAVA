@@ -5,6 +5,7 @@ import com.api.model.basicArchives.AuditManagementSearch;
 import com.api.model.basicArchives.Review;
 import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.basicArchives.VoCpmBuildingUnitEstate;
+import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class AuditManagementController {
     }
 
     /**
-     * 根据房屋审核主键id 查询房屋审核信息
+     * 根据房屋审核主键id 查询房屋审核信息（审核页面回显）
      * @param estateExamineId 房屋审核主键id
      * @return map
      */
@@ -59,4 +60,26 @@ public class AuditManagementController {
     public Map<String,Object> review(@RequestBody Review review){
         return auditManagementService.review(review);
     }
+
+    /**
+     * 删除审核管理信息
+     * @param voIds 审核管理主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds voIds){
+        return auditManagementService.delete(voIds.getIds());
+    }
+
+    /**
+     * 查看审核信息
+     * @param estateExamineId 房屋审核主键id
+     * @return map
+     */
+    @GetMapping("/checkById")
+    public Map<String,Object> checkById(Integer estateExamineId){
+        return auditManagementService.checkById(estateExamineId);
+    }
+
+
 }

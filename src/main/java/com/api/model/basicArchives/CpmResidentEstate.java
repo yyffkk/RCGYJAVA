@@ -21,11 +21,11 @@ public class CpmResidentEstate {
     /**
      * 有效时间开始（只限租客）
      */
-    private Date effective_time_start;
+    private Date effectiveTimeStart;
     /**
      * 有效时间结束（只限租客）
      */
-    private Date effective_time_end;
+    private Date effectiveTimeEnd;
 
     @Override
     public String toString() {
@@ -33,8 +33,8 @@ public class CpmResidentEstate {
                 "id=" + id +
                 ", buildingUnitEstateId=" + buildingUnitEstateId +
                 ", residentId=" + residentId +
-                ", effective_time_start=" + effective_time_start +
-                ", effective_time_end=" + effective_time_end +
+                ", effectiveTimeStart=" + effectiveTimeStart +
+                ", effectiveTimeEnd=" + effectiveTimeEnd +
                 '}';
     }
 
@@ -62,30 +62,30 @@ public class CpmResidentEstate {
         this.residentId = residentId;
     }
 
-    public Date getEffective_time_start() {
-        return effective_time_start;
+    public Date getEffectiveTimeStart() {
+        return effectiveTimeStart;
     }
 
-    public void setEffective_time_start(Date effective_time_start) {
-        this.effective_time_start = effective_time_start;
+    public void setEffectiveTimeStart(Date effectiveTimeStart) {
+        this.effectiveTimeStart = effectiveTimeStart;
     }
 
-    public Date getEffective_time_end() {
-        return effective_time_end;
+    public Date getEffectiveTimeEnd() {
+        return effectiveTimeEnd;
     }
 
-    public void setEffective_time_end(Date effective_time_end) {
-        this.effective_time_end = effective_time_end;
+    public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
+        this.effectiveTimeEnd = effectiveTimeEnd;
     }
 
     public CpmResidentEstate() {
     }
 
-    public CpmResidentEstate(Integer id, Integer buildingUnitEstateId, Integer residentId, Date effective_time_start, Date effective_time_end) {
+    public CpmResidentEstate(Integer id, Integer buildingUnitEstateId, Integer residentId, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.residentId = residentId;
-        this.effective_time_start = effective_time_start;
-        this.effective_time_end = effective_time_end;
+        this.effectiveTimeStart = effectiveTimeStart;
+        this.effectiveTimeEnd = effectiveTimeEnd;
     }
 }

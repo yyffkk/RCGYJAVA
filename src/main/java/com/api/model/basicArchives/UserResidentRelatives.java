@@ -4,9 +4,21 @@ package com.api.model.basicArchives;
  * 住户亲属关联表信息model
  */
 public class UserResidentRelatives {
+    /**
+     * 主键id
+     */
     private Integer id;
+    /**
+     * 业主id(租客id)
+     */
     private Integer residentId;
+    /**
+     * 亲属id
+     */
     private Integer relativesId;
+    /**
+     * 亲属的身份
+     */
     private Integer identity;
 
     @Override

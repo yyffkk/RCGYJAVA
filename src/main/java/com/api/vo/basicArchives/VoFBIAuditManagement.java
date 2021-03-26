@@ -11,6 +11,10 @@ public class VoFBIAuditManagement {
      */
     private Integer id;
     /**
+     * 申请人id
+     */
+    private Integer applicantId;
+    /**
      * 申请人姓名
      */
     private String name;
@@ -18,6 +22,10 @@ public class VoFBIAuditManagement {
      * 申请身份（1 审核业主，2审核亲属，3审核租客）
      */
     private Integer type;
+    /**
+     * 审核状态（1.审核中，3.审核失败，4.审核成功）
+     */
+    private Integer status;
     /**
      * 申请人手机号
      */
@@ -31,6 +39,10 @@ public class VoFBIAuditManagement {
      */
     private String idNumber;
     /**
+     * 房产id
+     */
+    private Integer estateId;
+    /**
      * 房屋名称
      */
     private String roomName;
@@ -42,6 +54,10 @@ public class VoFBIAuditManagement {
      * 有效时间结束（只限租客）
      */
     private Date effectiveTimeEnd;
+    /**
+     * 业主id
+     */
+    private String residentId;
     /**
      * 业主名称
      */
@@ -59,14 +75,18 @@ public class VoFBIAuditManagement {
     public String toString() {
         return "VoFBIAuditManagement{" +
                 "id=" + id +
+                ", applicantId=" + applicantId +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", status=" + status +
                 ", tel='" + tel + '\'' +
                 ", idType=" + idType +
                 ", idNumber='" + idNumber + '\'' +
+                ", estateId=" + estateId +
                 ", roomName='" + roomName + '\'' +
                 ", effectiveTimeStart=" + effectiveTimeStart +
                 ", effectiveTimeEnd=" + effectiveTimeEnd +
+                ", residentId='" + residentId + '\'' +
                 ", residentName='" + residentName + '\'' +
                 ", residentTel='" + residentTel + '\'' +
                 ", createDate=" + createDate +
@@ -79,6 +99,14 @@ public class VoFBIAuditManagement {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getApplicantId() {
+        return applicantId;
+    }
+
+    public void setApplicantId(Integer applicantId) {
+        this.applicantId = applicantId;
     }
 
     public String getName() {
@@ -95,6 +123,14 @@ public class VoFBIAuditManagement {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getTel() {
@@ -121,6 +157,14 @@ public class VoFBIAuditManagement {
         this.idNumber = idNumber;
     }
 
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
+    }
+
     public String getRoomName() {
         return roomName;
     }
@@ -143,6 +187,14 @@ public class VoFBIAuditManagement {
 
     public void setEffectiveTimeEnd(Date effectiveTimeEnd) {
         this.effectiveTimeEnd = effectiveTimeEnd;
+    }
+
+    public String getResidentId() {
+        return residentId;
+    }
+
+    public void setResidentId(String residentId) {
+        this.residentId = residentId;
     }
 
     public String getResidentName() {
@@ -172,16 +224,20 @@ public class VoFBIAuditManagement {
     public VoFBIAuditManagement() {
     }
 
-    public VoFBIAuditManagement(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String roomName, Date effectiveTimeStart, Date effectiveTimeEnd, String residentName, String residentTel, Date createDate) {
+    public VoFBIAuditManagement(Integer id, Integer applicantId, String name, Integer type, Integer status, String tel, Integer idType, String idNumber, Integer estateId, String roomName, Date effectiveTimeStart, Date effectiveTimeEnd, String residentId, String residentName, String residentTel, Date createDate) {
         this.id = id;
+        this.applicantId = applicantId;
         this.name = name;
         this.type = type;
+        this.status = status;
         this.tel = tel;
         this.idType = idType;
         this.idNumber = idNumber;
+        this.estateId = estateId;
         this.roomName = roomName;
         this.effectiveTimeStart = effectiveTimeStart;
         this.effectiveTimeEnd = effectiveTimeEnd;
+        this.residentId = residentId;
         this.residentName = residentName;
         this.residentTel = residentTel;
         this.createDate = createDate;

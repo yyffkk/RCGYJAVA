@@ -13,4 +13,8 @@ public interface AuditManagementService {
     Map<String, Object> findById(Integer estateExamineId);
 
     Map<String, Object> review(Review review);
+
+    Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> checkById(Integer estateExamineId);
 }
