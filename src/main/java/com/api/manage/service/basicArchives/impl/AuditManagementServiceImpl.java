@@ -4,16 +4,20 @@ import com.api.manage.dao.basicArchives.AuditManagementDao;
 import com.api.manage.service.basicArchives.AuditManagementService;
 import com.api.model.basicArchives.AuditManagementSearch;
 import com.api.vo.basicArchives.VoAuditManagement;
+import com.api.vo.basicArchives.VoFBIAuditManagement;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AuditManagementServiceImpl implements AuditManagementService {
     @Resource
     AuditManagementDao auditManagementDao;
+    private static Map<String,Object> map = null;
 
     @Override
     public List<VoAuditManagement> list(AuditManagementSearch auditManagementSearch) {
@@ -43,5 +47,15 @@ public class AuditManagementServiceImpl implements AuditManagementService {
             }
         }
         return auditManagementDao.list(auditManagementSearch);
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer estateExamineId) {
+        map = new HashMap<>();
+        VoFBIAuditManagement voFBIAuditManagement = auditManagementDao.findById(estateExamineId);
+        map.put("data",voFBIAuditManagement);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
     }
 }

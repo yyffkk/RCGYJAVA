@@ -40,4 +40,14 @@ public class AuditManagementController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 根据房屋审核主键id 查询房屋审核信息
+     * @param estateExamineId 房屋审核主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer estateExamineId){
+        return auditManagementService.findById(estateExamineId);
+    }
 }
