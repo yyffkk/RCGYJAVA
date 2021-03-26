@@ -68,6 +68,9 @@
             <if test="reviewer != null">
                 reviewer,
             </if>
+            <if test="reviewerDate != null">
+                reviewer_date,
+            </if>
             is_delete,
             create_date,
         </trim>
@@ -94,6 +97,9 @@
             </if>
             <if test="reviewer != null">
                 #{reviewer},
+            </if>
+            <if test="reviewerDate != null">
+                #{reviewerDate},
             </if>
             #{isDelete},
             #{createDate},

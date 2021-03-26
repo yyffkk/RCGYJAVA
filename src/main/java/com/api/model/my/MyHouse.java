@@ -46,6 +46,10 @@ public class MyHouse {
      */
     private Integer reviewer;
     /**
+     * 审核时间
+     */
+    private Date reviewerDate;
+    /**
      * 是否删除，1.非删 0.删除
      */
     private Integer isDelete;
@@ -67,6 +71,7 @@ public class MyHouse {
                 ", effectiveTimeStart=" + effectiveTimeStart +
                 ", effectiveTimeEnd=" + effectiveTimeEnd +
                 ", reviewer=" + reviewer +
+                ", reviewerDate=" + reviewerDate +
                 ", isDelete=" + isDelete +
                 ", createDate=" + createDate +
                 '}';
@@ -152,6 +157,14 @@ public class MyHouse {
         this.reviewer = reviewer;
     }
 
+    public Date getReviewerDate() {
+        return reviewerDate;
+    }
+
+    public void setReviewerDate(Date reviewerDate) {
+        this.reviewerDate = reviewerDate;
+    }
+
     public Integer getIsDelete() {
         return isDelete;
     }
@@ -171,7 +184,7 @@ public class MyHouse {
     public MyHouse() {
     }
 
-    public MyHouse(Integer residentId, Integer estateId, String name, Integer type, Integer idType, String idNumber, Integer status, Date effectiveTimeStart, Date effectiveTimeEnd, Integer reviewer, Integer isDelete, Date createDate) {
+    public MyHouse(Integer residentId, Integer estateId, String name, Integer type, Integer idType, String idNumber, Integer status, Date effectiveTimeStart, Date effectiveTimeEnd, Integer reviewer, Date reviewerDate, Integer isDelete, Date createDate) {
         this.residentId = residentId;
         this.estateId = estateId;
         this.name = name;
@@ -182,6 +195,7 @@ public class MyHouse {
         this.effectiveTimeStart = effectiveTimeStart;
         this.effectiveTimeEnd = effectiveTimeEnd;
         this.reviewer = reviewer;
+        this.reviewerDate = reviewerDate;
         this.isDelete = isDelete;
         this.createDate = createDate;
     }

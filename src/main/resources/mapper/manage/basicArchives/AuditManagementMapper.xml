@@ -4,4 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.basicArchives.AuditManagementDao">
 
+    <select id="list" parameterType="com.api.model.basicArchives.AuditManagementSearch" resultType="com.api.vo.basicArchives.VoAuditManagement">
+
+    </select>
 </mapper>

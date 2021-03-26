@@ -77,6 +77,8 @@ public class MyHouseServiceImpl implements MyHouseService {
                 myHouse.setStatus(4);
                 //填写审核人id（系统自动审核成功为-1）
                 myHouse.setReviewer(-1);
+                //填写审核时间（系统自动审核成功为当前时间）
+                myHouse.setReviewerDate(new Date());
                 //填入是否删除，1.非删 0.删除 默认为1.非删
                 myHouse.setIsDelete(1);
                 //填入创建时间
@@ -92,6 +94,8 @@ public class MyHouseServiceImpl implements MyHouseService {
                 myHouse.setStatus(1);
                 //填写审核人id（系统自动审核失败为null）
                 myHouse.setReviewer(null);
+                //填写审核时间(系统自动审核失败为null)
+                myHouse.setReviewerDate(null);
                 //填入是否删除，1.非删 0.删除 默认为1.非删
                 myHouse.setIsDelete(1);
                 //填入创建时间
