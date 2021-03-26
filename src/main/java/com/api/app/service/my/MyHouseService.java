@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MyHouseService {
-    List<MyHouseVo> list(Integer id);
+    Map<String, Object> list(Integer id);
 
     Map<String, Object> authentication(MyHouse myHouse, Integer type);
 

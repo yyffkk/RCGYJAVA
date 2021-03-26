@@ -2,13 +2,12 @@ package com.api.manage.controller.basicArchives;
 
 import com.api.manage.service.basicArchives.AuditManagementService;
 import com.api.model.basicArchives.AuditManagementSearch;
+import com.api.model.basicArchives.Review;
 import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -49,5 +48,15 @@ public class AuditManagementController {
     @GetMapping("/findById")
     public Map<String,Object> findById(Integer estateExamineId){
         return auditManagementService.findById(estateExamineId);
+    }
+
+    /**
+     * 审核通过/审核不通过
+     * @param review 审核内容
+     * @return map
+     */
+    @PostMapping("/reviewResult")
+    public Map<String,Object> review(@RequestBody Review review){
+        return auditManagementService.review(review);
     }
 }

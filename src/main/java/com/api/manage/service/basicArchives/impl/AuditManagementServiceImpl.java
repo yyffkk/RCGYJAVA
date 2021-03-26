@@ -3,6 +3,7 @@ package com.api.manage.service.basicArchives.impl;
 import com.api.manage.dao.basicArchives.AuditManagementDao;
 import com.api.manage.service.basicArchives.AuditManagementService;
 import com.api.model.basicArchives.AuditManagementSearch;
+import com.api.model.basicArchives.Review;
 import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.basicArchives.VoFBIAuditManagement;
 import org.apache.commons.lang3.StringUtils;
@@ -56,6 +57,22 @@ public class AuditManagementServiceImpl implements AuditManagementService {
         map.put("data",voFBIAuditManagement);
         map.put("message","请求成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> review(Review review) {
+        map = new HashMap<>();
+        try {
+            int update = 0;
+            if (review.getType()==1){//审核通过
+//                update = auditManagementDao.review(review);
+            }else {//审核不通过
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return map;
     }
 }

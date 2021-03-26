@@ -29,8 +29,13 @@ public class MyHouseServiceImpl implements MyHouseService {
     private static Map<String,Object> map = null;
 
     @Override
-    public List<MyHouseVo> list(Integer id) {
-        return myHouseDao.list(id);
+    public Map<String, Object> list(Integer id) {
+        map = new HashMap<>();
+        List<MyHouseVo> list = myHouseDao.list(id);
+        map.put("data",list);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
     }
 
     @Override

@@ -29,21 +29,12 @@ public class MyHouseController {
 
     /**
      * 查询所有的房屋审核信息
-     * @param pageNum 当前页数
-     * @param size 每页记录数
      * @param id 用户主键id
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(int pageNum,int size,Integer id){
-        PageHelper.startPage(pageNum,size);
-        List<MyHouseVo> myHouseVos =myHouseService.list(id);
-        PageInfo<MyHouseVo> pageInfo = new PageInfo<>(myHouseVos);
-        Map<String,Object> map = new HashMap<>();
-        map.put("tableList",pageInfo.getList());
-        map.put("rowCount",pageInfo.getTotal());
-        map.put("pageCount",pageInfo.getPages());
-        return map;
+    public Map<String,Object> list(Integer id){
+        return myHouseService.list(id);
     }
 
     /**
