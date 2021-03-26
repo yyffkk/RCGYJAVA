@@ -5,6 +5,40 @@
 <mapper namespace="com.api.manage.dao.basicArchives.AuditManagementDao">
 
     <select id="list" parameterType="com.api.model.basicArchives.AuditManagementSearch" resultType="com.api.vo.basicArchives.VoAuditManagement">
+        select cree.id,cree.name,cree.type,ur1.tel,cree.id_type,cree.id_number,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,
+        cree.status,cree.effective_time_start,cree.effective_time_end,T.resident_name,T.resident_tel,cree.create_date,cree.reviewer_date,
+        (case cree.reviewer when -1 then 'app自动审核' else su.actual_name end) as reviewer_name
 
+        from user_resident as ur1,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,
+        cpm_resident_estate_examine as cree
+        LEFT JOIN (
+            select cre.building_unit_estate_id,GROUP_CONCAT(ur2.name) as resident_name,GROUP_CONCAT(ur2.tel) as resident_tel from cpm_resident_estate as cre,user_resident as ur2
+            where cre.resident_id = ur2.id GROUP BY cre.building_unit_estate_id
+        ) as T
+        on cree.building_unit_estate_id = T.building_unit_estate_id
+
+        LEFT JOIN sys_user as su
+        on cree.reviewer = su.id
+        <where>
+            cree.resident_id = ur1.id
+            and cree.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="roomNumber != null and roomNumber != ''">
+                and cbue.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="unitNo != null">
+                and cbu.no like concat('%',#{unitNo},'%')
+            </if>
+            <if test="buildingNo != null">
+                and cb.no like concat('%',#{buildingNo},'%')
+            </if>
+            <if test="status != null">
+                and cree.status = #{status}
+            </if>
+            <if test="type != null">
+                and cree.type = #{type}
+            </if>
+        </where>
     </select>
 </mapper>

@@ -42,7 +42,6 @@ public class AuditManagementServiceImpl implements AuditManagementService {
                 auditManagementSearch.setRoomNumber(split[2]);
             }
         }
-
         return auditManagementDao.list(auditManagementSearch);
     }
 }
