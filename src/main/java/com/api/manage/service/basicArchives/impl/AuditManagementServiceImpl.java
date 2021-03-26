@@ -4,10 +4,13 @@ import com.api.manage.dao.basicArchives.AuditManagementDao;
 import com.api.manage.service.basicArchives.AuditManagementService;
 import com.api.model.basicArchives.AuditManagementSearch;
 import com.api.model.basicArchives.Review;
+import com.api.util.UploadUtil;
 import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.basicArchives.VoFBIAuditManagement;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -61,18 +64,42 @@ public class AuditManagementServiceImpl implements AuditManagementService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> review(Review review) {
         map = new HashMap<>();
         try {
-            int update = 0;
-            if (review.getType()==1){//审核通过
-//                update = auditManagementDao.review(review);
-            }else {//审核不通过
+            //将审核相关照片上传至数据库
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(review.getReviewFiles(),"cpmResidentEstateExamine",review.getId(),"review","600",30,20);
+            if (review.getStatus() == 1){//审核通过
+                review.setStatus(4); //审核表：4.审核成功
+                //审核成功判断是业主、租客还是亲属
+                //??????
 
+
+            }else if (review.getStatus() == 2){//审核不通过
+                review.setStatus(3); //审核表：3.审核失败
+            }else {
+                throw new RuntimeException("数据异常");
+            }
+            //修改审核状态和备注
+            int update = auditManagementDao.review(review);
+            if (update <= 0){
+                throw new RuntimeException("审核状态和备注修改失败");
             }
         } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
             e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
         }
+        map.put("message","操作成功");
+        map.put("status",true);
         return map;
     }
 }

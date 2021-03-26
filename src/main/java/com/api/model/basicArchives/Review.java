@@ -3,13 +3,17 @@ package com.api.model.basicArchives;
 import java.util.Arrays;
 
 /**
- * 审核内容
+ * 审核操作内容
  */
 public class Review {
     /**
-     * 审核结果，1.通过，2.不通过
+     * 审核管理主键id
      */
-    private Integer type;
+    private Integer id;
+    /**
+     * 审核状态，1.通过，2.不通过
+     */
+    private Integer status;
     /**
      * 备注
      */
@@ -22,18 +26,27 @@ public class Review {
     @Override
     public String toString() {
         return "Review{" +
-                "type=" + type +
+                "id=" + id +
+                ", status=" + status +
                 ", remakes='" + remakes + '\'' +
                 ", reviewFiles=" + Arrays.toString(reviewFiles) +
                 '}';
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getId() {
+        return id;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getRemakes() {
@@ -55,8 +68,9 @@ public class Review {
     public Review() {
     }
 
-    public Review(Integer type, String remakes, String[] reviewFiles) {
-        this.type = type;
+    public Review(Integer id, Integer status, String remakes, String[] reviewFiles) {
+        this.id = id;
+        this.status = status;
         this.remakes = remakes;
         this.reviewFiles = reviewFiles;
     }

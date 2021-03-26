@@ -160,4 +160,14 @@ public class UploadController {
         return uploadService.uploadDecorationNoticeDoc(file);
     }
 
+    /**
+     * 上传审核信息相关照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadEstateExamine")
+    public Map<String,Object> uploadEstateExamine(MultipartFile file){
+        return uploadService.uploadEstateExamine(file);
+    }
+
 }

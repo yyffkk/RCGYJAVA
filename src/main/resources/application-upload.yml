@@ -3,6 +3,9 @@ prop:
   #文件上传前置路径 src/main/resources/static 有文件服务器用这个，没有则注释
   #    upload: classpath:/static
 
+  #基础档案-房屋审核管理：审核信息相关照片
+  upload-estate-examine: /img/estateExamine/
+
   #管家服务-咨询建议：新增咨询建议照片上传路径
   upload-advice: /img/advice/
   #管家服务-投票管理：新增投票标题照片上传路径

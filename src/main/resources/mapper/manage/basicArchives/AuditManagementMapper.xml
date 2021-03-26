@@ -60,4 +60,11 @@
             and cree.id = #{estateExamineId}
         </where>
     </select>
+
+    <update id="review" parameterType="com.api.model.basicArchives.Review">
+        update cpm_resident_estate_examine
+        set status = #{status},remakes = #{remakes}
+        where id = #{id}
+    </update>
+
 </mapper>

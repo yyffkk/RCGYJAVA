@@ -63,6 +63,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_BUTLER_APP_INSPECTION_FACE;
     @Value("${prop.upload-butler-app-inspection-space}")
     private String UPLOAD_BUTLER_APP_INSPECTION_SPACE;
+    @Value("${prop.upload-estate-examine}")
+    private String UPLOAD_ESTATE_EXAMINE;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -221,6 +223,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadInspectionSpace(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_BUTLER_APP_INSPECTION_SPACE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadEstateExamine(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_ESTATE_EXAMINE);
         return map;
     }
 
