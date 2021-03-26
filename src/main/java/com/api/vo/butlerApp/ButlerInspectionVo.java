@@ -38,6 +38,10 @@ public class ButlerInspectionVo {
      * 状态（1.待巡检（实际当次巡检结束时间为null），2.已巡检(实际当次巡检结束时间不为null)）
      */
     private Integer status;
+    /**
+     * 巡检人姓名
+     */
+    private String inspectorName;
 
     @Override
     public String toString() {
@@ -50,6 +54,7 @@ public class ButlerInspectionVo {
                 ", actualBeginDate=" + actualBeginDate +
                 ", actualEndDate=" + actualEndDate +
                 ", status=" + status +
+                ", inspectorName='" + inspectorName + '\'' +
                 '}';
     }
 
@@ -117,10 +122,18 @@ public class ButlerInspectionVo {
         this.status = status;
     }
 
+    public String getInspectorName() {
+        return inspectorName;
+    }
+
+    public void setInspectorName(String inspectorName) {
+        this.inspectorName = inspectorName;
+    }
+
     public ButlerInspectionVo() {
     }
 
-    public ButlerInspectionVo(Integer id, String code, String name, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate, Integer status) {
+    public ButlerInspectionVo(Integer id, String code, String name, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate, Integer status, String inspectorName) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -129,5 +142,6 @@ public class ButlerInspectionVo {
         this.actualBeginDate = actualBeginDate;
         this.actualEndDate = actualEndDate;
         this.status = status;
+        this.inspectorName = inspectorName;
     }
 }
