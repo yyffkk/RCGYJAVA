@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface MyParkingSpaceService {
-    List<MyParkingSpaceVo> list(Integer id);
+    Map<String,Object> list(Integer id);
 }

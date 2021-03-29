@@ -43,6 +43,8 @@ public class AlipayServiceImpl implements AlipayService {
     private String RSA_ALIPAY_PUBLIC_KEY;
     @Value("${alipay.notifyUrl}")
     private String NOTIFY_URL;
+    @Value("${alipay.dailyPaymentNotifyUrl}")
+    private String DAILY_PAYMENT_NOTIFY_URL;
     @Value("${alipay.returnUrl}")
     private String RETURN_URL;
     @Value("${alipay.aliPayGateway}")
@@ -466,6 +468,115 @@ public class AlipayServiceImpl implements AlipayService {
         }
         return 0;
 
+    }
+
+    @Override
+    public Map<String, Object> dailyPaymentAlipay(AppDailyPaymentOrder appDailyPaymentOrder) {
+        map = new HashMap<>();
+        String body = "";
+
+        // 获取项目中实际的订单的信息
+        // 此处是相关业务代码
+        try {
+            //计算出所需支付总金额
+            BigDecimal paymentPrice = appDailyPaymentDao.findPaymentPriceById(appDailyPaymentOrder);
+            if (paymentPrice.compareTo(appDailyPaymentOrder.getPayPrice()) != 0){
+                throw new RuntimeException("支付金额有误，请重新支付");
+            }
+            if (paymentPrice.equals(BigDecimal.ZERO)){
+                throw new RuntimeException("支付金额不可为0");
+            }
+            //填写付款金额
+            appDailyPaymentOrder.setPayPrice(paymentPrice);
+
+            //填写支付单号(自动生成订单号)
+            appDailyPaymentOrder.setCode(UUID.randomUUID().toString().replace("-","").trim());
+            //填写创建人 app为-1
+            appDailyPaymentOrder.setCreateId(-1);
+            //填入创建时间
+            appDailyPaymentOrder.setCreateDate(new Date());
+            //填入付款状态，0.交易创建并等待买家付款
+            appDailyPaymentOrder.setStatus(0);
+            //添加缴费订单信息
+            int i = appDailyPaymentDao.insertOrder(appDailyPaymentOrder);
+            if (i<=0){
+                throw new RuntimeException("添加缴费订单信息失败");
+            }
+            //获取所有的缴费主键id
+            int[] ids = appDailyPaymentOrder.getIds();
+            for (int id : ids) {
+                //添加缴费订单清单信息（缴费信息 与 缴费订单信息 关联表）
+                DailyPaymentOrderList dailyPaymentOrderList = new DailyPaymentOrderList();
+                dailyPaymentOrderList.setDailyPaymentId(id);
+                dailyPaymentOrderList.setDailyPaymentOrderId(appDailyPaymentOrder.getId());
+                //根据缴费主键id查询当前缴费信息的缴费金额
+                BigDecimal dailyPaymentPrice = appDailyPaymentDao.findDailPaymentPriceById(id);
+                dailyPaymentOrderList.setDailyPaymentPrice(dailyPaymentPrice);
+                int orderList = appDailyPaymentDao.insertOrderList(dailyPaymentOrderList);
+                if (orderList <= 0){
+                    throw new RuntimeException("添加缴费订单清单信息失败");
+                }
+
+                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
+                int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(id);
+                if (update <= 0){
+                    throw new RuntimeException("修改缴费信息失败");
+                }
+            }
+
+            // 开始使用支付宝SDK中提供的API
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            model.setBody("日常缴费app支付");
+            model.setSubject("日常缴费");
+            // 唯一订单号 根据项目中实际需要获取相应的
+            model.setOutTradeNo(appDailyPaymentOrder.getCode());
+            // 支付超时时间（根据项目需要填写）
+            model.setTimeoutExpress("30m");
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            model.setTotalAmount(String.valueOf(appDailyPaymentOrder.getPayPrice()));
+            //app支付 固定值 填写QUICK_MSECURITY_PAY
+            model.setProductCode("QUICK_MSECURITY_PAY");
+            alipayRequest.setBizModel(model);
+            // 支付成功后支付宝异步通知的接收地址url
+            alipayRequest.setNotifyUrl(DAILY_PAYMENT_NOTIFY_URL);
+            //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+            // 注意：每个请求的相应对象不同，与请求对象是对应。
+            AlipayTradeAppPayResponse alipayResponse = null;
+            try {
+                alipayResponse = alipayClient.sdkExecute(alipayRequest);
+            } catch (AlipayApiException e) {
+                e.printStackTrace();
+                log.info("获取签名失败");
+                throw new RuntimeException("获取签名失败");
+            }
+            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+            body = alipayResponse.getBody();
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        log.info("body:"+body);
+        map.put("message",body);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public String dailyPaymentNotifyInfo(HttpServletRequest request) {
+        return null;
     }
 
 }

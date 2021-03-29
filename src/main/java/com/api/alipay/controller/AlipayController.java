@@ -113,5 +113,41 @@ public class AlipayController {
         return alipayService.checkAlipay(outTradeNo);
     }
 
+    /**
+     * app 日常缴费支付宝支付
+     * @param appDailyPaymentOrder app生活缴纳 支付订单信息
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/dailyPaymentAlipay")
+    public Map<String,Object> dailyPaymentAlipay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        //从request获取用户姓名
+        String name = request.getParameter("name");
+        //从request获取用户联系电话
+        String tel = request.getParameter("tel");
+        appDailyPaymentOrder.setName(name);
+        appDailyPaymentOrder.setTel(tel);
+        return alipayService.dailyPaymentAlipay(appDailyPaymentOrder);
+    }
+
+
+    /**
+     * 日常缴费 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
+     */
+    @PostMapping(value = "/dailyPaymentNotifyInfo")
+    public String dailyPaymentNotifyInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+        request.setCharacterEncoding("UTF-8");
+        return alipayService.dailyPaymentNotifyInfo(request);
+    }
+
+
 
 }

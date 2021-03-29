@@ -26,21 +26,12 @@ public class MyCarController {
 
     /**
      * 查询所有的车辆
-     * @param pageNum 当前页数
-     * @param size 每页记录数
      * @param id 用户主键id
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(int pageNum,int size,Integer id){
-        PageHelper.startPage(pageNum,size);
-        List<MyCarVo> myCarVoList = myCarService.list(id);
-        PageInfo<MyCarVo> pageInfo = new PageInfo<>(myCarVoList);
-        Map<String,Object> map = new HashMap<>();
-        map.put("tableList",pageInfo.getList());
-        map.put("rowCount",pageInfo.getTotal());
-        map.put("pageCount",pageInfo.getPages());
-        return map;
+    public Map<String,Object> list(Integer id){
+        return myCarService.list(id);
     }
 
 

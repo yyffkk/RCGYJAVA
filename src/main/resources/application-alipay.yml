@@ -19,6 +19,7 @@ alipay:
 
   #服务器异步通知页面路径
   notifyUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/getAlipayNotifyInfo"
+  dailyPaymentNotifyUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/dailyPaymentNotifyInfo"
 
   #页面跳转同步通知页面路径
   returnUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/return_url.do"

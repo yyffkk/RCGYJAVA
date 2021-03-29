@@ -16,4 +16,8 @@ public interface AlipayService {
     String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request);
 
     Integer checkAlipay(String outTradeNo);
+
+    Map<String, Object> dailyPaymentAlipay(AppDailyPaymentOrder appDailyPaymentOrder);
+
+    String dailyPaymentNotifyInfo(HttpServletRequest request);
 }
