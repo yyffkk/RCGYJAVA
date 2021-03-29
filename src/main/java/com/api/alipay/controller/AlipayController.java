@@ -194,6 +194,15 @@ public class AlipayController {
     }
 
 
+    /**
+     * 报事报修 向支付宝发起订单查询请求
+     * @param outTradeNo 商户订单号
+     * @return map
+     */
+    @PostMapping("/reportRepairCheckAlipay")
+    public Map<String,Object> reportRepairCheckAlipay(@RequestBody String outTradeNo){
+        return alipayService.reportRepairCheckAlipay(outTradeNo);
+    }
 
 
 

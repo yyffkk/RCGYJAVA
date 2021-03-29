@@ -93,7 +93,7 @@
         )
     </insert>
 
-    <select id="findPayPriceByCode" parameterType="java.lang.String" resultType="com.api.model.app.AppRepairOrder">
+    <select id="findRepairOrderByCode" parameterType="java.lang.String" resultType="com.api.model.app.AppRepairOrder">
         select * from sys_report_repair_order where code = #{outTradeNo}
     </select>
 

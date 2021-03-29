@@ -109,7 +109,7 @@ public interface AppReportRepairDao {
      * @param outTradeNo 支付单号
      * @return 支付订单信息
      */
-    AppRepairOrder findPayPriceByCode(String outTradeNo);
+    AppRepairOrder findRepairOrderByCode(String outTradeNo);
 
     /**
      * 更新支付订单状态

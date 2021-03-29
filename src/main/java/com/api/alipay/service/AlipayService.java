@@ -27,4 +27,7 @@ public interface AlipayService {
     Map<String, Object> reportRepairAlipay(AppRepairOrder appRepairOrder);
 
     String reportRepairNotifyInfo(HttpServletRequest request, String userName, Integer userId);
+
+    Map<String, Object> reportRepairCheckAlipay(String outTradeNo);
+
 }
