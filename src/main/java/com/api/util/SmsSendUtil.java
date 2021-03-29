@@ -60,7 +60,7 @@ public class SmsSendUtil {
         // 必填:短信签名-可在短信控制台中找到
         request.setSignName("深圳市凯达来科技有限公司"); //  改这里
         // 必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode("测试");  //  改这里SMS_212970091
+        request.setTemplateCode("SMS_212970091");  //  改这里SMS_212970091
         // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的用户,您的验证码为${code}"时,此处的值为
         request.setTemplateParam("{\"code\":\"" + code + "\"}");
 

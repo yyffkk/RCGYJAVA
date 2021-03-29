@@ -90,7 +90,7 @@ public class AppLoginServiceImpl implements AppLoginService {
             return map;
         }
 
-        map.put("code",CAPTCHA);
+//        map.put("code",CAPTCHA);
         map.put("message","验证码发送成功");
         map.put("status",true);
         return map;
