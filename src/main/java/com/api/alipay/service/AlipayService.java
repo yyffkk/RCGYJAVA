@@ -20,4 +20,6 @@ public interface AlipayService {
     Map<String, Object> dailyPaymentAlipay(AppDailyPaymentOrder appDailyPaymentOrder);
 
     String dailyPaymentNotifyInfo(HttpServletRequest request);
+
+    Integer dailyPaymentCheckAlipay(String outTradeNo);
 }

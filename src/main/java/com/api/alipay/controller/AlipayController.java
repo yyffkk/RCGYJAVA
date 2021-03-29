@@ -146,6 +146,15 @@ public class AlipayController {
         return alipayService.dailyPaymentNotifyInfo(request);
     }
 
+    /**
+     * 日常缴费 向支付宝发起订单查询请求
+     * @param outTradeNo 商户订单号
+     * @return map
+     */
+    @PostMapping("/checkAlipay")
+    public Integer dailyPaymentCheckAlipay(@RequestBody String outTradeNo){
+        return alipayService.dailyPaymentCheckAlipay(outTradeNo);
+    }
 
 
 }

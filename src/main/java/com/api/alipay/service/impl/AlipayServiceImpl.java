@@ -441,6 +441,7 @@ public class AlipayServiceImpl implements AlipayService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> dailyPaymentAlipay(AppDailyPaymentOrder appDailyPaymentOrder) {
         map = new HashMap<>();
         String body = "";
@@ -630,6 +631,52 @@ public class AlipayServiceImpl implements AlipayService {
             // 失败要返回fail，不然支付宝会不断发送通知。
             return "fail";
         }
+    }
+
+    @Override
+    public Integer dailyPaymentCheckAlipay(String outTradeNo) {
+        log.info("================日常缴费向支付宝发起查询，查询商户订单号为："+outTradeNo);
+
+        try {
+            //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
+            alipayTradeQueryRequest.setBizContent("{" +
+                    "\"out_trade_no\":\""+outTradeNo+"\"" +
+                    "}");
+            AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
+            if(alipayTradeQueryResponse.isSuccess()){
+                //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+                AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
+                //修改数据库支付宝订单表
+                switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
+                {
+                    case "TRADE_FINISHED": // 交易结束并不可退款
+                        aliPaymentOrder.setStatus(3);
+                        break;
+                    case "TRADE_SUCCESS": // 交易支付成功
+                        aliPaymentOrder.setStatus(2);
+                        break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        aliPaymentOrder.setStatus(1);
+                        break;
+                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+                        aliPaymentOrder.setStatus(0);
+                        break;
+                    default:
+                        break;
+                }
+                //更新表的状态
+                appDailyPaymentDao.updateDPOrderStatusByCode(aliPaymentOrder);
+                return aliPaymentOrder.getStatus(); //交易状态
+            } else {
+                log.info("==================调用支付宝查询接口失败！");
+            }
+        } catch (AlipayApiException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }
