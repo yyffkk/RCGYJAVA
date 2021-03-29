@@ -24,10 +24,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * 支付宝支付
+ * app支付宝支付
  */
 @RestController
-@RequestMapping("/alipay")
+@RequestMapping("app/user/alipay")
 @Slf4j
 public class AlipayController {
     @Resource
@@ -76,11 +76,11 @@ public class AlipayController {
 
 
     /**
-     * app支付
-     * @param appDailyPaymentOrder
-     * @param response
-     * @param request
-     * @return
+     * app测试支付
+     * @param appDailyPaymentOrder app生活缴纳 支付订单信息
+     * @param response response
+     * @param request request
+     * @return map
      */
     @PostMapping(value = "/alipay")
     public Map<String,Object> alipay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder, HttpServletResponse response, HttpServletRequest request) {
@@ -89,11 +89,11 @@ public class AlipayController {
     }
 
     /**
-     * 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
-     * @param request
-     * @param response
-     * @return
-     * @throws UnsupportedEncodingException
+     * 测试接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
      */
     @PostMapping(value = "/getAlipayNotifyInfo")
     public String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
@@ -104,7 +104,7 @@ public class AlipayController {
     }
 
     /**
-     * 向支付宝发起订单查询请求
+     * 测试向支付宝发起订单查询请求
      * @param outTradeNo 商户订单号
      * @return map
      */
@@ -123,12 +123,10 @@ public class AlipayController {
     @PostMapping(value = "/dailyPaymentAlipay")
     public Map<String,Object> dailyPaymentAlipay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder, HttpServletResponse response, HttpServletRequest request) {
         response.setHeader("Access-Control-Allow-Origin", "*");
-        //从request获取用户姓名
-        String name = request.getParameter("name");
-        //从request获取用户联系电话
-        String tel = request.getParameter("tel");
-        appDailyPaymentOrder.setName(name);
-        appDailyPaymentOrder.setTel(tel);
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        appDailyPaymentOrder.setName(name); //填写付款人姓名
+        appDailyPaymentOrder.setTel(tel); //填写付款人手机号
         return alipayService.dailyPaymentAlipay(appDailyPaymentOrder);
     }
 

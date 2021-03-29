@@ -59,6 +59,25 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     public Map<String, Object> findDetailById(Integer executeId) {
         map = new HashMap<>();
         ButlerInspectionFDBIVo inspectionFDBIVo = butlerInspectionDao.findDetailById(executeId);
+        if (inspectionFDBIVo != null){
+            //判断实际开始时间是否为null
+            if (inspectionFDBIVo.getActualBeginDate() != null){
+                //判断实际结束时间是否为null
+                if (inspectionFDBIVo.getActualEndDate() != null){
+                    inspectionFDBIVo.setStatus(2); //实际开始时间与实际结束时间都不为null，2.已巡检
+                }else {
+                    inspectionFDBIVo.setStatus(3); //实际开始时间不为null,实际结束时间为null，3.巡检中
+                }
+            }else {
+                //判断实际结束时间是否为null
+                if (inspectionFDBIVo.getActualEndDate() != null){
+                    inspectionFDBIVo.setStatus(4); //实际开始时间为null,实际结束时间不为null，4.未巡检
+                }else {
+                    //实际开始时间与实际结束时间都为null，1.待巡检
+                    inspectionFDBIVo.setStatus(1);
+                }
+            }
+        }
         map.put("data",inspectionFDBIVo);
         map.put("message","请求成功");
         map.put("status",true);
