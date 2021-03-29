@@ -18,8 +18,12 @@ alipay:
   rsaAlipayPublicKey: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArxvCSSnq0Fw6wCWF0ri+D3aT+PaxAy+2TU3LalN4EtIgywIhgse29nSBKlmi9po74dM+fChR4bu6L/mCA6B64ICl8NfZDu7g8imFP+6NXKnggzyP7kRtR8MkqwE/BAXWDdgDZ8ra8sZpOTY1jtSprI61qZtwq+X/t2+jVbptwqG9/ZQP9sjrWB9yASUDl3cA9IheyOKF5P3bE9j0+a+1aOp6l4X9teg+U2Rne8zuGe8ED788vsrUt8T2AS+WmTrT5ir5vwPtf85MhDFs8QjujlDVN1WEafmNVbcAlixb+nLP5nV7mbGo6rLzQYbnqi1wooxd2XzVlhykN30ku8PfOQIDAQAB"
 
   #服务器异步通知页面路径
+  ##测试
   notifyUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/getAlipayNotifyInfo"
+  ##日常缴费
   dailyPaymentNotifyUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/dailyPaymentNotifyInfo"
+  ##报事报修
+  reportRepairNotifyUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/reportRepairNotifyInfo"
 
   #页面跳转同步通知页面路径
   returnUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/return_url.do"

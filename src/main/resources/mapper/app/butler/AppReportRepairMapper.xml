@@ -63,4 +63,42 @@
     <select id="findRepairmanByRepairId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select repairman from sys_report_repair where id = #{repairId}
     </select>
+
+    <select id="findPayPriceById" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select (maintenance_labor_cast+maintenance_material_cost) as payPrice
+        from sys_report_repair where id = #{reportRepairId}
+    </select>
+
+    <insert id="insertOrder" parameterType="com.api.model.app.AppRepairOrder">
+        insert into sys_report_repair_order(
+            report_repair_id,
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date,
+            status
+        )values (
+            #{reportRepairId},
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate},
+            #{status}
+        )
+    </insert>
+
+    <select id="findPayPriceByCode" parameterType="java.lang.String" resultType="com.api.model.app.AppRepairOrder">
+        select * from sys_report_repair_order where code = #{outTradeNo}
+    </select>
+
+    <update id="updateDPOrderStatusByCode" parameterType="com.api.model.app.AppRepairOrder">
+        update sys_report_repair_order set status = #{status} where code = #{code}
+    </update>
+
 </mapper>

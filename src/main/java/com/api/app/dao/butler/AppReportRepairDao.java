@@ -1,12 +1,14 @@
 package com.api.app.dao.butler;
 
 import com.api.model.app.AppRepairEvaluate;
+import com.api.model.app.AppRepairOrder;
 import com.api.model.app.UserIdAndRepairId;
 import com.api.vo.app.AppDispatchListVo;
 import com.api.vo.app.AppMaintenanceResultVo;
 import com.api.vo.app.AppProcessRecordVo;
 import com.api.vo.app.AppReportRepairVo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AppReportRepairDao {
@@ -87,4 +89,33 @@ public interface AppReportRepairDao {
      * @return 报修人
      */
     int findRepairmanByRepairId(Integer repairId);
+
+    /**
+     * 添加报事报修订单信息
+     * @param appDispatchListOrder app 报事报修订单
+     * @return 影响行数
+     */
+    int insertOrder(AppRepairOrder appDispatchListOrder);
+
+    /**
+     * 根据报事报修主键id查询付款金额
+     * @param reportRepairId 报事报修主键id
+     * @return 付款金额
+     */
+    BigDecimal findPayPriceById(Integer reportRepairId);
+
+    /**
+     * 根据支付单号查询支付订单信息
+     * @param outTradeNo 支付单号
+     * @return 支付订单信息
+     */
+    AppRepairOrder findPayPriceByCode(String outTradeNo);
+
+    /**
+     * 更新支付订单状态
+     * @param appRepairOrder app 报事报修订单
+     * @return 影响行数
+     */
+    int updateDPOrderStatusByCode(AppRepairOrder appRepairOrder);
+
 }

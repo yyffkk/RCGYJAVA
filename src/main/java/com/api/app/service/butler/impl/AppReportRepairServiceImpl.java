@@ -272,6 +272,7 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> completeOrder(UserIdAndRepairId userIdAndRepairId, String name) {
         map = new HashMap<>();
         try {

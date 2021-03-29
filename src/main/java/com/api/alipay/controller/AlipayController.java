@@ -10,6 +10,8 @@ import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.api.alipay.service.AlipayService;
 import com.api.model.alipay.OrderTest;
 import com.api.model.app.AppDailyPaymentOrder;
+import com.api.model.app.AppRepairOrder;
+import com.api.model.app.UserIdAndRepairId;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -151,10 +153,48 @@ public class AlipayController {
      * @param outTradeNo 商户订单号
      * @return map
      */
-    @PostMapping("/checkAlipay")
-    public Integer dailyPaymentCheckAlipay(@RequestBody String outTradeNo){
+    @PostMapping("/dailyPaymentCheckAlipay")
+    public Map<String,Object> dailyPaymentCheckAlipay(@RequestBody String outTradeNo){
         return alipayService.dailyPaymentCheckAlipay(outTradeNo);
     }
+
+    /**
+     * app 报事报修完成订单支付宝支付
+     * @param appRepairOrder app 报事报修订单
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/reportRepairAlipay")
+    public Map<String,Object> reportRepairAlipay(@RequestBody AppRepairOrder appRepairOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        appRepairOrder.setName(name); //填写付款人姓名
+        appRepairOrder.setTel(tel); //填写付款人手机号
+        return alipayService.reportRepairAlipay(appRepairOrder);
+    }
+
+
+    /**
+     * 报事报修 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
+     */
+    @PostMapping(value = "/reportRepairNotifyInfo")
+    public String reportRepairNotifyInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+        request.setCharacterEncoding("UTF-8");
+        String userName = request.getParameter("name"); //从request获取用户姓名
+        Integer userId = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        return alipayService.reportRepairNotifyInfo(request,userName,userId);
+    }
+
+
+
 
 
 }
