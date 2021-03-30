@@ -123,6 +123,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 throw new RuntimeException("修改新版访客信息失败");
             }
 
+            //判断是否有照片？？？？？========== ？？？？？？？？
             //将图片发送给大华？？？？？========== ？？？？？？？？
             //判断返回是否成功,决定是否回滚操作？？？？？？？==========？？？？？？？
 
