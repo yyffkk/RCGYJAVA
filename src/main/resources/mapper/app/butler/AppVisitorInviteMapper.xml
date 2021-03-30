@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppVisitorInviteDao">
+
+    <insert id="insertUserVisitorsNew" parameterType="com.api.model.app.AppUserVisitorsInvite">
+        insert into
+        <trim prefix="user_visitors_new(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="carNumber != null and carNumber != ''">
+                car_number,
+            </if>
+            <if test="visitDateStart != null">
+                visit_date_start,
+            </if>
+            <if test="visitDateEnd != null">
+                visit_date_end,
+            </if>
+            create_id,
+            create_date
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="carNumber != null and carNumber != ''">
+                #{carNumber},
+            </if>
+            <if test="visitDateStart != null">
+                #{visitDateStart},
+            </if>
+            <if test="visitDateEnd != null">
+                #{visitDateEnd},
+            </if>
+            #{createId},
+            #{createDate}
+        </trim>
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+    <insert id="insertUserVisitorsUrl" parameterType="com.api.model.app.AppUserVisitorsUrl">
+        insert into user_visitors_new_url(
+            code,
+            effective_date,
+            user_visitors_new_id,
+            is_use
+        ) values (
+            #{code},
+            #{effectiveDate},
+            #{userVisitorsNewId},
+            #{isUse}
+        )
+    </insert>
+    <select id="findEffectiveDateByCode" parameterType="java.lang.String" resultType="java.util.Date">
+        select effective_date from user_visitors_new_url where code = #{code}
+    </select>
+    <select id="findByUrlCode" parameterType="java.lang.String" resultType="com.api.model.app.AppUserVisitorsInvite">
+        select uvn.* from user_visitors_new as uvn,user_visitors_new_url as uvnu
+        where uvnu.user_visitors_new_id = uvn.id and code = #{code}
+    </select>
+    <select id="findVisitIdByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select user_visitors_new_id from user_visitors_new_url where code = #{code}
+    </select>
+    <select id="findIsUseByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select is_use from user_visitors_new_url where code = #{code}
+    </select>
+    <update id="updateUserVisitorsNew" parameterType="com.api.model.app.AppUserVisitorsInviteSubmit">
+        update user_visitors_new
+        set name = #{name},
+        sex = #{sex},
+        <if test="carNumber != null and carNumber != ''">
+            car_number = #{carNumber},
+        </if>
+        visit_date_start = #{visitDateStart},
+        visit_date_end = #{visitDateEnd}
+        where id = #{id}
+    </update>
+    <update id="updateIsUseByCode" parameterType="java.lang.String">
+        update user_visitors_new_url set is_use = 1 where code = #{code}
+    </update>
+
+</mapper>

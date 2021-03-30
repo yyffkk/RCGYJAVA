@@ -59,5 +59,6 @@ prop:
   #ButlerApp-巡检管理：巡更人员拍摄现场
   upload-butler-app-inspection-space: /img/inspectionSpace/
 
-
+  #H5页面-访客邀请自拍照上传
+  upload-h5-visit: /img/h5/visit/
 
