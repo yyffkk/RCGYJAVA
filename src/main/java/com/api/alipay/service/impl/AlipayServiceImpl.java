@@ -20,6 +20,7 @@ import com.api.model.app.AppRepairOrder;
 import com.api.model.app.UserIdAndRepairId;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
+import com.api.util.IdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -247,7 +248,7 @@ public class AlipayServiceImpl implements AlipayService {
             appDailyPaymentOrder.setPayPrice(BigDecimal.valueOf(0.01));
 
             //填写支付单号(自动生成订单号)
-            appDailyPaymentOrder.setCode(UUID.randomUUID().toString().replace("-","").trim());
+            appDailyPaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
             //填写创建人 app为-1
             appDailyPaymentOrder.setCreateId(-1);
             //填入创建时间
@@ -467,7 +468,7 @@ public class AlipayServiceImpl implements AlipayService {
             appDailyPaymentOrder.setPayPrice(paymentPrice);
 
             //填写支付单号(自动生成订单号)
-            appDailyPaymentOrder.setCode(UUID.randomUUID().toString().replace("-","").trim());
+            appDailyPaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
             //填写创建人 app为-1
             appDailyPaymentOrder.setCreateId(-1);
             //填入创建时间
@@ -927,7 +928,7 @@ public class AlipayServiceImpl implements AlipayService {
             throw new RuntimeException("支付金额不可为0");
         }
         appRepairOrder.setPayPrice(payPrice); //填写付款金额
-        appRepairOrder.setCode(UUID.randomUUID().toString().replace("-","").trim()); //填写支付单号(自动生成订单号)
+        appRepairOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId())); //填写支付单号(自动生成订单号)
         appRepairOrder.setCreateId(-1); //填写创建人 app为-1
         appRepairOrder.setCreateDate(new Date()); //填入创建时间
         appRepairOrder.setStatus(0); //填入付款状态，0.交易创建并等待买家付款
