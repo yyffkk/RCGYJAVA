@@ -157,7 +157,7 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
 
                     Calendar calendar = Calendar.getInstance();
                     Date time = sysInspectionExecute.getBeginDate();
-                    while (time.getTime() <= new Date().getTime()){ //获取离当前时间最近的计划开始时间，当计划开始时间大于当前时间，跳出当前循环
+                    while (time.getTime() < new Date().getTime()){ //获取离当前时间最近的计划开始时间，当计划开始时间大于等于当前时间，跳出当前循环
                         calendar.setTime(time);
                         switch (sysInspectionPlan.getCheckRateType()){
                             case 1:
