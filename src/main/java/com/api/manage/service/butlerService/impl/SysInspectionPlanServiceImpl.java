@@ -9,6 +9,7 @@ import com.api.model.butlerService.PlanIdAndStatus;
 import com.api.model.butlerService.SearchInspectionPlan;
 import com.api.model.butlerService.SysInspectionExecute;
 import com.api.model.butlerService.SysInspectionPlan;
+import com.api.util.IdWorker;
 import com.api.vo.butlerService.VoFBIInspectionPlan;
 import com.api.vo.butlerService.VoInspectionPlan;
 import org.apache.shiro.SecurityUtils;
@@ -47,7 +48,7 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
             sysInspectionPlan.setCreateId(sysUser.getId()); //填入创建人id
             sysInspectionPlan.setCreateDate(new Date()); //填入创建时间
             sysInspectionPlan.setIsDelete(1); //默认为1.删除
-            sysInspectionPlan.setCode(UUID.randomUUID().toString().replace("-","").trim()); //填入巡检计划编号
+            sysInspectionPlan.setCode(String.valueOf(new IdWorker(1,1,1).nextId())); //填入巡检计划编号
             sysInspectionPlan.setStatus(1); //默认为1.启用
             //添加巡检计划信息
             int insert = sysInspectionPlanDao.insert(sysInspectionPlan);

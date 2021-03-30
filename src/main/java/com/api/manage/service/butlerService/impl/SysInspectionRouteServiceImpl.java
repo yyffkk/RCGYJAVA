@@ -7,6 +7,7 @@ import com.api.model.butlerService.RouteIdAndStatus;
 import com.api.model.butlerService.SearchInspectionPoint;
 import com.api.model.butlerService.SysInspectionPointRoute;
 import com.api.model.butlerService.SysInspectionRoute;
+import com.api.util.IdWorker;
 import com.api.vo.butlerService.VoFBIInspectionRoute;
 import com.api.vo.butlerService.VoFBIInspectionRoutePoint;
 import com.api.vo.butlerService.VoInspectionRoute;
@@ -40,7 +41,7 @@ public class SysInspectionRouteServiceImpl implements SysInspectionRouteService 
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
             if (sysInspectionRoute.getCode() == null){
-                sysInspectionRoute.setCode(UUID.randomUUID().toString().replace("-","").trim());
+                sysInspectionRoute.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
             }
             sysInspectionRoute.setCreateId(sysUser.getId()); //添加创建人
             sysInspectionRoute.setCreateDate(new Date()); //添加创建时间

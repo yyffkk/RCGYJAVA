@@ -25,6 +25,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -237,66 +238,93 @@ public class SysAutoRemind {
         List<SysInspectionExecute> sysInspectionExecuteList = butlerInspectionDao.findOldExecuteByToday(date);
         if (sysInspectionExecuteList != null && sysInspectionExecuteList.size()>0){
             for (SysInspectionExecute sysInspectionExecute : sysInspectionExecuteList) {
-                //查询最新的一次计划当次巡检开始时间
-                SysInspectionExecute sysInspectionExecute2 = sysInspectionPlanDao.findNewPlan(sysInspectionExecute.getInspectionPlanId());
-                //根据巡检计划主键id 查询 巡检计划情况
-                SysInspectionPlan sysInspectionPlan = butlerInspectionDao.findPlanById(sysInspectionExecute.getInspectionPlanId());
-                if (sysInspectionPlan.getStatus() ==1){ //启用
-                    //添加下一条巡检计划
-                    SysInspectionExecute sysInspectionExecute3 = new SysInspectionExecute();
-                    sysInspectionExecute3.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(sysInspectionExecute2.getBeginDate());
-                    switch (sysInspectionPlan.getCheckRateType()){
-                        case 1:
-                            calendar.add(Calendar.DAY_OF_MONTH,1);
-                            break;
-                        case 2:
-                            calendar.add(Calendar.DAY_OF_MONTH,7);
-                            break;
-                        case 3:
-                            calendar.add(Calendar.MONTH,1);
-                            break;
-                        default:
-                            log.info("数据异常,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                //当 当前时间的日期（年月日）大于添加后的当次巡检开始时间的日期（年月日），继续添加巡检计划，并将添加后的当次巡检计划变为未巡检状态
+                Date time = sysInspectionExecute.getBeginDate();
+                while (dateCompare(new Date(),time)){
+                    //查询最新的一次计划当次巡检开始时间
+                    sysInspectionExecute = sysInspectionPlanDao.findNewPlan(sysInspectionExecute.getInspectionPlanId());
+                    //根据巡检计划主键id 查询 巡检计划情况
+                    SysInspectionPlan sysInspectionPlan = butlerInspectionDao.findPlanById(sysInspectionExecute.getInspectionPlanId());
+                    if (sysInspectionPlan.getStatus() ==1){ //启用
+                        //添加下一条巡检计划
+                        SysInspectionExecute sysInspectionExecute3 = new SysInspectionExecute();
+                        sysInspectionExecute3.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(time);
+                        switch (sysInspectionPlan.getCheckRateType()){
+                            case 1:
+                                calendar.add(Calendar.DAY_OF_MONTH,1);
+                                break;
+                            case 2:
+                                calendar.add(Calendar.DAY_OF_MONTH,7);
+                                break;
+                            case 3:
+                                calendar.add(Calendar.MONTH,1);
+                                break;
+                            default:
+                                log.info("数据异常,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                                continue;
+                        }
+                        time = calendar.getTime();
+                        sysInspectionExecute3.setBeginDate(time); //填入计划当次巡检开始时间
+                        //根据巡检路线主键id查询 持续时间
+                        Integer spaceTime = butlerInspectionDao.findSpaceTimeById(sysInspectionPlan.getInspectionRouteId());
+                        if (spaceTime == null){
+                            log.info("数据异常2,巡检执行情况主键id:"+sysInspectionExecute.getId());
                             continue;
+                        }
+                        calendar.setTime(time);
+                        calendar.add(Calendar.MINUTE,spaceTime);
+                        Date time2 = calendar.getTime();
+                        sysInspectionExecute3.setEndDate(time2); //填入计划当次巡检结束时间
+                        //根据巡检计划主键id查询巡检执行数量
+                        int count2 = butlerInspectionDao.countExecuteNumByPlanId(sysInspectionExecute.getInspectionPlanId());
+                        sysInspectionExecute3.setSort(count2+1); //填入排序默认为1
+                        int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute3);
+                        if (insert2 <=0){
+                            log.info("添加执行巡检信息失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                            continue;
+                        }
+                        log.info("添加执行巡检信息成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                        //修改当次巡检情况实际结束时间
+                        ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate = new ButlerExecuteIdAndActualEndDate();
+                        executeIdAndActualEndDate.setExecuteId(sysInspectionExecute.getId());
+                        executeIdAndActualEndDate.setActualEndDate(new Date());
+                        int update3 = butlerInspectionDao.updateExecute(executeIdAndActualEndDate);
+                        if (update3 <= 0){
+                            log.info("修改当次巡检情况实际结束时间失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                            continue;
+                        }
+                        log.info("修改当次巡检情况实际结束时间成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
                     }
-                    Date time = calendar.getTime();
-                    sysInspectionExecute3.setBeginDate(time); //填入计划当次巡检开始时间
-                    //根据巡检路线主键id查询 持续时间
-                    Integer spaceTime = butlerInspectionDao.findSpaceTimeById(sysInspectionPlan.getInspectionRouteId());
-                    if (spaceTime == null){
-                        log.info("数据异常2,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                        continue;
-                    }
-                    calendar.setTime(time);
-                    calendar.add(Calendar.MINUTE,spaceTime);
-                    Date time2 = calendar.getTime();
-                    sysInspectionExecute3.setEndDate(time2); //填入计划当次巡检结束时间
-                    //根据巡检计划主键id查询巡检执行数量
-                    int count2 = butlerInspectionDao.countExecuteNumByPlanId(sysInspectionExecute.getInspectionPlanId());
-                    sysInspectionExecute3.setSort(count2+1); //填入排序默认为1
-                    int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute3);
-                    if (insert2 <=0){
-                        log.info("添加执行巡检信息失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                        continue;
-                    }
-                    log.info("添加执行巡检信息成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                    //修改当次巡检情况实际结束时间
-                    ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate = new ButlerExecuteIdAndActualEndDate();
-                    executeIdAndActualEndDate.setExecuteId(sysInspectionExecute.getId());
-                    executeIdAndActualEndDate.setActualEndDate(new Date());
-                    int update3 = butlerInspectionDao.updateExecute(executeIdAndActualEndDate);
-                    if (update3 <= 0){
-                        log.info("修改当次巡检情况实际结束时间失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                        continue;
-                    }
-                    log.info("修改当次巡检情况实际结束时间成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
                 }
             }
         }else {
             log.info("本次执行没有处理对象");
         }
+    }
+
+    /**
+     * 比较第一个值date和第二个值time
+     * @param date 第一个值
+     * @param time 第二个值
+     * @return date>time true date
+     */
+    private boolean dateCompare(Date date, Date time) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String dateFirst = dateFormat.format(date);
+        String dateLast = dateFormat.format(time);
+        int dateFirstIntVal = Integer.parseInt(dateFirst);
+        int dateLastIntVal = Integer.parseInt(dateLast);
+        if (dateFirstIntVal > dateLastIntVal) {
+            //第一个值大于第二个值true
+            return true;
+        } else if (dateFirstIntVal < dateLastIntVal) {
+            //第一个值小于第二个值false
+            return false;
+        }
+        //第一个值等于第二个值false
+        return false;
     }
 
 

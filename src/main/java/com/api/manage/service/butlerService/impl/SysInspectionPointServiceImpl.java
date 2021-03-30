@@ -6,6 +6,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SearchInspectionPoint;
 import com.api.model.butlerService.SysInspectionCheckItems;
 import com.api.model.butlerService.SysInspectionPoint;
+import com.api.util.IdWorker;
 import com.api.vo.butlerService.VoFBIInspectionCheckItems;
 import com.api.vo.butlerService.VoFBIInspectionPoint;
 import com.api.vo.butlerService.VoInspectionPoint;
@@ -37,7 +38,7 @@ public class SysInspectionPointServiceImpl implements SysInspectionPointService 
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         if (sysInspectionPoint.getCode() == null){
-            sysInspectionPoint.setCode(UUID.randomUUID().toString().replace("-","").trim());
+            sysInspectionPoint.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
         }
         sysInspectionPoint.setCreateDate(new Date()); //填入创建时间
         sysInspectionPoint.setCreateId(sysUser.getId()); //填入创建人id
