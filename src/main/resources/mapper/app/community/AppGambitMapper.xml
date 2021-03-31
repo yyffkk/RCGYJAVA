@@ -25,7 +25,7 @@
     <select id="listGambit" resultType="com.api.vo.app.AppGambitVo">
         select sg2.*,(case c.activity_num is null when true then 0 else c.activity_num end) as activity_num from sys_gambit as sg2 LEFT JOIN (
             select a.id,(a.sum2+b.count2) as activity_num from (
-                select sg.id,(case SUM(sgt.likes) is null when true then 0 else SUM(sgt.likes) end) as sum2 from sys_gambit_theme as sgt,sys_gambit as sg where sgt.gambit_id = sg.id and sgt.is_delete = 1 group by sgt.id
+                select sg.id,(case SUM(sgt.likes) is null when true then 0 else SUM(sgt.likes) end) as sum2 from sys_gambit_theme as sgt,sys_gambit as sg where sgt.gambit_id = sg.id and sgt.is_delete = 1 group by sg.id
             ) as a LEFT JOIN (
                 select sg.id,(case count(*) is null when true then 0 else count(*) end) as count2 from sys_gambit_theme_comment as sgtc,sys_gambit as sg where sgtc.gambit_id = sg.id  and sgtc.is_delete = 1  group by sg.id
             ) as b on a.id = b.id
