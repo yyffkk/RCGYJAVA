@@ -50,7 +50,7 @@
     </select>
 
     <select id="GambitThemeDetail" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGambitThemeVo">
-        select sgt.*,sg.title as gambit_title,ur.name as create_name
+        select sgt.*,sg.summary as gambit_title,ur.name as create_name
         from user_resident as ur,sys_gambit_theme as sgt
         LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
         where sgt.create_id = ur.id and sgt.is_delete = 1 and sgt.id = #{themeId}
@@ -141,7 +141,7 @@
 
     <select id="listByGambitId" parameterType="com.api.model.app.UserIdAndGambitId" resultType="com.api.vo.app.AppGambitThemeVo">
         select a.* from (
-            select sgt.*,sg.title as gambit_title,ur.name as create_name
+            select sgt.*,sg.summary as gambit_title,ur.name as create_name
             from user_resident as ur,sys_gambit_theme as sgt
             LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
             where ur.id = sgt.create_id and sgt.is_delete = 1 and sgt.gambit_id = #{gambitId}
