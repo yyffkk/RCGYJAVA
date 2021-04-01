@@ -54,6 +54,7 @@ public class ShareVisitorInviteController {
 
     /**
      * 提交访客信息（扫码二维码后提交的数据,H5页面）
+     * @param qrVisitorsInviteSubmit 访客邀请提交信息QR(扫码二维码后，H5提交model)
      * @return map
      */
     @PostMapping("/QRSubmit")
