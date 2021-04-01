@@ -11,6 +11,10 @@ public class MyHouseVo {
      */
     private Integer id;
     /**
+     * 房产id
+     */
+    private Integer estateId;
+    /**
      * 房产信息
      */
     private String roomName;
@@ -35,6 +39,7 @@ public class MyHouseVo {
     public String toString() {
         return "MyHouseVo{" +
                 "id=" + id +
+                ", estateId=" + estateId +
                 ", roomName='" + roomName + '\'' +
                 ", type=" + type +
                 ", status=" + status +
@@ -49,6 +54,14 @@ public class MyHouseVo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
     }
 
     public String getRoomName() {
@@ -94,8 +107,9 @@ public class MyHouseVo {
     public MyHouseVo() {
     }
 
-    public MyHouseVo(Integer id, String roomName, Integer type, Integer status, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public MyHouseVo(Integer id, Integer estateId, String roomName, Integer type, Integer status, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
+        this.estateId = estateId;
         this.roomName = roomName;
         this.type = type;
         this.status = status;
