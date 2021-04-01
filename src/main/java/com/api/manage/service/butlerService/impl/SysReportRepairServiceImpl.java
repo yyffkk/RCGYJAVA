@@ -169,7 +169,7 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
         VoFindByIdRepair byId = sysReportRepairDao.findById(id);
         if (byId != null){
             UploadUtil uploadUtil = new UploadUtil();
-            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", id, "repairImg");
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportRepair", byId.getId(), "repairImg");
             byId.setImgUrls(imgByDate);
         }
         return byId;

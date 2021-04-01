@@ -233,8 +233,11 @@
 
     <select id="findNameBySearch" parameterType="com.api.model.basicArchives.SearchFindName" resultType="com.api.vo.basicArchives.VoFindAll">
         select T.* from
-        (select id as value,name as label from user_resident
-        where type = 1 or type = 3) as T
+        (
+            select distinct ur.id as value,ur.name as label
+            from user_resident as ur,cpm_resident_estate as cre
+            where ur.id = cre.resident_id and NOW() <![CDATA[ < ]]> cre.effective_time_end
+        ) as T
         <where>
             <if test="name != null and name != ''">
                 and T.label like concat('%',#{name},'%')
