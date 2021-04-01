@@ -2,6 +2,7 @@ package com.api.app.controller.share_h5;
 
 import com.api.app.service.butler.AppVisitorInviteService;
 import com.api.manage.service.system.UploadService;
+import com.api.model.app.AppUserQRVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
 import org.springframework.web.bind.annotation.*;
@@ -49,5 +50,14 @@ public class ShareVisitorInviteController {
     @PostMapping("/submit")
     public Map<String,Object> submit(@RequestBody AppUserVisitorsInviteSubmit visitorsInviteSubmit){
         return appVisitorInviteService.submit(visitorsInviteSubmit);
+    }
+
+    /**
+     * 提交访客信息（扫码二维码后提交的数据,H5页面）
+     * @return map
+     */
+    @PostMapping("/QRSubmit")
+    public Map<String,Object> QRSubmit(@RequestBody AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit){
+        return appVisitorInviteService.QRSubmit(qrVisitorsInviteSubmit);
     }
 }

@@ -1,5 +1,6 @@
 package com.api.app.dao.butler;
 
+import com.api.model.app.AppUserQRVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsUrl;
@@ -62,4 +63,11 @@ public interface AppVisitorInviteDao {
      * @return 影响行数
      */
     int updateIsUseByCode(String code);
+
+    /**
+     * 扫码二维码后，添加新版访客信息
+     * @param qrVisitorsInviteSubmit 访客邀请提交信息QR(扫码二维码后，H5提交model)
+     * @return 影响行数
+     */
+    int insertQRUserVisitorsNew(AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit);
 }

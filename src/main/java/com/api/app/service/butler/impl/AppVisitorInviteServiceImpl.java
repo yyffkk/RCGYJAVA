@@ -2,6 +2,7 @@ package com.api.app.service.butler.impl;
 
 import com.api.app.dao.butler.AppVisitorInviteDao;
 import com.api.app.service.butler.AppVisitorInviteService;
+import com.api.model.app.AppUserQRVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsUrl;
@@ -129,6 +130,46 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
             //根据分享连接编号将该连接修改为1.已使用
             appVisitorInviteDao.updateIsUseByCode(visitorsInviteSubmit.getCode());
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> QRSubmit(AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit) {
+        map = new HashMap<>();
+        try {
+            if (new Date().getTime() > qrVisitorsInviteSubmit.getVisitDateStart().getTime()){//如果当前时间大于到访时间开始，则提示预计到访时间不可小于当前时间
+                throw new RuntimeException("预计到访时间不可小于当前时间");
+            }
+            qrVisitorsInviteSubmit.setCreateId(-1); //扫门口二维码填写，创建人默认为-1
+            qrVisitorsInviteSubmit.setCreateDate(new Date()); //填写创建时间
+            //添加新版访客信息
+            int insert = appVisitorInviteDao.insertQRUserVisitorsNew(qrVisitorsInviteSubmit);
+            if (insert <= 0){
+                throw new RuntimeException("添加新版访客信息失败");
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"selfie","600",30,20);
+
+
+            //判断是否有照片？？？？？========== ？？？？？？？？
+            //将图片发送给大华？？？？？========== ？？？？？？？？
+            //判断返回是否成功,决定是否回滚操作？？？？？？？==========？？？？？？？
+
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

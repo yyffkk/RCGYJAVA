@@ -86,8 +86,36 @@
         visit_date_end = #{visitDateEnd}
         where id = #{id}
     </update>
+
     <update id="updateIsUseByCode" parameterType="java.lang.String">
         update user_visitors_new_url set is_use = 1 where code = #{code}
     </update>
+
+    <insert id="insertQRUserVisitorsNew" parameterType="com.api.model.app.AppUserQRVisitorsInviteSubmit">
+        insert into user_visitors_new(
+            name,
+            sex,
+            <if test="carNumber != null and carNumber != ''">
+                car_number,
+            </if>
+            visit_date_start,
+            visit_date_end,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{sex},
+            <if test="carNumber != null and carNumber != ''">
+                #{carNumber},
+            </if>
+            #{visitDateStart},
+            #{visitDateEnd},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 
 </mapper>
