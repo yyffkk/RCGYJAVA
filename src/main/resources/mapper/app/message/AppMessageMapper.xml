@@ -16,7 +16,7 @@
     </select>
 
     <select id="sysCommentMessageList" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppCommentMessageVo">
-        select scm.*,ur1.name as create_name,ur2.name as respondent_name from user_resident as ur1,sys_comment_message as scm
+        select scm.*,ur1.nick_name as create_name,ur2.nick_name as respondent_name from user_resident as ur1,sys_comment_message as scm
         LEFT JOIN user_resident as ur2 on scm.respondent_id = ur2.id
         where scm.create_id = ur1.id and scm.receiver_account = #{id}
     </select>
@@ -46,7 +46,7 @@
     </select>
 
     <select id="findCommentNewTitleById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppCommentMessageVo">
-        select scm.*,ur.name as createName from sys_comment_message as scm,user_resident as ur
+        select scm.*,ur.nick_name as createName from sys_comment_message as scm,user_resident as ur
         where scm.create_id = ur.id and scm.receiver_account = #{id}
         order by create_date DESC limit 1
     </select>
