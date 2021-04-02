@@ -22,7 +22,7 @@
             ur.name as theme_name,ur.nick_name as theme_nick_name,sgt.create_date as theme_create_date,sgt.content as theme_content,sgt.likes as like_num,sgt.is_delete
             from user_resident as ur,sys_gambit as sg RIGHT JOIN sys_gambit_theme as sgt
             on sg.id = sgt.gambit_id
-            where  ur.id = sgt.create_id
+            where  ur.id = sgt.create_id and sg.is_delete = 1
         ) as a
         <where>
             <if test="beginDate != null">
