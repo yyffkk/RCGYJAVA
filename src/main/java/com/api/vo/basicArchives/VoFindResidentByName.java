@@ -7,11 +7,11 @@ public class VoFindResidentByName {
     /**
      * 业主主键id
      */
-    private Integer id;
+    private Integer value;
     /**
      * 业主名称
      */
-    private String name;
+    private String label;
     /**
      * 房屋信息
      */
@@ -32,8 +32,8 @@ public class VoFindResidentByName {
     @Override
     public String toString() {
         return "VoFindResidentByName{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "value=" + value +
+                ", label='" + label + '\'' +
                 ", roomName='" + roomName + '\'' +
                 ", buildingId=" + buildingId +
                 ", unitId=" + unitId +
@@ -41,20 +41,20 @@ public class VoFindResidentByName {
                 '}';
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getValue() {
+        return value;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setValue(Integer value) {
+        this.value = value;
     }
 
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getRoomName() {
@@ -92,9 +92,9 @@ public class VoFindResidentByName {
     public VoFindResidentByName() {
     }
 
-    public VoFindResidentByName(Integer id, String name, String roomName, Integer buildingId, Integer unitId, Integer estateId) {
-        this.id = id;
-        this.name = name;
+    public VoFindResidentByName(Integer value, String label, String roomName, Integer buildingId, Integer unitId, Integer estateId) {
+        this.value = value;
+        this.label = label;
         this.roomName = roomName;
         this.buildingId = buildingId;
         this.unitId = unitId;
