@@ -4,6 +4,7 @@ import com.api.app.dao.community.AppGambitDao;
 import com.api.app.dao.message.AppMessageDao;
 import com.api.app.service.community.AppGambitService;
 import com.api.model.app.*;
+import com.api.util.Base64Util;
 import com.api.util.JiguangUtil;
 import com.api.vo.app.IdAndName;
 import com.api.util.UploadUtil;
@@ -269,6 +270,10 @@ public class AppGambitServiceImpl implements AppGambitService {
     public Map<String, Object> comment(AppGambitThemeComment appGambitThemeComment) {
         map = new HashMap<>();
         try {
+            //给评论加密
+            String content = Base64Util.encodeData(appGambitThemeComment.getContent());
+            appGambitThemeComment.setContent(content);
+
             //根据主题主键id 查询 话题id
             Integer gambitId = appGambitDao.findGambitIdByThemeId(appGambitThemeComment.getGambitThemeId());
             appGambitThemeComment.setGambitId(gambitId);
