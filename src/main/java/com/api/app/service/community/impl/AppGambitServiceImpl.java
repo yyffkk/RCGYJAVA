@@ -271,8 +271,8 @@ public class AppGambitServiceImpl implements AppGambitService {
         map = new HashMap<>();
         try {
             //给评论加密
-            String content = Base64Util.encodeData(appGambitThemeComment.getContent());
-            appGambitThemeComment.setContent(content);
+//            String content = Base64Util.encodeData(appGambitThemeComment.getContent());
+//            appGambitThemeComment.setContent(content);
 
             //根据主题主键id 查询 话题id
             Integer gambitId = appGambitDao.findGambitIdByThemeId(appGambitThemeComment.getGambitThemeId());
@@ -356,6 +356,7 @@ public class AppGambitServiceImpl implements AppGambitService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> writePost(AppGambitTheme appGambitTheme) {
         map = new HashMap<>();
         try {
