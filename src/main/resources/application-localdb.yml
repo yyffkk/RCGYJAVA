@@ -2,7 +2,8 @@ spring:
   #    数据库源
   datasource:
     #本地数据库连接
-    url: jdbc:mysql://localhost:3306/IntelligentCommunity?characterEncoding=utf8&useSSL=false
+    #url: jdbc:mysql://localhost:3306/IntelligentCommunity?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://localhost:3306/IntelligentCommunity?useSSL=false
     username: root
     password: jlw15906763698
     #测试数据库连接
