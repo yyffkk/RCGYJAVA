@@ -5,6 +5,7 @@ import com.api.app.dao.message.AppMessageDao;
 import com.api.app.service.community.AppGambitService;
 import com.api.model.app.*;
 import com.api.util.Base64Util;
+import com.api.util.EmojiUtils;
 import com.api.util.JiguangUtil;
 import com.api.vo.app.IdAndName;
 import com.api.util.UploadUtil;
@@ -270,10 +271,9 @@ public class AppGambitServiceImpl implements AppGambitService {
     public Map<String, Object> comment(AppGambitThemeComment appGambitThemeComment) {
         map = new HashMap<>();
         try {
-            //给评论加密
-//            String content = Base64Util.encodeData(appGambitThemeComment.getContent());
-//            appGambitThemeComment.setContent(content);
-
+            //过滤掉emoji表情 或者 其他非文字类型的字符
+            String content = EmojiUtils.filterEmoji(appGambitThemeComment.getContent(), "/表情");
+            appGambitThemeComment.setContent(content);
             //根据主题主键id 查询 话题id
             Integer gambitId = appGambitDao.findGambitIdByThemeId(appGambitThemeComment.getGambitThemeId());
             appGambitThemeComment.setGambitId(gambitId);
@@ -360,6 +360,9 @@ public class AppGambitServiceImpl implements AppGambitService {
     public Map<String, Object> writePost(AppGambitTheme appGambitTheme) {
         map = new HashMap<>();
         try {
+            //过滤掉emoji表情 或者 其他非文字类型的字符
+            String content = EmojiUtils.filterEmoji(appGambitTheme.getContent(), "/表情");
+            appGambitTheme.setContent(content);
             //填入点赞数量（默认为0）
             appGambitTheme.setLikes(0);
             //填入发布时间
