@@ -26,6 +26,8 @@ public class EmojiUtils {
                 buf.append(codePoint);
             } else {
                 buf.append(slipStr);
+                //应为emoji表情长度占2，所以需要再+1
+                i=i+1;
             }
         }
         return buf.toString();

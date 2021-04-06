@@ -15,7 +15,7 @@ public class TestController extends ShiroExceptions {
 //    @RequiresPermissions(value = {"0201"})
     @GetMapping("/test")
     public Long test(){
-        String s = "哈哈😄";
+        String s = "哈哈😄大师答";
 //        String s1 = Base64Util.encodeData(s);
 //        String s2 = Base64Util.decodeData(s1);
 //        System.out.println(s1);
