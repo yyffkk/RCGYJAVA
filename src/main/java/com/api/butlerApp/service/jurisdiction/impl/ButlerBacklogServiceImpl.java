@@ -25,7 +25,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
     private static Map<String,Object> map = null;
 
     @Override
-    public List<ButlerBacklogVo> list(String roleId, int id) {
+    public List<ButlerBacklogVo> list(String roleId, int id, Integer backlogStatus) {
         //1.派单人,2.接单人,3.放行,4.维修人,5.其他人
         int type = findJurisdictionByUserId(roleId);
         //创建一个返回对象集合
