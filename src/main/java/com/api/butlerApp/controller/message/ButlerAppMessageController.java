@@ -71,4 +71,14 @@ public class ButlerAppMessageController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 根据报事报修主键id 同步查询报事报修消息信息（同步）
+     * @param repairId 报事报修主键id
+     * @return map
+     */
+    @GetMapping("/findRepairByRepairId")
+    public Map<String,Object> findRepairByRepairId(Integer repairId){
+        return butlerAppMessageService.findRepairByRepairId(repairId);
+    }
 }

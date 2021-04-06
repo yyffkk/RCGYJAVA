@@ -3,6 +3,7 @@ package com.api.butlerApp.dao.message;
 import com.api.model.butlerApp.ButlerAppCommentMessage;
 import com.api.model.butlerApp.ButlerAppSysMessage;
 import com.api.vo.butlerApp.ButlerCommentMessageVo;
+import com.api.vo.butlerApp.ButlerRepairMessageVo;
 import com.api.vo.butlerApp.ButlerSysMessageVo;
 
 import java.util.List;
@@ -56,4 +57,11 @@ public interface ButlerAppMessageDao {
      * @return 影响行数
      */
     int insertSysMessage(ButlerAppSysMessage butlerAppSysMessage);
+
+    /**
+     * 根据报事报修主键id 查询报事报修信息（异步）
+     * @param repairId 报事报修主键id
+     * @return 报事报修消息信息
+     */
+    ButlerRepairMessageVo findRepairByRepairId(Integer repairId);
 }

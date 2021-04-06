@@ -53,4 +53,10 @@
             #{sendDate}
         )
     </insert>
+
+    <select id="findRepairByRepairId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairMessageVo">
+        select srr.id,srr.tel,srr.type,ur.name from sys_report_repair as srr,user_resident as ur
+        where srr.repairman = ur.id and srr.id = #{repairId}
+    </select>
+
 </mapper>
