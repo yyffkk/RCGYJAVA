@@ -59,4 +59,9 @@
         where srr.repairman = ur.id and srr.id = #{repairId}
     </select>
 
+    <select id="findCommentByDispatchId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairCommentMesVo">
+        select sdl.id,ur.name,sdl.evaluation_level as level from sys_report_repair as srr,user_resident as ur,sys_dispatch_list as sdl
+        where srr.repairman = ur.id and srr.dispatch_list_id = sdl.id and sdl.id = #{dispatchId}
+    </select>
+
 </mapper>

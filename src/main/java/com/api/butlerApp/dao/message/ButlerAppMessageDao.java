@@ -3,6 +3,7 @@ package com.api.butlerApp.dao.message;
 import com.api.model.butlerApp.ButlerAppCommentMessage;
 import com.api.model.butlerApp.ButlerAppSysMessage;
 import com.api.vo.butlerApp.ButlerCommentMessageVo;
+import com.api.vo.butlerApp.ButlerRepairCommentMesVo;
 import com.api.vo.butlerApp.ButlerRepairMessageVo;
 import com.api.vo.butlerApp.ButlerSysMessageVo;
 
@@ -64,4 +65,11 @@ public interface ButlerAppMessageDao {
      * @return 报事报修消息信息
      */
     ButlerRepairMessageVo findRepairByRepairId(Integer repairId);
+
+    /**
+     * 根据工单主键id同步查询报事报修评论（同步）
+     * @param dispatchId 工单主键id
+     * @return 报事报修评论
+     */
+    ButlerRepairCommentMesVo findCommentByDispatchId(Integer dispatchId);
 }

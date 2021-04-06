@@ -5,7 +5,7 @@ package com.api.vo.butlerApp;
  */
 public class ButlerRepairMessageVo {
     /**
-     * 主键id
+     * 报事报修主键id
      */
     private Integer id;
     /**

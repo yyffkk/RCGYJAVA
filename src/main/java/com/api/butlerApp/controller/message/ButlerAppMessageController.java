@@ -81,4 +81,14 @@ public class ButlerAppMessageController {
     public Map<String,Object> findRepairByRepairId(Integer repairId){
         return butlerAppMessageService.findRepairByRepairId(repairId);
     }
+
+    /**
+     * 根据工单主键id同步查询报事报修评论（同步）
+     * @param dispatchId 工单主键id
+     * @return map
+     */
+    @GetMapping("/findCommentByDispatchId")
+    public Map<String,Object> findCommentByDispatchId(Integer dispatchId){
+        return butlerAppMessageService.findCommentByDispatchId(dispatchId);
+    }
 }

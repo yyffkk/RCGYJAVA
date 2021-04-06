@@ -3,6 +3,7 @@ package com.api.butlerApp.service.message.impl;
 import com.api.butlerApp.dao.message.ButlerAppMessageDao;
 import com.api.butlerApp.service.message.ButlerAppMessageService;
 import com.api.vo.butlerApp.ButlerCommentMessageVo;
+import com.api.vo.butlerApp.ButlerRepairCommentMesVo;
 import com.api.vo.butlerApp.ButlerRepairMessageVo;
 import com.api.vo.butlerApp.ButlerSysMessageVo;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,16 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
         map = new HashMap<>();
         ButlerRepairMessageVo butlerRepairMessageVo = butlerAppMessageDao.findRepairByRepairId(repairId);
         map.put("data",butlerRepairMessageVo);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findCommentByDispatchId(Integer dispatchId) {
+        map = new HashMap<>();
+        ButlerRepairCommentMesVo butlerRepairCommentMesVo = butlerAppMessageDao.findCommentByDispatchId(dispatchId);
+        map.put("data",butlerRepairCommentMesVo);
         map.put("message","请求成功");
         map.put("status",true);
         return map;

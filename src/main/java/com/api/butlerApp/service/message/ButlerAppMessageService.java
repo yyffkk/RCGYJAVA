@@ -14,4 +14,6 @@ public interface ButlerAppMessageService {
     List<ButlerCommentMessageVo> sysCommentMessageList(Integer id);
 
     Map<String, Object> findRepairByRepairId(Integer repairId);
+
+    Map<String, Object> findCommentByDispatchId(Integer dispatchId);
 }
