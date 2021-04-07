@@ -62,7 +62,7 @@ public class ButlerArticleOutServiceImpl implements ButlerArticleOutService {
             return map;
         }
 
-        articleOutRelease.setStatus(2);
+        articleOutRelease.setStatus(2); //2.已出门
         articleOutRelease.setActualTime(new Date());
         articleOutRelease.setReviewId(id);
         articleOutRelease.setReviewDate(new Date());
@@ -89,7 +89,7 @@ public class ButlerArticleOutServiceImpl implements ButlerArticleOutService {
             return map;
         }
 
-        articleOutNoRelease.setStatus(2);
+        articleOutNoRelease.setStatus(3); //3.驳回申请
         articleOutNoRelease.setReviewId(id);
         articleOutNoRelease.setReviewDate(new Date());
         int update = butlerArticleOutDao.noRelease(articleOutNoRelease);
