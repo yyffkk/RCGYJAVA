@@ -16,11 +16,11 @@
     </select>
 
     <select id="sysMessageList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerSysMessageVo">
-        select id,type,relation_id from butler_sys_message where receiver_account = #{id}
+        select id,type,relation_id,send_date from butler_sys_message where receiver_account = #{id}
     </select>
 
     <select id="sysCommentMessageList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerCommentMessageVo">
-        select id,type,relation_id from butler_comment_message where receiver_account = #{id}
+        select id,type,relation_id,send_date from butler_comment_message where receiver_account = #{id}
     </select>
     <insert id="insert" parameterType="com.api.model.butlerApp.ButlerAppCommentMessage">
         insert into butler_comment_message(
@@ -62,6 +62,12 @@
     <select id="findCommentByDispatchId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairCommentMesVo">
         select sdl.id,ur.name,sdl.evaluation_level as level from sys_report_repair as srr,user_resident as ur,sys_dispatch_list as sdl
         where srr.repairman = ur.id and srr.dispatch_list_id = sdl.id and sdl.id = #{dispatchId}
+    </select>
+    <select id="findFirstSysDateById" parameterType="java.lang.Integer" resultType="java.util.Date">
+        select send_date from butler_sys_message where receiver_account = #{id} order by send_date DESC limit 1
+    </select>
+    <select id="findFirstCommentDateById" parameterType="java.lang.Integer" resultType="java.util.Date">
+        select send_date from butler_comment_message where receiver_account = #{id} order by send_date DESC limit 1
     </select>
 
 </mapper>

@@ -1,5 +1,7 @@
 package com.api.vo.butlerApp;
 
+import java.util.Date;
+
 /**
  * 管家端系统消息Vo 回显
  */
@@ -16,6 +18,10 @@ public class ButlerSysMessageVo {
      * 关联的主键id（报事报修id,装修id）
      */
     private Integer relationId;
+    /**
+     * 发送时间
+     */
+    private Date sendDate;
 
     @Override
     public String toString() {
@@ -23,6 +29,7 @@ public class ButlerSysMessageVo {
                 "id=" + id +
                 ", type=" + type +
                 ", relationId=" + relationId +
+                ", sendDate=" + sendDate +
                 '}';
     }
 
@@ -50,12 +57,21 @@ public class ButlerSysMessageVo {
         this.relationId = relationId;
     }
 
+    public Date getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
+    }
+
     public ButlerSysMessageVo() {
     }
 
-    public ButlerSysMessageVo(Integer id, Integer type, Integer relationId) {
+    public ButlerSysMessageVo(Integer id, Integer type, Integer relationId, Date sendDate) {
         this.id = id;
         this.type = type;
         this.relationId = relationId;
+        this.sendDate = sendDate;
     }
 }

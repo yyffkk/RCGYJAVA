@@ -7,6 +7,7 @@ import com.api.vo.butlerApp.ButlerRepairCommentMesVo;
 import com.api.vo.butlerApp.ButlerRepairMessageVo;
 import com.api.vo.butlerApp.ButlerSysMessageVo;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ButlerAppMessageDao {
@@ -72,4 +73,18 @@ public interface ButlerAppMessageDao {
      * @return 报事报修评论
      */
     ButlerRepairCommentMesVo findCommentByDispatchId(Integer dispatchId);
+
+    /**
+     * 根据用户id 查询系统通知最新的第一个发送时间
+     * @param id 用户id
+     * @return 系统通知最新的第一个发送时间
+     */
+    Date findFirstSysDateById(Integer id);
+
+    /**
+     * 根据用户id 查询评论消息最新的第一个发送时间
+     * @param id 用户id
+     * @return 评论消息最新的第一个发送时间
+     */
+    Date findFirstCommentDateById(Integer id);
 }

@@ -9,6 +9,7 @@ import com.api.vo.butlerApp.ButlerSysMessageVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +28,19 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
         int count = butlerAppMessageDao.findSysNoReadNumById(id);
         //根据用户id 查询系统通知最新的第一个消息类型
         Integer type = butlerAppMessageDao.findFirstTypeById(id);
-
+        //根据用户id 查询系统通知最新的第一个发送时间
+        Date sysDate = butlerAppMessageDao.findFirstSysDateById(id);
         //查询评论消息
         //根据用户id 查询评论消息未读数量
         int commentCount = butlerAppMessageDao.findCommentNoReadNumById(id);
-
+        //根据用户id 查询评论消息最新的第一个发送时间
+        Date commentDate = butlerAppMessageDao.findFirstCommentDateById(id);
         map.put("sysCount",count);
         map.put("sysType",type);
+        map.put("sysDate",sysDate);
 
         map.put("commentCount",commentCount);
+        map.put("commentDate",commentDate);
         return map;
     }
 
