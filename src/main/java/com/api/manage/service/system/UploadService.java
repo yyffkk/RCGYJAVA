@@ -53,4 +53,6 @@ public interface UploadService {
     Map<String, Object> uploadEstateExamine(MultipartFile file);
 
     Map<String, Object> uploadH5Visit(MultipartFile file);
+
+    Map<String, Object> uploadQuestionnaireCoverPhoto(MultipartFile file);
 }

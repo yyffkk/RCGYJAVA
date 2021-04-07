@@ -170,4 +170,14 @@ public class UploadController {
         return uploadService.uploadEstateExamine(file);
     }
 
+    /**
+     * 上传问卷调查封面照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadQuestionnaireCoverPhoto")
+    public Map<String,Object> uploadQuestionnaireCoverPhoto(MultipartFile file){
+        return uploadService.uploadQuestionnaireCoverPhoto(file);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.api.model.butlerService;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -66,9 +67,9 @@ public class SysQuestionnaire {
      */
     private Integer answerNum;
     /**
-     * 上传文件（照片）
+     * 上传文件路径
      */
-    private MultipartFile file;
+    private String[] files;
 
     @Override
     public String toString() {
@@ -87,7 +88,7 @@ public class SysQuestionnaire {
                 ", modifyDate=" + modifyDate +
                 ", isRelease=" + isRelease +
                 ", answerNum=" + answerNum +
-                ", file=" + file +
+                ", files=" + Arrays.toString(files) +
                 '}';
     }
 
@@ -203,18 +204,18 @@ public class SysQuestionnaire {
         this.answerNum = answerNum;
     }
 
-    public MultipartFile getFile() {
-        return file;
+    public String[] getFiles() {
+        return files;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setFiles(String[] files) {
+        this.files = files;
     }
 
     public SysQuestionnaire() {
     }
 
-    public SysQuestionnaire(Integer id, String title, String description, Integer answerType, Date beginDate, Date endDate, Integer isDelete, List<SysQuestionnaireTopic> sysQuestionnaireTopicList, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isRelease, Integer answerNum, MultipartFile file) {
+    public SysQuestionnaire(Integer id, String title, String description, Integer answerType, Date beginDate, Date endDate, Integer isDelete, List<SysQuestionnaireTopic> sysQuestionnaireTopicList, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isRelease, Integer answerNum, String[] files) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -229,6 +230,6 @@ public class SysQuestionnaire {
         this.modifyDate = modifyDate;
         this.isRelease = isRelease;
         this.answerNum = answerNum;
-        this.file = file;
+        this.files = files;
     }
 }

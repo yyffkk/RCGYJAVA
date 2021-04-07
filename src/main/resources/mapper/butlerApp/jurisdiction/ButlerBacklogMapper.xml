@@ -11,9 +11,17 @@
         <where>
             srr.dispatch_list_id = sdl.id
             and sdl.sys_delete = 1
-            and sdl.status = 1
+            <if test="status == 1">
+                and sdl.status = 1
+            </if>
+            <if test="status == 2">
+                and sdl.status in (2,3)
+            </if>
+            <if test="status == 3">
+                and sdl.status = 4
+            </if>
         </where>
-        ) as a where a.create_id = -1 or a.create_id = #{id}
+        ) as a where a.create_id = -1 or a.create_id = #{userId}
     </select>
 
     <select id="backlogReceivingList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairVo">
@@ -22,13 +30,21 @@
         <where>
             srr.dispatch_list_id = sdl.id
             and sdld.dispatch_list_id = sdl.id
-            and sdld.create_id = #{id}
+            and sdld.create_id = #{userId}
             and sdl.sys_delete = 1
-            and sdl.status = 2
+            <if test="status == 1">
+                and sdl.status = 2
+            </if>
+            <if test="status == 2">
+                and sdl.status = 3
+            </if>
+            <if test="status == 3">
+                and sdl.status = 4
+            </if>
         </where>
     </select>
 
-    <select id="backlogReleasedList" resultType="com.api.vo.butlerApp.ButlerArticleOutVo">
+    <select id="backlogReleasedList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerArticleOutVo">
         select uao.id,uao.status,concat(cb.no,"幢-",cbu.no,"单元",cbue.room_number) as room_name,ur.name as applicant_name,ur.type as identity,uao.name as article_out_name,uao.expected_time,uao.applicant_date
         from user_article_out as uao,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
         <where>
@@ -36,7 +52,15 @@
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
             and ur.id = uao.applicant_id
-            and uao.status = 1
+            <if test="status == 1">
+                and uao.status = 1
+            </if>
+            <if test="status == 2">
+                and uao.status = 0
+            </if>
+            <if test="status == 3">
+                and uao.status in (2,3)
+            </if>
         </where>
     </select>
 

@@ -3,6 +3,7 @@ package com.api.butlerApp.service.jurisdiction.impl;
 import com.api.butlerApp.dao.jurisdiction.ButlerBacklogDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerBacklogService;
+import com.api.model.butlerApp.ButlerUserIdAndStatus;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.ButlerArticleOutVo;
 import com.api.vo.butlerApp.ButlerBacklogVo;
@@ -25,9 +26,13 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
     private static Map<String,Object> map = null;
 
     @Override
-    public List<ButlerBacklogVo> list(String roleId, int id) {
+    public List<ButlerBacklogVo> list(String roleId, int id, Integer backlogStatus) {
         //1.派单人,2.接单人,3.放行,4.维修人,5.其他人
         int type = findJurisdictionByUserId(roleId);
+        //填入用户主键id和事项状态
+        ButlerUserIdAndStatus butlerUserIdAndStatus = new ButlerUserIdAndStatus();
+        butlerUserIdAndStatus.setUserId(id);
+        butlerUserIdAndStatus.setStatus(backlogStatus);
         //创建一个返回对象集合
         ArrayList<ButlerBacklogVo> butlerBacklogVos = new ArrayList<>();
         ButlerBacklogVo butlerBacklogVo= null;
@@ -35,7 +40,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             //创建一个对象集合(派单人，报事报修)
             butlerBacklogVo = new ButlerBacklogVo<ButlerRepairVo>();
             //派单人的待派事项
-            List<ButlerRepairVo> butlerRepairVos = butlerBacklogDao.backlogDispatchList(id);
+            List<ButlerRepairVo> butlerRepairVos = butlerBacklogDao.backlogDispatchList(butlerUserIdAndStatus);
             //查询照片资源
             if (butlerRepairVos != null && butlerRepairVos.size()>0){
                 for (ButlerRepairVo butlerRepairVo : butlerRepairVos) {
@@ -55,7 +60,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             //创建一个对象集合(接单人，报事报修)
             butlerBacklogVo = new ButlerBacklogVo<ButlerRepairVo>();
             //接单人的待接单事项
-            List<ButlerRepairVo> butlerRepairVos = butlerBacklogDao.backlogReceivingList(id);
+            List<ButlerRepairVo> butlerRepairVos = butlerBacklogDao.backlogReceivingList(butlerUserIdAndStatus);
             //查询照片资源
             if (butlerRepairVos != null && butlerRepairVos.size()>0){
                 for (ButlerRepairVo butlerRepairVo : butlerRepairVos) {
@@ -75,7 +80,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             //创建一个对象集合（放行，物品出门）
             butlerBacklogVo = new ButlerBacklogVo<ButlerArticleOutVo>();
             //放行人的待出户事项
-            List<ButlerArticleOutVo> butlerArticleOutVos =butlerBacklogDao.backlogReleasedList();
+            List<ButlerArticleOutVo> butlerArticleOutVos =butlerBacklogDao.backlogReleasedList(backlogStatus);
             if (butlerArticleOutVos != null && butlerArticleOutVos.size()>0){
                 for (ButlerArticleOutVo butlerArticleOutVo : butlerArticleOutVos) {
                     butlerBacklogVo.setDataList(butlerArticleOutVo);

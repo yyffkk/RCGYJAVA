@@ -6,6 +6,7 @@ import com.api.model.butlerService.*;
 import com.api.model.resources.ResourcesImg;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysQuestionnaireService;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerService.*;
 import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
@@ -119,60 +120,9 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
                 throw new RuntimeException("该问卷没有题目信息");
             }
 
-            //上传文件
-            MultipartFile file = sysQuestionnaire.getFile();
-            //如果文件file不为空，则上传该文件到 ../static/img/advice目录下
-            if (file != null){
-                if (file.getSize() > 1024 * 1024 * 10) {
-                    throw new RuntimeException("文件大小不能大于10M");
-                }
-                //获取文件后缀
-                String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
-                if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
-                    throw new RuntimeException("请选择jpg,jpeg,gif,png格式的图片");
-                }
-                //获取保持路径
-                String savePath = UPLOAD_ADVICE;
-                File savePathFile = new File(savePath);
-                if (!savePathFile.exists()) {
-                    //若不存在该目录，则创建目录
-                    savePathFile.mkdir();
-                }
-                //通过UUID生成唯一文件名
-                String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
-                try {
-                    //将文件保存指定目录
-                    file.transferTo(new File(savePath + filename));
-                    //保存后，将文件路径存入数据库
-                    ResourcesImg resourcesImg = new ResourcesImg();
-                    //填入表名称 sysQuestionnaire
-                    resourcesImg.setTableName("sysQuestionnaire");
-                    //填入数据所属id
-                    resourcesImg.setDateId(sysQuestionnaire.getId());
-                    //填入类型名称 问卷调查照片：questionnaireImg
-                    resourcesImg.setTypeName("questionnaireImg");
-                    //填入图片路径
-                    resourcesImg.setUrl(savePath + filename);
-                    resourcesImg.setSize("600");
-                    resourcesImg.setLongs(30);
-                    resourcesImg.setParagraph(20);
-                    //查询该表，该类型名称的照片数量
-                    int count = resourcesImgDao.countByData(resourcesImg);
-                    if (count > 0){
-                        resourcesImg.setSort(count+1);
-                    }else {
-                        resourcesImg.setSort(1);
-                    }
-
-                    int insert2 = resourcesImgDao.insert(resourcesImg);
-                    if (insert2 <= 0){
-                        throw new RuntimeException("添加照片数据失败");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new RuntimeException("保存文件异常");
-                }
-            }
+            //上传文件到数据库
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(sysQuestionnaire.getFiles(),"sysQuestionnaire",sysQuestionnaire.getId(),"coverPhoto","600",30,20);
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -213,15 +163,8 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
             //传入题目信息集合
             voFindByIdQuestionnaire.setVoFindByIdTopicList(voFindByIdTopicList);
 
-            ResourcesImg resourcesImg = new ResourcesImg();
-            //填入表名称 sysQuestionnaire
-            resourcesImg.setTableName("sysQuestionnaire");
-            //填入数据所属id
-            resourcesImg.setDateId(id);
-            //填入类型名称 问卷调查照片：questionnaireImg
-            resourcesImg.setTypeName("questionnaireImg");
-            //查询照片信息集合
-            List<VoResourcesImg> imgByDate = resourcesImgDao.findImgByDate(resourcesImg);
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysQuestionnaire", id, "coverPhoto");
             voFindByIdQuestionnaire.setVoResourcesImgList(imgByDate);
         }
         map.put("sysQuestionnaire",voFindByIdQuestionnaire);
@@ -233,24 +176,10 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
     public Map<String, Object> update(SysQuestionnaire sysQuestionnaire) {
         map = new HashMap<>();
         try {
+            UploadUtil uploadUtil = new UploadUtil();
             //先删除照片文件
-            ResourcesImg resourcesImg2 = new ResourcesImg();
-            //填入表名称 sysQuestionnaire
-            resourcesImg2.setTableName("sysQuestionnaire");
-            //填入数据所属id
-            resourcesImg2.setDateId(sysQuestionnaire.getId());
-            //填入类型名称 问卷调查照片：questionnaireImg
-            resourcesImg2.setTypeName("questionnaireImg");
+            uploadUtil.delete("sysQuestionnaire",sysQuestionnaire.getId(),"coverPhoto");
 
-            //根据条件查询照片信息查询
-            List<VoResourcesImg> imgByDate = resourcesImgDao.findImgByDate(resourcesImg2);
-            if (imgByDate!=null){
-                for (VoResourcesImg voResourcesImg : imgByDate) {
-                    File file = new File(voResourcesImg.getUrl());
-                    file.delete();
-                    System.out.println("照片删除成功");
-                }
-            }
             //再删除问卷调查
             //删除选择项
             sysQuestionnaireDao.deleteChoice(sysQuestionnaire.getId());
@@ -323,60 +252,8 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
                 throw new RuntimeException("该问卷没有题目信息");
             }
 
-            //上传文件
-            MultipartFile file = sysQuestionnaire.getFile();
-            //如果文件file不为空，则上传该文件到 ../static/img/advice目录下
-            if (file != null){
-                if (file.getSize() > 1024 * 1024 * 10) {
-                    throw new RuntimeException("文件大小不能大于10M");
-                }
-                //获取文件后缀
-                String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
-                if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
-                    throw new RuntimeException("请选择jpg,jpeg,gif,png格式的图片");
-                }
-                //获取保持路径
-                String savePath = UPLOAD_ADVICE;
-                File savePathFile = new File(savePath);
-                if (!savePathFile.exists()) {
-                    //若不存在该目录，则创建目录
-                    savePathFile.mkdir();
-                }
-                //通过UUID生成唯一文件名
-                String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
-                try {
-                    //将文件保存指定目录
-                    file.transferTo(new File(savePath + filename));
-                    //保存后，将文件路径存入数据库
-                    ResourcesImg resourcesImg = new ResourcesImg();
-                    //填入表名称 sysQuestionnaire
-                    resourcesImg.setTableName("sysQuestionnaire");
-                    //填入数据所属id
-                    resourcesImg.setDateId(sysQuestionnaire.getId());
-                    //填入类型名称 问卷调查照片：questionnaireImg
-                    resourcesImg.setTypeName("questionnaireImg");
-                    //填入图片路径
-                    resourcesImg.setUrl(savePath + filename);
-                    resourcesImg.setSize("600");
-                    resourcesImg.setLongs(30);
-                    resourcesImg.setParagraph(20);
-                    //查询该表，该类型名称的照片数量
-                    int count = resourcesImgDao.countByData(resourcesImg);
-                    if (count > 0){
-                        resourcesImg.setSort(count+1);
-                    }else {
-                        resourcesImg.setSort(1);
-                    }
-
-                    int insert2 = resourcesImgDao.insert(resourcesImg);
-                    if (insert2 <= 0){
-                        throw new RuntimeException("添加照片数据失败");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new RuntimeException("保存文件异常");
-                }
-            }
+            //上传文件到数据库
+            uploadUtil.saveUrlToDB(sysQuestionnaire.getFiles(),"sysQuestionnaire",sysQuestionnaire.getId(),"coverPhoto","600",30,20);
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -400,23 +277,9 @@ public class SysQuestionnaireServiceImpl implements SysQuestionnaireService {
         map = new HashMap<>();
         try {
             for (int id : ids) {
+                UploadUtil uploadUtil = new UploadUtil();
                 //先删除照片文件
-                ResourcesImg resourcesImg = new ResourcesImg();
-                //填入表名称 sysQuestionnaire
-                resourcesImg.setTableName("sysQuestionnaire");
-                //填入数据所属id
-                resourcesImg.setDateId(id);
-                //填入类型名称 问卷调查照片：questionnaireImg
-                resourcesImg.setTypeName("questionnaireImg");
-
-                List<VoResourcesImg> imgByDate = resourcesImgDao.findImgByDate(resourcesImg);
-                if (imgByDate!=null){
-                    for (VoResourcesImg voResourcesImg : imgByDate) {
-                        File file = new File(voResourcesImg.getUrl());
-                        file.delete();
-                        System.out.println("照片删除成功");
-                    }
-                }
+                uploadUtil.delete("sysQuestionnaire",id,"coverPhoto");
                 //再删除问卷调查
                 //删除选择项
                 sysQuestionnaireDao.deleteChoice(id);

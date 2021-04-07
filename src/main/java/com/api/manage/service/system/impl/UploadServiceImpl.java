@@ -67,6 +67,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_ESTATE_EXAMINE;
     @Value("${prop.upload-h5-visit}")
     private String UPLOAD_H5_VISIT;
+    @Value("${prop.upload-questionnaire-cover-photo}")
+    private String UPLOAD_QUESTIONNAIRE_COVER_PHOTO;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -237,6 +239,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadH5Visit(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_H5_VISIT);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadQuestionnaireCoverPhoto(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_QUESTIONNAIRE_COVER_PHOTO);
         return map;
     }
 

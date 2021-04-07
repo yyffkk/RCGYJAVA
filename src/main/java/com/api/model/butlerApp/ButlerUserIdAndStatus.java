@@ -1,7 +1,7 @@
 package com.api.model.butlerApp;
 
 /**
- * 用户主键id 和 待办事务状态（1.待处理，2.处理中，3.已处理，4.全部）
+ * 用户主键id 和 事项状态（1.待处理，2.处理中，3.已处理，4.全部）
  */
 public class ButlerUserIdAndStatus {
     /**
@@ -9,7 +9,7 @@ public class ButlerUserIdAndStatus {
      */
     private Integer userId;
     /**
-     * 待办事务状态（1.待处理，2.处理中，3.已处理，4.全部）
+     * 事项状态（1.待处理，2.处理中，3.已处理，4.全部）
      */
     private Integer status;
 
