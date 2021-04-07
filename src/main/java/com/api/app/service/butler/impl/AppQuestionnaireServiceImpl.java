@@ -60,7 +60,7 @@ public class AppQuestionnaireServiceImpl implements AppQuestionnaireService {
 
                 UploadUtil uploadUtil = new UploadUtil();
                 //查询问卷照片信息
-                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysQuestionnaire", questionnaireVo.getId(), "questionnaireImg");
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysQuestionnaire", questionnaireVo.getId(), "coverPhoto");
                 questionnaireVo.setImgUrls(imgByDate);
 
                 //根据问卷信息id查询相关答卷人信息
@@ -110,7 +110,7 @@ public class AppQuestionnaireServiceImpl implements AppQuestionnaireService {
             questionnaireDetailVo.setQuestionnaireTopicVoList(questionnaireTopicVoList);
             //传入照片资源
             UploadUtil uploadUtil = new UploadUtil();
-            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysQuestionnaire", questionnaireId, "questionnaireImg");
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysQuestionnaire", questionnaireId, "coverPhoto");
             questionnaireDetailVo.setVoResourcesImgList(imgByDate);
         }
 
