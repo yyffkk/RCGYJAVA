@@ -15,7 +15,7 @@ public class Category {
      */
     private Integer parentId;
     /**
-     * 层级全路径::分割id
+     * 父类层级全路径  格式：0::分割id::分割id::
      */
     private String idPath;
     /**

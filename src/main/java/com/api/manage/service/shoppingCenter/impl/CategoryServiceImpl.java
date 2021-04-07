@@ -80,9 +80,6 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             //根据商品分类全路径字段判断该类目存不存在商品信息
 
-            //根据商品分类全路径字段判断该类目存不存在品牌信息？？
-
-
             //存在则不能删除，不存在则删除
 
 
