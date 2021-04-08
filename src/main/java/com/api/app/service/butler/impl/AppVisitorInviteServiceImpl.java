@@ -8,13 +8,20 @@ import com.api.model.app.AppUserVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsUrl;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
+import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +32,9 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     @Resource
     AppVisitorInviteDao appVisitorInviteDao;
     @Value("${res.visitShareTime}")
-    private Integer visitShareTime;
+    private Integer VISIT_SHARE_TIME;
+    @Value("${res.visitorsUrl}")
+    private String VISITORS_URL;
     private static Map<String,Object> map = null;
 
     @Override
@@ -46,7 +55,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             visitorsUrl.setCode(code); //填写分享连接编号
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
-            calendar.add(Calendar.HOUR,visitShareTime);
+            calendar.add(Calendar.HOUR,VISIT_SHARE_TIME);
             Date time = calendar.getTime();
             visitorsUrl.setEffectiveDate(time); //填写有效截止时间
             visitorsUrl.setIsUse(0); //填写是否使用，默认0.未使用
@@ -124,9 +133,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 throw new RuntimeException("修改新版访客信息失败");
             }
 
-            //判断是否有照片？？？？？========== ？？？？？？？？
-            //将图片发送给大华？？？？？========== ？？？？？？？？
-            //判断返回是否成功,决定是否回滚操作？？？？？？？==========？？？？？？？
+            //判断是否成功发送给大华
+            Boolean status = isUpload(visitorsInviteSubmit.getImgList());
+            if (!status){
+                throw new RuntimeException("照片发送失败");
+            }
 
             //根据分享连接编号将该连接修改为1.已使用
             appVisitorInviteDao.updateIsUseByCode(visitorsInviteSubmit.getCode());
@@ -165,10 +176,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"selfie","600",30,20);
 
-
-            //判断是否有照片？？？？？========== ？？？？？？？？
-            //将图片发送给大华？？？？？========== ？？？？？？？？
-            //判断返回是否成功,决定是否回滚操作？？？？？？？==========？？？？？？？
+            //判断是否成功发送给大华
+            Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList());
+            if (!status){
+                throw new RuntimeException("照片发送失败");
+            }
 
         } catch (Exception e) {
             //获取抛出的信息
@@ -184,5 +196,61 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
         map.put("message","提交成功");
         map.put("status",true);
         return map;
+    }
+
+
+    private Boolean isUpload(String[] imgList) {
+        //=====判断是否有照片
+        if (imgList.length <= 0){
+            return false;
+        }
+
+        //=====将图片发送给大华
+        //取第一张照片
+        String imgUrl = imgList[0];
+
+        try {
+            //传入真实路径（没有文件服务器的情况，用项目目录下的static）
+            // 获取项目同级目录，传入static中
+            String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
+            File file = new File(realPath+imgUrl);
+            InputStream inputStream = new FileInputStream(file);
+            MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
+
+            OkHttpClient httpClient = new OkHttpClient();
+            MultipartBody multipartBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("jpeg", multipartFile.getOriginalFilename(),
+                            RequestBody.create(MediaType.parse("multipart/form-data;charset=utf-8"),
+                                    multipartFile.getBytes()))
+                    .addFormDataPart("code","单元码")
+                    .addFormDataPart("ts", String.valueOf(new Date()))
+                    .addFormDataPart("te", String.valueOf(new Date()))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(VISITORS_URL)
+                    .post(multipartBody)
+                    .build();
+
+            Response response = httpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                ResponseBody body = response.body();
+                if (body != null) {
+                    //获取返回值
+                    String result = body.string();
+                    //=====判断返回是否成功
+                    if ("true".equals(result)){
+                        return true;
+                    }else {
+                        return false;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
     }
 }

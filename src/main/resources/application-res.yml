@@ -2,3 +2,5 @@
 res:
   #访客邀请分享有效时长
   visitShareTime: 3
+  #新版访客邀请门禁访客照片转发http 地址
+  visitorsUrl: http://192.168.31.130:9001/manage/test2/test2
