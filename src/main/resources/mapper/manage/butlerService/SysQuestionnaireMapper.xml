@@ -202,11 +202,11 @@
     </select>
 
     <select id="countJudgmentTrueByTId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from sys_questionnaire_judgment_answer where answer = 1
+        select count(*) from sys_questionnaire_judgment_answer where answer = 1 and questionnaire_topic_id = #{id}
     </select>
 
     <select id="countJudgmentFalseByTId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from sys_questionnaire_judgment_answer where answer = 0
+        select count(*) from sys_questionnaire_judgment_answer where answer = 0 and questionnaire_topic_id = #{id}
     </select>
 
     <select id="countShort" parameterType="java.lang.Integer" resultType="java.lang.Integer">
