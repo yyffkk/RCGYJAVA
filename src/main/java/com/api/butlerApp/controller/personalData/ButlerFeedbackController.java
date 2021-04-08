@@ -34,7 +34,7 @@ public class ButlerFeedbackController {
         sysAdvice.setCreateId(id);
         //填入创建时间
         sysAdvice.setCreateDate(new Date());
-        //填入创建人类型（1.住户，2.装修公司,3.物业）,1.住户
+        //填入创建人类型（1.住户，2.装修公司,3.物业）,3.物业
         sysAdvice.setCreateUserType(3);
         //填入默认点击数 0
         sysAdvice.setHits(0);
