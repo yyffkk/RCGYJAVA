@@ -4,14 +4,10 @@ import com.api.butlerApp.dao.jurisdiction.ButlerBorrowDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.*;
-import com.api.model.butlerService.SysArticleBorrow;
-import com.api.model.remind.SysSending;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.*;
 import com.api.vo.resources.VoResourcesImg;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -366,6 +362,9 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
             if (update <= 0){
                 throw new RuntimeException("递增数量失败");
             }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(butlerArticleDetail.getFileUrls(),"sysArticle",butlerArticleDetail.getId(),"articleImg","600",30,20);
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -384,9 +383,14 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
 
     @Override
     @Transactional
-    public Map<String, Object> delete(int[] ids) {
+    public Map<String, Object> delete(int[] ids, String roleId) {
         map = new HashMap<>();
         try {
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("当前用户没有该权限");
+            }
+
             for (int id : ids) {
                 //根据物品明细主键id统计借取记录数量
                 int count = butlerBorrowDao.countRecordNumById(id);
@@ -406,6 +410,8 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
                     throw new RuntimeException("删除物品明细失败");
                 }
 
+                UploadUtil uploadUtil = new UploadUtil();
+                uploadUtil.delete("sysArticle",id,"articleImg");
             }
         } catch (RuntimeException e) {
             //获取抛出的信息

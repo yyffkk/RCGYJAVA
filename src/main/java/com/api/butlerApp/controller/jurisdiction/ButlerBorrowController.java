@@ -170,11 +170,14 @@ public class ButlerBorrowController {
     /**
      * 删除物品明细信息
      * @param voIds 批量删除id
+     * @param request butlerApp-admin-token获取的request管家用户信息
      * @return map
      */
     @PostMapping("/delete")
-    public Map<String,Object> delete(@RequestBody VoIds voIds){
-        return butlerBorrowService.delete(voIds.getIds());
+    public Map<String,Object> delete(@RequestBody VoIds voIds,HttpServletRequest request){
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerBorrowService.delete(voIds.getIds(),roleId);
     }
 
 
