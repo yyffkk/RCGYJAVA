@@ -165,6 +165,9 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
                 throw new RuntimeException("新增失败");
             }
 
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(butlerArticle.getFileUrls(),"sysArticle",butlerArticle.getId(),"articleImg","600",30,20);
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -364,7 +367,7 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
             }
 
             UploadUtil uploadUtil = new UploadUtil();
-            uploadUtil.saveUrlToDB(butlerArticleDetail.getFileUrls(),"sysArticle",butlerArticleDetail.getId(),"articleImg","600",30,20);
+            uploadUtil.saveUrlToDB(butlerArticleDetail.getFileUrls(),"sysArticleDetail",butlerArticleDetail.getId(),"sysArticleDetailImg","600",30,20);
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -411,7 +414,7 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
                 }
 
                 UploadUtil uploadUtil = new UploadUtil();
-                uploadUtil.delete("sysArticle",id,"articleImg");
+                uploadUtil.delete("sysArticleDetail",id,"sysArticleDetailImg");
             }
         } catch (RuntimeException e) {
             //获取抛出的信息
