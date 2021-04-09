@@ -133,4 +133,26 @@
             #{sendDate}
         )
     </insert>
+    <insert id="insertArticleDetail" parameterType="com.api.model.butlerApp.ButlerArticleDetail">
+        insert into sys_article_detail(
+            article_id,
+            name,
+            code,
+            status,
+            create_id,
+            create_date
+        ) values (
+            #{articleId},
+            #{name},
+            #{code},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="incQuantityByArticleId" parameterType="java.lang.Integer">
+        update sys_article set quantity = quantity + 1 where id = #{articleId}
+    </update>
+
 </mapper>

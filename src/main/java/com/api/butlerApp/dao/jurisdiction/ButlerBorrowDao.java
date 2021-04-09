@@ -109,4 +109,18 @@ public interface ButlerBorrowDao {
      * @return 影响行数
      */
     int insertSending(ButlerSending butlerSending);
+
+    /**
+     * 添加物品明细信息
+     * @param butlerArticleDetail 管家app 物品明细 model
+     * @return 影响行数
+     */
+    int insertArticleDetail(ButlerArticleDetail butlerArticleDetail);
+
+    /**
+     * 根据物品总类主键id修改物品总类数量，基础上加1递增
+     * @param articleId 物品总类主键id
+     * @return 影响行数
+     */
+    int incQuantityByArticleId(Integer articleId);
 }

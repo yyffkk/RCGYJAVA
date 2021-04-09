@@ -356,13 +356,16 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
 
             butlerArticleDetail.setStatus(1); //填写物品状态(1.正常，2.破损，3.丢失),默认为1.正常
             butlerArticleDetail.setCreateDate(new Date());//填写创建时间
-//            int insert = butlerBorrowDao.insertArticleDetail(butlerArticleDetail);
-//            if (insert <= 0){
-//                throw new RuntimeException("新增失败");
-//            }
-
-            //修改物品总类数量，累加
-
+            //添加物品明细信息
+            int insert = butlerBorrowDao.insertArticleDetail(butlerArticleDetail);
+            if (insert <= 0){
+                throw new RuntimeException("新增失败");
+            }
+            //根据物品总类主键id修改物品总类数量，基础上加1递增
+            int update = butlerBorrowDao.incQuantityByArticleId(butlerArticleDetail.getArticleId());
+            if (update <= 0){
+                throw new RuntimeException("递增数量失败");
+            }
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
