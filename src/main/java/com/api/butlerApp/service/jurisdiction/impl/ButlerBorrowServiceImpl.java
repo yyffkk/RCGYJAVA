@@ -162,7 +162,8 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
                 throw new RuntimeException("当前用户没有该权限");
             }
 
-            butlerArticle.setCreateDate(new Date());
+            butlerArticle.setQuantity(0); //填写物品总类物品数量默认数量为0个
+            butlerArticle.setCreateDate(new Date());//填写创建时间
             int insert = butlerBorrowDao.insertArticle(butlerArticle);
             if (insert <= 0){
                 throw new RuntimeException("新增失败");
@@ -340,6 +341,40 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
             return map;
         }
         map.put("message","提醒成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> insertArticleDetail(ButlerArticleDetail butlerArticleDetail, String roleId) {
+        map = new HashMap<>();
+        try {
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("当前用户没有该权限");
+            }
+
+            butlerArticleDetail.setStatus(1); //填写物品状态(1.正常，2.破损，3.丢失),默认为1.正常
+            butlerArticleDetail.setCreateDate(new Date());//填写创建时间
+//            int insert = butlerBorrowDao.insertArticleDetail(butlerArticleDetail);
+//            if (insert <= 0){
+//                throw new RuntimeException("新增失败");
+//            }
+
+            //修改物品总类数量，累加
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","新增成功");
         map.put("status",true);
         return map;
     }

@@ -88,21 +88,21 @@ public class ButlerBorrowController {
     }
 
 
-//    /**
-//     * 新增总类(目前管家app不做此功能)
-//     * @param butlerArticle  管家app 物品管理model
-//     * @param request butlerApp-admin-token获取的request管家用户信息
-//     * @return map
-//     */
-//    @PostMapping("/insertArticle")
-//    public Map<String,Object> insertArticle(@RequestBody ButlerArticle butlerArticle,HttpServletRequest request){
-//        //从request获取用户id
-//        Integer id = Integer.valueOf(request.getParameter("id"));
-//        butlerArticle.setCreateId(id);
-//        //从request获取用户拥有的角色id
-//        String roleId = request.getParameter("roleId");
-//        return butlerBorrowService.insertArticle(butlerArticle,roleId);
-//    }
+    /**
+     * 新增总类
+     * @param butlerArticle  管家app 物品管理model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/insertArticle")
+    public Map<String,Object> insertArticle(@RequestBody ButlerArticle butlerArticle,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        butlerArticle.setCreateId(id);
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerBorrowService.insertArticle(butlerArticle,roleId);
+    }
 
     /**
      * 根据物品主键id查询所有的物品明细信息
@@ -121,6 +121,22 @@ public class ButlerBorrowController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 新增物品明细
+     * @param butlerArticleDetail  管家app 物品明细 model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/insertArticleDetail")
+    public Map<String,Object> insertArticleDetail(@RequestBody ButlerArticleDetail butlerArticleDetail,HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        butlerArticleDetail.setCreateId(id);
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        return butlerBorrowService.insertArticleDetail(butlerArticleDetail,roleId);
     }
 
 

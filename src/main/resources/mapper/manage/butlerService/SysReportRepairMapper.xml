@@ -117,8 +117,8 @@
             <if test="froms != null">
                 froms = #{froms},
             </if>
-            <if test="appointmentTime != null">
-                appointment_time = #{appointmentTime},
+            <if test="repairDate != null">
+                repair_date = #{repairDate},
             </if>
             <if test="reportDetail != null and reportDetail != ''">
                 report_detail = #{reportDetail},
