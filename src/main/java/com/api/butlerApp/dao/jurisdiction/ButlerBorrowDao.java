@@ -123,4 +123,32 @@ public interface ButlerBorrowDao {
      * @return 影响行数
      */
     int incQuantityByArticleId(Integer articleId);
+
+    /**
+     * 根据物品明细主键id删除物品明细
+     * @param id 物品明细主键id
+     * @return 影响行数
+     */
+    int delete(int id);
+
+    /**
+     * 根据物品明细主键id查询物品总类id
+     * @param id 物品明细主键id
+     * @return 物品总类id
+     */
+    Integer findArticleIdById(int id);
+
+    /**
+     * 对该物品总类id进行累减操作-1
+     * @param articleId 物品总类id
+     * @return 影响行数
+     */
+    int decQuantityById(int articleId);
+
+    /**
+     * 根据物品明细主键id统计借取记录数量
+     * @param id 物品明细主键id
+     * @return 借取记录数量
+     */
+    int countRecordNumById(int id);
 }

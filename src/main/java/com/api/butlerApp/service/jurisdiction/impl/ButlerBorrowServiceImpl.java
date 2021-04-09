@@ -382,6 +382,47 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         return map;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                //根据物品明细主键id统计借取记录数量
+                int count = butlerBorrowDao.countRecordNumById(id);
+                //判断是否被使用过，如果使用过，则不可删除
+                if (count >0){
+                    throw new RuntimeException("该物品已被使用过，不可删除，请联系管理员");
+                }
+
+                //根据物品明细主键id查询物品总类id
+                Integer articleId = butlerBorrowDao.findArticleIdById(id);
+                //对该物品总类id进行累减操作-1
+                butlerBorrowDao.decQuantityById(articleId);
+
+                //根据物品明细主键id删除物品明细
+                int delete = butlerBorrowDao.delete(id);
+                if (delete <= 0){
+                    throw new RuntimeException("删除物品明细失败");
+                }
+
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
+
 
     private int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");

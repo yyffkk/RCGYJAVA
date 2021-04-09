@@ -29,4 +29,6 @@ public interface ButlerBorrowService {
     Map<String, Object> remind(ButlerBorrowRemind butlerBorrowRemind, Integer id, String roleId);
 
     Map<String, Object> insertArticleDetail(ButlerArticleDetail butlerArticleDetail, String roleId);
+
+    Map<String, Object> delete(int[] ids);
 }

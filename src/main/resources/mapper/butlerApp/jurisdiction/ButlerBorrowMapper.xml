@@ -120,6 +120,7 @@
         select create_id from sys_article_borrow where id = #{borrowId}
     </select>
 
+
     <insert id="insertSending" parameterType="com.api.model.butlerApp.ButlerSending">
         insert into sys_sending(
             message_id,
@@ -154,5 +155,21 @@
     <update id="incQuantityByArticleId" parameterType="java.lang.Integer">
         update sys_article set quantity = quantity + 1 where id = #{articleId}
     </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_article_detail where id = #{id}
+    </delete>
+
+    <select id="findArticleIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select article_id from sys_article_detail where id = #{id}
+    </select>
+
+    <update id="decQuantityById" parameterType="java.lang.Integer">
+        update sys_article set quantity = quantity - 1 where id = #{articleId}
+    </update>
+
+    <select id="countRecordNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_article_borrow where article_detail_id =#{id}
+    </select>
 
 </mapper>

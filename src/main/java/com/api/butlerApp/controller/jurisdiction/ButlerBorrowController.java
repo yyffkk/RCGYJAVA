@@ -3,6 +3,7 @@ package com.api.butlerApp.controller.jurisdiction;
 import com.api.butlerApp.service.jurisdiction.ButlerBorrowService;
 import com.api.model.butlerApp.*;
 import com.api.model.butlerService.BorrowRemind;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerApp.ButlerArticleDetailVo;
 import com.api.vo.butlerApp.ButlerArticleVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
@@ -165,6 +166,18 @@ public class ButlerBorrowController {
         String roleId = request.getParameter("roleId");
         return butlerBorrowService.updateArticleDetail(butlerArticleDetail,roleId);
     }
+
+    /**
+     * 删除物品明细信息
+     * @param voIds 批量删除id
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds voIds){
+        return butlerBorrowService.delete(voIds.getIds());
+    }
+
+
 
     /**
      * 提醒归还(管理员发送)
