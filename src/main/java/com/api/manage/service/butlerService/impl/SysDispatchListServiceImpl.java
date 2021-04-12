@@ -329,7 +329,7 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
         }
         //传入照片资源信息
         UploadUtil uploadUtil = new UploadUtil();
-        List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", id, "repairImg");
+        List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", voRepair.getId(), "repairImg");
         voRepair.setImgUrls(imgByDate);
         //传出报修详情
         map.put("voRepair",voRepair);
