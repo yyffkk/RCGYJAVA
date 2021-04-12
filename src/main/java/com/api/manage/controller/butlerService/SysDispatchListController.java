@@ -103,6 +103,17 @@ public class SysDispatchListController extends ShiroExceptions {
         return sysDispatchListService.dispatch(sysDispatchListDetail);
     }
 
+    /**
+     * 根据真实名字模糊查询用户信息（需要有派工权限）
+     * @param actualName 真实名字
+     * @return map
+     */
+    @GetMapping("/findSysUserLikeActualName")
+    @RequiresPermissions(value = {"0311","03"},logical = Logical.AND)
+    public Map<String,Object> findSysUserLikeActualName(String actualName){
+        return sysDispatchListService.findSysUserLikeActualName(actualName);
+    }
+
 
     /**
      * 报修工单详情

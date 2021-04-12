@@ -2,6 +2,7 @@ package com.api.manage.dao.butlerService;
 
 import com.api.model.butlerService.*;
 import com.api.vo.butlerService.*;
+import com.api.vo.system.VoDispatchSysUser;
 
 import java.util.List;
 
@@ -96,4 +97,11 @@ public interface SysDispatchListDao {
      * @return 费用单号（工单号）和工单主键id信息
      */
     VoFindCodeAndIdSDPI findCodeAndIdBySDPI(Integer id);
+
+    /**
+     * 根据真实名字模糊查询用户信息
+     * @param actualName 真实名字
+     * @return 用户信息
+     */
+    List<VoDispatchSysUser> findSysUserLikeActualName(String actualName);
 }

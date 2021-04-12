@@ -169,4 +169,7 @@
     <select id="findCodeAndIdBySDPI" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindCodeAndIdSDPI">
         select id,code from sys_dispatch_list where sys_daily_payment_id = #{id}
     </select>
+    <select id="findSysUserLikeActualName" parameterType="java.lang.String" resultType="com.api.vo.system.VoDispatchSysUser">
+        select id,actual_name,tel from sys_user where actual_name like concat('%',#{actualName},'%')
+    </select>
 </mapper>

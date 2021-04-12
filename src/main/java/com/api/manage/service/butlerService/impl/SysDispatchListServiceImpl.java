@@ -12,6 +12,7 @@ import com.api.util.UploadUtil;
 import com.api.vo.butlerService.*;
 import com.api.vo.chargeManagement.VoHandleCompleteDetail;
 import com.api.vo.resources.VoResourcesImg;
+import com.api.vo.system.VoDispatchSysUser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -348,6 +349,16 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
         //传出回访信息
         VoRevisit voRevisit = sysDispatchListDao.findRevisitById(id);
         map.put("voRevisit",voRevisit);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findSysUserLikeActualName(String actualName) {
+        map = new HashMap<>();
+        List<VoDispatchSysUser> dispatchSysUserList = sysDispatchListDao.findSysUserLikeActualName(actualName);
+        map.put("message","请求成功");
+        map.put("data",dispatchSysUserList);
+        map.put("status",true);
         return map;
     }
 

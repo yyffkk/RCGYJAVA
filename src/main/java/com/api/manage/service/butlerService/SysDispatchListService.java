@@ -23,4 +23,6 @@ public interface SysDispatchListService {
     Map<String, Object> dispatch(SysDispatchListDetail sysDispatchListDetail);
 
     Map<String, Object> repairWorkOrderDetail(Integer id);
+
+    Map<String, Object> findSysUserLikeActualName(String actualName);
 }
