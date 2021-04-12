@@ -62,7 +62,7 @@
         from sys_report_repair as srr,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,sys_dispatch_list as sdl
         left JOIN sys_dispatch_list_detail as sdld on sdl.id = sdld.dispatch_list_id
         left JOIN sys_user as su on sdld.create_id = su.id
-        where srr.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and ur.id = srr.repairman and sdl.id = srr.dispatch_list_id and srr.id = #{id}
+        where srr.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and ur.id = srr.repairman and sdl.id = srr.dispatch_list_id and sdl.id = #{id}
     </select>
 
     <insert id="insert" parameterType="com.api.model.butlerService.ReportRepair">

@@ -74,9 +74,9 @@ public class SysDispatchListController extends ShiroExceptions {
      * @param revisitWorkOrder 回访信息
      * @return map
      */
-    @GetMapping("/revisit")
+    @PostMapping("/revisit")
     @RequiresPermissions(value = {"0309","03"},logical = Logical.AND)
-    public Map<String,Object> revisit(RevisitWorkOrder revisitWorkOrder){
+    public Map<String,Object> revisit(@RequestBody RevisitWorkOrder revisitWorkOrder){
         return sysDispatchListService.revisit(revisitWorkOrder);
     }
 
