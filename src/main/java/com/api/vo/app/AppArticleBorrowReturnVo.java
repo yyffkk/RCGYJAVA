@@ -2,18 +2,19 @@ package com.api.vo.app;
 
 import com.api.vo.resources.VoResourcesImg;
 
+import java.util.Date;
 import java.util.List;
 
 /**
- * 借还物品明细信息
+ * 物品归还信息
  */
-public class AppArticleBorrowDetailVo {
+public class AppArticleBorrowReturnVo {
     /**
      * 物品明细主键id
      */
     private Integer id;
     /**
-     * 物品名称
+     * 物品明细名称
      */
     private String name;
     /**
@@ -21,9 +22,13 @@ public class AppArticleBorrowDetailVo {
      */
     private String code;
     /**
-     * 物品状态（1.正常，2.破损，3.丢失）
+     * 借出时间
      */
-    private Integer status;
+    private Date beginDate;
+    /**
+     * 借用时长
+     */
+    private Long borrowTime;
     /**
      * 物品明细照片资源
      */
@@ -31,11 +36,12 @@ public class AppArticleBorrowDetailVo {
 
     @Override
     public String toString() {
-        return "AppArticleBorrowDetailVo{" +
+        return "AppArticleBorrowReturnVo{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
-                ", status=" + status +
+                ", beginDate=" + beginDate +
+                ", borrowTime=" + borrowTime +
                 ", imgList=" + imgList +
                 '}';
     }
@@ -64,12 +70,20 @@ public class AppArticleBorrowDetailVo {
         this.code = code;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Date getBeginDate() {
+        return beginDate;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Long getBorrowTime() {
+        return borrowTime;
+    }
+
+    public void setBorrowTime(Long borrowTime) {
+        this.borrowTime = borrowTime;
     }
 
     public List<VoResourcesImg> getImgList() {
@@ -80,14 +94,15 @@ public class AppArticleBorrowDetailVo {
         this.imgList = imgList;
     }
 
-    public AppArticleBorrowDetailVo() {
+    public AppArticleBorrowReturnVo() {
     }
 
-    public AppArticleBorrowDetailVo(Integer id, String name, String code, Integer status, List<VoResourcesImg> imgList) {
+    public AppArticleBorrowReturnVo(Integer id, String name, String code, Date beginDate, Long borrowTime, List<VoResourcesImg> imgList) {
         this.id = id;
         this.name = name;
         this.code = code;
-        this.status = status;
+        this.beginDate = beginDate;
+        this.borrowTime = borrowTime;
         this.imgList = imgList;
     }
 }

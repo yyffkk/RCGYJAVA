@@ -31,7 +31,40 @@
     <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppArticleBorrowDetailVo">
         select * from sys_article_detail
         where article_id = #{articleId} and status = 1
-        and id not in (select article_detail_id from sys_article_borrow where borrow_status = 1)
+        and id not in (select article_detail_id from sys_article_borrow where borrow_status in (1,3))
+    </select>
+    <select id="findBorrowArticleId" resultType="java.lang.Integer">
+        select article_detail_id from sys_article_borrow where borrow_status in (1,3)
     </select>
 
+    <insert id="borrow" parameterType="com.api.model.app.AppArticleBorrow">
+        insert into sys_article_borrow(
+            article_detail_id,
+            borrow_status,
+            status,
+            begin_date,
+            end_date,
+            create_id,
+            create_date,
+            modify_id,
+            modify_date,
+            remake
+        ) values (
+            #{articleDetailId},
+            #{borrowStatus},
+            #{status},
+            #{beginDate},
+            #{endDate},
+            #{createId},
+            #{createDate},
+            #{modifyId},
+            #{modifyDate},
+            #{remake}
+        )
+    </insert>
+
+    <select id="findBorrowByUserId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppArticleBorrowReturnVo">
+        select sad.id,sad.name,sad.code,sab.begin_date from sys_article_borrow as sab,sys_article_detail as sad
+        where sab.article_detail_id = sad.id and sab.borrow_status = 1 and sad.create_id = #{id}
+    </select>
 </mapper>

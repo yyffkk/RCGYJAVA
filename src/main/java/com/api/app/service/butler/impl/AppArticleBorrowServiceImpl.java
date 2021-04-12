@@ -2,13 +2,17 @@ package com.api.app.service.butler.impl;
 
 import com.api.app.dao.butler.AppArticleBorrowDao;
 import com.api.app.service.butler.AppArticleBorrowService;
+import com.api.model.app.AppArticleBorrow;
 import com.api.model.app.UserIdAndArticleBorrowId;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppArticleBorrowDetailVo;
+import com.api.vo.app.AppArticleBorrowReturnVo;
 import com.api.vo.app.AppArticleBorrowVo;
 import com.api.vo.app.AppMyArticleBorrowVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -82,8 +86,79 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
     public Map<String, Object> findDetailById(Integer articleId) {
         map = new HashMap<>();
         List<AppArticleBorrowDetailVo> articleBorrowDetailVoList = appArticleBorrowDao.findDetailById(articleId);
+        if (articleBorrowDetailVoList != null && articleBorrowDetailVoList.size()>0){
+            for (AppArticleBorrowDetailVo appArticleBorrowDetailVo : articleBorrowDetailVoList) {
+                //填入物品明细照片信息
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticleDetail", appArticleBorrowDetailVo.getId(), "sysArticleDetailImg");
+                appArticleBorrowDetailVo.setImgList(imgByDate);
+            }
+        }
         map.put("message","请求成功");
         map.put("data",articleBorrowDetailVoList);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> borrow(int[] ids, Integer userId) {
+        map = new HashMap<>();
+        try {
+            //查询出借中或待检查的物品明细主键id数组
+            List<Integer> articleIds = appArticleBorrowDao.findBorrowArticleId();
+            for (int id : ids) {
+                if (articleIds.contains(id)){
+                    throw new RuntimeException("物品已被出借");
+                }
+                AppArticleBorrow appArticleBorrow = new AppArticleBorrow();
+                appArticleBorrow.setArticleDetailId(id); //填入物品明细id
+                appArticleBorrow.setBorrowStatus(1); //填入借取状态,默认1.出借中
+                appArticleBorrow.setStatus(1); //填入物品状态,默认1.正常
+                appArticleBorrow.setBeginDate(new Date()); //填入借出时间
+                appArticleBorrow.setCreateId(userId); //填入创建人
+                appArticleBorrow.setCreateDate(new Date()); //填入创建时间
+                //添加物品借还信息
+                int insert = appArticleBorrowDao.borrow(appArticleBorrow);
+                if (insert <=0){
+                    throw new RuntimeException("借取失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","借取成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findBorrowByUserId(Integer id) {
+        map = new HashMap<>();
+        //根据用户主键id查询需要归还物品信息
+        List<AppArticleBorrowReturnVo> articleBorrowReturnVoList = appArticleBorrowDao.findBorrowByUserId(id);
+        if (articleBorrowReturnVoList != null && articleBorrowReturnVoList.size()>0){
+            for (AppArticleBorrowReturnVo appArticleBorrowReturnVo : articleBorrowReturnVoList) {
+                //出借时长 当前时间-借出时间
+                long hour = (new Date().getTime() - appArticleBorrowReturnVo.getBeginDate().getTime())/(60*60*1000);
+                appArticleBorrowReturnVo.setBorrowTime(hour);
+
+                //填入物品明细照片信息
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticleDetail", appArticleBorrowReturnVo.getId(), "sysArticleDetailImg");
+                appArticleBorrowReturnVo.setImgList(imgByDate);
+            }
+        }
+        map.put("message","请求成功");
+        map.put("data",articleBorrowReturnVoList);
         map.put("status",true);
         return map;
     }

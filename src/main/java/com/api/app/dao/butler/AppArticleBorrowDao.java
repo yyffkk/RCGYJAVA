@@ -1,7 +1,9 @@
 package com.api.app.dao.butler;
 
+import com.api.model.app.AppArticleBorrow;
 import com.api.model.app.UserIdAndArticleBorrowId;
 import com.api.vo.app.AppArticleBorrowDetailVo;
+import com.api.vo.app.AppArticleBorrowReturnVo;
 import com.api.vo.app.AppArticleBorrowVo;
 import com.api.vo.app.AppMyArticleBorrowVo;
 
@@ -41,4 +43,24 @@ public interface AppArticleBorrowDao {
      * @return 未借出的物品明细
      */
     List<AppArticleBorrowDetailVo> findDetailById(Integer articleId);
+
+    /**
+     * 借取物品(添加物品借还信息)
+     * @param appArticleBorrow 物品借还信息
+     * @return 影响行数
+     */
+    int borrow(AppArticleBorrow appArticleBorrow);
+
+    /**
+     * 查询出借中或待检查的物品明细主键id数组
+     * @return 正在出借中或待检查的物品明细主键id数组
+     */
+    List<Integer> findBorrowArticleId();
+
+    /**
+     * 根据用户主键id查询需要归还物品信息
+     * @param id 用户主键id
+     * @return 需要归还物品信息
+     */
+    List<AppArticleBorrowReturnVo> findBorrowByUserId(Integer id);
 }
