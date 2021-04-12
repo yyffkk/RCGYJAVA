@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class AppArticleBorrowReturnVo {
     /**
-     * 物品明细主键id
+     * 借还主键id
      */
     private Integer id;
     /**

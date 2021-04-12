@@ -106,7 +106,7 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
         map = new HashMap<>();
         try {
             //查询出借中或待检查的物品明细主键id数组
-            List<Integer> articleIds = appArticleBorrowDao.findBorrowArticleId();
+            List<Integer> articleIds = appArticleBorrowDao.findBorrowOrCheckArticleId();
             for (int id : ids) {
                 if (articleIds.contains(id)){
                     throw new RuntimeException("物品已被出借");
@@ -159,6 +159,44 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
         }
         map.put("message","请求成功");
         map.put("data",articleBorrowReturnVoList);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> articleReturn(int[] ids, Integer userId) {
+        map = new HashMap<>();
+        try {
+            //查询该用户出借中的物品借还主键id数组
+            List<Integer> articleIds = appArticleBorrowDao.findBorrowArticleIdByUserId(userId);
+            for (int id : ids) {
+                if (articleIds.contains(id)){
+                    AppArticleBorrow appArticleBorrow = new AppArticleBorrow();
+                    appArticleBorrow.setId(id); //填入借还主键id
+                    appArticleBorrow.setBorrowStatus(3); //填入借取状态,默认为3.待检查
+                    appArticleBorrow.setEndDate(new Date()); //填入归还时间
+                    //根据借还主键id修改物品借还归还状态信息
+                    int update = appArticleBorrowDao.articleReturn(appArticleBorrow);
+                    if (update <=0){
+                        throw new RuntimeException("归还失败");
+                    }
+                }else {
+                    throw new RuntimeException("物品信息选择出错");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","归还成功");
         map.put("status",true);
         return map;
     }

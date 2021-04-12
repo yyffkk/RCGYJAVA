@@ -19,4 +19,6 @@ public interface AppArticleBorrowService {
     Map<String, Object> borrow(int[] ids, Integer userId);
 
     Map<String, Object> findBorrowByUserId(Integer id);
+
+    Map<String, Object> articleReturn(int[] ids, Integer userId);
 }

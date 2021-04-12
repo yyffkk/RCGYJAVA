@@ -97,6 +97,19 @@ public class AppArticleBorrowController {
     }
 
     /**
+     * 归还物品
+     * @param ids 借还主键id
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/articleReturn")
+    public Map<String,Object> articleReturn(@RequestBody VoIds ids, HttpServletRequest request){
+        //从request获取用户id
+        Integer userId = Integer.valueOf(request.getParameter("id"));
+        return appArticleBorrowService.articleReturn(ids.getIds(),userId);
+    }
+
+    /**
      * 报损
      * @param userIdAndArticleBorrowId 用户id 和 物品借还主键id
      * @return map

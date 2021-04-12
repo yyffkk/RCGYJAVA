@@ -55,7 +55,7 @@ public interface AppArticleBorrowDao {
      * 查询出借中或待检查的物品明细主键id数组
      * @return 正在出借中或待检查的物品明细主键id数组
      */
-    List<Integer> findBorrowArticleId();
+    List<Integer> findBorrowOrCheckArticleId();
 
     /**
      * 根据用户主键id查询需要归还物品信息
@@ -63,4 +63,18 @@ public interface AppArticleBorrowDao {
      * @return 需要归还物品信息
      */
     List<AppArticleBorrowReturnVo> findBorrowByUserId(Integer id);
+
+    /**
+     * 查询该用户出借中的物品明细主键id数组
+     * @param userId 用户主键id
+     * @return 物品借还主键id数组
+     */
+    List<Integer> findBorrowArticleIdByUserId(Integer userId);
+
+    /**
+     * 根据借还主键id修改物品借还归还状态信息
+     * @param appArticleBorrow 物品借还信息
+     * @return 影响行数
+     */
+    int articleReturn(AppArticleBorrow appArticleBorrow);
 }
