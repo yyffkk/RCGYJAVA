@@ -62,9 +62,9 @@ public class SysDispatchListController extends ShiroExceptions {
      * @param cancelWorkOrder 作废原因
      * @return map
      */
-    @GetMapping("/cancel")
+    @PostMapping("/cancel")
     @RequiresPermissions(value = {"0308","03"},logical = Logical.AND)
-    public Map<String,Object> cancel(CancelWorkOrder cancelWorkOrder){
+    public Map<String,Object> cancel(@RequestBody CancelWorkOrder cancelWorkOrder){
         return sysDispatchListService.cancel(cancelWorkOrder);
     }
 
