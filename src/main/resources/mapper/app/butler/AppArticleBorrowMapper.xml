@@ -28,4 +28,10 @@
         where id = #{articleBorrowId} and create_id = #{id}
     </update>
 
+    <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppArticleBorrowDetailVo">
+        select * from sys_article_detail
+        where article_id = #{articleId} and status = 1
+        and id not in (select article_detail_id from sys_article_borrow where borrow_status = 1)
+    </select>
+
 </mapper>

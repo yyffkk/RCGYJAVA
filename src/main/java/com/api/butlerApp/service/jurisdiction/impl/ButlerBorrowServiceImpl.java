@@ -94,7 +94,7 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
                 throw new RuntimeException("该借还信息不存在或已被删除");
             }
             if (butlerBorrowVo.getBorrowStatus() != 3){
-                throw new RuntimeException("该信息未处于带检查状态");
+                throw new RuntimeException("该信息未处于待检查状态");
             }
             //填入物品明细主键id
             butlerSubmitCheck.setArticleDetailId(butlerBorrowVo.getArticleDetailId());

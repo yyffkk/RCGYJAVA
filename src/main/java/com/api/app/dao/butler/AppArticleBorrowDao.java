@@ -1,6 +1,7 @@
 package com.api.app.dao.butler;
 
 import com.api.model.app.UserIdAndArticleBorrowId;
+import com.api.vo.app.AppArticleBorrowDetailVo;
 import com.api.vo.app.AppArticleBorrowVo;
 import com.api.vo.app.AppMyArticleBorrowVo;
 
@@ -33,4 +34,11 @@ public interface AppArticleBorrowDao {
      * @return 影响行数
      */
     int frmLoss(UserIdAndArticleBorrowId userIdAndArticleBorrowId);
+
+    /**
+     * 根据物品总类主键id查询未借出的物品明细
+     * @param articleId 物品总类主键id
+     * @return 未借出的物品明细
+     */
+    List<AppArticleBorrowDetailVo> findDetailById(Integer articleId);
 }

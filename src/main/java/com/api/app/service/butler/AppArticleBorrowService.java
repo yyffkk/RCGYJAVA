@@ -13,4 +13,6 @@ public interface AppArticleBorrowService {
     List<AppMyArticleBorrowVo> myList(Integer id);
 
     Map<String, Object> frmLoss(UserIdAndArticleBorrowId userIdAndArticleBorrowId);
+
+    Map<String, Object> findDetailById(Integer articleId);
 }

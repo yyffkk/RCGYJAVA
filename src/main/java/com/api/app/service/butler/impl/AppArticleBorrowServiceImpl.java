@@ -4,6 +4,7 @@ import com.api.app.dao.butler.AppArticleBorrowDao;
 import com.api.app.service.butler.AppArticleBorrowService;
 import com.api.model.app.UserIdAndArticleBorrowId;
 import com.api.util.UploadUtil;
+import com.api.vo.app.AppArticleBorrowDetailVo;
 import com.api.vo.app.AppArticleBorrowVo;
 import com.api.vo.app.AppMyArticleBorrowVo;
 import com.api.vo.resources.VoResourcesImg;
@@ -74,6 +75,16 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
             map.put("message","您的报损信息提交失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findDetailById(Integer articleId) {
+        map = new HashMap<>();
+        List<AppArticleBorrowDetailVo> articleBorrowDetailVoList = appArticleBorrowDao.findDetailById(articleId);
+        map.put("message","请求成功");
+        map.put("data",articleBorrowDetailVoList);
+        map.put("status",true);
         return map;
     }
 }

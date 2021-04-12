@@ -64,6 +64,16 @@ public class AppArticleBorrowController {
     }
 
     /**
+     * 根据物品总类主键id查询未借出的物品明细
+     * @param articleId 物品总类主键id
+     * @return 未借出的物品明细
+     */
+    @GetMapping("/findDetailById")
+    public Map<String,Object> findDetailById(Integer articleId){
+        return appArticleBorrowService.findDetailById(articleId);
+    }
+
+    /**
      * 报损
      * @param userIdAndArticleBorrowId 用户id 和 物品借还主键id
      * @return map
@@ -72,5 +82,7 @@ public class AppArticleBorrowController {
     public Map<String,Object> frmLoss(UserIdAndArticleBorrowId userIdAndArticleBorrowId){
         return appArticleBorrowService.frmLoss(userIdAndArticleBorrowId);
     }
+
+
 
 }
