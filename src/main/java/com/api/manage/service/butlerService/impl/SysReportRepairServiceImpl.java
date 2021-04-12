@@ -72,6 +72,10 @@ public class SysReportRepairServiceImpl implements SysReportRepairService {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         VoRepair repairDetail = sysReportRepairDao.findRepairDetail(id);
+        //传入照片资源信息
+        UploadUtil uploadUtil = new UploadUtil();
+        List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", repairDetail.getId(), "repairImg");
+        repairDetail.setImgUrls(imgByDate);
         repairDetail.setDispatchName(sysUser.getActualName());
         return repairDetail;
     }
