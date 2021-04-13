@@ -84,7 +84,9 @@ public class SysWorkOrderTypeServiceImpl implements SysWorkOrderTypeService {
         map = new HashMap<>();
         try {
             //如果此工单已被引用，无法删除
-//            this new RuntimeException("此工单已被引用，无法删除");
+            if (id == 1||id == 2||id == 3||id == 4){
+                throw new RuntimeException("此工单已被引用，无法删除");
+            }
 
             //先根据工单大类主键id删除工单类型明细信息
             sysWorkOrderTypeDetailDao.deleteByWorkOrderTypeId(id);
