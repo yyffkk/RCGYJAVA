@@ -139,17 +139,5 @@
         GROUP BY createDate ORDER BY createDate desc
     </select>
 
-    <select id="findTodayDailyActivity" parameterType="java.util.Date" resultType="java.lang.Integer">
-        select count(*) from sys_resident_request_log where DATE(last_date) = DATE(#{date})
-    </select>
 
-    <insert id="insertDailyActivity" parameterType="com.api.model.systemDataBigScreen.DailyActivity">
-        insert into sys_daily_activity_log(
-            daily_activity_num,
-            create_date
-        ) values (
-            #{dailyActivityNum},
-            #{createDate}
-        )
-    </insert>
 </mapper>

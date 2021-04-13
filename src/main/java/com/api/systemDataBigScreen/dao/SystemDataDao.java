@@ -153,17 +153,4 @@ public interface SystemDataDao {
      */
     List<SDDailyActivityVo> findDailyActivity(DailyActivitySearch dailyActivitySearch);
 
-    /**
-     * 查询本日 日活跃量
-     * @param date 本日
-     * @return 日活跃量
-     */
-    int findTodayDailyActivity(Date date);
-
-    /**
-     * 将日活跃量 添加进数据库
-     * @param dailyActivity 日活跃量
-     * @return 影响行数
-     */
-    int insertDailyActivity(DailyActivity dailyActivity);
 }
