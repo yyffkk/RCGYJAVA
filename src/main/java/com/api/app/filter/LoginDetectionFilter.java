@@ -59,6 +59,7 @@ public class LoginDetectionFilter implements Filter {
             requestWrapper.addObject(userResident);
             //通行
             chain.doFilter(requestWrapper, response);
+            return;
         }
 
         //根据token Id查询登录信息 (user_login_token)
