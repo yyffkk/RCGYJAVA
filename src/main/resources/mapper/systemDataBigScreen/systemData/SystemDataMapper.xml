@@ -126,7 +126,7 @@
     </select>
 
     <select id="findDailyActivity" parameterType="com.api.model.systemDataBigScreen.DailyActivitySearch" resultType="com.api.vo.systemDataBigScreen.SDDailyActivityVo">
-        select date(last_date) as createDate,count(id) as daily_activity_num
+        select date(last_date) as createDate,count(DISTINCT resident_id) as daily_activity_num
         from sys_resident_request_log
         <where>
             <if test="beginDate != null">
