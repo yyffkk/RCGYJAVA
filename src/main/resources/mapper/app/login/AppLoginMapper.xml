@@ -125,24 +125,26 @@
     </delete>
 
     <select id="findRequestLog" parameterType="com.api.model.app.AppRequestLog" resultType="com.api.model.app.AppRequestLog">
-        select * from sys_resident_request_log where resident_id = #{residentId} and DATE(last_date) = DATE(#{lastDate})
+        select * from sys_resident_request_log where resident_id = #{residentId} and DATE(last_date) = DATE(#{lastDate}) and login_ip = #{loginIp}
     </select>
 
     <update id="updateRequestLog" parameterType="com.api.model.app.AppRequestLog">
         update sys_resident_request_log
         set request_num = request_num + 1,
         last_date = #{lastDate}
-        where id = #{id}
+        where id = #{id} and login_ip = #{loginIp}
     </update>
     <insert id="insertRequestLog" parameterType="com.api.model.app.AppRequestLog">
         insert into sys_resident_request_log(
             resident_id,
             request_num,
-            last_date
+            last_date,
+            login_ip
         )values (
             #{residentId},
             #{requestNum},
-            #{lastDate}
+            #{lastDate},
+            #{loginIp}
         )
     </insert>
 </mapper>

@@ -22,6 +22,10 @@ public class AppRequestLog {
      * 当天最后一次请求时间
      */
     private Date lastDate;
+    /**
+     * 用户登录ip
+     */
+    private String loginIp;
 
     @Override
     public String toString() {
@@ -30,6 +34,7 @@ public class AppRequestLog {
                 ", residentId=" + residentId +
                 ", requestNum=" + requestNum +
                 ", lastDate=" + lastDate +
+                ", loginIp='" + loginIp + '\'' +
                 '}';
     }
 
@@ -65,13 +70,22 @@ public class AppRequestLog {
         this.lastDate = lastDate;
     }
 
+    public String getLoginIp() {
+        return loginIp;
+    }
+
+    public void setLoginIp(String loginIp) {
+        this.loginIp = loginIp;
+    }
+
     public AppRequestLog() {
     }
 
-    public AppRequestLog(Integer id, Integer residentId, Integer requestNum, Date lastDate) {
+    public AppRequestLog(Integer id, Integer residentId, Integer requestNum, Date lastDate, String loginIp) {
         this.id = id;
         this.residentId = residentId;
         this.requestNum = requestNum;
         this.lastDate = lastDate;
+        this.loginIp = loginIp;
     }
 }

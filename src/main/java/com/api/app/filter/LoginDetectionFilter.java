@@ -6,6 +6,7 @@ import com.api.app.service.login.impl.AppLoginServiceImpl;
 import com.api.model.app.AppRequestLog;
 import com.api.model.app.UserLoginToken;
 import com.api.model.basicArchives.UserResident;
+import com.api.util.GetIpUtil;
 import com.api.vo.app.UserLoginTokenVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,8 @@ public class LoginDetectionFilter implements Filter {
         appRequestLog1.setResidentId(userResident.getId());
         //填入当前时间
         appRequestLog1.setLastDate(new Date());
+        //填入用户登录ip
+        appRequestLog1.setLoginIp(GetIpUtil.getIp2(req));
         //根据住户id和当前时间查询今日是否有操作记录
         AppRequestLog appRequestLog = appLoginService.findRequestLog(appRequestLog1);
         if (appRequestLog != null){
