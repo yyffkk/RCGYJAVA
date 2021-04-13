@@ -308,6 +308,7 @@ public class AppGambitServiceImpl implements AppGambitService {
             if (appGambitThemeComment.getParentId() == 0){
                 appCommentMessage.setRespondentId(-1);
             }else {
+                //TODO 判断上级评论人id是否推送消息
                 //根据主键id 查询 评论人id(被回复人id)【主题评论信息表】
                 int createId = appGambitDao.findCreateIdById(appGambitThemeComment.getParentId());
                 appCommentMessage.setRespondentId(createId);
@@ -326,10 +327,11 @@ public class AppGambitServiceImpl implements AppGambitService {
                     }
                 }
             }
+            //TODO 判断主题发布人id是否推送消息
             //如果评论人与主题发布人不是同一个人（自己在自己发布的主题下评论，收不到评论通知）
             if (createId2 != appGambitThemeComment.getCreateId()){
                 //填入接收人id,【接收人为主题发布人】
-                appCommentMessage.setReceiverAccount(appGambitThemeComment.getCreateId());
+                appCommentMessage.setReceiverAccount(createId2);
                 //添加主题发布人评论通知信息
                 int insert2 = appMessageDao.insertCommentMessage(appCommentMessage);
                 if (insert2 <= 0){
