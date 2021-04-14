@@ -324,7 +324,6 @@ public class SysChargesTemplateDetailServiceImpl implements SysChargesTemplateDe
             try {
                 fileName = new String(fileName.getBytes(),"ISO8859-1");
             } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             response.setContentType("application/octet-stream;charset=ISO8859-1");

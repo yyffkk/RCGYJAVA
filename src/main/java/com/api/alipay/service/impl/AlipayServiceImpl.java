@@ -440,7 +440,6 @@ public class AlipayServiceImpl implements AlipayService {
                 log.info("==================调用支付宝查询接口失败！");
             }
         } catch (AlipayApiException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return 0;
@@ -682,7 +681,6 @@ public class AlipayServiceImpl implements AlipayService {
                 log.info("==================调用支付宝查询接口失败！");
             }
         } catch (AlipayApiException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         map.put("status",0);
@@ -910,7 +908,6 @@ public class AlipayServiceImpl implements AlipayService {
                 log.info("==================调用支付宝查询接口失败！");
             }
         } catch (AlipayApiException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         map.put("status",0);
