@@ -43,6 +43,7 @@ public class MyHouseServiceImpl implements MyHouseService {
     public Map<String, Object> authentication(MyHouse myHouse, Integer type) {
         map =  new HashMap<>();
         try {
+            // TODO 去除该判断，使得用户可以同时拥有两种身份
             //当既不是游客，用户类型又不相等时，抛出错误；是游客继续执行，类型相等继续执行
             if (type != 4 && myHouse.getType() != type){
                 throw new RuntimeException("身份信息不对，请联系管理员");
@@ -66,6 +67,7 @@ public class MyHouseServiceImpl implements MyHouseService {
             //根据用户主键id查询数据库住户信息
             MyHouseResidentInfoVo residentInfoVo = myHouseDao.findSBResidentInfoByResidentId(myHouse.getResidentId());
             //判断填入数据与数据库已知数据是否相同
+            // （1）用户类型不为2.审核亲属，（2）该用户拥有该房产的拥有权，（3）用户证件类型与数据库一致，（4）用户姓名与数据库一致，（5）用户住户类型与数据库一致
             if (myHouse.getType() != 2 && ids.contains(myHouse.getEstateId()) && residentInfoVo.getIdNumber().equals(myHouse.getIdNumber())
                     && residentInfoVo.getName().equals(myHouse.getName()) && residentInfoVo.getIdType().equals(myHouse.getIdType())){
                 //系统自动审核成功
