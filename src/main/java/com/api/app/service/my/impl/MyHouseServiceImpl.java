@@ -64,10 +64,11 @@ public class MyHouseServiceImpl implements MyHouseService {
             //当数据库存在该房屋信息时，直接审核成功
             //根据用户主键id查询数据库存在的关联的房房产id集合
             List<Integer> ids = myHouseDao.findDBEstaIdByResidentId(myHouse.getResidentId());
+            // TODO 根据房产主键id查询住户信息，以此判断用户是否
             //根据用户主键id查询数据库住户信息
             MyHouseResidentInfoVo residentInfoVo = myHouseDao.findSBResidentInfoByResidentId(myHouse.getResidentId());
             //判断填入数据与数据库已知数据是否相同
-            // （1）用户类型不为2.审核亲属，（2）该用户拥有该房产的拥有权，（3）用户证件类型与数据库一致，（4）用户姓名与数据库一致，（5）用户住户类型与数据库一致
+            // （1）用户类型不为2.审核亲属，（2）该用户拥有该房产的拥有权，（3）用户证件号码与数据库一致，（4）用户姓名与数据库一致，（5）用户证件类型与数据库一致
             if (myHouse.getType() != 2 && ids.contains(myHouse.getEstateId()) && residentInfoVo.getIdNumber().equals(myHouse.getIdNumber())
                     && residentInfoVo.getName().equals(myHouse.getName()) && residentInfoVo.getIdType().equals(myHouse.getIdType())){
                 //系统自动审核成功

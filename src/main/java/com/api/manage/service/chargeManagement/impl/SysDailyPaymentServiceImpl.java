@@ -235,6 +235,12 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             //获取订单信息
             DailyPaymentOrder dailyPaymentOrder = dailyPayment.getDailyPaymentOrder();
             if (dailyPaymentOrder != null){
+                //判断支付单号是否已存在
+                int countOrderCodeByCode = sysDailyPaymentDao.countOrderCodeByCode(dailyPayment.getDailyPaymentOrder().getCode());
+                if (countOrderCodeByCode > 0){
+                    throw new RuntimeException("该支付单号已存在");
+                }
+
                 //如果待缴金额小于支付金额，则抛出 超出待缴金额异常
                 if (dailyPayment.getPaymentPrice().compareTo(dailyPaymentOrder.getPayPrice()) == -1 ){
                     throw new RuntimeException("支付超出待缴金额，请重新支付,待缴金额为："+dailyPayment.getPaymentPrice());

@@ -140,7 +140,7 @@
     </insert>
 
     <select id="findOrderCodeBySDPI" parameterType="java.lang.Integer" resultType="java.lang.String">
-        select code from sys_daily_payment_order where daily_payment_id = #{id}
+        select sdpo.code from sys_daily_payment_order as sdpo,sys_daily_payment_order_list as sdpol where sdpo.id = sdpol.daily_payment_order_id and sdpol.daily_payment_id = #{id}
     </select>
 
     <select id="findResidentByEstateId" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoPayResident">
@@ -160,5 +160,8 @@
         )
     </insert>
 
+    <select id="countOrderCodeByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from sys_daily_payment_order where code = #{code}
+    </select>
 
 </mapper>

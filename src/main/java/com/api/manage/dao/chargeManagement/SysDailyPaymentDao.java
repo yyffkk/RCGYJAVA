@@ -70,4 +70,11 @@ public interface SysDailyPaymentDao {
      * @return 影响行数
      */
     int insertOrderList(DailyPaymentOrderList dailyPaymentOrderList);
+
+    /**
+     * 判断支付单号是否已存在
+     * @param code 支付单号
+     * @return 存在数量
+     */
+    int countOrderCodeByCode(String code);
 }
