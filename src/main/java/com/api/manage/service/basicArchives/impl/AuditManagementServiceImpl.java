@@ -89,7 +89,7 @@ public class AuditManagementServiceImpl implements AuditManagementService {
                     residentIdAndEstateId.setEstateId(byId.getEstateId()); //填入房产id
                     auditManagementDao.deleteByRIDAndEID(residentIdAndEstateId);
 
-                    //添加住户房产关联表
+                    //添加住户房产关联表 TODO 住户房产关联表增加一个字段，【type用户类型】
                     CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
                     cpmResidentEstate.setBuildingUnitEstateId(byId.getEstateId()); //填入房产id
                     cpmResidentEstate.setResidentId(byId.getApplicantId()); //填入住户id
@@ -123,7 +123,7 @@ public class AuditManagementServiceImpl implements AuditManagementService {
                     throw new RuntimeException("数据异常");
                 }
 
-                //修改住户资料信息
+                //修改住户资料信息 TODO 用户表减少一个字段，【type用户类型】
                 UserResident userResident = new UserResident();
                 userResident.setId(byId.getApplicantId()); //填入住户主键id
                 userResident.setIdType(byId.getIdType()); //填入证件类型

@@ -68,6 +68,8 @@ public interface MyHouseDao {
 
     /**
      * 根据用户主键id查询数据库存在的关联的房房产id
+     * TODO 此查询改为2个查询 查业主关联的房产id select cre.building_unit_estate_id from cpm_resident_estate as cre,user_resident as ur where cre.resident_id = ur.id and resident_id = #{residentId} and ur.type = 3
+     * TODO  查租户关联的房产id select cre.building_unit_estate_id from cpm_resident_estate as cre,user_resident as ur where cre.resident_id = ur.id and resident_id = #{residentId} and ur.type = 1
      * @param residentId 用户主键id
      * @return 数据库存在的关联的房房产id集合
      */
