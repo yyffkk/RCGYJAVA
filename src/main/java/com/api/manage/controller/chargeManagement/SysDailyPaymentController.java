@@ -112,6 +112,15 @@ public class SysDailyPaymentController extends ShiroExceptions {
     }
 
 
+    /**
+     * 查询已开启的收费标准明细信息(物业管理费和日常费用)
+     * @return map
+     */
+    @GetMapping("/findEnableTempleDetail")
+    public Map<String,Object> findEnableTempleDetail(){
+        return sysDailyPaymentService.findEnableTempleDetail();
+    }
+
 
 
 }

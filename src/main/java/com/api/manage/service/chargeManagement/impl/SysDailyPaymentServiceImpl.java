@@ -9,6 +9,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysDailyPaymentService;
 import com.api.util.JiguangUtil;
 import com.api.vo.chargeManagement.VoDailyPayment;
+import com.api.vo.chargeManagement.VoEnableTemplateDetail;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
 import com.api.vo.chargeManagement.VoPayResident;
 import org.apache.commons.lang3.StringUtils;
@@ -307,5 +308,15 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
     public VoPayResident findResidentByEstateId(Integer id) {
         //根据房产id查询待缴费人信息
         return sysDailyPaymentDao.findResidentByEstateId(id);
+    }
+
+    @Override
+    public Map<String, Object> findEnableTempleDetail() {
+        map = new HashMap<>();
+        List<VoEnableTemplateDetail> detailList = sysDailyPaymentDao.findEnableTempleDetail();
+        map.put("message","请求成功");
+        map.put("data",detailList);
+        map.put("status",true);
+        return map;
     }
 }

@@ -20,4 +20,7 @@ public interface SysDailyPaymentService {
     Map<String, Object> insert(DailyPayment dailyPayment);
 
     VoPayResident findResidentByEstateId(Integer id);
+
+    Map<String, Object> findEnableTempleDetail();
+
 }

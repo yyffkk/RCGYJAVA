@@ -1,12 +1,10 @@
 package com.api.manage.dao.chargeManagement;
 
 import com.api.model.chargeManagement.*;
-import com.api.vo.chargeManagement.VoDailyPayment;
-import com.api.vo.chargeManagement.VoFindAllDailyPayment;
-import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
-import com.api.vo.chargeManagement.VoPayResident;
+import com.api.vo.chargeManagement.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysDailyPaymentDao {
     /**
@@ -77,4 +75,11 @@ public interface SysDailyPaymentDao {
      * @return 存在数量
      */
     int countOrderCodeByCode(String code);
+
+    /**
+     * 查询已开启的收费标准明细信息(物业管理费和日常费用)
+     * @return map
+     */
+    List<VoEnableTemplateDetail> findEnableTempleDetail();
+
 }
