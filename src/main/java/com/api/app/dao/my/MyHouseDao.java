@@ -1,5 +1,6 @@
 package com.api.app.dao.my;
 
+import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.vo.my.MyHouseEstateInfoVo;
@@ -95,4 +96,11 @@ public interface MyHouseDao {
      * @return 数据库住户信息
      */
     MyHouseResidentInfoVo findSBResidentInfoByResidentId(Integer residentId);
+
+    /**
+     * 根据用户主键id修改当前选中的房产审核id
+     * @param appUserIdAndExamineId app 用户主键id 和 房产审核主键id
+     * @return 影响行数
+     */
+    int updateEstateExamineId(AppUserIdAndExamineId appUserIdAndExamineId);
 }

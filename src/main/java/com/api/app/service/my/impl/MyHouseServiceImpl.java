@@ -3,8 +3,8 @@ package com.api.app.service.my.impl;
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.dao.my.MyHouseDao;
 import com.api.app.service.my.MyHouseService;
+import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
-import com.api.model.basicArchives.UserResident;
 import com.api.model.my.MyHouse;
 import com.api.vo.my.MyHouseEstateInfoVo;
 import com.api.vo.my.MyHouseFBIVo;
@@ -68,7 +68,8 @@ public class MyHouseServiceImpl implements MyHouseService {
             //根据用户主键id查询数据库住户信息
             MyHouseResidentInfoVo residentInfoVo = myHouseDao.findSBResidentInfoByResidentId(myHouse.getResidentId());
             //判断填入数据与数据库已知数据是否相同
-            // （1）用户类型不为2.审核亲属，（2）该用户拥有该房产的拥有权，（3）用户证件号码与数据库一致，（4）用户姓名与数据库一致，（5）用户证件类型与数据库一致 TODO 缺少判断用户类型，业主还是租户
+            // （1）用户类型不为2.审核亲属，（2）该用户拥有该房产的拥有权，（3）用户证件号码与数据库一致，（4）用户姓名与数据库一致，（5）用户证件类型与数据库一致
+            // TODO 缺少判断用户类型，业主还是租户
             if (myHouse.getType() != 2 && ids.contains(myHouse.getEstateId()) && residentInfoVo.getIdNumber().equals(myHouse.getIdNumber())
                     && residentInfoVo.getName().equals(myHouse.getName()) && residentInfoVo.getIdType().equals(myHouse.getIdType())){
                 //系统自动审核成功
@@ -188,6 +189,22 @@ public class MyHouseServiceImpl implements MyHouseService {
         MyHouseFBIVo myHouseFBIVo = myHouseDao.findById(estateExamineId);
         map.put("data",myHouseFBIVo);
         map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> changeSelectExamineId(Integer examineId, Integer id) {
+        map = new HashMap<>();
+        AppUserIdAndExamineId appUserIdAndExamineId = new AppUserIdAndExamineId();
+        appUserIdAndExamineId.setExamineId(examineId);
+        appUserIdAndExamineId.setUserId(id);
+        int update = myHouseDao.updateEstateExamineId(appUserIdAndExamineId);
+        if (update <= 0){
+            map.put("message","更改失败");
+            map.put("status",false);
+        }
+        map.put("message","更改成功");
         map.put("status",true);
         return map;
     }

@@ -78,4 +78,16 @@ public class MyHouseController {
         return myHouseService.falseDelete(voIds.getIds(),residentId);
     }
 
+
+    /**
+     * 修改选中的房产审核id
+     * @param examineId 房产审核id
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/changeSelectExamineId")
+    public Map<String,Object> changeSelectExamineId(Integer examineId,Integer id){
+        return myHouseService.changeSelectExamineId(examineId,id);
+    }
+
 }

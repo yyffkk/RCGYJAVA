@@ -68,9 +68,9 @@ public class AppUserInfo {
      */
     private List<String> estateNames;
     /**
-     * app审核界面当前选中的房产id
+     * app审核界面当前选中的房产审核id
      */
-    private Integer nowEstateId;
+    private Integer nowEstateExamineId;
 
     @Override
     public String toString() {
@@ -90,7 +90,7 @@ public class AppUserInfo {
                 ", roomStatus=" + roomStatus +
                 ", nickName='" + nickName + '\'' +
                 ", estateNames=" + estateNames +
-                ", nowEstateId=" + nowEstateId +
+                ", nowEstateExamineId=" + nowEstateExamineId +
                 '}';
     }
 
@@ -214,18 +214,18 @@ public class AppUserInfo {
         this.estateNames = estateNames;
     }
 
-    public Integer getNowEstateId() {
-        return nowEstateId;
+    public Integer getNowEstateExamineId() {
+        return nowEstateExamineId;
     }
 
-    public void setNowEstateId(Integer nowEstateId) {
-        this.nowEstateId = nowEstateId;
+    public void setNowEstateExamineId(Integer nowEstateExamineId) {
+        this.nowEstateExamineId = nowEstateExamineId;
     }
 
     public AppUserInfo() {
     }
 
-    public AppUserInfo(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName, List<String> estateNames, Integer nowEstateId) {
+    public AppUserInfo(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName, List<String> estateNames, Integer nowEstateExamineId) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -241,6 +241,6 @@ public class AppUserInfo {
         this.roomStatus = roomStatus;
         this.nickName = nickName;
         this.estateNames = estateNames;
-        this.nowEstateId = nowEstateId;
+        this.nowEstateExamineId = nowEstateExamineId;
     }
 }

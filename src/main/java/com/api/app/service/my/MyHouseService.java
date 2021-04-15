@@ -1,11 +1,7 @@
 package com.api.app.service.my;
 
-import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.my.MyHouse;
-import com.api.vo.app.AppAdviceVo;
-import com.api.vo.my.MyHouseVo;
 
-import java.util.List;
 import java.util.Map;
 
 public interface MyHouseService {
@@ -16,4 +12,6 @@ public interface MyHouseService {
     Map<String, Object> falseDelete(int[] ids,Integer residentId);
 
     Map<String, Object> findById(Integer estateExamineId);
+
+    Map<String, Object> changeSelectExamineId(Integer examineId, Integer id);
 }

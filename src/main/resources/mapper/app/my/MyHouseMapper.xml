@@ -49,4 +49,7 @@
         select id,name,id_type,id_number from user_resident where id = #{residentId}
     </select>
 
+    <update id="updateEstateExamineId" parameterType="com.api.model.app.AppUserIdAndExamineId">
+        update user_resident set now_estate_examine_id = #{examineId} where id = #{userId}
+    </update>
 </mapper>
