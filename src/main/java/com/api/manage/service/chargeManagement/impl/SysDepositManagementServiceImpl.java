@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -178,6 +179,10 @@ public class SysDepositManagementServiceImpl implements SysDepositManagementServ
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
+            if (sysDepositManagementOrder.getRefundPrice().compareTo(BigDecimal.ZERO) == -1){
+                throw new RuntimeException("退押金不可小于0");
+            }
+
             //根据装修主键id查询装修状态
             int status = userDecorationDao.findStatusById(sysDepositManagementOrder.getDecorationId());
             //如果装修状态不为 6.申请退款 则无法退款
