@@ -149,10 +149,8 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
 
             //填入创建人
             dailyPaymentOrder.setCreateId(sysUser.getId());
-            if (dailyPaymentOrder.getCreateDate() == null){
-                //填入创建时间
-                dailyPaymentOrder.setCreateDate(new Date());
-            }
+            //填入创建时间
+            dailyPaymentOrder.setCreateDate(new Date());
             //添加缴费订单信息
             int i = sysDailyPaymentDao.insertOrder(dailyPaymentOrder);
             if (i<=0){
