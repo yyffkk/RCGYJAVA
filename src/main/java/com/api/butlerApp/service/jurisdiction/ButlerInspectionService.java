@@ -1,5 +1,6 @@
 package com.api.butlerApp.service.jurisdiction;
 
+import com.api.model.butlerApp.ButlerExecuteMap;
 import com.api.model.butlerApp.ButlerExecutePointSubmit;
 import com.api.model.butlerApp.ButlerInspectionSearch;
 import com.api.vo.butlerApp.ButlerInspectionVo;
@@ -23,4 +24,8 @@ public interface ButlerInspectionService {
     Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId);
 
     Map<String, Object> findCheckDetailById(Integer executePointId);
+
+    Map<String, Object> uploadLocation(ButlerExecuteMap butlerExecuteMap, String roleId);
+
+    Map<String, Object> getLocation(Integer executeId);
 }

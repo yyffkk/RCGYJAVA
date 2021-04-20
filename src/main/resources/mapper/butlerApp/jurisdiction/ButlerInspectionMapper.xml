@@ -175,4 +175,26 @@
         select * from sys_inspection_execute
         where DATE_FORMAT(begin_date,'%Y-%m-%d') <![CDATA[ < ]]> DATE_FORMAT(#{date},'%Y-%m-%d') and actual_end_date is null
     </select>
+
+    <insert id="insertExecuteMap" parameterType="com.api.model.butlerApp.ButlerExecuteMap">
+        insert into sys_inspection_execute_map(
+            execute_id,
+            longitude,
+            latitude,
+            create_id,
+            create_date
+        )values (
+            #{executeId},
+            #{longitude},
+            #{latitude},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="getLocation" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteMapVo">
+        select id,longitude,latitude,create_date from sys_inspection_execute_map where execute_id =#{executeId} order by create_date
+    </select>
+
+
 </mapper>

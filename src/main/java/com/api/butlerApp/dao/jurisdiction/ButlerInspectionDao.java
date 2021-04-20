@@ -197,4 +197,18 @@ public interface ButlerInspectionDao {
      * @return 巡检执行情况数据集合
      */
     List<SysInspectionExecute> findOldExecuteByToday(Date date);
+
+    /**
+     * 添加巡检执行路线地图经纬度信息
+     * @param butlerExecuteMap 巡检执行路线地图经纬度信息
+     * @return 影响行数
+     */
+    int insertExecuteMap(ButlerExecuteMap butlerExecuteMap);
+
+    /**
+     * 获取巡检执行的定位信息
+     * @param executeId 巡检执行情况主键id
+     * @return 巡检执行路线地图经纬度信息集合
+     */
+    List<ButlerExecuteMapVo> getLocation(Integer executeId);
 }

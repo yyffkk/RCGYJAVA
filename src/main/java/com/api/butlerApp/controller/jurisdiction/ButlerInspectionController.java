@@ -1,6 +1,7 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
+import com.api.model.butlerApp.ButlerExecuteMap;
 import com.api.model.butlerApp.ButlerExecutePointSubmit;
 import com.api.model.butlerApp.ButlerInspectionSearch;
 import com.api.vo.butlerApp.ButlerInspectionVo;
@@ -119,7 +120,32 @@ public class ButlerInspectionController {
         return butlerInspectionService.findCheckDetailById(executePointId);
     }
 
+    /**
+     * 上传巡检定位信息
+     * @param butlerExecuteMap 巡检执行路线地图经纬度信息
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/uploadLocation")
+    public Map<String,Object> uploadLocation(@RequestBody ButlerExecuteMap butlerExecuteMap, HttpServletRequest request){
+        //从request获取用户主键id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        butlerExecuteMap.setCreateId(id); //填入创建人
+        return butlerInspectionService.uploadLocation(butlerExecuteMap,roleId);
+    }
 
+
+    /**
+     * 获取巡检执行的定位信息
+     * @param executeId 巡检执行情况主键id
+     * @return map
+     */
+    @GetMapping("/getLocation")
+    public Map<String,Object> getLocation(Integer executeId){
+        return butlerInspectionService.getLocation(executeId);
+    }
 
 
 }

@@ -365,6 +365,39 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> uploadLocation(ButlerExecuteMap butlerExecuteMap, String roleId) {
+        map = new HashMap<>();
+        //查询用户所属权限,type:1.巡检人员 3.其他角色
+        int type = findJurisdictionByUserId(roleId);
+        if (type != 1){
+            map.put("data",null);
+            map.put("message","无权限操作");
+            map.put("status",false);
+            return map;
+        }
+        butlerExecuteMap.setCreateDate(new Date()); //传入创建时间
+        //添加巡检执行路线地图经纬度信息
+        int insert = butlerInspectionDao.insertExecuteMap(butlerExecuteMap);
+        if (insert <= 0){
+            map.put("message","添加失败");
+            map.put("status",false);
+        }
+        map.put("message","添加成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getLocation(Integer executeId) {
+        map = new HashMap<>();
+        List<ButlerExecuteMapVo> butlerExecuteMapVoList = butlerInspectionDao.getLocation(executeId);
+        map.put("message","请求成功");
+        map.put("data",butlerExecuteMapVoList);
+        map.put("status",true);
+        return map;
+    }
+
     private int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");
         if (split.length >0){
