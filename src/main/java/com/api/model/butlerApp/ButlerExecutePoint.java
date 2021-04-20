@@ -1,5 +1,6 @@
 package com.api.model.butlerApp;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -27,6 +28,14 @@ public class ButlerExecutePoint {
      */
     private Integer type;
     /**
+     * 经度
+     */
+    private BigDecimal longitude;
+    /**
+     * 纬度
+     */
+    private BigDecimal latitude;
+    /**
      * 巡检点完成时间
      */
     private Date completeDate;
@@ -39,6 +48,8 @@ public class ButlerExecutePoint {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
                 ", completeDate=" + completeDate +
                 '}';
     }
@@ -83,6 +94,22 @@ public class ButlerExecutePoint {
         this.type = type;
     }
 
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
     public Date getCompleteDate() {
         return completeDate;
     }
@@ -94,12 +121,14 @@ public class ButlerExecutePoint {
     public ButlerExecutePoint() {
     }
 
-    public ButlerExecutePoint(Integer id, Integer executeId, String code, String name, Integer type, Date completeDate) {
+    public ButlerExecutePoint(Integer id, Integer executeId, String code, String name, Integer type, BigDecimal longitude, BigDecimal latitude, Date completeDate) {
         this.id = id;
         this.executeId = executeId;
         this.code = code;
         this.name = name;
         this.type = type;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.completeDate = completeDate;
     }
 }
