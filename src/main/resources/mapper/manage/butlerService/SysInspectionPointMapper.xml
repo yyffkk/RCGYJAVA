@@ -21,6 +21,12 @@
             code,
             name,
             type,
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
             create_id,
             create_date,
             is_delete
@@ -28,6 +34,12 @@
             #{code},
             #{name},
             #{type},
+            <if test="longitude != null">
+                #{longitude},
+            </if>
+            <if test="latitude != null">
+                #{latitude},
+            </if>
             #{createId},
             #{createDate},
             #{isDelete}
@@ -48,7 +60,7 @@
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBIInspectionPoint">
-        select id,code,name,type from sys_inspection_point where id = #{id} and is_delete = 1
+        select id,code,name,type,longitude,latitude from sys_inspection_point where id = #{id} and is_delete = 1
     </select>
 
     <select id="findByIdCheckItems" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBIInspectionCheckItems">
@@ -63,6 +75,12 @@
             </if>
             <if test="type != null">
                 type = #{type},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude},
             </if>
             modify_id = #{modifyId},
             modify_date = #{modifyDate}

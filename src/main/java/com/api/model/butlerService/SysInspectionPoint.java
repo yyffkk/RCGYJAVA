@@ -1,5 +1,6 @@
 package com.api.model.butlerService;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,14 @@ public class SysInspectionPoint {
      * 巡检模式（1.扫码）【就一个模式】
      */
     private Integer type;
+    /**
+     * 经度
+     */
+    private BigDecimal longitude;
+    /**
+     * 纬度
+     */
+    private BigDecimal latitude;
     /**
      * 创建人id
      */
@@ -55,6 +64,8 @@ public class SysInspectionPoint {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
@@ -94,6 +105,22 @@ public class SysInspectionPoint {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
     }
 
     public Integer getCreateId() {
@@ -147,11 +174,13 @@ public class SysInspectionPoint {
     public SysInspectionPoint() {
     }
 
-    public SysInspectionPoint(Integer id, String code, String name, Integer type, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, List<SysInspectionCheckItems> itemsList) {
+    public SysInspectionPoint(Integer id, String code, String name, Integer type, BigDecimal longitude, BigDecimal latitude, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, List<SysInspectionCheckItems> itemsList) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.type = type;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;

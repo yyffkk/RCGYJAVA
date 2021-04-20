@@ -1,5 +1,6 @@
 package com.api.vo.butlerService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -23,6 +24,14 @@ public class VoFBIInspectionPoint {
      */
     private Integer type;
     /**
+     * 经度
+     */
+    private BigDecimal longitude;
+    /**
+     * 纬度
+     */
+    private BigDecimal latitude;
+    /**
      * 巡检点检查项Vo findById 回显
      */
     private List<VoFBIInspectionCheckItems> checkItemsList;
@@ -34,6 +43,8 @@ public class VoFBIInspectionPoint {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
                 ", checkItemsList=" + checkItemsList +
                 '}';
     }
@@ -70,6 +81,22 @@ public class VoFBIInspectionPoint {
         this.type = type;
     }
 
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
     public List<VoFBIInspectionCheckItems> getCheckItemsList() {
         return checkItemsList;
     }
@@ -81,11 +108,13 @@ public class VoFBIInspectionPoint {
     public VoFBIInspectionPoint() {
     }
 
-    public VoFBIInspectionPoint(Integer id, String code, String name, Integer type, List<VoFBIInspectionCheckItems> checkItemsList) {
+    public VoFBIInspectionPoint(Integer id, String code, String name, Integer type, BigDecimal longitude, BigDecimal latitude, List<VoFBIInspectionCheckItems> checkItemsList) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.type = type;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.checkItemsList = checkItemsList;
     }
 }
