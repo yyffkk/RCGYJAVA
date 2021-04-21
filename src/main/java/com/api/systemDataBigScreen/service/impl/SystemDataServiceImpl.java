@@ -223,9 +223,16 @@ public class SystemDataServiceImpl implements SystemDataService {
                 }
 
                 //查询巡检点
+                if (inspectionExecuteVo.getActualBeginDate() != null){
+                    //查询执行计划的巡检点
 
+                }else {
+                    //查询计划的巡检点
+
+                }
 
                 //巡检执行路线经纬度
+
             }
         }
         return inspectionExecuteVoList;
