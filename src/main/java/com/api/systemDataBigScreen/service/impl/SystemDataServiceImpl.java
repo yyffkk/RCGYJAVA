@@ -4,6 +4,8 @@ import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
+import com.api.util.UploadUtil;
+import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
 import org.springframework.stereotype.Service;
 
@@ -147,6 +149,22 @@ public class SystemDataServiceImpl implements SystemDataService {
         //根据搜索条件 查询日活跃
         List<SDDailyActivityVo> sdDailyActivityVos = systemDataDao.findDailyActivity(dailyActivitySearch);
         map.put("data",sdDailyActivityVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findAllInspector() {
+        map = new HashMap<>();
+        //查询所有的巡更人员
+        List<SDInspectionSysUserVo> inspectionSysUserVoList = systemDataDao.findAllInspector();
+        if (inspectionSysUserVoList != null && inspectionSysUserVoList.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (SDInspectionSysUserVo sysUserVo : inspectionSysUserVoList) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysUser", sysUserVo.getId(), "headSculpture");
+                sysUserVo.setImgList(imgByDate);
+            }
+        }
+        map.put("data",inspectionSysUserVoList);
         return map;
     }
 

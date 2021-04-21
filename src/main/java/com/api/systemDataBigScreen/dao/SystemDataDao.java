@@ -153,4 +153,9 @@ public interface SystemDataDao {
      */
     List<SDDailyActivityVo> findDailyActivity(DailyActivitySearch dailyActivitySearch);
 
+    /**
+     * 查询所有的巡更人员
+     * @return 系统数据 巡更人员信息
+     */
+    List<SDInspectionSysUserVo> findAllInspector();
 }

@@ -138,6 +138,10 @@
         </where>
         GROUP BY createDate ORDER BY createDate desc
     </select>
+    <select id="findAllInspector" resultType="com.api.vo.systemDataBigScreen.SDInspectionSysUserVo">
+        select DISTINCT su.id,su.actual_name,su.tel from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_user as su
+        where sie.inspection_plan_id = sip.id and sip.inspector = su.id
+    </select>
 
 
 </mapper>

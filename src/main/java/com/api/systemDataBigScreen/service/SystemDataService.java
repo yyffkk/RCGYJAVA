@@ -34,4 +34,5 @@ public interface SystemDataService {
 
     Map<String, Object> findDailyActivity(DailyActivitySearch dailyActivitySearch);
 
+    Map<String, Object> findAllInspector();
 }

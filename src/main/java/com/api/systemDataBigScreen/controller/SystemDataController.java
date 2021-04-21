@@ -166,5 +166,13 @@ public class SystemDataController {
         return systemDataService.sysDailyPayment();
     }
 
+    /**
+     * 查询所有的巡更人员
+     * @return map
+     */
+    @GetMapping("/findAllInspector")
+    public Map<String,Object> findAllInspector(){
+        return systemDataService.findAllInspector();
+    }
 
 }
