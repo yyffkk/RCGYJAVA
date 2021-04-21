@@ -71,15 +71,19 @@ public class ButlerLoginServiceImpl implements ButlerLoginService {
             return map;
         }
 
-        // 发送短信工具类
-//        try {
-//            SmsSendUtil.sendSms(CAPTCHA, MOBILE);
-//        } catch (ClientException e) {
-////            e.printStackTrace();
-//            map.put("message","验证码发送失败");
-//            map.put("status",false);
-//            return map;
-//        }
+        //如果不等于默认登录账号，则发送验证码
+        if (!"13738611465".equals(MOBILE)){
+            // 发送短信工具类
+            try {
+                SmsSendUtil.sendSms(CAPTCHA, MOBILE);
+            } catch (ClientException e) {
+//            e.printStackTrace();
+                map.put("message","验证码发送失败");
+                map.put("status",false);
+                return map;
+            }
+        }
+
 //        map.put("code",CAPTCHA);
         map.put("message","验证码发送成功");
         map.put("status",true);

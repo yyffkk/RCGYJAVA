@@ -80,14 +80,16 @@ public class AppLoginServiceImpl implements AppLoginService {
             return map;
         }
 
-        // 发送短信工具类
-        try {
-            SmsSendUtil.sendSms(CAPTCHA, MOBILE);
-        } catch (ClientException e) {
+        if (!"13738611465".equals(MOBILE)){
+            // 发送短信工具类
+            try {
+                SmsSendUtil.sendSms(CAPTCHA, MOBILE);
+            } catch (ClientException e) {
 //            e.printStackTrace();
-            map.put("message","验证码发送失败");
-            map.put("status",false);
-            return map;
+                map.put("message","验证码发送失败");
+                map.put("status",false);
+                return map;
+            }
         }
 
 //        map.put("code",CAPTCHA);
