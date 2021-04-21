@@ -35,7 +35,7 @@
     </select>
 
     <select id="findPointByPlanId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerPointVo">
-        select sipo.id,sipo.name
+        select sipo.id,sipo.name,sipo.longitude,sipo.latitude
         from sys_inspection_plan as sipl,sys_inspection_route as sir,sys_inspection_point_route as sipr,sys_inspection_point as sipo
         where sipl.inspection_route_id = sir.id and sipr.inspection_point_id = sipo.id and sipr.inspection_route_id and sipo.is_delete = 1 and sipl.id = #{planId}
     </select>
@@ -45,7 +45,7 @@
     </select>
 
     <select id="findPointByExecuteId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerPointVo">
-        select id,name,complete_date from sys_inspection_execute_point where execute_id = #{executeId}
+        select id,name,complete_date,longitude,latitude from sys_inspection_execute_point where execute_id = #{executeId}
     </select>
 
     <select id="countCheckNumByPointId2" parameterType="java.lang.Integer" resultType="java.lang.Integer">
