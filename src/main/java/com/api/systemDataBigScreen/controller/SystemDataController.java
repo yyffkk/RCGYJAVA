@@ -4,6 +4,9 @@ import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.app.AppActivityVo;
+import com.api.vo.butlerApp.ButlerBorrowVo;
+import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
+import com.api.vo.systemDataBigScreen.SDInspectionExecuteListVo;
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
 import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
 import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
@@ -175,4 +178,28 @@ public class SystemDataController {
         return systemDataService.findAllInspector();
     }
 
+    /**
+     * 查询今日巡更执行计划
+     * @return map
+     */
+    @GetMapping("/findTodayExecute")
+    public Map<String,Object> findTodayExecute(){
+        return systemDataService.findTodayExecute();
+    }
+
+    /**
+     * 查询今日当前巡更执行计划
+     * @return map
+     */
+    @GetMapping("/findNowExecute")
+    public Map<String,Object> findNowExecute(int PageNum,int Size){
+        PageHelper.startPage(PageNum,Size);
+        List<SDInspectionExecuteListVo> executeListVos = systemDataService.findNowExecute();
+        PageInfo<SDInspectionExecuteListVo> pageInfo = new PageInfo<>(executeListVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 }

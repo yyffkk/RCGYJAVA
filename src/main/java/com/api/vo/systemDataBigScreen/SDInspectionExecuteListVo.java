@@ -1,21 +1,17 @@
-package com.api.vo.butlerApp;
+package com.api.vo.systemDataBigScreen;
 
 import java.util.Date;
 
 /**
- * 管家app 巡检管理Vo list 回显
+ * 系统数据 巡更执行计划 Vo list 回显
  */
-public class ButlerInspectionVo {
+public class SDInspectionExecuteListVo {
     /**
-     * 主键id
+     * 巡检执行计划主键id
      */
     private Integer id;
     /**
-     * 执行巡检编号（巡检计划编号+序号）
-     */
-    private String code;
-    /**
-     * 执行巡检名称（巡检计划名称）
+     * 巡检计划名称
      */
     private String name;
     /**
@@ -35,27 +31,20 @@ public class ButlerInspectionVo {
      */
     private Date actualEndDate;
     /**
-     * 状态（1.待巡检（实际当次巡检结束时间为null），2.已巡检(实际当次巡检结束时间不为null),
-     * 3.巡检中(实际开始时间不为null,实际结束时间为null),4.未巡检(实际开始时间为null,实际结束时间不为null)）
+     * 巡检状态（1.待巡检，2.已巡检，3.巡检中，4.未巡检）
      */
     private Integer status;
-    /**
-     * 巡检人姓名
-     */
-    private String inspectorName;
 
     @Override
     public String toString() {
-        return "ButlerInspectionVo{" +
+        return "SDInspectionExecuteListVo{" +
                 "id=" + id +
-                ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
                 ", actualBeginDate=" + actualBeginDate +
                 ", actualEndDate=" + actualEndDate +
                 ", status=" + status +
-                ", inspectorName='" + inspectorName + '\'' +
                 '}';
     }
 
@@ -65,14 +54,6 @@ public class ButlerInspectionVo {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -123,26 +104,16 @@ public class ButlerInspectionVo {
         this.status = status;
     }
 
-    public String getInspectorName() {
-        return inspectorName;
+    public SDInspectionExecuteListVo() {
     }
 
-    public void setInspectorName(String inspectorName) {
-        this.inspectorName = inspectorName;
-    }
-
-    public ButlerInspectionVo() {
-    }
-
-    public ButlerInspectionVo(Integer id, String code, String name, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate, Integer status, String inspectorName) {
+    public SDInspectionExecuteListVo(Integer id, String name, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate, Integer status) {
         this.id = id;
-        this.code = code;
         this.name = name;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.actualBeginDate = actualBeginDate;
         this.actualEndDate = actualEndDate;
         this.status = status;
-        this.inspectorName = inspectorName;
     }
 }

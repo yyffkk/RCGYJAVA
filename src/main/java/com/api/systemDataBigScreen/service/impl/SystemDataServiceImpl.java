@@ -168,4 +168,34 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> findTodayExecute() {
+        map = new HashMap<>();
+        Date date = new Date();
+        List<SDInspectionExecuteListVo> inspectionExecuteListVoList = systemDataDao.findTodayExecute(date);
+        if (inspectionExecuteListVoList != null && inspectionExecuteListVoList.size()>0){
+            for (SDInspectionExecuteListVo inspectionExecuteListVo : inspectionExecuteListVoList) {
+                //判断实际开始时间是否为null
+                if (inspectionExecuteListVo.getActualBeginDate() != null){
+                    //判断实际结束时间是否为null
+                    if (inspectionExecuteListVo.getActualEndDate() != null){
+                        inspectionExecuteListVo.setStatus(2); //实际开始时间与实际结束时间都不为null，2.已巡检
+                    }else {
+                        inspectionExecuteListVo.setStatus(3); //实际开始时间不为null,实际结束时间为null，3.巡检中
+                    }
+                }else {
+                    //判断实际结束时间是否为null
+                    if (inspectionExecuteListVo.getActualEndDate() != null){
+                        inspectionExecuteListVo.setStatus(4); //实际开始时间为null,实际结束时间不为null，4.未巡检
+                    }else {
+                        //实际开始时间与实际结束时间都为null，1.待巡检
+                        inspectionExecuteListVo.setStatus(1);
+                    }
+                }
+            }
+        }
+        map.put("data",inspectionExecuteListVoList);
+        return map;
+    }
+
 }

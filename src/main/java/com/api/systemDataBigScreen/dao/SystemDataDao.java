@@ -1,6 +1,5 @@
 package com.api.systemDataBigScreen.dao;
 
-import com.api.model.systemDataBigScreen.DailyActivity;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.vo.systemDataBigScreen.*;
@@ -158,4 +157,12 @@ public interface SystemDataDao {
      * @return 系统数据 巡更人员信息
      */
     List<SDInspectionSysUserVo> findAllInspector();
+
+    /**
+     * 查询今日巡更执行计划
+     * @return 系统数据 巡更执行计划 Vo list 回显
+     * @param date
+     */
+    List<SDInspectionExecuteListVo> findTodayExecute(Date date);
+
 }
