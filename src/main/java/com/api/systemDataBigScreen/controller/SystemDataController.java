@@ -6,10 +6,7 @@ import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
-import com.api.vo.systemDataBigScreen.SDInspectionExecuteListVo;
-import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
-import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
-import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
+import com.api.vo.systemDataBigScreen.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -188,14 +185,14 @@ public class SystemDataController {
     }
 
     /**
-     * 查询今日当前巡更执行计划
+     * 查询今日当前巡更执行计划（含分页）
      * @return map
      */
     @GetMapping("/findNowExecute")
     public Map<String,Object> findNowExecute(int PageNum,int Size){
         PageHelper.startPage(PageNum,Size);
-        List<SDInspectionExecuteListVo> executeListVos = systemDataService.findNowExecute();
-        PageInfo<SDInspectionExecuteListVo> pageInfo = new PageInfo<>(executeListVos);
+        List<SDInspectionExecuteVo> executeVos = systemDataService.findNowExecute();
+        PageInfo<SDInspectionExecuteVo> pageInfo = new PageInfo<>(executeVos);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());

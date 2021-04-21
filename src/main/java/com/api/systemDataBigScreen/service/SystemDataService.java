@@ -2,6 +2,7 @@ package com.api.systemDataBigScreen.service;
 
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
+import com.api.vo.systemDataBigScreen.SDInspectionExecuteVo;
 import com.api.vo.systemDataBigScreen.SDSysAdviceVo;
 import com.api.vo.systemDataBigScreen.SDSysAnnouncementVo;
 import com.api.vo.systemDataBigScreen.SDUserVisitorsVo;
@@ -37,5 +38,7 @@ public interface SystemDataService {
     Map<String, Object> findAllInspector();
 
     Map<String, Object> findTodayExecute();
+
+    List<SDInspectionExecuteVo> findNowExecute();
 
 }

@@ -147,5 +147,10 @@
         where sie.inspection_plan_id = sip.id and DATE(sie.begin_date) = DATE(#{date}) order by sie.begin_date
     </select>
 
+    <select id="findNowExecute" parameterType="java.util.Date" resultType="com.api.vo.systemDataBigScreen.SDInspectionExecuteVo">
+        select sie.id,sip.name,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date from sys_inspection_execute as sie,sys_inspection_plan as sip
+        where sie.inspection_plan_id = sip.id and DATE(sie.begin_date) = DATE(#{date}) order by sie.begin_date
+    </select>
+
 
 </mapper>

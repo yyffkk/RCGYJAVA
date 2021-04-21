@@ -160,9 +160,15 @@ public interface SystemDataDao {
 
     /**
      * 查询今日巡更执行计划
+     * @param date 当前时间
      * @return 系统数据 巡更执行计划 Vo list 回显
-     * @param date
      */
     List<SDInspectionExecuteListVo> findTodayExecute(Date date);
 
+    /**
+     * 查询今日巡更执行计划
+     * @param date 当前时间
+     * @return 系统数据 巡更执行计划 Vo list 回显
+     */
+    List<SDInspectionExecuteVo> findNowExecute(Date date);
 }
