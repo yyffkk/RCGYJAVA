@@ -222,7 +222,10 @@ public class SystemDataServiceImpl implements SystemDataService {
                     }
                 }
 
-                //查询巡检点和巡检执行路线经纬度
+                //查询巡检点
+
+
+                //巡检执行路线经纬度
             }
         }
         return inspectionExecuteVoList;

@@ -21,9 +21,9 @@ public class VoFindByIdOrganization {
      */
     private Integer leadingId;
     /**
-     * 主负责人真实姓名
+     * 主负责人昵称
      */
-    private String actualName;
+    private String nickName;
     /**
      * 手机号
      */
@@ -48,7 +48,7 @@ public class VoFindByIdOrganization {
                 ", parentId=" + parentId +
                 ", name='" + name + '\'' +
                 ", leadingId=" + leadingId +
-                ", actualName='" + actualName + '\'' +
+                ", nickName='" + nickName + '\'' +
                 ", leadingTel='" + leadingTel + '\'' +
                 ", categoryId=" + categoryId +
                 ", sort=" + sort +
@@ -88,12 +88,12 @@ public class VoFindByIdOrganization {
         this.leadingId = leadingId;
     }
 
-    public String getActualName() {
-        return actualName;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setActualName(String actualName) {
-        this.actualName = actualName;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getLeadingTel() {
@@ -131,12 +131,12 @@ public class VoFindByIdOrganization {
     public VoFindByIdOrganization() {
     }
 
-    public VoFindByIdOrganization(Integer id, Integer parentId, String name, Integer leadingId, String actualName, String leadingTel, Integer categoryId, Integer sort, String remake) {
+    public VoFindByIdOrganization(Integer id, Integer parentId, String name, Integer leadingId, String nickName, String leadingTel, Integer categoryId, Integer sort, String remake) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
         this.leadingId = leadingId;
-        this.actualName = actualName;
+        this.nickName = nickName;
         this.leadingTel = leadingTel;
         this.categoryId = categoryId;
         this.sort = sort;
