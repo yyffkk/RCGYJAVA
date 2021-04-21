@@ -13,6 +13,10 @@ public class VoUser {
      */
     private String nickName;
     /**
+     * 真实名称
+     */
+    private String actualName;
+    /**
      * 电话
      */
     private String tel;
@@ -46,6 +50,7 @@ public class VoUser {
         return "VoUser{" +
                 "id=" + id +
                 ", nickName='" + nickName + '\'' +
+                ", actualName='" + actualName + '\'' +
                 ", tel='" + tel + '\'' +
                 ", organizationName='" + organizationName + '\'' +
                 ", positionName='" + positionName + '\'' +
@@ -70,6 +75,14 @@ public class VoUser {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public String getActualName() {
+        return actualName;
+    }
+
+    public void setActualName(String actualName) {
+        this.actualName = actualName;
     }
 
     public String getTel() {
@@ -131,9 +144,10 @@ public class VoUser {
     public VoUser() {
     }
 
-    public VoUser(Integer id, String nickName, String tel, String organizationName, String positionName, String roleId, String roleName, Integer status, String remake) {
+    public VoUser(Integer id, String nickName, String actualName, String tel, String organizationName, String positionName, String roleId, String roleName, Integer status, String remake) {
         this.id = id;
         this.nickName = nickName;
+        this.actualName = actualName;
         this.tel = tel;
         this.organizationName = organizationName;
         this.positionName = positionName;
