@@ -24,4 +24,7 @@ public interface SysActivityManagementService {
     Map<String, Object> update(ActivityManagement activityManagement);
 
     Map<String, Object> falseDelete(int[] ids);
+
+    Map<String, Object> findEnableTempleDetail();
+
 }

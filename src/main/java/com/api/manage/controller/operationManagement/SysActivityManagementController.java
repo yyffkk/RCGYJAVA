@@ -114,6 +114,15 @@ public class SysActivityManagementController extends ShiroExceptions {
         return sysActivityManagementService.falseDelete(ids.getIds());
     }
 
+    /**
+     * 查询已开启的收费标准明细信息(活动报名费)
+     * @return map
+     */
+    @GetMapping("/findEnableTempleDetail")
+    public Map<String,Object> findEnableTempleDetail(){
+        return sysActivityManagementService.findEnableTempleDetail();
+    }
+
 
 
 

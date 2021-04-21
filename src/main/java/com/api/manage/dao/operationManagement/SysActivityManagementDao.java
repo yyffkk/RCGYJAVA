@@ -2,6 +2,7 @@ package com.api.manage.dao.operationManagement;
 
 import com.api.model.operationManagement.ActivityManagement;
 import com.api.model.operationManagement.SearchActivityManagement;
+import com.api.vo.chargeManagement.VoEnableTemplateDetail;
 import com.api.vo.operationManagement.VoActivityManagement;
 import com.api.vo.operationManagement.VoActivityRegistration;
 import com.api.vo.operationManagement.VoFindByIdActivityManagement;
@@ -65,5 +66,11 @@ public interface SysActivityManagementDao {
      * @return 影响行数
      */
     int falseDelete(int id);
+
+    /**
+     * 查询已开启的收费标准明细信息(活动报名费)
+     * @return map
+     */
+    List<VoEnableTemplateDetail> findEnableTempleDetail();
 }
 

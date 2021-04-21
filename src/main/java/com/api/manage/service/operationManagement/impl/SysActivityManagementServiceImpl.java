@@ -6,6 +6,7 @@ import com.api.model.operationManagement.SearchActivityManagement;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.operationManagement.SysActivityManagementService;
 import com.api.util.UploadUtil;
+import com.api.vo.chargeManagement.VoEnableTemplateDetail;
 import com.api.vo.operationManagement.VoActivityManagement;
 import com.api.vo.operationManagement.VoActivityRegistration;
 import com.api.vo.operationManagement.VoFindByIdActivityManagement;
@@ -173,6 +174,16 @@ public class SysActivityManagementServiceImpl implements SysActivityManagementSe
             return map;
         }
         map.put("message","删除活动信息成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findEnableTempleDetail() {
+        map = new HashMap<>();
+        List<VoEnableTemplateDetail> detailList = sysActivityManagementDao.findEnableTempleDetail();
+        map.put("message","请求成功");
+        map.put("data",detailList);
         map.put("status",true);
         return map;
     }
