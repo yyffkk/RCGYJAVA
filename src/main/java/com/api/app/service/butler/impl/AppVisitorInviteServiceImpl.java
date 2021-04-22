@@ -2,6 +2,7 @@ package com.api.app.service.butler.impl;
 
 import com.api.app.dao.butler.AppVisitorInviteDao;
 import com.api.app.service.butler.AppVisitorInviteService;
+import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.model.app.AppUserQRVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
@@ -31,6 +32,8 @@ import java.util.Map;
 public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     @Resource
     AppVisitorInviteDao appVisitorInviteDao;
+    @Resource
+    CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
     @Value("${res.visitShareTime}")
     private Integer VISIT_SHARE_TIME;
     @Value("${res.visitorsUrl}")
@@ -173,8 +176,12 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 throw new RuntimeException("添加新版访客信息失败");
             }
 
+            //将照片保存进数据库
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"selfie","600",30,20);
+
+            //TODO 根据拜访房产id查询设备号
+//            cpmBuildingUnitEstateDao.find
 
             //判断是否成功发送给大华
             Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList());

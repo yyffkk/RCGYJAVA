@@ -1,26 +1,37 @@
 package com.api.app.controller.share_h5;
 
 import com.api.app.service.butler.AppVisitorInviteService;
+import com.api.manage.service.basicArchives.CpmBuildingService;
+import com.api.manage.service.basicArchives.CpmBuildingUnitEstateService;
+import com.api.manage.service.basicArchives.CpmBuildingUnitService;
 import com.api.manage.service.system.UploadService;
 import com.api.model.app.AppUserQRVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
+import com.api.vo.basicArchives.VoFindAll;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
  * app访客邀请h5分享接口
  */
 @RestController
-@RequestMapping("app/share/decorationApplication")
+@RequestMapping("app/share/visitorApplication")
 public class ShareVisitorInviteController {
     @Resource
     AppVisitorInviteService appVisitorInviteService;
     @Resource
     UploadService uploadService;
+    @Resource
+    CpmBuildingService cpmBuildingService;
+    @Resource
+    CpmBuildingUnitService cpmBuildingUnitService;
+    @Resource
+    CpmBuildingUnitEstateService cpmBuildingUnitEstateService;
 
     /**
      * 根据分享连接编号查询访客信息（H5页面接口）
@@ -61,4 +72,36 @@ public class ShareVisitorInviteController {
     public Map<String,Object> QRSubmit(@RequestBody AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit){
         return appVisitorInviteService.QRSubmit(qrVisitorsInviteSubmit);
     }
+
+    /**
+     * 查询所有楼栋id和name(H5页面)
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findAll")
+    public List<VoFindAll> findAll(){
+        return cpmBuildingService.findAll();
+    }
+
+    /**
+     * 根据楼栋id查询对应的楼栋单元id和name(H5页面)
+     * @param id 楼栋id
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findByBuildingId")
+    public List<VoFindAll> findByBuildingId(Integer id){
+        return cpmBuildingUnitService.findByBuildingId(id);
+    }
+
+    /**
+     * 根据楼栋单元id查询对应的楼栋单元房产id和name(H5页面)
+     * @param id 楼栋单元id
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findByBuildingUnitId")
+    public List<VoFindAll> findByBuildingUnitId(Integer id){
+        return cpmBuildingUnitEstateService.findByBuildingUnitId(id);
+    }
+
+
+
 }
