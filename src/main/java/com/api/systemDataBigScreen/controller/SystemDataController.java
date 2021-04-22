@@ -189,8 +189,8 @@ public class SystemDataController {
      * @return map
      */
     @GetMapping("/findNowExecute")
-    public Map<String,Object> findNowExecute(int PageNum,int Size){
-        PageHelper.startPage(PageNum,Size);
+    public Map<String,Object> findNowExecute(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
         List<SDInspectionExecuteVo> executeVos = systemDataService.findNowExecute();
         PageInfo<SDInspectionExecuteVo> pageInfo = new PageInfo<>(executeVos);
         Map<String,Object> map = new HashMap<>();

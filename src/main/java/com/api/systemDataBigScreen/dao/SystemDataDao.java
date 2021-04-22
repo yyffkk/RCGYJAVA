@@ -171,4 +171,25 @@ public interface SystemDataDao {
      * @return 系统数据 巡更执行计划 Vo list 回显
      */
     List<SDInspectionExecuteVo> findNowExecute(Date date);
+
+    /**
+     * 根据巡检执行计划主键id查询执行计划的巡检点（开始巡检后的巡检点信息）
+     * @param executeId 巡检执行计划主键id
+     * @return 开始巡检后的巡检点信息
+     */
+    List<SDInspectionExecutePointVo> findExecutePointByExecuteId(Integer executeId);
+
+    /**
+     * 根据巡检执行计划主键id查询计划的巡检点（开始巡检前的巡检点信息）
+     * @param executeId 巡检执行计划主键id
+     * @return 开始巡检前的巡检点信息
+     */
+    List<SDInspectionExecutePointVo> findPlanPointByExecuteId(Integer executeId);
+
+    /**
+     * 查询所有的地点信息
+     * @param executeId 巡检执行计划主键id
+     * @return 系统数据 巡更执行路线 Vo 回显
+     */
+    List<SDInspectionExecuteMapVo> findAllLocation(Integer executeId);
 }
