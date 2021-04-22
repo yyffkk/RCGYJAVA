@@ -217,6 +217,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             InputStream inputStream = new FileInputStream(file);
             MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
 
+            //TODO 接入第三方接口
             OkHttpClient httpClient = new OkHttpClient();
             MultipartBody multipartBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)

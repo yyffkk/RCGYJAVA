@@ -41,8 +41,7 @@
 
 
     <insert id="insert" parameterType="com.api.model.basicArchives.CpmBuildingUnitEstate">
-        insert into
-        cpm_building_unit_estate(
+        insert into cpm_building_unit_estate(
             building_unit_id,
             room_number,
             status,
@@ -51,6 +50,9 @@
             indoor_area,
             create_id,
             create_date,
+            <if test="deviceNumber != null and deviceNumber != ''">
+                device_number,
+            </if>
             is_delete
         )
         values (
@@ -62,6 +64,9 @@
             #{indoorArea},
             #{createId},
             #{createDate},
+            <if test="deviceNumber != null and deviceNumber != ''">
+                #{deviceNumber},
+            </if>
             #{isDelete}
         )
         <selectKey keyProperty="id" resultType="java.lang.Integer">
@@ -106,6 +111,9 @@
             </if>
             <if test="modifyDate != null">
                 modify_date = #{modifyDate},
+            </if>
+            <if test="deviceNumber != null and deviceNumber != ''">
+                device_number = #{deviceNumber},
             </if>
         </set>
         where id =#{id}
