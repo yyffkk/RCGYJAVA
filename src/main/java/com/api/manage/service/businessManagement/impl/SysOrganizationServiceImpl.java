@@ -4,6 +4,7 @@ import com.api.manage.dao.businessManagement.SysOrganizationDao;
 import com.api.model.businessManagement.SysOrganization;
 import com.api.manage.service.businessManagement.SysOrganizationService;
 import com.api.model.businessManagement.SysUser;
+import com.api.vo.app.IdAndName;
 import com.api.vo.businessManagement.VoFindByIdOrganization;
 import com.api.vo.businessManagement.VoOrganization;
 import org.apache.shiro.SecurityUtils;
@@ -27,7 +28,14 @@ public class SysOrganizationServiceImpl implements SysOrganizationService {
 
     @Override
     public VoFindByIdOrganization findById(Integer id) {
-        return sysOrganizationDao.findById(id);
+        VoFindByIdOrganization byId = sysOrganizationDao.findById(id);
+        if (byId != null && byId.getParentId() != 0){
+            VoFindByIdOrganization byId1 = sysOrganizationDao.findById(byId.getParentId());
+            //查询并列的上级信息集合
+            List<IdAndName> parentList = sysOrganizationDao.findListByParentId(byId1.getParentId());
+            byId.setParentList(parentList);
+        }
+        return byId;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.api.manage.dao.businessManagement;
 
 import com.api.model.businessManagement.SysOrganization;
+import com.api.vo.app.IdAndName;
 import com.api.vo.businessManagement.VoFindByIdOrganization;
 import com.api.vo.businessManagement.VoOrganization;
 import org.springframework.stereotype.Component;
@@ -74,4 +75,11 @@ public interface SysOrganizationDao {
      * @return 上级id
      */
     int findParentIdById(Integer organizationId);
+
+    /**
+     * 根据上级id查询组织信息集合的 id和name
+     * @param parentId 组织上级id
+     * @return id and name
+     */
+    List<IdAndName> findListByParentId(Integer parentId);
 }

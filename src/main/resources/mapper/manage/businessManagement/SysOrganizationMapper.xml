@@ -82,5 +82,8 @@
     <select id="findParentIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select parent_id from sys_organization where id = #{id}
     </select>
+    <select id="findListByParentId" parameterType="java.lang.Integer" resultType="com.api.vo.app.IdAndName">
+        select id,name from sys_organization where parent_id = #{parentId}
+    </select>
 
 </mapper>

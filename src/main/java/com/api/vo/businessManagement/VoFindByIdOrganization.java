@@ -1,5 +1,9 @@
 package com.api.vo.businessManagement;
 
+import com.api.vo.app.IdAndName;
+
+import java.util.List;
+
 /**
  * 组织架构Vo findById 回显
  */
@@ -12,6 +16,10 @@ public class VoFindByIdOrganization {
      * 上级ID无上级则为0
      */
     private Integer parentId;
+    /**
+     * 并列的上级信息集合
+     */
+    private List<IdAndName> parentList;
     /**
      * 组织名称
      */
@@ -46,6 +54,7 @@ public class VoFindByIdOrganization {
         return "VoFindByIdOrganization{" +
                 "id=" + id +
                 ", parentId=" + parentId +
+                ", parentList=" + parentList +
                 ", name='" + name + '\'' +
                 ", leadingId=" + leadingId +
                 ", actualName='" + actualName + '\'' +
@@ -70,6 +79,14 @@ public class VoFindByIdOrganization {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public List<IdAndName> getParentList() {
+        return parentList;
+    }
+
+    public void setParentList(List<IdAndName> parentList) {
+        this.parentList = parentList;
     }
 
     public String getName() {
@@ -131,9 +148,10 @@ public class VoFindByIdOrganization {
     public VoFindByIdOrganization() {
     }
 
-    public VoFindByIdOrganization(Integer id, Integer parentId, String name, Integer leadingId, String actualName, String leadingTel, Integer categoryId, Integer sort, String remake) {
+    public VoFindByIdOrganization(Integer id, Integer parentId, List<IdAndName> parentList, String name, Integer leadingId, String actualName, String leadingTel, Integer categoryId, Integer sort, String remake) {
         this.id = id;
         this.parentId = parentId;
+        this.parentList = parentList;
         this.name = name;
         this.leadingId = leadingId;
         this.actualName = actualName;
