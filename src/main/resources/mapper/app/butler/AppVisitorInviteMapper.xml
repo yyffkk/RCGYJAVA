@@ -96,6 +96,7 @@
 
     <insert id="insertQRUserVisitorsNew" parameterType="com.api.model.app.AppUserQRVisitorsInviteSubmit">
         insert into user_visitors_new(
+            estate_id,
             name,
             sex,
             <if test="carNumber != null and carNumber != ''">
@@ -106,6 +107,7 @@
             create_id,
             create_date
         )values (
+            #{estateId},
             #{name},
             #{sex},
             <if test="carNumber != null and carNumber != ''">
