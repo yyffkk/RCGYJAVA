@@ -192,4 +192,11 @@ public interface SystemDataDao {
      * @return 系统数据 巡更执行路线 Vo 回显
      */
     List<SDInspectionExecuteMapVo> findAllLocation(Integer executeId);
+
+    /**
+     * 查询所有的巡更记录
+     * @return 系统数据 巡更记录回显
+     */
+    List<SDInspectionRecordVo> findAllInspectionRecord();
+
 }

@@ -241,4 +241,24 @@ public class SystemDataServiceImpl implements SystemDataService {
         return inspectionExecuteVoList;
     }
 
+    @Override
+    public List<SDInspectionRecordVo> findAllInspectionRecord() {
+        List<SDInspectionRecordVo> inspectionRecordVos = systemDataDao.findAllInspectionRecord();
+        if (inspectionRecordVos != null && inspectionRecordVos.size()>0){
+            for (SDInspectionRecordVo inspectionRecordVo : inspectionRecordVos) {
+                List<SDInspectionExecutePointVo> executePointVos =null;
+                //如果实际开始实际为null，查询执行计划的巡检点，反之，查询计划的巡检点
+                if (inspectionRecordVo.getActualBeginDate() != null){
+                    //根据巡检执行计划主键id查询执行计划的巡检点（开始巡检后的巡检点信息）
+                    executePointVos = systemDataDao.findExecutePointByExecuteId(inspectionRecordVo.getId());
+                }else {
+                    //根据巡检执行计划主键id查询计划的巡检点（开始巡检前的巡检点信息）
+                    executePointVos = systemDataDao.findPlanPointByExecuteId(inspectionRecordVo.getId());
+                }
+                inspectionRecordVo.setPointVoList(executePointVos);
+            }
+        }
+        return inspectionRecordVos;
+    }
+
 }

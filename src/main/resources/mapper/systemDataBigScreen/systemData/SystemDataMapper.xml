@@ -153,17 +153,23 @@
     </select>
     <select id="findExecutePointByExecuteId" parameterType="java.lang.Integer"
             resultType="com.api.vo.systemDataBigScreen.SDInspectionExecutePointVo">
-        select sipo.id,sipo.name,sipo.longitude,sipo.latitude
-from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_inspection_route as sir,sys_inspection_point_route as sipr,sys_inspection_point as sipo
-where sie.inspection_plan_id = sip.id and sip.inspection_route_id = sir.id and sipr.inspection_route_id = sir.id and sipr.inspection_point_id = sipo.id and sie.id = #{executeId}
+        select id,code,name,complete_date,longitude,latitude from sys_inspection_execute_point where execute_id = #{executeId}
     </select>
 
     <select id="findPlanPointByExecuteId" parameterType="java.lang.Integer"
             resultType="com.api.vo.systemDataBigScreen.SDInspectionExecutePointVo">
-        select id,name,complete_date,longitude,latitude from sys_inspection_execute_point where execute_id = #{executeId}
+        select sipo.id,sipo.code,sipo.name,sipo.longitude,sipo.latitude
+        from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_inspection_route as sir,sys_inspection_point_route as sipr,sys_inspection_point as sipo
+        where sie.inspection_plan_id = sip.id and sip.inspection_route_id = sir.id and sipr.inspection_route_id = sir.id and sipr.inspection_point_id = sipo.id and sie.id = #{executeId}
     </select>
     <select id="findAllLocation" parameterType="java.lang.Integer" resultType="com.api.vo.systemDataBigScreen.SDInspectionExecuteMapVo">
         select longitude,latitude,create_date from sys_inspection_execute_map where execute_id = #{executeId}
+    </select>
+
+    <select id="findAllInspectionRecord" resultType="com.api.vo.systemDataBigScreen.SDInspectionRecordVo">
+        select sie.id,sip.name,su.actual_name as inspector,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date
+        from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_user as su
+        where sie.inspection_plan_id = sip.id and sip.inspector = su.id
     </select>
 
 

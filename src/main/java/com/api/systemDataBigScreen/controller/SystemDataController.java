@@ -199,4 +199,24 @@ public class SystemDataController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 查询所有的巡更记录（含分页）
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/findAllInspectionRecord")
+    public Map<String,Object> findAllInspectionRecord(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<SDInspectionRecordVo> inspectionRecordVos = systemDataService.findAllInspectionRecord();
+        PageInfo<SDInspectionRecordVo> pageInfo = new PageInfo<>(inspectionRecordVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
 }
