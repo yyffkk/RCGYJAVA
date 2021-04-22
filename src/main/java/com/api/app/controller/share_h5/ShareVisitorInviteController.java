@@ -83,7 +83,7 @@ public class ShareVisitorInviteController {
     }
 
     /**
-     * 根据楼栋id查询对应的楼栋单元id和name(H5页面)
+     * 根据楼栋id查询对应的单元id和name(H5页面)
      * @param id 楼栋id
      * @return List<VoFindAll>
      */
@@ -93,7 +93,7 @@ public class ShareVisitorInviteController {
     }
 
     /**
-     * 根据楼栋单元id查询对应的楼栋单元房产id和name(H5页面)
+     * 根据单元id查询对应的房产id和name(H5页面)
      * @param id 楼栋单元id
      * @return List<VoFindAll>
      */
