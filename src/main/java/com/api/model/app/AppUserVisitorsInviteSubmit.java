@@ -12,6 +12,10 @@ public class AppUserVisitorsInviteSubmit {
      */
     private Integer id;
     /**
+     * 拜访房产id
+     */
+    private Integer estateId;
+    /**
      * 访客连接编号
      */
     private String code;
@@ -44,6 +48,7 @@ public class AppUserVisitorsInviteSubmit {
     public String toString() {
         return "AppUserVisitorsInviteSubmit{" +
                 "id=" + id +
+                ", estateId=" + estateId +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
@@ -60,6 +65,14 @@ public class AppUserVisitorsInviteSubmit {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
     }
 
     public String getCode() {
@@ -121,8 +134,9 @@ public class AppUserVisitorsInviteSubmit {
     public AppUserVisitorsInviteSubmit() {
     }
 
-    public AppUserVisitorsInviteSubmit(Integer id, String code, String name, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, String[] imgList) {
+    public AppUserVisitorsInviteSubmit(Integer id, Integer estateId, String code, String name, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, String[] imgList) {
         this.id = id;
+        this.estateId = estateId;
         this.code = code;
         this.name = name;
         this.sex = sex;

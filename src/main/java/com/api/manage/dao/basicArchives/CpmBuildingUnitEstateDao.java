@@ -102,4 +102,11 @@ public interface CpmBuildingUnitEstateDao {
      * @return 房产有效时间
      */
     VoEffectiveTimes findTimeByEstateId(ResidentIdAndEstateId residentIdAndEstateId);
+
+    /**
+     * 根据拜访房产id查询设备号
+     * @param estateId 拜访房产id
+     * @return 设备号
+     */
+    String findDeviceNumberByEstateId(Integer estateId);
 }

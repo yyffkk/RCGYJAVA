@@ -12,7 +12,6 @@ import com.api.util.UploadUtil;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -136,8 +135,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 throw new RuntimeException("修改新版访客信息失败");
             }
 
+            //根据拜访房产id查询设备号
+            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
+
             //判断是否成功发送给大华
-            Boolean status = isUpload(visitorsInviteSubmit.getImgList());
+            Boolean status = isUpload(visitorsInviteSubmit.getImgList(), deviceNumber);
             if (!status){
                 throw new RuntimeException("照片发送失败");
             }
@@ -180,11 +182,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"selfie","600",30,20);
 
-            //TODO 根据拜访房产id查询设备号
-//            cpmBuildingUnitEstateDao.find
+            //根据拜访房产id查询设备号
+            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
 
             //判断是否成功发送给大华
-            Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList());
+            Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList(),deviceNumber);
             if (!status){
                 throw new RuntimeException("照片发送失败");
             }
@@ -206,7 +208,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     }
 
 
-    private Boolean isUpload(String[] imgList) {
+    private Boolean isUpload(String[] imgList, String deviceNumber) {
         //=====判断是否有照片
         if (imgList.length <= 0){
             return false;

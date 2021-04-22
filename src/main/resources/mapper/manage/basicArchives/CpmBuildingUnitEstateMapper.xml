@@ -166,4 +166,7 @@
     <select id="findTimeByEstateId" parameterType="com.api.model.basicArchives.ResidentIdAndEstateId" resultType="com.api.vo.basicArchives.VoEffectiveTimes">
         select * from cpm_resident_estate where building_unit_estate_id = #{estateId} and resident_id = #{residentId}
     </select>
+    <select id="findDeviceNumberByEstateId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select device_number from cpm_building_unit_estate where id = #{estateId}
+    </select>
 </mapper>
