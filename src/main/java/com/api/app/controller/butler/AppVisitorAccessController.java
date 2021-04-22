@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * app访客通行
+ * app访客通行(旧版-二维码版)
  */
 @RestController
 @RequestMapping("app/user/visitorAccess")

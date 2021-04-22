@@ -12,6 +12,10 @@ public class AppUserQRVisitorsInviteSubmit {
      */
     private Integer id;
     /**
+     * 拜访房产id
+     */
+    private Integer estateId;
+    /**
      * 访客姓名
      */
     private String name;
@@ -48,6 +52,7 @@ public class AppUserQRVisitorsInviteSubmit {
     public String toString() {
         return "AppUserQRVisitorsInviteSubmit{" +
                 "id=" + id +
+                ", estateId=" + estateId +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
                 ", carNumber='" + carNumber + '\'' +
@@ -65,6 +70,14 @@ public class AppUserQRVisitorsInviteSubmit {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
     }
 
     public String getName() {
@@ -134,8 +147,9 @@ public class AppUserQRVisitorsInviteSubmit {
     public AppUserQRVisitorsInviteSubmit() {
     }
 
-    public AppUserQRVisitorsInviteSubmit(Integer id, String name, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, String[] imgList, Integer createId, Date createDate) {
+    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, String[] imgList, Integer createId, Date createDate) {
         this.id = id;
+        this.estateId = estateId;
         this.name = name;
         this.sex = sex;
         this.carNumber = carNumber;

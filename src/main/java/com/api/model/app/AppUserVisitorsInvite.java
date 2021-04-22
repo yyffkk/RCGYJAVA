@@ -11,6 +11,14 @@ public class AppUserVisitorsInvite {
      */
     private Integer id;
     /**
+     * 拜访房产id
+     */
+    private Integer estateId;
+    /**
+     * 拜访房产名称
+     */
+    private String roomName;
+    /**
      * 访客姓名
      */
     private String name;
@@ -43,6 +51,8 @@ public class AppUserVisitorsInvite {
     public String toString() {
         return "AppUserVisitorsInvite{" +
                 "id=" + id +
+                ", estateId=" + estateId +
+                ", roomName='" + roomName + '\'' +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
                 ", carNumber='" + carNumber + '\'' +
@@ -59,6 +69,22 @@ public class AppUserVisitorsInvite {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public String getName() {
@@ -120,8 +146,10 @@ public class AppUserVisitorsInvite {
     public AppUserVisitorsInvite() {
     }
 
-    public AppUserVisitorsInvite(Integer id, String name, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer createId, Date createDate) {
+    public AppUserVisitorsInvite(Integer id, Integer estateId, String roomName, String name, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer createId, Date createDate) {
         this.id = id;
+        this.estateId = estateId;
+        this.roomName = roomName;
         this.name = name;
         this.sex = sex;
         this.carNumber = carNumber;

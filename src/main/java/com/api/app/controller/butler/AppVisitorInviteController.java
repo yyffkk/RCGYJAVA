@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * app 新版的访客邀请管理
+ * app 新版的访客邀请管理-人脸识别版
  */
 @RestController
 @RequestMapping("app/user/visitorInvite")
