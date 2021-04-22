@@ -37,6 +37,10 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     private Integer VISIT_SHARE_TIME;
     @Value("${res.visitorsUrl}")
     private String VISITORS_URL;
+    @Value("${res.communityUrl}")
+    private String COMMUNITY_URL;
+    @Value("${lilin.districtNumber}")
+    private String DISTRICT_NUMBER;
     private static Map<String,Object> map = null;
 
     @Override

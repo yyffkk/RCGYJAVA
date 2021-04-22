@@ -4,3 +4,10 @@ res:
   visitShareTime: 3
   #新版访客邀请门禁访客照片转发http 地址
   visitorsUrl: http://192.168.31.130:9001/manage/test2/test2
+  #信息服务系统照片存放地址
+  communityUrl: http://test.akuhotel.com:8804/static
+
+#立林对讲机系统
+lilin:
+  #小区号
+  districtNumber:
