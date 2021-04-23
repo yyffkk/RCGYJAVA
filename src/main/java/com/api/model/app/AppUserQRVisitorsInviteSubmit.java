@@ -20,6 +20,10 @@ public class AppUserQRVisitorsInviteSubmit {
      */
     private String name;
     /**
+     * 访客手机号
+     */
+    private String tel;
+    /**
      * 访客性别，1.男，2.女
      */
     private Integer sex;
@@ -54,6 +58,7 @@ public class AppUserQRVisitorsInviteSubmit {
                 "id=" + id +
                 ", estateId=" + estateId +
                 ", name='" + name + '\'' +
+                ", tel='" + tel + '\'' +
                 ", sex=" + sex +
                 ", carNumber='" + carNumber + '\'' +
                 ", visitDateStart=" + visitDateStart +
@@ -86,6 +91,14 @@ public class AppUserQRVisitorsInviteSubmit {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     public Integer getSex() {
@@ -147,10 +160,11 @@ public class AppUserQRVisitorsInviteSubmit {
     public AppUserQRVisitorsInviteSubmit() {
     }
 
-    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, String[] imgList, Integer createId, Date createDate) {
+    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, String[] imgList, Integer createId, Date createDate) {
         this.id = id;
         this.estateId = estateId;
         this.name = name;
+        this.tel = tel;
         this.sex = sex;
         this.carNumber = carNumber;
         this.visitDateStart = visitDateStart;

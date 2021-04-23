@@ -22,10 +22,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
@@ -37,10 +34,21 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     private Integer VISIT_SHARE_TIME;
     @Value("${res.visitorsUrl}")
     private String VISITORS_URL;
-    @Value("${res.communityUrl}")
-    private String COMMUNITY_URL;
-    @Value("${lilin.districtNumber}")
-    private String DISTRICT_NUMBER;
+    @Value("${res.communityLocation}")
+    private String COMMUNITY_LOCATION;
+    @Value("${lilin.version}")
+    private String VERSION;
+    @Value("${lilin.signatureVersion}")
+    private String SIGNATURE_VERSION;
+    @Value("${lilin.neighNo}")
+    private String NEIGH_NO;
+    @Value("${lilin.clientId}")
+    private String CLIENT_ID;
+    @Value("${lilin.clientSecret}")
+    private String CLIENT_SECRET;
+    @Value("${lilin.serviceLocation}")
+    private String SERVICE_LOCATION;
+
     private static Map<String,Object> map = null;
 
     @Override
@@ -223,12 +231,35 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
         String imgUrl = imgList[0];
 
         try {
-            //传入真实路径（没有文件服务器的情况，用项目目录下的static）
-            // 获取项目同级目录，传入static中
-            String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
-            File file = new File(realPath+imgUrl);
-            InputStream inputStream = new FileInputStream(file);
-            MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
+            //第三方账号
+            String phoneNumber = "13738611460";
+
+            //API版本号
+            String version = VERSION;
+            //签名算法版本。当前为1.0。
+            String signatureVersion = SIGNATURE_VERSION;
+            //第三方唯一标示
+            String clientId = CLIENT_ID;
+            //第三方密钥
+            String clientSecret = CLIENT_SECRET;
+
+            //请求的时间戳
+            String timestamp = String.valueOf(new Date().getTime());
+            //唯一随机数
+            String nonce = UUID.randomUUID().toString();
+
+            //拼接出图片的完整http路径
+            String phoneUrl = COMMUNITY_LOCATION + imgUrl;
+            //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
+            String deviceSn = NEIGH_NO + deviceNumber;
+
+            //封装data
+
+
+            //获取签名结果串
+            getSignature(clientId,method,timestamp,nonce,data);
+
+
 
             //TODO 接入第三方接口
             OkHttpClient httpClient = new OkHttpClient();

@@ -23,6 +23,10 @@ public class AppUserVisitorsInvite {
      */
     private String name;
     /**
+     * 访客手机号
+     */
+    private String tel;
+    /**
      * 访客性别，1.男，2.女
      */
     private Integer sex;
@@ -54,6 +58,7 @@ public class AppUserVisitorsInvite {
                 ", estateId=" + estateId +
                 ", roomName='" + roomName + '\'' +
                 ", name='" + name + '\'' +
+                ", tel='" + tel + '\'' +
                 ", sex=" + sex +
                 ", carNumber='" + carNumber + '\'' +
                 ", visitDateStart=" + visitDateStart +
@@ -93,6 +98,14 @@ public class AppUserVisitorsInvite {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     public Integer getSex() {
@@ -146,11 +159,12 @@ public class AppUserVisitorsInvite {
     public AppUserVisitorsInvite() {
     }
 
-    public AppUserVisitorsInvite(Integer id, Integer estateId, String roomName, String name, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer createId, Date createDate) {
+    public AppUserVisitorsInvite(Integer id, Integer estateId, String roomName, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer createId, Date createDate) {
         this.id = id;
         this.estateId = estateId;
         this.roomName = roomName;
         this.name = name;
+        this.tel = tel;
         this.sex = sex;
         this.carNumber = carNumber;
         this.visitDateStart = visitDateStart;

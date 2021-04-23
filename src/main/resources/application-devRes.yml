@@ -1,0 +1,19 @@
+#资源配置文件
+res:
+  #访客邀请分享有效时长
+  visitShareTime: 3
+  #新版访客邀请门禁访客照片转发http 地址
+  visitorsUrl: http://192.168.31.130:9001/manage/test2/test2
+  #信息服务系统照片存放地址
+  communityLocation: http://test.akuhotel.com:8804/static
+
+#立林对讲机系统（人才公寓对接）
+lilin:
+  #小区号
+  neighNo: 450127500001
+  #第三方唯一标示
+  clientId: 70d274b536f930b70314c2d01243ddd3
+  #第三方密钥
+  clientSecret: 18d4873936e0e42ac3510402dee8611c
+  #测试服务器地址
+  serviceLocation: http://test.iot.leelen.com/
