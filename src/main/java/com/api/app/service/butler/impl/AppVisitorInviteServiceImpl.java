@@ -8,18 +8,21 @@ import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsUrl;
 import com.api.util.IdWorker;
+import com.api.util.LiLinSignGetHmac;
 import com.api.util.UploadUtil;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.*;
 
 @Service
+@Slf4j
 public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     @Resource
     AppVisitorInviteDao appVisitorInviteDao;
@@ -247,52 +250,44 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             Integer floorType = 2;
 
             //封装data
-            String data = "{'neighNo':"+NEIGH_NO+",'deviceSn':"+deviceSn+
-                    ",'phoneNumber':"+phoneNumber+",'startTime':"+visitDateStart+",'endTime':"+visitDateEnd+
-                    ",'photoUrl':"+phoneUrl+",'floorType':"+floorType+"}";
+            String data = "{\"neighNo\":\""+NEIGH_NO+"\",\"deviceSn\":\""+deviceSn+
+                    "\",\"phoneNumber\":"+phoneNumber+",\"startTime\":"+visitDateStart.getTime()+",\"endTime\":"+visitDateEnd.getTime()+
+                    ",\"photoUrl\":\""+phoneUrl+"\",\"floorType\":"+floorType+"}";
 
             //获取签名结果串
             String signature = getSignature(method,timestamp,nonce,data);
 
 
             //TODO 接入第三方接口
-            //创建OkHttpClient实例，主要用于请求网络
-            OkHttpClient okHttpClient = new OkHttpClient();
-            //创建表单请求体
-            FormBody.Builder formBody = new FormBody.Builder();
-            //传递键值对参数
-//            formBody.add("version",version);
 
-//            OkHttpClient httpClient = new OkHttpClient();
-//            MultipartBody multipartBody = new MultipartBody.Builder()
-//                    .setType(MultipartBody.FORM)
-//                    .addFormDataPart("jpeg", multipartFile.getOriginalFilename(),
-//                            RequestBody.create(MediaType.parse("multipart/form-data;charset=utf-8"),
-//                                    multipartFile.getBytes()))
-//                    .addFormDataPart("code","单元码")
-//                    .addFormDataPart("ts", String.valueOf(new Date()))
-//                    .addFormDataPart("te", String.valueOf(new Date()))
-//                    .build();
-//
-//            Request request = new Request.Builder()
-//                    .url(VISITORS_URL)
-//                    .post(multipartBody)
-//                    .build();
+            String json = "{\"version\":\""+VERSION+"\",\"clientId\":\""+CLIENT_ID+"\",\"timestamp\":\""+timestamp+
+                    "\",\"nonce\":\""+nonce+"\",\"signature\":\""+signature+"\",\"signatureVersion\":\""+SIGNATURE_VERSION+
+                    "\",\"data\":"+data+"}";
 
-//            Response response = httpClient.newCall(request).execute();
-//            if (response.isSuccessful()) {
-//                ResponseBody body = response.body();
-//                if (body != null) {
-//                    //获取返回值
-//                    String result = body.string();
-//                    //=====判断返回是否成功
-//                    if ("true".equals(result)){
-//                        return true;
-//                    }else {
-//                        return false;
-//                    }
-//                }
-//            }
+            System.out.println(json);
+
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+            RequestBody requestBody = FormBody.create(mediaType, json);
+            Request request = new Request.Builder()
+                    .url("http://test.iot.leelen.com/third/an/addIcCard")
+                    .post(requestBody)
+                    .build();
+            Response execute = client.newCall(request).execute();
+            if (execute.isSuccessful()) {
+                ResponseBody body = execute.body();
+                if (body != null) {
+                    //获取返回值
+                    String result = body.string();
+                    System.out.println(result);
+                    //=====判断返回是否成功
+                    if ("true".equals(result)){
+                        return true;
+                    }else {
+                        return false;
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -307,8 +302,13 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
         if (data != null){
             signature = signature + "&data="+data;
         }
-        //TODO 签名模版工具类是啥
-//        signature=Base64(HMAC-SHA1(UTF-8-Encoding-Of(signature)).toString(),CLIENT_SECRET)
+        //签名模版工具类签名
+        try {
+            signature = LiLinSignGetHmac.genHMAC(signature, CLIENT_SECRET);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("签名异常");
+        }
         return signature;
     }
 }
