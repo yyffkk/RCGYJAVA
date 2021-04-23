@@ -2,6 +2,7 @@ package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppVisitorInviteService;
 import com.api.model.app.AppUserVisitorsInvite;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -29,7 +32,15 @@ public class AppVisitorInviteController {
      * @return map
      */
     @PostMapping("/share")
-    public Map<String,Object> share(@RequestBody AppUserVisitorsInvite visitorsInvite, HttpServletRequest request){
+    public Map<String,Object> share(@RequestBody AppUserVisitorsInvite visitorsInvite, HttpServletRequest request) {
+        //处理预计到访时间开始 和 预计到访时间结束
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            visitorsInvite.setVisitDateStart(simpleDateFormat.parse(DateFormatUtils.format(visitorsInvite.getVisitDateStart(),"yyyy-MM-dd 00:00:00")));
+            visitorsInvite.setVisitDateEnd(simpleDateFormat.parse(DateFormatUtils.format(visitorsInvite.getVisitDateStart(),"yyyy-MM-dd 23:59:59")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
         visitorsInvite.setCreateId(id); //填写创建人

@@ -19,5 +19,9 @@ lilin:
   clientId: 70d274b536f930b70314c2d01243ddd3
   #第三方密钥
   clientSecret: 18d4873936e0e42ac3510402dee8611c
-  #测试服务器地址
+  #立林对讲机系统测试服务器地址
   serviceLocation: http://test.iot.leelen.com/
+  #API接口
+  api:
+    #添加设备人脸识别api方法
+    faceMethod: addFaceRecognize

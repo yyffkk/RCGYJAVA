@@ -9,7 +9,8 @@ import com.api.model.app.AppUserVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsUrl;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
-import okhttp3.*;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,23 +26,25 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     @Resource
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
     @Value("${res.visitShareTime}")
-    private Integer VISIT_SHARE_TIME;
+    private Integer VISIT_SHARE_TIME;    //访客邀请分享有效时长
     @Value("${res.visitorsUrl}")
-    private String VISITORS_URL;
+    private String VISITORS_URL;    //新版访客邀请门禁访客照片转发http 地址
     @Value("${res.communityLocation}")
-    private String COMMUNITY_LOCATION;
+    private String COMMUNITY_LOCATION;  //信息服务系统照片存放地址
     @Value("${lilin.version}")
-    private String VERSION;
+    private String VERSION;    //第三方密钥
     @Value("${lilin.signatureVersion}")
-    private String SIGNATURE_VERSION;
+    private String SIGNATURE_VERSION;   //签名算法版本
     @Value("${lilin.neighNo}")
-    private String NEIGH_NO;
+    private String NEIGH_NO;    //小区号
     @Value("${lilin.clientId}")
-    private String CLIENT_ID;
+    private String CLIENT_ID;   //第三方唯一标示
     @Value("${lilin.clientSecret}")
-    private String CLIENT_SECRET;
+    private String CLIENT_SECRET;   //第三方密钥
     @Value("${lilin.serviceLocation}")
-    private String SERVICE_LOCATION;
+    private String SERVICE_LOCATION;    //立林对讲机系统测试服务器地址
+    @Value("${lilin.api.faceMethod}")
+    private String FACE_METHOD;     //添加设备人脸识别api方法
 
     private static Map<String,Object> map = null;
 
@@ -145,7 +148,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
 
             //判断是否成功发送给大华
-            Boolean status = isUpload(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel());
+            Boolean status = isUpload(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
             if (!status){
                 throw new RuntimeException("照片发送失败");
             }
@@ -192,7 +195,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
 
             //判断是否成功发送给大华
-            Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList(),deviceNumber,qrVisitorsInviteSubmit.getTel());
+            Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList(),deviceNumber,qrVisitorsInviteSubmit.getTel(), qrVisitorsInviteSubmit.getVisitDateStart(), qrVisitorsInviteSubmit.getVisitDateEnd());
             if (!status){
                 throw new RuntimeException("照片发送失败");
             }
@@ -214,7 +217,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     }
 
 
-    private Boolean isUpload(String[] imgList, String deviceNumber, String tel) {
+    private Boolean isUpload(String[] imgList, String deviceNumber, String tel, Date visitDateStart, Date visitDateEnd) {
         //=====判断是否有照片
         if (imgList.length <= 0){
             return false;
@@ -228,15 +231,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //第三方账号
             String phoneNumber = tel;
 
-            //API版本号
-            String version = VERSION;
-            //签名算法版本。当前为1.0。
-            String signatureVersion = SIGNATURE_VERSION;
-            //第三方唯一标示
-            String clientId = CLIENT_ID;
-            //第三方密钥
-            String clientSecret = CLIENT_SECRET;
-
+            //api接口方法
+            String method = FACE_METHOD;
             //请求的时间戳
             String timestamp = String.valueOf(new Date().getTime());
             //唯一随机数
@@ -251,14 +247,22 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             Integer floorType = 2;
 
             //封装data
-            String data = "{'phoneNumber':"+phoneNumber+",'neighNo':"+",'floorType':2,";
+            String data = "{'neighNo':"+NEIGH_NO+",'deviceSn':"+deviceSn+
+                    ",'phoneNumber':"+phoneNumber+",'startTime':"+visitDateStart+",'endTime':"+visitDateEnd+
+                    ",'photoUrl':"+phoneUrl+",'floorType':"+floorType+"}";
 
             //获取签名结果串
-//            getSignature(clientId,method,timestamp,nonce,data);
-
+            String signature = getSignature(method,timestamp,nonce,data);
 
 
             //TODO 接入第三方接口
+            //创建OkHttpClient实例，主要用于请求网络
+            OkHttpClient okHttpClient = new OkHttpClient();
+            //创建表单请求体
+            FormBody.Builder formBody = new FormBody.Builder();
+            //传递键值对参数
+//            formBody.add("version",version);
+
 //            OkHttpClient httpClient = new OkHttpClient();
 //            MultipartBody multipartBody = new MultipartBody.Builder()
 //                    .setType(MultipartBody.FORM)
@@ -294,5 +298,17 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             return false;
         }
         return false;
+    }
+
+
+    private String getSignature(String method, String timestamp, String nonce, String data) {
+        //公共参数签名
+        String signature = "clientId="+CLIENT_ID+"&method="+method+"&timestamp="+timestamp+"&nonce="+nonce;
+        if (data != null){
+            signature = signature + "&data="+data;
+        }
+        //TODO 签名模版工具类是啥
+//        signature=Base64(HMAC-SHA1(UTF-8-Encoding-Of(signature)).toString(),CLIENT_SECRET)
+        return signature;
     }
 }

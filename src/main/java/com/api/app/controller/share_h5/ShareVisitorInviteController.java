@@ -9,10 +9,13 @@ import com.api.model.app.AppUserQRVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
 import com.api.vo.basicArchives.VoFindAll;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +63,14 @@ public class ShareVisitorInviteController {
      */
     @PostMapping("/submit")
     public Map<String,Object> submit(@RequestBody AppUserVisitorsInviteSubmit visitorsInviteSubmit){
+        //处理预计到访时间开始 和 预计到访时间结束
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            visitorsInviteSubmit.setVisitDateStart(simpleDateFormat.parse(DateFormatUtils.format(visitorsInviteSubmit.getVisitDateStart(),"yyyy-MM-dd 00:00:00")));
+            visitorsInviteSubmit.setVisitDateEnd(simpleDateFormat.parse(DateFormatUtils.format(visitorsInviteSubmit.getVisitDateStart(),"yyyy-MM-dd 23:59:59")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return appVisitorInviteService.submit(visitorsInviteSubmit);
     }
 
@@ -70,6 +81,14 @@ public class ShareVisitorInviteController {
      */
     @PostMapping("/QRSubmit")
     public Map<String,Object> QRSubmit(@RequestBody AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit){
+        //处理预计到访时间开始 和 预计到访时间结束
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            qrVisitorsInviteSubmit.setVisitDateStart(simpleDateFormat.parse(DateFormatUtils.format(qrVisitorsInviteSubmit.getVisitDateStart(),"yyyy-MM-dd 00:00:00")));
+            qrVisitorsInviteSubmit.setVisitDateEnd(simpleDateFormat.parse(DateFormatUtils.format(qrVisitorsInviteSubmit.getVisitDateStart(),"yyyy-MM-dd 23:59:59")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return appVisitorInviteService.QRSubmit(qrVisitorsInviteSubmit);
     }
 
