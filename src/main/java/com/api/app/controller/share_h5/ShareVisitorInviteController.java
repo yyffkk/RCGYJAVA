@@ -49,7 +49,7 @@ public class ShareVisitorInviteController {
      * @return map
      */
     @PostMapping("/uploadH5Visit")
-    public Map<String,Object> uploadH5Visit(String fileStr){
+    public Map<String,Object> uploadH5Visit(@RequestBody String fileStr){
         return uploadService.uploadH5Visit(fileStr);
     }
 
