@@ -246,10 +246,7 @@ public class UploadServiceImpl implements UploadService {
         if(StringUtils.isNotBlank(fileStr)){
             base64DecodedMultipartFile =  (BASE64DecodedMultipartFile) Base64StrToImage.base64MutipartFile(fileStr);
         }
-        Map<String, Object> map = null;
-        if (StringUtils.isNotBlank((CharSequence) base64DecodedMultipartFile)){
-            map = upload(base64DecodedMultipartFile,UPLOAD_H5_VISIT);
-        }
+        Map<String, Object> map = upload(base64DecodedMultipartFile,UPLOAD_H5_VISIT);
         return map;
     }
 

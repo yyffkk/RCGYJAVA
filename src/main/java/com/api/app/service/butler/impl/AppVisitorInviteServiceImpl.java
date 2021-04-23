@@ -251,7 +251,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             Integer floorType = 2;
 
             //封装data
-//            String data = "{'phoneNumber':"+phoneNumber+",'floorType':";
+            String data = "{'phoneNumber':"+phoneNumber+",'neighNo':"+",'floorType':2,";
 
             //获取签名结果串
 //            getSignature(clientId,method,timestamp,nonce,data);
