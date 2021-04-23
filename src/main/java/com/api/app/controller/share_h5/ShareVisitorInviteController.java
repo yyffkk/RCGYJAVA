@@ -45,12 +45,12 @@ public class ShareVisitorInviteController {
 
     /**
      * 上传访客邀请自拍照(H5页面)
-     * @param file 上传文件
+     * @param fileStr 上传文件base64编码
      * @return map
      */
     @PostMapping("/uploadH5Visit")
-    public Map<String,Object> uploadH5Visit(MultipartFile file){
-        return uploadService.uploadH5Visit(file);
+    public Map<String,Object> uploadH5Visit(String fileStr){
+        return uploadService.uploadH5Visit(fileStr);
     }
 
     /**

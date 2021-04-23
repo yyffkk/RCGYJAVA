@@ -4,7 +4,10 @@ import com.api.manage.dao.butlerService.UserDecorationDao;
 import com.api.manage.service.system.UploadService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.UserDecorationDoc;
+import com.api.util.BASE64DecodedMultipartFile;
+import com.api.util.Base64StrToImage;
 import com.api.util.UploadUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -237,8 +241,15 @@ public class UploadServiceImpl implements UploadService {
     }
 
     @Override
-    public Map<String, Object> uploadH5Visit(MultipartFile file) {
-        Map<String, Object> map = upload(file,UPLOAD_H5_VISIT);
+    public Map<String, Object> uploadH5Visit(String fileStr) {
+        BASE64DecodedMultipartFile base64DecodedMultipartFile = null;
+        if(StringUtils.isNotBlank(fileStr)){
+            base64DecodedMultipartFile =  (BASE64DecodedMultipartFile) Base64StrToImage.base64MutipartFile(fileStr);
+        }
+        Map<String, Object> map = null;
+        if (StringUtils.isNotBlank((CharSequence) base64DecodedMultipartFile)){
+            map = upload(base64DecodedMultipartFile,UPLOAD_H5_VISIT);
+        }
         return map;
     }
 

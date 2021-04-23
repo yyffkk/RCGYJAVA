@@ -11,17 +11,11 @@ import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -151,7 +145,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
 
             //判断是否成功发送给大华
-            Boolean status = isUpload(visitorsInviteSubmit.getImgList(), deviceNumber);
+            Boolean status = isUpload(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel());
             if (!status){
                 throw new RuntimeException("照片发送失败");
             }
@@ -198,7 +192,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
 
             //判断是否成功发送给大华
-            Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList(),deviceNumber);
+            Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList(),deviceNumber,qrVisitorsInviteSubmit.getTel());
             if (!status){
                 throw new RuntimeException("照片发送失败");
             }
@@ -220,7 +214,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     }
 
 
-    private Boolean isUpload(String[] imgList, String deviceNumber) {
+    private Boolean isUpload(String[] imgList, String deviceNumber, String tel) {
         //=====判断是否有照片
         if (imgList.length <= 0){
             return false;
@@ -232,7 +226,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
         try {
             //第三方账号
-            String phoneNumber = "13738611460";
+            String phoneNumber = tel;
 
             //API版本号
             String version = VERSION;
@@ -253,45 +247,48 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
             String deviceSn = NEIGH_NO + deviceNumber;
 
-            //封装data
+            //梯控权限类型
+            Integer floorType = 2;
 
+            //封装data
+//            String data = "{'phoneNumber':"+phoneNumber+",'floorType':";
 
             //获取签名结果串
-            getSignature(clientId,method,timestamp,nonce,data);
+//            getSignature(clientId,method,timestamp,nonce,data);
 
 
 
             //TODO 接入第三方接口
-            OkHttpClient httpClient = new OkHttpClient();
-            MultipartBody multipartBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("jpeg", multipartFile.getOriginalFilename(),
-                            RequestBody.create(MediaType.parse("multipart/form-data;charset=utf-8"),
-                                    multipartFile.getBytes()))
-                    .addFormDataPart("code","单元码")
-                    .addFormDataPart("ts", String.valueOf(new Date()))
-                    .addFormDataPart("te", String.valueOf(new Date()))
-                    .build();
+//            OkHttpClient httpClient = new OkHttpClient();
+//            MultipartBody multipartBody = new MultipartBody.Builder()
+//                    .setType(MultipartBody.FORM)
+//                    .addFormDataPart("jpeg", multipartFile.getOriginalFilename(),
+//                            RequestBody.create(MediaType.parse("multipart/form-data;charset=utf-8"),
+//                                    multipartFile.getBytes()))
+//                    .addFormDataPart("code","单元码")
+//                    .addFormDataPart("ts", String.valueOf(new Date()))
+//                    .addFormDataPart("te", String.valueOf(new Date()))
+//                    .build();
+//
+//            Request request = new Request.Builder()
+//                    .url(VISITORS_URL)
+//                    .post(multipartBody)
+//                    .build();
 
-            Request request = new Request.Builder()
-                    .url(VISITORS_URL)
-                    .post(multipartBody)
-                    .build();
-
-            Response response = httpClient.newCall(request).execute();
-            if (response.isSuccessful()) {
-                ResponseBody body = response.body();
-                if (body != null) {
-                    //获取返回值
-                    String result = body.string();
-                    //=====判断返回是否成功
-                    if ("true".equals(result)){
-                        return true;
-                    }else {
-                        return false;
-                    }
-                }
-            }
+//            Response response = httpClient.newCall(request).execute();
+//            if (response.isSuccessful()) {
+//                ResponseBody body = response.body();
+//                if (body != null) {
+//                    //获取返回值
+//                    String result = body.string();
+//                    //=====判断返回是否成功
+//                    if ("true".equals(result)){
+//                        return true;
+//                    }else {
+//                        return false;
+//                    }
+//                }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
