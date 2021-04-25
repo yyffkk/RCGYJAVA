@@ -12,6 +12,7 @@ import com.api.util.LiLinSignGetHmac;
 import com.api.util.UploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -150,11 +151,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //根据拜访房产id查询设备号
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
 
-            //判断是否成功发送给大华
-            Boolean status = isUpload(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
-            if (!status){
-                throw new RuntimeException("照片发送失败");
-            }
+            //连接立林对讲机系统
+            connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
 
             //根据分享连接编号将该连接修改为1.已使用
             appVisitorInviteDao.updateIsUseByCode(visitorsInviteSubmit.getCode());
@@ -197,11 +195,9 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //根据拜访房产id查询设备号
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
 
-            //判断是否成功发送给大华
-            Boolean status = isUpload(qrVisitorsInviteSubmit.getImgList(),deviceNumber,qrVisitorsInviteSubmit.getTel(), qrVisitorsInviteSubmit.getVisitDateStart(), qrVisitorsInviteSubmit.getVisitDateEnd());
-            if (!status){
-                throw new RuntimeException("照片发送失败");
-            }
+            //连接立林对讲机系统
+            connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+
 
         } catch (Exception e) {
             //获取抛出的信息
@@ -220,7 +216,76 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     }
 
 
-    private Boolean isUpload(String[] imgList, String deviceNumber, String tel, Date visitDateStart, Date visitDateEnd) {
+    /**
+     * 连接立林对讲机系统
+     * @param imgList 照片路径数组
+     * @param deviceNumber 设备号
+     * @param tel 访客手机号
+     * @param visitDateStart 拜访开始时间
+     * @param visitDateEnd 拜访结束时间
+     */
+    private void connectLiLinFace(String[] imgList, String deviceNumber, String tel, Date visitDateStart, Date visitDateEnd) {
+        //判断是否成功发送给大华
+        //拼接入口设备号（4个入口）
+//        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "0001");
+//        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "0002");
+//        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "0003");
+//        String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "0004");
+
+
+
+        //上传给房屋门禁设备
+        Boolean status = isUploadFace(imgList, deviceNumber, tel,visitDateStart,visitDateEnd);
+        if (!status){
+            throw new RuntimeException("连接房屋门禁失败");
+        }
+
+        log.info("连接房屋门禁成功");
+
+//        //上传给入口1设备
+//        Boolean status1 = isUploadFace(imgList, entranceNumber1, tel,visitDateStart,visitDateEnd);
+//        if (!status1){
+//            throw new RuntimeException("连接入口1失败");
+//        }
+//
+//        log.info("连接入口1成功");
+//
+//        //上传给入口2设备
+//        Boolean status2 = isUploadFace(imgList, entranceNumber2, tel,visitDateStart,visitDateEnd);
+//        if (!status2){
+//            throw new RuntimeException("连接入口2失败");
+//        }
+//
+//        log.info("连接入口2成功");
+//
+//        //上传给入口3设备
+//        Boolean status3 = isUploadFace(imgList, entranceNumber3, tel,visitDateStart,visitDateEnd);
+//        if (!status3){
+//            throw new RuntimeException("连接入口3失败");
+//        }
+//
+//        log.info("连接入口3成功");
+//
+//        //上传给入口4设备
+//        Boolean status4 = isUploadFace(imgList, entranceNumber4, tel,visitDateStart,visitDateEnd);
+//        if (!status4){
+//            throw new RuntimeException("连接入口4失败");
+//        }
+//
+//        log.info("连接入口4成功");
+    }
+
+
+    /**
+     * 上传给设备
+     * @param imgList 照片路径数组
+     * @param deviceNumber 设备号
+     * @param tel 访客手机号
+     * @param visitDateStart 拜访开始时间
+     * @param visitDateEnd 拜访结束时间
+     * @return boolean
+     */
+    private Boolean isUploadFace(String[] imgList, String deviceNumber, String tel, Date visitDateStart, Date visitDateEnd) {
         //=====判断是否有照片
         if (imgList.length <= 0){
             return false;
@@ -242,8 +307,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             String nonce = UUID.randomUUID().toString();
 
             //拼接出图片的完整http路径
-//            String phoneUrl = COMMUNITY_LOCATION + imgUrl;
-            String phoneUrl = "http://test.akuhotel.com:8804/static/img/h5/visit/641043db8d9944cb975eeeddcc8089ab.jpeg";
+            String phoneUrl = COMMUNITY_LOCATION + imgUrl;
+//            String phoneUrl = "http://test.akuhotel.com:8804/static/img/h5/visit/641043db8d9944cb975eeeddcc8089ab.jpeg";
             //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
             String deviceSn = NEIGH_NO + deviceNumber;
 
@@ -259,13 +324,12 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             String signature = getSignature(method,timestamp,nonce,data);
 
 
-            //TODO 接入第三方接口 4010 无该小区权限／无该设备权限
 
             String json = "{\"version\":\""+VERSION+"\",\"clientId\":\""+CLIENT_ID+"\",\"timestamp\":\""+timestamp+
                     "\",\"nonce\":\""+nonce+"\",\"method\":\""+method+"\",\"signature\":\""+signature+"\",\"signatureVersion\":\""+SIGNATURE_VERSION+
                     "\",\"data\":"+data+"}";
 
-//            System.out.println(json);
+            log.info(json);
 
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
@@ -281,17 +345,19 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                     //获取返回值
                     String result = body.string();
                     log.info(result);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String result1 = String.valueOf(jsonObject.get("result"));
                     //=====判断返回是否成功
-                    if ("true".equals(result)){
+                    if ("1".equals(result1)){
                         return true;
                     }else {
-                        return false;
+                        throw new RuntimeException(String.valueOf(jsonObject.get("message")));
                     }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
         return false;
     }

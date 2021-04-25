@@ -11,10 +11,20 @@
             and su.position_id = si.id
             and su.is_delete = 1
             <if test="organizationId != null">
-                and su.organization_id = #{organizationId}
+                and su.organization_id_path like concat('%:',#{organizationId},':%')
             </if>
             <if test="roleId != null">
-                and su.role_id = #{roleId}
+                and #{roleId} in
+                (
+                    SELECT
+                    SUBSTRING_INDEX(SUBSTRING_INDEX(aa.pid,',',help_topic_id+1),',',-1) AS num
+                    FROM
+                    mysql.`help_topic`,(
+                    select su1.role_id as pid from sys_user as su1 where su1.id = su.id
+                    ) AS aa
+                    WHERE
+                    help_topic_id <![CDATA[ <= ]]> LENGTH(aa.pid)-LENGTH(REPLACE(aa.pid,',',''))
+                )
             </if>
         </where>
     </select>

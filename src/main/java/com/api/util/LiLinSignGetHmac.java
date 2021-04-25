@@ -7,6 +7,9 @@ import sun.misc.BASE64Encoder;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * 立林加密获取签名工具类
+ */
 public class LiLinSignGetHmac {
     private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
 
@@ -31,7 +34,6 @@ public class LiLinSignGetHmac {
         String s = new BASE64Encoder().encodeBuffer(Hex.encodeHexString(rawHmac).getBytes());
         //去掉换行符和特殊符号
         String s2 = s.replaceAll("[\\s*\t\n\r]", "");
-
         return s2;
     }
 }
