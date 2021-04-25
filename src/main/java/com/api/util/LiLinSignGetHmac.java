@@ -1,5 +1,6 @@
 package com.api.util;
 
+
 import org.apache.commons.codec.binary.Hex;
 import sun.misc.BASE64Encoder;
 
@@ -9,6 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class LiLinSignGetHmac {
     private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
 
+
     /**
      * @description: hmac加密
      * @author: huabin@2019/10/4 15:37
@@ -17,7 +19,6 @@ public class LiLinSignGetHmac {
      * @return: 加密结果
      * @throws:
      */
-
     public static String genHMAC(String data, String key) throws Exception {
         //根据给定的字节数组构造一个密钥,第二参数指定一个密钥算法的名称
         SecretKeySpec signinKey = new SecretKeySpec(key.getBytes(), HMAC_SHA1_ALGORITHM);
@@ -27,6 +28,10 @@ public class LiLinSignGetHmac {
         mac.init(signinKey);
         //完成 Mac 操作
         byte[] rawHmac = mac.doFinal(data.getBytes("UTF-8"));
-        return new BASE64Encoder().encodeBuffer(Hex.encodeHexString(rawHmac).getBytes());
+        String s = new BASE64Encoder().encodeBuffer(Hex.encodeHexString(rawHmac).getBytes());
+        //去掉换行符和特殊符号
+        String s2 = s.replaceAll("[\\s*\t\n\r]", "");
+
+        return s2;
     }
 }

@@ -242,7 +242,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             String nonce = UUID.randomUUID().toString();
 
             //拼接出图片的完整http路径
-            String phoneUrl = COMMUNITY_LOCATION + imgUrl;
+//            String phoneUrl = COMMUNITY_LOCATION + imgUrl;
+            String phoneUrl = "http://test.akuhotel.com:8804/static/img/h5/visit/641043db8d9944cb975eeeddcc8089ab.jpeg";
             //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
             String deviceSn = NEIGH_NO + deviceNumber;
 
@@ -258,19 +259,19 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             String signature = getSignature(method,timestamp,nonce,data);
 
 
-            //TODO 接入第三方接口
+            //TODO 接入第三方接口 4010 无该小区权限／无该设备权限
 
             String json = "{\"version\":\""+VERSION+"\",\"clientId\":\""+CLIENT_ID+"\",\"timestamp\":\""+timestamp+
-                    "\",\"nonce\":\""+nonce+"\",\"signature\":\""+signature+"\",\"signatureVersion\":\""+SIGNATURE_VERSION+
+                    "\",\"nonce\":\""+nonce+"\",\"method\":\""+method+"\",\"signature\":\""+signature+"\",\"signatureVersion\":\""+SIGNATURE_VERSION+
                     "\",\"data\":"+data+"}";
 
-            System.out.println(json);
+//            System.out.println(json);
 
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = FormBody.create(mediaType, json);
             Request request = new Request.Builder()
-                    .url("http://test.iot.leelen.com/third/an/addIcCard")
+                    .url("http://test.iot.leelen.com/third/an/addFaceRecognize")
                     .post(requestBody)
                     .build();
             Response execute = client.newCall(request).execute();
@@ -279,7 +280,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 if (body != null) {
                     //获取返回值
                     String result = body.string();
-                    System.out.println(result);
+                    log.info(result);
                     //=====判断返回是否成功
                     if ("true".equals(result)){
                         return true;
@@ -302,6 +303,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
         if (data != null){
             signature = signature + "&data="+data;
         }
+        log.info(signature);
         //签名模版工具类签名
         try {
             signature = LiLinSignGetHmac.genHMAC(signature, CLIENT_SECRET);
@@ -309,6 +311,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             e.printStackTrace();
             throw new RuntimeException("签名异常");
         }
+        log.info(signature);
         return signature;
     }
 }

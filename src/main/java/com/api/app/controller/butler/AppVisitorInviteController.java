@@ -36,8 +36,10 @@ public class AppVisitorInviteController {
         //处理预计到访时间开始 和 预计到访时间结束
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            visitorsInvite.setVisitDateStart(simpleDateFormat.parse(DateFormatUtils.format(visitorsInvite.getVisitDateStart(),"yyyy-MM-dd 00:00:00")));
-            visitorsInvite.setVisitDateEnd(simpleDateFormat.parse(DateFormatUtils.format(visitorsInvite.getVisitDateStart(),"yyyy-MM-dd 23:59:59")));
+            if (visitorsInvite.getVisitDateStart() != null){
+                visitorsInvite.setVisitDateStart(simpleDateFormat.parse(DateFormatUtils.format(visitorsInvite.getVisitDateStart(),"yyyy-MM-dd 00:00:00")));
+                visitorsInvite.setVisitDateEnd(simpleDateFormat.parse(DateFormatUtils.format(visitorsInvite.getVisitDateStart(),"yyyy-MM-dd 23:59:59")));
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
