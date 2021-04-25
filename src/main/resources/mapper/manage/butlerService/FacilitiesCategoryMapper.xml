@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.FacilitiesCategoryDao">
+    <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesCategory" resultType="com.api.vo.butlerService.VoFacilitiesCategory">
+        select sfc.id,sfc.code,sfc.name,su.actual_name as create_name,sfc.num,sfc.create_date
+        from sys_facilities_category as sfc,sys_user as su
+        <where>
+            sfc.create_id = su.id
+            <if test="name != null and name != ''">
+                and sfc.name like concat('%',#{name},'%')
+            </if>
+            <if test="code != null and code != ''">
+                and sfc.code = #{code}
+            </if>
+            <if test="createStartDate != null">
+                and sfc.create_date <![CDATA[ >= ]]> #{createStartDate}
+            </if>
+            <if test="createEndDate != null">
+                and sfc.create_date <![CDATA[ <= ]]> #{createEndDate}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.FacilitiesCategory">
+        insert into sys_facilities_category(
+            code,
+            name,
+            num,
+            create_id,
+            create_date
+        )values (
+            #{code},
+            #{name},
+            #{num},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFacilitiesCategoryDetail">
+        select sfc.id,sfc.code,sfc.name,su.actual_name as create_name,sfc.num,sfc.create_date,su.tel
+        from sys_facilities_category as sfc,sys_user as su
+        where sfc.create_id = su.id and sfc.id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.butlerService.FacilitiesCategory">
+        update sys_facilities_category
+        set name = #{name},code = #{code}
+        where id = #{id}
+    </update>
+
+</mapper>
