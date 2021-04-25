@@ -227,10 +227,10 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     private void connectLiLinFace(String[] imgList, String deviceNumber, String tel, Date visitDateStart, Date visitDateEnd) {
         //判断是否成功发送给大华
         //拼接入口设备号（4个入口）
-//        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "0001");
-//        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "0002");
-//        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "0003");
-//        String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "0004");
+//        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
+//        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
+//        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
+//        String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
 
 
 

@@ -6,6 +6,8 @@ res:
   visitorsUrl: http://192.168.31.130:9001/manage/test2/test2
   #信息服务系统照片存放地址
   communityLocation: http://test.akuhotel.com:8804/static
+  #第三方对外接口token值
+  systemDataToken: 9627a35847e640cb92a7067557f09bda
 
 #立林对讲机系统（人才公寓对接）
 lilin:
