@@ -34,25 +34,43 @@ public class SysFacilitiesManageServiceImpl implements SysFacilitiesManageServic
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(FacilitiesManage facilitiesManage) {
         map = new HashMap<>();
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
 
-        facilitiesManage.setCreateId(sysUser.getId());
-        facilitiesManage.setCreateDate(new Date());
-        facilitiesManage.setIsDelete(1); //填入是否删除 默认为1.非删
-        facilitiesManage.setStatus(1); //填入默认状态 1.空置中
+            facilitiesManage.setCreateId(sysUser.getId());
+            facilitiesManage.setCreateDate(new Date());
+            facilitiesManage.setIsDelete(1); //填入是否删除 默认为1.非删
+            facilitiesManage.setStatus(1); //填入默认状态 1.空置中
 
-        int insert = sysFacilitiesManageDao.insert(facilitiesManage);
-        if (insert <= 0){
-            map.put("message","添加失败");
+            //对设施分类数量 加一
+            int inc = sysFacilitiesManageDao.incCategory(facilitiesManage.getFacilitiesCategoryId());
+            if (inc <= 0){
+                throw new RuntimeException("累加失败");
+            }
+
+            int insert = sysFacilitiesManageDao.insert(facilitiesManage);
+            if (insert <= 0){
+                throw new RuntimeException("添加失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
-        }else {
-            map.put("message","添加成功");
-            map.put("status",true);
+            return map;
         }
+
+        map.put("message","添加成功");
+        map.put("status",true);
         return map;
     }
 
@@ -101,6 +119,14 @@ public class SysFacilitiesManageServiceImpl implements SysFacilitiesManageServic
         map = new HashMap<>();
         try {
             for (int id : ids) {
+                VoFacilitiesManageDetail detailById = sysFacilitiesManageDao.findDetailById(id);
+
+                int dec = sysFacilitiesManageDao.decCategoryNum(detailById.getFacilitiesCategoryId());
+                if (dec <= 0){
+                    throw new RuntimeException("累减失败");
+                }
+                //TODO 做个条件限制，不可直接删除
+
                 int update = sysFacilitiesManageDao.delete(id);
                 if (update <= 0){
                     throw new RuntimeException("删除失败");

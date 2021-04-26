@@ -88,4 +88,15 @@
         select status from sys_facilities_manage where id = #{id}
     </select>
 
+    <update id="incCategory" parameterType="java.lang.Integer">
+        update sys_facilities_category
+        set num = num + 1
+        where id = #{facilitiesCategoryId}
+    </update>
+    <update id="decCategoryNum" parameterType="java.lang.Integer">
+        update sys_facilities_category
+        set num = num - 1
+        where id = #{facilitiesCategoryId}
+    </update>
+
 </mapper>

@@ -64,4 +64,18 @@ public interface SysFacilitiesManageDao {
      * @return 设施状态
      */
     int findStatusById(Integer id);
+
+    /**
+     * 根据设施分类主键id 累加 设施分类数量
+     * @param facilitiesCategoryId  设施分类主键id
+     * @return 影响行数
+     */
+    int incCategory(Integer facilitiesCategoryId);
+
+    /**
+     * 根据设施分类主键id 累减 设施分类数量
+     * @param facilitiesCategoryId  设施分类主键id
+     * @return 影响行数
+     */
+    int decCategoryNum(Integer facilitiesCategoryId);
 }
