@@ -8,6 +8,7 @@
         from sys_facilities_category as sfc,sys_user as su
         <where>
             sfc.create_id = su.id
+            and sfc.is_delete = 1
             <if test="name != null and name != ''">
                 and sfc.name like concat('%',#{name},'%')
             </if>
@@ -44,7 +45,7 @@
     <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFacilitiesCategoryDetail">
         select sfc.id,sfc.code,sfc.name,su.actual_name as create_name,sfc.num,sfc.create_date,su.tel
         from sys_facilities_category as sfc,sys_user as su
-        where sfc.create_id = su.id and sfc.id = #{id}
+        where sfc.create_id = su.id and sfc.id = #{id} and sfc.is_delete = 1
     </select>
 
     <update id="update" parameterType="com.api.model.butlerService.FacilitiesCategory">
@@ -55,7 +56,7 @@
 
     <update id="delete" parameterType="java.lang.Integer">
         update sys_facilities_category
-        set is_delete = #{isDelete}
+        set is_delete = 0
         where id = #{id}
     </update>
 

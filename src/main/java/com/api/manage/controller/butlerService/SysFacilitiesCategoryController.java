@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/facilitiesCategory")
-public class FacilitiesCategoryController extends ShiroExceptions {
+public class SysFacilitiesCategoryController extends ShiroExceptions {
     @Resource
     FacilitiesCategoryService facilitiesCategoryService;
 
