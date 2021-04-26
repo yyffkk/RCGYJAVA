@@ -37,7 +37,7 @@ public interface SysFacilitiesCategoryDao {
     int update(FacilitiesCategory facilitiesCategory);
 
     /**
-     * 根据设施分类主键id删除设施分类信息
+     * 根据设施分类主键id假删除设施分类信息
      * @param id 设施分类主键id
      * @return 影响行数
      */

@@ -3,7 +3,7 @@ package com.api.vo.butlerService;
 import java.util.Date;
 
 /**
- * 设施分类详情 Vo 回显
+ * 设施分类详情 Vo findDetail 回显
  */
 public class VoFacilitiesCategoryDetail {
     /**
