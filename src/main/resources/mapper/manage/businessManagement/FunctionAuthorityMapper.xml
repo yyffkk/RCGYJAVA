@@ -29,9 +29,15 @@
         from sys_jurisdiction as sj LEFT JOIN sys_role_jurisdiction as srj
         on sj.id = srj.jurisdiction_id and srj.role_id = #{roleId} where sj.parent_id = #{parentId}
     </select>
+    <select id="countByRoleIdJurisdictionId" parameterType="com.api.model.businessManagement.RoleIdAndJurisdictionId" resultType="java.lang.Integer">
+        select count(*) from sys_role_jurisdiction where role_id = #{roleId} and jurisdiction_id = #{jurisdictionId}
+    </select>
 
     <delete id="deleteJurisdictionByRoleId" parameterType="java.lang.Integer">
         delete from sys_role_jurisdiction where role_id = #{roleId}
+    </delete>
+    <delete id="deleteByRoleIdJurisdictionId" parameterType="com.api.model.businessManagement.RoleIdAndJurisdictionId">
+        delete from sys_role_jurisdiction where role_id = #{roleId} and jurisdiction_id = #{jurisdictionId}
     </delete>
 
     <insert id="insertJurisdiction" parameterType="com.api.model.businessManagement.RoleIdAndJurisdictionId">

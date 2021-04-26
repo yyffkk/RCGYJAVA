@@ -1,9 +1,6 @@
 package com.api.manage.service.businessManagement;
 
-import com.api.model.businessManagement.RoleIdAndJurisdictionIdList;
-import com.api.model.businessManagement.SearchFunctionAuthority;
-import com.api.model.businessManagement.RoleIdAndParentId;
-import com.api.model.businessManagement.UserIdAndRoleId;
+import com.api.model.businessManagement.*;
 import com.api.vo.businessManagement.VoFunctionAuthority;
 import com.api.vo.businessManagement.VoListJurisdiction;
 
@@ -20,4 +17,6 @@ public interface FunctionAuthorityService {
     List<VoListJurisdiction> listJurisdiction(RoleIdAndParentId searchListJurisdiction);
 
     Map<String, Object> updateJurisdiction(RoleIdAndJurisdictionIdList roleIdAndJurisdictionIdList);
+
+    Map<String, Object> updateOneJurisdiction(RoleIdAndJurisdictionId roleIdAndJurisdictionId);
 }

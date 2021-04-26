@@ -30,6 +30,10 @@ public class FacilitiesCategory {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 是否删除，1.非删，0.删除
+     */
+    private Integer isDelete;
 
     @Override
     public String toString() {
@@ -40,6 +44,7 @@ public class FacilitiesCategory {
                 ", num=" + num +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", isDelete=" + isDelete +
                 '}';
     }
 
@@ -91,15 +96,24 @@ public class FacilitiesCategory {
         this.createDate = createDate;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     public FacilitiesCategory() {
     }
 
-    public FacilitiesCategory(Integer id, String code, String name, Integer num, Integer createId, Date createDate) {
+    public FacilitiesCategory(Integer id, String code, String name, Integer num, Integer createId, Date createDate, Integer isDelete) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.num = num;
         this.createId = createId;
         this.createDate = createDate;
+        this.isDelete = isDelete;
     }
 }

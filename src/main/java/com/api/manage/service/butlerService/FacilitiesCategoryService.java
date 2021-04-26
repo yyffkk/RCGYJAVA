@@ -15,4 +15,6 @@ public interface FacilitiesCategoryService {
     Map<String, Object> findDetailById(Integer id);
 
     Map<String, Object> update(FacilitiesCategory facilitiesCategory);
+
+    Map<String, Object> delete(int[] ids);
 }

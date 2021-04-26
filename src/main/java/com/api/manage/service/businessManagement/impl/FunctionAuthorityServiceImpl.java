@@ -127,6 +127,37 @@ public class FunctionAuthorityServiceImpl implements FunctionAuthorityService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> updateOneJurisdiction(RoleIdAndJurisdictionId roleIdAndJurisdictionId) {
+        map = new HashMap<>();
+        int count = functionAuthorityDao.countByRoleIdJurisdictionId(roleIdAndJurisdictionId);
+        if (count < 0){
+            map.put("message","修改失败");
+            map.put("status",false);
+        }else if (count == 0){
+            //添加角色权限关联
+            int insert = functionAuthorityDao.insertJurisdiction(roleIdAndJurisdictionId);
+            if (insert <= 0){
+                map.put("message","添加失败");
+                map.put("status",false);
+            }else {
+                map.put("message","添加成功");
+                map.put("status",true);
+            }
+        }else {
+            //删除角色权限关联
+            int delete = functionAuthorityDao.deleteByRoleIdJurisdictionId(roleIdAndJurisdictionId);
+            if (delete <= 0){
+                map.put("message","删除失败");
+                map.put("status",false);
+            }else {
+                map.put("message","删除成功");
+                map.put("status",true);
+            }
+        }
+        return map;
+    }
+
     //递归查询当前角色的所有权限信息
     public List<VoListJurisdiction> findListJurisdiction(RoleIdAndParentId searchListJurisdiction){
         List<VoListJurisdiction> voListJurisdictionList = functionAuthorityDao.listJurisdiction(searchListJurisdiction);

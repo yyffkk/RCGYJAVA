@@ -12,7 +12,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebFilter(urlPatterns = "/systemData/*")
+//TODO 对外接口拦截有误
+//@WebFilter(urlPatterns = "/systemData/*")
 public class SystemDataBigScreenFilter implements Filter {
     ObjectMapper objectMapper = new ObjectMapper();
     /**

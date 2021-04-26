@@ -4,12 +4,15 @@ import com.api.manage.dao.butlerService.FacilitiesCategoryDao;
 import com.api.manage.service.butlerService.FacilitiesCategoryService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.FacilitiesCategory;
+import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.SearchFacilitiesCategory;
 import com.api.vo.butlerService.VoFacilitiesCategory;
 import com.api.vo.butlerService.VoFacilitiesCategoryDetail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -39,6 +42,7 @@ public class FacilitiesCategoryServiceImpl implements FacilitiesCategoryService 
         facilitiesCategory.setNum(0); //添加默认设施数量 0
         facilitiesCategory.setCreateId(sysUser.getId());
         facilitiesCategory.setCreateDate(new Date());
+        facilitiesCategory.setIsDelete(1); //添加默认 1.非删
 
         int insert = facilitiesCategoryDao.insert(facilitiesCategory);
         if (insert <=0){
@@ -72,6 +76,33 @@ public class FacilitiesCategoryServiceImpl implements FacilitiesCategoryService 
             map.put("message","修改成功");
             map.put("status",true);
         }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                int update = facilitiesCategoryDao.delete(id);
+                if (update <= 0){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
         return map;
     }
 }

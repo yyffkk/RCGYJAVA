@@ -36,4 +36,18 @@ public interface FunctionAuthorityDao {
      * @return 影响行数
      */
     int insertJurisdiction(RoleIdAndJurisdictionId roleIdAndJurisdictionId);
+
+    /**
+     * 根据角色id 和权限id 查询 存在数量
+     * @param roleIdAndJurisdictionId 角色id 和 权限id
+     * @return 存在数量
+     */
+    int countByRoleIdJurisdictionId(RoleIdAndJurisdictionId roleIdAndJurisdictionId);
+
+    /**
+     * 根据角色id 和权限id 删除角色权限关联信息
+     * @param roleIdAndJurisdictionId 角色id 和 权限id
+     * @return 影响行数
+     */
+    int deleteByRoleIdJurisdictionId(RoleIdAndJurisdictionId roleIdAndJurisdictionId);
 }

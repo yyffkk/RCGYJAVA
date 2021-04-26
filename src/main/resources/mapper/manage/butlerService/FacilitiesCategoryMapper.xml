@@ -29,13 +29,15 @@
             name,
             num,
             create_id,
-            create_date
+            create_date,
+            is_delete
         )values (
             #{code},
             #{name},
             #{num},
             #{createId},
-            #{createDate}
+            #{createDate},
+            #{isDelete}
         )
     </insert>
 
@@ -48,6 +50,12 @@
     <update id="update" parameterType="com.api.model.butlerService.FacilitiesCategory">
         update sys_facilities_category
         set name = #{name},code = #{code}
+        where id = #{id}
+    </update>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        update sys_facilities_category
+        set is_delete = #{isDelete}
         where id = #{id}
     </update>
 

@@ -3,10 +3,7 @@ package com.api.manage.controller.businessManagement;
 import com.api.manage.service.businessManagement.FunctionAuthorityService;
 import com.api.manage.service.system.SysRoleService;
 import com.api.manage.shiro.ShiroExceptions;
-import com.api.model.businessManagement.RoleIdAndJurisdictionIdList;
-import com.api.model.businessManagement.SearchFunctionAuthority;
-import com.api.model.businessManagement.RoleIdAndParentId;
-import com.api.model.businessManagement.UserIdAndRoleId;
+import com.api.model.businessManagement.*;
 import com.api.vo.businessManagement.VoFunctionAuthority;
 import com.api.vo.businessManagement.VoListJurisdiction;
 import com.api.vo.system.VoRole;
@@ -103,6 +100,17 @@ public class FunctionAuthorityController extends ShiroExceptions {
     @RequiresPermissions(value = {"0105","01"},logical = Logical.AND)
     public Map<String,Object> updateJurisdiction(@RequestBody RoleIdAndJurisdictionIdList roleIdAndJurisdictionIdList){
         return functionAuthorityService.updateJurisdiction(roleIdAndJurisdictionIdList);
+    }
+
+    /**
+     * 修改单个角色的权限信息
+     * @param roleIdAndJurisdictionId 角色id 和 权限id
+     * @return map
+     */
+    @PostMapping("/updateOneJurisdiction")
+    @RequiresPermissions(value = {"0105","01"},logical = Logical.AND)
+    public Map<String,Object> updateOneJurisdiction(@RequestBody RoleIdAndJurisdictionId roleIdAndJurisdictionId){
+        return functionAuthorityService.updateOneJurisdiction(roleIdAndJurisdictionId);
     }
 
 

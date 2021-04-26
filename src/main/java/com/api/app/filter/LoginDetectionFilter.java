@@ -1,18 +1,11 @@
 package com.api.app.filter;
 
-import com.api.app.dao.login.AppLoginDao;
 import com.api.app.service.login.AppLoginService;
-import com.api.app.service.login.impl.AppLoginServiceImpl;
 import com.api.model.app.AppRequestLog;
-import com.api.model.app.UserLoginToken;
 import com.api.model.basicArchives.UserResident;
 import com.api.util.GetIpUtil;
 import com.api.vo.app.UserLoginTokenVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
