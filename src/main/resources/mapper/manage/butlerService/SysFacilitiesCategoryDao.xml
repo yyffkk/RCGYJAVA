@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.api.manage.dao.butlerService.FacilitiesCategoryDao">
+<mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesCategoryDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesCategory" resultType="com.api.vo.butlerService.VoFacilitiesCategory">
         select sfc.id,sfc.code,sfc.name,su.actual_name as create_name,sfc.num,sfc.create_date
         from sys_facilities_category as sfc,sys_user as su
@@ -50,7 +50,10 @@
 
     <update id="update" parameterType="com.api.model.butlerService.FacilitiesCategory">
         update sys_facilities_category
-        set name = #{name},code = #{code}
+        set name = #{name},
+        code = #{code},
+        modify_id = #{modifyId},
+        modify_date = #{modifyDate}
         where id = #{id}
     </update>
 

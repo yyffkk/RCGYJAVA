@@ -1,10 +1,9 @@
 package com.api.manage.service.butlerService.impl;
 
-import com.api.manage.dao.butlerService.FacilitiesCategoryDao;
-import com.api.manage.service.butlerService.FacilitiesCategoryService;
+import com.api.manage.dao.butlerService.SysFacilitiesCategoryDao;
+import com.api.manage.service.butlerService.SysFacilitiesCategoryService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.FacilitiesCategory;
-import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.SearchFacilitiesCategory;
 import com.api.vo.butlerService.VoFacilitiesCategory;
 import com.api.vo.butlerService.VoFacilitiesCategoryDetail;
@@ -21,11 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class FacilitiesCategoryServiceImpl implements FacilitiesCategoryService {
+public class SysFacilitiesCategoryServiceImpl implements SysFacilitiesCategoryService {
     private static Map<String,Object> map = null;
 
     @Resource
-    FacilitiesCategoryDao facilitiesCategoryDao;
+    SysFacilitiesCategoryDao facilitiesCategoryDao;
 
     @Override
     public List<VoFacilitiesCategory> list(SearchFacilitiesCategory facilitiesCategory) {
@@ -68,6 +67,11 @@ public class FacilitiesCategoryServiceImpl implements FacilitiesCategoryService 
     @Override
     public Map<String, Object> update(FacilitiesCategory facilitiesCategory) {
         map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        facilitiesCategory.setModifyId(sysUser.getId());
+        facilitiesCategory.setModifyDate(new Date());
         int update = facilitiesCategoryDao.update(facilitiesCategory);
         if (update <=0){
             map.put("message","修改失败");

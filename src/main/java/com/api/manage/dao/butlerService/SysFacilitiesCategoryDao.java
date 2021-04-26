@@ -7,7 +7,7 @@ import com.api.vo.butlerService.VoFacilitiesCategoryDetail;
 
 import java.util.List;
 
-public interface FacilitiesCategoryDao {
+public interface SysFacilitiesCategoryDao {
     /**
      * 查询所有的设施分类（包含搜索条件）
      * @param facilitiesCategory 设施分类搜索条件

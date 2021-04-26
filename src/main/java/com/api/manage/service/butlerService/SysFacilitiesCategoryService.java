@@ -7,7 +7,7 @@ import com.api.vo.butlerService.VoFacilitiesCategory;
 import java.util.List;
 import java.util.Map;
 
-public interface FacilitiesCategoryService {
+public interface SysFacilitiesCategoryService {
     List<VoFacilitiesCategory> list(SearchFacilitiesCategory facilitiesCategory);
 
     Map<String, Object> insert(FacilitiesCategory facilitiesCategory);

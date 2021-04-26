@@ -1,12 +1,11 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.service.butlerService.FacilitiesCategoryService;
+import com.api.manage.service.butlerService.SysFacilitiesCategoryService;
 import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.FacilitiesCategory;
 import com.api.model.butlerService.SearchFacilitiesCategory;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoFacilitiesCategory;
-import com.api.vo.butlerService.VoUserAdvice;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
@@ -25,7 +24,7 @@ import java.util.Map;
 @RequestMapping("manage/facilitiesCategory")
 public class SysFacilitiesCategoryController extends ShiroExceptions {
     @Resource
-    FacilitiesCategoryService facilitiesCategoryService;
+    SysFacilitiesCategoryService facilitiesCategoryService;
 
     /**
      * 查询所有的设施分类（包含搜索条件）
@@ -84,6 +83,7 @@ public class SysFacilitiesCategoryController extends ShiroExceptions {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return facilitiesCategoryService.delete(ids.getIds());
     }

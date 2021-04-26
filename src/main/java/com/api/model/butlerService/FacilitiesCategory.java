@@ -31,6 +31,14 @@ public class FacilitiesCategory {
      */
     private Date createDate;
     /**
+     * 修改人
+     */
+    private Integer modifyId;
+    /**
+     * 修改时间
+     */
+    private Date modifyDate;
+    /**
      * 是否删除，1.非删，0.删除
      */
     private Integer isDelete;
@@ -44,6 +52,8 @@ public class FacilitiesCategory {
                 ", num=" + num +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", modifyId=" + modifyId +
+                ", modifyDate=" + modifyDate +
                 ", isDelete=" + isDelete +
                 '}';
     }
@@ -96,6 +106,22 @@ public class FacilitiesCategory {
         this.createDate = createDate;
     }
 
+    public Integer getModifyId() {
+        return modifyId;
+    }
+
+    public void setModifyId(Integer modifyId) {
+        this.modifyId = modifyId;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
     public Integer getIsDelete() {
         return isDelete;
     }
@@ -107,13 +133,15 @@ public class FacilitiesCategory {
     public FacilitiesCategory() {
     }
 
-    public FacilitiesCategory(Integer id, String code, String name, Integer num, Integer createId, Date createDate, Integer isDelete) {
+    public FacilitiesCategory(Integer id, String code, String name, Integer num, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.num = num;
         this.createId = createId;
         this.createDate = createDate;
+        this.modifyId = modifyId;
+        this.modifyDate = modifyDate;
         this.isDelete = isDelete;
     }
 }
