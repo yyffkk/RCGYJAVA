@@ -180,4 +180,14 @@ public class UploadController {
         return uploadService.uploadQuestionnaireCoverPhoto(file);
     }
 
+    /**
+     * 上传设施分类照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadFacilitiesCategory")
+    public Map<String,Object> uploadFacilitiesCategory(MultipartFile file){
+        return uploadService.uploadFacilitiesCategory(file);
+    }
+
 }

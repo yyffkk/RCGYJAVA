@@ -42,4 +42,11 @@ public interface SysFacilitiesCategoryDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据设施分类主键id 查询未删除设施数量
+     * @param id 设施分类主键id
+     * @return 未删除设施数量
+     */
+    int countFacilitiesByCategoryId(int id);
 }

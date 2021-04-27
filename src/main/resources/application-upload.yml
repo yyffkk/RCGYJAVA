@@ -51,6 +51,9 @@ prop:
   #收费管理-固定金额分摊：固定金额分摊缴纳凭证，照片上传路径
   upload-voucher: /img/voucher/
 
+  #管家服务-设施分类：设施分类照片上传路径
+  upload-facilities-category: /img/facilitiesCategory/
+
   #App-个人资料：头像照片上传路径
   upload-app-head-sculpture: /img/headSculpture/
 
@@ -60,6 +63,8 @@ prop:
   upload-butler-app-inspection-face: /img/inspectionFace/
   #ButlerApp-巡检管理：巡更人员拍摄现场
   upload-butler-app-inspection-space: /img/inspectionSpace/
+
+
 
   #H5页面-访客邀请自拍照上传
   upload-h5-visit: /img/h5/visit/

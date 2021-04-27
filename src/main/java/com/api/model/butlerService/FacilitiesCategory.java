@@ -1,5 +1,8 @@
 package com.api.model.butlerService;
 
+
+import java.sql.Time;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -23,6 +26,14 @@ public class FacilitiesCategory {
      */
     private Integer num;
     /**
+     * 开放开始时间
+     */
+    private Time openStartDate;
+    /**
+     * 开放结束时间
+     */
+    private Time openEndDate;
+    /**
      * 创建人id
      */
     private Integer createId;
@@ -42,6 +53,10 @@ public class FacilitiesCategory {
      * 是否删除，1.非删，0.删除
      */
     private Integer isDelete;
+    /**
+     * 照片路径数组
+     */
+    private String[] imgUrls;
 
     @Override
     public String toString() {
@@ -50,11 +65,14 @@ public class FacilitiesCategory {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", num=" + num +
+                ", openStartDate=" + openStartDate +
+                ", openEndDate=" + openEndDate +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
                 ", isDelete=" + isDelete +
+                ", imgUrls=" + Arrays.toString(imgUrls) +
                 '}';
     }
 
@@ -88,6 +106,22 @@ public class FacilitiesCategory {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public Time getOpenStartDate() {
+        return openStartDate;
+    }
+
+    public void setOpenStartDate(Time openStartDate) {
+        this.openStartDate = openStartDate;
+    }
+
+    public Time getOpenEndDate() {
+        return openEndDate;
+    }
+
+    public void setOpenEndDate(Time openEndDate) {
+        this.openEndDate = openEndDate;
     }
 
     public Integer getCreateId() {
@@ -130,18 +164,29 @@ public class FacilitiesCategory {
         this.isDelete = isDelete;
     }
 
+    public String[] getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String[] imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public FacilitiesCategory() {
     }
 
-    public FacilitiesCategory(Integer id, String code, String name, Integer num, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
+    public FacilitiesCategory(Integer id, String code, String name, Integer num, Time openStartDate, Time openEndDate, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String[] imgUrls) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.num = num;
+        this.openStartDate = openStartDate;
+        this.openEndDate = openEndDate;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
         this.isDelete = isDelete;
+        this.imgUrls = imgUrls;
     }
 }

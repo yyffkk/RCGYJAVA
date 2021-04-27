@@ -1,6 +1,10 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
+import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 设施分类详情 Vo findDetail 回显
@@ -23,6 +27,14 @@ public class VoFacilitiesCategoryDetail {
      */
     private Integer num;
     /**
+     * 开放开始时间
+     */
+    private Time openStartDate;
+    /**
+     * 开放结束时间
+     */
+    private Time openEndDate;
+    /**
      * 添加人
      */
     private String createName;
@@ -34,6 +46,10 @@ public class VoFacilitiesCategoryDetail {
      * 联系电话
      */
     private String tel;
+    /**
+     * 分类照片信息
+     */
+    private List<VoResourcesImg> files;
 
     @Override
     public String toString() {
@@ -42,9 +58,12 @@ public class VoFacilitiesCategoryDetail {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", num=" + num +
+                ", openStartDate=" + openStartDate +
+                ", openEndDate=" + openEndDate +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
                 ", tel='" + tel + '\'' +
+                ", files=" + files +
                 '}';
     }
 
@@ -80,6 +99,22 @@ public class VoFacilitiesCategoryDetail {
         this.num = num;
     }
 
+    public Time getOpenStartDate() {
+        return openStartDate;
+    }
+
+    public void setOpenStartDate(Time openStartDate) {
+        this.openStartDate = openStartDate;
+    }
+
+    public Time getOpenEndDate() {
+        return openEndDate;
+    }
+
+    public void setOpenEndDate(Time openEndDate) {
+        this.openEndDate = openEndDate;
+    }
+
     public String getCreateName() {
         return createName;
     }
@@ -104,16 +139,27 @@ public class VoFacilitiesCategoryDetail {
         this.tel = tel;
     }
 
+    public List<VoResourcesImg> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<VoResourcesImg> files) {
+        this.files = files;
+    }
+
     public VoFacilitiesCategoryDetail() {
     }
 
-    public VoFacilitiesCategoryDetail(Integer id, String code, String name, Integer num, String createName, Date createDate, String tel) {
+    public VoFacilitiesCategoryDetail(Integer id, String code, String name, Integer num, Time openStartDate, Time openEndDate, String createName, Date createDate, String tel, List<VoResourcesImg> files) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.num = num;
+        this.openStartDate = openStartDate;
+        this.openEndDate = openEndDate;
         this.createName = createName;
         this.createDate = createDate;
         this.tel = tel;
+        this.files = files;
     }
 }
