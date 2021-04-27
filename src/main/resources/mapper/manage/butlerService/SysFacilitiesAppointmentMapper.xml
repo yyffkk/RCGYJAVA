@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesAppointmentDao">
+
+    <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesAppointment" resultType="com.api.vo.butlerService.VoFacilitiesAppointment">
+        select * from (
+            select sfa.id,sfa.code,sfc.name as facilities_category_name,sfm.name as facilities_name,
+            su.actual_name as appointment_name,su.tel as appointment_tel,
+            sfa.appointment_start_date,sfa.appointment_end_date,sfa.status,sfa.create_date
+            from sys_facilities_appointment as sfa,sys_facilities_manage as sfm,sys_facilities_category as sfc,sys_user as su
+            <where>
+                sfa.facilities_manage_id = sfm.id
+                and sfm.facilities_category_id = sfc.id
+                and sfa.appointment_id = su.id
+                <if test="code != null and code != ''">
+                    and sfa.code = #{code}
+                </if>
+                <if test="facilitiesCategoryId != null">
+                    and sfc.id = #{facilitiesCategoryId}
+                </if>
+                <if test="appointmentId != null">
+                    and sfa.appointment_id = #{appointmentId}
+                </if>
+                <if test="status != null">
+                    and sfa.status = #{status}
+                </if>
+                <if test="createStartDate != null">
+                    and sfa.create_date <![CDATA[ >= ]]> #{createStartDate}
+                </if>
+                <if test="createEndDate != null">
+                    and sfa.create_date <![CDATA[ <= ]]> #{createEndDate}
+                </if>
+            </where>
+        ) as T
+        <where>
+            <if test="appointmentStartDate != null and appointmentEndDate == null">
+                T.appointment_end_date <![CDATA[ >= ]]> #{appointmentStartDate}
+            </if>
+            <if test="appointmentStartDate == null and appointmentEndDate != null">
+                T.appointment_start_date <![CDATA[ <= ]]> #{appointmentEndDate}
+            </if>
+            <if test="appointmentStartDate != null and appointmentEndDate != null">
+                T.appointment_start_date BETWEEN #{appointmentStartDate} and #{appointmentEndDate}
+                or T.appointment_end_date BETWEEN #{appointmentStartDate} and #{appointmentEndDate}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.FacilitiesAppointment">
+        insert into sys_facilities_appointment(
+            code,
+            estate_id,
+            facilities_manage_id,
+            status,
+            appointment_id,
+            appointment_start_date,
+            appointment_end_date,
+            create_id,
+            create_date
+        )values (
+            #{code},
+            #{estateId},
+            #{facilitiesManageId},
+            #{status},
+            #{appointmentId},
+            #{appointmentStartDate},
+            #{appointmentEndDate},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+</mapper>
