@@ -105,7 +105,7 @@ public class SysFacilitiesManageServiceImpl implements SysFacilitiesManageServic
         if (voFacilitiesManageDetail != null && voFacilitiesManageDetail.getStatus() == 3){
             List<VoFacilitiesManageSituation> voFacilitiesManageSituation = sysFacilitiesManageDao.findSituationById(voFacilitiesManageDetail.getId());
             voFacilitiesManageFBI.setSituation(voFacilitiesManageSituation.get(0));
-            //TODO 照片信息
+            //TODO 设施反馈情况照片信息
         }
         map.put("message","请求成功");
         map.put("status",true);
