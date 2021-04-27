@@ -261,4 +261,26 @@ public class SystemDataServiceImpl implements SystemDataService {
         return inspectionRecordVos;
     }
 
+    @Override
+    public SDReportDispatchAllVo findReportDispatch() {
+        SDReportDispatchAllVo sdReportDispatchAllVo = new SDReportDispatchAllVo();
+        //查询所有的报修工单信息
+        List<SDReportDispatchVo> reportDispatch = systemDataDao.findReportDispatch();
+        sdReportDispatchAllVo.setReportDispatchVoList(reportDispatch);
+        //查询已处理数量
+        int handledNum = systemDataDao.findHandledNum();
+        sdReportDispatchAllVo.setHandledNum(handledNum);
+        //查询未处理数量
+        int pendingNum = systemDataDao.findPendingNum();
+        sdReportDispatchAllVo.setPendingNum(pendingNum);
+        //查询公区报修数量
+        int publicTypeNum = systemDataDao.findPublicTypeNum();
+        sdReportDispatchAllVo.setPublicTypeNum(publicTypeNum);
+        //查询家庭报修数量
+        int familyTypeNum = systemDataDao.findFamilyTypeNum();
+        sdReportDispatchAllVo.setFamilyTypeNum(familyTypeNum);
+
+        return sdReportDispatchAllVo;
+    }
+
 }

@@ -171,6 +171,29 @@
         from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_user as su
         where sie.inspection_plan_id = sip.id and sip.inspector = su.id
     </select>
+    <select id="findReportDispatch" resultType="com.api.vo.systemDataBigScreen.SDReportDispatchVo">
+        select sdl.id,sdl.code,
+        (case sdl.status <![CDATA[ < ]]> 4 when true then 1 else 2 end) as status,
+        (case sdl.end_date is null when true then srr.create_date else sdl.end_date end) as date_time
+        from sys_report_repair as srr,sys_dispatch_list as sdl
+        where sdl.id = srr.dispatch_list_id
+    </select>
+    <select id="findHandledNum" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list
+        where status <![CDATA[ < ]]> 4
+    </select>
+    <select id="findPendingNum" resultType="java.lang.Integer">
+        select count(*) from sys_dispatch_list
+        where status <![CDATA[ >= ]]> 4
+    </select>
+    <select id="findPublicTypeNum" resultType="java.lang.Integer">
+        select count(*) from sys_report_repair
+        where type = 1
+    </select>
+    <select id="findFamilyTypeNum" resultType="java.lang.Integer">
+        select count(*) from sys_report_repair
+        where type = 2
+    </select>
 
 
 </mapper>

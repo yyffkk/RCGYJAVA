@@ -218,5 +218,31 @@ public class SystemDataController {
         return map;
     }
 
+    /**
+     * 查询报修工单信息
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/findReportDispatch")
+    public Map<String,Object> findReportDispatch(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        SDReportDispatchAllVo sdReportDispatchAllVo = systemDataService.findReportDispatch();
+        PageInfo<SDReportDispatchVo> pageInfo = new PageInfo<>(sdReportDispatchAllVo.getReportDispatchVoList());
+        Map<String,Object> map = new HashMap<>();
+        //已处理数量
+        map.put("handledNum",sdReportDispatchAllVo.getHandledNum());
+        //未处理数量
+        map.put("pendingNum",sdReportDispatchAllVo.getPendingNum());
+        //公区报修数量
+        map.put("publicTypeNum",sdReportDispatchAllVo.getPublicTypeNum());
+        //家庭报修数量
+        map.put("familyTypeNum",sdReportDispatchAllVo.getFamilyTypeNum());
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
 
 }

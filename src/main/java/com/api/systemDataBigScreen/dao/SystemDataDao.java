@@ -199,4 +199,33 @@ public interface SystemDataDao {
      */
     List<SDInspectionRecordVo> findAllInspectionRecord();
 
+    /**
+     * 查询所有的报修工单信息
+     * @return 报修工单信息
+     */
+    List<SDReportDispatchVo> findReportDispatch();
+
+    /**
+     * 查询已处理数量
+     * @return 已处理数量
+     */
+    int findHandledNum();
+
+    /**
+     * 查询未处理数量
+     * @return 未处理数量
+     */
+    int findPendingNum();
+
+    /**
+     * 查询公区报修数量
+     * @return 有偿类型数量
+     */
+    int findPublicTypeNum();
+
+    /**
+     * 查询家庭报修数量
+     * @return 无偿类型数量
+     */
+    int findFamilyTypeNum();
 }

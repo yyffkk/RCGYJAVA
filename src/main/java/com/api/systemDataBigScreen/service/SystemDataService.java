@@ -40,4 +40,6 @@ public interface SystemDataService {
 
     List<SDInspectionRecordVo> findAllInspectionRecord();
 
+    SDReportDispatchAllVo findReportDispatch();
+
 }
