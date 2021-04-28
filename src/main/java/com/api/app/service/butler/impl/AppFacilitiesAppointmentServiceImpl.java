@@ -3,6 +3,7 @@ package com.api.app.service.butler.impl;
 import com.api.app.dao.butler.AppFacilitiesAppointmentDao;
 import com.api.app.service.butler.AppFacilitiesAppointmentService;
 import com.api.manage.dao.butlerService.SysFacilitiesAppointmentDao;
+import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
 import com.api.util.IdWorker;
@@ -72,6 +73,28 @@ public class AppFacilitiesAppointmentServiceImpl implements AppFacilitiesAppoint
         map.put("data",facilities);
         map.put("message","请求成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> useStop(AppointmentStopUseFactor appointmentStopUseFactor) {
+        map = new HashMap<>();
+        Integer status = facilitiesAppointmentDao.findStatusById(appointmentStopUseFactor.getFacilitiesAppointmentId());
+        if (status != 2){
+            map.put("message","此状态不可结束使用");
+            map.put("status",false);
+            return map;
+        }
+
+        appointmentStopUseFactor.setUseEndDate(new Date()); //填入结束时间
+        int update = facilitiesAppointmentDao.useStop(appointmentStopUseFactor);
+        if (update <= 0){
+            map.put("message","结束失败");
+            map.put("status",false);
+        }else {
+            map.put("message","结束成功");
+            map.put("status",true);
+        }
         return map;
     }
 }

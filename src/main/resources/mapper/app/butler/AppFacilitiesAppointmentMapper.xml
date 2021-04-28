@@ -33,4 +33,15 @@
     <select id="findFacilitiesByCategoryId" parameterType="java.lang.Integer" resultType="com.api.vo.app.IdAndName">
         select id,name from sys_facilities_manage where facilities_category_id = #{categoryId}
     </select>
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from sys_facilities_appointment where id = #{facilitiesAppointmentId}
+    </select>
+
+    <update id="useStop" parameterType="com.api.model.app.AppointmentStopUseFactor">
+        update sys_facilities_appointment
+        set status = 5,
+        use_end_date = #{useEndDate}
+        where id = #{facilitiesAppointmentId} and appointment_id = #{id}
+    </update>
+
 </mapper>

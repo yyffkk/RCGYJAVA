@@ -1,5 +1,6 @@
 package com.api.app.dao.butler;
 
+import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
 import com.api.vo.app.AppFacilitiesCategoryVo;
@@ -27,4 +28,18 @@ public interface AppFacilitiesAppointmentDao {
      * @return 设施id和name
      */
     List<IdAndName> findFacilitiesByCategoryId(Integer categoryId);
+
+    /**
+     * 结束使用
+     * @param appointmentStopUseFactor 设施预约结束使用条件
+     * @return 影响行数
+     */
+    int useStop(AppointmentStopUseFactor appointmentStopUseFactor);
+
+    /**
+     * 根据设施预约主键id查询预约状态
+     * @param facilitiesAppointmentId 设施预约主键id
+     * @return 预约状态
+     */
+    Integer findStatusById(Integer facilitiesAppointmentId);
 }

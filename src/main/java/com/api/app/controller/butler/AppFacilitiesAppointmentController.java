@@ -1,9 +1,9 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppFacilitiesAppointmentService;
+import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
-import com.api.vo.app.AppEventVotingVo;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
 import com.api.vo.app.AppFacilitiesCategoryVo;
 import com.github.pagehelper.PageHelper;
@@ -85,4 +85,13 @@ public class AppFacilitiesAppointmentController {
         return facilitiesAppointmentService.findFacilitiesByCategoryId(categoryId);
     }
 
+    /**
+     * 结束使用
+     * @param appointmentStopUseFactor 设施预约结束使用条件
+     * @return map
+     */
+    @GetMapping("/useStop")
+    public Map<String,Object> useStop(AppointmentStopUseFactor appointmentStopUseFactor){
+        return facilitiesAppointmentService.useStop(appointmentStopUseFactor);
+    }
 }

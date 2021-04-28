@@ -1,5 +1,6 @@
 package com.api.app.service.butler;
 
+import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
@@ -16,4 +17,7 @@ public interface AppFacilitiesAppointmentService {
     List<AppFacilitiesCategoryVo> findCategoryList();
 
     Map<String, Object> findFacilitiesByCategoryId(Integer categoryId);
+
+    Map<String, Object> useStop(AppointmentStopUseFactor appointmentStopUseFactor);
+
 }
