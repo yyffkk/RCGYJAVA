@@ -5,6 +5,7 @@ import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
 import com.api.vo.app.AppEventVotingVo;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
+import com.api.vo.app.AppFacilitiesCategoryVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,34 @@ public class AppFacilitiesAppointmentController {
         //填入预约人id
         facilitiesAppointment.setAppointmentId(id);
         return facilitiesAppointmentService.insert(facilitiesAppointment);
+    }
+
+    /**
+     * 查询所有的设施分类信息
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/findCategoryList")
+    public Map<String,Object> findCategoryList(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<AppFacilitiesCategoryVo> facilitiesCategoryVoList = facilitiesAppointmentService.findCategoryList();
+        PageInfo<AppFacilitiesCategoryVo> pageInfo = new PageInfo<>(facilitiesCategoryVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 根据设施分类主键id查询设施信息
+     * @param categoryId 设施分类主键id
+     * @return map
+     */
+    @GetMapping("/findFacilitiesByCategoryId")
+    public Map<String,Object> findFacilitiesByCategoryId(Integer categoryId){
+        return facilitiesAppointmentService.findFacilitiesByCategoryId(categoryId);
     }
 
 }

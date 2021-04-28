@@ -27,4 +27,10 @@
         </where>
 
     </select>
+    <select id="findCategoryList" resultType="com.api.vo.app.AppFacilitiesCategoryVo">
+        select id,name,open_start_date,open_end_date,num from sys_facilities_category where is_delete = 1
+    </select>
+    <select id="findFacilitiesByCategoryId" parameterType="java.lang.Integer" resultType="com.api.vo.app.IdAndName">
+        select id,name from sys_facilities_manage where facilities_category_id = #{categoryId}
+    </select>
 </mapper>

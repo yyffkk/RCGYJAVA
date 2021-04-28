@@ -1,15 +1,15 @@
 package com.api.vo.app;
 
 /**
- * 用户id 和 用户名称
+ * 主键id 和 名称
  */
 public class IdAndName {
     /**
-     * 用户id
+     * 主键id
      */
     private Integer id;
     /**
-     * 用户名称
+     * 名称
      */
     private String name;
 

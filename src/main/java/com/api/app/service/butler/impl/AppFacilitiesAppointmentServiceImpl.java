@@ -6,7 +6,11 @@ import com.api.manage.dao.butlerService.SysFacilitiesAppointmentDao;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
 import com.api.util.IdWorker;
+import com.api.util.UploadUtil;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
+import com.api.vo.app.AppFacilitiesCategoryVo;
+import com.api.vo.app.IdAndName;
+import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -45,6 +49,29 @@ public class AppFacilitiesAppointmentServiceImpl implements AppFacilitiesAppoint
             map.put("message","添加成功");
             map.put("status",true);
         }
+        return map;
+    }
+
+    @Override
+    public List<AppFacilitiesCategoryVo> findCategoryList() {
+        List<AppFacilitiesCategoryVo> facilitiesCategoryVoList = facilitiesAppointmentDao.findCategoryList();
+        if (facilitiesCategoryVoList != null && facilitiesCategoryVoList.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (AppFacilitiesCategoryVo appFacilitiesCategoryVo : facilitiesCategoryVoList) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysFacilitiesCategory", appFacilitiesCategoryVo.getId(), "categoryImg");
+                appFacilitiesCategoryVo.setImgUrls(imgByDate);
+            }
+        }
+        return facilitiesCategoryVoList;
+    }
+
+    @Override
+    public Map<String, Object> findFacilitiesByCategoryId(Integer categoryId) {
+        map = new HashMap<>();
+        List<IdAndName> facilities = facilitiesAppointmentDao.findFacilitiesByCategoryId(categoryId);
+        map.put("data",facilities);
+        map.put("message","请求成功");
+        map.put("status",true);
         return map;
     }
 }

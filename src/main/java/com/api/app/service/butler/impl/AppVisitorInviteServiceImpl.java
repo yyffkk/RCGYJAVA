@@ -342,7 +342,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             if (execute.isSuccessful()) {
                 ResponseBody body = execute.body();
                 if (body != null) {
-                    //获取返回值//TODO 4004 设备不存在
+                    //获取返回值//TODO 4004 设备不存在 或者 亲！物业不在线
                     String result = body.string();
                     log.info(result);
                     JSONObject jsonObject = new JSONObject(result);

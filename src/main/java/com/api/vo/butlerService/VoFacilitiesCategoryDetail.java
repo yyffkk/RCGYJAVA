@@ -15,11 +15,11 @@ public class VoFacilitiesCategoryDetail {
      */
     private Integer id;
     /**
-     * 设施编号
+     * 设施分类编号
      */
     private String code;
     /**
-     * 设施名称
+     * 设施分类名称
      */
     private String name;
     /**
