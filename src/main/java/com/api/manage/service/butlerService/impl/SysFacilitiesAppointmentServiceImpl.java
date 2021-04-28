@@ -53,8 +53,26 @@ public class SysFacilitiesAppointmentServiceImpl implements SysFacilitiesAppoint
     }
 
     @Override
-    public Map<String, Object> nullify(Integer id) {
+    public Map<String, Object> nullify(FacilitiesAppointment facilitiesAppointment) {
         map = new HashMap<>();
-        return null;
+        int update = facilitiesAppointmentDao.nullify(facilitiesAppointment);
+        if (update <= 0){
+            map.put("message","作废失败");
+            map.put("status",false);
+        }else {
+            map.put("message","作废成功");
+            map.put("status",true);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> countAppointmentNow() {
+        map = new HashMap<>();
+        int num = facilitiesAppointmentDao.countAppointmentNow(new Date());
+        map.put("num",num);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
     }
 }

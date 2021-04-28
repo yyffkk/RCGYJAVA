@@ -72,4 +72,16 @@
         )
     </insert>
 
+    <update id="nullify" parameterType="com.api.model.butlerService.FacilitiesAppointment">
+        update sys_facilities_appointment
+        set status = 3,
+        nullify_reason = #{nullifyReason}
+        where id = #{id}
+    </update>
+
+    <select id="countAppointmentNow" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select count(*) from sys_facilities_appointment where DATE(create_date) = DATE(#{date})
+    </select>
+
+
 </mapper>

@@ -52,13 +52,21 @@ public class SysFacilitiesAppointmentController {
 
     /**
      * 作废设施预约信息
-     * @param id 设施预约信息主键id
+     * @param facilitiesAppointment 设施预约信息主键id 和 作废原因
      * @return map
      */
-    @GetMapping("/nullify")
-    public Map<String,Object> nullify(Integer id){
-        return facilitiesAppointmentService.nullify(id);
+    @PostMapping("/nullify")
+    public Map<String,Object> nullify(@RequestBody FacilitiesAppointment facilitiesAppointment){
+        return facilitiesAppointmentService.nullify(facilitiesAppointment);
     }
 
+    /**
+     * 查询今日新增预约数量
+     * @return map
+     */
+    @GetMapping("/countAppointmentNow")
+    public Map<String,Object> countAppointmentNow(){
+        return facilitiesAppointmentService.countAppointmentNow();
+    }
 
 }

@@ -4,6 +4,7 @@ import com.api.model.butlerService.FacilitiesAppointment;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SysFacilitiesAppointmentDao {
@@ -20,4 +21,18 @@ public interface SysFacilitiesAppointmentDao {
      * @return 影响行数
      */
     int insert(FacilitiesAppointment facilitiesAppointment);
+
+    /**
+     * 作废设施预约信息
+     * @param facilitiesAppointment 设施预约管理model
+     * @return 影响行数
+     */
+    int nullify(FacilitiesAppointment facilitiesAppointment);
+
+    /**
+     * 查询今日新增预约数量
+     * @param date 当前时间
+     * @return 影响行数
+     */
+    int countAppointmentNow(Date date);
 }

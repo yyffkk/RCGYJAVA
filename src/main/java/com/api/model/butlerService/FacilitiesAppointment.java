@@ -50,6 +50,10 @@ public class FacilitiesAppointment {
      * 用户反馈内容
      */
     private String feedback;
+    /**
+     * 作废原因
+     */
+    private String nullifyReason;
 
     @Override
     public String toString() {
@@ -65,6 +69,7 @@ public class FacilitiesAppointment {
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", feedback='" + feedback + '\'' +
+                ", nullifyReason='" + nullifyReason + '\'' +
                 '}';
     }
 
@@ -156,10 +161,18 @@ public class FacilitiesAppointment {
         this.feedback = feedback;
     }
 
+    public String getNullifyReason() {
+        return nullifyReason;
+    }
+
+    public void setNullifyReason(String nullifyReason) {
+        this.nullifyReason = nullifyReason;
+    }
+
     public FacilitiesAppointment() {
     }
 
-    public FacilitiesAppointment(Integer id, String code, Integer estateId, Integer facilitiesManageId, Integer status, Integer appointmentId, Date appointmentStartDate, Date appointmentEndDate, Integer createId, Date createDate, String feedback) {
+    public FacilitiesAppointment(Integer id, String code, Integer estateId, Integer facilitiesManageId, Integer status, Integer appointmentId, Date appointmentStartDate, Date appointmentEndDate, Integer createId, Date createDate, String feedback, String nullifyReason) {
         this.id = id;
         this.code = code;
         this.estateId = estateId;
@@ -171,5 +184,6 @@ public class FacilitiesAppointment {
         this.createId = createId;
         this.createDate = createDate;
         this.feedback = feedback;
+        this.nullifyReason = nullifyReason;
     }
 }

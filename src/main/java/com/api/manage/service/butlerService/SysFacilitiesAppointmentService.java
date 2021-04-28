@@ -12,5 +12,8 @@ public interface SysFacilitiesAppointmentService {
 
     Map<String, Object> insert(FacilitiesAppointment facilitiesAppointment);
 
-    Map<String, Object> nullify(Integer id);
+    Map<String, Object> nullify(FacilitiesAppointment facilitiesAppointment);
+
+    Map<String, Object> countAppointmentNow();
+
 }
