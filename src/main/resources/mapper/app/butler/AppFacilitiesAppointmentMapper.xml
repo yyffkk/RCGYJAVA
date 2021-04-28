@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppFacilitiesAppointmentDao">
+
+    <select id="list" parameterType="com.api.model.app.SearchAppFacilitiesAppointment" resultType="com.api.vo.app.AppFacilitiesAppointmentVo">
+        select * from (
+            select sfa.id,sfa.code,sfm.name as facilities_name,sfm.address,sfa.appointment_start_date,sfa.appointment_end_date,sfa.use_end_date,
+            (
+                case sfa.status = 1 and sfa.appointment_start_date <![CDATA[ < ]]> NOW() when true then 3 else
+                (
+                    case sfa.status = 2 and sfa.appointment_end_date <![CDATA[ < ]]> NOW() when true then 5 else sfa.status end
+                )
+            end
+            ) as status
+            from sys_facilities_appointment as sfa,sys_facilities_manage as sfm
+            where sfa.facilities_manage_id = sfm.id
+        ) as T
+        <where>
+            <if test="facilitiesType == 1">
+                and T.status <![CDATA[ < ]]> 3
+            </if>
+            <if test="facilitiesType == 2">
+                and T.status <![CDATA[ >= ]]> 3
+            </if>
+        </where>
+
+    </select>
+</mapper>
