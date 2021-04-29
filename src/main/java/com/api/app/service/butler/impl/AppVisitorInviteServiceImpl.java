@@ -137,7 +137,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             if (new Date().getTime() > effectiveDate.getTime()){ //如果当前时间超出有效截止时间，则提示该连接已失效
                 throw new RuntimeException("该连接已失效");
             }
-            if (new Date().getTime() > visitorsInviteSubmit.getVisitDateStart().getTime()){//如果当前时间大于到访时间开始，则提示预计到访时间不可小于当前时间
+            if (new Date().getTime() - 24*60*60*1000 > visitorsInviteSubmit.getVisitDateStart().getTime()){//如果当前时间大于到访时间开始，则提示预计到访时间不可小于当前时间
                 throw new RuntimeException("预计到访时间不可小于当前时间");
             }
             UploadUtil uploadUtil = new UploadUtil();
@@ -177,7 +177,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     public Map<String, Object> QRSubmit(AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit) {
         map = new HashMap<>();
         try {
-            if (new Date().getTime() > qrVisitorsInviteSubmit.getVisitDateStart().getTime()){//如果当前时间大于到访时间开始，则提示预计到访时间不可小于当前时间
+            if (new Date().getTime() - 24*60*60*1000 > qrVisitorsInviteSubmit.getVisitDateStart().getTime()){//如果当前时间大于到访时间开始，则提示预计到访时间不可小于当前时间
                 throw new RuntimeException("预计到访时间不可小于当前时间");
             }
             qrVisitorsInviteSubmit.setCreateId(-1); //扫门口二维码填写，创建人默认为-1
