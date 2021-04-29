@@ -3,11 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.UserVisitorsDao">
+
     <select id="list" parameterType="com.api.model.butlerService.SearchUserVisitors" resultType="com.api.vo.butlerService.VoUserVisitors">
-        SELECT uv.*,cbue.room_number as room_number,cbu.no as unit_no,cb.no as estate_no
-        from user_visitors as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        SELECT uv.id,uv.name,uv.tel,uv.car_number as car_num,uv.visit_date_start as expected_visit_date,cbue.room_number as room_number,cbu.no as unit_no,cb.no as estate_no
+        from user_visitors_new as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         <where>
-            uv.building_unit_estate_id = cbue.id
+            uv.estate_id = cbue.id
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
             <if test="roomNumber != null and roomNumber != ''">
@@ -26,40 +27,81 @@
                 and uv.sex = #{sex}
             </if>
             <if test="carNum != null and carNum != ''">
-                and uv.car_num like concat('%',#{carNum},'%')
+                and uv.car_number like concat('%',#{carNum},'%')
             </if>
             <if test="expectedVisitDateStart != null">
-                and uv.expected_visit_date <![CDATA[ >= ]]> #{expectedVisitDateStart}
+                and uv.visit_date_start <![CDATA[ >= ]]> #{expectedVisitDateStart}
             </if>
             <if test="expectedVisitDateEnd != null">
-                and uv.expected_visit_date <![CDATA[ <= ]]> #{expectedVisitDateEnd}
+                and uv.visit_date_start <![CDATA[ <= ]]> #{expectedVisitDateEnd}
             </if>
-            <if test="visitDateStart != null">
-                and uv.visit_date <![CDATA[ >= ]]> #{visitDateStart}
+            <if test="type == 1">
+                and uv.type = -1
             </if>
-            <if test="visitDateEnd != null">
-                and uv.visit_date <![CDATA[ <= ]]> #{visitDateEnd}
-            </if>
-            <if test="visitorStatus != null">
-                and uv.visitor_status = #{visitorStatus}
-            </if>
-            <if test="type != null">
-                and uv.type = #{type}
+            <if test="type == 2">
+                and uv.type > 0
             </if>
         </where>
-        <if test="appointmentVisitDateSort == 1">
-            order by uv.expected_visit_date DESC
-        </if>
-        <if test="appointmentVisitDateSort == 2">
-            order by uv.expected_visit_date
-        </if>
-        <if test="actualVisitDateSort == 1">
-            order by uv.visit_date DESC
-        </if>
-        <if test="actualVisitDateSort == 2">
-            order by uv.visit_date
-        </if>
+        order by uv.create_date DESC
     </select>
+<!--    旧版访客管理list查询-->
+<!--    <select id="list" parameterType="com.api.model.butlerService.SearchUserVisitors" resultType="com.api.vo.butlerService.VoUserVisitors">-->
+<!--        SELECT uv.*,cbue.room_number as room_number,cbu.no as unit_no,cb.no as estate_no-->
+<!--        from user_visitors as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb-->
+<!--        <where>-->
+<!--            uv.building_unit_estate_id = cbue.id-->
+<!--            and cbue.building_unit_id = cbu.id-->
+<!--            and cbu.building_id = cb.id-->
+<!--            <if test="roomNumber != null and roomNumber != ''">-->
+<!--                and cbue.room_number like concat('%',#{roomNumber},'%')-->
+<!--            </if>-->
+<!--            <if test="unitNo != null">-->
+<!--                and cbu.no like concat('%',#{unitNo},'%')-->
+<!--            </if>-->
+<!--            <if test="estateNo != null">-->
+<!--                and cb.no like concat('%',#{estateNo},'%')-->
+<!--            </if>-->
+<!--            <if test="name != null and name != ''">-->
+<!--                and uv.name like concat('%',#{name},'%')-->
+<!--            </if>-->
+<!--            <if test="sex != null">-->
+<!--                and uv.sex = #{sex}-->
+<!--            </if>-->
+<!--            <if test="carNum != null and carNum != ''">-->
+<!--                and uv.car_num like concat('%',#{carNum},'%')-->
+<!--            </if>-->
+<!--            <if test="expectedVisitDateStart != null">-->
+<!--                and uv.expected_visit_date <![CDATA[ >= ]]> #{expectedVisitDateStart}-->
+<!--            </if>-->
+<!--            <if test="expectedVisitDateEnd != null">-->
+<!--                and uv.expected_visit_date <![CDATA[ <= ]]> #{expectedVisitDateEnd}-->
+<!--            </if>-->
+<!--            <if test="visitDateStart != null">-->
+<!--                and uv.visit_date <![CDATA[ >= ]]> #{visitDateStart}-->
+<!--            </if>-->
+<!--            <if test="visitDateEnd != null">-->
+<!--                and uv.visit_date <![CDATA[ <= ]]> #{visitDateEnd}-->
+<!--            </if>-->
+<!--            <if test="visitorStatus != null">-->
+<!--                and uv.visitor_status = #{visitorStatus}-->
+<!--            </if>-->
+<!--            <if test="type != null">-->
+<!--                and uv.type = #{type}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        <if test="appointmentVisitDateSort == 1">-->
+<!--            order by uv.expected_visit_date DESC-->
+<!--        </if>-->
+<!--        <if test="appointmentVisitDateSort == 2">-->
+<!--            order by uv.expected_visit_date-->
+<!--        </if>-->
+<!--        <if test="actualVisitDateSort == 1">-->
+<!--            order by uv.visit_date DESC-->
+<!--        </if>-->
+<!--        <if test="actualVisitDateSort == 2">-->
+<!--            order by uv.visit_date-->
+<!--        </if>-->
+<!--    </select>-->
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdVisitors">
         SELECT uv.*,cbue.room_number as room_number,cbu.no as unit_no,cb.no as estate_no
