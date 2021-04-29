@@ -42,4 +42,6 @@ public interface SystemDataService {
 
     SDReportDispatchAllVo findReportDispatch();
 
+    Map<String, Object> findArticleBorrow();
+
 }

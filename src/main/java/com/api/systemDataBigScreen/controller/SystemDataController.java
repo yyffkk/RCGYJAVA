@@ -244,5 +244,17 @@ public class SystemDataController {
         return map;
     }
 
+    /**
+     * 查询物品借还信息
+     * @return map
+     */
+    @GetMapping("/findArticleBorrow")
+    public Map<String,Object> findArticleBorrow(){
+        return systemDataService.findArticleBorrow();
+    }
+
+
+
+
 
 }

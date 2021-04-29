@@ -228,4 +228,29 @@ public interface SystemDataDao {
      * @return 无偿类型数量
      */
     int findFamilyTypeNum();
+
+    /**
+     * 查询所有的物品数量
+     * @return 空置的物品数量
+     */
+    int findAllArticle();
+
+    /**
+     * 查询已借出的物品数量
+     * @return 已借出的物品数量
+     */
+    int findBorrowArticle();
+
+    /**
+     * 查询已损坏的物品数量
+     * @return 已损坏的物品数量
+     */
+    int findBreakDownArticle();
+
+    /**
+     * 查询已丢失的物品数量
+     * @return 已丢失的物品数量
+     */
+    int findLoseArticle();
+
 }

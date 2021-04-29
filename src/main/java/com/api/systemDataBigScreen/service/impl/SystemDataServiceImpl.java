@@ -283,4 +283,26 @@ public class SystemDataServiceImpl implements SystemDataService {
         return sdReportDispatchAllVo;
     }
 
+    @Override
+    public Map<String, Object> findArticleBorrow() {
+        map = new HashMap<>();
+        SDArticleBorrowVo sdArticleBorrowVo = new SDArticleBorrowVo();
+        //查询所有的物品数量
+        int allArticle = systemDataDao.findAllArticle();
+        //查询已借出的物品数量
+        int borrowArticle = systemDataDao.findBorrowArticle();
+        sdArticleBorrowVo.setBorrowArticle(borrowArticle);
+        //查询已损坏的物品数量
+        int breakDownArticle = systemDataDao.findBreakDownArticle();
+        sdArticleBorrowVo.setBreakDownArticle(breakDownArticle);
+        //查询丢失的物品数量
+        int loseArticle = systemDataDao.findLoseArticle();
+        sdArticleBorrowVo.setLoseArticle(loseArticle);
+        int vacantArticle = allArticle - borrowArticle - breakDownArticle - loseArticle;
+        sdArticleBorrowVo.setVacantArticle(vacantArticle);
+        map.put("data",sdArticleBorrowVo);
+        //查询空置的物品数量
+        return map;
+    }
+
 }
