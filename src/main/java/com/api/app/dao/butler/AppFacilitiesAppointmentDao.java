@@ -1,11 +1,13 @@
 package com.api.app.dao.butler;
 
+import com.api.model.app.AppointmentCodeAndUserId;
 import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
 import com.api.vo.app.AppFacilitiesCategoryVo;
 import com.api.vo.app.IdAndName;
 
+import java.util.Date;
 import java.util.List;
 
 public interface AppFacilitiesAppointmentDao {
@@ -42,4 +44,25 @@ public interface AppFacilitiesAppointmentDao {
      * @return 预约状态
      */
     Integer findStatusById(Integer facilitiesAppointmentId);
+
+    /**
+     * 根据设施预约主键id取消预约
+     * @param appointmentStopUseFactor 设施取消预约 使用条件
+     * @return 影响行数
+     */
+    int cancel(AppointmentStopUseFactor appointmentStopUseFactor);
+
+    /**
+     * 根据预约编号和预约人主键id 查询预约时间
+     * @param appointmentCodeAndUserId 设施预约编号和用户主键id
+     * @return 预约时间
+     */
+    Date findAppointmentStartDateByACAUI(AppointmentCodeAndUserId appointmentCodeAndUserId);
+
+    /**
+     * 根据设施预约编号和用户主键id 签到
+     * @param appointmentCodeAndUserId 设施预约编号和用户主键id
+     * @return 影响行数
+     */
+    int signId(AppointmentCodeAndUserId appointmentCodeAndUserId);
 }

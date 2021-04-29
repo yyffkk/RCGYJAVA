@@ -3,7 +3,7 @@ package com.api.model.app;
 import java.util.Date;
 
 /**
- * 设施预约结束使用条件
+ * 设施预约结束/取消预约 使用条件
  */
 public class AppointmentStopUseFactor {
     /**

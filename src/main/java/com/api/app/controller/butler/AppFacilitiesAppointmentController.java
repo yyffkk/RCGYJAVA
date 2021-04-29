@@ -1,6 +1,7 @@
 package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppFacilitiesAppointmentService;
+import com.api.model.app.AppointmentCodeAndUserId;
 import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
@@ -94,4 +95,26 @@ public class AppFacilitiesAppointmentController {
     public Map<String,Object> useStop(AppointmentStopUseFactor appointmentStopUseFactor){
         return facilitiesAppointmentService.useStop(appointmentStopUseFactor);
     }
+
+    /**
+     * 取消预约
+     * @param appointmentStopUseFactor 设施预约结束使用条件
+     * @return map
+     */
+    @GetMapping("/cancel")
+    public Map<String,Object> cancel(AppointmentStopUseFactor appointmentStopUseFactor){
+        return facilitiesAppointmentService.cancel(appointmentStopUseFactor);
+    }
+
+
+    /**
+     * 扫码签到
+     * @param appointmentCodeAndUserId 设施预约编号和用户主键id
+     * @return map
+     */
+    @GetMapping("/signIn")
+    public Map<String,Object> signIn(AppointmentCodeAndUserId appointmentCodeAndUserId){
+        return facilitiesAppointmentService.signId(appointmentCodeAndUserId);
+    }
+
 }

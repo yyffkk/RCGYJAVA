@@ -306,9 +306,9 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //唯一随机数
             String nonce = UUID.randomUUID().toString();
 
-            //拼接出图片的完整http路径
+            //拼接出图片的完整http路径 //TODO 本地测需要改照片路径
             String phoneUrl = COMMUNITY_LOCATION + imgUrl;
-//            String phoneUrl = "http://test.akuhotel.com:8804/static/img/h5/visit/641043db8d9944cb975eeeddcc8089ab.jpeg";
+//            String phoneUrl = "http://test.akuhotel.com:8804/static/img/h5/visit/fafdc87cceb04edf8c2b8895212a49d6.jpeg";
             //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
             String deviceSn = NEIGH_NO + deviceNumber;
 

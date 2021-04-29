@@ -3,6 +3,7 @@ package com.api.app.service.butler.impl;
 import com.api.app.dao.butler.AppFacilitiesAppointmentDao;
 import com.api.app.service.butler.AppFacilitiesAppointmentService;
 import com.api.manage.dao.butlerService.SysFacilitiesAppointmentDao;
+import com.api.model.app.AppointmentCodeAndUserId;
 import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
@@ -93,6 +94,60 @@ public class AppFacilitiesAppointmentServiceImpl implements AppFacilitiesAppoint
             map.put("status",false);
         }else {
             map.put("message","结束成功");
+            map.put("status",true);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> cancel(AppointmentStopUseFactor appointmentStopUseFactor) {
+        map = new HashMap<>();
+        int update = facilitiesAppointmentDao.cancel(appointmentStopUseFactor);
+        if (update <= 0){
+            map.put("message","取消成功");
+            map.put("status",true);
+        }else {
+            map.put("message","取消失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> signId(AppointmentCodeAndUserId appointmentCodeAndUserId) {
+        map = new HashMap<>();
+        //根据预约编号和预约人主键id 查询预约时间
+        Date appointmentStartDate = facilitiesAppointmentDao.findAppointmentStartDateByACAUI(appointmentCodeAndUserId);
+        if (appointmentStartDate == null){
+            map.put("message","该预约不存在");
+            map.put("status",false);
+            return map;
+        }
+
+        //当前时间 时间戳
+        long time = new Date().getTime();
+        //预约开始时间 时间戳
+        long time1 = appointmentStartDate.getTime();
+        //当前时间 小于 预约开始时间 前半小时
+        if (time < time1-30*60*1000){
+            map.put("message","当前时间不可签到");
+            map.put("status",false);
+            return map;
+        }
+
+        //当前时间 大于 预约开始时间
+        if (time > time1){
+            map.put("message","已超出预约时间");
+            map.put("status",false);
+            return map;
+        }
+
+        int update = facilitiesAppointmentDao.signId(appointmentCodeAndUserId);
+        if (update <= 0){
+            map.put("message","签到失败");
+            map.put("status",false);
+        }else {
+            map.put("message","签到成功");
             map.put("status",true);
         }
         return map;

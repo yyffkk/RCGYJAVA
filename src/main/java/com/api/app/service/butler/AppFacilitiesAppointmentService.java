@@ -1,5 +1,6 @@
 package com.api.app.service.butler;
 
+import com.api.model.app.AppointmentCodeAndUserId;
 import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
@@ -20,4 +21,7 @@ public interface AppFacilitiesAppointmentService {
 
     Map<String, Object> useStop(AppointmentStopUseFactor appointmentStopUseFactor);
 
+    Map<String, Object> cancel(AppointmentStopUseFactor appointmentStopUseFactor);
+
+    Map<String, Object> signId(AppointmentCodeAndUserId appointmentCodeAndUserId);
 }

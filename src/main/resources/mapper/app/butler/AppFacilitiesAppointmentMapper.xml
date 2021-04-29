@@ -44,4 +44,21 @@
         where id = #{facilitiesAppointmentId} and appointment_id = #{id}
     </update>
 
+    <update id="cancel" parameterType="com.api.model.app.AppointmentStopUseFactor">
+        update sys_facilities_appointment
+        set status = 4
+        where id = #{facilitiesAppointmentId}
+    </update>
+
+    <select id="findAppointmentStartDateByACAUI" parameterType="com.api.model.app.AppointmentCodeAndUserId" resultType="java.util.Date">
+        select appointment_start_date from sys_facilities_appointment where code = #{appointmentCode} and appointment_id = #{id}
+    </select>
+
+    <update id="signId" parameterType="com.api.model.app.AppointmentCodeAndUserId">
+        update sys_facilities_appointment
+        set status = 2
+        where code = #{appointmentCode} and appointment_id = #{id} and status = 1
+    </update>
+
+
 </mapper>
