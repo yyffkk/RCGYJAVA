@@ -15,7 +15,7 @@ public class SDSysAnnouncementVo {
      */
     private String content;
     /**
-     * 状态（2.已发布）
+     * 状态（2.已发布,3.定时发布）
      */
     private Integer status;
     /**

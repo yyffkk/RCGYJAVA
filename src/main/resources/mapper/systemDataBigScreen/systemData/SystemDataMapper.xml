@@ -51,7 +51,11 @@
     </select>
 
     <select id="sysAnnouncementList" resultType="com.api.vo.systemDataBigScreen.SDSysAnnouncementVo">
-        select title,content,status,release_date from sys_announcement_management where status = 2
+        select T.* from (
+            select title,content,status,(case status when 2 then release_date else scheduled_release_time end) as release_date
+            from sys_announcement_management
+            where status in (2,3)
+        ) as T order by T.release_date desc
     </select>
     <select id="findBuildingNum" resultType="java.lang.Integer">
         select count(*) from cpm_building
@@ -208,6 +212,9 @@
     </select>
     <select id="findLoseArticle" resultType="java.lang.Integer">
         select count(*) from sys_article_detail where status = 3
+    </select>
+    <select id="findActivity" resultType="com.api.vo.systemDataBigScreen.SDSysActivityVo">
+        select title,registration_start_time,registration_end_time from sys_activity_management order by create_date DESC
     </select>
 
 

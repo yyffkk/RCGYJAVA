@@ -8,9 +8,9 @@
         from sys_report_repair as srr,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,sys_dispatch_list as sdl
         left join
         (
-        select sdld.dispatch_list_id,su1.actual_name as distributor_name,su2.actual_name as operator_name,swotl.name as work_order_time_limit,su1.id as operator,su2.id as distributor
+        select sdld.dispatch_list_id,su1.actual_name as distributor_name,su2.actual_name as operator_name,swotl.name as work_order_time_limit,su2.id as operator,su1.id as distributor
         from sys_dispatch_list_detail as sdld,sys_user as su1,sys_user as su2,sys_work_order_time_limit as swotl
-        where su1.id = sdld.operator and su2.id = sdld.create_id and swotl.id = sdld.work_order_time_limit
+        where su2.id = sdld.operator and su1.id = sdld.create_id and swotl.id = sdld.work_order_time_limit
         ) as a
         on sdl.id = a.dispatch_list_id
         <where>

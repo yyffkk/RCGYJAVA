@@ -44,4 +44,5 @@ public interface SystemDataService {
 
     Map<String, Object> findArticleBorrow();
 
+    Map<String, Object> findActivity();
 }

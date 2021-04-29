@@ -253,4 +253,9 @@ public interface SystemDataDao {
      */
     int findLoseArticle();
 
+    /**
+     * 查询社区活动信息
+     * @return 社区活动信息
+     */
+    List<SDSysActivityVo> findActivity();
 }

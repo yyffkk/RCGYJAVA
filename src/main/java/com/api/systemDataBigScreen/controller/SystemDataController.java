@@ -94,7 +94,7 @@ public class SystemDataController {
     }
 
     /**
-     * 查询公共资讯信息集合（发布时间、标题、内容）
+     * 查询公告信息集合（发布时间、标题、内容）
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @return map
@@ -253,7 +253,17 @@ public class SystemDataController {
         return systemDataService.findArticleBorrow();
     }
 
+    /**
+     * 查询社区活动信息
+     * @return map
+     */
+    @GetMapping("/findActivity")
+    public Map<String,Object> findActivity(){
+        return systemDataService.findActivity();
+    }
 
+
+//    public Map<String,Object> find
 
 
 

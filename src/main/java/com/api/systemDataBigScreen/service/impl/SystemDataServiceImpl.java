@@ -305,4 +305,12 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> findActivity() {
+        map = new HashMap<>();
+        List<SDSysActivityVo> sdSysActivityVoList = systemDataDao.findActivity();
+        map.put("data",sdSysActivityVoList);
+        return map;
+    }
+
 }
