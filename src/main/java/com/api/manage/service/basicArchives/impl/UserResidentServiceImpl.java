@@ -94,38 +94,41 @@ public class UserResidentServiceImpl implements UserResidentService {
             }
 
             //关联亲属信息
-            for (VoRelatives voRelatives : voRelativesList) {
-                //校验重复亲属信息
-                //根据住户手机号查询是否已有住户信息
-                UserResident userResident3 = userResidentDao.findByTel(voRelatives.getTel());
-                if (userResident3 != null){
-                    throw new RuntimeException("亲属手机号已存在");
-                }
+            if (voRelativesList != null && voRelativesList.size()>0){
+                for (VoRelatives voRelatives : voRelativesList) {
+                    //校验重复亲属信息
+                    //根据住户手机号查询是否已有住户信息
+                    UserResident userResident3 = userResidentDao.findByTel(voRelatives.getTel());
+                    if (userResident3 != null){
+                        throw new RuntimeException("亲属手机号已存在");
+                    }
 
-                //根据住户证件号码查询是否已有住户信息
-                UserResident userResident4 = userResidentDao.findByIdNumber(voRelatives.getIdNumber());
-                if (userResident4 != null){
-                    throw new RuntimeException("亲属证件号码已存在");
-                }
+                    //根据住户证件号码查询是否已有住户信息
+                    UserResident userResident4 = userResidentDao.findByIdNumber(voRelatives.getIdNumber());
+                    if (userResident4 != null){
+                        throw new RuntimeException("亲属证件号码已存在");
+                    }
 
-                //添加亲属信息
-                voRelatives.setType(2);
-                voRelatives.setCreateId(sysUser.getId());
-                voRelatives.setCreateDate(new Date());
-                int insertRelatives = userResidentDao.insertRelatives(voRelatives);
-                //添加业主亲属关联表
-                UserResidentRelatives userResidentRelatives = new UserResidentRelatives();
-                userResidentRelatives.setIdentity(voRelatives.getIdentity());
-                userResidentRelatives.setRelativesId(voRelatives.getId());
-                userResidentRelatives.setResidentId(userResident.getId());
-                int insertResidentRelatives = userResidentDao.insertResidentRelatives(userResidentRelatives);
-                if (insertRelatives <=0 || insertResidentRelatives <= 0){
-                    throw new RuntimeException("关联亲属信息失败");
+                    //添加亲属信息
+                    voRelatives.setType(2);
+                    voRelatives.setCreateId(sysUser.getId());
+                    voRelatives.setCreateDate(new Date());
+                    int insertRelatives = userResidentDao.insertRelatives(voRelatives);
+                    //添加业主亲属关联表
+                    UserResidentRelatives userResidentRelatives = new UserResidentRelatives();
+                    userResidentRelatives.setIdentity(voRelatives.getIdentity());
+                    userResidentRelatives.setRelativesId(voRelatives.getId());
+                    userResidentRelatives.setResidentId(userResident.getId());
+                    int insertResidentRelatives = userResidentDao.insertResidentRelatives(userResidentRelatives);
+                    if (insertRelatives <=0 || insertResidentRelatives <= 0){
+                        throw new RuntimeException("关联亲属信息失败");
+                    }
                 }
             }
 
+
             //添加车位信息
-            if (cpmParkingSpaceIds != null){
+            if (cpmParkingSpaceIds != null && cpmParkingSpaceIds.length !=0){
                 for (Integer cpmParkingSpaceId : cpmParkingSpaceIds) {
                     CpmParkingSpace cpmParkingSpace = new CpmParkingSpace();
                     cpmParkingSpace.setId(cpmParkingSpaceId);

@@ -25,5 +25,11 @@ public class Test3Controller {
 //        Thread.sleep(5000);
 //        myTask.cancel();//task的cancel方法
 //        System.out.println("current canceled task number is "+timer.purge());
+        Integer i = 8;
+        if (!i.equals(8)){
+            System.out.println("111");
+        }else {
+            System.out.println("222");
+        }
     }
 }

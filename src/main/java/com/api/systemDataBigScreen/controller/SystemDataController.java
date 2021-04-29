@@ -262,8 +262,23 @@ public class SystemDataController {
         return systemDataService.findActivity();
     }
 
+    /**
+     * 系统数据 日常缴费
+     * @return map
+     */
+    @GetMapping("/findDailyPayment")
+    public Map<String,Object> findDailyPayment(){
+        return systemDataService.findDailyPayment();
+    }
 
-//    public Map<String,Object> find
+    /**
+     * 系统数据 访客信息
+     * @return map
+     */
+    @GetMapping("/findVisitorInfo")
+    public Map<String,Object> findVisitorInfo(){
+        return systemDataService.findVisitorInfo();
+    }
 
 
 

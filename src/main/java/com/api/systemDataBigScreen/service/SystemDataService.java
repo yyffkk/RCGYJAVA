@@ -45,4 +45,8 @@ public interface SystemDataService {
     Map<String, Object> findArticleBorrow();
 
     Map<String, Object> findActivity();
+
+    Map<String, Object> findDailyPayment();
+
+    Map<String, Object> findVisitorInfo();
 }

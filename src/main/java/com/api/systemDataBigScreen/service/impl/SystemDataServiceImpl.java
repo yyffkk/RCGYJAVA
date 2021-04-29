@@ -313,4 +313,19 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> findDailyPayment() {
+        map = new HashMap<>();
+        //TODO 需要完善
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findVisitorInfo() {
+        map = new HashMap<>();
+        List<SDVisitorInfoVo> sdVisitorInfoVos = systemDataDao.findVisitorInfo();
+        map.put("data",sdVisitorInfoVos);
+        return map;
+    }
+
 }

@@ -258,4 +258,10 @@ public interface SystemDataDao {
      * @return 社区活动信息
      */
     List<SDSysActivityVo> findActivity();
+
+    /**
+     * 查询每月访客数量
+     * @return 每月访客数量
+     */
+    List<SDVisitorInfoVo> findVisitorInfo();
 }

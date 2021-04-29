@@ -17,7 +17,7 @@
         GROUP BY one_day ORDER BY one_day desc
     </select>
 
-    <select id="findNowSolveNum" parameterType="java.util.Date" resultType="com.api.vo.systemDataBigScreen.SDDispatchNumListVo">
+    <select id="findNowSolveNum" parameterType="com.api.model.systemDataBigScreen.DispatchListSearch" resultType="com.api.vo.systemDataBigScreen.SDDispatchNumListVo">
         select date(end_date) as one_day,count(id) as num
         from sys_dispatch_list
         <where>
@@ -41,9 +41,10 @@
     </select>
 
     <select id="userVisitorsList" resultType="com.api.vo.systemDataBigScreen.SDUserVisitorsVo">
-        select CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,uv.name,uv.tel,ur.name as invite_name,uv.expected_visit_date,uv.visit_date
-        from user_visitors as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
-        where uv.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and uv.invite_people_id = ur.id
+        select CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,uv.name,uv.tel,uv.visit_date_start as expected_visit_date,uv.visit_date_end as visit_date,
+			(case uv.create_id when -1 then '二维码填入' else (select ur.name from user_resident as ur where ur.id = uv.create_id) end) as invite_name
+        from user_visitors_new as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where uv.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
     </select>
 
     <select id="sysAdviceList" resultType="com.api.vo.systemDataBigScreen.SDSysAdviceVo">
@@ -215,6 +216,13 @@
     </select>
     <select id="findActivity" resultType="com.api.vo.systemDataBigScreen.SDSysActivityVo">
         select title,registration_start_time,registration_end_time from sys_activity_management order by create_date DESC
+    </select>
+    <select id="findVisitorInfo" resultType="com.api.vo.systemDataBigScreen.SDVisitorInfoVo">
+        select DATE(visit_date_start) as date_time,count(id) as visitor_num
+        from user_visitors_new
+        where visit_date_start is not null
+        group by DATE(visit_date_start)
+		order by DATE(visit_date_start) desc
     </select>
 
 

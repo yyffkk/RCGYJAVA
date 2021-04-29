@@ -43,7 +43,7 @@
         <where>
             srr.dispatch_list_id = sdl.id
             and sdld.dispatch_list_id = sdl.id
-            and sdld.create_id = #{id}
+            and sdld.operator = #{id}
             and sdl.sys_delete = 1
             <if test="repairStatus == 1">
                 and sdl.status = 2
