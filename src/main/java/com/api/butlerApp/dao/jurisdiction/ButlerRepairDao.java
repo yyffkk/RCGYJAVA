@@ -148,7 +148,7 @@ public interface ButlerRepairDao {
      * @param dispatchListId 派工单主键id
      * @return 派工单状态
      */
-    int findStatusByDispatchId(Integer dispatchListId);
+    Integer findStatusByDispatchId(Integer dispatchListId);
 
     /**
      * 改派

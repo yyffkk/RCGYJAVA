@@ -9,7 +9,7 @@
 
     <select id="list1" parameterType="com.api.model.butlerApp.ButlerRepairSearch" resultType="com.api.vo.butlerApp.ButlerRepairVo">
         select * from (
-            select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id
+            select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id,sdl.create_date
             from sys_report_repair as srr,sys_dispatch_list as sdl LEFT JOIN sys_dispatch_list_detail as sdld
             on sdld.dispatch_list_id = sdl.id
             <where>
@@ -34,7 +34,7 @@
                     and sdl.status = 8
                 </if>
             </where>
-        ) as a where a.create_id = -1 or a.create_id = #{id}
+        ) as a where a.create_id = -1 or a.create_id = #{id} order by a.create_date DESC
     </select>
 
     <select id="list2" parameterType="com.api.model.butlerApp.ButlerRepairSearch" resultType="com.api.vo.butlerApp.ButlerRepairVo">
@@ -61,6 +61,7 @@
                 and sdl.status = 8
             </if>
         </where>
+        order by sdl.create_date DESC
     </select>
 
     <select id="list3" parameterType="com.api.model.butlerApp.ButlerRepairSearch" resultType="com.api.vo.butlerApp.ButlerRepairVo">
@@ -85,6 +86,7 @@
                 and sdl.status = 8
             </if>
         </where>
+        order by sdl.create_date DESC
     </select>
 
     <select id="findById" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerRepairFindByIdVo">

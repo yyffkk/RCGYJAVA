@@ -41,7 +41,7 @@
     </select>
 
     <select id="userVisitorsList" resultType="com.api.vo.systemDataBigScreen.SDUserVisitorsVo">
-        select CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,uv.name,uv.tel,uv.visit_date_start as expected_visit_date,uv.visit_date_end as visit_date,
+        select CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,uv.name,uv.tel,uv.visit_date_start as expected_visit_date,
 			(case uv.create_id when -1 then '二维码填入' else (select ur.name from user_resident as ur where ur.id = uv.create_id) end) as invite_name
         from user_visitors_new as uv,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         where uv.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id

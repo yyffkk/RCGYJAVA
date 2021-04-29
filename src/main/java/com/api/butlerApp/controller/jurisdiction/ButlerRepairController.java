@@ -120,14 +120,14 @@ public class ButlerRepairController {
 
     /**
      * 接单
-     * @param dispatchId 派工单id
+     * @param dispatchListId 派工单id
      * @param id 用户id
      * @param roleId 用户所拥有的角色id
      * @return map
      */
     @GetMapping("/receivingOrders")
-    public Map<String,Object> receivingOrders(Integer dispatchId,Integer id,String roleId){
-        return butlerRepairService.receivingOrders(dispatchId,id,roleId);
+    public Map<String,Object> receivingOrders(Integer dispatchListId,Integer id,String roleId){
+        return butlerRepairService.receivingOrders(dispatchListId,id,roleId);
     }
 
 

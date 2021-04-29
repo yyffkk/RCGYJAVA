@@ -192,7 +192,7 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
             }
 
             //根据派工单主键id查询派工单状态
-            int status = butlerRepairDao.findStatusByDispatchId(sysDispatchListDetail.getDispatchListId());
+            Integer status = butlerRepairDao.findStatusByDispatchId(sysDispatchListDetail.getDispatchListId());
             //1.待分配
             if (status != 1){
                 throw new RuntimeException("此订单当前不可分配");
