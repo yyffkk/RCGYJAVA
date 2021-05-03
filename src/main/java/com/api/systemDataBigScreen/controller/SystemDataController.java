@@ -158,7 +158,7 @@ public class SystemDataController {
     }
 
     /**
-     * 查询日常缴费信息（今年应缴物业费总户数/总金额，已交物业费总户数/总金额，未交物业费总户数/总金额）
+     * 查询日常缴费信息【物业费+日常费用】（今年应缴物业费总户数/总金额，已交物业费总户数/总金额，未交物业费总户数/总金额）
      * @return map
      */
     @GetMapping("/sysDailyPayment")
@@ -262,17 +262,17 @@ public class SystemDataController {
         return systemDataService.findActivity();
     }
 
-    /**
-     * 系统数据 日常缴费
-     * @return map
-     */
-    @GetMapping("/findDailyPayment")
-    public Map<String,Object> findDailyPayment(){
-        return systemDataService.findDailyPayment();
-    }
+//    /**
+//     * 查询日常缴费信息（暂时不用）【物业费加日常费用】
+//     * @return map
+//     */
+//    @GetMapping("/findDailyPayment")
+//    public Map<String,Object> findDailyPayment(){
+//        return systemDataService.findDailyPayment();
+//    }
 
     /**
-     * 系统数据 访客信息
+     * 查询访客信息(一周内数据)
      * @return map
      */
     @GetMapping("/findVisitorInfo")

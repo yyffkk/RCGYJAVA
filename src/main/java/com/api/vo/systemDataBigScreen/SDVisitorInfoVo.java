@@ -1,5 +1,8 @@
 package com.api.vo.systemDataBigScreen;
 
+
+import java.sql.Date;
+
 /**
  * 访客管理信息 Vo 回显
  */
@@ -11,7 +14,7 @@ public class SDVisitorInfoVo {
     /**
      * 日期(天)
      */
-    private int dateTime;
+    private Date dateTime;
 
     @Override
     public String toString() {
@@ -29,18 +32,18 @@ public class SDVisitorInfoVo {
         this.visitorNum = visitorNum;
     }
 
-    public int getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(int dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 
     public SDVisitorInfoVo() {
     }
 
-    public SDVisitorInfoVo(int visitorNum, int dateTime) {
+    public SDVisitorInfoVo(int visitorNum, Date dateTime) {
         this.visitorNum = visitorNum;
         this.dateTime = dateTime;
     }

@@ -97,37 +97,55 @@
     <select id="findThisYearPayableNum" parameterType="java.util.Date" resultType="java.lang.Integer">
         select count(sdp.id)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date}) and sctd.marker = 1
+        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date}) and sctd.marker in (1,5)
     </select>
 
     <select id="findThisYearPayablePrice" parameterType="java.util.Date" resultType="java.math.BigDecimal">
         select sum(total_price)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date}) and sctd.marker = 1
+        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date}) and sctd.marker in (1,5)
     </select>
 
     <select id="findPaidNum" resultType="java.lang.Integer">
         select count(sdp.id)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id  and sctd.marker = 1 and sdp.status = 3
+        where sdp.charges_template_detail_id = sctd.id  and sctd.marker in (1,5) and sdp.status = 3
     </select>
 
     <select id="findPaidPrice" resultType="java.math.BigDecimal">
         select sum(paid_price)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id  and sctd.marker = 1 and sdp.status = 3
+        where sdp.charges_template_detail_id = sctd.id  and sctd.marker in (1,5) and sdp.status = 3
     </select>
 
     <select id="findUnPaidNum" resultType="java.lang.Integer">
         select count(sdp.id)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id  and sctd.marker = 1 and sdp.status = 1
+        where sdp.charges_template_detail_id = sctd.id  and sctd.marker in (1,5) and sdp.status = 1
     </select>
 
     <select id="findUnPaidPrice" resultType="java.math.BigDecimal">
         select sum(payment_price)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id  and sctd.marker = 1 and sdp.status = 1
+        where sdp.charges_template_detail_id = sctd.id  and sctd.marker in (1,5) and sdp.status = 1
+    </select>
+
+
+    <select id="findSixMonthUnPaidNum" resultType="com.api.vo.systemDataBigScreen.SDCountAndDate">
+        select count(u.id) as count, year(s.date) as years, MONTH(s.date) as months from
+        (select date_add(NOW(),interval @i:=@i-1 month) as date
+        from (
+        select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1) as tmp,
+         (select @i:= 1) t
+        ) s left join user_visitors_new as u on YEAR(s.date) = YEAR(u.visit_date_start) and MONTH(s.date) = MONTH(u.visit_date_start)
+        GROUP BY s.date
     </select>
 
     <select id="findDailyActivity" parameterType="com.api.model.systemDataBigScreen.DailyActivitySearch" resultType="com.api.vo.systemDataBigScreen.SDDailyActivityVo">
@@ -218,11 +236,22 @@
         select title,registration_start_time,registration_end_time from sys_activity_management order by create_date DESC
     </select>
     <select id="findVisitorInfo" resultType="com.api.vo.systemDataBigScreen.SDVisitorInfoVo">
-        select DATE(visit_date_start) as date_time,count(id) as visitor_num
-        from user_visitors_new
-        where visit_date_start is not null
-        group by DATE(visit_date_start)
-		order by DATE(visit_date_start) desc
+        select count(u.id) as visitor_num,s.date as date_time from
+        (select date_add(DATE(NOW()),interval @i:=@i-1 day) as date
+        from (
+        select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1) as tmp,
+         (select @i:= 1) t
+        ) s left join user_visitors_new as u on s.date = date_format(u.visit_date_start,'%Y-%m-%d')
+        GROUP BY s.date
+    </select>
+    <select id="findAllUnpaidFees" resultType="java.lang.Integer">
+        select sum(payment_price) as unpaidFees from sys_daily_payment
     </select>
 
 

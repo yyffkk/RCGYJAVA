@@ -76,7 +76,7 @@
     <select id="findByUrlCode" parameterType="java.lang.String" resultType="com.api.model.app.AppUserVisitorsInvite">
         select uvn.*,concat(cb.no,'幢',cbu.no,'单元',cbue.room_number) as room_name
         from user_visitors_new as uvn,user_visitors_new_url as uvnu,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
-        where uvnu.user_visitors_new_id = uvn.id and uvn.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and code = #{code}
+        where uvnu.user_visitors_new_id = uvn.id and uvn.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and uvnu.code = #{code}
     </select>
     <select id="findVisitIdByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
         select user_visitors_new_id from user_visitors_new_url where code = #{code}

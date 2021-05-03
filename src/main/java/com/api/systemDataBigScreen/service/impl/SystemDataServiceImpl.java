@@ -134,12 +134,16 @@ public class SystemDataServiceImpl implements SystemDataService {
         int unPaidNum = systemDataDao.findUnPaidNum();
         //查询未缴物业费总金额
         BigDecimal unPaidPrice = systemDataDao.findUnPaidPrice();
+        //系统数据 日常缴费未缴费住户数量和年份和月份【查询日常缴费未缴费住户数量（最近6个月，每月信息数量）】
+        List<SDCountAndDate> sixMonthUnPaidNum = systemDataDao.findSixMonthUnPaidNum();
+
         map.put("thisYearPayableNum",thisYearPayableNum);
         map.put("thisYearPayablePrice",thisYearPayablePrice);
         map.put("paidNum",paidNum);
         map.put("paidPrice",paidPrice);
         map.put("unPaidNum",unPaidNum);
         map.put("unPaidPrice",unPaidPrice);
+        map.put("sixMonthUnPaidNum",sixMonthUnPaidNum);
         return map;
     }
 
@@ -316,6 +320,14 @@ public class SystemDataServiceImpl implements SystemDataService {
     @Override
     public Map<String, Object> findDailyPayment() {
         map = new HashMap<>();
+        //查询日常缴费未缴总费用
+        int unpaidFees = systemDataDao.findAllUnpaidFees();
+        //查询日常缴费已缴纳住户数量
+//        int paidNum = systemDataDao.findDayPaidNum();
+        //查询日常缴费未缴纳住户数量
+//        int noPaidNum = systemDataDao.findNoPaidNum();
+        //查询日常缴费未缴费住户数量（最近6个月，每月信息数量）
+
         //TODO 需要完善
         return map;
     }

@@ -146,6 +146,12 @@ public interface SystemDataDao {
     BigDecimal findUnPaidPrice();
 
     /**
+     * 查询日常缴费未缴费住户数量（最近6个月，每月信息数量）
+     * @return 最近6个月，每月未缴费住户数量
+     */
+    List<SDCountAndDate> findSixMonthUnPaidNum();
+
+    /**
      * 查询日活跃量
      * @param dailyActivitySearch 日活跃搜索条件
      * @return 日活跃量
@@ -264,4 +270,12 @@ public interface SystemDataDao {
      * @return 每月访客数量
      */
     List<SDVisitorInfoVo> findVisitorInfo();
+
+    /**
+     * 查询未缴总费用
+     * @return 未缴总费用
+     */
+    int findAllUnpaidFees();
+
+
 }

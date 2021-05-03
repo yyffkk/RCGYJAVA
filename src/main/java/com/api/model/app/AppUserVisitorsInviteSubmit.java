@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class AppUserVisitorsInviteSubmit {
     /**
-     * 主键id
+     * 访客邀请主键id
      */
     private Integer id;
     /**
