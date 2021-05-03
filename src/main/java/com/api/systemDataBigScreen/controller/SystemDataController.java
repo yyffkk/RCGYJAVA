@@ -1,11 +1,14 @@
 package com.api.systemDataBigScreen.controller;
 
+import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
+import com.api.model.butlerService.SearchFacilitiesAppointment;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
+import com.api.vo.butlerService.VoFacilitiesAppointment;
 import com.api.vo.systemDataBigScreen.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,6 +29,8 @@ import java.util.Map;
 public class SystemDataController {
     @Resource
     SystemDataService systemDataService;
+    @Resource
+    SysFacilitiesAppointmentService facilitiesAppointmentService;
 
     /**
      * 查询每日新增的报修单数量
@@ -280,6 +285,21 @@ public class SystemDataController {
         return systemDataService.findVisitorInfo();
     }
 
-
+    /**
+     * 查询所有的设施预约信息（包含搜索条件）【与后台list 调用同一个service】
+     * @param searchFacilitiesAppointment 设施预约管理 搜索条件
+     * @return map
+     */
+    @GetMapping("/findFacilitiesAppointment")
+    public Map<String,Object> list(SearchFacilitiesAppointment searchFacilitiesAppointment){
+        PageHelper.startPage(searchFacilitiesAppointment.getPageNum(),searchFacilitiesAppointment.getSize());
+        List<VoFacilitiesAppointment> voFacilitiesAppointmentList = facilitiesAppointmentService.list(searchFacilitiesAppointment);
+        PageInfo<VoFacilitiesAppointment> pageInfo = new PageInfo<>(voFacilitiesAppointmentList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 
 }
