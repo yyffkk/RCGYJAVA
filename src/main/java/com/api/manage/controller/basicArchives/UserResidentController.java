@@ -2,11 +2,8 @@ package com.api.manage.controller.basicArchives;
 
 import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.basicArchives.*;
-import com.api.vo.basicArchives.VoFindAll;
-import com.api.vo.basicArchives.VoFindResidentByName;
-import com.api.vo.basicArchives.VoIds;
+import com.api.vo.basicArchives.*;
 import com.api.manage.service.basicArchives.UserResidentService;
-import com.api.vo.basicArchives.VoUserResident;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
@@ -199,6 +196,21 @@ public class UserResidentController extends ShiroExceptions {
         PageHelper.startPage(searchFindName.getPageNum(),searchFindName.getSize());
         List<VoFindResidentByName> voFindResidentByNameList = userResidentService.findResidentNameBySearch(searchFindName);
         PageInfo<VoFindResidentByName> pageInfo = new PageInfo<>(voFindResidentByNameList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 根据名字模糊查询查询住户信息及房产相关信息
+     */
+    @GetMapping("/findResidentInfoBySearch")
+    public Map<String,Object> findResidentInfoBySearch(SearchFindName searchFindName){
+        PageHelper.startPage(searchFindName.getPageNum(),searchFindName.getSize());
+        List<VoFindResidentInfo> voFindResidentByNameList = userResidentService.findResidentInfoBySearch(searchFindName);
+        PageInfo<VoFindResidentInfo> pageInfo = new PageInfo<>(voFindResidentByNameList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());

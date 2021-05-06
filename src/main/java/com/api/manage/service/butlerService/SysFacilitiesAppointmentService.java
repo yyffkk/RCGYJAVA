@@ -15,5 +15,4 @@ public interface SysFacilitiesAppointmentService {
     Map<String, Object> nullify(FacilitiesAppointment facilitiesAppointment);
 
     Map<String, Object> countAppointmentNow();
-
 }

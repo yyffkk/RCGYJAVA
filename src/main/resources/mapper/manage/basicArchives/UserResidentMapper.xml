@@ -288,4 +288,22 @@
             </if>
         </where>
     </select>
+    <select id="findResidentInfoBySearch" parameterType="com.api.model.basicArchives.SearchFindName" resultType="com.api.vo.basicArchives.VoFindResidentInfo">
+        select T.value,T.label,T.tel,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,cb.id as building_id,cbu.id as unit_id,cbue.id as estate_id from
+        (
+        select ur.id as value,ur.name as label,ur.tel,ur.type,max(cre.building_unit_estate_id) as estate_id
+        from user_resident as ur,cpm_resident_estate as cre
+        where ur.id = cre.resident_id
+        GROUP BY ur.id
+        ) as T,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        <where>
+            cbue.id = T.estate_id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and T.type in (1,3)
+            <if test="name != null and name != ''">
+                and T.label like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

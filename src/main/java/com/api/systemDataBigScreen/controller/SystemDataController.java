@@ -302,4 +302,14 @@ public class SystemDataController {
         return map;
     }
 
+
+    /**
+     * 推送火灾通知
+     * @param content 火灾内容
+     * @return map
+     */
+    @GetMapping("/pushAlert")
+    public Map<String,Object> pushAlert(String content){
+        return systemDataService.pushAlert(content);
+    }
 }

@@ -122,6 +122,8 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
                     JiguangUtil.push(String.valueOf(receiverAccountId),"日常缴纳推送提醒");
                 }
 
+            }else {
+                throw new RuntimeException("推送失败,该房屋无任何住户信息");
             }
 
         } catch (RuntimeException e) {

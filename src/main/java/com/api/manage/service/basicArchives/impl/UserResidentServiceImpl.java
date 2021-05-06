@@ -547,5 +547,10 @@ public class UserResidentServiceImpl implements UserResidentService {
         return userResidentDao.findResidentNameBySearch(searchFindName);
     }
 
+    @Override
+    public List<VoFindResidentInfo> findResidentInfoBySearch(SearchFindName searchFindName) {
+        return userResidentDao.findResidentInfoBySearch(searchFindName);
+    }
+
 
 }

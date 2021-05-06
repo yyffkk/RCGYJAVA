@@ -1,10 +1,7 @@
 package com.api.manage.service.basicArchives;
 
 import com.api.model.basicArchives.*;
-import com.api.vo.basicArchives.VoFindAll;
-import com.api.vo.basicArchives.VoFindResidentByName;
-import com.api.vo.basicArchives.VoRelatives;
-import com.api.vo.basicArchives.VoUserResident;
+import com.api.vo.basicArchives.*;
 
 import java.util.List;
 import java.util.Map;
@@ -41,4 +38,6 @@ public interface UserResidentService {
     List<VoFindAll> findNameBySearch(SearchFindName searchFindName);
 
     List<VoFindResidentByName> findResidentNameBySearch(SearchFindName searchFindName);
+
+    List<VoFindResidentInfo> findResidentInfoBySearch(SearchFindName searchFindName);
 }

@@ -14,13 +14,13 @@ public class DailyPaymentPush {
     /**
      * 日常缴费主键id
      */
-    private Integer DailyPaymentId;
+    private Integer dailyPaymentId;
 
     @Override
     public String toString() {
         return "DailyPaymentPush{" +
                 "sysMessage=" + sysMessage +
-                ", DailyPaymentId=" + DailyPaymentId +
+                ", dailyPaymentId=" + dailyPaymentId +
                 '}';
     }
 
@@ -33,11 +33,11 @@ public class DailyPaymentPush {
     }
 
     public Integer getDailyPaymentId() {
-        return DailyPaymentId;
+        return dailyPaymentId;
     }
 
     public void setDailyPaymentId(Integer dailyPaymentId) {
-        DailyPaymentId = dailyPaymentId;
+        this.dailyPaymentId = dailyPaymentId;
     }
 
     public DailyPaymentPush() {
@@ -45,6 +45,6 @@ public class DailyPaymentPush {
 
     public DailyPaymentPush(SysMessage sysMessage, Integer dailyPaymentId) {
         this.sysMessage = sysMessage;
-        DailyPaymentId = dailyPaymentId;
+        this.dailyPaymentId = dailyPaymentId;
     }
 }

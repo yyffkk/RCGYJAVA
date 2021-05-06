@@ -1,10 +1,7 @@
 package com.api.manage.dao.basicArchives;
 
 import com.api.model.basicArchives.*;
-import com.api.vo.basicArchives.VoFindAll;
-import com.api.vo.basicArchives.VoFindResidentByName;
-import com.api.vo.basicArchives.VoRelatives;
-import com.api.vo.basicArchives.VoUserResident;
+import com.api.vo.basicArchives.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -166,4 +163,10 @@ public interface UserResidentDao {
      */
     List<VoFindResidentByName> findResidentNameBySearch(SearchFindName searchFindName);
 
+    /**
+     * 根据名字模糊查询查询住户信息及房产相关信息
+     * @param searchFindName 模糊查询名称搜索条件
+     * @return 住户信息及房产相关信息
+     */
+    List<VoFindResidentInfo> findResidentInfoBySearch(SearchFindName searchFindName);
 }

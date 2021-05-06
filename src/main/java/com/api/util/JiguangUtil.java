@@ -68,7 +68,7 @@ public class JiguangUtil {
 //    }
 
     /**
-     * 生成极光推送对象PushPayload（采用java SDK）
+     * 生成极光别名推送对象PushPayload（采用java SDK）
      * @param alias 别名
      * @param alert 消息
      * @return PushPayload
@@ -84,6 +84,33 @@ public class JiguangUtil {
                                 .build())
                         .addPlatformNotification(IosNotification.newBuilder()
                                 .addExtra("type", "infomation")
+                                .setAlert(alert)
+                                .build())
+                        .build())
+                .setOptions(Options.newBuilder()
+                        .setApnsProduction(false)//true-推送生产环境 false-推送开发环境（测试使用参数）
+                        .setTimeToLive(90)//消息在JPush服务器的失效时间（测试使用参数）
+                        .build())
+                .build();
+    }
+
+    /**
+     * 生成极光广播推送对象PushPayloadAll（采用java SDK）
+     * @param alert 消息
+     * @param value 附加字段value值
+     * @return PushPayload
+     */
+    public static PushPayload buildPushObject_android_ios_alias_alert_all(String alert,String value){
+        return PushPayload.newBuilder()
+                .setPlatform(Platform.all())
+                .setAudience(Audience.all())
+                .setNotification(Notification.newBuilder()
+                        .addPlatformNotification(AndroidNotification.newBuilder()
+                                .addExtra("type", value)
+                                .setAlert(alert)
+                                .build())
+                        .addPlatformNotification(IosNotification.newBuilder()
+                                .addExtra("type", value)
                                 .setAlert(alert)
                                 .build())
                         .build())
@@ -142,4 +169,55 @@ public class JiguangUtil {
             return null;
         }
     }
+
+    /**
+     * app广播推送
+     * @param alert 推送消息
+     * @param type 附加类型的value值
+     */
+    public static PushResult sendPushAll(String alert,String type) {
+        ClientConfig clientConfig = ClientConfig.getInstance();
+        JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, clientConfig);
+        PushPayload payload = buildPushObject_android_ios_alias_alert_all(alert,type);
+        try {
+            return jpushClient.sendPush(payload);
+        } catch (APIConnectionException e) {
+            log.error("Connection error. Should retry later. ", e);
+            return null;
+        } catch (APIRequestException e) {
+            log.error("Error response from JPush server. Should review and fix it. ", e);
+            log.info("HTTP Status: " + e.getStatus());
+            log.info("Error Code: " + e.getErrorCode());
+            log.info("Error Message: " + e.getErrorMessage());
+            log.info("Msg ID: " + e.getMsgId());
+            return null;
+        }
+    }
+
+    /**
+     * 管家app广播推送
+     * @param alert 推送消息
+     * @param type 附加类型的value值
+     */
+    public static PushResult sendButlerPushAll(String alert,String type) {
+        ClientConfig clientConfig = ClientConfig.getInstance();
+        JPushClient jpushClient = new JPushClient(masterSecret, butlerAppKey, null, clientConfig);
+
+        PushPayload payload = buildPushObject_android_ios_alias_alert_all(alert,type);
+        try {
+            return jpushClient.sendPush(payload);
+        } catch (APIConnectionException e) {
+            log.error("Connection error. Should retry later. ", e);
+            return null;
+        } catch (APIRequestException e) {
+            log.error("Error response from JPush server. Should review and fix it. ", e);
+            log.info("HTTP Status: " + e.getStatus());
+            log.info("Error Code: " + e.getErrorCode());
+            log.info("Error Message: " + e.getErrorMessage());
+            log.info("Msg ID: " + e.getMsgId());
+            return null;
+        }
+    }
+
+
 }
