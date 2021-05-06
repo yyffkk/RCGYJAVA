@@ -12,15 +12,15 @@ public class DailyPaymentPush {
      */
     private SysMessage sysMessage;
     /**
-     * 接收人id
+     * 日常缴费主键id
      */
-    private Integer receiverAccountId;
+    private Integer DailyPaymentId;
 
     @Override
     public String toString() {
         return "DailyPaymentPush{" +
                 "sysMessage=" + sysMessage +
-                ", receiverAccountId=" + receiverAccountId +
+                ", DailyPaymentId=" + DailyPaymentId +
                 '}';
     }
 
@@ -32,19 +32,19 @@ public class DailyPaymentPush {
         this.sysMessage = sysMessage;
     }
 
-    public Integer getReceiverAccountId() {
-        return receiverAccountId;
+    public Integer getDailyPaymentId() {
+        return DailyPaymentId;
     }
 
-    public void setReceiverAccountId(Integer receiverAccountId) {
-        this.receiverAccountId = receiverAccountId;
+    public void setDailyPaymentId(Integer dailyPaymentId) {
+        DailyPaymentId = dailyPaymentId;
     }
 
     public DailyPaymentPush() {
     }
 
-    public DailyPaymentPush(SysMessage sysMessage, Integer receiverAccountId) {
+    public DailyPaymentPush(SysMessage sysMessage, Integer dailyPaymentId) {
         this.sysMessage = sysMessage;
-        this.receiverAccountId = receiverAccountId;
+        DailyPaymentId = dailyPaymentId;
     }
 }

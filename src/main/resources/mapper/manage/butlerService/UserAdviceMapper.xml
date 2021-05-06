@@ -34,7 +34,7 @@
                 and (sa.type = 1 or sa.type = 2)
             </if>
             <if test="releaseName != null and releaseName != ''">
-                ur.name like concat('%',#{releaseName},'%')
+                and ur.name like concat('%',#{releaseName},'%')
             </if>
         </where>
     </select>

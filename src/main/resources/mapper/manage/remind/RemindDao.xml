@@ -37,4 +37,8 @@
             #{sendDate}
         )
     </insert>
+    <select id="findResidentByDailyPaymentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select cre.resident_id from sys_daily_payment as sdp,cpm_resident_estate as cre
+        where sdp.building_unit_estate_id = cre.building_unit_estate_id and sdp.id = #{dailyPaymentId}
+    </select>
 </mapper>

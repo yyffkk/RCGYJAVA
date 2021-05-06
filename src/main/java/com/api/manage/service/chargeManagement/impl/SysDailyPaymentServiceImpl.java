@@ -84,37 +84,46 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         try {
-            //填入标题
-            sysMessage.setTitle("日常缴纳推送提醒");
-            //填入发送人id（系统发送为-1）
-            sysMessage.setSender(sysUser.getId());
-            //填入创建时间
-            sysMessage.setGenerateDate(new Date());
-            //填入发送时间
-            sysMessage.setSendDate(new Date());
-            //填入发送类型（1.系统广播，2.管理员消息）
-            sysMessage.setType(2);
-            //添加提醒 消息列表 并返回主键id
-            int insert = remindDao.insertMessage(sysMessage);
-            if (insert <= 0){
-                throw new RuntimeException("推送失败");
+            //根据缴费主键Id查询住户主键id数组
+            List<Integer> ids = remindDao.findResidentByDailyPaymentId(dailyPaymentPush.getDailyPaymentId());
+
+            if (ids != null && ids.size()>0){
+                for (Integer receiverAccountId : ids) {
+                    //填入标题
+                    sysMessage.setTitle("日常缴纳推送提醒");
+                    //填入发送人id（系统发送为-1）
+                    sysMessage.setSender(sysUser.getId());
+                    //填入创建时间
+                    sysMessage.setGenerateDate(new Date());
+                    //填入发送时间
+                    sysMessage.setSendDate(new Date());
+                    //填入发送类型（1.系统广播，2.管理员消息）
+                    sysMessage.setType(2);
+                    //添加提醒 消息列表 并返回主键id
+                    int insert = remindDao.insertMessage(sysMessage);
+                    if (insert <= 0){
+                        throw new RuntimeException("推送失败");
+                    }
+
+                    SysSending sysSending = new SysSending();
+                    //填入消息id
+                    sysSending.setMessageId(sysMessage.getId());
+                    //填入接收人id
+                    sysSending.setReceiverAccount(receiverAccountId);
+                    //填入发送状态（0.未发或不成功1.发送成功（未读），3.已读）[初始为1，查看为3]
+                    sysSending.setSendStatus(1);
+                    //填入发送日期
+                    sysSending.setSendDate(new Date());
+                    //添加消息接收列表
+                    int i = remindDao.insertSending(sysSending);
+                    if (i <= 0){
+                        throw new RuntimeException("推送失败");
+                    }
+                    JiguangUtil.push(String.valueOf(receiverAccountId),"日常缴纳推送提醒");
+                }
+
             }
 
-            SysSending sysSending = new SysSending();
-            //填入消息id
-            sysSending.setMessageId(sysMessage.getId());
-            //填入接收人id
-            sysSending.setReceiverAccount(dailyPaymentPush.getReceiverAccountId());
-            //填入发送状态（0.未发或不成功1.发送成功（未读），3.已读）[初始为1，查看为3]
-            sysSending.setSendStatus(1);
-            //填入发送日期
-            sysSending.setSendDate(new Date());
-            //添加消息接收列表
-            int i = remindDao.insertSending(sysSending);
-            if (i <= 0){
-                throw new RuntimeException("推送失败");
-            }
-            JiguangUtil.push(String.valueOf(dailyPaymentPush.getReceiverAccountId()),"日常缴纳推送提醒");
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
