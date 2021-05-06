@@ -33,11 +33,11 @@ public class SearchReportRepair {
     /**
      * 分配人
      */
-    private Integer distributor;
+    private String distributor;
     /**
      * 维修人
      */
-    private Integer operator;
+    private String operator;
     /**
      * 报修时间开始
      */
@@ -72,8 +72,8 @@ public class SearchReportRepair {
                 ", repairman='" + repairman + '\'' +
                 ", roomName='" + roomName + '\'' +
                 ", froms=" + froms +
-                ", distributor=" + distributor +
-                ", operator=" + operator +
+                ", distributor='" + distributor + '\'' +
+                ", operator='" + operator + '\'' +
                 ", repairDateStart=" + repairDateStart +
                 ", repairDateEnd=" + repairDateEnd +
                 ", status=" + status +
@@ -131,19 +131,19 @@ public class SearchReportRepair {
         this.froms = froms;
     }
 
-    public Integer getDistributor() {
+    public String getDistributor() {
         return distributor;
     }
 
-    public void setDistributor(Integer distributor) {
+    public void setDistributor(String distributor) {
         this.distributor = distributor;
     }
 
-    public Integer getOperator() {
+    public String getOperator() {
         return operator;
     }
 
-    public void setOperator(Integer operator) {
+    public void setOperator(String operator) {
         this.operator = operator;
     }
 
@@ -198,7 +198,7 @@ public class SearchReportRepair {
     public SearchReportRepair() {
     }
 
-    public SearchReportRepair(int pageNum, int size, String code, String repairman, String roomName, Integer froms, Integer distributor, Integer operator, Date repairDateStart, Date repairDateEnd, Integer status, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchReportRepair(int pageNum, int size, String code, String repairman, String roomName, Integer froms, String distributor, String operator, Date repairDateStart, Date repairDateEnd, Integer status, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
         this.code = code;

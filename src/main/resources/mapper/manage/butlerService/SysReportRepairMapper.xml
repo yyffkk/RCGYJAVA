@@ -39,11 +39,11 @@
             <if test="froms != null">
                 and srr.froms = #{froms}
             </if>
-            <if test="distributor != null">
-                and a.distributor = #{distributor}
+            <if test="distributor != null and distributor != ''">
+                and a.distributor_name like concat('%',#{distributor},'%')
             </if>
-            <if test="operator != null">
-                and a.operator = #{operator}
+            <if test="operator != null and operator != ''">
+                and a.operator_name like concat('%',#{operator},'%')
             </if>
             <if test="repairDateStart != null">
                 and srr.repair_date <![CDATA[ > ]]> #{repairDateStart}
