@@ -4,5 +4,5 @@ spring:
     #测试数据库连接
     url: jdbc:mysql://localhost:3306/smart_community?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: smart_community
-    password: 123456
+    password: iRxaCp6cTHkstC3S
     driver-class-name: com.mysql.jdbc.Driver
