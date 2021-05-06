@@ -5,6 +5,6 @@
 <mapper namespace="com.api.app.dao.my.MyCarDao">
 
     <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.my.MyCarVo">
-        select code,status,effective_time_end from user_car where id = #{id} and status != 4
+        select code,status,effective_time_end from user_car where building_unit_estate_id = #{estateId} and status != 4
     </select>
 </mapper>

@@ -26,12 +26,12 @@ public class MyCarController {
 
     /**
      * 查询所有的车辆
-     * @param id 用户主键id
+     * @param estateId 房产id
      * @return map
      */
     @GetMapping("/list")
-    public Map<String,Object> list(Integer id){
-        return myCarService.list(id);
+    public Map<String,Object> list(Integer estateId){
+        return myCarService.list(estateId);
     }
 
 

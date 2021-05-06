@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface MyCarService {
-    Map<String,Object> list(Integer id);
+    Map<String,Object> list(Integer estateId);
 }

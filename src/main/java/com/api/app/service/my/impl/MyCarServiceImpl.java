@@ -18,9 +18,9 @@ public class MyCarServiceImpl implements MyCarService {
     private static Map<String,Object> map = null;
 
     @Override
-    public Map<String,Object> list(Integer id) {
+    public Map<String,Object> list(Integer estateId) {
         map = new HashMap<>();
-        List<MyCarVo> list = myCarDao.list(id);
+        List<MyCarVo> list = myCarDao.list(estateId);
         map.put("data",list);
         map.put("message","请求成功");
         map.put("status",true);
