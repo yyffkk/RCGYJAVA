@@ -4,6 +4,7 @@ import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
+import com.api.model.systemDataBigScreen.FirePushAlert;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
@@ -12,9 +13,7 @@ import com.api.vo.butlerService.VoFacilitiesAppointment;
 import com.api.vo.systemDataBigScreen.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -302,14 +301,26 @@ public class SystemDataController {
         return map;
     }
 
+    /**
+     * 查询app注册数
+     * @return map
+     */
+    @GetMapping("/findRegCount")
+    public Map<String,Object> findRegCount(){
+        return systemDataService.findRegCount();
+    }
 
     /**
      * 推送火灾通知
-     * @param content 火灾内容
+     * @param firePushAlert 火灾推送通知内容
      * @return map
      */
-    @GetMapping("/pushAlert")
-    public Map<String,Object> pushAlert(String content){
-        return systemDataService.pushAlert(content);
+    @PostMapping("/firePushAlert")
+    public Map<String,Object> firePushAlert(@RequestBody FirePushAlert firePushAlert){
+        return systemDataService.pushAlert(firePushAlert);
     }
+
+
+
+
 }

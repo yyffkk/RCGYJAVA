@@ -278,4 +278,10 @@ public interface SystemDataDao {
     int findAllUnpaidFees();
 
 
+    /**
+     * 查询app注册数
+     * @return app注册数
+     */
+    int findRegCount();
+
 }

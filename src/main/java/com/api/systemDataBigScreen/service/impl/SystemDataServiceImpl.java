@@ -2,6 +2,7 @@ package com.api.systemDataBigScreen.service.impl;
 
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
+import com.api.model.systemDataBigScreen.FirePushAlert;
 import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.util.JiguangUtil;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -342,12 +344,16 @@ public class SystemDataServiceImpl implements SystemDataService {
     }
 
     @Override
-    public Map<String, Object> pushAlert(String content) {
+    public Map<String, Object> pushAlert(FirePushAlert firePushAlert) {
         map = new HashMap<>();
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String format = sdf.format(firePushAlert.getTime());
+            String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
+//            System.out.printf(content);
             // key:type value:1 火警
             JiguangUtil.sendPushAll(content,"1");
-//            JiguangUtil.sendButlerPushAll(content,"1");
+            JiguangUtil.sendButlerPushAll(content,"1");
         } catch (Exception e) {
             e.printStackTrace();
             map.put("message","推送失败");
@@ -356,6 +362,14 @@ public class SystemDataServiceImpl implements SystemDataService {
         }
         map.put("message","推送成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findRegCount() {
+        map = new HashMap<>();
+        int regCount = systemDataDao.findRegCount();
+        map.put("data",regCount);
         return map;
     }
 

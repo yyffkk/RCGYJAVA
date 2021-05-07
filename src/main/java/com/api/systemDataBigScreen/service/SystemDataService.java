@@ -2,6 +2,7 @@ package com.api.systemDataBigScreen.service;
 
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
+import com.api.model.systemDataBigScreen.FirePushAlert;
 import com.api.vo.systemDataBigScreen.*;
 
 import java.util.List;
@@ -50,5 +51,7 @@ public interface SystemDataService {
 
     Map<String, Object> findVisitorInfo();
 
-    Map<String, Object> pushAlert(String content);
+    Map<String, Object> pushAlert(FirePushAlert firePushAlert);
+
+    Map<String, Object> findRegCount();
 }

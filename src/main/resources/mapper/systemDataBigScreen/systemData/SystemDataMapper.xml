@@ -253,6 +253,9 @@
     <select id="findAllUnpaidFees" resultType="java.lang.Integer">
         select sum(payment_price) as unpaidFees from sys_daily_payment
     </select>
+    <select id="findRegCount" resultType="java.lang.Integer">
+        select count(*) from user_resident where create_id = -1
+    </select>
 
 
 </mapper>

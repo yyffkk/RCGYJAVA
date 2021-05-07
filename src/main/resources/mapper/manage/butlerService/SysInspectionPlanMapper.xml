@@ -15,7 +15,10 @@
                 and sip.code = #{code}
             </if>
             <if test="name != null and name != ''">
-                and sip.name = #{name}
+                and sip.name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and sip.status = #{status}
             </if>
             <if test="inspectionRouteId != null">
                 and sip.inspection_route_id = #{inspectionRouteId}
