@@ -87,18 +87,18 @@ public interface ButlerInspectionDao {
     int updateActualBeginDateById(ButlerExecuteIdAndBeginDate butlerExecuteIdAndBeginDate);
 
     /**
-     * 根据巡检执行情况主键id查询巡检点主键id
+     * 根据巡检执行情况主键id查询巡检点编号
      * @param executeId 巡检执行情况主键id
-     * @return 巡检点主键ids数组
+     * @return 巡检点编号数组
      */
-    List<Integer> findPointIdByExecuteId(Integer executeId);
+    List<String> findPointCodeByExecuteId(Integer executeId);
 
     /**
      * 根据巡检执行点主键id查询巡检执行点信息
-     * @param executePointId 执行巡检点主键id
+     * @param executePointCode 执行巡检点编号
      * @return 巡检执行点信息
      */
-    ButlerExecutePointVo findExecutePointById(Integer executePointId);
+    ButlerExecutePointVo findExecutePointByCode(String executePointCode);
 
     /**
      * 根据巡检执行点主键id查询巡检执行检查项

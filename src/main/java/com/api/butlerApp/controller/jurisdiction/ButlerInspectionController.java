@@ -87,13 +87,13 @@ public class ButlerInspectionController {
     /**
      * 扫码二维码查询巡检执行点信息
      * @param executeId 巡检执行情况主键id
-     * @param executePointId 巡检执行点主键id（二维码携带内容）
+     * @param executePointCode 巡检执行点编号（二维码携带内容）
      * @param roleId 当前用户所拥有的角色id
      * @return map
      */
     @GetMapping("/findCheckDetailByQR")
-    public Map<String,Object> findCheckDetailByQR(Integer executeId,Integer executePointId,String roleId){
-        return butlerInspectionService.findCheckDetailByQR(executeId,executePointId,roleId);
+    public Map<String,Object> findCheckDetailByQR(Integer executeId,String executePointCode,String roleId){
+        return butlerInspectionService.findCheckDetailByQR(executeId,executePointCode,roleId);
     }
 
     /**

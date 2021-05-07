@@ -104,12 +104,12 @@
         update sys_inspection_execute set actual_begin_date = #{actualBeginDate} where id = #{executeId}
     </update>
 
-    <select id="findPointIdByExecuteId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select id from sys_inspection_execute_point where execute_id = #{executeId}
+    <select id="findPointCodeByExecuteId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select code from sys_inspection_execute_point where execute_id = #{executeId}
     </select>
 
-    <select id="findExecutePointById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecutePointVo">
-        select * from sys_inspection_execute_point where id = #{executePointId}
+    <select id="findExecutePointByCode" parameterType="java.lang.String" resultType="com.api.vo.butlerApp.ButlerExecutePointVo">
+        select * from sys_inspection_execute_point where id = #{executePointCode}
     </select>
 
     <select id="findExecuteCheckByPointId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteCheckVo">

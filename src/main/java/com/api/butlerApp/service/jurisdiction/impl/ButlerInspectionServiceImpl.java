@@ -207,7 +207,7 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     }
 
     @Override
-    public Map<String, Object> findCheckDetailByQR(Integer executeId, Integer executePointId, String roleId) {
+    public Map<String, Object> findCheckDetailByQR(Integer executeId, String executePointCode, String roleId) {
         map = new HashMap<>();
         //查询用户所属权限,type:1.巡检人员 3.其他角色
         int type = findJurisdictionByUserId(roleId);
@@ -217,11 +217,11 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
             map.put("status",false);
             return map;
         }
-        //根据巡检执行情况主键id查询巡检点主键id
-        List<Integer> ids = butlerInspectionDao.findPointIdByExecuteId(executeId);
-        if (ids.contains(executePointId)){
+        //根据巡检执行情况主键id查询巡检点编号
+        List<String> codes = butlerInspectionDao.findPointCodeByExecuteId(executeId);
+        if (codes.contains(executePointCode)){
             //显示信息
-            ButlerExecutePointVo executePointVo = butlerInspectionDao.findExecutePointById(executePointId);
+            ButlerExecutePointVo executePointVo = butlerInspectionDao.findExecutePointByCode(executePointCode);
             if (executePointVo != null){
                 List<ButlerExecuteCheckVo> checkVoList = butlerInspectionDao.findExecuteCheckByPointId(executePointVo.getId());
                 executePointVo.setCheckVoList(checkVoList);
