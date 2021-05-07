@@ -1,0 +1,114 @@
+package com.api.manage.service.shoppingCenter.impl;
+
+import com.api.manage.dao.shoppingCenter.SupplierDao;
+import com.api.manage.service.shoppingCenter.SupplierService;
+import com.api.model.businessManagement.SysUser;
+import com.api.model.shoppingCenter.Supplier;
+import com.api.model.shoppingCenter.SupplierSearch;
+import com.api.util.IdWorker;
+import com.api.vo.shoppingCenter.SupplierFBIVo;
+import com.api.vo.shoppingCenter.SupplierVo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class SupplierServiceImpl implements SupplierService {
+    private static Map<String,Object> map = null;
+    @Resource
+    SupplierDao supplierDao;
+
+    @Override
+    public List<SupplierVo> list(SupplierSearch supplierSearch) {
+        return supplierDao.list(supplierSearch);
+    }
+
+    @Override
+    public Map<String, Object> insert(Supplier supplier) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        supplier.setCreateId(sysUser.getId());
+        supplier.setCreateDate(new Date());
+        supplier.setIsDelete(1); //填写默认是否删除，1.非删
+        supplier.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
+
+        int insert = supplierDao.insert(supplier);
+        if (insert <0){
+            map.put("message","添加失败");
+            map.put("status",false);
+        }else {
+            map.put("message","添加成功");
+            map.put("status",true);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
+        SupplierFBIVo supplierFBIVo = supplierDao.findById(id);
+        map.put("data",supplierFBIVo);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> update(Supplier supplier) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        supplier.setModifyId(sysUser.getId());
+        supplier.setModifyDate(new Date());
+
+        int update = supplierDao.update(supplier);
+        if (update <0){
+            map.put("message","修改失败");
+            map.put("status",false);
+        }else {
+            map.put("message","修改成功");
+            map.put("status",true);
+        }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                int update = supplierDao.delete(id);
+                if (update < 0){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.shoppingCenter.SupplierDao">
+
+    <select id="list" parameterType="com.api.model.shoppingCenter.SupplierSearch" resultType="com.api.vo.shoppingCenter.SupplierVo">
+        select * from shop_supplier
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.shoppingCenter.Supplier">
+        insert into shop_supplier(
+            code,
+            name,
+            director,
+            tel,
+            address,
+            create_id,
+            create_date,
+            is_delete
+        ) values (
+            #{code},
+            #{name},
+            #{director},
+            #{tel},
+            #{address},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+    </insert>
+
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.shoppingCenter.SupplierFBIVo">
+        select * from shop_supplier where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.shoppingCenter.Supplier">
+        update shop_supplier
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="director != null and director != ''">
+                director = #{director},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        update shop_supplier set is_delete = 0 where id = #{id}
+    </update>
+
+
+</mapper>
