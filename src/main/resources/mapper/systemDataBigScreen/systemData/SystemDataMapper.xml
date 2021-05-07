@@ -270,7 +270,7 @@
     </select>
 
     <select id="findExecuteByExecuteId" parameterType="java.lang.Integer" resultType="com.api.vo.systemDataBigScreen.SDInspectionExecuteListVo">
-        select * from sys_inspection_execute from id = #{executeId}
+        select * from sys_inspection_execute where id = #{executeId}
     </select>
     <select id="findAllInspectionRoute" resultType="com.api.vo.systemDataBigScreen.SDInspectionRouteVo">
         select * from sys_inspection_route where is_delete = 1

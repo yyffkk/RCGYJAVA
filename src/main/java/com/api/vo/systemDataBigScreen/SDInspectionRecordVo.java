@@ -16,10 +16,6 @@ public class SDInspectionRecordVo {
      */
     private String name;
     /**
-     * 巡更点集合
-     */
-    private List<SDInspectionExecutePointVo> PointVoList;
-    /**
      * 巡更人员名称
      */
     private String inspector;
@@ -45,7 +41,6 @@ public class SDInspectionRecordVo {
         return "SDInspectionRecordVo{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", PointVoList=" + PointVoList +
                 ", inspector='" + inspector + '\'' +
                 ", beginDate=" + beginDate +
                 ", endDate=" + endDate +
@@ -68,14 +63,6 @@ public class SDInspectionRecordVo {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<SDInspectionExecutePointVo> getPointVoList() {
-        return PointVoList;
-    }
-
-    public void setPointVoList(List<SDInspectionExecutePointVo> pointVoList) {
-        PointVoList = pointVoList;
     }
 
     public String getInspector() {
@@ -121,10 +108,9 @@ public class SDInspectionRecordVo {
     public SDInspectionRecordVo() {
     }
 
-    public SDInspectionRecordVo(Integer id, String name, List<SDInspectionExecutePointVo> pointVoList, String inspector, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate) {
+    public SDInspectionRecordVo(Integer id, String name, String inspector, Date beginDate, Date endDate, Date actualBeginDate, Date actualEndDate) {
         this.id = id;
         this.name = name;
-        PointVoList = pointVoList;
         this.inspector = inspector;
         this.beginDate = beginDate;
         this.endDate = endDate;

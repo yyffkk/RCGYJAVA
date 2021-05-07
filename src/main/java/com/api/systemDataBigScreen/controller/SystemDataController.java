@@ -224,7 +224,7 @@ public class SystemDataController {
     }
 
     /**
-     * 查询所有的巡检路线
+     * 查询所有的巡检路线（右上角显示）
      * @return map
      */
     @GetMapping("/findAllInspectionRoute")
@@ -233,7 +233,7 @@ public class SystemDataController {
     }
 
     /**
-     * 根据巡检路线主键id查询巡检执行计划信息
+     * 根据巡检路线主键id查询巡检执行计划信息（右下角显示）
      * @param routeId 巡检路线主键id
      * @return 巡检执行计划信息
      */
@@ -244,7 +244,7 @@ public class SystemDataController {
 
 
     /**
-     * 根据执行计划主键id查询巡检点信息（右下角查看）
+     * 根据执行计划主键id查询巡检点信息（右下角查看按钮）
      * @param executeId 执行计划主键id
      * @return map
      */
