@@ -392,6 +392,12 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     public Map<String, Object> getLocation(Integer executeId) {
         map = new HashMap<>();
         List<ButlerExecuteMapVo> butlerExecuteMapVoList = butlerInspectionDao.getLocation(executeId);
+        if (butlerExecuteMapVoList == null || butlerExecuteMapVoList.size()==0){
+            map.put("message","该计划还没有执行路线");
+            map.put("data",null);
+            map.put("status",false);
+            return map;
+        }
         map.put("message","请求成功");
         map.put("data",butlerExecuteMapVoList);
         map.put("status",true);

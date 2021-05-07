@@ -41,6 +41,14 @@ public interface SystemDataService {
 
     List<SDInspectionRecordVo> findAllInspectionRecord();
 
+    Map<String, Object> findAllInspectionRoute();
+
+    Map<String, Object> findExecuteByRoute(Integer routeId);
+
+
+    Map<String, Object> findPointByExecuteId(Integer executeId);
+
+
     SDReportDispatchAllVo findReportDispatch();
 
     Map<String, Object> findArticleBorrow();
@@ -54,4 +62,6 @@ public interface SystemDataService {
     Map<String, Object> pushAlert(FirePushAlert firePushAlert);
 
     Map<String, Object> findRegCount();
+
+
 }

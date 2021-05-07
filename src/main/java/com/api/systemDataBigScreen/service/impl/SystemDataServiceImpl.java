@@ -269,6 +269,50 @@ public class SystemDataServiceImpl implements SystemDataService {
     }
 
     @Override
+    public Map<String, Object> findAllInspectionRoute() {
+        map = new HashMap<>();
+        List<SDInspectionRouteVo> sdInspectionRouteVoList = systemDataDao.findAllInspectionRoute();
+        map.put("data",sdInspectionRouteVoList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findExecuteByRoute(Integer routeId) {
+        map = new HashMap<>();
+        List<SDInspectionExecutePlanVo> sdInspectionExecutePlanVos = systemDataDao.findExecuteByRoute(routeId);
+        map.put("data",sdInspectionExecutePlanVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findPointByExecuteId(Integer executeId) {
+        map = new HashMap<>();
+        List<SDInspectionExecutePointVo> sdInspectionExecutePointVos = null;
+
+        //根据执行计划主键id查询执行计划信息
+        SDInspectionExecuteListVo sdInspectionExecuteListVo = systemDataDao.findExecuteByExecuteId(executeId);
+        if (sdInspectionExecuteListVo == null){
+            map.put("data",null);
+            map.put("message","执行计划不存在");
+            map.put("status",false);
+            return map;
+        }else {
+            if (sdInspectionExecuteListVo.getActualBeginDate() != null){
+                //根据执行计划主键id查询巡检后的巡检点信息(巡检后的巡检点)
+                sdInspectionExecutePointVos = systemDataDao.findPointByExecuteIdAfter(executeId);
+            }else {
+                //根据执行计划主键id查询巡检前的巡检点信息(巡检前的巡检点)
+                sdInspectionExecutePointVos = systemDataDao.findPointByExecuteIdBefore(executeId);
+
+            }
+        }
+        map.put("data",sdInspectionExecutePointVos);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
     public SDReportDispatchAllVo findReportDispatch() {
         SDReportDispatchAllVo sdReportDispatchAllVo = new SDReportDispatchAllVo();
         //查询所有的报修工单信息

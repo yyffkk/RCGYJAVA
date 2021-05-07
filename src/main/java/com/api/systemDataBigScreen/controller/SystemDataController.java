@@ -1,5 +1,6 @@
 package com.api.systemDataBigScreen.controller;
 
+import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
 import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
@@ -171,7 +172,7 @@ public class SystemDataController {
     }
 
     /**
-     * 查询所有的巡更人员
+     * 查询所有的巡更人员（左上角）
      * @return map
      */
     @GetMapping("/findAllInspector")
@@ -205,7 +206,7 @@ public class SystemDataController {
     }
 
     /**
-     * 查询所有的巡更记录（含分页）
+     * 查询所有的巡更记录（左下角）
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @return map
@@ -221,6 +222,37 @@ public class SystemDataController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 查询所有的巡检路线
+     * @return map
+     */
+    @GetMapping("/findAllInspectionRoute")
+    public Map<String,Object> findAllInspectionRoute(){
+        return systemDataService.findAllInspectionRoute();
+    }
+
+    /**
+     * 根据巡检路线主键id查询巡检执行计划信息
+     * @param routeId 巡检路线主键id
+     * @return 巡检执行计划信息
+     */
+    @GetMapping("/findExecuteByRoute")
+    public Map<String,Object> findExecuteByRoute(Integer routeId){
+        return systemDataService.findExecuteByRoute(routeId);
+    }
+
+
+    /**
+     * 根据执行计划主键id查询巡检点信息（右下角查看）
+     * @param executeId 执行计划主键id
+     * @return map
+     */
+    @GetMapping("/findPointByExecuteId")
+    public Map<String,Object> findPointByExecuteId(Integer executeId){
+        return systemDataService.findPointByExecuteId(executeId);
+    }
+
 
     /**
      * 查询报修工单信息

@@ -190,9 +190,9 @@
     </select>
 
     <select id="findAllInspectionRecord" resultType="com.api.vo.systemDataBigScreen.SDInspectionRecordVo">
-        select sie.id,sip.name,su.actual_name as inspector,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date
+        select sie.id,concat(sip.name,'-',sie.sort) as name ,su.actual_name as inspector,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date
         from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_user as su
-        where sie.inspection_plan_id = sip.id and sip.inspector = su.id
+        where sie.inspection_plan_id = sip.id and sip.inspector = su.id order by sie.begin_date DESC
     </select>
     <select id="findReportDispatch" resultType="com.api.vo.systemDataBigScreen.SDReportDispatchVo">
         select sdl.id,sdl.code,
@@ -255,6 +255,30 @@
     </select>
     <select id="findRegCount" resultType="java.lang.Integer">
         select count(*) from user_resident where create_id = -1
+    </select>
+    <select id="findPointByExecuteIdAfter" parameterType="java.lang.Integer" resultType="com.api.vo.systemDataBigScreen.SDInspectionExecutePointVo">
+        select * from sys_inspection_execute_point where execute_id = #{executeId}
+    </select>
+
+    <select id="findPointByExecuteIdBefore" parameterType="java.lang.Integer"
+            resultType="com.api.vo.systemDataBigScreen.SDInspectionExecutePointVo">
+        select sipo.*
+        from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_inspection_route as sir,
+        sys_inspection_point_route as sipr,sys_inspection_point as sipo
+        where sie.inspection_plan_id = sip.id and sip.inspection_route_id = sipr.inspection_route_id
+        and sipr.inspection_point_id = sipo.id and sie.id = #{executeId}
+    </select>
+
+    <select id="findExecuteByExecuteId" parameterType="java.lang.Integer" resultType="com.api.vo.systemDataBigScreen.SDInspectionExecuteListVo">
+        select * from sys_inspection_execute from id = #{executeId}
+    </select>
+    <select id="findAllInspectionRoute" resultType="com.api.vo.systemDataBigScreen.SDInspectionRouteVo">
+        select * from sys_inspection_route where is_delete = 1
+    </select>
+    <select id="findExecuteByRoute" parameterType="java.lang.Integer" resultType="com.api.vo.systemDataBigScreen.SDInspectionExecutePlanVo">
+        select sie.id as executeId,sip.name,sie.begin_date,sie.end_date
+        from sys_inspection_execute as sie,sys_inspection_plan as sip
+        where sie.inspection_plan_id = sip.id and sip.inspection_route_id = #{routeId} order by sie.begin_date DESC
     </select>
 
 

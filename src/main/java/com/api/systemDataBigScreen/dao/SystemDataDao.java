@@ -193,6 +193,44 @@ public interface SystemDataDao {
     List<SDInspectionExecutePointVo> findPlanPointByExecuteId(Integer executeId);
 
     /**
+     * 查询所有的巡检路线
+     * @return 巡检路线
+     */
+    List<SDInspectionRouteVo> findAllInspectionRoute();
+
+    /**
+     * 根据巡检路线主键id查询巡检执行计划信息
+     * @param routeId 巡检路线主键id
+     * @return 巡检执行计划信息
+     */
+    List<SDInspectionExecutePlanVo> findExecuteByRoute(Integer routeId);
+
+
+    /**
+     * 根据执行计划主键id查询执行计划信息
+     * @param executeId 行计划主键id
+     * @return 执行计划信息
+     */
+    SDInspectionExecuteListVo findExecuteByExecuteId(Integer executeId);
+
+
+    /**
+     * 根据执行计划主键id查询巡检后的巡检点信息(巡检后的巡检点)
+     * @param executeId 执行计划主键id
+     * @return 巡检点信息
+     */
+    List<SDInspectionExecutePointVo> findPointByExecuteIdAfter(Integer executeId);
+
+
+    /**
+     * 根据执行计划主键id查询巡检前的巡检点信息(巡检前的巡检点)
+     * @param executeId 执行计划主键id
+     * @return 巡检点信息
+     */
+    List<SDInspectionExecutePointVo> findPointByExecuteIdBefore(Integer executeId);
+
+
+    /**
      * 查询所有的地点信息
      * @param executeId 巡检执行计划主键id
      * @return 系统数据 巡更执行路线 Vo 回显
@@ -283,5 +321,6 @@ public interface SystemDataDao {
      * @return app注册数
      */
     int findRegCount();
+
 
 }
