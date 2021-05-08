@@ -13,7 +13,7 @@
                 and sfc.name like concat('%',#{name},'%')
             </if>
             <if test="code != null and code != ''">
-                and sfc.code = #{code}
+                and sfc.code like concat('%',#{code},'%')
             </if>
             <if test="createStartDate != null">
                 and sfc.create_date <![CDATA[ >= ]]> #{createStartDate}

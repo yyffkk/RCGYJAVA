@@ -23,13 +23,13 @@
     </select>
 
     <select id="findProcessRecordByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppProcessRecordVo">
-        select * from sys_process_record as spr,sys_dispatch_list as sdl
-        where spr.dispatch_list_id = sdl.id and sdl.user_delete = 1 and sdl.sys_delete = 1 and spr.dispatch_list_id = #{repairId}
+        select spr.* from sys_process_record as spr,sys_dispatch_list as sdl,sys_report_repair as srr
+        where spr.dispatch_list_id = sdl.id and srr.dispatch_list_id = sdl.id and sdl.user_delete = 1 and sdl.sys_delete = 1 and srr.id = #{repairId}
     </select>
 
     <select id="findHandleCompleteByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppMaintenanceResultVo">
-        select * from sys_handle_complete_detail as shcd,sys_dispatch_list as sdl
-        where shcd.dispatch_list_id = sdl.id and sdl.user_delete = 1 and sdl.sys_delete = 1 and shcd.dispatch_list_id = #{repairId}
+        select shcd.* from sys_handle_complete_detail as shcd,sys_dispatch_list as sdl,sys_report_repair as srr
+        where shcd.dispatch_list_id = sdl.id and srr.dispatch_list_id = sdl.id and sdl.user_delete = 1 and sdl.sys_delete = 1 and srr.id = #{repairId}
     </select>
 
     <update id="falseDelete" parameterType="com.api.model.app.UserIdAndRepairId">
