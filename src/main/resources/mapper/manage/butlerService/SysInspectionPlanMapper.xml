@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.SysInspectionPlanDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchInspectionPlan" resultType="com.api.vo.butlerService.VoInspectionPlan">
-        select sip.id,sip.code,sir.code as route_code,sip.name,sip.plan_begin_date,sip.actual_begin_date,so.name as organization_name,su.actual_name as inspector_name
+        select sip.id,sip.code,sir.code as route_code,sip.name,sip.plan_begin_date,sip.actual_begin_date,so.name as organization_name,su.actual_name as inspector_name,sip.status
         from sys_inspection_plan as sip,sys_inspection_route as sir,sys_user as su,sys_organization as so
         <where>
             sip.inspection_route_id = sir.id

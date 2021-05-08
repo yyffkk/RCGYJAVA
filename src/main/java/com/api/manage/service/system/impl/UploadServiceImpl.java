@@ -75,6 +75,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_QUESTIONNAIRE_COVER_PHOTO;
     @Value("${prop.upload-facilities-category}")
     private String UPLOAD_FACILITIES_CATEGORY;
+    @Value("${prop.upload-shopping-goods}")
+    private String UPLOAD_SHOPPING_GOODS;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -261,6 +263,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadFacilitiesCategory(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_FACILITIES_CATEGORY);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadShoppingGoods(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_SHOPPING_GOODS);
         return map;
     }
 

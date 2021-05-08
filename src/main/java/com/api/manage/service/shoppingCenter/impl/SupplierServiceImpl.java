@@ -91,6 +91,13 @@ public class SupplierServiceImpl implements SupplierService {
         map = new HashMap<>();
         try {
             for (int id : ids) {
+                //根据商品主键id查询商品状态
+                int status = supplierDao.findStatusById(id);
+                if (status != 2){
+                    throw new RuntimeException("请先下架商品");
+                }
+
+                //假删除商品信息
                 int update = supplierDao.delete(id);
                 if (update < 0){
                     throw new RuntimeException("删除失败");

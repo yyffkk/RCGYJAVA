@@ -4,4 +4,75 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.shoppingCenter.GoodsDao">
 
+    <select id="list" parameterType="com.api.model.shoppingCenter.GoodsSearch" resultType="com.api.vo.shoppingCenter.GoodsVo">
+        select * from shop_goods
+        <where>
+            <if test="code != null and code != ''">
+                and code = #{code}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="createDateStart != null">
+                and create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            and is_delete = 1
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.shoppingCenter.Goods">
+        insert into shop_goods(
+            code,
+            category_id,
+            title,
+            recommend,
+            supplier_id,
+            detail,
+            selling_price,
+            marking_price,
+            stock,
+            draw_type,
+            status,
+            arrival_time,
+            create_id,
+            create_date
+        )values (
+            #{code},
+            #{categoryId},
+            #{title},
+            #{recommend},
+            #{supplierId},
+            #{detail},
+            #{sellingPrice},
+            #{markingPrice},
+            #{stock},
+            #{drawType},
+            #{status},
+            #{arrivalTime},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="updateStatus" parameterType="com.api.model.shoppingCenter.GoodsIdAndStatus">
+        update shop_goods set status = #{status} where id = #{goodsId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        update shop_goods set is_delete = 0 where id = #{id}
+    </delete>
+
+
 </mapper>

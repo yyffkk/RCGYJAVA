@@ -190,4 +190,14 @@ public class UploadController {
         return uploadService.uploadFacilitiesCategory(file);
     }
 
+    /**
+     * 上传商品照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadShoppingGoods")
+    public Map<String,Object> uploadShoppingGoods(MultipartFile file){
+        return uploadService.uploadShoppingGoods(file);
+    }
+
 }

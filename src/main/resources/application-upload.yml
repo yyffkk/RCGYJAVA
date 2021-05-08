@@ -51,6 +51,9 @@ prop:
   #收费管理-固定金额分摊：固定金额分摊缴纳凭证，照片上传路径
   upload-voucher: /img/voucher/
 
+  #商场中心-商品照片：新增商品照片
+  upload-shopping-goods: /img/goods/
+
   #管家服务-设施分类：设施分类照片上传路径
   upload-facilities-category: /img/facilitiesCategory/
 
