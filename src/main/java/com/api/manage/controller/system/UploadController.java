@@ -200,4 +200,24 @@ public class UploadController {
         return uploadService.uploadShoppingGoods(file);
     }
 
+    /**
+     * 上传分类照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadShoppingCategory")
+    public Map<String,Object> uploadShoppingCategory(MultipartFile file){
+        return uploadService.uploadShoppingCategory(file);
+    }
+
+    /**
+     * 上传供应商照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadShoppingSupplier")
+    public Map<String,Object> uploadShoppingSupplier(MultipartFile file){
+        return uploadService.uploadShoppingSupplier(file);
+    }
+
 }

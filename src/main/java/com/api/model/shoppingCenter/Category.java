@@ -1,5 +1,6 @@
 package com.api.model.shoppingCenter;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -38,6 +39,10 @@ public class Category {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 分类照片路径数组
+     */
+    private String[] imgUrls;
 
     @Override
     public String toString() {
@@ -50,6 +55,7 @@ public class Category {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", imgUrls=" + Arrays.toString(imgUrls) +
                 '}';
     }
 
@@ -117,10 +123,18 @@ public class Category {
         this.modifyDate = modifyDate;
     }
 
+    public String[] getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String[] imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public Category() {
     }
 
-    public Category(Integer id, Integer parentId, String idPath, String name, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public Category(Integer id, Integer parentId, String idPath, String name, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] imgUrls) {
         this.id = id;
         this.parentId = parentId;
         this.idPath = idPath;
@@ -129,5 +143,6 @@ public class Category {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.imgUrls = imgUrls;
     }
 }

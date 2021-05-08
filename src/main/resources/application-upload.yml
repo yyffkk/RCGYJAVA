@@ -52,7 +52,11 @@ prop:
   upload-voucher: /img/voucher/
 
   #商场中心-商品照片：新增商品照片
-  upload-shopping-goods: /img/goods/
+  upload-shopping-goods: /img/shopping/goods/
+  #商场中心-分类照片：新增分类照片
+  upload-shopping-category: /img/shopping/category/
+  #商品中心-供应商照片：新增供应商照片
+  upload-shopping-supplier: /img/shopping/supplier/
 
   #管家服务-设施分类：设施分类照片上传路径
   upload-facilities-category: /img/facilitiesCategory/

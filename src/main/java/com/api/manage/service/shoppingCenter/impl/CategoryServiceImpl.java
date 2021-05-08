@@ -4,6 +4,9 @@ import com.api.manage.dao.shoppingCenter.CategoryDao;
 import com.api.manage.service.shoppingCenter.CategoryService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.shoppingCenter.Category;
+import com.api.util.UploadUtil;
+import com.api.vo.app.AppCategoryVo;
+import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.shoppingCenter.CategoryVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -28,6 +31,13 @@ public class CategoryServiceImpl implements CategoryService {
     public Map<String, Object> list(Integer parentId) {
         map = new HashMap<>();
         List<CategoryVo> categoryVoList = categoryDao.list(parentId);
+        if (categoryVoList != null && categoryVoList.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (CategoryVo categoryVo : categoryVoList) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("shopCategory", categoryVo.getId(), "categoryImg");
+                categoryVo.setImgList(imgByDate);
+            }
+        }
         map.put("data",categoryVoList);
         map.put("message","请求成功");
         map.put("status",true);
@@ -35,41 +45,72 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(Category category) {
         map = new HashMap<>();
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
 
-        category.setCreateId(sysUser.getId());
-        category.setCreateDate(new Date());
-        int insert = categoryDao.insert(category);
-        if (insert >0){
-            map.put("message","添加成功");
-            map.put("status",true);
-        }else {
-            map.put("message","添加失败");
+            category.setCreateId(sysUser.getId());
+            category.setCreateDate(new Date());
+            int insert = categoryDao.insert(category);
+            if (insert <0){
+                map.put("message","添加失败");
+                map.put("status",false);
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(category.getImgUrls(),"shopCategory",category.getId(),"categoryImg","600",20,30);
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","添加成功");
+        map.put("status",true);
         return map;
     }
 
     @Override
+    @Transactional
     public Map<String, Object> update(Category category) {
         map = new HashMap<>();
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-        category.setModifyId(sysUser.getId());
-        category.setModifyDate(new Date());
-        int update = categoryDao.update(category);
-        if (update >0){
-            map.put("message","修改成功");
-            map.put("status",true);
-        }else {
-            map.put("message","修改失败");
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+            category.setModifyId(sysUser.getId());
+            category.setModifyDate(new Date());
+            int update = categoryDao.update(category);
+            if (update <0){
+                map.put("message","修改失败");
+                map.put("status",false);
+            }
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.delete("shopCategory",category.getId(),"categoryImg");
+            uploadUtil.saveUrlToDB(category.getImgUrls(),"shopCategory",category.getId(),"categoryImg","600",20,30);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","修改成功");
+        map.put("status",true);
         return map;
     }
 
@@ -78,6 +119,8 @@ public class CategoryServiceImpl implements CategoryService {
     public Map<String, Object> delete(Integer categoryId) {
         map = new HashMap<>();
         try {
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.delete("shopCategory",categoryId,"categoryImg");
             //根据商品分类全路径字段判断该类目存不存在商品信息
 
             //存在则不能删除，不存在则删除
