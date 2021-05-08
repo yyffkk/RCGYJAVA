@@ -1,5 +1,6 @@
 package com.api.model.shoppingCenter;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -50,6 +51,10 @@ public class Supplier {
      * 是否删除，1.非删，0.删除
      */
     private Integer isDelete;
+    /**
+     * 供应商照片路径数组
+     */
+    private String[] imgUrls;
 
 
     @Override
@@ -66,6 +71,7 @@ public class Supplier {
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
                 ", isDelete=" + isDelete +
+                ", imgUrls=" + Arrays.toString(imgUrls) +
                 '}';
     }
 
@@ -157,10 +163,18 @@ public class Supplier {
         this.isDelete = isDelete;
     }
 
+    public String[] getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String[] imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public Supplier() {
     }
 
-    public Supplier(Integer id, String code, String name, String director, String tel, String address, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
+    public Supplier(Integer id, String code, String name, String director, String tel, String address, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String[] imgUrls) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -172,5 +186,6 @@ public class Supplier {
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
         this.isDelete = isDelete;
+        this.imgUrls = imgUrls;
     }
 }

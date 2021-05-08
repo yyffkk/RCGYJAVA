@@ -57,8 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
             category.setCreateDate(new Date());
             int insert = categoryDao.insert(category);
             if (insert <0){
-                map.put("message","添加失败");
-                map.put("status",false);
+                throw new RuntimeException("添加失败");
             }
 
             UploadUtil uploadUtil = new UploadUtil();
@@ -92,8 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
             category.setModifyDate(new Date());
             int update = categoryDao.update(category);
             if (update <0){
-                map.put("message","修改失败");
-                map.put("status",false);
+                throw new RuntimeException("修改失败");
             }
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.delete("shopCategory",category.getId(),"categoryImg");
