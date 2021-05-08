@@ -7,4 +7,17 @@
     <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppCategoryVo">
         select id,name from shop_category where parent_id = #{parentId}
     </select>
+    <select id="findTopGoods" resultType="com.api.vo.app.AppGoodsVo">
+        select * from shop_goods where status = 1 and is_delete = 1 order By subscribe_num desc limit 4
+    </select>
+    <select id="findGoodsByCategoryId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGoodsVo">
+        select * from shop_goods where category_id = #{categoryId} and  status = 1 and is_delete = 1 order By subscribe_num
+    </select>
+    <select id="findDetailByGoodsId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGoodsDetailVo">
+        select sg.id,sg.recommend,sg.title,sg.selling_price,sg.marking_price,sc.name as category_name,
+        sg.subscribe_num,sg.detail,sg.arrival_time,ss.id as supplier_id,ss.name as supplier_name,ss.tel as supplier_tel,
+        ss.address as supplier_adresss
+        from shop_goods as sg,shop_supplier as ss,shop_category as sc
+        where sg.category_id = sc.id and sg.supplier_id = ss.id and sg.id = #{goodsId} and  sg.status = 1 and sg.is_delete = 1
+    </select>
 </mapper>
