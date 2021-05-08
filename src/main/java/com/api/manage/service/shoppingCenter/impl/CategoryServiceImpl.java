@@ -127,7 +127,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 
             //删除子类目
-            categoryDao.deleteSon(categoryId);
+//            categoryDao.deleteSon(categoryId);
+            //根据分类主键id查询子类目数量
+            int count = categoryDao.findSonNumById(categoryId);
+            if (count >0){
+                throw new RuntimeException("请先删除子类目");
+            }
+
 
             int delete = categoryDao.delete(categoryId);
             if (delete < 0){

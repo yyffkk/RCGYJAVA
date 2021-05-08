@@ -51,4 +51,9 @@
     <delete id="deleteSon" parameterType="java.lang.Integer">
         delete from shop_category where id_path like concat('%::',#{categoryId},'::%')
     </delete>
+
+    <select id="findSonNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from shop_category where parent_id = #{categoryId}
+    </select>
+
 </mapper>

@@ -40,4 +40,11 @@ public interface CategoryDao {
      * @return 影响行数
      */
     int deleteSon(Integer categoryId);
+
+    /**
+     * 根据分类主键id查询子类目数量
+     * @param categoryId  分类主键id
+     * @return 子类目数量
+     */
+    int findSonNumById(Integer categoryId);
 }
