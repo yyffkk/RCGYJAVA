@@ -15,13 +15,13 @@
                 and sfm.facilities_category_id = sfc.id
                 and sfa.appointment_id = su.id
                 <if test="code != null and code != ''">
-                    and sfa.code = #{code}
+                    and sfa.code like concat('%',#{code},'%')
                 </if>
                 <if test="facilitiesCategoryId != null">
                     and sfc.id = #{facilitiesCategoryId}
                 </if>
-                <if test="appointmentId != null">
-                    and sfa.appointment_id = #{appointmentId}
+                <if test="appointmentName != null and appointmentName != ''">
+                    and su.actual_name like concat('%',#{appointmentName},'%')
                 </if>
                 <if test="status != null">
                     and sfa.status = #{status}

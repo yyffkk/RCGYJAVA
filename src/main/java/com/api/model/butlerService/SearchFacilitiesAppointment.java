@@ -23,9 +23,9 @@ public class SearchFacilitiesAppointment {
      */
     private Integer facilitiesCategoryId;
     /**
-     * 预约人id
+     * 预约人名称
      */
-    private Integer appointmentId;
+    private String appointmentName;
     /**
      * 预约状态（1.未签到，2.已签到，3.已作废，4.已取消,5.已结束）
      */
@@ -54,7 +54,7 @@ public class SearchFacilitiesAppointment {
                 ", size=" + size +
                 ", code='" + code + '\'' +
                 ", facilitiesCategoryId=" + facilitiesCategoryId +
-                ", appointmentId=" + appointmentId +
+                ", appointmentName='" + appointmentName + '\'' +
                 ", status=" + status +
                 ", appointmentStartDate=" + appointmentStartDate +
                 ", appointmentEndDate=" + appointmentEndDate +
@@ -95,12 +95,12 @@ public class SearchFacilitiesAppointment {
         this.facilitiesCategoryId = facilitiesCategoryId;
     }
 
-    public Integer getAppointmentId() {
-        return appointmentId;
+    public String getAppointmentName() {
+        return appointmentName;
     }
 
-    public void setAppointmentId(Integer appointmentId) {
-        this.appointmentId = appointmentId;
+    public void setAppointmentName(String appointmentName) {
+        this.appointmentName = appointmentName;
     }
 
     public Integer getStatus() {
@@ -146,12 +146,12 @@ public class SearchFacilitiesAppointment {
     public SearchFacilitiesAppointment() {
     }
 
-    public SearchFacilitiesAppointment(int pageNum, int size, String code, Integer facilitiesCategoryId, Integer appointmentId, Integer status, Date appointmentStartDate, Date appointmentEndDate, Date createStartDate, Date createEndDate) {
+    public SearchFacilitiesAppointment(int pageNum, int size, String code, Integer facilitiesCategoryId, String appointmentName, Integer status, Date appointmentStartDate, Date appointmentEndDate, Date createStartDate, Date createEndDate) {
         this.pageNum = pageNum;
         this.size = size;
         this.code = code;
         this.facilitiesCategoryId = facilitiesCategoryId;
-        this.appointmentId = appointmentId;
+        this.appointmentName = appointmentName;
         this.status = status;
         this.appointmentStartDate = appointmentStartDate;
         this.appointmentEndDate = appointmentEndDate;

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.SysInspectionRouteDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchInspectionRoute" resultType="com.api.vo.butlerService.VoInspectionRoute">
-        select id,code,name,status,space_time,create_date from sys_inspection_route and is_delete = 1
+        select id,code,name,status,space_time,create_date from sys_inspection_route where is_delete = 1
     </select>
     <insert id="insert" parameterType="com.api.model.butlerService.SysInspectionRoute">
         insert into sys_inspection_route(

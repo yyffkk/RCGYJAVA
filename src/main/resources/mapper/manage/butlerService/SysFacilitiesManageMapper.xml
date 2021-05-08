@@ -17,7 +17,7 @@
                 and sfm.facilities_category_id = #{facilitiesCategoryId}
             </if>
             <if test="code != null and code != ''">
-                and sfm.code = #{code}
+                and sfm.code like concat('%',#{code},'%')
             </if>
             <if test="status != null">
                 and sfm.status = #{status}

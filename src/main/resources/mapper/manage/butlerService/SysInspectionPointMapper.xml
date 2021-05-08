@@ -7,10 +7,10 @@
         select id,code,name,type,create_date from sys_inspection_point
         <where>
             <if test="code != null and code != ''">
-                and code = #{code}
+                and code like concat('%',#{code},'%')
             </if>
             <if test="name != null and name != ''">
-                and name = #{name}
+                and name like concat('%',#{name},'%')
             </if>
             and is_delete = 1
         </where>
