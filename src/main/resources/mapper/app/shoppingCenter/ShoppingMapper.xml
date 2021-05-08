@@ -45,4 +45,8 @@
         )
     </insert>
 
+    <select id="goodsSearch" parameterType="java.lang.String" resultType="com.api.vo.app.AppGoodsVo">
+        select * from shop_goods where title like concat('%',#{searchName},'%')
+    </select>
+
 </mapper>

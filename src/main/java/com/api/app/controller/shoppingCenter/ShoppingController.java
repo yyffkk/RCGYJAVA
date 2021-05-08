@@ -101,5 +101,23 @@ public class ShoppingController {
         return shoppingService.goodsAppointment(appGoodsAppointment,type,id);
     }
 
+    /**
+     * 商品搜索
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @param searchName 搜索内容
+     * @return map
+     */
+    @GetMapping("/goodsSearch")
+    public Map<String,Object> goodsSearch(int pageNum,int size,String searchName){
+        PageHelper.startPage(pageNum,size);
+        List<AppGoodsVo> appGoodsVos = shoppingService.goodsSearch(searchName);
+        PageInfo<AppGoodsVo> pageInfo = new PageInfo<>(appGoodsVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 
 }

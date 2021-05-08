@@ -18,4 +18,6 @@ public interface ShoppingService {
     Map<String, Object> findTopGoodsBySupplierId(Integer supplierId);
 
     Map<String, Object> goodsAppointment(AppGoodsAppointment appGoodsAppointment, Integer type, Integer id);
+
+    List<AppGoodsVo> goodsSearch(String searchName);
 }

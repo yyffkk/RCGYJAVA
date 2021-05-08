@@ -148,4 +148,18 @@ public class ShoppingServiceImpl implements ShoppingService {
         }
         return map;
     }
+
+    @Override
+    public List<AppGoodsVo> goodsSearch(String searchName) {
+        map = new HashMap<>();
+        List<AppGoodsVo> appGoodsVos = shoppingDao.goodsSearch(searchName);
+        if (appGoodsVos != null && appGoodsVos.size()>0){
+            for (AppGoodsVo appGoodsVo : appGoodsVos) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("shopGoods", appGoodsVo.getId(), "goodsImg");
+                appGoodsVo.setImgList(imgByDate);
+            }
+        }
+        return appGoodsVos;
+    }
 }

@@ -56,4 +56,11 @@ public interface ShoppingDao {
      * @return 影响行数
      */
     int goodsAppointment(AppGoodsAppointment appGoodsAppointment);
+
+    /**
+     * 商品搜索
+     * @param searchName 搜索内容
+     * @return 商品信息
+     */
+    List<AppGoodsVo> goodsSearch(String searchName);
 }
