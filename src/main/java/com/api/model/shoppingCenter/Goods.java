@@ -49,6 +49,10 @@ public class Goods {
      */
     private Integer stock;
     /**
+     * 订阅量/预约量
+     */
+    private Integer subscribeNum;
+    /**
      * 提取方式，默认1.线下自提
      */
     private Integer drawType;
@@ -98,6 +102,7 @@ public class Goods {
                 ", sellingPrice=" + sellingPrice +
                 ", markingPrice=" + markingPrice +
                 ", stock=" + stock +
+                ", subscribeNum=" + subscribeNum +
                 ", drawType=" + drawType +
                 ", status=" + status +
                 ", arrivalTime='" + arrivalTime + '\'' +
@@ -190,6 +195,14 @@ public class Goods {
         this.stock = stock;
     }
 
+    public Integer getSubscribeNum() {
+        return subscribeNum;
+    }
+
+    public void setSubscribeNum(Integer subscribeNum) {
+        this.subscribeNum = subscribeNum;
+    }
+
     public Integer getDrawType() {
         return drawType;
     }
@@ -265,7 +278,7 @@ public class Goods {
     public Goods() {
     }
 
-    public Goods(Integer id, String code, Integer categoryId, String title, String recommend, Integer supplierId, String detail, BigDecimal sellingPrice, BigDecimal markingPrice, Integer stock, Integer drawType, Integer status, String arrivalTime, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String[] imgUrls) {
+    public Goods(Integer id, String code, Integer categoryId, String title, String recommend, Integer supplierId, String detail, BigDecimal sellingPrice, BigDecimal markingPrice, Integer stock, Integer subscribeNum, Integer drawType, Integer status, String arrivalTime, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String[] imgUrls) {
         this.id = id;
         this.code = code;
         this.categoryId = categoryId;
@@ -276,6 +289,7 @@ public class Goods {
         this.sellingPrice = sellingPrice;
         this.markingPrice = markingPrice;
         this.stock = stock;
+        this.subscribeNum = subscribeNum;
         this.drawType = drawType;
         this.status = status;
         this.arrivalTime = arrivalTime;

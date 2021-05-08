@@ -39,9 +39,6 @@
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.shoppingCenter.SupplierFBIVo">
         select * from shop_supplier where id = #{id}
     </select>
-    <select id="findStatusById" resultType="java.lang.Integer">
-        select status from shop_supplier where id = #{id}
-    </select>
 
     <update id="update" parameterType="com.api.model.shoppingCenter.Supplier">
         update shop_supplier

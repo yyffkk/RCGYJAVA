@@ -33,6 +33,14 @@ public interface GoodsDao {
      */
     int updateStatus(GoodsIdAndStatus goodsIdAndStatus);
 
+
+    /**
+     * 根据商品主键id查询商品状态
+     * @param id 商品主键id
+     * @return 商品状态
+     */
+    int findStatusById(int id);
+
     /**
      * 假删除商品信息
      * @param id 商品主键id

@@ -55,6 +55,7 @@ public class GoodsServiceImpl implements GoodsService {
             goods.setIsDelete(1); //填写默认是否删除，1.非删
             goods.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
             goods.setDrawType(1); //填写提取方式，默认1.线下自提
+            goods.setSubscribeNum(0); //填写默认订阅量 为0
 
             int insert = goodsDao.insert(goods);
             if (insert <0){
@@ -120,6 +121,12 @@ public class GoodsServiceImpl implements GoodsService {
         map = new HashMap<>();
         try {
             for (int id : ids) {
+                //根据商品主键id查询商品状态
+                int status = goodsDao.findStatusById(id);
+                if (status != 2){
+                    throw new RuntimeException("请先下架商品");
+                }
+
                 int update = goodsDao.delete(id);
                 if (update < 0){
                     throw new RuntimeException("删除失败");

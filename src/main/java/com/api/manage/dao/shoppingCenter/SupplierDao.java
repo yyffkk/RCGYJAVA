@@ -42,11 +42,4 @@ public interface SupplierDao {
      * @return 影响行数
      */
     int delete(int id);
-
-    /**
-     * 根据商品主键id查询商品状态
-     * @param id 商品主键id
-     * @return 商品状态
-     */
-    int findStatusById(int id);
 }

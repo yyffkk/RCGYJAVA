@@ -11,7 +11,7 @@
                 and code = #{code}
             </if>
             <if test="title != null and title != ''">
-                and title = #{title}
+                and title like concat('%',#{title},'%')
             </if>
             <if test="categoryId != null">
                 and category_id = #{categoryId}
@@ -44,7 +44,8 @@
             status,
             arrival_time,
             create_id,
-            create_date
+            create_date,
+            is_delete
         )values (
             #{code},
             #{categoryId},
@@ -59,7 +60,8 @@
             #{status},
             #{arrivalTime},
             #{createId},
-            #{createDate}
+            #{createDate},
+            #{isDelete}
         )
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id
@@ -69,6 +71,11 @@
     <update id="updateStatus" parameterType="com.api.model.shoppingCenter.GoodsIdAndStatus">
         update shop_goods set status = #{status} where id = #{goodsId}
     </update>
+
+
+    <select id="findStatusById" resultType="java.lang.Integer">
+        select status from shop_goods where id = #{id}
+    </select>
 
     <delete id="delete" parameterType="java.lang.Integer">
         update shop_goods set is_delete = 0 where id = #{id}
