@@ -1,5 +1,6 @@
 package com.api.app.service.shoppingCenter;
 
+import com.api.model.app.AppGoodsAppointment;
 import com.api.vo.app.AppGoodsVo;
 
 import java.util.List;
@@ -12,5 +13,9 @@ public interface ShoppingService {
 
     List<AppGoodsVo> findGoodsByCategoryId(Integer categoryId);
 
-    Map<String, Object> findDetailByGoodsId(Integer goodsId);
+    Map<String, Object> findDetailByGoodsId(Integer goodsId, Integer id);
+
+    Map<String, Object> findTopGoodsBySupplierId(Integer supplierId);
+
+    Map<String, Object> goodsAppointment(AppGoodsAppointment appGoodsAppointment, Integer type, Integer id);
 }

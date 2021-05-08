@@ -1,15 +1,16 @@
 package com.api.app.controller.shoppingCenter;
 
 import com.api.app.service.shoppingCenter.ShoppingService;
+import com.api.model.app.AppGoodsAppointment;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.app.AppGoodsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,13 +67,39 @@ public class ShoppingController {
     /***
      * 根据商品主键id查询商品详情
      * @param goodsId 商品主键id
+     * @param id 用户主键id
      * @return map
      */
     @GetMapping("/findDetailByGoodsId")
-    public Map<String,Object> findDetailByGoodsId(Integer goodsId){
-        return shoppingService.findDetailByGoodsId(goodsId);
+    public Map<String,Object> findDetailByGoodsId(Integer goodsId,Integer id){
+        return shoppingService.findDetailByGoodsId(goodsId,id);
     }
 
+    /**
+     * 根据供应商主键id 查询预约量最高的4个商品信息(其他【4个】)
+     * @param supplierId 供应商主键id
+     * @return map
+     */
+    @GetMapping("/findTopGoodsBySupplierId")
+    public Map<String,Object> findTopGoodsBySupplierId(Integer supplierId){
+        return shoppingService.findTopGoodsBySupplierId(supplierId);
+    }
+
+
+    /**
+     * 商品预约
+     * @param appGoodsAppointment app 商品预约信息
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/goodsAppointment")
+    public Map<String,Object> goodsAppointment(@RequestBody AppGoodsAppointment appGoodsAppointment, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户type
+        Integer type = Integer.valueOf(request.getParameter("type"));
+        return shoppingService.goodsAppointment(appGoodsAppointment,type,id);
+    }
 
 
 }

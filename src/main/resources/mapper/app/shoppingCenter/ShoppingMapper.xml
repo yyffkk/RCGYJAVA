@@ -20,4 +20,29 @@
         from shop_goods as sg,shop_supplier as ss,shop_category as sc
         where sg.category_id = sc.id and sg.supplier_id = ss.id and sg.id = #{goodsId} and  sg.status = 1 and sg.is_delete = 1
     </select>
+    <select id="countAppointmentByGIdAndUId" parameterType="com.api.model.app.AppGoodsIdAndUserId" resultType="java.lang.Integer">
+        select count(*) from shop_goods_appointment where goods_id = #{goodsId} and create_id = #{UserId}
+    </select>
+    <select id="findTopGoodsBySupplierId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGoodsVo">
+        select * from shop_goods where supplier_id = #{supplierId} and  status = 1 and is_delete = 1 order By subscribe_num limit 4
+    </select>
+
+    <insert id="goodsAppointment" parameterType="com.api.model.app.AppGoodsAppointment">
+        insert into shop_goods_appointment(
+            goods_id,
+            user_name,
+            user_tel,
+            num,
+            create_id,
+            create_date
+        )values (
+            #{goodsId},
+            #{userName},
+            #{userTel},
+            #{num},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
 </mapper>

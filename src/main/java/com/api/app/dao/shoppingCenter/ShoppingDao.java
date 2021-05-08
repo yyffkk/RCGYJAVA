@@ -1,5 +1,7 @@
 package com.api.app.dao.shoppingCenter;
 
+import com.api.model.app.AppGoodsAppointment;
+import com.api.model.app.AppGoodsIdAndUserId;
 import com.api.vo.app.AppCategoryVo;
 import com.api.vo.app.AppGoodsDetailVo;
 import com.api.vo.app.AppGoodsVo;
@@ -33,4 +35,25 @@ public interface ShoppingDao {
      * @return 商品详情
      */
     AppGoodsDetailVo findDetailByGoodsId(Integer goodsId);
+
+    /**
+     * 根据商品主键id 和 用户主键id 查询是否预约
+     * @param goodsIdAndUserId 商品主键id 和 用户主键id
+     * @return 预约数
+     */
+    int countAppointmentByGIdAndUId(AppGoodsIdAndUserId goodsIdAndUserId);
+
+    /**
+     * 根据供应商主键id 查询预约量最高的4个商品信息(其他【4个】)
+     * @param supplierId 供应商主键id
+     * @return 预约量最高的4个商品信息
+     */
+    List<AppGoodsVo> findTopGoodsBySupplierId(Integer supplierId);
+
+    /**
+     * 商品预约
+     * @param appGoodsAppointment app 商品预约信息
+     * @return 影响行数
+     */
+    int goodsAppointment(AppGoodsAppointment appGoodsAppointment);
 }

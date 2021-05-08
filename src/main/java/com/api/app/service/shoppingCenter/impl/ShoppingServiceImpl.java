@@ -2,6 +2,8 @@ package com.api.app.service.shoppingCenter.impl;
 
 import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.app.service.shoppingCenter.ShoppingService;
+import com.api.model.app.AppGoodsAppointment;
+import com.api.model.app.AppGoodsIdAndUserId;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppCategoryVo;
 import com.api.vo.app.AppGoodsDetailVo;
@@ -10,6 +12,7 @@ import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +72,7 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public Map<String, Object> findDetailByGoodsId(Integer goodsId) {
+    public Map<String, Object> findDetailByGoodsId(Integer goodsId, Integer id) {
         map = new HashMap<>();
         AppGoodsDetailVo appGoodsDetailVo = shoppingDao.findDetailByGoodsId(goodsId);
         if (appGoodsDetailVo != null){
@@ -78,10 +81,71 @@ public class ShoppingServiceImpl implements ShoppingService {
             appGoodsDetailVo.setGoodsImgList(imgByDate);
             List<VoResourcesImg> imgByDate1 = uploadUtil.findImgByDate("shopSupplier", appGoodsDetailVo.getSupplierId(), "supplierImg");
             appGoodsDetailVo.setSupplierImgList(imgByDate1);
+
+            //查询该用户是否有报名该商品
+            AppGoodsIdAndUserId goodsIdAndUserId = new AppGoodsIdAndUserId();
+            goodsIdAndUserId.setUserId(id);
+            goodsIdAndUserId.setGoodsId(goodsId);
+            int count = shoppingDao.countAppointmentByGIdAndUId(goodsIdAndUserId);
+            if (count >0){
+                appGoodsDetailVo.setIsSubscribe(1); //1.订阅
+            }else {
+                appGoodsDetailVo.setIsSubscribe(0); //0.没订阅
+            }
         }
         map.put("data",appGoodsDetailVo);
         map.put("message","请求成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findTopGoodsBySupplierId(Integer supplierId) {
+        map = new HashMap<>();
+        List<AppGoodsVo> appGoodsVos = shoppingDao.findTopGoodsBySupplierId(supplierId);
+        if (appGoodsVos != null && appGoodsVos.size()>0){
+            for (AppGoodsVo appGoodsVo : appGoodsVos) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("shopGoods", appGoodsVo.getId(), "goodsImg");
+                appGoodsVo.setImgList(imgByDate);
+            }
+        }
+        map.put("data",appGoodsVos);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> goodsAppointment(AppGoodsAppointment appGoodsAppointment, Integer type, Integer id) {
+        map = new HashMap<>();
+        if (type == 4){//4.游客
+            map.put("message","您的身份为游客，不可进行此操作");
+            map.put("status",false);
+            return map;
+        }
+        //查询该用户是否有报名该商品
+        AppGoodsIdAndUserId goodsIdAndUserId = new AppGoodsIdAndUserId();
+        goodsIdAndUserId.setUserId(id);
+        goodsIdAndUserId.setGoodsId(appGoodsAppointment.getGoodsId());
+        int count = shoppingDao.countAppointmentByGIdAndUId(goodsIdAndUserId);
+        if (count >0){
+            map.put("message","您已预约成功，不可进行再次进行该操作");
+            map.put("status",false);
+            return map;
+        }
+
+        appGoodsAppointment.setCreateId(id);
+        appGoodsAppointment.setCreateDate(new Date());
+
+        int insert = shoppingDao.goodsAppointment(appGoodsAppointment);
+        if (insert >0){
+            map.put("message","添加成功");
+            map.put("status",true);
+        }else {
+            map.put("message","添加失败");
+            map.put("status",false);
+        }
         return map;
     }
 }
