@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysNewsManagementDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchNewsManagement" resultType="com.api.vo.operationManagement.VoNewsManagement">
+        select sn.id,sn.code,sn.title,snc.name as news_category_name,su.actual_name as create_name,sn.create_date
+        from sys_news as sn,sys_news_category as snc,sys_user as su
+        <where>
+            sn.create_id = su.id
+            and sn.news_category_id = snc.id
+            <if test="code != null and code != ''">
+                and sn.code like concat('%',#{code},'%')
+            </if>
+            <if test="title != null and title != ''">
+                and sn.title like concat('%',#{title},'%')
+            </if>
+            <if test="newsCategoryId != null">
+                and sn.news_category_id = #{newsCategoryId}
+            </if>
+            <if test="createName != null and createName != ''">
+                and su.actual_name like concat('%',#{createName},'%')
+            </if>
+            <if test="createDateStart != null">
+                and sn.create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and sn.create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+    </select>
+</mapper>

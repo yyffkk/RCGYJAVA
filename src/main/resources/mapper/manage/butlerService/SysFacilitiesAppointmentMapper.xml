@@ -5,15 +5,14 @@
 <mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesAppointmentDao">
 
     <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesAppointment" resultType="com.api.vo.butlerService.VoFacilitiesAppointment">
-        select * from (
-            select sfa.id,sfa.code,sfc.name as facilities_category_name,sfm.name as facilities_name,
-            su.actual_name as appointment_name,su.tel as appointment_tel,
-            sfa.appointment_start_date,sfa.appointment_end_date,sfa.status,sfa.create_date
-            from sys_facilities_appointment as sfa,sys_facilities_manage as sfm,sys_facilities_category as sfc,sys_user as su
-            <where>
+        select sfa.id,sfa.code,sfc.name as facilities_category_name,sfm.name as facilities_name,
+        ur.name as appointment_name,ur.tel as appointment_tel,
+        sfa.appointment_start_date,sfa.appointment_end_date,sfa.status,sfa.create_date
+        from sys_facilities_appointment as sfa,sys_facilities_manage as sfm,sys_facilities_category as sfc,user_resident as ur
+        <where>
                 sfa.facilities_manage_id = sfm.id
                 and sfm.facilities_category_id = sfc.id
-                and sfa.appointment_id = su.id
+                and sfa.appointment_id = ur.id
                 <if test="code != null and code != ''">
                     and sfa.code like concat('%',#{code},'%')
                 </if>
