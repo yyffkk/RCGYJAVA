@@ -42,4 +42,11 @@ public interface SupplierDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据供应商主键id查询 所拥有的商品数量
+     * @param id 供应商主键id
+     * @return 所拥有的商品数量
+     */
+    int countGoodsById(int id);
 }

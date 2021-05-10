@@ -47,4 +47,11 @@ public interface GoodsDao {
      * @return  影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据商品主键id查询是否预约
+     * @param id 商品主键id
+     * @return 预约数
+     */
+    int countAppointmentById(int id);
 }

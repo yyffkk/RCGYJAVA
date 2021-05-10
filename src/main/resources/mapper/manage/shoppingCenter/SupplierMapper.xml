@@ -66,5 +66,9 @@
         update shop_supplier set is_delete = 0 where id = #{id}
     </update>
 
+    <select id="countGoodsById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from shop_goods where supplier_id = #{id}
+    </select>
+
 
 </mapper>

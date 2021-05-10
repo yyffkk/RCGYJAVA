@@ -55,5 +55,8 @@
     <select id="findSonNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from shop_category where parent_id = #{categoryId}
     </select>
+    <select id="countGoodsById" resultType="java.lang.Integer">
+        select count(*) from shop_goods where category_id = #{categoryId}
+    </select>
 
 </mapper>

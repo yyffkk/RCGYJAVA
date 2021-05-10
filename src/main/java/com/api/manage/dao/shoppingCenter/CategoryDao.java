@@ -47,4 +47,11 @@ public interface CategoryDao {
      * @return 子类目数量
      */
     int findSonNumById(Integer categoryId);
+
+    /**
+     * 根据分类主键id 查询 拥有商品数量
+     * @param categoryId 分类主键id
+     * @return 拥有商品数量
+     */
+    int countGoodsById(Integer categoryId);
 }

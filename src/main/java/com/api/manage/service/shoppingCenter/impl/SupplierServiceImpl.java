@@ -130,6 +130,12 @@ public class SupplierServiceImpl implements SupplierService {
             UploadUtil uploadUtil = new UploadUtil();
             for (int id : ids) {
 
+                //根据供应商主键id查询 所拥有的商品数量
+                int count = supplierDao.countGoodsById(id);
+                if (count >0){
+                    throw new RuntimeException("请先删除拥有的商品");
+                }
+
                 //假删除商品信息
                 int update = supplierDao.delete(id);
                 if (update < 0){

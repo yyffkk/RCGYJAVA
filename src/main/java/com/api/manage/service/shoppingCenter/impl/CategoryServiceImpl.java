@@ -119,10 +119,6 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.delete("shopCategory",categoryId,"categoryImg");
-            //根据商品分类全路径字段判断该类目存不存在商品信息
-
-            //存在则不能删除，不存在则删除
-
 
             //删除子类目
 //            categoryDao.deleteSon(categoryId);
@@ -130,6 +126,12 @@ public class CategoryServiceImpl implements CategoryService {
             int count = categoryDao.findSonNumById(categoryId);
             if (count >0){
                 throw new RuntimeException("请先删除子类目");
+            }
+
+            //根据分类主键id 查询 拥有商品数量
+            int count2 = categoryDao.countGoodsById(categoryId);
+            if (count2 >0){
+                throw new RuntimeException("请先删除拥有的商品");
             }
 
 

@@ -127,6 +127,12 @@ public class GoodsServiceImpl implements GoodsService {
                     throw new RuntimeException("请先下架商品");
                 }
 
+                //根据商品主键id查询是否预约
+                int count = goodsDao.countAppointmentById(id);
+                if (count > 0){
+                    throw new RuntimeException("商品已被预约");
+                }
+
                 int update = goodsDao.delete(id);
                 if (update < 0){
                     throw new RuntimeException("删除失败");
