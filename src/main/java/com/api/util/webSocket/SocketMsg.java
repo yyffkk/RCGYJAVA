@@ -1,4 +1,4 @@
-package com.api.util;
+package com.api.util.webSocket;
 
 public class SocketMsg {
     private int type; //聊天类型0：群聊，1：单聊.

@@ -1,6 +1,6 @@
 package com.api.manage.controller;
 
-import com.api.util.WebSocketService;
+import com.api.util.webSocket.WebSocketService;
 //import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 

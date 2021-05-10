@@ -1,7 +1,6 @@
-package com.api.util;
+package com.api.util.webSocket;
 
 
-import com.api.util.SocketMsg;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

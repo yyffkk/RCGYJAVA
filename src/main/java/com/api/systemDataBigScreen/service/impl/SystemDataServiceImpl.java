@@ -7,7 +7,7 @@ import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
-import com.api.util.WebSocketService;
+import com.api.util.webSocket.WebSocketService;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
 import org.springframework.stereotype.Service;
