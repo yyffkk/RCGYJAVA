@@ -37,8 +37,6 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
         ArrayList<ButlerBacklogVo> butlerBacklogVos = new ArrayList<>();
         ButlerBacklogVo butlerBacklogVo= null;
         if (type == 1 || type == 5){
-            //创建一个对象集合(派单人，报事报修)
-            butlerBacklogVo = new ButlerBacklogVo<ButlerRepairVo>();
             //派单人的待派事项
             List<ButlerRepairVo> butlerRepairVos = butlerBacklogDao.backlogDispatchList(butlerUserIdAndStatus);
             //查询照片资源
@@ -49,6 +47,8 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
                     butlerRepairVo.setImgUrls(imgByDate);
                     butlerRepairVo.setType(type);
 
+                    //创建一个对象集合(派单人，报事报修)
+                    butlerBacklogVo = new ButlerBacklogVo<ButlerRepairVo>();
                     //填入dataList数据
                     butlerBacklogVo.setDataList(butlerRepairVo);
                     butlerBacklogVo.setType(1);
@@ -57,8 +57,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             }
         }
         if (type == 2 || type == 5){
-            //创建一个对象集合(接单人，报事报修)
-            butlerBacklogVo = new ButlerBacklogVo<ButlerRepairVo>();
+
             //接单人的待接单事项
             List<ButlerRepairVo> butlerRepairVos = butlerBacklogDao.backlogReceivingList(butlerUserIdAndStatus);
             //查询照片资源
@@ -69,6 +68,8 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
                     butlerRepairVo.setImgUrls(imgByDate);
                     butlerRepairVo.setType(type);
 
+                    //创建一个对象集合(接单人，报事报修)
+                    butlerBacklogVo = new ButlerBacklogVo<ButlerRepairVo>();
                     //填入dataList数据
                     butlerBacklogVo.setDataList(butlerRepairVo);
                     butlerBacklogVo.setType(1);
@@ -77,12 +78,13 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             }
         }
         if (type == 3 || type == 5){
-            //创建一个对象集合（放行，物品出门）
-            butlerBacklogVo = new ButlerBacklogVo<ButlerArticleOutVo>();
+
             //放行人的待出户事项
             List<ButlerArticleOutVo> butlerArticleOutVos =butlerBacklogDao.backlogReleasedList(backlogStatus);
             if (butlerArticleOutVos != null && butlerArticleOutVos.size()>0){
                 for (ButlerArticleOutVo butlerArticleOutVo : butlerArticleOutVos) {
+                    //创建一个对象集合（放行，物品出门）
+                    butlerBacklogVo = new ButlerBacklogVo<ButlerArticleOutVo>();
                     butlerBacklogVo.setDataList(butlerArticleOutVo);
                     butlerBacklogVo.setType(2);
                     butlerBacklogVos.add(butlerBacklogVo);

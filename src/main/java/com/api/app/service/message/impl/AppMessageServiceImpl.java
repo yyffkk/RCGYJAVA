@@ -114,13 +114,10 @@ public class AppMessageServiceImpl implements AppMessageService {
         try {
             //修改系统通知为已读
             int update = appMessageDao.allReadSys(id);
-            if (update <=0){
-                throw new RuntimeException("操作失败");
-            }
             //修改评论通知为已读
             int update2 = appMessageDao.allReadComment(id);
-            if (update2 <=0){
-                throw new RuntimeException("操作2失败");
+            if (update <=0 && update2 <=0){
+                throw new RuntimeException("操作失败");
             }
         } catch (Exception e) {
             //获取抛出的信息
