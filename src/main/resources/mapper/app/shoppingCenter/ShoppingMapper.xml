@@ -49,4 +49,8 @@
         select * from shop_goods where title like concat('%',#{searchName},'%')
     </select>
 
+    <update id="incGoodsAppointmentNum" parameterType="com.api.model.app.AppGoodsIdAndAppointmentNum">
+        update shop_goods set subscribe_num = subscribe_num + #{appointmentNum} where id = #{goodsId} and subscribe_num + #{appointmentNum} <![CDATA[ <= ]]> stock
+    </update>
+
 </mapper>

@@ -3,6 +3,7 @@ package com.api.app.service.shoppingCenter.impl;
 import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.app.service.shoppingCenter.ShoppingService;
 import com.api.model.app.AppGoodsAppointment;
+import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppCategoryVo;
@@ -138,6 +139,18 @@ public class ShoppingServiceImpl implements ShoppingService {
         appGoodsAppointment.setCreateId(id);
         appGoodsAppointment.setCreateDate(new Date());
 
+        AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum = new AppGoodsIdAndAppointmentNum();
+        appGoodsIdAndAppointmentNum.setGoodsId(appGoodsAppointment.getGoodsId());
+        appGoodsIdAndAppointmentNum.setAppointmentNum(appGoodsAppointment.getNum());
+
+        //累加商品预约量
+        int update = shoppingDao.incGoodsAppointmentNum(appGoodsIdAndAppointmentNum);
+        if (update <= 0){
+            map.put("message","预约失败，库存已无");
+            map.put("status",false);
+            return map;
+        }
+
         int insert = shoppingDao.goodsAppointment(appGoodsAppointment);
         if (insert >0){
             map.put("message","添加成功");
@@ -146,6 +159,8 @@ public class ShoppingServiceImpl implements ShoppingService {
             map.put("message","添加失败");
             map.put("status",false);
         }
+
+
         return map;
     }
 
