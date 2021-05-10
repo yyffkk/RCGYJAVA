@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysNewsCategoryManagementDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchNewsCategoryManagement" resultType="com.api.vo.operationManagement.VoNewsCategoryManagement">
+        select snc.id,snc.code,snc.name,snc.num,su.actual_name as create_name,snc.create_date
+        from sys_news_category as snc,sys_user as su
+        <where>
+            snc.create_id = su.id
+            <if test="code != null and code != ''">
+                and snc.code like concat('%',#{code},'%')
+            </if>
+            <if test="name != null and name != ''">
+                and snc.name like concat('%',#{name},'%')
+            </if>
+            <if test="createName != null and createName != ''">
+                and su.actual_name like concat('%',#{createName},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysNewsCategoryManagement">
+        insert into sys_news_category(
+            code,
+            name,
+            num,
+            create_id,
+            create_date
+        )values (
+            #{code},
+            #{name},
+            #{num},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoNewsCategoryManagement">
+        select snc.id,snc.code,snc.name,snc.num,su.actual_name as create_name,snc.create_date
+        from sys_news_category as snc,sys_user as su where snc.create_id = su.id and snc.id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysNewsCategoryManagement">
+        update sys_news_category
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_news_category where id =#{id}
+    </delete>
+
+</mapper>
