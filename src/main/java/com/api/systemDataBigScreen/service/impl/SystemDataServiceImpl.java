@@ -7,6 +7,7 @@ import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
+import com.api.util.WebSocketService;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
 import org.springframework.stereotype.Service;
@@ -398,6 +399,9 @@ public class SystemDataServiceImpl implements SystemDataService {
             // key:type value:1 火警
             JiguangUtil.sendPushAll(content,"1");
             JiguangUtil.sendButlerPushAll(content,"1");
+            WebSocketService ws = new WebSocketService();
+            ws.broadcast(content);
+
         } catch (Exception e) {
             e.printStackTrace();
             map.put("message","推送失败");
