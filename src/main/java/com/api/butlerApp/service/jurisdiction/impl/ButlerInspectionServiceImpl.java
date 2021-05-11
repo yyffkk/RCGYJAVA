@@ -220,9 +220,14 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
         //根据巡检执行情况主键id查询巡检点编号
         List<String> codes = butlerInspectionDao.findPointCodeByExecuteId(executeId);
         if (codes.contains(executePointCode)){
+            ButlerExecuteIdAndExecutePointCode executeIdAndExecutePointCode = new ButlerExecuteIdAndExecutePointCode();
+            executeIdAndExecutePointCode.setExecuteId(executeId);
+            executeIdAndExecutePointCode.setExecutePointCode(executePointCode);
             //显示信息
-            ButlerExecutePointVo executePointVo = butlerInspectionDao.findExecutePointByCode(executePointCode);
+            //根据 巡检执行情况主键id 和 执行巡检点编号 查询巡检执行点信息
+            ButlerExecutePointVo executePointVo = butlerInspectionDao.findExecutePointByCode(executeIdAndExecutePointCode);
             if (executePointVo != null){
+                //根据巡检执行点主键id查询巡检执行检查项
                 List<ButlerExecuteCheckVo> checkVoList = butlerInspectionDao.findExecuteCheckByPointId(executePointVo.getId());
                 executePointVo.setCheckVoList(checkVoList);
             }

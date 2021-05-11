@@ -94,11 +94,11 @@ public interface ButlerInspectionDao {
     List<String> findPointCodeByExecuteId(Integer executeId);
 
     /**
-     * 根据巡检执行点主键id查询巡检执行点信息
-     * @param executePointCode 执行巡检点编号
+     * 根据 巡检执行情况主键id 和 执行巡检点编号 查询巡检执行点信息
+     * @param executeIdAndExecutePointCode 巡检执行情况主键id 和 执行巡检点编号
      * @return 巡检执行点信息
      */
-    ButlerExecutePointVo findExecutePointByCode(String executePointCode);
+    ButlerExecutePointVo findExecutePointByCode(ButlerExecuteIdAndExecutePointCode executeIdAndExecutePointCode);
 
     /**
      * 根据巡检执行点主键id查询巡检执行检查项

@@ -108,8 +108,8 @@
         select code from sys_inspection_execute_point where execute_id = #{executeId}
     </select>
 
-    <select id="findExecutePointByCode" parameterType="java.lang.String" resultType="com.api.vo.butlerApp.ButlerExecutePointVo">
-        select * from sys_inspection_execute_point where id = #{executePointCode}
+    <select id="findExecutePointByCode" parameterType="com.api.model.butlerApp.ButlerExecuteIdAndExecutePointCode" resultType="com.api.vo.butlerApp.ButlerExecutePointVo">
+        select * from sys_inspection_execute_point where execute_id = #{executeId}  and code = #{executePointCode}
     </select>
 
     <select id="findExecuteCheckByPointId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteCheckVo">
