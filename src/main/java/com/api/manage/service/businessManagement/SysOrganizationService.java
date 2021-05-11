@@ -34,4 +34,7 @@ public interface SysOrganizationService {
     Map<String, Object> stop(Integer id);
 
     Map<String, Object> recovery(Integer id);
+
+    Map<String, Object> findAllDepartment();
+
 }

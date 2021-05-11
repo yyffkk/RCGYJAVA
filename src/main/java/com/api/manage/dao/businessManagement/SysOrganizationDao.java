@@ -82,4 +82,11 @@ public interface SysOrganizationDao {
      * @return id and name
      */
     List<IdAndName> findListByParentId(Integer parentId);
+
+    /**
+     * 查询所有的部门id 和 name（类别为部门的）
+     * @return 部门id 和 name
+     */
+    List<IdAndName> findAllDepartment();
+
 }

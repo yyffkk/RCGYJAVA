@@ -96,4 +96,13 @@ public class SysOrganizationController extends ShiroExceptions {
         return sysOrganizationService.recovery(id);
     }
 
+    /**
+     * 查询所有的部门id 和 name（类别为部门的）
+     * @return map
+     */
+    @GetMapping("/findAllDepartment")
+    public Map<String,Object> findAllDepartment(){
+        return sysOrganizationService.findAllDepartment();
+    }
+
 }

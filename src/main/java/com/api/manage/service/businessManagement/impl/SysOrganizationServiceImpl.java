@@ -141,6 +141,16 @@ public class SysOrganizationServiceImpl implements SysOrganizationService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> findAllDepartment() {
+        map = new HashMap<>();
+        List<IdAndName> idAndNames = sysOrganizationDao.findAllDepartment();
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",idAndNames);
+        return map;
+    }
+
     private List<VoOrganization> findList(Integer parentId) {
         List<VoOrganization> list = sysOrganizationDao.list(parentId);
         if (list != null && list.size()>0){
