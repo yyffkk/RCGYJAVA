@@ -12,10 +12,7 @@ import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ButlerBacklogServiceImpl implements ButlerBacklogService {
@@ -165,6 +162,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
     private int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");
         if (split.length >0){
+//            HashSet<Object> hashSet = new HashSet<>();
             for (String s : split) {
                 int roleId = Integer.parseInt(s);
                 //根据角色id查询权限id集合

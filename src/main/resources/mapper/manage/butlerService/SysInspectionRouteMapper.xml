@@ -24,7 +24,8 @@
             status,
             space_time,
             create_id,
-            create_date
+            create_date,
+            is_delete
         )values (
             #{code},
             #{name},
@@ -32,7 +33,8 @@
             #{status},
             #{spaceTime},
             #{createId},
-            #{createDate}
+            #{createDate},
+            #{isDelete}
         )
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id

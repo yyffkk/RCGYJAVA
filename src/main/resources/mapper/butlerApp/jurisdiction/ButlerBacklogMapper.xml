@@ -5,7 +5,7 @@
 <mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerBacklogDao">
     <select id="backlogDispatchList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairVo">
         select * from (
-        select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id
+        select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id,srr.create_date
         from sys_report_repair as srr,sys_dispatch_list as sdl LEFT JOIN sys_dispatch_list_detail as sdld
         on sdld.dispatch_list_id = sdl.id
         <where>
@@ -22,6 +22,7 @@
             </if>
         </where>
         ) as a where a.create_id = -1 or a.create_id = #{userId}
+        ORDER BY a.create_date DESC
     </select>
 
     <select id="backlogReceivingList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairVo">
@@ -30,7 +31,7 @@
         <where>
             srr.dispatch_list_id = sdl.id
             and sdld.dispatch_list_id = sdl.id
-            and sdld.create_id = #{userId}
+            and sdld.operator = #{userId}
             and sdl.sys_delete = 1
             <if test="status == 1">
                 and sdl.status = 2
@@ -42,6 +43,7 @@
                 and sdl.status = 4
             </if>
         </where>
+        ORDER BY sdl.begin_date DESC
     </select>
 
     <select id="backlogReleasedList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerArticleOutVo">

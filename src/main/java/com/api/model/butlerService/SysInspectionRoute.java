@@ -48,6 +48,10 @@ public class SysInspectionRoute {
      */
     private Date modifyDate;
     /**
+     * 是否删除，1.非删 0.删除
+     */
+    private Integer isDelete;
+    /**
      * 巡检点-路线 关联表
      */
     private List<SysInspectionPointRoute> pointRouteList;
@@ -65,6 +69,7 @@ public class SysInspectionRoute {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", isDelete=" + isDelete +
                 ", pointRouteList=" + pointRouteList +
                 '}';
     }
@@ -149,6 +154,14 @@ public class SysInspectionRoute {
         this.modifyDate = modifyDate;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     public List<SysInspectionPointRoute> getPointRouteList() {
         return pointRouteList;
     }
@@ -160,7 +173,7 @@ public class SysInspectionRoute {
     public SysInspectionRoute() {
     }
 
-    public SysInspectionRoute(Integer id, String code, String name, String describes, Integer status, Integer spaceTime, Integer createId, Date createDate, Integer modifyId, Date modifyDate, List<SysInspectionPointRoute> pointRouteList) {
+    public SysInspectionRoute(Integer id, String code, String name, String describes, Integer status, Integer spaceTime, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, List<SysInspectionPointRoute> pointRouteList) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -171,6 +184,7 @@ public class SysInspectionRoute {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.isDelete = isDelete;
         this.pointRouteList = pointRouteList;
     }
 }
