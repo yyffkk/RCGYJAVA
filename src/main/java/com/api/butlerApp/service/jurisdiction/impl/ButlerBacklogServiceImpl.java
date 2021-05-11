@@ -43,7 +43,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             if (butlerRepairVos != null && butlerRepairVos.size()>0){
                 for (ButlerRepairVo butlerRepairVo : butlerRepairVos) {
                     UploadUtil uploadUtil = new UploadUtil();
-                    List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", butlerRepairVo.getId(), "repairImg");
+                    List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportRepair", butlerRepairVo.getId(), "repairImg");
                     butlerRepairVo.setImgUrls(imgByDate);
                     butlerRepairVo.setType(type);
 
@@ -64,7 +64,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             if (butlerRepairVos != null && butlerRepairVos.size()>0){
                 for (ButlerRepairVo butlerRepairVo : butlerRepairVos) {
                     UploadUtil uploadUtil = new UploadUtil();
-                    List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sys_report_repair", butlerRepairVo.getId(), "repairImg");
+                    List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportRepair", butlerRepairVo.getId(), "repairImg");
                     butlerRepairVo.setImgUrls(imgByDate);
                     butlerRepairVo.setType(type);
 
