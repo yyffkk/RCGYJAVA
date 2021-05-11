@@ -17,4 +17,5 @@ public interface SysNewsCategoryManagementService {
     Map<String, Object> update(SysNewsCategoryManagement sysNewsCategoryManagement);
 
     Map<String, Object> delete(int[] ids);
+
 }

@@ -1,6 +1,8 @@
 package com.api.manage.service.operationManagement.impl;
 
+import com.api.manage.dao.operationManagement.SysNewsCategoryManagementDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
+import com.api.manage.service.operationManagement.SysNewsCategoryManagementService;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SearchNewsManagement;
@@ -27,6 +29,8 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
     private static Map<String,Object> map = null;
     @Resource
     SysNewsManagementDao sysNewsManagementDao;
+    @Resource
+    SysNewsCategoryManagementDao sysNewsCategoryManagementDao;
 
     @Override
     public List<VoNewsManagement> list(SearchNewsManagement searchNewsManagement) {
@@ -48,12 +52,19 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
 
             int insert = sysNewsManagementDao.insert(sysNewsManagement);
             if (insert <=0){
-                map.put("message","添加失败");
-                map.put("status",false);
+                throw new RuntimeException("添加失败");
             }
             //添加照片
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(sysNewsManagement.getImgUrls(),"sysNews",sysNewsManagement.getId(),"newsImg","600",20,30);
+
+            //对资讯分类的资讯数量进行累加
+            int update = sysNewsCategoryManagementDao.incNum(sysNewsManagement.getNewsCategoryId());
+            if (update <= 0){
+                throw new RuntimeException("累加失败");
+            }
+
+
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -129,6 +140,17 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
         try {
             UploadUtil uploadUtil = new UploadUtil();
             for (int id : ids) {
+                VoFBINewsManagement byId = sysNewsManagementDao.findById(id);
+                if (byId == null){
+                    throw new RuntimeException("删除资讯失败,资讯不存在");
+                }
+
+                //对资讯分类的资讯数量进行累减
+                int update = sysNewsCategoryManagementDao.decNum(byId.getNewsCategoryId());
+                if (update <= 0){
+                    throw new RuntimeException("累减失败");
+                }
+
                 int delete = sysNewsManagementDao.delete(id);
                 if (delete <=0 ){
                     throw new RuntimeException("删除资讯失败");

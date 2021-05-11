@@ -53,6 +53,12 @@
         </set>
         where id = #{id}
     </update>
+    <update id="incNum" parameterType="java.lang.Integer">
+        update sys_news_category set num = num + 1 where id = #{newsCategoryId}
+    </update>
+    <update id="decNum" parameterType="java.lang.Integer">
+        update sys_news_category set num = num - 1 where id = #{newsCategoryId}
+    </update>
 
     <delete id="delete" parameterType="java.lang.Integer">
         delete from sys_news_category where id =#{id}

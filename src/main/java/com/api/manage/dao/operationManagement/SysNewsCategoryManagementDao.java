@@ -41,4 +41,18 @@ public interface SysNewsCategoryManagementDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 对资讯分类的资讯数量进行累加
+     * @param newsCategoryId 资讯分类主键id
+     * @return 影响行数
+     */
+    int incNum(Integer newsCategoryId);
+
+    /**
+     * 对资讯分类的资讯数量进行累减
+     * @param newsCategoryId 资讯分类主键id
+     * @return 影响行数
+     */
+    int decNum(Integer newsCategoryId);
 }
