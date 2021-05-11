@@ -122,6 +122,9 @@ public class AppActivityServiceImpl implements AppActivityService {
     public Map<String, Object> signUp(Integer id, Integer activityId) {
         map = new HashMap<>();
         try {
+            if (id == 0){
+                throw new RuntimeException("游客不可报名，请先登录");
+            }
             //查询时间是否处于参与时间
             AppActivityDetailVo activityDetailVo = appActivityDao.findById(activityId);
             Date date = new Date();
