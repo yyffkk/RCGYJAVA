@@ -12,7 +12,10 @@ import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ButlerBacklogServiceImpl implements ButlerBacklogService {
@@ -33,7 +36,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
         //创建一个返回对象集合
         ArrayList<ButlerBacklogVo> butlerBacklogVos = new ArrayList<>();
         ButlerBacklogVo butlerBacklogVo= null;
-        if (type == 1 || type == 5){
+        if (type == 1 || type == 5 || type == 10){
             //派单人的待派事项
             List<ButlerRepairVo> butlerRepairVos = butlerBacklogDao.backlogDispatchList(butlerUserIdAndStatus);
             //查询照片资源
@@ -53,7 +56,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
                 }
             }
         }
-        if (type == 2 || type == 5){
+        if (type == 2 || type == 5 || type == 10){
 
             //接单人的待接单事项
             List<ButlerRepairVo> butlerRepairVos = butlerBacklogDao.backlogReceivingList(butlerUserIdAndStatus);
@@ -74,10 +77,10 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
                 }
             }
         }
-        if (type == 3 || type == 5){
+        if (type == 3 || type == 5 || type == 10){
 
             //放行人的待出户事项
-            List<ButlerArticleOutVo> butlerArticleOutVos =butlerBacklogDao.backlogReleasedList(backlogStatus);
+            List<ButlerArticleOutVo> butlerArticleOutVos =butlerBacklogDao.backlogReleasedList(butlerUserIdAndStatus);
             if (butlerArticleOutVos != null && butlerArticleOutVos.size()>0){
                 for (ButlerArticleOutVo butlerArticleOutVo : butlerArticleOutVos) {
                     //创建一个对象集合（放行，物品出门）
@@ -110,7 +113,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
 
         //1.派单人,2.接单人,3.放行,4.维修人,5.其他人
         int type = findJurisdictionByUserId(roleId);
-        if (type == 1 || type == 5){
+        if (type == 1 || type == 5 || type == 10){
             //(派单人，报事报修)
             //查询派单人待处理事项
             int num1 = butlerBacklogDao.findUnProcessedNum1();
@@ -124,7 +127,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             //派单人全部事项
             allNum += num1+num2+num3;
         }
-        if (type == 2 || type == 5){
+        if (type == 2 || type == 5 || type == 10){
             //(接单人，报事报修)
             //查询接单人未处理事项
             int num1 = butlerBacklogDao.findUnProcessedNum2(id);
@@ -138,7 +141,7 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
             //接单人全部事项
             allNum += num1+num2+num3;
         }
-        if (type == 3 || type == 5){
+        if (type == 3 || type == 5 || type == 10){
             //(放行人，物品出门)
             //查询放行人未处理事项
             int num1 = butlerBacklogDao.findUnProcessedNum3();
@@ -162,13 +165,18 @@ public class ButlerBacklogServiceImpl implements ButlerBacklogService {
     private int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");
         if (split.length >0){
-//            HashSet<Object> hashSet = new HashSet<>();
             for (String s : split) {
                 int roleId = Integer.parseInt(s);
                 //根据角色id查询权限id集合
                 List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
                 if (jurisdictionIds != null && jurisdictionIds.size()>0){
-                    //52.派单人,53.接单人,55.放行,59.维修人
+                    if (jurisdictionIds.contains(52) && jurisdictionIds.contains(53) &&
+                            jurisdictionIds.contains(55) && jurisdictionIds.contains(59)){
+                        //10.管家
+                        return 10;
+                    }
+
+                    //52.派单人,53.接单人,55.放行,59.跟踪人
                     if (jurisdictionIds.contains(52)){
                         return 1;
                     }else if (jurisdictionIds.contains(53)){

@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerBacklogDao">
-    <select id="backlogDispatchList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairVo">
+    <select id="backlogDispatchList" parameterType="com.api.model.butlerApp.ButlerUserIdAndStatus" resultType="com.api.vo.butlerApp.ButlerRepairVo">
         select * from (
         select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id,srr.create_date
         from sys_report_repair as srr,sys_dispatch_list as sdl LEFT JOIN sys_dispatch_list_detail as sdld
@@ -25,7 +25,7 @@
         ORDER BY a.create_date DESC
     </select>
 
-    <select id="backlogReceivingList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairVo">
+    <select id="backlogReceivingList" parameterType="com.api.model.butlerApp.ButlerUserIdAndStatus" resultType="com.api.vo.butlerApp.ButlerRepairVo">
         select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status
         from sys_report_repair as srr,sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld
         <where>
@@ -46,7 +46,7 @@
         ORDER BY sdl.begin_date DESC
     </select>
 
-    <select id="backlogReleasedList" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerArticleOutVo">
+    <select id="backlogReleasedList" parameterType="com.api.model.butlerApp.ButlerUserIdAndStatus" resultType="com.api.vo.butlerApp.ButlerArticleOutVo">
         select uao.id,uao.status,concat(cb.no,"幢-",cbu.no,"单元",cbue.room_number) as room_name,ur.name as applicant_name,ur.type as identity,uao.name as article_out_name,uao.expected_time,uao.applicant_date
         from user_article_out as uao,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
         <where>
@@ -64,6 +64,7 @@
                 and uao.status in (2,3)
             </if>
         </where>
+        order by uao.applicant_date desc
     </select>
 
     <select id="findUnProcessedNum1" resultType="java.lang.Integer">

@@ -27,7 +27,7 @@ public interface ButlerBacklogDao {
      * @param backlogStatus 事项状态
      * @return 管家app 物品出户Vo list 回显
      */
-    List<ButlerArticleOutVo> backlogReleasedList(Integer backlogStatus);
+    List<ButlerArticleOutVo> backlogReleasedList(ButlerUserIdAndStatus butlerUserIdAndStatus);
 
 
     /**
