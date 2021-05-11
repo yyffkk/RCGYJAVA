@@ -257,6 +257,9 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
             if (executeCheckList != null && executeCheckList.size()>0){
                 for (ButlerExecuteCheck executeCheck : executeCheckList) {
                     executeCheck.setExecutePointId(executePointSubmit.getExecutePointId());
+                    if (executeCheck.getStatus() == null){
+                        throw new RuntimeException("请选择检查项的状态");
+                    }
                     int update = butlerInspectionDao.updateExecuteCheck(executeCheck);
                     if (update <=0){
                         throw new RuntimeException("修改巡检执行点检查项失败");

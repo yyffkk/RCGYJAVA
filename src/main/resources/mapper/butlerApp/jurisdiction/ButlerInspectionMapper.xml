@@ -117,7 +117,12 @@
     </select>
     <update id="updateExecuteCheck" parameterType="com.api.model.butlerApp.ButlerExecuteCheck">
         update sys_inspection_execute_check_items
-        set status = #{status},remakes = #{remakes}
+        <set>
+            status = #{status},
+            <if test="remakes != null and remakes != ''">
+                remakes = #{remakes},
+            </if>
+        </set>
         where id = #{id}
     </update>
 
