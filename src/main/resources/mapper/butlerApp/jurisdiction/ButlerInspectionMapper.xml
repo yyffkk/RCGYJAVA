@@ -9,6 +9,7 @@
         <where>
             sie.inspection_plan_id = sip.id
             and sip.inspector = su.id
+            and sip.inspector = #{id}
             <if test="inspectionStatus == 1">
                 and sie.actual_begin_date is null
                 and sie.actual_end_date is null

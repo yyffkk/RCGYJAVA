@@ -16,13 +16,18 @@ public class ButlerInspectionSearch {
      * 巡检状态（1.待巡检，2.已巡检）
      */
     private Integer inspectionStatus;
+    /**
+     * 用户主键id
+     */
+    private Integer id;
 
     @Override
     public String toString() {
-        return "ButlerInspection{" +
+        return "ButlerInspectionSearch{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
                 ", inspectionStatus=" + inspectionStatus +
+                ", id=" + id +
                 '}';
     }
 
@@ -50,12 +55,21 @@ public class ButlerInspectionSearch {
         this.inspectionStatus = inspectionStatus;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public ButlerInspectionSearch() {
     }
 
-    public ButlerInspectionSearch(int pageNum, int size, Integer inspectionStatus) {
+    public ButlerInspectionSearch(int pageNum, int size, Integer inspectionStatus, Integer id) {
         this.pageNum = pageNum;
         this.size = size;
         this.inspectionStatus = inspectionStatus;
+        this.id = id;
     }
 }
