@@ -4,17 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.basicArchives.CpmBuildingUnitDao">
     <select id="list" parameterType="com.api.vo.basicArchives.VoCpmBuildingUnit" resultType="com.api.vo.basicArchives.VoCpmBuildingUnit">
-        select cnu.id,cnu.building_id,cnu.no,cnu.total_floor,cnu.is_elevator,cb.name as buildingName
-        from cpm_building cb,cpm_building_unit cnu
+        select cbu.id,cbu.building_id,cbu.no,cbu.total_floor,cbu.is_elevator,cb.name as buildingName
+        from cpm_building cb,cpm_building_unit cbu
         <where>
-            and cb.id = cnu.building_id
+            cb.id = cbu.building_id
             <if test="buildingName != null and buildingName != ''">
                 and cb.name like concat('%',#{buildingName},'%')
             </if>
             <if test="no != null">
-                and cnu.no = #{no}
+                and cbu.no = #{no}
             </if>
         </where>
+        order by cbu.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.basicArchives.CpmBuildingUnit">

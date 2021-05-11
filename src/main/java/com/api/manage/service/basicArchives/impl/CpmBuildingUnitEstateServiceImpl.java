@@ -79,12 +79,12 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
 
         //校验重复
         //根据楼栋单元房产房间号查询是否已有房产信息
-        CpmBuildingUnitEstate cpmBuildingUnitEstate1 = cpmBuildingUnitEstateDao.findByRoomNumber(cpmBuildingUnitEstate.getRoomNumber());
-        if (cpmBuildingUnitEstate1 != null){
-            map.put("message","房间名称已存在");
-            map.put("status",false);
-            return map;
-        }
+//        CpmBuildingUnitEstate cpmBuildingUnitEstate1 = cpmBuildingUnitEstateDao.findByRoomNumber(cpmBuildingUnitEstate.getRoomNumber());
+//        if (cpmBuildingUnitEstate1 != null){
+//            map.put("message","房间名称已存在");
+//            map.put("status",false);
+//            return map;
+//        }
 
         cpmBuildingUnitEstate.setCreateId(sysUser.getId());
         cpmBuildingUnitEstate.setCreateDate(new Date());
@@ -111,12 +111,12 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
 
         //校验重复
         //根据楼栋单元房产房间号查询是否已有房产信息
-        CpmBuildingUnitEstate cpmBuildingUnitEstate1 = cpmBuildingUnitEstateDao.findByRoomNumber(cpmBuildingUnitEstate.getRoomNumber());
-        if (cpmBuildingUnitEstate1 != null){
-            map.put("message","房屋名称已存在");
-            map.put("status",false);
-            return map;
-        }
+//        CpmBuildingUnitEstate cpmBuildingUnitEstate1 = cpmBuildingUnitEstateDao.findByRoomNumber(cpmBuildingUnitEstate.getRoomNumber());
+//        if (cpmBuildingUnitEstate1 != null){
+//            map.put("message","房屋名称已存在");
+//            map.put("status",false);
+//            return map;
+//        }
 
         cpmBuildingUnitEstate.setCreateId(sysUser.getId());
         cpmBuildingUnitEstate.setCreateDate(new Date());
@@ -277,15 +277,15 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
 
         //校验重复
         //根据楼栋单元房产房间号查询是否已有房产信息
-        CpmBuildingUnitEstate cpmBuildingUnitEstate1 = cpmBuildingUnitEstateDao.findByRoomNumber(estateAndResident.getEstate().getRoomNumber());
-        if (cpmBuildingUnitEstate1 != null){
-            //如果输入id与查询到的id不一致，则修改了房间号信息，并且房间号重复
-            if (!cpmBuildingUnitEstate1.getId().equals(estateAndResident.getEstate().getId())){
-                map.put("message","房间号已存在");
-                map.put("status",false);
-                return map;
-            }
-        }
+//        CpmBuildingUnitEstate cpmBuildingUnitEstate1 = cpmBuildingUnitEstateDao.findByRoomNumber(estateAndResident.getEstate().getRoomNumber());
+//        if (cpmBuildingUnitEstate1 != null){
+//            //如果输入id与查询到的id不一致，则修改了房间号信息，并且房间号重复
+//            if (!cpmBuildingUnitEstate1.getId().equals(estateAndResident.getEstate().getId())){
+//                map.put("message","房间号已存在");
+//                map.put("status",false);
+//                return map;
+//            }
+//        }
 
         try {
             //修改房屋信息

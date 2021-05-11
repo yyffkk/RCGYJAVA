@@ -16,6 +16,7 @@
                 and code like concat('%',#{code},'%')
             </if>
         </where>
+        order by create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.basicArchives.CpmBuilding">

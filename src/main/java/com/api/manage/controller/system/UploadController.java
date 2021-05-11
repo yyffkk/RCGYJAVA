@@ -220,4 +220,15 @@ public class UploadController {
         return uploadService.uploadShoppingSupplier(file);
     }
 
+
+    /**
+     * 上传资讯照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadNews")
+    public Map<String,Object> uploadNews(MultipartFile file){
+        return uploadService.uploadNews(file);
+    }
+
 }

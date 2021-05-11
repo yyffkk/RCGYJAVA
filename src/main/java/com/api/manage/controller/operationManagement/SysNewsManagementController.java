@@ -2,13 +2,13 @@ package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysNewsManagementService;
 import com.api.model.operationManagement.SearchNewsManagement;
+import com.api.model.operationManagement.SysNewsManagement;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.operationManagement.VoNewsCategoryManagement;
 import com.api.vo.operationManagement.VoNewsManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -40,5 +40,46 @@ public class SysNewsManagementController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+
+    /**
+     * 添加资讯信息
+     * @param sysNewsManagement 资讯信息
+     * @return map
+     */
+    @PostMapping("/insert")
+    public Map<String,Object> insert(@RequestBody SysNewsManagement sysNewsManagement){
+        return sysNewsManagementService.insert(sysNewsManagement);
+    }
+
+    /**
+     * 根据资讯主键id 查询 资讯信息
+     * @param newsId 资讯主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer newsId){
+        return sysNewsManagementService.findById(newsId);
+    }
+
+    /**
+     * 修改资讯信息
+     * @param sysNewsManagement 资讯信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysNewsManagement sysNewsManagement){
+        return sysNewsManagementService.update(sysNewsManagement);
+    }
+
+    /**
+     * 批量删除资讯信息
+     * @param ids 资讯信息主键id
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysNewsManagementService.delete(ids.getIds());
     }
 }

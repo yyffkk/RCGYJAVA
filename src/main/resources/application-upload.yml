@@ -47,6 +47,8 @@ prop:
   upload-sponsor: /img/sponsor/
   #运营管理-活动管理：新增活动信息 照片上传路径
   upload-activity: /img/activity/
+  #运营管理-资讯管理：新增资讯信息 照片上传路径
+  upload-news: /img/news/
 
   #收费管理-固定金额分摊：固定金额分摊缴纳凭证，照片上传路径
   upload-voucher: /img/voucher/
