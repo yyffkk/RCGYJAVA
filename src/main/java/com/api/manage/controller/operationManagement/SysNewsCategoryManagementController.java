@@ -1,6 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysNewsCategoryManagementService;
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.operationManagement.SearchNewsCategoryManagement;
 import com.api.model.operationManagement.SysNewsCategoryManagement;
 import com.api.vo.basicArchives.VoIds;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/newsCategoryManagement")
-public class SysNewsCategoryManagementController {
+public class SysNewsCategoryManagementController extends ShiroExceptions {
     @Resource
     SysNewsCategoryManagementService sysNewsCategoryManagementService;
 

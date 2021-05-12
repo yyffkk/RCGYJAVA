@@ -1,6 +1,7 @@
 package com.api.manage.controller.butlerService;
 
 import com.api.manage.service.butlerService.SysInspectionRouteService;
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.butlerService.SearchInspectionPoint;
 import com.api.model.butlerService.SysInspectionRoute;
 import com.api.vo.basicArchives.VoIds;
@@ -22,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/inspectionRoute")
-public class SysInspectionRouteController {
+public class SysInspectionRouteController extends ShiroExceptions {
     @Resource
     SysInspectionRouteService sysInspectionRouteService;
 
