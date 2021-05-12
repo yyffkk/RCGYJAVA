@@ -3,7 +3,7 @@ package com.api.manage.controller.operationManagement;
 import com.api.manage.service.operationManagement.SysPackageCollectionService;
 import com.api.model.operationManagement.SearchPackageCollection;
 import com.api.model.operationManagement.SysPackageCollection;
-import com.api.vo.operationManagement.VoNewsManagement;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.operationManagement.VoPackageCollection;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -62,6 +62,24 @@ public class SysPackageCollectionController {
     }
 
 
-//    public Map<String,Object> update()
+    /**
+     * 修改包裹代收信息
+     * @param sysPackageCollection 包裹代收model信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysPackageCollection sysPackageCollection){
+        return sysPackageCollectionService.update(sysPackageCollection);
+    }
+
+    /**
+     * 批量删除包裹代收信息
+     * @param ids 包裹代收信息主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysPackageCollectionService.delete(ids.getIds());
+    }
 
 }

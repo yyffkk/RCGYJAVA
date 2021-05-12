@@ -28,4 +28,18 @@ public interface SysPackageCollectionDao {
      * @return 包裹代收信息
      */
     VoFBIPackageCollection findById(Integer id);
+
+    /**
+     * 修改包裹代收信息
+     * @param sysPackageCollection 包裹代收model信息
+     * @return map
+     */
+    int update(SysPackageCollection sysPackageCollection);
+
+    /**
+     * 根据包裹代收主键id 删除包裹代收信息
+     * @param id 包裹代收主键id
+     * @return 影响行数
+     */
+    int delete(int id);
 }

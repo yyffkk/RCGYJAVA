@@ -13,4 +13,8 @@ public interface SysPackageCollectionService {
     Map<String, Object> insert(SysPackageCollection sysPackageCollection);
 
     Map<String, Object> findById(Integer id);
+
+    Map<String, Object> update(SysPackageCollection sysPackageCollection);
+
+    Map<String, Object> delete(int[] ids);
 }

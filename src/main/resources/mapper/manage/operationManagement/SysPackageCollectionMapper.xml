@@ -57,4 +57,26 @@
         select * from sys_package_collection where id = #{id}
     </select>
 
+    <update id="update" parameterType="com.api.model.operationManagement.SysPackageCollection">
+        update sys_package_collection
+        <set>
+            <if test="addresseeName != null and addresseeName != ''">
+                addressee_name = #{addresseeName},
+            </if>
+            <if test="addresseeTel != null and addresseeTel != ''">
+                addressee_tel = #{addresseeTel},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_package_collection where id = #{id}
+    </delete>
+
 </mapper>
