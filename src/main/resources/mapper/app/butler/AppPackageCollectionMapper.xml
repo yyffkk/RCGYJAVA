@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppPackageCollectionDao">
+
+    <select id="list" parameterType="com.api.model.app.SearchAppPackageCollection" resultType="com.api.vo.operationManagement.VoPackageCollection">
+        select * from sys_package_collection
+        <where>
+            <if test="packageCollectionStatus != null">
+                and status = #{packageCollectionStatus}
+            </if>
+            and addressee_tel = #{tel}
+        </where>
+    </select>
+    <select id="findAddresseeTelByPackageId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select addressee_tel from sys_package_collection where id = #{packageCollectionId}
+    </select>
+
+    <update id="confirmCollection" parameterType="com.api.vo.app.AppConfirmCollection">
+        update sys_package_collection
+        set status = 2,receive_date = #{receiveDate}
+        where id = #{packageCollectionId}
+    </update>
+
+</mapper>
