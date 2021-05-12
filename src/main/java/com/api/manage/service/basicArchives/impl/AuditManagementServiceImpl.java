@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +140,7 @@ public class AuditManagementServiceImpl implements AuditManagementService {
             }else {
                 throw new RuntimeException("数据异常");
             }
+            review.setReviewerDate(new Date());
             //修改审核状态和备注
             int update = auditManagementDao.review(review);
             if (update <= 0){

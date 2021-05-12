@@ -33,6 +33,15 @@ public class SysPackageCollectionServiceImpl implements SysPackageCollectionServ
     @Override
     public Map<String, Object> insert(SysPackageCollection sysPackageCollection) {
         map = new HashMap<>();
+
+        //根据手机号查询是否注册
+        int count = sysPackageCollectionDao.countByTel(sysPackageCollection.getAddresseeTel());
+        if (count <=0){
+            map.put("message","收件人手机号未注册，添加失败");
+            map.put("status",false);
+            return map;
+        }
+
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();

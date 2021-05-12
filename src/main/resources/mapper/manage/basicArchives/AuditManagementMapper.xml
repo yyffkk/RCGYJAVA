@@ -63,7 +63,7 @@
 
     <update id="review" parameterType="com.api.model.basicArchives.Review">
         update cpm_resident_estate_examine
-        set status = #{status},remakes = #{remakes}
+        set status = #{status},remakes = #{remakes},reviewer_date = #{reviewerDate}
         where id = #{id}
     </update>
 

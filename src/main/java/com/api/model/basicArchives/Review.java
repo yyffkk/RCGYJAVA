@@ -1,6 +1,7 @@
 package com.api.model.basicArchives;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * 审核操作内容
@@ -19,6 +20,10 @@ public class Review {
      */
     private String remakes;
     /**
+     * 审核时间
+     */
+    private Date reviewerDate;
+    /**
      * 审核相关照片
      */
     private String[] reviewFiles;
@@ -29,6 +34,7 @@ public class Review {
                 "id=" + id +
                 ", status=" + status +
                 ", remakes='" + remakes + '\'' +
+                ", reviewerDate=" + reviewerDate +
                 ", reviewFiles=" + Arrays.toString(reviewFiles) +
                 '}';
     }
@@ -57,6 +63,14 @@ public class Review {
         this.remakes = remakes;
     }
 
+    public Date getReviewerDate() {
+        return reviewerDate;
+    }
+
+    public void setReviewerDate(Date reviewerDate) {
+        this.reviewerDate = reviewerDate;
+    }
+
     public String[] getReviewFiles() {
         return reviewFiles;
     }
@@ -68,10 +82,11 @@ public class Review {
     public Review() {
     }
 
-    public Review(Integer id, Integer status, String remakes, String[] reviewFiles) {
+    public Review(Integer id, Integer status, String remakes, Date reviewerDate, String[] reviewFiles) {
         this.id = id;
         this.status = status;
         this.remakes = remakes;
+        this.reviewerDate = reviewerDate;
         this.reviewFiles = reviewFiles;
     }
 }

@@ -42,4 +42,11 @@ public interface SysPackageCollectionDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据手机号查询是否注册
+     * @param addresseeTel 收件人手机号
+     * @return 是否注册
+     */
+    int countByTel(String addresseeTel);
 }
