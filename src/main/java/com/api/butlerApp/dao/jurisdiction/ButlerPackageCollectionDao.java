@@ -11,4 +11,18 @@ public interface ButlerPackageCollectionDao {
      * @return 包裹代收信息
      */
     List<VoPackageCollection> list(Integer collectionStatus);
+
+    /**
+     * 根据包裹代收主键id查询 包裹代收信息
+     * @param packageCollectionId 包裹代收主键id
+     * @return 包裹代收信息
+     */
+    VoPackageCollection findById(Integer packageCollectionId);
+
+    /**
+     * 根据收件人手机号查询收件人主键id
+     * @param addresseeTel 收件人手机号
+     * @return 收件人主键id
+     */
+    Integer findResidentIdByTel(String addresseeTel);
 }

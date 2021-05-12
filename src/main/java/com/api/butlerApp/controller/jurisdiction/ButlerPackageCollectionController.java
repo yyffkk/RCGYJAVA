@@ -57,10 +57,11 @@ public class ButlerPackageCollectionController {
     /**
      * 提醒领取
      * @param packageCollectionId 包裹代收主键id
+     * @param id 用户主键id
      * @return map
      */
     @GetMapping("/remind")
-    public Map<String,Object> remind(Integer packageCollectionId){
-        return null;
+    public Map<String,Object> remind(Integer packageCollectionId,Integer id){
+        return butlerPackageCollectionService.remind(packageCollectionId,id);
     }
 }
