@@ -27,6 +27,10 @@ public class SysPackageCollection {
      */
     private String address;
     /**
+     * 放置位置
+     */
+    private String placePosition;
+    /**
      * 状态,1.未领取，2.已领取
      */
     private Integer status;
@@ -59,6 +63,7 @@ public class SysPackageCollection {
                 ", addresseeName='" + addresseeName + '\'' +
                 ", addresseeTel='" + addresseeTel + '\'' +
                 ", address='" + address + '\'' +
+                ", placePosition='" + placePosition + '\'' +
                 ", status=" + status +
                 ", receiveDate=" + receiveDate +
                 ", createId=" + createId +
@@ -106,6 +111,14 @@ public class SysPackageCollection {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPlacePosition() {
+        return placePosition;
+    }
+
+    public void setPlacePosition(String placePosition) {
+        this.placePosition = placePosition;
     }
 
     public Integer getStatus() {
@@ -159,12 +172,13 @@ public class SysPackageCollection {
     public SysPackageCollection() {
     }
 
-    public SysPackageCollection(Integer id, String code, String addresseeName, String addresseeTel, String address, Integer status, Date receiveDate, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public SysPackageCollection(Integer id, String code, String addresseeName, String addresseeTel, String address, String placePosition, Integer status, Date receiveDate, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
         this.id = id;
         this.code = code;
         this.addresseeName = addresseeName;
         this.addresseeTel = addresseeTel;
         this.address = address;
+        this.placePosition = placePosition;
         this.status = status;
         this.receiveDate = receiveDate;
         this.createId = createId;

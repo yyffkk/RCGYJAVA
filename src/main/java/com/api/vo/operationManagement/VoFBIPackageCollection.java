@@ -27,6 +27,10 @@ public class VoFBIPackageCollection {
      */
     private String address;
     /**
+     * 放置位置
+     */
+    private String placePosition;
+    /**
      * 状态 ，1.未领取，2.已领取
      */
     private Integer status;
@@ -43,6 +47,7 @@ public class VoFBIPackageCollection {
                 ", addresseeName='" + addresseeName + '\'' +
                 ", addresseeTel='" + addresseeTel + '\'' +
                 ", address='" + address + '\'' +
+                ", placePosition='" + placePosition + '\'' +
                 ", status=" + status +
                 ", receiveDate=" + receiveDate +
                 '}';
@@ -88,6 +93,14 @@ public class VoFBIPackageCollection {
         this.address = address;
     }
 
+    public String getPlacePosition() {
+        return placePosition;
+    }
+
+    public void setPlacePosition(String placePosition) {
+        this.placePosition = placePosition;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -107,12 +120,13 @@ public class VoFBIPackageCollection {
     public VoFBIPackageCollection() {
     }
 
-    public VoFBIPackageCollection(Integer id, String code, String addresseeName, String addresseeTel, String address, Integer status, Date receiveDate) {
+    public VoFBIPackageCollection(Integer id, String code, String addresseeName, String addresseeTel, String address, String placePosition, Integer status, Date receiveDate) {
         this.id = id;
         this.code = code;
         this.addresseeName = addresseeName;
         this.addresseeTel = addresseeTel;
         this.address = address;
+        this.placePosition = placePosition;
         this.status = status;
         this.receiveDate = receiveDate;
     }

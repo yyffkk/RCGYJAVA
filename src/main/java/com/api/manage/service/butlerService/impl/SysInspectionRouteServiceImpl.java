@@ -180,7 +180,7 @@ public class SysInspectionRouteServiceImpl implements SysInspectionRouteService 
             if (status == 1){
                 //根据巡检路线主键id查询巡检计划是否启用
                 Integer status2 = sysInspectionRouteDao.findPlanStatusById(id);
-                if (status2 > 0){ //大于0，巡检计划启用,巡检路线无法删除
+                if (status2 != null && status2 > 0){ //大于0，巡检计划启用,巡检路线无法删除
                     throw new RuntimeException("请先禁用巡检计划");
                 }
                 msg = "停用";
@@ -203,7 +203,9 @@ public class SysInspectionRouteServiceImpl implements SysInspectionRouteService 
             }
         } catch (Exception e) {
             e.printStackTrace();
-            map.put("message","数据有误");
+            //获取抛出的信息
+            String message = e.getMessage();
+            map.put("message",message);
             map.put("status",false);
             return map;
         }

@@ -38,6 +38,7 @@
             addressee_name,
             addressee_tel,
             address,
+            place_position,
             status,
             create_id,
             create_date
@@ -46,6 +47,7 @@
             #{addresseeName},
             #{addresseeTel},
             #{address},
+            #{placePosition},
             #{status},
             #{createId},
             #{createDate}
@@ -68,6 +70,9 @@
             </if>
             <if test="address != null and address != ''">
                 address = #{address},
+            </if>
+            <if test="placePosition != null and placePosition != ''">
+                place_position = #{placePosition},
             </if>
             modify_id = #{modifyId},
             modify_date = #{modifyDate}
