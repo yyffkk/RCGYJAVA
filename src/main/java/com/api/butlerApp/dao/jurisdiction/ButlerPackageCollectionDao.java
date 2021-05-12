@@ -1,5 +1,6 @@
 package com.api.butlerApp.dao.jurisdiction;
 
+import com.api.vo.operationManagement.VoFBIPackageCollection;
 import com.api.vo.operationManagement.VoPackageCollection;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface ButlerPackageCollectionDao {
      * @param packageCollectionId 包裹代收主键id
      * @return 包裹代收信息
      */
-    VoPackageCollection findById(Integer packageCollectionId);
+    VoFBIPackageCollection findById(Integer packageCollectionId);
 
     /**
      * 根据收件人手机号查询收件人主键id

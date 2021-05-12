@@ -6,6 +6,7 @@ import com.api.manage.dao.remind.RemindDao;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.util.JiguangUtil;
+import com.api.vo.operationManagement.VoFBIPackageCollection;
 import com.api.vo.operationManagement.VoPackageCollection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,14 +37,16 @@ public class ButlerPackageCollectionServiceImpl implements ButlerPackageCollecti
         map = new HashMap<>();
 
         try {
-            VoPackageCollection voPackageCollection = butlerPackageCollectionDao.findById(packageCollectionId);
-            Integer residentId = butlerPackageCollectionDao.findResidentIdByTel(voPackageCollection.getAddresseeTel());
+            VoFBIPackageCollection voFBIPackageCollection = butlerPackageCollectionDao.findById(packageCollectionId);
+            Integer residentId = butlerPackageCollectionDao.findResidentIdByTel(voFBIPackageCollection.getAddresseeTel());
             if (residentId == null){
                 throw new RuntimeException("手机人手机号未注册,或已注销");
             }
             SysMessage sysMessage = new SysMessage();
             //填入标题
             sysMessage.setTitle("包裹领取提醒");
+            //填入内容
+            sysMessage.setContent("你的包裹已放置至【"+voFBIPackageCollection.getPlacePosition()+"】，请速来领取");
             //填入发送人id（系统发送为-1）
             sysMessage.setSender(id);
             //填入创建时间
