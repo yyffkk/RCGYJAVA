@@ -4,4 +4,89 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.operationManagement.SysKeyManagementDao">
 
+    <select id="list" parameterType="com.api.model.operationManagement.SearchKeyManagement" resultType="com.api.vo.operationManagement.VoKeyManagement">
+        select * from sys_key
+        <where>
+            <if test="code != null and code != ''">
+                and code like concat('%',#{code},'%')
+            </if>
+            <if test="facilityName != null and facilityName != ''">
+                and facility_name like concat('%',#{facilityName},'%')
+            </if>
+            <if test="administrator != null and administrator != ''">
+                and administrator like concat('%',#{administrator},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel like concat('%',#{tel},'%')
+            </if>
+            <if test="createDateStart != null">
+                and create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysKeyManagement">
+        insert into sys_key(
+            code,
+            facility_name,
+            num,
+            corresponding_position,
+            storage_location,
+            administrator,
+            tel,
+            create_id,
+            create_date
+        )values (
+            #{code},
+            #{facilityName},
+            #{num},
+            #{correspondingPosition},
+            #{storageLocation},
+            #{administrator},
+            #{tel},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoKeyManagement">
+        select * from sys_key where id = #{id}
+    </select>
+
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysKeyManagement">
+        update sys_key
+        <set>
+            <if test="facilityName != null and facilityName != ''">
+                facility_name = #{facilityName},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="correspondingPosition != null and correspondingPosition != ''">
+                corresponding_position = #{correspondingPosition},
+            </if>
+            <if test="storageLocation != null and storageLocation != ''">
+                storage_location = #{storageLocation},
+            </if>
+            <if test="administrator != null and administrator != ''">
+                administrator = #{administrator},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_key where id = #{id}
+    </delete>
+
 </mapper>
