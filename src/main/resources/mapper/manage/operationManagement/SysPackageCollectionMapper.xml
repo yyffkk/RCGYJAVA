@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysPackageCollectionDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchPackageCollection" resultType="com.api.vo.operationManagement.VoPackageCollection">
+        select * from sys_package_collection
+        <where>
+            <if test="code != null and code != ''">
+                and code like concat('%',#{code},'%')
+            </if>
+            <if test="addresseeName != null and addresseeName != ''">
+                and addressee_name like concat('%',#{addresseeName},'%')
+            </if>
+            <if test="addresseeTel != null and addresseeTel != ''">
+                and addressee_tel like concat('%',#{addresseeTel},'%')
+            </if>
+            <if test="address != null and address != ''">
+                and address like concat('%',#{address},'%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createDateStart != null">
+                and create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysPackageCollection">
+        insert into sys_package_collection(
+            code,
+            addressee_name,
+            addressee_tel,
+            address,
+            status,
+            create_id,
+            create_date
+        )values (
+            #{code},
+            #{addresseeName},
+            #{addresseeTel},
+            #{address},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIPackageCollection">
+        select * from sys_package_collection where id = #{id}
+    </select>
+
+</mapper>

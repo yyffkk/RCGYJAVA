@@ -56,7 +56,7 @@
     <select id="findPlanInspectionPoint" parameterType="java.lang.Integer" resultType="com.api.model.butlerApp.ButlerExecutePoint">
         select sipo.id,sipo.code,sipo.name,sipo.type,sipo.longitude,sipo.latitude
         from sys_inspection_execute as sie,sys_inspection_plan as sipl,sys_inspection_route as sir,sys_inspection_point_route as sipr,sys_inspection_point as sipo
-        where sie.inspection_plan_id = sipl.id and sipl.inspection_route_id = sir.id and sipr.inspection_point_id = sipo.id and sipr.inspection_route_id and sir.is_delete = 1 and sipo.is_delete = 1 and sie.id = #{executeId}
+        where sie.inspection_plan_id = sipl.id and sipl.inspection_route_id = sir.id and sipr.inspection_point_id = sipo.id and sipr.inspection_route_id = sir.id and sir.is_delete = 1 and sipo.is_delete = 1 and sie.id = #{executeId}
     </select>
 
     <insert id="insertExecutePoint" parameterType="com.api.model.butlerApp.ButlerExecutePoint">
