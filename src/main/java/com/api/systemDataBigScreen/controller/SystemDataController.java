@@ -128,7 +128,7 @@ public class SystemDataController {
     }
 
     /**
-     * 基础数据:(楼栋数、房屋总数、已入住房屋数)
+     * 基础数据:(楼栋数、房屋总数、已入住房屋数,各楼栋入住数信息)
      * @return map
      */
     @GetMapping("/sysEstate")
@@ -416,6 +416,5 @@ public class SystemDataController {
     public Map<String,Object> findShopAppointmentNum(){
         return systemDataService.findShopAppointmentNum();
     }
-
 
 }

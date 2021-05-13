@@ -365,4 +365,11 @@ public interface SystemDataDao {
      * @return 商场各分类下报名统计
      */
     List<SDShopAppointmentNumVo> findShopAppointmentNum();
+
+    /**
+     * 查询各楼栋入住数信息
+     * @return 各楼栋入住数信息
+     */
+    List<SDOccupancyRateVo> findOccupancyRate();
+
 }

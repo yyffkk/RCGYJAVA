@@ -331,6 +331,14 @@
         LEFT JOIN shop_goods_appointment as sga on sga.goods_id = sg.id
         GROUP BY sc.id
     </select>
+    <select id="findOccupancyRate" resultType="com.api.vo.systemDataBigScreen.SDOccupancyRateVo">
+        select cb.name,count(cbue.id) as total,count(cbue2.id) as occupancy_num,round((case count(cbue.id) = 0 when true then 0 else count(cbue2.id)/count(cbue.id) end),2)*100 as occupancy_rate
+        from cpm_building as cb
+        LEFT JOIN cpm_building_unit as cbu on cbu.building_id = cb.id
+        LEFT JOIN cpm_building_unit_estate as cbue on cbue.building_unit_id = cbu.id and cbue.is_delete = 1
+        LEFT JOIN cpm_building_unit_estate as cbue2 on cbue2.id = cbue.id and cbue2.status in (1,5) and cbue2.is_delete = 1
+        group by cb.id
+    </select>
 
 
 </mapper>

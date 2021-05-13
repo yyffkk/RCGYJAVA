@@ -81,9 +81,13 @@ public class SystemDataServiceImpl implements SystemDataService {
         int estateNum = systemDataDao.findEstateNum();
         //已入住房屋数
         int checkInEstateNum = systemDataDao.findCheckInEstateNum();
+        //各楼栋入住数信息
+        List<SDOccupancyRateVo> occupancyRateVoList = systemDataDao.findOccupancyRate();
+
         map.put("buildingNum",buildingNum);
         map.put("estateNum",estateNum);
         map.put("checkInEstateNum",checkInEstateNum);
+        map.put("occupancyRateVoList",occupancyRateVoList);
         return map;
     }
 
