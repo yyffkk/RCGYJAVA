@@ -306,6 +306,15 @@
         ) s left join user_visitors_new as u on  YEAR(s.date)  = YEAR(u.visit_date_start) and MONTH(s.date) = MONTH(u.visit_date_start)
         GROUP BY s.date
     </select>
+    <select id="findWaitOutNum" resultType="java.lang.Integer">
+        select count(*) from user_article_out where status = 1
+    </select>
+    <select id="findGoOutNum" resultType="java.lang.Integer">
+        select count(*) from user_article_out where status = 2
+    </select>
+    <select id="findRejectNum" resultType="java.lang.Integer">
+        select count(*) from user_article_out where status = 3
+    </select>
 
 
 </mapper>

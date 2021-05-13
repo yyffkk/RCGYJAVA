@@ -387,7 +387,7 @@ public class SystemDataController {
      */
     @GetMapping("/findArticleOutInfo")
     public Map<String,Object> findArticleOutInfo(){
-        return null;
+        return systemDataService.findArticleOutInfo();
     }
 
 

@@ -71,4 +71,5 @@ public interface SystemDataService {
     List<VoGreenTask> findGreenTaskList();
 
 
+    Map<String, Object> findArticleOutInfo();
 }

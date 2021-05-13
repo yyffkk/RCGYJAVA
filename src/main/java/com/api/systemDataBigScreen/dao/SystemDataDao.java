@@ -336,4 +336,21 @@ public interface SystemDataDao {
      */
     List<SDVisitorInfoMonthVo> findVisitorInfoMonth();
 
+    /**
+     * 查询待出户的数量
+     * @return 待出户的数量
+     */
+    int findWaitOutNum();
+
+    /**
+     * 查询已出户的数量
+     * @return 已出户的数量
+     */
+    int findGoOutNum();
+
+    /**
+     * 查询已驳回的数量
+     * @return 已驳回的数量
+     */
+    int findRejectNum();
 }

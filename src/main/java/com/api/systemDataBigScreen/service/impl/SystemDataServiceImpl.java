@@ -435,4 +435,19 @@ public class SystemDataServiceImpl implements SystemDataService {
         return systemDataDao.findGreenTaskList();
     }
 
+    @Override
+    public Map<String, Object> findArticleOutInfo() {
+        map = new HashMap<>();
+        //查询待出户的数量
+        int waitOutNum = systemDataDao.findWaitOutNum();
+        map.put("waitOutNum",waitOutNum);
+        //查询已出户的数量
+        int goOutNum = systemDataDao.findGoOutNum();
+        map.put("goOutNum",goOutNum);
+        //查询已驳回的数量
+        int rejectNum = systemDataDao.findRejectNum();
+        map.put("rejectNum",rejectNum);
+        return map;
+    }
+
 }
