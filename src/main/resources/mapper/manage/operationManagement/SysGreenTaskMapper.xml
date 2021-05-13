@@ -9,7 +9,7 @@
         from sys_green_task as sgt,sys_green_area as sga,sys_user as su
         <where>
             sgt.green_area_id = sga.id
-            and sgt.create_id = su.id
+            and sgt.director = su.id
             <if test="greenAreaName != null and greenAreaName != ''">
                 and sga.name like concat('%',#{greenAreaName},'%')
             </if>

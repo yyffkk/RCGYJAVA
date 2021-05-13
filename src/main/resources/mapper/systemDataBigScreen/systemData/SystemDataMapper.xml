@@ -280,6 +280,12 @@
         from sys_inspection_execute as sie,sys_inspection_plan as sip
         where sie.inspection_plan_id = sip.id and sip.inspection_route_id = #{routeId} order by sie.begin_date DESC
     </select>
+    <select id="findGreenTaskList" resultType="com.api.vo.operationManagement.VoGreenTask">
+        select sgt.id,sga.name as green_area_name,sgt.content,su.actual_name as director_name,sgt.status,sgt.end_date,sgt.create_date
+        from sys_green_task as sgt,sys_green_area as sga,sys_user as su
+        where sgt.green_area_id = sga.id and sgt.director = su.id
+        order by sgt.create_date desc
+    </select>
 
 
 </mapper>

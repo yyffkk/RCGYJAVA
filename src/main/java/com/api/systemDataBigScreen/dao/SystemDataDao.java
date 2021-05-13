@@ -2,6 +2,7 @@ package com.api.systemDataBigScreen.dao;
 
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
+import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 
 import java.math.BigDecimal;
@@ -322,5 +323,11 @@ public interface SystemDataDao {
      */
     int findRegCount();
 
+
+    /**
+     * 查询所有的绿化管理情况
+     * @return 绿化管理情况
+     */
+    List<VoGreenTask> findGreenTaskList();
 
 }

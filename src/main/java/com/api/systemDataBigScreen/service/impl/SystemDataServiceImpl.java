@@ -8,6 +8,7 @@ import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.util.webSocket.WebSocketService;
+import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
 import org.springframework.stereotype.Service;
@@ -419,6 +420,11 @@ public class SystemDataServiceImpl implements SystemDataService {
         int regCount = systemDataDao.findRegCount();
         map.put("data",regCount);
         return map;
+    }
+
+    @Override
+    public List<VoGreenTask> findGreenTaskList() {
+        return systemDataDao.findGreenTaskList();
     }
 
 }

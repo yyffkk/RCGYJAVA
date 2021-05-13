@@ -11,6 +11,7 @@ import com.api.vo.app.AppActivityVo;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
+import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -351,6 +352,27 @@ public class SystemDataController {
     public Map<String,Object> firePushAlert(@RequestBody FirePushAlert firePushAlert){
         return systemDataService.pushAlert(firePushAlert);
     }
+
+
+    /**
+     * 查询所有的绿化管理情况
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/findGreenList")
+    public Map<String,Object> findGreenTaskList(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<VoGreenTask> voGreenTaskList = systemDataService.findGreenTaskList();
+        PageInfo<VoGreenTask> pageInfo = new PageInfo<>(voGreenTaskList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
 
 
 

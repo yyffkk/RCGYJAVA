@@ -3,6 +3,7 @@ package com.api.systemDataBigScreen.service;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 
 import java.util.List;
@@ -63,5 +64,7 @@ public interface SystemDataService {
 
     Map<String, Object> findRegCount();
 
+
+    List<VoGreenTask> findGreenTaskList();
 
 }
