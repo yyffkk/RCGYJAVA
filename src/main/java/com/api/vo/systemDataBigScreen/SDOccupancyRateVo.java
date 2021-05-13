@@ -9,7 +9,7 @@ public class SDOccupancyRateVo {
      */
     private String name;
     /**
-     * 房屋总数
+     * 该楼栋房屋总数
      */
     private Integer total;
     /**
