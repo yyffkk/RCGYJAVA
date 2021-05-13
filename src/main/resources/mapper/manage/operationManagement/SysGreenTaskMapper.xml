@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysGreenTaskDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchGreenTask" resultType="com.api.vo.operationManagement.VoGreenTask">
+        select sgt.id,sga.name as green_area_name,sgt.content,su.actual_name as director_name,sgt.status,sgt.end_date,sgt.create_date
+        from sys_green_task as sgt,sys_green_area as sga,sys_user as su
+        <where>
+            sgt.green_area_id = sga.id
+            and sgt.create_id = su.id
+            <if test="greenAreaName != null and greenAreaName != ''">
+                and sga.name like concat('%',#{greenAreaName},'%')
+            </if>
+            <if test="content != null and content != ''">
+                and sgt.content like concat('%',#{content},'%')
+            </if>
+            <if test="directorName != null and directorName != ''">
+                and su.actual_name like concat('%',#{directorName},'%')
+            </if>
+            <if test="status != null">
+                and sgt.status = #{status}
+            </if>
+            <if test="endDateStart != null">
+                and sgt.end_date <![CDATA[ >= ]]> #{endDateStart}
+            </if>
+            <if test="endDateEnd != null">
+                and sgt.end_date <![CDATA[ <= ]]> #{endDateEnd}
+            </if>
+            <if test="createDateStart != null">
+                and sgt.create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and sgt.create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+        order by sgt.create_date desc
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysGreenTask">
+        insert into sys_green_task(
+            green_area_id,
+            content,
+            director,
+            status,
+            end_date,
+            create_id,
+            create_date
+        )values (
+            #{greenAreaId},
+            #{content},
+            #{director},
+            #{status},
+            #{endDate},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_green_task where id = #{id}
+    </delete>
+
+</mapper>
