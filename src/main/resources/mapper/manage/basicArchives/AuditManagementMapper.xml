@@ -91,6 +91,12 @@
             </if>
         </trim>
     </insert>
+
+
+    <update id="updateEstateStatus" parameterType="com.api.model.basicArchives.CpmBuildingUnitEstate">
+        update cpm_building_unit_estate set status = #{status} where id =#{id}
+    </update>
+
     <insert id="insertResidentRelatives" parameterType="com.api.model.basicArchives.UserResidentRelatives">
         insert into user_resident_relatves(
             resident_id,

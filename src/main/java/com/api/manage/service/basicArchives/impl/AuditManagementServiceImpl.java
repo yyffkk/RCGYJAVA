@@ -100,6 +100,24 @@ public class AuditManagementServiceImpl implements AuditManagementService {
                     if (insert <=0){
                         throw new RuntimeException("添加住户房产关联失败");
                     }
+
+                    //更新房产的状态信息
+                    CpmBuildingUnitEstate cpmBuildingUnitEstate = new CpmBuildingUnitEstate();
+                    cpmBuildingUnitEstate.setId(byId.getEstateId()); //填入房产id
+                    if (byId.getType() == 1){
+                        //业主，1.入住
+                        cpmBuildingUnitEstate.setStatus(1);
+                    }else if (byId.getType() == 3){
+                        //租客，5.已租
+                        cpmBuildingUnitEstate.setStatus(5);
+                    }else {
+                        throw new RuntimeException("数据出错");
+                    }
+                    int update = auditManagementDao.updateEstateStatus(cpmBuildingUnitEstate);
+                    if (update <= 0){
+                        throw new RuntimeException("房产状态更新失败");
+                    }
+
                 }else if (byId.getType() == 2){ //2.审核亲属
                     String residentId = byId.getResidentId(); //获取业主id
                     String[] split = residentId.split(",");

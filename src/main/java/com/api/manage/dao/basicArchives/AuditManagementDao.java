@@ -37,6 +37,13 @@ public interface AuditManagementDao {
     int insertResidentEstate(CpmResidentEstate cpmResidentEstate);
 
     /**
+     * 更新房产状态
+     * @param cpmBuildingUnitEstate 楼宇单元房产信息
+     * @return 影响行数
+     */
+    int updateEstateStatus(CpmBuildingUnitEstate cpmBuildingUnitEstate);
+
+    /**
      * 添加住户亲属关联
      * @param userResidentRelatives 住户亲属关联表信息model
      * @return 影响行数
@@ -77,4 +84,7 @@ public interface AuditManagementDao {
      * @return 审核信息
      */
     VoCheckAuditById checkById(Integer estateExamineId);
+
+
+
 }
