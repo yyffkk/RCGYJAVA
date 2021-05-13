@@ -359,4 +359,10 @@ public interface SystemDataDao {
      * @return 投票信息
      */
     List<SDVoteInfoVo> findVoteInfo();
+
+    /**
+     * 查询商场各分类下报名统计
+     * @return 商场各分类下报名统计
+     */
+    List<SDShopAppointmentNumVo> findShopAppointmentNum();
 }

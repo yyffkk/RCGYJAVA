@@ -70,4 +70,6 @@ public interface SystemDataService {
 
     List<SDVoteInfoVo> findVoteInfo();
 
+    Map<String, Object> findShopAppointmentNum();
+
 }

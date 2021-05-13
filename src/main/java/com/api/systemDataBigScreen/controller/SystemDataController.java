@@ -408,10 +408,14 @@ public class SystemDataController {
         return map;
     }
 
-
-
-
-
+    /**
+     * 查询商场各分类下报名统计
+     * @return map
+     */
+    @GetMapping("/findShopAppointmentNum")
+    public Map<String,Object> findShopAppointmentNum(){
+        return systemDataService.findShopAppointmentNum();
+    }
 
 
 }

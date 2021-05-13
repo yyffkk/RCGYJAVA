@@ -472,4 +472,12 @@ public class SystemDataServiceImpl implements SystemDataService {
         return sdVoteInfoVoList;
     }
 
+    @Override
+    public Map<String, Object> findShopAppointmentNum() {
+        map = new HashMap<>();
+        List<SDShopAppointmentNumVo> sdShopAppointmentNumVoList = systemDataDao.findShopAppointmentNum();
+        map.put("data",sdShopAppointmentNumVoList);
+        return map;
+    }
+
 }
