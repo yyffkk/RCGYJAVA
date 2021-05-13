@@ -41,4 +41,11 @@ public interface SysGreenAreaDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据绿化区域主键id查询绿化任务数量
+     * @param id 绿化区域主键id
+     * @return 绿化任务数量
+     */
+    int countTaskByAreaId(int id);
 }

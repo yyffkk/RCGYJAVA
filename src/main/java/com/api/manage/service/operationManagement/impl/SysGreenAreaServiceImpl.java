@@ -92,6 +92,11 @@ public class SysGreenAreaServiceImpl implements SysGreenAreaService {
 
         try {
             for (int id : ids) {
+                //根据绿化区域主键id查询绿化任务数量
+                int count = sysGreenAreaDao.countTaskByAreaId(id);
+                if (count >0){
+                    throw new RuntimeException("该区域已被使用，不可删除");
+                }
 
                 int delete = sysGreenAreaDao.delete(id);
                 if (delete <=0){

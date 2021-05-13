@@ -54,5 +54,9 @@
         delete from sys_green_area where id =#{id}
     </delete>
 
+    <select id="countTaskByAreaId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_green_task where green_area_id = #{id}
+    </select>
+
 
 </mapper>
