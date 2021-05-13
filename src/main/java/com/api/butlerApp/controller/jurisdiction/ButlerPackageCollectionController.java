@@ -10,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,6 @@ import java.util.Map;
 public class ButlerPackageCollectionController {
     @Resource
     ButlerPackageCollectionService butlerPackageCollectionService;
-    @Resource
-    SysPackageCollectionService sysPackageCollectionService;
 
     /**
      * 管家app 查询所有的包裹代收信息
@@ -47,11 +46,14 @@ public class ButlerPackageCollectionController {
     /**
      * 添加包裹代收信息
      * @param sysPackageCollection 包裹代收model信息
+     * @param request butlerApp-admin-token获取的request管家用户信息
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody SysPackageCollection sysPackageCollection){
-        return sysPackageCollectionService.insert(sysPackageCollection);
+    public Map<String,Object> insert(@RequestBody SysPackageCollection sysPackageCollection, HttpServletRequest request){
+        //从request获取用户主键id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return butlerPackageCollectionService.insert(sysPackageCollection,id);
     }
 
     /**

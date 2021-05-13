@@ -315,6 +315,11 @@
     <select id="findRejectNum" resultType="java.lang.Integer">
         select count(*) from user_article_out where status = 3
     </select>
+    <select id="findVoteInfo" resultType="com.api.vo.systemDataBigScreen.SDVoteInfoVo">
+        select * from sys_vote
+        where is_delete = 1 and is_release = 1
+        order by create_date desc
+    </select>
 
 
 </mapper>

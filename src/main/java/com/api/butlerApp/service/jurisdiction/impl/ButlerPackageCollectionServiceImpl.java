@@ -2,7 +2,9 @@ package com.api.butlerApp.service.jurisdiction.impl;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerPackageCollectionDao;
 import com.api.butlerApp.service.jurisdiction.ButlerPackageCollectionService;
+import com.api.manage.dao.operationManagement.SysPackageCollectionDao;
 import com.api.manage.dao.remind.RemindDao;
+import com.api.model.operationManagement.SysPackageCollection;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.util.JiguangUtil;
@@ -25,6 +27,8 @@ public class ButlerPackageCollectionServiceImpl implements ButlerPackageCollecti
     ButlerPackageCollectionDao butlerPackageCollectionDao;
     @Resource
     RemindDao remindDao;
+    @Resource
+    SysPackageCollectionDao sysPackageCollectionDao;
 
     @Override
     public List<VoPackageCollection> list(Integer collectionStatus) {
@@ -89,6 +93,32 @@ public class ButlerPackageCollectionServiceImpl implements ButlerPackageCollecti
         }
         map.put("message","提醒成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> insert(SysPackageCollection sysPackageCollection, Integer id) {
+        map = new HashMap<>();
+
+        //根据手机号查询是否注册
+        int count = sysPackageCollectionDao.countByTel(sysPackageCollection.getAddresseeTel());
+        if (count <=0){
+            map.put("message","收件人手机号未注册，添加失败");
+            map.put("status",false);
+            return map;
+        }
+        sysPackageCollection.setCreateId(id);
+        sysPackageCollection.setCreateDate(new Date());
+        sysPackageCollection.setStatus(1); //默认填写状态,1.未领取
+
+        int insert = sysPackageCollectionDao.insert(sysPackageCollection);
+        if (insert >0) {
+            map.put("message","添加成功");
+            map.put("status",true);
+        }else {
+            map.put("message","添加失败");
+            map.put("status",false);
+        }
         return map;
     }
 }

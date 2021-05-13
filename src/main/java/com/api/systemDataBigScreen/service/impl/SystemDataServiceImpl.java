@@ -450,4 +450,26 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public List<SDVoteInfoVo> findVoteInfo() {
+        List<SDVoteInfoVo> sdVoteInfoVoList = systemDataDao.findVoteInfo();
+        if (sdVoteInfoVoList != null && sdVoteInfoVoList.size()>0){
+            Date date = new Date();
+            for (SDVoteInfoVo sdVoteInfoVo : sdVoteInfoVoList) {
+                //查询时间是否处于投票时间
+                if (date.getTime() < sdVoteInfoVo.getBeginDate().getTime()){
+                    //状态为1.未开始
+                    sdVoteInfoVo.setStatus(1);
+                }else if (date.getTime() > sdVoteInfoVo.getEndDate().getTime()){
+                    //状态为3.已结束
+                    sdVoteInfoVo.setStatus(3);
+                }else {
+                    //状态为2.进行中
+                    sdVoteInfoVo.setStatus(2);
+                }
+            }
+        }
+        return sdVoteInfoVoList;
+    }
+
 }

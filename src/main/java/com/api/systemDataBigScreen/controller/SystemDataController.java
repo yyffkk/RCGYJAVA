@@ -390,6 +390,24 @@ public class SystemDataController {
         return systemDataService.findArticleOutInfo();
     }
 
+    /**
+     * 查询投票信息
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/findVoteInfo")
+    public Map<String,Object> findVoteInfo(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<SDVoteInfoVo> sdVoteInfoVoList = systemDataService.findVoteInfo();
+        PageInfo<SDVoteInfoVo> pageInfo = new PageInfo<>(sdVoteInfoVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
 
 
 

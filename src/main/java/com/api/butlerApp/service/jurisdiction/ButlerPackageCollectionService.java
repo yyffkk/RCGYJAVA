@@ -1,5 +1,6 @@
 package com.api.butlerApp.service.jurisdiction;
 
+import com.api.model.operationManagement.SysPackageCollection;
 import com.api.vo.operationManagement.VoPackageCollection;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface ButlerPackageCollectionService {
 
     Map<String, Object> remind(Integer packageCollectionId, Integer id);
 
+    Map<String, Object> insert(SysPackageCollection sysPackageCollection, Integer id);
 }

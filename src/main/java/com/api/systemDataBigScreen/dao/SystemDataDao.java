@@ -353,4 +353,10 @@ public interface SystemDataDao {
      * @return 已驳回的数量
      */
     int findRejectNum();
+
+    /**
+     * 查询所有的投票信息
+     * @return 投票信息
+     */
+    List<SDVoteInfoVo> findVoteInfo();
 }

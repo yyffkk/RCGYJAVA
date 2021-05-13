@@ -46,9 +46,7 @@ public interface SystemDataService {
 
     Map<String, Object> findExecuteByRoute(Integer routeId);
 
-
     Map<String, Object> findPointByExecuteId(Integer executeId);
-
 
     SDReportDispatchAllVo findReportDispatch();
 
@@ -62,14 +60,14 @@ public interface SystemDataService {
 
     Map<String, Object> findVisitorInfoMonth();
 
-
     Map<String, Object> pushAlert(FirePushAlert firePushAlert);
 
     Map<String, Object> findRegCount();
 
-
     List<VoGreenTask> findGreenTaskList();
 
-
     Map<String, Object> findArticleOutInfo();
+
+    List<SDVoteInfoVo> findVoteInfo();
+
 }
