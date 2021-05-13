@@ -390,6 +390,14 @@ public class SystemDataServiceImpl implements SystemDataService {
     }
 
     @Override
+    public Map<String, Object> findVisitorInfoMonth() {
+        map = new HashMap<>();
+        List<SDVisitorInfoMonthVo> sdVisitorInfoMonthVos = systemDataDao.findVisitorInfoMonth();
+        map.put("data",sdVisitorInfoMonthVos);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> pushAlert(FirePushAlert firePushAlert) {
         map = new HashMap<>();
         try {

@@ -318,6 +318,15 @@ public class SystemDataController {
     }
 
     /**
+     * 查询访客信息(12个月内的数据，不包含本月)
+     * @return map
+     */
+    @GetMapping("/findVisitorInfoMonth")
+    public Map<String,Object> findVisitorInfoMonth(){
+        return systemDataService.findVisitorInfoMonth();
+    }
+
+    /**
      * 查询所有的设施预约信息（包含搜索条件）【与后台list 调用同一个service】
      * @param searchFacilitiesAppointment 设施预约管理 搜索条件
      * @return map
@@ -371,6 +380,16 @@ public class SystemDataController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 查询物品出门事项统计
+     * @return map
+     */
+    @GetMapping("/findArticleOutInfo")
+    public Map<String,Object> findArticleOutInfo(){
+        return null;
+    }
+
 
 
 

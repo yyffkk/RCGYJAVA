@@ -10,7 +10,9 @@
             <if test="name != null and name != ''">
                 and name like concat('%',#{name},'%')
             </if>
+            and is_delete = 1
         </where>
+        order by create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.shoppingCenter.Supplier">

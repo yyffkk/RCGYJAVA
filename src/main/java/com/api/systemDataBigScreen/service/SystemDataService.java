@@ -60,11 +60,15 @@ public interface SystemDataService {
 
     Map<String, Object> findVisitorInfo();
 
+    Map<String, Object> findVisitorInfoMonth();
+
+
     Map<String, Object> pushAlert(FirePushAlert firePushAlert);
 
     Map<String, Object> findRegCount();
 
 
     List<VoGreenTask> findGreenTaskList();
+
 
 }

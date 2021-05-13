@@ -4,7 +4,7 @@ package com.api.vo.systemDataBigScreen;
 import java.sql.Date;
 
 /**
- * 访客管理信息 Vo 回显
+ * 系统数据 访客管理信息 Vo 回显 (按日查询)
  */
 public class SDVisitorInfoVo {
     /**

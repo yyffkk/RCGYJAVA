@@ -286,6 +286,26 @@
         where sgt.green_area_id = sga.id and sgt.director = su.id
         order by sgt.create_date desc
     </select>
+    <select id="findVisitorInfoMonth" resultType="com.api.vo.systemDataBigScreen.SDVisitorInfoMonthVo">
+        select count(u.id) as visitor_num,YEAR(s.date) as years,MONTH(s.date) as months from
+        (select date_add(DATE(NOW()),interval @i:=@i-1 month) as date
+        from (
+        select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1
+        union all select 1) as tmp,
+         (select @i:= 0) t
+        ) s left join user_visitors_new as u on  YEAR(s.date)  = YEAR(u.visit_date_start) and MONTH(s.date) = MONTH(u.visit_date_start)
+        GROUP BY s.date
+    </select>
 
 
 </mapper>

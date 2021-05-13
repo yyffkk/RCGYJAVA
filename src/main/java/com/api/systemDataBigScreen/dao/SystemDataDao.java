@@ -330,4 +330,10 @@ public interface SystemDataDao {
      */
     List<VoGreenTask> findGreenTaskList();
 
+    /**
+     * 查询访客信息(12个月内的数据，不包含本月)
+     * @return 访客信息
+     */
+    List<SDVisitorInfoMonthVo> findVisitorInfoMonth();
+
 }
