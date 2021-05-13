@@ -12,6 +12,7 @@
             </if>
             and addressee_tel = #{tel}
         </where>
+        order by create_date desc
     </select>
     <select id="findAddresseeTelByPackageId" parameterType="java.lang.Integer" resultType="java.lang.String">
         select addressee_tel from sys_package_collection where id = #{packageCollectionId}
