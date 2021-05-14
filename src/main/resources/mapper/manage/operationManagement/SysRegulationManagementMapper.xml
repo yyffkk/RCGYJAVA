@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysRegulationManagementDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchRegulationManagement" resultType="com.api.vo.operationManagement.VoRegulationManagement">
+        select * from (
+            select srm.id,srm.title,srm.content,srm.status,su.actual_name as create_name,
+                (case srm.modify_date is null when true then srm.create_date else srm.modify_date end) as near_modify_date,srm.create_date
+            from sys_regulation_management as srm,sys_user as su
+            where srm.create_id = su.id
+        ) as T
+        <where>
+            <if test="title != null and title != ''">
+                and T.title like concat('%',#{title},'%')
+            </if>
+            <if test="status != null">
+                and T.status = #{status}
+            </if>
+            <if test="createName != null and createName != ''">
+                and T.create_name like concat('%',#{createName},'%')
+            </if>
+            <if test="nearModifyDateStart != null">
+                and T.near_modify_date <![CDATA[ >= ]]> #{nearModifyDateStart}
+            </if>
+            <if test="nearModifyDateEnd != null">
+                and T.near_modify_date <![CDATA[ <= ]]> #{nearModifyDateEnd}
+            </if>
+            <if test="createDateStart != null">
+                and T.create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and T.create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+        order by T.create_date desc
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysRegulationManagement">
+        insert into sys_regulation_management(
+            title,
+            content,
+            status,
+            release_date,
+            create_id,
+            create_date
+        )values (
+            #{title},
+            #{content},
+            #{status},
+            #{releaseDate},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIRegulationManagement">
+        select * from sys_regulation_management where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysRegulationManagement">
+        update sys_regulation_management
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="releaseDate != null">
+                release_date = #{releaseDate},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_regulation_management where id = #{id}
+    </delete>
+
+</mapper>

@@ -22,6 +22,7 @@
                 and ssb.create_date <![CDATA[ <= ]]> #{createDateEnd}
             </if>
         </where>
+        order by ssb.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SysServiceBrowsing">

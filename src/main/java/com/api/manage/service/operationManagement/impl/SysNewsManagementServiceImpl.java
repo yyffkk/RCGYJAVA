@@ -110,8 +110,7 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
 
             int update = sysNewsManagementDao.update(sysNewsManagement);
             if (update <= 0){
-                map.put("message","修改失败");
-                map.put("status",false);
+                throw new RuntimeException("修改失败");
             }
 
             UploadUtil uploadUtil = new UploadUtil();
