@@ -41,6 +41,12 @@
     <select id="findAdviceByAdviceId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppAdviceVo">
         select * from sys_advice where id = #{adviceId} and is_delete = 1 and user_delete = 1
     </select>
+    <select id="findScoreById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select score from sys_advice where id = #{id}
+    </select>
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from sys_advice where id = #{id}
+    </select>
 
     <insert id="reQuestion" parameterType="com.api.model.butlerService.SysAdviceDetail">
         insert into sys_advice_detail(
@@ -72,5 +78,8 @@
 
     <update id="falseDelete" parameterType="com.api.model.app.UserIdAndAdviceId">
         update sys_advice set user_delete = 0 where id = #{adviceId} and create_id = #{id} and create_user_type = 1
+    </update>
+    <update id="completeFeedback" parameterType="java.lang.Integer">
+        update sys_advice set status = 3 where id = #{adviceId}
     </update>
 </mapper>

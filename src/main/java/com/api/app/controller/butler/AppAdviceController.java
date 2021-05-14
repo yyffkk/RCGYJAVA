@@ -110,4 +110,14 @@ public class AppAdviceController {
         Integer id = Integer.valueOf(request.getParameter("id"));
         return appAdviceService.falseDelete(ids.getIds(),id);
     }
+
+    /**
+     * 完成反馈
+     * @param adviceId 咨询建议主键id
+     * @return map
+     */
+    @GetMapping("/completeFeedback")
+    public Map<String,Object> completeFeedback(Integer adviceId){
+        return appAdviceService.completeFeedback(adviceId);
+    }
 }

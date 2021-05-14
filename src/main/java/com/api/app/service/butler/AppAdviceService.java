@@ -5,7 +5,6 @@ import com.api.model.app.UserIdAndAdviceId;
 import com.api.model.butlerService.SysAdvice;
 import com.api.model.butlerService.SysAdviceDetail;
 import com.api.vo.app.AppAdviceVo;
-import com.api.vo.basicArchives.VoIds;
 
 import java.util.List;
 import java.util.Map;
@@ -22,4 +21,6 @@ public interface AppAdviceService {
     Map<String, Object> evaluate(SysAdvice sysAdvice);
 
     Map<String, Object> falseDelete(int[] ids, Integer id);
+
+    Map<String, Object> completeFeedback(Integer adviceId);
 }

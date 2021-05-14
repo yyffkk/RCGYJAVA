@@ -3,7 +3,6 @@ package com.api.app.service.butler.impl;
 import com.api.app.dao.butler.AppAdviceDao;
 import com.api.app.service.butler.AppAdviceService;
 import com.api.manage.dao.butlerService.SysProhibitedKeywordsDao;
-import com.api.manage.dao.butlerService.UserAdviceDao;
 import com.api.model.app.SearchAppAdvice;
 import com.api.model.app.UserIdAndAdviceId;
 import com.api.model.butlerService.SearchProhibitedKeywords;
@@ -13,8 +12,6 @@ import com.api.util.UploadUtil;
 import com.api.vo.app.AppAdviceContentVo;
 import com.api.vo.app.AppAdviceDetailVo;
 import com.api.vo.app.AppAdviceVo;
-import com.api.vo.basicArchives.VoIds;
-import com.api.vo.butlerService.VoFindByIdAdvice;
 import com.api.vo.butlerService.VoProhibitedKeywords;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
@@ -126,6 +123,13 @@ public class AppAdviceServiceImpl implements AppAdviceService {
     @Override
     public Map<String, Object> reQuestion(SysAdviceDetail sysAdviceDetail) {
         map = new HashMap<>();
+        Integer status = appAdviceDao.findStatusById(sysAdviceDetail.getAdviceId());
+        if (status == 3){
+            map.put("message","反馈已完成，不可再提问");
+            map.put("status",false);
+            return map;
+        }
+
         //填入是否删除 默认为1.非删
         sysAdviceDetail.setIsDelete(1);
         //填入创建时间
@@ -147,13 +151,28 @@ public class AppAdviceServiceImpl implements AppAdviceService {
     @Override
     public Map<String, Object> evaluate(SysAdvice sysAdvice) {
         map = new HashMap<>();
+        //根据 咨询建议/投诉表扬主键id 查询状态信息
+        Integer status = appAdviceDao.findStatusById(sysAdvice.getId());
+        if (status == 1){
+            map.put("message","物业未反馈，不可评价");
+            map.put("status",false);
+            return map;
+        }
+
+        //根据 咨询建议/投诉表扬主键id 查询评分数
+        Integer score = appAdviceDao.findScoreById(sysAdvice.getId());
+        if (score != null){
+            map.put("message","已评价，不可再次评价");
+            map.put("status",false);
+            return map;
+        }
         //添加评价分数
         int update = appAdviceDao.evaluate(sysAdvice);
         if (update >0){
-            map.put("message","打分成功");
+            map.put("message","评价成功");
             map.put("status",true);
         }else {
-            map.put("message","打分失败");
+            map.put("message","评价失败");
             map.put("status",false);
         }
         return map;
@@ -186,6 +205,20 @@ public class AppAdviceServiceImpl implements AppAdviceService {
         }
         map.put("message","删除成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> completeFeedback(Integer adviceId) {
+        map = new HashMap<>();
+        int update = appAdviceDao.completeFeedback(adviceId);
+        if (update >0){
+            map.put("message","完成反馈成功");
+            map.put("status",true);
+        }else {
+            map.put("message","完成反馈失败");
+            map.put("status",false);
+        }
         return map;
     }
 

@@ -58,4 +58,25 @@ public interface AppAdviceDao {
      * @return 影响行数
      */
     int falseDelete(UserIdAndAdviceId userIdAndAdviceId);
+
+    /**
+     * 根据 咨询建议/投诉表扬主键id 查询评分数
+     * @param id 咨询建议/投诉表扬主键id
+     * @return 评分数
+     */
+    Integer findScoreById(Integer id);
+
+    /**
+     * 根据 咨询建议/投诉表扬主键id 查询状态信息
+     * @param id 咨询建议/投诉表扬主键id
+     * @return 状态信息
+     */
+    Integer findStatusById(Integer id);
+
+    /**
+     * 完成反馈
+     * @param adviceId 咨询建议主键id
+     * @return 影响行数
+     */
+    int completeFeedback(Integer adviceId);
 }
