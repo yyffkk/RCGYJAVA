@@ -82,4 +82,14 @@ public class SysRegulationManagementController extends ShiroExceptions {
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysRegulationManagementService.delete(ids.getIds());
     }
+
+    /**
+     * 发布
+     * @param id 规程信息主键id
+     * @return map
+     */
+    @GetMapping("/release")
+    public Map<String,Object> release(Integer id){
+        return sysRegulationManagementService.release(id);
+    }
 }

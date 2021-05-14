@@ -84,4 +84,11 @@
         delete from sys_regulation_management where id = #{id}
     </delete>
 
+    <update id="release" parameterType="com.api.model.operationManagement.SysRegulationManagement">
+        update sys_regulation_management
+        set status = #{status},
+        release_date = #{releaseDate}
+        where id = #{id}
+    </update>
+
 </mapper>

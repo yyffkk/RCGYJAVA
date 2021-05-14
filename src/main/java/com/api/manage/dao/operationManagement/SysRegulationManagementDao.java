@@ -42,4 +42,11 @@ public interface SysRegulationManagementDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 发布
+     * @param sysRegulationManagement 规程管理model信息
+     * @return 影响行数
+     */
+    int release(SysRegulationManagement sysRegulationManagement);
 }

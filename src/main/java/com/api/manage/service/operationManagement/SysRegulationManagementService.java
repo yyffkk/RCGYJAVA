@@ -17,4 +17,6 @@ public interface SysRegulationManagementService {
     Map<String, Object> update(SysRegulationManagement sysRegulationManagement);
 
     Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> release(Integer id);
 }

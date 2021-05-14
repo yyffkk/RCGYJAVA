@@ -114,4 +114,24 @@ public class SysRegulationManagementServiceImpl implements SysRegulationManageme
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> release(Integer id) {
+        map = new HashMap<>();
+
+        SysRegulationManagement sysRegulationManagement = new SysRegulationManagement();
+        sysRegulationManagement.setId(id);
+        sysRegulationManagement.setReleaseDate(new Date());
+        sysRegulationManagement.setStatus(1);
+        
+        int update = sysRegulationManagementDao.release(sysRegulationManagement);
+        if (update >0) {
+            map.put("message","发布成功");
+            map.put("status",true);
+        }else {
+            map.put("message","发布失败");
+            map.put("status",false);
+        }
+        return map;
+    }
 }
