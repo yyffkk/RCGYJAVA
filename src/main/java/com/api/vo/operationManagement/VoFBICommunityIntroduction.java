@@ -1,40 +1,38 @@
 package com.api.vo.operationManagement;
 
-import java.util.Date;
-
 /**
- * 服务浏览Vo findById 回显
+ * 社区介绍Vo findById 回显
  */
-public class VoFBIServiceBrowsing {
+public class VoFBICommunityIntroduction {
     /**
-     * 主键id
+     * 社区介绍主键id
      */
     private Integer id;
     /**
-     * 服务名称
+     * 模版名称
      */
     private String name;
     /**
-     * 服务介绍
+     * 内容
      */
     private String content;
+    /**
+     * 启用状态 ，1.启用中，2.未启用
+     */
+    private Integer status;
     /**
      * 创建人名称
      */
     private String createName;
-    /**
-     * 创建时间
-     */
-    private Date createDate;
 
     @Override
     public String toString() {
-        return "VoFBIServiceBrowsing{" +
+        return "VoFBICommunityIntroduction{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", content='" + content + '\'' +
+                ", status=" + status +
                 ", createName='" + createName + '\'' +
-                ", createDate=" + createDate +
                 '}';
     }
 
@@ -62,6 +60,14 @@ public class VoFBIServiceBrowsing {
         this.content = content;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getCreateName() {
         return createName;
     }
@@ -70,22 +76,14 @@ public class VoFBIServiceBrowsing {
         this.createName = createName;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public VoFBICommunityIntroduction() {
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public VoFBIServiceBrowsing() {
-    }
-
-    public VoFBIServiceBrowsing(Integer id, String name, String content, String createName, Date createDate) {
+    public VoFBICommunityIntroduction(Integer id, String name, String content, Integer status, String createName) {
         this.id = id;
         this.name = name;
         this.content = content;
+        this.status = status;
         this.createName = createName;
-        this.createDate = createDate;
     }
 }

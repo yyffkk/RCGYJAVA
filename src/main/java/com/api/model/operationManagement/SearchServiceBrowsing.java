@@ -23,11 +23,11 @@ public class SearchServiceBrowsing {
      */
     private String createName;
     /**
-     * 发布时间开始
+     * 创建时间开始
      */
     private Date createDateStart;
     /**
-     * 发布时间结束
+     * 创建时间结束
      */
     private Date createDateEnd;
 

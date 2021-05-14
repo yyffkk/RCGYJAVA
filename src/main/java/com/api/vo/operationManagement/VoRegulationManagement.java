@@ -31,7 +31,7 @@ public class VoRegulationManagement {
      */
     private Date nearModifyDate;
     /**
-     * 发布时间
+     * 创建时间
      */
     private Date createDate;
 

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysCommunityIntroductionDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchCommunityIntroduction" resultType="com.api.vo.operationManagement.VoCommunityIntroduction">
+        select * from (
+            select sci.id,sci.name,sci.content,sci.status,su.actual_name as create_name,
+            (case sci.modify_date is null when true then sci.create_date else sci.modify_date end) as near_modify_date,sci.create_date
+            from sys_community_introduction as sci,sys_user as su
+            where sci.create_id = su.id
+        ) as T
+        <where>
+            <if test="name != null and name != ''">
+                and T.name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and T.status = #{status}
+            </if>
+            <if test="createName != null and createName != ''">
+                and T.create_name like concat('%',#{createName},'%')
+            </if>
+            <if test="nearModifyDateStart != null">
+                and T.near_modify_date <![CDATA[ >= ]]> #{nearModifyDateStart}
+            </if>
+            <if test="nearModifyDateEnd != null">
+                and T.near_modify_date <![CDATA[ <= ]]> #{nearModifyDateEnd}
+            </if>
+            <if test="createDateStart != null">
+                and T.create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and T.create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+        order by T.create_date desc
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysCommunityIntroduction">
+        insert into sys_community_introduction(
+            name,
+            content,
+            status,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{content},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBICommunityIntroduction">
+        select sci.id,sci.name,sci.content,sci.status,su.actual_name as create_name
+        from sys_community_introduction as sci,sys_user as su
+        where sci.create_id = su.id and sci.id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysCommunityIntroduction">
+        update sys_community_introduction
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id =#{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_community_introduction where id = #{id}
+    </delete>
+
+    <update id="enable" parameterType="java.lang.Integer">
+        update sys_community_introduction set status = 1 where id = #{id}
+    </update>
+    <update id="disableOther" parameterType="java.lang.Integer">
+        update sys_community_introduction set status = 2 where id != #{id}
+    </update>
+
+
+</mapper>

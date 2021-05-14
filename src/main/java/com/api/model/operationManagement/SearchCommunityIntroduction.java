@@ -3,9 +3,9 @@ package com.api.model.operationManagement;
 import java.util.Date;
 
 /**
- * 规程管理搜索条件
+ * 社区介绍搜索条件
  */
-public class SearchRegulationManagement {
+public class SearchCommunityIntroduction {
     /**
      * 当前页数
      */
@@ -15,11 +15,11 @@ public class SearchRegulationManagement {
      */
     private int size;
     /**
-     * 规程标题
+     * 模版名称
      */
-    private String title;
-    /**
-     * 发布状态 ，1.已发布 2.未发布
+    private String name;
+    /***
+     * 启用状态 1.启用中，2.未启用
      */
     private Integer status;
     /**
@@ -45,10 +45,10 @@ public class SearchRegulationManagement {
 
     @Override
     public String toString() {
-        return "SearchRegulationManagement{" +
+        return "SearchCommunityIntroduction{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
-                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
                 ", status=" + status +
                 ", createName='" + createName + '\'' +
                 ", nearModifyDateStart=" + nearModifyDateStart +
@@ -74,12 +74,12 @@ public class SearchRegulationManagement {
         this.size = size;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getStatus() {
@@ -130,13 +130,13 @@ public class SearchRegulationManagement {
         this.createDateEnd = createDateEnd;
     }
 
-    public SearchRegulationManagement() {
+    public SearchCommunityIntroduction() {
     }
 
-    public SearchRegulationManagement(int pageNum, int size, String title, Integer status, String createName, Date nearModifyDateStart, Date nearModifyDateEnd, Date createDateStart, Date createDateEnd) {
+    public SearchCommunityIntroduction(int pageNum, int size, String name, Integer status, String createName, Date nearModifyDateStart, Date nearModifyDateEnd, Date createDateStart, Date createDateEnd) {
         this.pageNum = pageNum;
         this.size = size;
-        this.title = title;
+        this.name = name;
         this.status = status;
         this.createName = createName;
         this.nearModifyDateStart = nearModifyDateStart;

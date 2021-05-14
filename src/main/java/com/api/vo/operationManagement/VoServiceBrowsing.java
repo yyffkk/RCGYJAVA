@@ -23,7 +23,7 @@ public class VoServiceBrowsing {
      */
     private String createName;
     /**
-     * 发布时间
+     * 创建时间
      */
     private Date createDate;
 
