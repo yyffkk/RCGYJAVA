@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysServiceBrowsingDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchServiceBrowsing" resultType="com.api.vo.operationManagement.VoServiceBrowsing">
+        select ssb.id,ssb.name,ssb.content,su.actual_name as create_name,ssb.create_date
+        from sys_service_browsing as ssb,sys_user as su
+        <where>
+            ssb.create_id = su.id
+            <if test="name != null and name != ''">
+                and ssb.name like concat('%',#{name},'%')
+            </if>
+            <if test="createName != null and createName != ''">
+                and su.actual_name like concat('%',#{createName},'%')
+            </if>
+            <if test="createDateStart != null">
+                and ssb.create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and ssb.create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysServiceBrowsing">
+        insert into sys_service_browsing(
+            name,
+            content,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{content},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIServiceBrowsing">
+        select ssb.id,ssb.name,ssb.content,su.actual_name as create_name,ssb.create_date
+        from sys_service_browsing as ssb,sys_user as su
+        where ssb.create_id = su.id and ssb.id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysServiceBrowsing">
+        update sys_service_browsing
+        set name = #{name},
+        content = #{content},
+        modify_id = #{modifyId},
+        modify_date = #{modifyDate}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_service_browsing where id = #{id}
+    </delete>
+
+
+</mapper>
