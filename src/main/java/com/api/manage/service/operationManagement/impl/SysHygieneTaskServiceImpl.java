@@ -39,6 +39,7 @@ public class SysHygieneTaskServiceImpl implements SysHygieneTaskService {
 
         sysHygieneTask.setCreateId(sysUser.getId());
         sysHygieneTask.setCreateDate(new Date());
+        sysHygieneTask.setStatus(1); //填写默认状态 1.待处理
 
         int insert = sysHygieneTaskDao.insert(sysHygieneTask);
         if (insert >0){

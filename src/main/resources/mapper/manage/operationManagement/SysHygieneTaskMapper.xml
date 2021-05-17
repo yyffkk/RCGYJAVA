@@ -14,7 +14,7 @@
                 and sha.name like concat('%',#{hygieneAreaName},'%')
             </if>
             <if test="content != null and content != ''">
-                and sht.content like concat('%',#{searchHygieneTask},'%')
+                and sht.content like concat('%',#{content},'%')
             </if>
             <if test="directorName != null and directorName != ''">
                 and su.actual_name like concat('%',#{directorName},'%')
