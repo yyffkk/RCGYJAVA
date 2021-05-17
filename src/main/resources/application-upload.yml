@@ -49,6 +49,9 @@ prop:
   upload-activity: /img/activity/
   #运营管理-资讯管理：新增资讯信息 照片上传路径
   upload-news: /img/news/
+  #运营管理-电子商务管理：新增电子商务信息 照片上传路径
+  upload-electronic-commerce: /img/electronicCommerce/
+
 
   #收费管理-固定金额分摊：固定金额分摊缴纳凭证，照片上传路径
   upload-voucher: /img/voucher/

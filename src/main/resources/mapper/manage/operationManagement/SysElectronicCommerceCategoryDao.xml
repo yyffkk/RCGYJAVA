@@ -19,6 +19,7 @@
                 and su.actual_name like concat('%',#{createName},'%')
             </if>
         </where>
+        order by secc.create_date DESC
     </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SysElectronicCommerceCategory">

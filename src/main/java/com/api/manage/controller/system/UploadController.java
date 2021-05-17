@@ -231,4 +231,14 @@ public class UploadController {
         return uploadService.uploadNews(file);
     }
 
+    /**
+     * 上传电子商务照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadElectronicCommerce")
+    public Map<String,Object> uploadElectronicCommerce(MultipartFile file){
+        return uploadService.uploadElectronicCommerce(file);
+    }
+
 }

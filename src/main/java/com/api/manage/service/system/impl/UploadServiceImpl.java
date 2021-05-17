@@ -83,6 +83,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_SHOPPING_SUPPLIER;
     @Value("${prop.upload-news}")
     private String UPLOAD_NEWS;
+    @Value("${prop.upload-electronic-commerce}")
+    private String UPLOAD_ELECTRONIC_COMMERCE;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -293,6 +295,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadNews(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_NEWS);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadElectronicCommerce(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_ELECTRONIC_COMMERCE);
         return map;
     }
 
