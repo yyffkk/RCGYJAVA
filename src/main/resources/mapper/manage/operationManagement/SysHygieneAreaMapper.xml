@@ -56,5 +56,9 @@
         delete from sys_hygiene_area where id = #{id}
     </delete>
 
+    <select id="countTaskByAreaId" resultType="java.lang.Integer">
+        select count(*) from sys_hygiene_task where hygiene_area_id = #{id}
+    </select>
+
 
 </mapper>

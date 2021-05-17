@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysHygieneTaskDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchHygieneTask" resultType="com.api.vo.operationManagement.VoHygieneTask">
+        select sht.id,sha.name as hygiene_area_name,sht.content,su.actual_name as director_name,sht.status,sht.end_date,sht.create_date
+        from sys_hygiene_task as sht,sys_hygiene_area as sha,sys_user as su
+        <where>
+            sht.hygiene_area_id = sha.id
+            and sht.create_id = su.id
+            <if test="hygieneAreaName != null and hygieneAreaName != ''">
+                and sha.name like concat('%',#{hygieneAreaName},'%')
+            </if>
+            <if test="content != null and content != ''">
+                and sht.content like concat('%',#{searchHygieneTask},'%')
+            </if>
+            <if test="directorName != null and directorName != ''">
+                and su.actual_name like concat('%',#{directorName},'%')
+            </if>
+            <if test="status != null">
+                and sht.status = #{status}
+            </if>
+            <if test="endDateStart != null">
+                and sht.end_date <![CDATA[ >= ]]> #{endDateStart}
+            </if>
+            <if test="endDateEnd != null">
+                and sht.end_date <![CDATA[ <= ]]> #{endDateEnd}
+            </if>
+            <if test="createDateStart != null">
+                and sht.create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and sht.create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysHygieneTask">
+        insert into sys_hygiene_task(
+            hygiene_area_id,
+            content,
+            director,
+            status,
+            end_date,
+            create_id,
+            create_date
+        )values (
+            #{hygieneAreaId},
+            #{content},
+            #{director},
+            #{status},
+            #{endDate},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIHygieneTask">
+        select sht.id,sht.hygiene_area_id,sha.name as hygiene_area_name,sht.content,sht.director,su.actual_name as director_name,sht.status,sht.end_date,sht.create_date
+        from sys_hygiene_task as sht,sys_hygiene_area as sha,sys_user as su
+        where sht.hygiene_area_id = sha.id and sht.create_id = su.id and sht.id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_hygiene_task where id = #{id}
+    </delete>
+
+
+</mapper>

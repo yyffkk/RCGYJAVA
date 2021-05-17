@@ -89,6 +89,12 @@ public class SysHygieneAreaServiceImpl implements SysHygieneAreaService {
 
         try {
             for (int id : ids) {
+                //根据卫生区域主键id查询卫生任务数量
+                int count = sysHygieneAreaDao.countTaskByAreaId(id);
+                if (count >0){
+                    throw new RuntimeException("该区域已被使用，不可删除");
+                }
+
                 int delete = sysHygieneAreaDao.delete(id);
                 if (delete <=0){
                     throw new RuntimeException("删除失败");

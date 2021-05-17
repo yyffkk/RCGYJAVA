@@ -42,4 +42,11 @@ public interface SysHygieneAreaDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据卫生区域主键id查询卫生任务数量
+     * @param id 卫生区域主键id
+     * @return 卫生任务数量
+     */
+    int countTaskByAreaId(int id);
 }
