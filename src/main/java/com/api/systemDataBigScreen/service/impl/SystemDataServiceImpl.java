@@ -499,7 +499,7 @@ public class SystemDataServiceImpl implements SystemDataService {
 
     @Override
     @Transactional
-    public Map<String, Object> insert(SysNewsManagement sysNewsManagement) {
+    public Map<String, Object> insertNews(SysNewsManagement sysNewsManagement) {
         map = new HashMap<>();
         try {
             sysNewsManagement.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));

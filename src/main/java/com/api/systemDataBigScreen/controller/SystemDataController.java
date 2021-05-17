@@ -424,8 +424,8 @@ public class SystemDataController {
      * @param sysNewsManagement 资讯信息
      * @return map
      */
-    @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody SysNewsManagement sysNewsManagement){
-        return systemDataService.insert(sysNewsManagement);
+    @PostMapping("/insertNews")
+    public Map<String,Object> insertNews(@RequestBody SysNewsManagement sysNewsManagement){
+        return systemDataService.insertNews(sysNewsManagement);
     }
 }

@@ -73,6 +73,6 @@ public interface SystemDataService {
 
     Map<String, Object> findShopAppointmentNum();
 
-    Map<String, Object> insert(SysNewsManagement sysNewsManagement);
+    Map<String, Object> insertNews(SysNewsManagement sysNewsManagement);
 
 }
