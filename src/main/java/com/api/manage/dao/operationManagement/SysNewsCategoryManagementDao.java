@@ -36,8 +36,8 @@ public interface SysNewsCategoryManagementDao {
     int update(SysNewsCategoryManagement sysNewsCategoryManagement);
 
     /**
-     * 删除商品分类
-     * @param id 商品分类主键id
+     * 删除资讯分类
+     * @param id 资讯分类主键id
      * @return 影响行数
      */
     int delete(int id);
