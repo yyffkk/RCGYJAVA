@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysHygieneAreaDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchHygieneArea" resultType="com.api.vo.operationManagement.VoHygieneArea">
+        select sha.id,sha.name,su.actual_name as createName,sha.create_date
+        from sys_hygiene_area as sha,sys_user as su
+        <where>
+            sha.create_id = su.id
+            <if test="name != null and name != ''">
+                and sha.name like concat('%',#{name},'%')
+            </if>
+            <if test="createName != null and createName != ''">
+                and su.actual_name like concat('%',#{createName},'%')
+            </if>
+            <if test="createDateStart != null">
+                and sha.create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and sha.create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+        order by sha.create_date desc
+    </select>
+
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysHygieneArea">
+        insert into sys_hygiene_area(
+            name,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIHygieneArea">
+        select sha.id,sha.name,su.actual_name as createName,sha.create_date
+        from sys_hygiene_area as sha,sys_user as su
+        where sha.create_id = su.id and sha.id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysHygieneArea">
+        update sys_hygiene_area
+        set name = #{name},
+        modify_id = #{modifyId},
+        modify_date = #{modifyDate}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_hygiene_area where id = #{id}
+    </delete>
+
+
+</mapper>
