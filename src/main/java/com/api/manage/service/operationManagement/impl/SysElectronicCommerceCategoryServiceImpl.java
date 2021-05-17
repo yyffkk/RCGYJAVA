@@ -56,8 +56,8 @@ public class SysElectronicCommerceCategoryServiceImpl implements SysElectronicCo
     @Override
     public Map<String, Object> findById(Integer id) {
         map = new HashMap<>();
-        VoNewsCategoryManagement voNewsCategoryManagement = sysElectronicCommerceCategoryDao.findById(id);
-        map.put("data",voNewsCategoryManagement);
+        VoElectronicCommerceCategory voElectronicCommerceCategory = sysElectronicCommerceCategoryDao.findById(id);
+        map.put("data",voElectronicCommerceCategory);
         map.put("message","请求成功");
         map.put("status",true);
         return map;

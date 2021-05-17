@@ -35,7 +35,7 @@
         )
     </insert>
 
-    <select id="findById" resultType="com.api.vo.operationManagement.VoNewsCategoryManagement">
+    <select id="findById" resultType="com.api.vo.operationManagement.VoElectronicCommerceCategory">
         select secc.id,secc.code,secc.name,su.actual_name as create_name,secc.create_date
         from sys_electronic_commerce_category as secc,sys_user as su
         where secc.create_id = su.id and secc.id = #{id}

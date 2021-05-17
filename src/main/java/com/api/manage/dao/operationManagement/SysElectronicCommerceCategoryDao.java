@@ -27,7 +27,7 @@ public interface SysElectronicCommerceCategoryDao {
      * @param id 电子商务分类主键id
      * @return 电子商务分类信息
      */
-    VoNewsCategoryManagement findById(Integer id);
+    VoElectronicCommerceCategory findById(Integer id);
 
     /**
      * 修改电子商务分类信息
