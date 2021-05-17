@@ -20,7 +20,7 @@ import java.util.Map;
  * 电子商务分类管理
  */
 @RestController
-@RequestMapping("manage/electronicCommerce")
+@RequestMapping("manage/electronicCommerceCategory")
 public class SysElectronicCommerceCategoryController {
     @Resource
     SysElectronicCommerceCategoryService sysElectronicCommerceService;
