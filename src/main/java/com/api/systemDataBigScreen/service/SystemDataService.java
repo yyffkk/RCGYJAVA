@@ -1,5 +1,6 @@
 package com.api.systemDataBigScreen.service;
 
+import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
@@ -71,5 +72,7 @@ public interface SystemDataService {
     List<SDVoteInfoVo> findVoteInfo();
 
     Map<String, Object> findShopAppointmentNum();
+
+    Map<String, Object> insert(SysNewsManagement sysNewsManagement);
 
 }

@@ -3,6 +3,7 @@ package com.api.systemDataBigScreen.controller;
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
 import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
+import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 系统数据
+ * 系统数据（第三方对外接口）
  */
 @RestController
 @RequestMapping("/systemData")
@@ -417,4 +418,14 @@ public class SystemDataController {
         return systemDataService.findShopAppointmentNum();
     }
 
+
+    /**
+     * 第三方 添加资讯信息
+     * @param sysNewsManagement 资讯信息
+     * @return map
+     */
+    @PostMapping("/insert")
+    public Map<String,Object> insert(@RequestBody SysNewsManagement sysNewsManagement){
+        return systemDataService.insert(sysNewsManagement);
+    }
 }

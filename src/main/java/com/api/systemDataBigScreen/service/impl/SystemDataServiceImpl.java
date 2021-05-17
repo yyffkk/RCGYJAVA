@@ -1,17 +1,26 @@
 package com.api.systemDataBigScreen.service.impl;
 
+import com.api.manage.dao.operationManagement.SysNewsCategoryManagementDao;
+import com.api.manage.dao.operationManagement.SysNewsManagementDao;
+import com.api.model.businessManagement.SysUser;
+import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
 import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
+import com.api.util.IdWorker;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.util.webSocket.WebSocketService;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -25,6 +34,10 @@ import java.util.Map;
 public class SystemDataServiceImpl implements SystemDataService {
     @Resource
     SystemDataDao systemDataDao;
+    @Resource
+    SysNewsManagementDao sysNewsManagementDao;
+    @Resource
+    SysNewsCategoryManagementDao sysNewsCategoryManagementDao;
     private static Map<String,Object> map = null;
 
     @Override
@@ -481,6 +494,46 @@ public class SystemDataServiceImpl implements SystemDataService {
         map = new HashMap<>();
         List<SDShopAppointmentNumVo> sdShopAppointmentNumVoList = systemDataDao.findShopAppointmentNum();
         map.put("data",sdShopAppointmentNumVoList);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insert(SysNewsManagement sysNewsManagement) {
+        map = new HashMap<>();
+        try {
+            sysNewsManagement.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
+            sysNewsManagement.setCreateId(-1);
+            sysNewsManagement.setCreateDate(new Date());
+
+            int insert = sysNewsManagementDao.insert(sysNewsManagement);
+            if (insert <=0){
+                throw new RuntimeException("添加失败");
+            }
+            //添加照片
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(sysNewsManagement.getImgUrls(),"sysNews",sysNewsManagement.getId(),"newsImg","600",20,30);
+
+            //对资讯分类的资讯数量进行累加
+            int update = sysNewsCategoryManagementDao.incNum(sysNewsManagement.getNewsCategoryId());
+            if (update <= 0){
+                throw new RuntimeException("累加失败");
+            }
+
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","添加成功");
+        map.put("status",true);
         return map;
     }
 
