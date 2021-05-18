@@ -2,6 +2,7 @@ package com.api.systemDataBigScreen.dao;
 
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
+import com.api.model.systemDataBigScreen.FirePushAlert;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 
@@ -371,5 +372,12 @@ public interface SystemDataDao {
      * @return 各楼栋入住数信息
      */
     List<SDOccupancyRateVo> findOccupancyRate();
+
+    /**
+     * 添加记录进数据库
+     * @param firePushAlert 火灾推送通知内容
+     * @return 影响行数
+     */
+    int insertPushAlert(FirePushAlert firePushAlert);
 
 }

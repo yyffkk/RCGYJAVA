@@ -340,5 +340,23 @@
         group by cb.id
     </select>
 
+    <insert id="insertPushAlert" parameterType="com.api.model.systemDataBigScreen.FirePushAlert">
+        insert into sys_fire_alarm(
+            device_no,
+            alarm_no,
+            alarm_type,
+            device_name,
+            alarm_time,
+            create_date
+        )values (
+            #{deviceNo},
+            #{alarmNo},
+            #{alarmType},
+            #{deviceName},
+            #{time},
+            now()
+        )
+    </insert>
+
 
 </mapper>

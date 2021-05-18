@@ -418,13 +418,19 @@ public class SystemDataServiceImpl implements SystemDataService {
     public Map<String, Object> pushAlert(FirePushAlert firePushAlert) {
         map = new HashMap<>();
         try {
+            //添加记录进数据库
+            int insert = systemDataDao.insertPushAlert(firePushAlert);
+            if (insert <=0){
+                throw new RuntimeException("添加记录失败");
+            }
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String format = sdf.format(firePushAlert.getTime());
             String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
 //            System.out.printf(content);
             // key:type value:1 火警
-            JiguangUtil.sendPushAll(content,"1");
-            JiguangUtil.sendButlerPushAll(content,"1");
+//            JiguangUtil.sendPushAll(content,"1");
+//            JiguangUtil.sendButlerPushAll(content,"1");
             WebSocketService ws = new WebSocketService();
             ws.broadcast(content);
 
