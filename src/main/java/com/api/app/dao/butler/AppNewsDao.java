@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AppNewsDao {
     /**
-     * 查询所有的资讯分类(【全部】是默认显示的值)
+     * 查询所有的资讯分类(【全部】是app页面默认显示的值)
      * @return 资讯信息
      */
     List<IdAndName> findAllCategory();
