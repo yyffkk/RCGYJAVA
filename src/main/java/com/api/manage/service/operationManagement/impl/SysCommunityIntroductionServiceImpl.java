@@ -161,7 +161,7 @@ public class SysCommunityIntroductionServiceImpl implements SysCommunityIntroduc
             int update = sysCommunityIntroductionDao.enable(id);
             //禁用其他社区介绍模版
             int update2 = sysCommunityIntroductionDao.disableOther(id);
-            if (update <= 0 || update2 <= 0){
+            if (update <= 0){
                 throw new RuntimeException("启用失败");
             }
         } catch (RuntimeException e) {
