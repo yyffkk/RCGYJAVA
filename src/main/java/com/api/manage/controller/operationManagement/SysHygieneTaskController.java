@@ -1,6 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysHygieneTaskService;
+import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.operationManagement.SysHygieneTask;
 import com.api.model.operationManagement.SearchHygieneTask;
 import com.api.vo.basicArchives.VoIds;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/hygieneTask")
-public class SysHygieneTaskController {
+public class SysHygieneTaskController extends ShiroExceptions {
     @Resource
     SysHygieneTaskService sysHygieneTaskService;
 
