@@ -7,4 +7,18 @@
     <select id="findAllCategory" resultType="com.api.vo.app.IdAndName">
         select id,name from sys_electronic_commerce_category
     </select>
+    <select id="electronicCommerceList" parameterType="com.api.model.app.SearchAppElectronicCommerce" resultType="com.api.model.app.AppElectronicCommerceVo">
+        select id,title,create_date from sys_electronic_commerce
+        <where>
+            <if test="electronicCommerceCategoryId != null">
+                electronic_commerce_category_id = #{electronicCommerceCategoryId}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+    <select id="findElectronicCommerceById" parameterType="java.lang.Integer" resultType="com.api.model.app.AppElectronicCommerceVoFBI">
+        select sec.id,sec.code,sec.title,sec.content,secc.name as electronic_commerce_category_name,su.actual_name as create_name,sec.create_date
+        from sys_electronic_commerce as sec,sys_electronic_commerce_category as secc,sys_user as su
+        where sec.electronic_commerce_category_id = secc.id and sec.create_id = su.id and sec.id = #{electronicCommerceId}
+    </select>
 </mapper>

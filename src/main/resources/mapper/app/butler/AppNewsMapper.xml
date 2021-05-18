@@ -15,6 +15,7 @@
                 news_category_id = #{newsCategoryId}
             </if>
         </where>
+        order by create_date desc
     </select>
     <select id="findNewsByNewsId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppNewsVoFBI">
         select sn.id,sn.code,sn.title,sn.content,snc.name as news_category_name,su.actual_name create_name,sn.create_date
