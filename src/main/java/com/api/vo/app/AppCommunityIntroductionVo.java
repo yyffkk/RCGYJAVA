@@ -1,6 +1,9 @@
 package com.api.vo.app;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * app 社区介绍Vo detail 回显
@@ -22,6 +25,10 @@ public class AppCommunityIntroductionVo {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 照片资源信息集合
+     */
+    private List<VoResourcesImg> imgList;
 
     @Override
     public String toString() {
@@ -30,6 +37,7 @@ public class AppCommunityIntroductionVo {
                 ", name='" + name + '\'' +
                 ", content='" + content + '\'' +
                 ", createDate=" + createDate +
+                ", imgList=" + imgList +
                 '}';
     }
 
@@ -65,13 +73,22 @@ public class AppCommunityIntroductionVo {
         this.createDate = createDate;
     }
 
+    public List<VoResourcesImg> getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(List<VoResourcesImg> imgList) {
+        this.imgList = imgList;
+    }
+
     public AppCommunityIntroductionVo() {
     }
 
-    public AppCommunityIntroductionVo(Integer id, String name, String content, Date createDate) {
+    public AppCommunityIntroductionVo(Integer id, String name, String content, Date createDate, List<VoResourcesImg> imgList) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.createDate = createDate;
+        this.imgList = imgList;
     }
 }

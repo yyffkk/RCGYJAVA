@@ -9,7 +9,7 @@
         from sys_hygiene_task as sht,sys_hygiene_area as sha,sys_user as su
         <where>
             sht.hygiene_area_id = sha.id
-            and sht.create_id = su.id
+            and sht.director = su.id
             <if test="hygieneAreaName != null and hygieneAreaName != ''">
                 and sha.name like concat('%',#{hygieneAreaName},'%')
             </if>

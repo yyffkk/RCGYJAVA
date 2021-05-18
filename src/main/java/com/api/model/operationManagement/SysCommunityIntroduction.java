@@ -1,5 +1,6 @@
 package com.api.model.operationManagement;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -38,6 +39,10 @@ public class SysCommunityIntroduction {
      * 修改时间
      */
     private Date modifyDate;
+    /**
+     * 照片路径数组
+     */
+    private String[] imgUrls;
 
     @Override
     public String toString() {
@@ -50,6 +55,7 @@ public class SysCommunityIntroduction {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", imgUrls=" + Arrays.toString(imgUrls) +
                 '}';
     }
 
@@ -117,10 +123,18 @@ public class SysCommunityIntroduction {
         this.modifyDate = modifyDate;
     }
 
+    public String[] getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String[] imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public SysCommunityIntroduction() {
     }
 
-    public SysCommunityIntroduction(Integer id, String name, String content, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public SysCommunityIntroduction(Integer id, String name, String content, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] imgUrls) {
         this.id = id;
         this.name = name;
         this.content = content;
@@ -129,5 +143,6 @@ public class SysCommunityIntroduction {
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+        this.imgUrls = imgUrls;
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.butler.ButlerRegulationManagementDao">
+
+    <select id="list" resultType="com.api.vo.butlerApp.ButlerRegulationManagementVo">
+        select * from sys_regulation_management where status = 1
+    </select>
+</mapper>

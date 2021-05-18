@@ -1,5 +1,9 @@
 package com.api.vo.operationManagement;
 
+import com.api.vo.resources.VoResourcesImg;
+
+import java.util.List;
+
 /**
  * 社区介绍Vo findById 回显
  */
@@ -24,6 +28,10 @@ public class VoFBICommunityIntroduction {
      * 创建人名称
      */
     private String createName;
+    /**
+     * 照片资源信息集合
+     */
+    private List<VoResourcesImg> imgList;
 
     @Override
     public String toString() {
@@ -33,6 +41,7 @@ public class VoFBICommunityIntroduction {
                 ", content='" + content + '\'' +
                 ", status=" + status +
                 ", createName='" + createName + '\'' +
+                ", imgList=" + imgList +
                 '}';
     }
 
@@ -76,14 +85,23 @@ public class VoFBICommunityIntroduction {
         this.createName = createName;
     }
 
+    public List<VoResourcesImg> getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(List<VoResourcesImg> imgList) {
+        this.imgList = imgList;
+    }
+
     public VoFBICommunityIntroduction() {
     }
 
-    public VoFBICommunityIntroduction(Integer id, String name, String content, Integer status, String createName) {
+    public VoFBICommunityIntroduction(Integer id, String name, String content, Integer status, String createName, List<VoResourcesImg> imgList) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.status = status;
         this.createName = createName;
+        this.imgList = imgList;
     }
 }

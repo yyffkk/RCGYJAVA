@@ -51,6 +51,8 @@ prop:
   upload-news: /img/news/
   #运营管理-电子商务管理：新增电子商务信息 照片上传路径
   upload-electronic-commerce: /img/electronicCommerce/
+  #运营管理-社区介绍管理：新增社区介绍信息 照片上传路径
+  upload-community-introduction: /img/communityIntroduction/
 
 
   #收费管理-固定金额分摊：固定金额分摊缴纳凭证，照片上传路径

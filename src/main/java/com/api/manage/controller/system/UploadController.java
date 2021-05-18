@@ -241,4 +241,13 @@ public class UploadController {
         return uploadService.uploadElectronicCommerce(file);
     }
 
+    /**
+     * 上传社区介绍照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadCommunityIntroduction")
+    public Map<String,Object> uploadCommunityIntroduction(MultipartFile file){
+        return uploadService.uploadCommunityIntroduction(file);
+    }
 }
