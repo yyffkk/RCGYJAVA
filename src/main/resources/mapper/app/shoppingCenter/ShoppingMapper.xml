@@ -16,7 +16,7 @@
     <select id="findDetailByGoodsId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGoodsDetailVo">
         select sg.id,sg.recommend,sg.title,sg.selling_price,sg.marking_price,sc.name as category_name,
         sg.subscribe_num,sg.detail,sg.arrival_time,ss.id as supplier_id,ss.name as supplier_name,ss.tel as supplier_tel,
-        ss.address as supplier_adresss
+        ss.address as supplier_address
         from shop_goods as sg,shop_supplier as ss,shop_category as sc
         where sg.category_id = sc.id and sg.supplier_id = ss.id and sg.id = #{goodsId} and  sg.status = 1 and sg.is_delete = 1
     </select>
