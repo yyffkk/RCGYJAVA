@@ -552,6 +552,10 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
                 //根据角色id查询权限id集合
                 List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
                 if (jurisdictionIds != null && jurisdictionIds.size()>0){
+                    if (jurisdictionIds.contains(52)&&jurisdictionIds.contains(53)){
+                        return 3;
+                    }
+
                     //52.派单
                     if (jurisdictionIds.contains(52)){
                         return 1;
