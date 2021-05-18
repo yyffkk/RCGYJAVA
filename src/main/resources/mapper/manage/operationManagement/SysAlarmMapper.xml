@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysAlarmDao">
+
+    <select id="fireAlarmList" resultType="com.api.vo.operationManagement.VoFireAlarm">
+        select * from sys_fire_alarm
+    </select>
+    <select id="oneButtonAlarmList" resultType="com.api.vo.operationManagement.VoOneButtonAlarm">
+        select soba.id,ur.name,ur.tel,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,soba.create_date
+        from user_resident as ur,sys_one_button_alarm as soba
+        LEFT JOIN cpm_building_unit_estate as cbue on soba.estate_id = cbue.id
+        LEFT JOIN cpm_building_unit as cbu on cbue.building_unit_id = cbu.id
+        LEFT JOIN cpm_building as cb on cbu.building_id = cb.id
+        where soba.create_id = ur.id
+    </select>
+</mapper>
