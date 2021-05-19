@@ -11,6 +11,6 @@
         select * from sys_package_collection where id = #{packageCollectionId}
     </select>
     <select id="findResidentIdByTel" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select id from sys_user where tel = #{addresseeTel}
+        select id from user_resident where tel = #{addresseeTel}
     </select>
 </mapper>
