@@ -27,6 +27,10 @@ public class VoGreenTask {
      */
     private Integer status;
     /**
+     * 完成时间
+     */
+    private Date completeDate;
+    /**
      * 截止时间
      */
     private Date endDate;
@@ -43,6 +47,7 @@ public class VoGreenTask {
                 ", content='" + content + '\'' +
                 ", directorName='" + directorName + '\'' +
                 ", status=" + status +
+                ", completeDate=" + completeDate +
                 ", endDate=" + endDate +
                 ", createDate=" + createDate +
                 '}';
@@ -88,6 +93,14 @@ public class VoGreenTask {
         this.status = status;
     }
 
+    public Date getCompleteDate() {
+        return completeDate;
+    }
+
+    public void setCompleteDate(Date completeDate) {
+        this.completeDate = completeDate;
+    }
+
     public Date getEndDate() {
         return endDate;
     }
@@ -107,12 +120,13 @@ public class VoGreenTask {
     public VoGreenTask() {
     }
 
-    public VoGreenTask(Integer id, String greenAreaName, String content, String directorName, Integer status, Date endDate, Date createDate) {
+    public VoGreenTask(Integer id, String greenAreaName, String content, String directorName, Integer status, Date completeDate, Date endDate, Date createDate) {
         this.id = id;
         this.greenAreaName = greenAreaName;
         this.content = content;
         this.directorName = directorName;
         this.status = status;
+        this.completeDate = completeDate;
         this.endDate = endDate;
         this.createDate = createDate;
     }

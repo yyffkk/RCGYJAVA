@@ -6,6 +6,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SysHygieneTask;
 import com.api.model.operationManagement.SearchHygieneTask;
 import com.api.vo.operationManagement.VoFBIHygieneTask;
+import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.operationManagement.VoHygieneTask;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -27,7 +28,15 @@ public class SysHygieneTaskServiceImpl implements SysHygieneTaskService {
 
     @Override
     public List<VoHygieneTask> list(SearchHygieneTask searchHygieneTask) {
-        return sysHygieneTaskDao.list(searchHygieneTask);
+        List<VoHygieneTask> list = sysHygieneTaskDao.list(searchHygieneTask);
+        if (list != null && list.size()>0){
+            for (VoHygieneTask voHygieneTask : list) {
+                if (voHygieneTask.getStatus() ==1 && new Date().getTime() > voHygieneTask.getEndDate().getTime()){
+                    voHygieneTask.setStatus(3); //3.未完成
+                }
+            }
+        }
+        return list;
     }
 
     @Override

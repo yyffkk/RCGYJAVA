@@ -5,7 +5,7 @@
 <mapper namespace="com.api.manage.dao.operationManagement.SysGreenTaskDao">
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchGreenTask" resultType="com.api.vo.operationManagement.VoGreenTask">
-        select sgt.id,sga.name as green_area_name,sgt.content,su.actual_name as director_name,sgt.status,sgt.end_date,sgt.create_date
+        select sgt.id,sga.name as green_area_name,sgt.content,su.actual_name as director_name,sgt.status,sgt.complete_date,sgt.end_date,sgt.create_date
         from sys_green_task as sgt,sys_green_area as sga,sys_user as su
         <where>
             sgt.green_area_id = sga.id

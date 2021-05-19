@@ -26,7 +26,15 @@ public class SysGreenTaskServiceImpl implements SysGreenTaskService {
 
     @Override
     public List<VoGreenTask> list(SearchGreenTask searchGreenTask) {
-        return sysGreenTaskDao.list(searchGreenTask);
+        List<VoGreenTask> list = sysGreenTaskDao.list(searchGreenTask);
+        if (list != null && list.size()>0){
+            for (VoGreenTask voGreenTask : list) {
+                if (voGreenTask.getStatus() ==1 && new Date().getTime() > voGreenTask.getEndDate().getTime()){
+                    voGreenTask.setStatus(3); //3.未完成
+                }
+            }
+        }
+        return list;
     }
 
     @Override
