@@ -7,13 +7,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 
-@Configuration
+//@Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     @Resource
     private CorsInterceptor corsInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(corsInterceptor).addPathPatterns("/**");
+//        registry.addInterceptor(corsInterceptor).addPathPatterns("/**");
     }
 
     public WebMvcConfig() {

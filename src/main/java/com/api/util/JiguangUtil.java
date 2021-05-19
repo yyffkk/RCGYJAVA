@@ -201,7 +201,7 @@ public class JiguangUtil {
      */
     public static PushResult sendButlerPushAll(String alert,String type) {
         ClientConfig clientConfig = ClientConfig.getInstance();
-        JPushClient jpushClient = new JPushClient(masterSecret, butlerAppKey, null, clientConfig);
+        JPushClient jpushClient = new JPushClient(butlerMasterSecret, butlerAppKey, null, clientConfig);
 
         PushPayload payload = buildPushObject_android_ios_alias_alert_all(alert,type);
         try {
