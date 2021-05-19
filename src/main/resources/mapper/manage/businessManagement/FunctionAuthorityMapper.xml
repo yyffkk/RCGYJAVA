@@ -27,7 +27,9 @@
         select sj.*,
         (case srj.id is null when true then 0 else 1 end) as is_check
         from sys_jurisdiction as sj LEFT JOIN sys_role_jurisdiction as srj
-        on sj.id = srj.jurisdiction_id and srj.role_id = #{roleId} where sj.parent_id = #{parentId}
+        on sj.id = srj.jurisdiction_id and srj.role_id = #{roleId}
+        where sj.parent_id = #{parentId}
+        order By sj.sort
     </select>
     <select id="countByRoleIdJurisdictionId" parameterType="com.api.model.businessManagement.RoleIdAndJurisdictionId" resultType="java.lang.Integer">
         select count(*) from sys_role_jurisdiction where role_id = #{roleId} and jurisdiction_id = #{jurisdictionId}
