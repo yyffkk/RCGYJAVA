@@ -21,14 +21,14 @@ public interface SysRoleService {
      * @param organizationId 组织ID
      * @return 角色信息
      */
-    SysRole findByOrganizationId(Integer organizationId);
+    List<SysRole> findByOrganizationId(Integer organizationId);
 
     /**
      * 根据身份ID查找角色信息
      * @param positionId 身份ID
      * @return 角色信息
      */
-    SysRole findByIdentityId(Integer positionId);
+    List<SysRole> findByIdentityId(Integer positionId);
 
     List<VoRole> roleList();
 }

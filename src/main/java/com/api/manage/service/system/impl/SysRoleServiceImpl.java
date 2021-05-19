@@ -33,7 +33,7 @@ public class SysRoleServiceImpl implements SysRoleService {
      * @return 角色信息
      */
     @Override
-    public SysRole findByOrganizationId(Integer organizationId) {
+    public List<SysRole> findByOrganizationId(Integer organizationId) {
         return sysRoleDao.findByOrganizationId(organizationId);
     }
 
@@ -43,7 +43,7 @@ public class SysRoleServiceImpl implements SysRoleService {
      * @return 角色信息
      */
     @Override
-    public SysRole findByIdentityId(Integer positionId) {
+    public List<SysRole> findByIdentityId(Integer positionId) {
         return sysRoleDao.findByIdentityId(positionId);
     }
 

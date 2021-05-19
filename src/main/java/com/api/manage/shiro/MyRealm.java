@@ -66,31 +66,35 @@ public class MyRealm extends AuthorizingRealm {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         //根据组织ID查找角色信息
-        SysRole role1 = sysRoleService.findByOrganizationId(sysUser.getOrganizationId());
+        List<SysRole> role1 = sysRoleService.findByOrganizationId(sysUser.getOrganizationId());
 
         //根据身份ID查找角色信息
-        SysRole role2 = sysRoleService.findByIdentityId(sysUser.getPositionId());
+        List<SysRole> role2 = sysRoleService.findByIdentityId(sysUser.getPositionId());
 
 
         //-2-授权角色
         Set<SysJurisdiction> sysJurisdictionLists = new HashSet<>();
         if (role1 != null){
-            authorizationInfo.addRole(role1.getName());
-            //授权权限
-            //-1-查后台数据
-            //根据角色ID查找权限拥有的信息
-            List<SysJurisdiction> sysJurisdictionList1 = sysJurisdictionService.findByRoleId(role1.getId());
-            //添加到Set集合中，去掉重复权限数据
-            sysJurisdictionLists.addAll(sysJurisdictionList1);
+            for (SysRole sysRole : role1) {
+                authorizationInfo.addRole(sysRole.getName());
+                //授权权限
+                //-1-查后台数据
+                //根据角色ID查找权限拥有的信息
+                List<SysJurisdiction> sysJurisdictionList1 = sysJurisdictionService.findByRoleId(sysRole.getId());
+                //添加到Set集合中，去掉重复权限数据
+                sysJurisdictionLists.addAll(sysJurisdictionList1);
+            }
         }
         if (role2 != null){
-            authorizationInfo.addRole(role2.getName());
-            //授权权限
-            //-1-查后台数据
-            //根据角色ID查找权限拥有的信息
-            List<SysJurisdiction> sysJurisdictionList2 = sysJurisdictionService.findByRoleId(role2.getId());
-            //添加到Set集合中，去掉重复权限数据
-            sysJurisdictionLists.addAll(sysJurisdictionList2);
+            for (SysRole sysRole : role2) {
+                authorizationInfo.addRole(sysRole.getName());
+                //授权权限
+                //-1-查后台数据
+                //根据角色ID查找权限拥有的信息
+                List<SysJurisdiction> sysJurisdictionList2 = sysJurisdictionService.findByRoleId(sysRole.getId());
+                //添加到Set集合中，去掉重复权限数据
+                sysJurisdictionLists.addAll(sysJurisdictionList2);
+            }
         }
 
 
