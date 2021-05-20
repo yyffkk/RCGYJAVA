@@ -4,4 +4,59 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.operationManagement.SysKeyBorrowDao">
 
+    <select id="list" parameterType="com.api.model.operationManagement.SearchKeyBorrow" resultType="com.api.vo.operationManagement.VoKeyBorrow">
+        select skb.id,sk.id as key_id,skb.code,su.actual_name as reviewer_name,si.name as identity,
+        su.tel,sk.facility_name,skb.status,skb.audit_date,skb.create_date,sk.num as loanable_num
+        from sys_key_borrow as skb,sys_key as sk,sys_user as su
+        LEFT JOIN sys_identity as si on su.position_id = si.id
+        <where>
+            skb.borrower = su.id
+            and skb.key_id = sk.id
+            <if test="code != null and code != ''">
+                and skb.code like concat('%',#{code},'%')
+            </if>
+            <if test="reviewerName != null and reviewerName != ''">
+                and su.actual_name like concat('%',#{reviewerName},'%')
+            </if>
+            <if test="identity != null and identity != ''">
+                and si.name like concat('%',#{identity},'%')
+            </if>
+            <if test="facilityName != null and facilityName != ''">
+                and sk.facility_name like concat('%',#{facilityName},'%')
+            </if>
+            <if test="auditDateStart != null">
+                and skb.audit_date <![CDATA[ >= ]]> #{auditDateStart}
+            </if>
+            <if test="auditDateEnd != null">
+                and skb.audit_date <![CDATA[ <= ]]> #{auditDateEnd}
+            </if>
+            <if test="createDateStart != null">
+                and skb.create_date <![CDATA[ >= ]]> #{createDateStart}
+            </if>
+            <if test="createDateEnd != null">
+                and skb.create_date <![CDATA[ <= ]]> #{createDateEnd}
+            </if>
+        </where>
+        order by skb.create_date desc
+    </select>
+    <select id="countLoanableKeyNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_key_borrow where key_id = #{keyId} and status = 2
+    </select>
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from sys_key_borrow where id = #{id}
+    </select>
+
+    <update id="examine" parameterType="com.api.model.operationManagement.KeyBorrow">
+        update sys_key_borrow
+        <set>
+            reviewer = #{reviewer},
+            audit_date = #{auditDate},
+            status = #{status},
+            <if test="reason != null and reason != ''">
+                reason = #{reason},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

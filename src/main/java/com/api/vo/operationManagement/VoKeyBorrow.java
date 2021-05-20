@@ -7,9 +7,13 @@ import java.util.Date;
  */
 public class VoKeyBorrow {
     /**
-     * 主键id
+     * 审核主键id
      */
     private Integer id;
+    /**
+     * 钥匙主键id
+     */
+    private Integer keyId;
     /**
      * 借取编号/申请编号
      */
@@ -51,6 +55,7 @@ public class VoKeyBorrow {
     public String toString() {
         return "VoKeyBorrow{" +
                 "id=" + id +
+                ", keyId=" + keyId +
                 ", code='" + code + '\'' +
                 ", reviewerName='" + reviewerName + '\'' +
                 ", identity='" + identity + '\'' +
@@ -69,6 +74,14 @@ public class VoKeyBorrow {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getKeyId() {
+        return keyId;
+    }
+
+    public void setKeyId(Integer keyId) {
+        this.keyId = keyId;
     }
 
     public String getCode() {
@@ -146,8 +159,9 @@ public class VoKeyBorrow {
     public VoKeyBorrow() {
     }
 
-    public VoKeyBorrow(Integer id, String code, String reviewerName, String identity, String tel, String facilityName, Integer loanableNum, Integer status, Date auditDate, Date createDate) {
+    public VoKeyBorrow(Integer id, Integer keyId, String code, String reviewerName, String identity, String tel, String facilityName, Integer loanableNum, Integer status, Date auditDate, Date createDate) {
         this.id = id;
+        this.keyId = keyId;
         this.code = code;
         this.reviewerName = reviewerName;
         this.identity = identity;

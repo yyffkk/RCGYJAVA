@@ -21,15 +21,11 @@ public class SearchKeyBorrow {
     /**
      * 借取人/申请人
      */
-    private String borrowerName;
+    private String reviewerName;
     /**
      * 身份
      */
     private String identity;
-    /**
-     * 联系方式
-     */
-    private String tel;
     /**
      * 对应设备
      */
@@ -57,9 +53,8 @@ public class SearchKeyBorrow {
                 "pageNum=" + pageNum +
                 ", size=" + size +
                 ", code='" + code + '\'' +
-                ", borrowerName='" + borrowerName + '\'' +
+                ", reviewerName='" + reviewerName + '\'' +
                 ", identity='" + identity + '\'' +
-                ", tel='" + tel + '\'' +
                 ", facilityName='" + facilityName + '\'' +
                 ", auditDateStart=" + auditDateStart +
                 ", auditDateEnd=" + auditDateEnd +
@@ -92,12 +87,12 @@ public class SearchKeyBorrow {
         this.code = code;
     }
 
-    public String getBorrowerName() {
-        return borrowerName;
+    public String getReviewerName() {
+        return reviewerName;
     }
 
-    public void setBorrowerName(String borrowerName) {
-        this.borrowerName = borrowerName;
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
     }
 
     public String getIdentity() {
@@ -106,14 +101,6 @@ public class SearchKeyBorrow {
 
     public void setIdentity(String identity) {
         this.identity = identity;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
     }
 
     public String getFacilityName() {
@@ -159,13 +146,12 @@ public class SearchKeyBorrow {
     public SearchKeyBorrow() {
     }
 
-    public SearchKeyBorrow(int pageNum, int size, String code, String borrowerName, String identity, String tel, String facilityName, Date auditDateStart, Date auditDateEnd, Date createDateStart, Date createDateEnd) {
+    public SearchKeyBorrow(int pageNum, int size, String code, String reviewerName, String identity, String facilityName, Date auditDateStart, Date auditDateEnd, Date createDateStart, Date createDateEnd) {
         this.pageNum = pageNum;
         this.size = size;
         this.code = code;
-        this.borrowerName = borrowerName;
+        this.reviewerName = reviewerName;
         this.identity = identity;
-        this.tel = tel;
         this.facilityName = facilityName;
         this.auditDateStart = auditDateStart;
         this.auditDateEnd = auditDateEnd;
