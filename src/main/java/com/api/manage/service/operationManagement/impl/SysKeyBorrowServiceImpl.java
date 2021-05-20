@@ -43,18 +43,10 @@ public class SysKeyBorrowServiceImpl implements SysKeyBorrowService {
     @Override
     public Map<String, Object> examine(KeyBorrow keyBorrow) {
         map = new HashMap<>();
-
-        KeyBorrow keyBorrow1 = sysKeyBorrowDao.findKeyBorrowById(keyBorrow.getId());
-
-        ButlerKeyIdAndBorrowerId keyIdAndBorrowerId = new ButlerKeyIdAndBorrowerId();
-        keyIdAndBorrowerId.setKeyId(keyBorrow1.getKeyId());
-        keyIdAndBorrowerId.setBorrowerId(keyBorrow1.getBorrower());
-        Date date = butlerKeyDao.findCreateDateByKeyIdAndBorrowerId(keyIdAndBorrowerId);
-        if (date != null){
-            map.put("message","该用户已获取该钥匙，不可申请通过");
+        if (keyBorrow.getStatus() != 2 && keyBorrow.getStatus() != 3){
+            map.put("message","状态传输有误");
             map.put("status",false);
             return map;
-
         }
 
         //根据审核主键id 查询审核状态
@@ -64,6 +56,21 @@ public class SysKeyBorrowServiceImpl implements SysKeyBorrowService {
             map.put("status",false);
             return map;
         }
+
+        if (keyBorrow.getStatus() == 2){//当审核通过，系统先判定该用户是否借取该钥匙
+            KeyBorrow keyBorrow1 = sysKeyBorrowDao.findKeyBorrowById(keyBorrow.getId());
+
+            ButlerKeyIdAndBorrowerId keyIdAndBorrowerId = new ButlerKeyIdAndBorrowerId();
+            keyIdAndBorrowerId.setKeyId(keyBorrow1.getKeyId());
+            keyIdAndBorrowerId.setBorrowerId(keyBorrow1.getBorrower());
+            Date date = butlerKeyDao.findCreateDateByKeyIdAndBorrowerId(keyIdAndBorrowerId);
+            if (date != null){
+                map.put("message","该用户已获取该钥匙，不可审核通过");
+                map.put("status",false);
+                return map;
+            }
+        }
+
 
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();

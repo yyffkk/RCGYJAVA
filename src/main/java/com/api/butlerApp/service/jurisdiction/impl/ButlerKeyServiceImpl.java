@@ -6,8 +6,10 @@ import com.api.manage.dao.operationManagement.SysKeyBorrowDao;
 import com.api.model.butlerApp.ButlerKeyBorrow;
 import com.api.model.butlerApp.ButlerKeyIdAndBorrowerId;
 import com.api.model.butlerApp.ButlerKeySearch;
+import com.api.model.butlerApp.ButlerRecordSearch;
 import com.api.util.IdWorker;
 import com.api.vo.butlerApp.ButlerKeyVo;
+import com.api.vo.butlerApp.ButlerRecordVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -83,8 +85,8 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
         butlerKeyBorrow.setStatus(1);//填入状态 ,1.待审核
 
         ButlerKeyIdAndBorrowerId keyIdAndBorrowerId = new ButlerKeyIdAndBorrowerId();
-        keyIdAndBorrowerId.setKeyId(butlerKeyBorrow.getKeyId());
-        keyIdAndBorrowerId.setBorrowerId(id);
+        keyIdAndBorrowerId.setKeyId(butlerKeyBorrow.getKeyId());//填入钥匙主键id
+        keyIdAndBorrowerId.setBorrowerId(id);//填入借取人主键id
         Date date = butlerKeyDao.findCreateDateByKeyIdAndBorrowerId(keyIdAndBorrowerId);
         if (date != null){
             map.put("message","已获取该钥匙，不可申请");
@@ -102,5 +104,41 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
             map.put("status",false);
         }
         return map;
+    }
+
+    @Override
+    public Map<String, Object> returnKey(Integer keyId, Integer id) {
+        map = new HashMap<>();
+        ButlerKeyIdAndBorrowerId keyIdAndBorrowerId = new ButlerKeyIdAndBorrowerId();
+        keyIdAndBorrowerId.setKeyId(keyId);//填入钥匙主键id
+        keyIdAndBorrowerId.setBorrowerId(id);//填入借取人主键id
+
+        Date date = butlerKeyDao.findCreateDateByKeyIdAndBorrowerId(keyIdAndBorrowerId);
+        if (date == null){
+            map.put("message","未借取该钥匙，不可归还");
+            map.put("status",false);
+            return map;
+        }
+
+        ButlerKeyBorrow butlerKeyBorrow = new ButlerKeyBorrow();
+        butlerKeyBorrow.setKeyId(keyId); //填入钥匙主键id
+        butlerKeyBorrow.setBorrower(id); //填入借取人主键id
+        butlerKeyBorrow.setReturnDate(new Date()); //填入归还时间
+        butlerKeyBorrow.setStatus(4);//4.已归还
+
+        int update = butlerKeyDao.returnKey(butlerKeyBorrow);
+        if (update >0){
+            map.put("message","归还成功");
+            map.put("status",true);
+        }else {
+            map.put("message","归还失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public List<ButlerRecordVo> record(ButlerRecordSearch butlerRecordSearch) {
+        return butlerKeyDao.record(butlerRecordSearch);
     }
 }

@@ -3,9 +3,11 @@ package com.api.butlerApp.controller.jurisdiction;
 import com.api.butlerApp.service.jurisdiction.ButlerKeyService;
 import com.api.model.butlerApp.ButlerKeyBorrow;
 import com.api.model.butlerApp.ButlerKeySearch;
+import com.api.model.butlerApp.ButlerRecordSearch;
 import com.api.util.IdWorker;
 import com.api.vo.butlerApp.ButlerInspectionVo;
 import com.api.vo.butlerApp.ButlerKeyVo;
+import com.api.vo.butlerApp.ButlerRecordVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -73,5 +75,33 @@ public class ButlerKeyController {
         return butlerKeyService.apply(butlerKeyBorrow,id);
     }
 
+    /**
+     * 归还钥匙
+     * @param keyId 钥匙主键id
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/returnKey")
+    public Map<String,Object> returnKey(Integer keyId,Integer id){
+        return butlerKeyService.returnKey(keyId,id);
+    }
+
+
+    /**
+     * 查询所有的申请记录（包含条件搜索）
+     * @param butlerRecordSearch 管家app 申请记录搜索条件
+     * @return map
+     */
+    @GetMapping("/record")
+    public Map<String,Object> record(ButlerRecordSearch butlerRecordSearch){
+        PageHelper.startPage(butlerRecordSearch.getPageNum(),butlerRecordSearch.getSize());
+        List<ButlerRecordVo> butlerRecordVoList = butlerKeyService.record(butlerRecordSearch);
+        PageInfo<ButlerRecordVo> pageInfo = new PageInfo<>(butlerRecordVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 
 }

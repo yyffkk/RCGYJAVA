@@ -37,4 +37,24 @@
         )
     </insert>
 
+    <update id="returnKey" parameterType="com.api.model.butlerApp.ButlerKeyBorrow">
+        update sys_key_borrow
+        set return_date = #{returnDate},
+        status = #{status}
+        where key_id = #{keyId} and borrower = #{borrower} and status = 2
+    </update>
+
+    <select id="record" parameterType="com.api.model.butlerApp.ButlerRecordSearch" resultType="com.api.vo.butlerApp.ButlerRecordVo">
+        select skb.id,skb.code,skb.status,sk.facility_name,sk.corresponding_position,sk.storage_location,skb.audit_date,skb.reason
+        from sys_key_borrow as skb,sys_key as sk
+        <where>
+            skb.key_id = sk.id
+            <if test="recordStatus != null">
+                and skb.status = #{recordStatus}
+            </if>
+            and skb.borrower = #{id}
+        </where>
+        order by skb.create_date desc
+    </select>
+
 </mapper>
