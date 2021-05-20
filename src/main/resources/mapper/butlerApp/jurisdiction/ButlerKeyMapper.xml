@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerKeyDao">
+
+    <select id="list" parameterType="com.api.model.butlerApp.ButlerKeySearch" resultType="com.api.vo.butlerApp.ButlerKeyVo">
+        select sk.id,sk.code,sk.facility_name,sk.num as total_num,sk.corresponding_position,
+        sk.storage_location
+        from sys_key as sk
+    </select>
+    <select id="findCreateDateByKeyIdAndBorrowerId" parameterType="com.api.model.butlerApp.ButlerKeyIdAndBorrowerId" resultType="java.util.Date">
+        select create_date from sys_key_borrow
+        where key_id = #{keyId} and borrower = #{borrowerId}
+        order by create_date desc limit 1
+    </select>
+    <select id="noReturnList" parameterType="com.api.model.butlerApp.ButlerKeySearch" resultType="com.api.vo.butlerApp.ButlerKeyVo">
+        select sk.id,sk.code,sk.facility_name,sk.num as total_num,sk.corresponding_position,
+        sk.storage_location,skb.status,skb.create_date
+        from sys_key as sk,sys_key_borrow as skb
+		where skb.key_id = sk.id and skb.status = 2 and skb.borrower =#{id}
+    </select>
+</mapper>

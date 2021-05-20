@@ -1,0 +1,72 @@
+package com.api.butlerApp.service.jurisdiction.impl;
+
+import com.api.butlerApp.dao.jurisdiction.ButlerKeyDao;
+import com.api.butlerApp.service.jurisdiction.ButlerKeyService;
+import com.api.manage.dao.operationManagement.SysKeyBorrowDao;
+import com.api.model.butlerApp.ButlerKeyIdAndBorrowerId;
+import com.api.model.butlerApp.ButlerKeySearch;
+import com.api.vo.butlerApp.ButlerKeyVo;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class ButlerKeyServiceImpl implements ButlerKeyService {
+    private static Map<String,Object> map = null;
+    @Resource
+    ButlerKeyDao butlerKeyDao;
+    @Resource
+    SysKeyBorrowDao sysKeyBorrowDao;
+
+    @Override
+    public List<ButlerKeyVo> list(ButlerKeySearch butlerKeySearch) {
+        List<ButlerKeyVo> list = butlerKeyDao.list(butlerKeySearch);
+        if (list != null && list.size()>0){
+            for (ButlerKeyVo butlerKeyVo : list) {
+                //查询当前已借出的钥匙数量(当状态为2时，视为已借出)
+                int loanableNum = sysKeyBorrowDao.countLoanableKeyNum(butlerKeyVo.getId());
+                //填入可申请钥匙数量
+                butlerKeyVo.setLoanableNum(butlerKeyVo.getTotalNum() - loanableNum);
+
+                //填入状态
+                if (butlerKeyVo.getTotalNum() > butlerKeyVo.getLoanableNum()){
+                    //当钥匙总数 大于 钥匙借取数量
+                    butlerKeyVo.setStatus(1);//1.可申请
+                }else {
+                    butlerKeyVo.setStatus(3);//3.钥匙已空
+                }
+
+                //判断该用户是否使用中
+                ButlerKeyIdAndBorrowerId keyIdAndBorrowerId = new ButlerKeyIdAndBorrowerId();
+                keyIdAndBorrowerId.setKeyId(butlerKeyVo.getId());//填入钥匙主键id
+                keyIdAndBorrowerId.setBorrowerId(butlerKeySearch.getId());//填入借取人主键id
+
+                Date createDate = butlerKeyDao.findCreateDateByKeyIdAndBorrowerId(keyIdAndBorrowerId);
+                if (createDate != null){
+                    butlerKeyVo.setStatus(2);//2.使用中
+                    butlerKeyVo.setCreateDate(createDate);
+                }
+
+
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<ButlerKeyVo> noReturnList(ButlerKeySearch butlerKeySearch) {
+        List<ButlerKeyVo> list = butlerKeyDao.noReturnList(butlerKeySearch);
+        if (list != null && list.size()>0){
+            for (ButlerKeyVo butlerKeyVo : list) {
+                //查询当前已借出的钥匙数量(当状态为2时，视为已借出)
+                int loanableNum = sysKeyBorrowDao.countLoanableKeyNum(butlerKeyVo.getId());
+                //填入可申请钥匙数量
+                butlerKeyVo.setLoanableNum(butlerKeyVo.getTotalNum() - loanableNum);
+            }
+        }
+        return list;
+    }
+}
