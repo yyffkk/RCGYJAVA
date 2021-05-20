@@ -34,4 +34,11 @@ public interface SysKeyBorrowDao {
      * @return 审核状态
      */
     int findStatusById(Integer id);
+
+    /**
+     * 根据钥匙审核主键id查询钥匙审核model管理
+     * @param id 钥匙审核主键id
+     * @return 钥匙审核model管理
+     */
+    KeyBorrow findKeyBorrowById(Integer id);
 }

@@ -1,5 +1,6 @@
 package com.api.butlerApp.dao.jurisdiction;
 
+import com.api.model.butlerApp.ButlerKeyBorrow;
 import com.api.model.butlerApp.ButlerKeyIdAndBorrowerId;
 import com.api.model.butlerApp.ButlerKeySearch;
 import com.api.vo.butlerApp.ButlerKeyVo;
@@ -16,7 +17,7 @@ public interface ButlerKeyDao {
     List<ButlerKeyVo> list(ButlerKeySearch butlerKeySearch);
 
     /**
-     * 判断该用户是否使用中
+     * 判断该用户是否使用中并查询开始时间
      * @param keyIdAndBorrowerId 管家app 钥匙主键id 和 借取人主键id
      * @return 借取时间/开始时间
      */
@@ -28,4 +29,11 @@ public interface ButlerKeyDao {
      * @return 未归还钥匙信息
      */
     List<ButlerKeyVo> noReturnList(ButlerKeySearch butlerKeySearch);
+
+    /**
+     * 申请钥匙
+     * @param butlerKeyBorrow 管家app 钥匙借取model信息
+     * @return 影响行数
+     */
+    int apply(ButlerKeyBorrow butlerKeyBorrow);
 }

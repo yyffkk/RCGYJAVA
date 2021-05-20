@@ -11,7 +11,7 @@
     </select>
     <select id="findCreateDateByKeyIdAndBorrowerId" parameterType="com.api.model.butlerApp.ButlerKeyIdAndBorrowerId" resultType="java.util.Date">
         select create_date from sys_key_borrow
-        where key_id = #{keyId} and borrower = #{borrowerId}
+        where key_id = #{keyId} and borrower = #{borrowerId} and status = 2
         order by create_date desc limit 1
     </select>
     <select id="noReturnList" parameterType="com.api.model.butlerApp.ButlerKeySearch" resultType="com.api.vo.butlerApp.ButlerKeyVo">
@@ -20,4 +20,21 @@
         from sys_key as sk,sys_key_borrow as skb
 		where skb.key_id = sk.id and skb.status = 2 and skb.borrower =#{id}
     </select>
+
+    <insert id="apply" parameterType="com.api.model.butlerApp.ButlerKeyBorrow">
+        insert into sys_key_borrow(
+            code,
+            key_id,
+            borrower,
+            status,
+            create_date
+        )values (
+            #{code},
+            #{keyId},
+            #{borrower},
+            #{status},
+            #{createDate}
+        )
+    </insert>
+
 </mapper>

@@ -59,4 +59,8 @@
         where id = #{id}
     </update>
 
+    <select id="findKeyBorrowById" parameterType="java.lang.Integer" resultType="com.api.model.operationManagement.KeyBorrow">
+        select * from sys_key_borrow where id = #{id}
+    </select>
+
 </mapper>

@@ -1,8 +1,10 @@
 package com.api.manage.service.operationManagement.impl;
 
+import com.api.butlerApp.dao.jurisdiction.ButlerKeyDao;
 import com.api.manage.dao.operationManagement.SysKeyBorrowDao;
 import com.api.manage.service.operationManagement.SysKeyBorrowService;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerApp.ButlerKeyIdAndBorrowerId;
 import com.api.model.operationManagement.KeyBorrow;
 import com.api.model.operationManagement.SearchKeyBorrow;
 import com.api.vo.operationManagement.VoKeyBorrow;
@@ -21,6 +23,8 @@ public class SysKeyBorrowServiceImpl implements SysKeyBorrowService {
     private static Map<String,Object> map = null;
     @Resource
     SysKeyBorrowDao sysKeyBorrowDao;
+    @Resource
+    ButlerKeyDao butlerKeyDao;
 
     @Override
     public List<VoKeyBorrow> list(SearchKeyBorrow searchKeyBorrow) {
@@ -39,6 +43,19 @@ public class SysKeyBorrowServiceImpl implements SysKeyBorrowService {
     @Override
     public Map<String, Object> examine(KeyBorrow keyBorrow) {
         map = new HashMap<>();
+
+        KeyBorrow keyBorrow1 = sysKeyBorrowDao.findKeyBorrowById(keyBorrow.getId());
+
+        ButlerKeyIdAndBorrowerId keyIdAndBorrowerId = new ButlerKeyIdAndBorrowerId();
+        keyIdAndBorrowerId.setKeyId(keyBorrow1.getKeyId());
+        keyIdAndBorrowerId.setBorrowerId(keyBorrow1.getBorrower());
+        Date date = butlerKeyDao.findCreateDateByKeyIdAndBorrowerId(keyIdAndBorrowerId);
+        if (date != null){
+            map.put("message","该用户已获取该钥匙，不可申请通过");
+            map.put("status",false);
+            return map;
+
+        }
 
         //根据审核主键id 查询审核状态
         int status = sysKeyBorrowDao.findStatusById(keyBorrow.getId());

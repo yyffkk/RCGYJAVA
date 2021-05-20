@@ -1,16 +1,18 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerKeyService;
+import com.api.model.butlerApp.ButlerKeyBorrow;
 import com.api.model.butlerApp.ButlerKeySearch;
+import com.api.util.IdWorker;
 import com.api.vo.butlerApp.ButlerInspectionVo;
 import com.api.vo.butlerApp.ButlerKeyVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +60,18 @@ public class ButlerKeyController {
         return map;
     }
 
-
+    /**
+     * 申请钥匙
+     * @param butlerKeyBorrow 管家app 钥匙借取model信息
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/apply")
+    public Map<String,Object> apply(@RequestBody ButlerKeyBorrow butlerKeyBorrow, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return butlerKeyService.apply(butlerKeyBorrow,id);
+    }
 
 
 }
