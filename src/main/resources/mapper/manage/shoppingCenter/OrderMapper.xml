@@ -28,4 +28,27 @@
         group by sga.id
         order by sga.create_date desc
     </select>
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from shop_goods_appointment where id = #{id}
+    </select>
+
+    <update id="deliverGoods" parameterType="com.api.model.shoppingCenter.Order">
+        update shop_goods_appointment
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="sendDate != null">
+                send_date = #{sendDate},
+            </if>
+            <if test="sendDetail != null and sendDetail != ''">
+                send_detail = #{sendDetail},
+            </if>
+            <if test="sendOperator != null">
+                send_operator = #{sendOperator},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

@@ -2,14 +2,14 @@ package com.api.manage.controller.shoppingCenter;
 
 import com.api.manage.service.shoppingCenter.OrderService;
 import com.api.model.shoppingCenter.GoodsSearch;
+import com.api.model.shoppingCenter.Order;
 import com.api.model.shoppingCenter.OrderSearch;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.shoppingCenter.GoodsVo;
 import com.api.vo.shoppingCenter.OrderVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -41,4 +41,16 @@ public class OrderController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 发货
+     * @param order 商品预约model（订单）
+     * @return map
+     */
+    @PostMapping("/deliverGoods")
+    public Map<String,Object> deliverGoods(@RequestBody Order order){
+        return orderService.deliverGoods(order);
+    }
+
+
 }
