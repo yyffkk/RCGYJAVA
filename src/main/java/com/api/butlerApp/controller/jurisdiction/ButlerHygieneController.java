@@ -3,15 +3,16 @@ package com.api.butlerApp.controller.jurisdiction;
 import com.api.butlerApp.service.jurisdiction.ButlerHygieneService;
 import com.api.model.butlerApp.ButlerGreenSearch;
 import com.api.model.butlerApp.ButlerHygieneSearch;
+import com.api.model.operationManagement.SysGreenTask;
+import com.api.model.operationManagement.SysHygieneTask;
 import com.api.vo.butlerApp.ButlerGreenVo;
 import com.api.vo.butlerApp.ButlerHygieneVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,5 +41,19 @@ public class ButlerHygieneController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 确认完成
+     * @param sysHygieneTask 卫生任务管理model信息
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/complete")
+    public Map<String,Object> complete(@RequestBody SysHygieneTask sysHygieneTask, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        sysHygieneTask.setDirector(id);//填入负责人员id
+        return butlerHygieneService.complete(sysHygieneTask);
     }
 }

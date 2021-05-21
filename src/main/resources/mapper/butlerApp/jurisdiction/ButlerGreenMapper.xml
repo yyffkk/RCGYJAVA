@@ -17,6 +17,7 @@
                 and T.status = #{greenStatus}
             </if>
         </where>
+        order by T.create_date desc
     </select>
 
     <update id="complete" parameterType="com.api.model.operationManagement.SysGreenTask">

@@ -17,6 +17,14 @@
                 and T.status = #{hygieneStatus}
             </if>
         </where>
-
+        order by T.create_date desc
     </select>
+
+    <update id="complete" parameterType="com.api.model.operationManagement.SysHygieneTask">
+        update sys_hygiene_task
+        set status = #{status},
+        complete_date = #{complete}
+        where id = #{id} and director = #{director}
+    </update>
+
 </mapper>
