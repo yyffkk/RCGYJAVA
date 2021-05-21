@@ -80,4 +80,12 @@ public interface ShoppingDao {
      * @return 订单信息
      */
     List<AppMyOrderVo> myOrder(Order order);
+
+    /**
+     * 取消预约
+     * @param order 商品预约model（订单）
+     * @return 影响行数
+     */
+    int cancel(Order order);
+
 }

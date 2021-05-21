@@ -71,4 +71,8 @@
         order by sga.create_date desc
     </select>
 
+    <delete id="cancel" parameterType="com.api.model.shoppingCenter.Order">
+        delete from shop_goods_appointment where id = #{id} and create_id = #{createId} and status = #{status}
+    </delete>
+
 </mapper>

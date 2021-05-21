@@ -23,4 +23,7 @@ public interface ShoppingService {
     List<AppGoodsVo> goodsSearch(String searchName);
 
     List<AppMyOrderVo> myOrder(Integer id, Integer orderStart);
+
+    Map<String, Object> cancel(Integer id, Integer goodsAppointmentId);
+
 }

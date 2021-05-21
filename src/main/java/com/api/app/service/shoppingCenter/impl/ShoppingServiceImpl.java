@@ -2,6 +2,7 @@ package com.api.app.service.shoppingCenter.impl;
 
 import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.app.service.shoppingCenter.ShoppingService;
+import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
@@ -200,5 +201,25 @@ public class ShoppingServiceImpl implements ShoppingService {
         }
 
         return appMyOrderVos;
+    }
+
+    @Override
+    public Map<String, Object> cancel(Integer id, Integer goodsAppointmentId) {
+        map = new HashMap<>();
+        Order order = new Order();
+        order.setId(goodsAppointmentId);//填入预约商品主键Id
+        order.setCreateId(id);//填入用户主键id
+        order.setStatus(1);//1.待发货
+
+        int delete = shoppingDao.cancel(order);
+        if (delete > 0){
+            map.put("message","取消预约成功");
+            map.put("status",true);
+        }else {
+            map.put("message","取消预约失败");
+            map.put("status",false);
+        }
+
+        return map;
     }
 }
