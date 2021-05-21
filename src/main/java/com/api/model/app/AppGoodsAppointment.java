@@ -11,6 +11,10 @@ public class AppGoodsAppointment {
      */
     private Integer id;
     /**
+     * 商品预约编号
+     */
+    private String code;
+    /**
      * 商品主键id
      */
     private Integer goodsId;
@@ -43,6 +47,7 @@ public class AppGoodsAppointment {
     public String toString() {
         return "AppGoodsAppointment{" +
                 "id=" + id +
+                ", code='" + code + '\'' +
                 ", goodsId=" + goodsId +
                 ", status=" + status +
                 ", userName='" + userName + '\'' +
@@ -59,6 +64,14 @@ public class AppGoodsAppointment {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getGoodsId() {
@@ -120,8 +133,9 @@ public class AppGoodsAppointment {
     public AppGoodsAppointment() {
     }
 
-    public AppGoodsAppointment(Integer id, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate) {
+    public AppGoodsAppointment(Integer id, String code, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate) {
         this.id = id;
+        this.code = code;
         this.goodsId = goodsId;
         this.status = status;
         this.userName = userName;

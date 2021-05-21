@@ -5,6 +5,7 @@ import com.api.app.service.shoppingCenter.ShoppingService;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
+import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppCategoryVo;
 import com.api.vo.app.AppGoodsDetailVo;
@@ -139,6 +140,7 @@ public class ShoppingServiceImpl implements ShoppingService {
         appGoodsAppointment.setCreateId(id);
         appGoodsAppointment.setCreateDate(new Date());
         appGoodsAppointment.setStatus(1);//1.待发货
+        appGoodsAppointment.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));//填入预约编号
 
         AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum = new AppGoodsIdAndAppointmentNum();
         appGoodsIdAndAppointmentNum.setGoodsId(appGoodsAppointment.getGoodsId());

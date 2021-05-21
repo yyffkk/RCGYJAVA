@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.shoppingCenter.OrderDao">
+
+    <select id="list" parameterType="com.api.model.shoppingCenter.OrderSearch" resultType="com.api.vo.shoppingCenter.GoodsVo">
+        
+    </select>
+</mapper>
