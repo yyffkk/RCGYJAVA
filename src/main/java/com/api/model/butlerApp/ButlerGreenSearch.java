@@ -16,6 +16,10 @@ public class ButlerGreenSearch {
      * 状态 1.待处理，2.已完成，3.未完成（不为数据库数据）
      */
     private Integer greenStatus;
+    /**
+     * 用户主键id
+     */
+    private Integer id;
 
     @Override
     public String toString() {
@@ -23,6 +27,7 @@ public class ButlerGreenSearch {
                 "pageNum=" + pageNum +
                 ", size=" + size +
                 ", greenStatus=" + greenStatus +
+                ", id=" + id +
                 '}';
     }
 
@@ -50,12 +55,21 @@ public class ButlerGreenSearch {
         this.greenStatus = greenStatus;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public ButlerGreenSearch() {
     }
 
-    public ButlerGreenSearch(int pageNum, int size, Integer greenStatus) {
+    public ButlerGreenSearch(int pageNum, int size, Integer greenStatus, Integer id) {
         this.pageNum = pageNum;
         this.size = size;
         this.greenStatus = greenStatus;
+        this.id = id;
     }
 }

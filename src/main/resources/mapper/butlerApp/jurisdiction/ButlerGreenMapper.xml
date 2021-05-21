@@ -10,7 +10,7 @@
             (case sgt.status = 1 and sgt.end_date <![CDATA[ < ]]> now()  when true then 3 else sgt.status end) as status,
             sgt.end_date,sgt.complete_date,sgt.create_date
             from sys_green_task as sgt,sys_green_area as sga,sys_user as su
-            where sgt.green_area_id = sga.id and sgt.director = su.id
+            where sgt.green_area_id = sga.id and sgt.director = su.id and sgt.director = #{id}
         ) as T
         <where>
             <if test="greenStatus != null">
@@ -18,4 +18,12 @@
             </if>
         </where>
     </select>
+
+    <update id="complete" parameterType="com.api.model.operationManagement.SysGreenTask">
+        update sys_green_task
+        set status = #{status},
+        complete_date = #{complete}
+        where id = #{id} and director = #{director}
+    </update>
+
 </mapper>
