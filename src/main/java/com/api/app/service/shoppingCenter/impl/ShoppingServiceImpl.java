@@ -261,7 +261,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 
         int status = orderDao.findStatusById(goodsAppointmentId);
         if (status != 2){
-            map.put("message","该状态不可申请退换货");
+            map.put("message","该状态不可确认收货");
             map.put("status",false);
             return map;
         }
@@ -274,10 +274,10 @@ public class ShoppingServiceImpl implements ShoppingService {
 
         int update = shoppingDao.confirmReceipt(order);
         if (update > 0){
-            map.put("message","申请退换成功");
+            map.put("message","确认收货成功");
             map.put("status",true);
         }else {
-            map.put("message","申请退换失败");
+            map.put("message","确认收货失败");
             map.put("status",false);
         }
 
