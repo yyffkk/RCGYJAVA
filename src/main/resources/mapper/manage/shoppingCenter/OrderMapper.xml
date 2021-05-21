@@ -4,7 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.shoppingCenter.OrderDao">
 
-    <select id="list" parameterType="com.api.model.shoppingCenter.OrderSearch" resultType="com.api.vo.shoppingCenter.GoodsVo">
-        
+    <select id="list" parameterType="com.api.model.shoppingCenter.OrderSearch" resultType="com.api.vo.shoppingCenter.OrderVo">
+        select sga.id,sg.id as goods_id,sga.code,sg.title as goods_name,sg.selling_price,sg.marking_price,sga.num,ur.name as user_name,
+        ur.tel as user_tel,group_concat(concat(cb.no,'-',cbu.no,'-',cbue.room_number)) as room_name,sga.status,sg.arrival_time
+        from shop_goods_appointment as sga,shop_goods as sg,user_resident as ur
+        LEFT JOIN cpm_resident_estate as cre on cre.resident_id = ur.id
+        LEFT JOIN cpm_building_unit_estate as cbue on cre.building_unit_estate_id = cbue.id
+        LEFT JOIN cpm_building_unit as cbu on cbue.building_unit_id = cbu.id
+        LEFT JOIN cpm_building as cb on cbu.building_id = cb.id
+        <where>
+            sga.goods_id = sg.id
+            and sga.create_id = ur.id
+            <if test="code != null and code != ''">
+                and sga.code like concat('%',#{code},'%')
+            </if>
+            <if test="status != null">
+                and sga.status = #{status}
+            </if>
+            <if test="userTel != null and userTel != ''">
+                and ur.tel like concat('%',#{userTel},'%')
+            </if>
+        </where>
+        group by sga.id
+        order by sga.create_date desc
     </select>
 </mapper>

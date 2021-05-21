@@ -14,6 +14,14 @@ public class OrderVo {
      */
     private Integer id;
     /**
+     * 商品预约编号
+     */
+    private String code;
+    /**
+     * 商品主键id
+     */
+    private Integer goodsId;
+    /**
      * 商品名称
      */
     private String goodsName;
@@ -58,6 +66,8 @@ public class OrderVo {
     public String toString() {
         return "OrderVo{" +
                 "id=" + id +
+                ", code='" + code + '\'' +
+                ", goodsId=" + goodsId +
                 ", goodsName='" + goodsName + '\'' +
                 ", goodsImgList=" + goodsImgList +
                 ", sellingPrice=" + sellingPrice +
@@ -77,6 +87,22 @@ public class OrderVo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getGoodsName() {
@@ -162,8 +188,10 @@ public class OrderVo {
     public OrderVo() {
     }
 
-    public OrderVo(Integer id, String goodsName, List<VoResourcesImg> goodsImgList, BigDecimal sellingPrice, BigDecimal markingPrice, Integer num, String userName, String userTel, String roomName, Integer status, String arrivalTime) {
+    public OrderVo(Integer id, String code, Integer goodsId, String goodsName, List<VoResourcesImg> goodsImgList, BigDecimal sellingPrice, BigDecimal markingPrice, Integer num, String userName, String userTel, String roomName, Integer status, String arrivalTime) {
         this.id = id;
+        this.code = code;
+        this.goodsId = goodsId;
         this.goodsName = goodsName;
         this.goodsImgList = goodsImgList;
         this.sellingPrice = sellingPrice;

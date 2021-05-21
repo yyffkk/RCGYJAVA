@@ -13,9 +13,9 @@ public class OrderSearch {
      */
     private int size;
     /**
-     * 商品预约主键id
+     * 商品预约编号
      */
-    private Integer id;
+    private String code;
     /**
      * 状态：1.待发货，2.已发货，3.已收货
      */
@@ -30,7 +30,7 @@ public class OrderSearch {
         return "OrderSearch{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
-                ", id=" + id +
+                ", code='" + code + '\'' +
                 ", status=" + status +
                 ", userTel='" + userTel + '\'' +
                 '}';
@@ -52,12 +52,12 @@ public class OrderSearch {
         this.size = size;
     }
 
-    public Integer getId() {
-        return id;
+    public String getCode() {
+        return code;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getStatus() {
@@ -79,10 +79,10 @@ public class OrderSearch {
     public OrderSearch() {
     }
 
-    public OrderSearch(int pageNum, int size, Integer id, Integer status, String userTel) {
+    public OrderSearch(int pageNum, int size, String code, Integer status, String userTel) {
         this.pageNum = pageNum;
         this.size = size;
-        this.id = id;
+        this.code = code;
         this.status = status;
         this.userTel = userTel;
     }

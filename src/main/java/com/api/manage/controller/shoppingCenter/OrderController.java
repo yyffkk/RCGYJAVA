@@ -4,6 +4,7 @@ import com.api.manage.service.shoppingCenter.OrderService;
 import com.api.model.shoppingCenter.GoodsSearch;
 import com.api.model.shoppingCenter.OrderSearch;
 import com.api.vo.shoppingCenter.GoodsVo;
+import com.api.vo.shoppingCenter.OrderVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +33,8 @@ public class OrderController {
     @GetMapping("/list")
     public Map<String,Object> list(OrderSearch orderSearch){
         PageHelper.startPage(orderSearch.getPageNum(),orderSearch.getSize());
-        List<GoodsVo> goodsVos = orderService.list(orderSearch);
-        PageInfo<GoodsVo> pageInfo = new PageInfo<>(goodsVos);
+        List<OrderVo> orderVoList = orderService.list(orderSearch);
+        PageInfo<OrderVo> pageInfo = new PageInfo<>(orderVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());
