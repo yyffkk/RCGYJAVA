@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerHygieneDao">
+
+    <select id="list" parameterType="com.api.model.butlerApp.ButlerHygieneSearch" resultType="com.api.vo.butlerApp.ButlerHygieneVo">
+        select T.* from (
+            select sht.id,sha.name as hygiene_area_name,sht.content,su.actual_name as director_name,
+            (case sht.status = 1 and sht.end_date <![CDATA[ < ]]> now()  when true then 3 else sht.status end) as status,
+            sht.end_date,sht.complete_date,sht.create_date
+            from sys_hygiene_task as sht,sys_hygiene_area as sha,sys_user as su
+            where sht.hygiene_area_id = sha.id and sht.director = su.id and sht.director = #{id}
+        ) as T
+        <where>
+            <if test="hygieneStatus != null">
+                and T.status = #{hygieneStatus}
+            </if>
+        </where>
+
+    </select>
+</mapper>
