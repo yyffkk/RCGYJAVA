@@ -35,6 +35,10 @@ public class Order {
      */
     private Integer sendOperator;
     /**
+     * 收货时间
+     */
+    private Date receivingDate;
+    /**
      * 客户期望：1.退货，2.换货
      */
     private Integer backType;
@@ -89,6 +93,7 @@ public class Order {
                 ", sendDate=" + sendDate +
                 ", sendDetail='" + sendDetail + '\'' +
                 ", sendOperator=" + sendOperator +
+                ", receivingDate=" + receivingDate +
                 ", backType=" + backType +
                 ", backDate=" + backDate +
                 ", backReason='" + backReason + '\'' +
@@ -157,6 +162,14 @@ public class Order {
 
     public void setSendOperator(Integer sendOperator) {
         this.sendOperator = sendOperator;
+    }
+
+    public Date getReceivingDate() {
+        return receivingDate;
+    }
+
+    public void setReceivingDate(Date receivingDate) {
+        this.receivingDate = receivingDate;
     }
 
     public Integer getBackType() {
@@ -250,7 +263,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer id, String code, Integer goodsId, Integer status, Date sendDate, String sendDetail, Integer sendOperator, Integer backType, Date backDate, String backReason, Integer reviewer, Date auditDate, String reason, String userName, String userTel, Integer num, Integer createId, Date createDate) {
+    public Order(Integer id, String code, Integer goodsId, Integer status, Date sendDate, String sendDetail, Integer sendOperator, Date receivingDate, Integer backType, Date backDate, String backReason, Integer reviewer, Date auditDate, String reason, String userName, String userTel, Integer num, Integer createId, Date createDate) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -258,6 +271,7 @@ public class Order {
         this.sendDate = sendDate;
         this.sendDetail = sendDetail;
         this.sendOperator = sendOperator;
+        this.receivingDate = receivingDate;
         this.backType = backType;
         this.backDate = backDate;
         this.backReason = backReason;

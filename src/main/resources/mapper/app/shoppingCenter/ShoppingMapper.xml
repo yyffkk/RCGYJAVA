@@ -87,6 +87,14 @@
         </set>
         where id = #{id} and create_id = #{createId}
     </update>
+    <update id="confirmReceipt" parameterType="com.api.model.shoppingCenter.Order">
+        update shop_goods_appointment
+        <set>
+            receiving_date = #{receivingDate},
+            status = #{status}
+        </set>
+        where id = #{id} and create_id = #{createId}
+    </update>
 
 
 </mapper>

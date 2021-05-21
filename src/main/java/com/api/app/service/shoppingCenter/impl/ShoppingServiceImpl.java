@@ -231,16 +231,48 @@ public class ShoppingServiceImpl implements ShoppingService {
 
         int status = orderDao.findStatusById(goodsAppointmentId);
         if (status != 3){
-            throw new RuntimeException("该状态不可退换货");
+            map.put("message","该状态不可退换货");
+            map.put("status",false);
+            return map;
         }
 
         Order order = new Order();
         order.setId(goodsAppointmentId);//填入预约商品主键Id
         order.setCreateId(id);//填入用户主键id
         order.setBackDate(new Date());//填入申请退货时间
-        order.setStatus(4);//申请退货
+        order.setStatus(4);//4.申请退货
 
         int update = shoppingDao.applicationRefund(order);
+        if (update > 0){
+            map.put("message","申请退换成功");
+            map.put("status",true);
+        }else {
+            map.put("message","申请退换失败");
+            map.put("status",false);
+        }
+
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> confirmReceipt(Integer id, Integer goodsAppointmentId) {
+        map = new HashMap<>();
+
+        int status = orderDao.findStatusById(goodsAppointmentId);
+        if (status != 2){
+            map.put("message","该状态不可申请退换货");
+            map.put("status",false);
+            return map;
+        }
+
+        Order order = new Order();
+        order.setId(goodsAppointmentId);//填入预约商品主键Id
+        order.setCreateId(id);//填入用户主键id
+        order.setReceivingDate(new Date());//填入收货时间
+        order.setStatus(3);//3.已收货
+
+        int update = shoppingDao.confirmReceipt(order);
         if (update > 0){
             map.put("message","申请退换成功");
             map.put("status",true);

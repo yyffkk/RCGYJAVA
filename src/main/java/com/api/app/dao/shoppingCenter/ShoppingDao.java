@@ -94,4 +94,11 @@ public interface ShoppingDao {
      * @return 影响行数
      */
     int applicationRefund(Order order);
+
+    /**
+     * 确认收货
+     * @param order 商品预约model（订单）
+     * @return 影响行数
+     */
+    int confirmReceipt(Order order);
 }

@@ -165,4 +165,15 @@ public class ShoppingController {
         return shoppingService.applicationRefund(id,goodsAppointmentId);
     }
 
+    /**
+     * 确认收货
+     * @param id 用户主键id
+     * @param goodsAppointmentId 商品预约主键id
+     * @return map
+     */
+    @GetMapping("/confirmReceipt")
+    public Map<String,Object> confirmReceipt(Integer id,Integer goodsAppointmentId){
+        return shoppingService.confirmReceipt(id,goodsAppointmentId);
+    }
+
 }
