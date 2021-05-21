@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.shoppingCenter.RefundDao">
+
+    <select id="list" parameterType="com.api.model.shoppingCenter.RefundSearch" resultType="com.api.vo.shoppingCenter.RefundVo">
+        select sga.id,sga.code,sg.id as goods_id,sg.title as goods_name,sga.back_type,sga.status,sga.num,ur.name as user_name,
+        ur.tel as user_tel,sga.back_date
+        from shop_goods_appointment as sga,shop_goods as sg,user_resident as ur
+        <where>
+            sga.goods_id = sg.id
+            and sga.create_id = ur.id
+            and sga.status  <![CDATA[ > ]]> 3
+            <if test="code != null and code != ''">
+                and sga.code like concat('%',#{code},'%')
+            </if>
+            <if test="backType != null">
+                and sga.back_type = #{backType}
+            </if>
+            <if test="userTel != null and userTel != ''">
+                and ur.tel like concat('%',#{userTel},'%')
+            </if>
+            <if test="status != null">
+                and sga.status = #{status}
+            </if>
+        </where>
+        order by sga.create_date desc
+    </select>
+</mapper>

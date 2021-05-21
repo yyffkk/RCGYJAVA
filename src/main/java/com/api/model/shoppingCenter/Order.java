@@ -35,6 +35,30 @@ public class Order {
      */
     private Integer sendOperator;
     /**
+     * 客户期望：1.退货，2.换货
+     */
+    private Integer backType;
+    /**
+     * 申请退货时间
+     */
+    private Date backDate;
+    /**
+     * 退换货理由
+     */
+    private String backReason;
+    /**
+     * 审核人id
+     */
+    private Integer reviewer;
+    /**
+     * 审核时间
+     */
+    private Date auditDate;
+    /**
+     * 审核通过/驳回原因
+     */
+    private String reason;
+    /**
      * 用户姓名
      */
     private String userName;
@@ -65,6 +89,12 @@ public class Order {
                 ", sendDate=" + sendDate +
                 ", sendDetail='" + sendDetail + '\'' +
                 ", sendOperator=" + sendOperator +
+                ", backType=" + backType +
+                ", backDate=" + backDate +
+                ", backReason='" + backReason + '\'' +
+                ", reviewer=" + reviewer +
+                ", auditDate=" + auditDate +
+                ", reason='" + reason + '\'' +
                 ", userName='" + userName + '\'' +
                 ", userTel='" + userTel + '\'' +
                 ", num=" + num +
@@ -129,6 +159,54 @@ public class Order {
         this.sendOperator = sendOperator;
     }
 
+    public Integer getBackType() {
+        return backType;
+    }
+
+    public void setBackType(Integer backType) {
+        this.backType = backType;
+    }
+
+    public Date getBackDate() {
+        return backDate;
+    }
+
+    public void setBackDate(Date backDate) {
+        this.backDate = backDate;
+    }
+
+    public String getBackReason() {
+        return backReason;
+    }
+
+    public void setBackReason(String backReason) {
+        this.backReason = backReason;
+    }
+
+    public Integer getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(Integer reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public Date getAuditDate() {
+        return auditDate;
+    }
+
+    public void setAuditDate(Date auditDate) {
+        this.auditDate = auditDate;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -172,7 +250,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer id, String code, Integer goodsId, Integer status, Date sendDate, String sendDetail, Integer sendOperator, String userName, String userTel, Integer num, Integer createId, Date createDate) {
+    public Order(Integer id, String code, Integer goodsId, Integer status, Date sendDate, String sendDetail, Integer sendOperator, Integer backType, Date backDate, String backReason, Integer reviewer, Date auditDate, String reason, String userName, String userTel, Integer num, Integer createId, Date createDate) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -180,6 +258,12 @@ public class Order {
         this.sendDate = sendDate;
         this.sendDetail = sendDetail;
         this.sendOperator = sendOperator;
+        this.backType = backType;
+        this.backDate = backDate;
+        this.backReason = backReason;
+        this.reviewer = reviewer;
+        this.auditDate = auditDate;
+        this.reason = reason;
         this.userName = userName;
         this.userTel = userTel;
         this.num = num;
