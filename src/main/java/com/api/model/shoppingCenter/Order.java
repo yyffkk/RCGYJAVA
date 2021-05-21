@@ -19,7 +19,7 @@ public class Order {
      */
     private Integer goodsId;
     /**
-     * 状态：1.待发货，2.已发货，3.已收货
+     * 状态：1.待发货，2.已发货，3.已收货，4.申请退换货，5.申请通过，6.申请驳回
      */
     private Integer status;
     /**

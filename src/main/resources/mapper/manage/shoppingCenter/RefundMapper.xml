@@ -27,4 +27,20 @@
         </where>
         order by sga.create_date desc
     </select>
+
+    <update id="examine" parameterType="com.api.model.shoppingCenter.Order">
+        update shop_goods_appointment
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            reviewer = #{reviewer},
+            audit_date = #{auditDate},
+            <if test="reason != null and reason != ''">
+                reason = #{reason}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

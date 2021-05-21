@@ -1,14 +1,13 @@
 package com.api.manage.controller.shoppingCenter;
 
 import com.api.manage.service.shoppingCenter.RefundService;
+import com.api.model.shoppingCenter.Order;
 import com.api.model.shoppingCenter.RefundSearch;
 import com.api.vo.shoppingCenter.OrderVo;
 import com.api.vo.shoppingCenter.RefundVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -41,4 +40,14 @@ public class RefundController {
         return map;
     }
 
+
+    /**
+     * 审核
+     * @param order 商品预约model（订单）
+     * @return map
+     */
+    @PostMapping("/examine")
+    public Map<String,Object> examine(@RequestBody Order order){
+        return refundService.examine(order);
+    }
 }

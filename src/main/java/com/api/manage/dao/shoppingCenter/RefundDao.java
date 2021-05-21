@@ -1,5 +1,6 @@
 package com.api.manage.dao.shoppingCenter;
 
+import com.api.model.shoppingCenter.Order;
 import com.api.model.shoppingCenter.RefundSearch;
 import com.api.vo.shoppingCenter.RefundVo;
 
@@ -12,4 +13,11 @@ public interface RefundDao {
      * @return 退换货管理信息
      */
     List<RefundVo> list(RefundSearch refundSearch);
+
+    /**
+     * 审核
+     * @param order 商品预约model（订单）
+     * @return 影响行数
+     */
+    int examine(Order order);
 }
