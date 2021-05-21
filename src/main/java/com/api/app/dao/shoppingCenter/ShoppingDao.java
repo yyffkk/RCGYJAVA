@@ -88,4 +88,10 @@ public interface ShoppingDao {
      */
     int cancel(Order order);
 
+    /**
+     * 申请退换
+     * @param order 商品预约model（订单）
+     * @return 影响行数
+     */
+    int applicationRefund(Order order);
 }

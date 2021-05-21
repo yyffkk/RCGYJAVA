@@ -26,4 +26,5 @@ public interface ShoppingService {
 
     Map<String, Object> cancel(Integer id, Integer goodsAppointmentId);
 
+    Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId);
 }

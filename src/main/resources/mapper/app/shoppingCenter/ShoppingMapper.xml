@@ -75,4 +75,18 @@
         delete from shop_goods_appointment where id = #{id} and create_id = #{createId} and status = #{status}
     </delete>
 
+    <update id="applicationRefund" parameterType="com.api.model.shoppingCenter.Order">
+        update shop_goods_appointment
+        <set>
+            back_type = #{backType},
+            back_date = #{backDate},
+            <if test="backReason != null and backReason != ''">
+                back_reason = #{backReason},
+            </if>
+            status = #{status}
+        </set>
+        where id = #{id} and create_id = #{createId}
+    </update>
+
+
 </mapper>

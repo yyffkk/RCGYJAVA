@@ -154,4 +154,15 @@ public class ShoppingController {
         return shoppingService.cancel(id,goodsAppointmentId);
     }
 
+    /**
+     * 申请退换
+     * @param id 用户主键id
+     * @param goodsAppointmentId 商品预约主键id
+     * @return map
+     */
+    @GetMapping("/applicationRefund")
+    public Map<String,Object> applicationRefund(Integer id,Integer goodsAppointmentId){
+        return shoppingService.applicationRefund(id,goodsAppointmentId);
+    }
+
 }
