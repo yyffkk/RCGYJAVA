@@ -84,7 +84,13 @@ public class AppAdviceServiceImpl implements AppAdviceService {
 
         //上传照片资源路径到数据库
         UploadUtil uploadUtil = new UploadUtil();
-        uploadUtil.saveUrlToDB(sysAdvice.getFileUrls(),"sysAdvice",sysAdvice.getId(),"adviceImg","600",30,20);
+        if (sysAdvice.getType() >= 3){
+            //投诉/表扬
+            uploadUtil.saveUrlToDB(sysAdvice.getFileUrls(),"sysAdvice",sysAdvice.getId(),"complaintPraiseImg","600",30,20);
+        }else {
+            //咨询/建议
+            uploadUtil.saveUrlToDB(sysAdvice.getFileUrls(),"sysAdvice",sysAdvice.getId(),"adviceImg","600",30,20);
+        }
         return map;
     }
 
