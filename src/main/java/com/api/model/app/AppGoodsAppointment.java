@@ -15,6 +15,10 @@ public class AppGoodsAppointment {
      */
     private Integer goodsId;
     /**
+     * 状态：1.待发货，2.已发货，3.已收货
+     */
+    private Integer status;
+    /**
      * 用户姓名
      */
     private String userName;
@@ -40,6 +44,7 @@ public class AppGoodsAppointment {
         return "AppGoodsAppointment{" +
                 "id=" + id +
                 ", goodsId=" + goodsId +
+                ", status=" + status +
                 ", userName='" + userName + '\'' +
                 ", userTel='" + userTel + '\'' +
                 ", num=" + num +
@@ -62,6 +67,14 @@ public class AppGoodsAppointment {
 
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getUserName() {
@@ -107,9 +120,10 @@ public class AppGoodsAppointment {
     public AppGoodsAppointment() {
     }
 
-    public AppGoodsAppointment(Integer id, Integer goodsId, String userName, String userTel, Integer num, Integer createId, Date createDate) {
+    public AppGoodsAppointment(Integer id, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate) {
         this.id = id;
         this.goodsId = goodsId;
+        this.status = status;
         this.userName = userName;
         this.userTel = userTel;
         this.num = num;

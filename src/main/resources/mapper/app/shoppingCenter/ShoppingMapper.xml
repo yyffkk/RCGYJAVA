@@ -30,6 +30,7 @@
     <insert id="goodsAppointment" parameterType="com.api.model.app.AppGoodsAppointment">
         insert into shop_goods_appointment(
             goods_id,
+            status,
             user_name,
             user_tel,
             num,
@@ -37,6 +38,7 @@
             create_date
         )values (
             #{goodsId},
+            #{status},
             #{userName},
             #{userTel},
             #{num},

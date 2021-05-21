@@ -138,6 +138,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 
         appGoodsAppointment.setCreateId(id);
         appGoodsAppointment.setCreateDate(new Date());
+        appGoodsAppointment.setStatus(1);//1.待发货
 
         AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum = new AppGoodsIdAndAppointmentNum();
         appGoodsIdAndAppointmentNum.setGoodsId(appGoodsAppointment.getGoodsId());
