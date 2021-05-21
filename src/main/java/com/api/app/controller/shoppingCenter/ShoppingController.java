@@ -4,6 +4,7 @@ import com.api.app.service.shoppingCenter.ShoppingService;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.app.AppGoodsVo;
+import com.api.vo.app.AppMyOrderVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -113,6 +114,27 @@ public class ShoppingController {
         PageHelper.startPage(pageNum,size);
         List<AppGoodsVo> appGoodsVos = shoppingService.goodsSearch(searchName);
         PageInfo<AppGoodsVo> pageInfo = new PageInfo<>(appGoodsVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
+    /**
+     * 我的订单
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @param id 用户主键id
+     * @param orderStart 订单状态：1.待发货，2.已发货，3.已收货，4.申请退换货，5.申请通过，6.申请驳回
+     * @return map
+     */
+    @GetMapping("/myOrder")
+    public Map<String,Object> myOrder(int pageNum,int size,Integer id,Integer orderStart){
+        PageHelper.startPage(pageNum,size);
+        List<AppMyOrderVo> appMyOrderVoList = shoppingService.myOrder(id,orderStart);
+        PageInfo<AppMyOrderVo> pageInfo = new PageInfo<>(appMyOrderVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());

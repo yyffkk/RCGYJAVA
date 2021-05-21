@@ -2,6 +2,7 @@ package com.api.app.service.shoppingCenter;
 
 import com.api.model.app.AppGoodsAppointment;
 import com.api.vo.app.AppGoodsVo;
+import com.api.vo.app.AppMyOrderVo;
 
 import java.util.List;
 import java.util.Map;
@@ -20,4 +21,6 @@ public interface ShoppingService {
     Map<String, Object> goodsAppointment(AppGoodsAppointment appGoodsAppointment, Integer type, Integer id);
 
     List<AppGoodsVo> goodsSearch(String searchName);
+
+    List<AppMyOrderVo> myOrder(Integer id, Integer orderStart);
 }

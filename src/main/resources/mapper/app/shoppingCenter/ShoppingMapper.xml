@@ -57,4 +57,18 @@
         update shop_goods set subscribe_num = subscribe_num + #{appointmentNum} where id = #{goodsId} and subscribe_num + #{appointmentNum} <![CDATA[ <= ]]> stock
     </update>
 
+    <select id="myOrder" parameterType="com.api.model.shoppingCenter.Order" resultType="com.api.vo.app.AppMyOrderVo">
+        select sga.id,sga.code,sg.id as goods_id,sg.title as goods_name,sga.back_type,sga.status,sga.num,sg.selling_price,sg.marking_price,sg.arrival_time
+        from shop_goods_appointment as sga,shop_goods as sg,user_resident as ur
+        <where>
+            sga.goods_id = sg.id
+            and sga.create_id = ur.id
+            <if test="status != null">
+                and sga.status = #{status}
+            </if>
+            and sga.create_id = #{createId}
+        </where>
+        order by sga.create_date desc
+    </select>
+
 </mapper>

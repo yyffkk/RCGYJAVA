@@ -3,9 +3,11 @@ package com.api.app.dao.shoppingCenter;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
+import com.api.model.shoppingCenter.Order;
 import com.api.vo.app.AppCategoryVo;
 import com.api.vo.app.AppGoodsDetailVo;
 import com.api.vo.app.AppGoodsVo;
+import com.api.vo.app.AppMyOrderVo;
 
 import java.util.List;
 
@@ -71,4 +73,11 @@ public interface ShoppingDao {
      * @return 影响行数
      */
     int incGoodsAppointmentNum(AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum);
+
+    /**
+     * 我的订单
+     * @param order 商品预约model（订单）
+     * @return 订单信息
+     */
+    List<AppMyOrderVo> myOrder(Order order);
 }

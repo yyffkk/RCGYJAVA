@@ -5,11 +5,13 @@ import com.api.app.service.shoppingCenter.ShoppingService;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
+import com.api.model.shoppingCenter.Order;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppCategoryVo;
 import com.api.vo.app.AppGoodsDetailVo;
 import com.api.vo.app.AppGoodsVo;
+import com.api.vo.app.AppMyOrderVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
@@ -179,5 +181,24 @@ public class ShoppingServiceImpl implements ShoppingService {
             }
         }
         return appGoodsVos;
+    }
+
+    @Override
+    public List<AppMyOrderVo> myOrder(Integer id, Integer orderStart) {
+        Order order = new Order();
+
+        order.setStatus(orderStart);
+        order.setCreateId(id);
+        List<AppMyOrderVo> appMyOrderVos = shoppingDao.myOrder(order);
+
+        if (appMyOrderVos != null && appMyOrderVos.size()>0){
+            for (AppMyOrderVo appMyOrderVo : appMyOrderVos) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("shopGoods", appMyOrderVo.getGoodsId(), "goodsImg");
+                appMyOrderVo.setGoodsImgList(imgByDate);
+            }
+        }
+
+        return appMyOrderVos;
     }
 }
