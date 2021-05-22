@@ -1,10 +1,17 @@
 package com.api.manage.dao.system;
 
+import com.api.model.system.SysDataDictionary;
+import com.api.model.system.SysDataDictionarySearch;
 import com.api.vo.system.VoDataDictionary;
+import com.api.vo.system.VoDataDictionaryList;
 
 import java.util.List;
 
 public interface SysDataDictionaryDao {
+    List<VoDataDictionaryList> list(SysDataDictionarySearch sysDataDictionarySearch);
+
+    int update(SysDataDictionary sysDataDictionary);
+
     List<VoDataDictionary> findParkingSpaceStatus();
 
     List<VoDataDictionary> findUserResidentIdType();

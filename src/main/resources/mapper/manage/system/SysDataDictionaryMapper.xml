@@ -6,6 +6,25 @@
     <sql id="field">
         show_name,show_value,remarks
     </sql>
+
+    <select id="list" parameterType="com.api.model.system.SysDataDictionarySearch" resultType="com.api.vo.system.VoDataDictionaryList">
+        select * from sys_data_dictionary
+        <where>
+            <if test="remarks != null and remarks != ''">
+                and remarks like concat('%',#{remarks},'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.api.model.system.SysDataDictionary">
+        update sys_data_dictionary
+        set show_name = #{showName},
+        modify_id = #{modifyId},
+        modify_date = #{modifyDate}
+        where id = #{id}
+    </update>
+
+
     <!--  查询车位状态  -->
     <select id="findParkingSpaceStatus" resultType="com.api.vo.system.VoDataDictionary">
         select

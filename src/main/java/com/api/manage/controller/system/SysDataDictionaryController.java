@@ -1,13 +1,19 @@
 package com.api.manage.controller.system;
 
 import com.api.manage.service.system.SysDataDictionaryService;
+import com.api.model.system.SysDataDictionary;
+import com.api.model.system.SysDataDictionarySearch;
+import com.api.vo.businessManagement.VoSalary;
 import com.api.vo.system.VoDataDictionary;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.api.vo.system.VoDataDictionaryList;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据字典表
@@ -17,6 +23,34 @@ import java.util.List;
 public class SysDataDictionaryController {
     @Resource
     SysDataDictionaryService sysDataDictionaryService;
+
+    /**
+     * 查询所有的数据字典信息
+     * @param sysDataDictionarySearch 数据字典搜索条件
+     * @return map
+     */
+    @GetMapping("/list")
+    public Map<String,Object> list(SysDataDictionarySearch sysDataDictionarySearch){
+        PageHelper.startPage(sysDataDictionarySearch.getPageNum(),sysDataDictionarySearch.getSize());
+        List<VoDataDictionaryList> voDataDictionaryLists = sysDataDictionaryService.list(sysDataDictionarySearch);
+        PageInfo<VoDataDictionaryList> pageInfo = new PageInfo<>(voDataDictionaryLists);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 修改数据字典信息
+     * @param sysDataDictionary 系统数据字典表
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysDataDictionary sysDataDictionary){
+        return sysDataDictionaryService.update(sysDataDictionary);
+    }
+
 
     /**
      * 查询车位状态 cpm_parking_space_status
