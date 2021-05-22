@@ -14,9 +14,10 @@
                 and st.organization_id = #{organizationId}
             </if>
             <if test="tel != null and tel != ''">
-                and tel like concat('%',#{tel},'%')
+                and su.tel like concat('%',#{tel},'%')
             </if>
         </where>
+        order by st.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.businessManagement.SysTrain">
