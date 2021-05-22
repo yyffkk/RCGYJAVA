@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysMaterialRecordDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchMaterialRecord" resultType="com.api.vo.operationManagement.VoMaterialRecord">
+        select smr.id,smr.create_date,sm.name,su.actual_name as create_name,smr.type,smr.num
+        from sys_material_record as smr,sys_material as sm,sys_user as su
+        <where>
+            smr.material_id = sm.id
+            and smr.create_id = su.id
+            <if test="name != null and name != ''">
+                and sm.name like concat('%',#{name},'%')
+            </if>
+            <if test="type != null">
+                and smr.type = #{type}
+            </if>
+        </where>
+        order by smr.create_date desc
+    </select>
+
+    <update id="delivery" parameterType="com.api.model.operationManagement.SysMaterialRecord">
+        update sys_material
+        set stock = stock - #{num}
+        where stock - #{num} <![CDATA[ >= ]]> 0
+    </update>
+
+    <update id="warehousing" parameterType="com.api.model.operationManagement.SysMaterialRecord">
+        update sys_material
+        set stock = stock + #{num}
+    </update>
+    <insert id="insert">
+        insert into sys_material_record(
+            material_id,
+            type,
+            num,
+            create_id,
+            create_date
+        )values (
+            #{materialId},
+            #{type},
+            #{num},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+
+</mapper>
