@@ -5,6 +5,10 @@ package com.api.vo.system;
  */
 public class VoDataDictionaryList {
     /**
+     * 数据字典主键id
+     */
+    private Integer id;
+    /**
      * 显示名称
      */
     private String showName;
@@ -28,12 +32,21 @@ public class VoDataDictionaryList {
     @Override
     public String toString() {
         return "VoDataDictionaryList{" +
-                "showName='" + showName + '\'' +
+                "id=" + id +
+                ", showName='" + showName + '\'' +
                 ", typeName='" + typeName + '\'' +
                 ", showValue=" + showValue +
                 ", sort=" + sort +
                 ", remarks='" + remarks + '\'' +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getShowName() {
@@ -79,7 +92,8 @@ public class VoDataDictionaryList {
     public VoDataDictionaryList() {
     }
 
-    public VoDataDictionaryList(String showName, String typeName, Integer showValue, Integer sort, String remarks) {
+    public VoDataDictionaryList(Integer id, String showName, String typeName, Integer showValue, Integer sort, String remarks) {
+        this.id = id;
         this.showName = showName;
         this.typeName = typeName;
         this.showValue = showValue;
