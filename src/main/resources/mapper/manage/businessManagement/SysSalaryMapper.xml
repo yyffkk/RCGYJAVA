@@ -8,7 +8,7 @@
         select ss.id,so.name as organization_name,su.actual_name as name,su.sex,su.tel,ss.wage_card_number,ss.salary
         from sys_salary as ss,sys_organization as so,sys_user as su
         <where>
-            ss.train_person = su.id
+            ss.salary_person = su.id
             and ss.organization_id = so.id
             <if test="organizationId != null">
                 and ss.organization_id = #{organizationId}
@@ -22,4 +22,27 @@
         </where>
         order by ss.create_date desc
     </select>
+
+    <insert id="insert" parameterType="com.api.model.businessManagement.SysSalary">
+        insert into sys_salary(
+            organization_id,
+            salary_person,
+            wage_card_number,
+            salary,
+            create_id,
+            create_date
+        )values (
+            #{organizationId},
+            #{salaryPerson},
+            #{wageCardNumber},
+            #{salary},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="com.api.model.businessManagement.SysSalary">
+        delete from sys_salary where id = #{id}
+    </delete>
+
 </mapper>
