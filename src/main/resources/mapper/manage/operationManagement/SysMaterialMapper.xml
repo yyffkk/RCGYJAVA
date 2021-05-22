@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysMaterialDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchMaterial" resultType="com.api.vo.operationManagement.VoMaterial">
+        select * from sys_material
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            and is_delete = 1
+        </where>
+        order by create_date desc
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysMaterial">
+        insert into sys_material(
+            name,
+            stock,
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{name},
+            #{stock},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        update sys_material
+        set is_delete = 0
+        where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysMaterial">
+        update sys_material
+        set name = #{name}
+        where id = #{id}
+    </update>
+
+
+</mapper>
