@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.businessManagement.SysTrainDao">
+
+    <select id="list" parameterType="com.api.model.businessManagement.SearchTrain" resultType="com.api.vo.businessManagement.VoTrain">
+        select st.id,so.name as organization_name,su.actual_name as name,su.sex,su.tel,st.train_date
+        from sys_train as st,sys_organization as so,sys_user as su
+        <where>
+            st.train_person = su.id
+            and st.organization_id = so.id
+            <if test="organizationId != null">
+                and st.organization_id = #{organizationId}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel like concat('%',#{tel},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.businessManagement.SysTrain">
+        insert into sys_train(
+            organization_id,
+            train_person,
+            train_date,
+            create_id,
+            create_date
+        )values (
+            #{organizationId},
+            #{trainPerson},
+            #{trainDate},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_train where id = #{id}
+    </delete>
+
+
+</mapper>
