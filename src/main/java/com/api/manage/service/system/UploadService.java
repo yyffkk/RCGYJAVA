@@ -69,4 +69,6 @@ public interface UploadService {
     Map<String, Object> uploadElectronicCommerce(MultipartFile file);
 
     Map<String, Object> uploadCommunityIntroduction(MultipartFile file);
+
+    Map<String, Object> uploadContractDoc(MultipartFile file);
 }

@@ -34,6 +34,10 @@ public class VoFindByIdAnnouncementManagement {
      */
     private String fileDocUrl;
     /**
+     * doc文件名
+     */
+    private String fileDocName;
+    /**
      * 状态（0.未发布，1.已发布）
      */
     private Integer status;
@@ -51,6 +55,7 @@ public class VoFindByIdAnnouncementManagement {
                 ", imgUrls=" + imgUrls +
                 ", content='" + content + '\'' +
                 ", fileDocUrl='" + fileDocUrl + '\'' +
+                ", fileDocName='" + fileDocName + '\'' +
                 ", status=" + status +
                 ", scheduledReleaseTime=" + scheduledReleaseTime +
                 '}';
@@ -104,6 +109,14 @@ public class VoFindByIdAnnouncementManagement {
         this.fileDocUrl = fileDocUrl;
     }
 
+    public String getFileDocName() {
+        return fileDocName;
+    }
+
+    public void setFileDocName(String fileDocName) {
+        this.fileDocName = fileDocName;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -123,13 +136,14 @@ public class VoFindByIdAnnouncementManagement {
     public VoFindByIdAnnouncementManagement() {
     }
 
-    public VoFindByIdAnnouncementManagement(Integer id, String title, Integer pushObject, List<VoResourcesImg> imgUrls, String content, String fileDocUrl, Integer status, Date scheduledReleaseTime) {
+    public VoFindByIdAnnouncementManagement(Integer id, String title, Integer pushObject, List<VoResourcesImg> imgUrls, String content, String fileDocUrl, String fileDocName, Integer status, Date scheduledReleaseTime) {
         this.id = id;
         this.title = title;
         this.pushObject = pushObject;
         this.imgUrls = imgUrls;
         this.content = content;
         this.fileDocUrl = fileDocUrl;
+        this.fileDocName = fileDocName;
         this.status = status;
         this.scheduledReleaseTime = scheduledReleaseTime;
     }

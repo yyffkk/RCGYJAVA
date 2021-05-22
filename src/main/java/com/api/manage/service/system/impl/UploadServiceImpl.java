@@ -43,6 +43,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_ANNOUNCEMENT;
     @Value("${prop.upload-announcement-doc}")
     private String UPLOAD_ANNOUNCEMENT_DOC;
+    @Value("${prop.upload-contract-doc}")
+    private String UPLOAD_CONTRACT_DOC;
     @Value("${prop.upload-decoration-notice-doc}")
     private String UPLOAD_DECORATION_NOTICE_DOC;
     @Value("${prop.upload-sponsor}")
@@ -309,6 +311,28 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadCommunityIntroduction(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_COMMUNITY_INTRODUCTION);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadContractDoc(MultipartFile file) {
+        map = new HashMap<>();
+        String url = null;
+        try {
+            UploadUtil uploadUtil = new UploadUtil();
+            url = uploadUtil.uploadDoc(file, UPLOAD_CONTRACT_DOC);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            map.put("message",message);
+            map.put("url","");
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","上传成功");
+        map.put("url",url);
+        map.put("status",true);
         return map;
     }
 

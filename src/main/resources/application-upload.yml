@@ -54,6 +54,9 @@ prop:
   #运营管理-社区介绍管理：新增社区介绍信息 照片上传路径
   upload-community-introduction: /img/communityIntroduction/
 
+  #系统管理-合同管理：合同doc,docx文件上传路径
+  upload-contract-doc: /doc/contract/
+
 
   #收费管理-固定金额分摊：固定金额分摊缴纳凭证，照片上传路径
   upload-voucher: /img/voucher/

@@ -250,4 +250,14 @@ public class UploadController {
     public Map<String,Object> uploadCommunityIntroduction(MultipartFile file){
         return uploadService.uploadCommunityIntroduction(file);
     }
+
+    /**
+     * 上传合同信息doc,docx文件
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadContractDoc")
+    public Map<String,Object> uploadContractDoc(MultipartFile file){
+        return uploadService.uploadContractDoc(file);
+    }
 }
