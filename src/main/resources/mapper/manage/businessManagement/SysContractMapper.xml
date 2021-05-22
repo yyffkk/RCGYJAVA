@@ -4,4 +4,56 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.businessManagement.SysContractDao">
 
+    <select id="list" parameterType="com.api.model.businessManagement.SearchContract" resultType="com.api.vo.businessManagement.VoContract">
+        select sc.id,so.name as organization_name,su.actual_name as name,su.sex,su.tel,sc.entry_date,sc.file_doc_url,sc.file_doc_name
+        from sys_contract as sc,sys_organization as so,sys_user as su
+        <where>
+            sc.contract_person = su.id
+            and sc.organization_id = so.id
+            <if test="organizationId != null">
+                and sc.organization_id = #{organizationId}
+            </if>
+            <if test="tel != null and tel != ''">
+                and su.tel like concat('%',#{tel},'%')
+            </if>
+        </where>
+        order by sc.create_date desc
+    </select>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.businessManagement.VoContract">
+        select * from sys_contract where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.businessManagement.SysContract">
+        insert into sys_contract(
+            organization_id,
+            contract_person,
+            entry_date,
+            <if test="fileDocUrl != null and fileDocUrl != ''">
+                file_doc_url,
+            </if>
+            <if test="fileDocName != null and fileDocName != ''">
+                file_doc_name,
+            </if>
+            create_id,
+            create_date
+        )values (
+            #{organizationId},
+            #{contractPerson},
+            #{entryDate},
+            <if test="fileDocUrl != null and fileDocUrl != ''">
+                #{fileDocUrl},
+            </if>
+            <if test="fileDocName != null and fileDocName != ''">
+                #{fileDocName},
+            </if>
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_contract where id = #{id}
+    </delete>
+
+
 </mapper>
