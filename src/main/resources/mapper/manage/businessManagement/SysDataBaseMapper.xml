@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.businessManagement.SysDataBaseDao">
+
+    <select id="list" parameterType="com.api.model.businessManagement.SearchDataBase" resultType="com.api.vo.businessManagement.VoDataBase">
+        select * from sys_data_base
+        <where>
+            <if test="functionType != null and functionType != ''">
+                and function_type = #{functionType}
+            </if>
+            <if test="functionName != null and functionName != ''">
+                and function_name = #{functionName}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.businessManagement.SysDataBase">
+        insert into sys_data_base(
+            function_type,
+            function_name,
+            field_name,
+            create_id,
+            create_date
+        )values (
+            #{functionType},
+            #{functionName},
+            #{fieldName},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_data_base where id = #{id}
+    </delete>
+
+
+</mapper>
