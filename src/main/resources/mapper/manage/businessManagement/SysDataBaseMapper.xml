@@ -8,10 +8,10 @@
         select * from sys_data_base
         <where>
             <if test="functionType != null and functionType != ''">
-                and function_type = #{functionType}
+                and function_type like concat('%',#{functionType},'%')
             </if>
             <if test="functionName != null and functionName != ''">
-                and function_name = #{functionName}
+                and function_name like concat('%',#{functionName},'%')
             </if>
         </where>
     </select>
