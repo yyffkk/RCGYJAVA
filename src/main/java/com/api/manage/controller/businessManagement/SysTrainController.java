@@ -56,7 +56,7 @@ public class SysTrainController {
      * @param ids 培训信息主键id数组
      * @return map
      */
-    @PostMapping
+    @PostMapping("/delete")
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysTrainService.delete(ids.getIds());
     }
