@@ -21,7 +21,23 @@
                 and T.status = #{executeStatus}
             </if>
         </where>
-
-
     </select>
+
+    <update id="submitCheck" parameterType="com.api.model.butlerService.FacilitiesExecute">
+        update sys_facilities_execute
+        <set>
+            status = #{status},
+            check_date = #{checkDate},
+            situation = #{situation},
+            <if test="detail != null and detail != ''">
+                detail = #{detail}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.FacilitiesExecute">
+        select * from sys_facilities_execute where id = #{id}
+    </select>
+
+
 </mapper>

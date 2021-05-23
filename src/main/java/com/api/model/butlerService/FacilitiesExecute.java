@@ -1,17 +1,18 @@
 package com.api.model.butlerService;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
- * 设施/设备检查执行情况
+ * 设施/设备检查记录
  */
 public class FacilitiesExecute {
     /**
-     * 主键id
+     * 设施设备检查记录主键id
      */
     private Integer id;
     /**
-     * 状态：1.待完成，2.已完成，3.未完成（数据库不存该状态）
+     * 状态：1.待完成，2.已完成，3.未完成
      */
     private Integer status;
     /**
@@ -42,6 +43,10 @@ public class FacilitiesExecute {
      * 排序，设施/设备检查计划的第几次执行
      */
     private Integer sort;
+    /**
+     * 检查照片路径数组
+     */
+    private String[] imgUrls;
 
     @Override
     public String toString() {
@@ -55,6 +60,7 @@ public class FacilitiesExecute {
                 ", situation=" + situation +
                 ", detail='" + detail + '\'' +
                 ", sort=" + sort +
+                ", imgUrls=" + Arrays.toString(imgUrls) +
                 '}';
     }
 
@@ -130,10 +136,18 @@ public class FacilitiesExecute {
         this.sort = sort;
     }
 
+    public String[] getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String[] imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public FacilitiesExecute() {
     }
 
-    public FacilitiesExecute(Integer id, Integer status, Integer facilitiesPlanId, Date beginDate, Date endDate, Date checkDate, Integer situation, String detail, Integer sort) {
+    public FacilitiesExecute(Integer id, Integer status, Integer facilitiesPlanId, Date beginDate, Date endDate, Date checkDate, Integer situation, String detail, Integer sort, String[] imgUrls) {
         this.id = id;
         this.status = status;
         this.facilitiesPlanId = facilitiesPlanId;
@@ -143,5 +157,6 @@ public class FacilitiesExecute {
         this.situation = situation;
         this.detail = detail;
         this.sort = sort;
+        this.imgUrls = imgUrls;
     }
 }

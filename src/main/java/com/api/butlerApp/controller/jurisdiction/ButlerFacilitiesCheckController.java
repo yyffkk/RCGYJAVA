@@ -2,13 +2,12 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerFacilitiesCheckService;
 import com.api.model.butlerApp.ButlerFacilitiesCheckSearch;
+import com.api.model.butlerService.FacilitiesExecute;
 import com.api.vo.butlerApp.ButlerFacilitiesCheckVo;
 import com.api.vo.butlerApp.ButlerGreenVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -39,5 +38,15 @@ public class ButlerFacilitiesCheckController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 提交报告
+     * @param facilitiesExecute 设施/设备检查执行情况
+     * @return map
+     */
+    @PostMapping("/submitCheck")
+    public Map<String,Object> submitCheck(@RequestBody FacilitiesExecute facilitiesExecute){
+        return butlerFacilitiesCheckService.submitCheck(facilitiesExecute);
     }
 }
