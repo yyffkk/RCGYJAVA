@@ -5,10 +5,13 @@ import com.api.manage.service.butlerService.SysFacilitiesPlanService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.FacilitiesExecute;
 import com.api.model.butlerService.FacilitiesPlan;
+import com.api.model.butlerService.SearchFacilitiesExecute;
 import com.api.model.butlerService.SearchFacilitiesPlan;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
+import com.api.vo.butlerService.VoFacilitiesExecute;
 import com.api.vo.butlerService.VoFacilitiesPlan;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -217,5 +220,18 @@ public class SysFacilitiesPlanServiceImpl implements SysFacilitiesPlanService {
         map.put("message","开启计划成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public List<VoFacilitiesExecute> executeList(SearchFacilitiesExecute searchFacilitiesExecute) {
+        List<VoFacilitiesExecute> list = sysFacilitiesPlanDao.executeList(searchFacilitiesExecute);
+        if (list != null && list.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (VoFacilitiesExecute voFacilitiesExecute : list) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysFacilitiesExecute", voFacilitiesExecute.getId(), "checkImg");
+                voFacilitiesExecute.setImgList(imgByDate);
+            }
+        }
+        return list;
     }
 }

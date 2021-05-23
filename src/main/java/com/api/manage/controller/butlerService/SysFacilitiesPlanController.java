@@ -2,8 +2,10 @@ package com.api.manage.controller.butlerService;
 
 import com.api.manage.service.butlerService.SysFacilitiesPlanService;
 import com.api.model.butlerService.FacilitiesPlan;
+import com.api.model.butlerService.SearchFacilitiesExecute;
 import com.api.model.butlerService.SearchFacilitiesPlan;
 import com.api.vo.basicArchives.VoIds;
+import com.api.vo.butlerService.VoFacilitiesExecute;
 import com.api.vo.butlerService.VoFacilitiesPlan;
 import com.api.vo.butlerService.VoGambit;
 import com.github.pagehelper.PageHelper;
@@ -80,5 +82,22 @@ public class SysFacilitiesPlanController {
     @PostMapping("/open")
     public Map<String,Object> open(@RequestBody VoIds ids){
         return sysFacilitiesPlanService.open(ids.getIds());
+    }
+
+    /**
+     * 查询所有的设施设备检查记录
+     * @param searchFacilitiesExecute 设备/设施检查记录搜索条件
+     * @return map
+     */
+    @GetMapping("/executeList")
+    public Map<String,Object> executeList(SearchFacilitiesExecute searchFacilitiesExecute){
+        PageHelper.startPage(searchFacilitiesExecute.getPageNum(),searchFacilitiesExecute.getSize());
+        List<VoFacilitiesExecute> voFacilitiesExecuteList = sysFacilitiesPlanService.executeList(searchFacilitiesExecute);
+        PageInfo<VoFacilitiesExecute> pageInfo = new PageInfo<>(voFacilitiesExecuteList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 }

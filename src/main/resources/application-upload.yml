@@ -38,6 +38,8 @@ prop:
   upload-decoration-decoration-commitment: /img/decoration/decorationCommitment/
   #管家服务-问卷调查：封面照片
   upload-questionnaire-cover-photo: /img/questionnaire/coverPhone/
+  #管家服务-设施/设备检查：检查照片
+  upload-facilities-check-photo: /img/facilities/checkPhone/
 
   #运营管理-公告管理：新增公告信息照片上传路径
   upload-announcement: /img/announcement/

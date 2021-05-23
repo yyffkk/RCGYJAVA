@@ -71,4 +71,6 @@ public interface UploadService {
     Map<String, Object> uploadCommunityIntroduction(MultipartFile file);
 
     Map<String, Object> uploadContractDoc(MultipartFile file);
+
+    Map<String, Object> uploadFacilitiesCheckPhoto(MultipartFile file);
 }

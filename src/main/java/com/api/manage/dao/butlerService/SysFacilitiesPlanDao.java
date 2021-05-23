@@ -2,7 +2,9 @@ package com.api.manage.dao.butlerService;
 
 import com.api.model.butlerService.FacilitiesExecute;
 import com.api.model.butlerService.FacilitiesPlan;
+import com.api.model.butlerService.SearchFacilitiesExecute;
 import com.api.model.butlerService.SearchFacilitiesPlan;
+import com.api.vo.butlerService.VoFacilitiesExecute;
 import com.api.vo.butlerService.VoFacilitiesPlan;
 
 import java.util.Date;
@@ -95,4 +97,10 @@ public interface SysFacilitiesPlanDao {
      */
     int updateExecuteStatus(Integer id);
 
+    /**
+     * 查询所有的设施设备检查记录
+     * @param searchFacilitiesExecute 设备/设施执行记录搜索条件
+     * @return 设施设备检查记录
+     */
+    List<VoFacilitiesExecute> executeList(SearchFacilitiesExecute searchFacilitiesExecute);
 }

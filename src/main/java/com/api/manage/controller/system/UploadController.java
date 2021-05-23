@@ -260,4 +260,14 @@ public class UploadController {
     public Map<String,Object> uploadContractDoc(MultipartFile file){
         return uploadService.uploadContractDoc(file);
     }
+
+    /**
+     * 上传设施/设备检查照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadFacilitiesCheckPhoto")
+    public Map<String,Object> uploadFacilitiesCheckPhoto(MultipartFile file){
+        return uploadService.uploadFacilitiesCheckPhoto(file);
+    }
 }

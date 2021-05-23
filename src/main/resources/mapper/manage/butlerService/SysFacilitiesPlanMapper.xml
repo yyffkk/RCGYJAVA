@@ -117,5 +117,41 @@
         where id = #{id}
     </update>
 
+    <select id="executeList" parameterType="com.api.model.butlerService.SearchFacilitiesExecute" resultType="com.api.vo.butlerService.VoFacilitiesExecute">
+        select T.* from (
+            select sfe.id,concat(sfp.code,'-',sfe.sort) as code,sfc.name as category_name,
+            sfm.name as facilities_name,su1.actual_name as examiner_name,su1.tel as examiner_tel,
+            sfe.status,sfe.check_date,sfe.situation,sfe.detail
+            from sys_facilities_execute as sfe,sys_facilities_plan as sfp,sys_facilities_manage as sfm,sys_user as su1,
+            sys_facilities_category as sfc
+            <where>
+                sfe.facilities_plan_id = sfp.id
+                and sfp.examiner = su1.id
+                and sfp.facilities_manage_id = sfm.id
+                and sfm.facilities_category_id = sfc.id
+                <if test="type != null">
+                    and sfc.type = #{type}
+                </if>
+                <if test="facilitiesName != null and facilitiesName != ''">
+                    and sfm.name like concat('%',#{facilitiesName},'%')
+                </if>
+                <if test="tel != null and tel != ''">
+                    and su1.tel like concat('%',#{tel},'%')
+                </if>
+                <if test="status != null">
+                    and sfe.status = #{status}
+                </if>
+                and sfp.is_delete = 1
+                and sfm.is_delete = 1
+                and sfc.is_delete = 1
+            </where>
+        ) as T
+        <where>
+            <if test="code != null and code != ''">
+                and T.code like concat('%',#{code},'%')
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

@@ -89,6 +89,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_ELECTRONIC_COMMERCE;
     @Value("${prop.upload-community-introduction}")
     private String UPLOAD_COMMUNITY_INTRODUCTION;
+    @Value("${prop.upload-facilities-check-photo}")
+    private String UPLOAD_FACILITIES_CHECK_PHOTO;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -333,6 +335,12 @@ public class UploadServiceImpl implements UploadService {
         map.put("message","上传成功");
         map.put("url",url);
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadFacilitiesCheckPhoto(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_FACILITIES_CHECK_PHOTO);
         return map;
     }
 
