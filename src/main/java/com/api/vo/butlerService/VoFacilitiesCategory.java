@@ -19,6 +19,10 @@ public class VoFacilitiesCategory {
      */
     private String name;
     /**
+     * 分类类型：1.设施，2.设备
+     */
+    private Integer type;
+    /**
      * 添加人名称
      */
     private String createName;
@@ -37,6 +41,7 @@ public class VoFacilitiesCategory {
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", type=" + type +
                 ", createName='" + createName + '\'' +
                 ", num=" + num +
                 ", createDate=" + createDate +
@@ -67,6 +72,14 @@ public class VoFacilitiesCategory {
         this.name = name;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public String getCreateName() {
         return createName;
     }
@@ -94,10 +107,11 @@ public class VoFacilitiesCategory {
     public VoFacilitiesCategory() {
     }
 
-    public VoFacilitiesCategory(Integer id, String code, String name, String createName, Integer num, Date createDate) {
+    public VoFacilitiesCategory(Integer id, String code, String name, Integer type, String createName, Integer num, Date createDate) {
         this.id = id;
         this.code = code;
         this.name = name;
+        this.type = type;
         this.createName = createName;
         this.num = num;
         this.createDate = createDate;

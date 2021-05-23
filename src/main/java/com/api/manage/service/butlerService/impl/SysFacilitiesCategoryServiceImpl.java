@@ -38,6 +38,11 @@ public class SysFacilitiesCategoryServiceImpl implements SysFacilitiesCategorySe
     public Map<String, Object> insert(FacilitiesCategory facilitiesCategory) {
         map = new HashMap<>();
         try {
+            if (facilitiesCategory.getType() != 1 && facilitiesCategory.getType() != 2){
+                //分类类型：1.设施，2.设备
+                throw new RuntimeException("设施分类类型填写有误");
+            }
+
             //获取登录用户信息
             Subject subject = SecurityUtils.getSubject();
             SysUser sysUser = (SysUser) subject.getPrincipal();
@@ -131,7 +136,7 @@ public class SysFacilitiesCategoryServiceImpl implements SysFacilitiesCategorySe
         map = new HashMap<>();
         try {
             for (int id : ids) {
-                //根据设施分类主键id 查询未删除设施数量
+                //根据设施/设备分类主键id 查询未删除设施/设备数量
                 int count = facilitiesCategoryDao.countFacilitiesByCategoryId(id);
                 if (count >0){
                     throw new RuntimeException("所选分类下存在设施信息，不可删除");

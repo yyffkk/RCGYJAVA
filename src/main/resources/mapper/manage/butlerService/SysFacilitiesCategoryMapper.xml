@@ -4,13 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesCategoryDao">
     <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesCategory" resultType="com.api.vo.butlerService.VoFacilitiesCategory">
-        select sfc.id,sfc.code,sfc.name,su.actual_name as create_name,sfc.num,sfc.create_date
+        select sfc.id,sfc.code,sfc.name,sfc.type,su.actual_name as create_name,sfc.num,sfc.create_date
         from sys_facilities_category as sfc,sys_user as su
         <where>
             sfc.create_id = su.id
             and sfc.is_delete = 1
             <if test="name != null and name != ''">
                 and sfc.name like concat('%',#{name},'%')
+            </if>
+            <if test="type != null">
+                and sfc.type = #{type}
             </if>
             <if test="code != null and code != ''">
                 and sfc.code like concat('%',#{code},'%')
@@ -28,6 +31,7 @@
         insert into sys_facilities_category(
             code,
             name,
+            type,
             num,
             open_start_date,
             open_end_date,
@@ -37,6 +41,7 @@
         )values (
             #{code},
             #{name},
+            #{type},
             #{num},
             #{openStartDate},
             #{openEndDate},
@@ -50,7 +55,7 @@
     </insert>
 
     <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFacilitiesCategoryDetail">
-        select sfc.id,sfc.code,sfc.name,su.actual_name as create_name,sfc.num,sfc.create_date,su.tel,sfc.open_start_date,sfc.open_end_date
+        select sfc.id,sfc.code,sfc.name,sfc.type,su.actual_name as create_name,sfc.num,sfc.create_date,su.tel,sfc.open_start_date,sfc.open_end_date
         from sys_facilities_category as sfc,sys_user as su
         where sfc.create_id = su.id and sfc.id = #{id} and sfc.is_delete = 1
     </select>

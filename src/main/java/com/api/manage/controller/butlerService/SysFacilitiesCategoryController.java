@@ -27,8 +27,8 @@ public class SysFacilitiesCategoryController extends ShiroExceptions {
     SysFacilitiesCategoryService facilitiesCategoryService;
 
     /**
-     * 查询所有的设施分类（包含搜索条件）
-     * @param facilitiesCategory 设施分类搜索条件
+     * 查询所有的设施/设备分类（包含搜索条件）
+     * @param facilitiesCategory 设施/设备分类搜索条件
      * @return map
      */
     @GetMapping("/list")
@@ -45,8 +45,8 @@ public class SysFacilitiesCategoryController extends ShiroExceptions {
     }
 
     /**
-     * 添加设施分类信息
-     * @param facilitiesCategory 设施分类管理model
+     * 添加设施/设备分类信息
+     * @param facilitiesCategory 设施/设备分类管理model
      * @return map
      */
     @PostMapping("/insert")
@@ -56,8 +56,8 @@ public class SysFacilitiesCategoryController extends ShiroExceptions {
     }
 
     /**
-     * 根据设施分类主键id查询设施分类信息
-     * @param id 设施分类主键id
+     * 根据设施/设备分类主键id查询设施分类信息
+     * @param id 设施/设备分类主键id
      * @return map
      */
     @GetMapping("/findDetailById")
@@ -67,8 +67,8 @@ public class SysFacilitiesCategoryController extends ShiroExceptions {
     }
 
     /**
-     * 根据设施分类主键Id修改设施分类信息
-     * @param facilitiesCategory 设施分类管理model
+     * 根据设施分类/设备主键Id修改设施分类信息(不允许修改设施分类类型)
+     * @param facilitiesCategory 设施/设备分类管理model
      * @return map
      */
     @PostMapping("/update")
@@ -79,7 +79,7 @@ public class SysFacilitiesCategoryController extends ShiroExceptions {
 
 
     /**
-     * 批量删除设施分类
+     * 批量删除设施/设备分类
      * @return map
      */
     @PostMapping("/delete")

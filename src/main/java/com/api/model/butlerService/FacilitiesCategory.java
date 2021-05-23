@@ -22,6 +22,10 @@ public class FacilitiesCategory {
      */
     private String name;
     /**
+     * 分类类型：1.设施，2.设备
+     */
+    private Integer type;
+    /**
      * 设施数量
      */
     private Integer num;
@@ -64,6 +68,7 @@ public class FacilitiesCategory {
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", type=" + type +
                 ", num=" + num +
                 ", openStartDate=" + openStartDate +
                 ", openEndDate=" + openEndDate +
@@ -98,6 +103,14 @@ public class FacilitiesCategory {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getNum() {
@@ -175,10 +188,11 @@ public class FacilitiesCategory {
     public FacilitiesCategory() {
     }
 
-    public FacilitiesCategory(Integer id, String code, String name, Integer num, Time openStartDate, Time openEndDate, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String[] imgUrls) {
+    public FacilitiesCategory(Integer id, String code, String name, Integer type, Integer num, Time openStartDate, Time openEndDate, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String[] imgUrls) {
         this.id = id;
         this.code = code;
         this.name = name;
+        this.type = type;
         this.num = num;
         this.openStartDate = openStartDate;
         this.openEndDate = openEndDate;
