@@ -10,6 +10,7 @@ import com.api.vo.businessManagement.VoContract;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -51,6 +52,7 @@ public class SysContractServiceImpl implements SysContractService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> delete(int[] ids) {
         map = new HashMap<>();
 
