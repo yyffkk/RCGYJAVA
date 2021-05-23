@@ -154,7 +154,7 @@ public class SysFacilitiesManageServiceImpl implements SysFacilitiesManageServic
         //根据设施主键ID查询设施状态
         int status = sysFacilitiesManageDao.findStatusById(id);
         if (status != 3){
-            map.put("message","此设施不处于停用状态，不可开启");
+            map.put("message","此设施/设备不处于停用状态，不可开启");
             map.put("status",false);
             return map;
         }

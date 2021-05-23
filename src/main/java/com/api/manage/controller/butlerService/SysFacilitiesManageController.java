@@ -26,8 +26,8 @@ public class SysFacilitiesManageController extends ShiroExceptions {
     SysFacilitiesManageService sysFacilitiesManageService;
 
     /**
-     * 查询所有的设施信息（包含搜索条件）
-     * @param searchFacilitiesManage 设施管理 搜索条件
+     * 查询所有的设施/设备信息（包含搜索条件）
+     * @param searchFacilitiesManage 设施/设备管理 搜索条件
      * @return map
      */
     @GetMapping("/list")
@@ -44,8 +44,8 @@ public class SysFacilitiesManageController extends ShiroExceptions {
 
 
     /**
-     * 添加设施信息
-     * @param facilitiesManage 设施管理信息model
+     * 添加设施/设备信息
+     * @param facilitiesManage 设施/设备管理信息model
      * @return map
      */
     @PostMapping("/insert")
@@ -54,8 +54,8 @@ public class SysFacilitiesManageController extends ShiroExceptions {
     }
 
     /**
-     * 修改设施信息
-     * @param facilitiesManage 设施管理信息model
+     * 修改设施/设备信息
+     * @param facilitiesManage 设施/设备管理信息model
      * @return map
      */
     @PostMapping("/update")
@@ -64,9 +64,9 @@ public class SysFacilitiesManageController extends ShiroExceptions {
     }
 
     /**
-     * 根据设施主键id查询设施详情
-     * @param id 设施主键id
-     * @return 设施
+     * 根据设施/设备主键id查询设施/设备详情
+     * @param id 设施/设备主键id
+     * @return map
      */
     @GetMapping("/findDetailById")
     public Map<String,Object> findDetailById(Integer id){
@@ -74,8 +74,8 @@ public class SysFacilitiesManageController extends ShiroExceptions {
     }
 
     /**
-     * 批量删除设施信息
-     * @param ids 批量删除设施主键id数组
+     * 批量删除设施/设备信息
+     * @param ids 批量删除设施/设备主键id数组
      * @return map
      */
     @PostMapping("/delete")
@@ -84,7 +84,7 @@ public class SysFacilitiesManageController extends ShiroExceptions {
     }
 
     /**
-     * 开启设施
+     * 开启设施/设备
      * @param id 设施主键ID
      * @return map
      */
