@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerFacilitiesCheckDao">
+
+    <select id="list" parameterType="com.api.model.butlerApp.ButlerFacilitiesCheckSearch" resultType="com.api.vo.butlerApp.ButlerFacilitiesCheckVo">
+        select T.* from(
+            select sfe.id,concat(sfp.code,'-',sfe.sort) as code,sfm.address as facilities_address,
+            sfm.name as facilities_name,sfe.status,sfe.begin_date,sfe.end_date,sfe.check_date,sfe.situation,sfe.detail,sfc.type
+            from sys_facilities_execute as sfe,sys_facilities_plan as sfp,sys_facilities_manage as sfm,sys_facilities_category as sfc
+            where sfe.facilities_plan_id = sfp.id and sfp.facilities_manage_id = sfm.id
+            and sfm.facilities_category_id = sfc.id and sfp.examiner = #{id}
+            order by sfe.begin_date desc
+        ) as T
+        <where>
+            <if test="facilitiesType != null">
+                and T.type = #{facilitiesType}
+            </if>
+            <if test="executeStatus != null">
+                and T.status = #{executeStatus}
+            </if>
+        </where>
+
+
+    </select>
+</mapper>
