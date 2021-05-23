@@ -43,6 +43,18 @@ public class AppMyOrderVo {
      */
     private Integer num;
     /**
+     * 供应商名称
+     */
+    private String supplierName;
+    /**
+     * 一级分类名称
+     */
+    private String levelOneCategory;
+    /**
+     * 二级分类名称
+     */
+    private String levelTwoCategory;
+    /**
      * 状态：1.待发货，2.已发货，3.已收货，4.申请退换货，5.申请通过，6.申请驳回
      */
     private Integer status;
@@ -63,6 +75,9 @@ public class AppMyOrderVo {
                 ", sellingPrice=" + sellingPrice +
                 ", markingPrice=" + markingPrice +
                 ", num=" + num +
+                ", supplierName='" + supplierName + '\'' +
+                ", levelOneCategory='" + levelOneCategory + '\'' +
+                ", levelTwoCategory='" + levelTwoCategory + '\'' +
                 ", status=" + status +
                 ", arrivalTime='" + arrivalTime + '\'' +
                 '}';
@@ -140,6 +155,30 @@ public class AppMyOrderVo {
         this.num = num;
     }
 
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getLevelOneCategory() {
+        return levelOneCategory;
+    }
+
+    public void setLevelOneCategory(String levelOneCategory) {
+        this.levelOneCategory = levelOneCategory;
+    }
+
+    public String getLevelTwoCategory() {
+        return levelTwoCategory;
+    }
+
+    public void setLevelTwoCategory(String levelTwoCategory) {
+        this.levelTwoCategory = levelTwoCategory;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -159,7 +198,7 @@ public class AppMyOrderVo {
     public AppMyOrderVo() {
     }
 
-    public AppMyOrderVo(Integer id, String code, Integer goodsId, String goodsName, Integer backType, List<VoResourcesImg> goodsImgList, BigDecimal sellingPrice, BigDecimal markingPrice, Integer num, Integer status, String arrivalTime) {
+    public AppMyOrderVo(Integer id, String code, Integer goodsId, String goodsName, Integer backType, List<VoResourcesImg> goodsImgList, BigDecimal sellingPrice, BigDecimal markingPrice, Integer num, String supplierName, String levelOneCategory, String levelTwoCategory, Integer status, String arrivalTime) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -169,6 +208,9 @@ public class AppMyOrderVo {
         this.sellingPrice = sellingPrice;
         this.markingPrice = markingPrice;
         this.num = num;
+        this.supplierName = supplierName;
+        this.levelOneCategory = levelOneCategory;
+        this.levelTwoCategory = levelTwoCategory;
         this.status = status;
         this.arrivalTime = arrivalTime;
     }

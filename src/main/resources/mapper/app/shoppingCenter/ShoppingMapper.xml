@@ -58,11 +58,15 @@
     </update>
 
     <select id="myOrder" parameterType="com.api.model.shoppingCenter.Order" resultType="com.api.vo.app.AppMyOrderVo">
-        select sga.id,sga.code,sg.id as goods_id,sg.title as goods_name,sga.back_type,sga.status,sga.num,sg.selling_price,sg.marking_price,sg.arrival_time
-        from shop_goods_appointment as sga,shop_goods as sg,user_resident as ur
+        select sga.id,sga.code,sg.id as goods_id,sg.title as goods_name,sga.back_type,sga.status,sga.num,sg.selling_price,sg.marking_price,sg.arrival_time,
+        ss.name as supplier_name,sc2.name as level_two_category,sc1.name as level_one_category
+        from shop_goods_appointment as sga,shop_goods as sg,user_resident as ur,shop_supplier as ss,shop_category as sc2,shop_category as sc1
         <where>
             sga.goods_id = sg.id
             and sga.create_id = ur.id
+            and sg.supplier_id = ss.id
+            and sg.category_id = sc2.id
+            and sc2.parent_id = sc1.id
             <if test="status != null">
                 and sga.status = #{status}
             </if>
