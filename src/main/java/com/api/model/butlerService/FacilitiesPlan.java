@@ -11,6 +11,10 @@ public class FacilitiesPlan {
      */
     private Integer id;
     /**
+     * 设施/设备计划编号
+     */
+    private String code;
+    /**
      * 设施/设备管理主键id
      */
     private Integer facilitiesManageId;
@@ -51,6 +55,7 @@ public class FacilitiesPlan {
     public String toString() {
         return "FacilitiesPlan{" +
                 "id=" + id +
+                ", code='" + code + '\'' +
                 ", facilitiesManageId=" + facilitiesManageId +
                 ", examiner=" + examiner +
                 ", status=" + status +
@@ -69,6 +74,14 @@ public class FacilitiesPlan {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getFacilitiesManageId() {
@@ -146,8 +159,9 @@ public class FacilitiesPlan {
     public FacilitiesPlan() {
     }
 
-    public FacilitiesPlan(Integer id, Integer facilitiesManageId, Integer examiner, Integer status, Date planBeginDate, Integer spaceTime, Integer checkRateType, Integer createId, Date createDate, Integer isDelete) {
+    public FacilitiesPlan(Integer id, String code, Integer facilitiesManageId, Integer examiner, Integer status, Date planBeginDate, Integer spaceTime, Integer checkRateType, Integer createId, Date createDate, Integer isDelete) {
         this.id = id;
+        this.code = code;
         this.facilitiesManageId = facilitiesManageId;
         this.examiner = examiner;
         this.status = status;

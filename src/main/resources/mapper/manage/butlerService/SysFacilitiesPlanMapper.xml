@@ -4,13 +4,20 @@
 <mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesPlanDao">
 
     <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesPlan" resultType="com.api.vo.butlerService.VoFacilitiesPlan">
-        select sfp.id,sfm.name as facilities_name,su1.actual_name as examiner_name,su1.tel as examiner_tel,
+        select sfp.id,sfp.code,sfm.name as facilities_name,su1.actual_name as examiner_name,su1.tel as examiner_tel,
         sfp.status,sfp.plan_begin_date,sfp.space_time,sfp.check_rate_type,su2.actual_name as create_name
-        from sys_facilities_plan as sfp,sys_facilities_manage as sfm,sys_user as su1,sys_user as su2
+        from sys_facilities_plan as sfp,sys_facilities_manage as sfm,sys_user as su1,sys_user as su2,sys_facilities_category as sfc
         <where>
             sfp.examiner = su1.id
             and sfp.create_id = su2.id
             and sfp.facilities_manage_id = sfm.id
+            and sfm.facilities_category_id = sfc.id
+            <if test="type != null">
+                and sfc.type = #{type}
+            </if>
+            <if test="code != null and code != ''">
+                and sfp.code like concat('%',#{code},'%')
+            </if>
             <if test="facilitiesName != null and facilitiesName != ''">
                 and sfm.name like concat('%',#{facilitiesName},'%')
             </if>
@@ -18,12 +25,15 @@
                 and su1.tel like concat('%',#{tel},'%')
             </if>
             and sfp.is_delete = 1
+            and sfm.is_delete = 1
+            and sfc.is_delete = 1
         </where>
         order by sfp.create_date desc
     </select>
 
     <insert id="insertPlan" parameterType="com.api.model.butlerService.FacilitiesPlan">
         insert into sys_facilities_plan(
+            code,
             facilities_manage_id,
             examiner,
             status,
@@ -34,6 +44,7 @@
             create_date,
             is_delete
         )values (
+            #{code},
             #{facilitiesManageId},
             #{examiner},
             #{status},
@@ -87,6 +98,10 @@
     </select>
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.FacilitiesPlan">
         select * from sys_facilities_plan where id = #{id} and is_delete = 1
+    </select>
+
+    <select id="findById2" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.FacilitiesPlan">
+        select * from sys_facilities_plan where id = #{id}
     </select>
     <select id="countExecuteNumByPlanId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from sys_facilities_execute where facilities_plan_id = #{facilitiesPlanId}

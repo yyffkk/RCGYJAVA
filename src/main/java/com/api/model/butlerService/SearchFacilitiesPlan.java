@@ -13,6 +13,14 @@ public class SearchFacilitiesPlan {
      */
     private int size;
     /**
+     * 类型：1.设施，2.设备
+     */
+    private Integer type;
+    /**
+     * 检查计划编号
+     */
+    private String code;
+    /**
      * 设施/设备名称
      */
     private String facilitiesName;
@@ -26,6 +34,8 @@ public class SearchFacilitiesPlan {
         return "SearchFacilitiesPlan{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
+                ", type=" + type +
+                ", code='" + code + '\'' +
                 ", facilitiesName='" + facilitiesName + '\'' +
                 ", tel='" + tel + '\'' +
                 '}';
@@ -47,6 +57,22 @@ public class SearchFacilitiesPlan {
         this.size = size;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public String getFacilitiesName() {
         return facilitiesName;
     }
@@ -66,9 +92,11 @@ public class SearchFacilitiesPlan {
     public SearchFacilitiesPlan() {
     }
 
-    public SearchFacilitiesPlan(int pageNum, int size, String facilitiesName, String tel) {
+    public SearchFacilitiesPlan(int pageNum, int size, Integer type, String code, String facilitiesName, String tel) {
         this.pageNum = pageNum;
         this.size = size;
+        this.type = type;
+        this.code = code;
         this.facilitiesName = facilitiesName;
         this.tel = tel;
     }

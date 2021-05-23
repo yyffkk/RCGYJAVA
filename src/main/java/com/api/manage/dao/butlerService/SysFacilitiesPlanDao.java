@@ -66,6 +66,14 @@ public interface SysFacilitiesPlanDao {
     FacilitiesPlan findById(int id);
 
     /**
+     * 根据检查计划主键id 查询 检查计划情况(删除也能查到)
+     * @param id 检查计划主键id
+     * @return 检查计划情况
+     */
+    FacilitiesPlan findById2(int id);
+
+
+    /**
      * 根据检查计划主键id查询检查执行数量
      * @param facilitiesPlanId 检查计划主键id
      * @return 检查执行数量
@@ -86,4 +94,5 @@ public interface SysFacilitiesPlanDao {
      * @return 影响行数
      */
     int updateExecuteStatus(Integer id);
+
 }

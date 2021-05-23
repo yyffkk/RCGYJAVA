@@ -6,11 +6,13 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.FacilitiesExecute;
 import com.api.model.butlerService.FacilitiesPlan;
 import com.api.model.butlerService.SearchFacilitiesPlan;
+import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFacilitiesPlan;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -28,6 +30,7 @@ public class SysFacilitiesPlanServiceImpl implements SysFacilitiesPlanService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(FacilitiesPlan facilitiesPlan) {
         map = new HashMap<>();
         //获取登录用户信息
@@ -39,6 +42,7 @@ public class SysFacilitiesPlanServiceImpl implements SysFacilitiesPlanService {
             facilitiesPlan.setCreateDate(new Date());
             facilitiesPlan.setStatus(1);//默认1.开启
             facilitiesPlan.setIsDelete(1);//默认1.非删
+            facilitiesPlan.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));//填入计划编号
 
             int insert = sysFacilitiesPlanDao.insertPlan(facilitiesPlan);
             if (insert <=0){
@@ -82,6 +86,7 @@ public class SysFacilitiesPlanServiceImpl implements SysFacilitiesPlanService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> delete(int[] ids) {
         map = new HashMap<>();
         try {
@@ -108,6 +113,7 @@ public class SysFacilitiesPlanServiceImpl implements SysFacilitiesPlanService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> stop(int[] ids) {
         map = new HashMap<>();
         try {
@@ -134,6 +140,7 @@ public class SysFacilitiesPlanServiceImpl implements SysFacilitiesPlanService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> open(int[] ids) {
         map = new HashMap<>();
         try {
@@ -142,8 +149,11 @@ public class SysFacilitiesPlanServiceImpl implements SysFacilitiesPlanService {
                 //查询最新的一次的检查状态
                 FacilitiesExecute execute = sysFacilitiesPlanDao.findNewPlan(id);
 
-                //根据检查计划主键id 查询 检查计划情况
-                FacilitiesPlan plan = sysFacilitiesPlanDao.findById(id);
+                //根据检查计划主键id 查询 检查计划情况(删除也能查到)
+                FacilitiesPlan plan = sysFacilitiesPlanDao.findById2(id);
+                if (plan == null){
+                    throw new RuntimeException("该检查计划不存在");
+                }
 
                 if (execute.getStatus() != 1){
                     //当最新的一次的检查状态不为1.待完成，证明开启计划需要新添加一条执行记录
