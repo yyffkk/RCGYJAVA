@@ -1,0 +1,96 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesPlanDao">
+
+    <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesPlan" resultType="com.api.vo.butlerService.VoFacilitiesPlan">
+        select sfp.id,sfm.name as facilities_name,su1.actual_name as examiner_name,su1.tel as examiner_tel,
+        sfp.status,sfp.plan_begin_date,sfp.space_time,sfp.check_rate_type,su2.actual_name as create_name
+        from sys_facilities_plan as sfp,sys_facilities_manage as sfm,sys_user as su1,sys_user as su2
+        <where>
+            sfp.examiner = su1.id
+            and sfp.create_id = su2.id
+            and sfp.facilities_manage_id = sfm.id
+            <if test="facilitiesName != null and facilitiesName != ''">
+                and sfm.name like concat('%',#{facilitiesName},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and su1.tel like concat('%',#{tel},'%')
+            </if>
+            and sfp.is_delete = 1
+        </where>
+        order by sfp.create_date desc
+    </select>
+
+    <insert id="insertPlan" parameterType="com.api.model.butlerService.FacilitiesPlan">
+        insert into sys_facilities_plan(
+            facilities_manage_id,
+            examiner,
+            status,
+            plan_begin_date,
+            space_time,
+            check_rate_type,
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{facilitiesManageId},
+            #{examiner},
+            #{status},
+            #{planBeginDate},
+            #{spaceTime},
+            #{checkRateType},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+    <insert id="insertExecute" parameterType="com.api.model.butlerService.FacilitiesExecute">
+        insert into sys_facilities_execute(
+            status,
+            facilities_plan_id,
+            begin_date,
+            end_date,
+            sort
+        )values (
+            #{status},
+            #{facilitiesPlanId},
+            #{beginDate},
+            #{endDate},
+            #{sort}
+        )
+    </insert>
+
+    <update id="falseDelete" parameterType="java.lang.Integer">
+        update sys_facilities_plan
+        set is_delete = 0
+        where id = #{id}
+    </update>
+    <update id="stop" parameterType="java.lang.Integer">
+        update sys_facilities_plan
+        set status = 2
+        where id = #{id}
+    </update>
+    <update id="open" parameterType="java.lang.Integer">
+        update sys_facilities_plan
+        set status = 1
+        where id = #{id}
+    </update>
+
+    <select id="findNewPlan" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.FacilitiesExecute">
+        select * from sys_facilities_execute
+        where facilities_plan_id = #{id}
+        order by sort desc limit 1
+    </select>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.FacilitiesPlan">
+        select * from sys_facilities_plan where id = #{id}
+    </select>
+    <select id="countExecuteNumByPlanId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_facilities_execute where facilities_plan_id = #{facilitiesPlanId}
+    </select>
+
+
+</mapper>
