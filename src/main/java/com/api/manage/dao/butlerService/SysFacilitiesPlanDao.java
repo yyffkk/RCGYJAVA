@@ -5,6 +5,7 @@ import com.api.model.butlerService.FacilitiesPlan;
 import com.api.model.butlerService.SearchFacilitiesPlan;
 import com.api.vo.butlerService.VoFacilitiesPlan;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SysFacilitiesPlanDao {
@@ -70,4 +71,19 @@ public interface SysFacilitiesPlanDao {
      * @return 检查执行数量
      */
     int countExecuteNumByPlanId(Integer facilitiesPlanId);
+
+
+    /**
+     * 根据当前时间，查询计划当次检查开始时间小于当天的 并状态为待完成的检查执行记录
+     * @param date 当前时间
+     * @return 检查执行记录
+     */
+    List<FacilitiesExecute> findOldExecuteByToday(Date date);
+
+    /**
+     * 修改当次检查情况状态为，3.未完成
+     * @param id 检查执行情况主键id
+     * @return 影响行数
+     */
+    int updateExecuteStatus(Integer id);
 }

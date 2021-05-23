@@ -86,11 +86,21 @@
         order by sort desc limit 1
     </select>
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.FacilitiesPlan">
-        select * from sys_facilities_plan where id = #{id}
+        select * from sys_facilities_plan where id = #{id} and is_delete = 1
     </select>
     <select id="countExecuteNumByPlanId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from sys_facilities_execute where facilities_plan_id = #{facilitiesPlanId}
     </select>
+    <select id="findOldExecuteByToday" parameterType="java.util.Date" resultType="com.api.model.butlerService.FacilitiesExecute">
+        select * from sys_facilities_execute
+        where DATE_FORMAT(begin_date,'%Y-%m-%d') <![CDATA[ < ]]> DATE_FORMAT(#{date},'%Y-%m-%d') and status = 1
+    </select>
+
+    <update id="updateExecuteStatus" parameterType="java.lang.Integer">
+        update sys_facilities_execute
+        set status = 3
+        where id = #{id}
+    </update>
 
 
 </mapper>

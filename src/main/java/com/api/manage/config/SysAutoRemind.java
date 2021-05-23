@@ -3,14 +3,13 @@ package com.api.manage.config;
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.butlerService.BorrowDao;
+import com.api.manage.dao.butlerService.SysFacilitiesPlanDao;
 import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
 import com.api.manage.dao.remind.RemindDao;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
 import com.api.model.butlerApp.ButlerPlanIdAndActualBeginDate;
-import com.api.model.butlerService.SysArticleBorrow;
-import com.api.model.butlerService.SysInspectionExecute;
-import com.api.model.butlerService.SysInspectionPlan;
+import com.api.model.butlerService.*;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.systemDataBigScreen.DailyActivity;
@@ -83,6 +82,8 @@ public class SysAutoRemind {
     ButlerInspectionDao butlerInspectionDao;
     @Resource
     SysInspectionPlanDao sysInspectionPlanDao;
+    @Resource
+    SysFacilitiesPlanDao sysFacilitiesPlanDao;
 
 
     /**
@@ -303,6 +304,82 @@ public class SysAutoRemind {
             log.info("本次执行没有处理对象");
         }
     }
+
+    /**
+     * 0 0 0 1/1 * ?
+     * 0/5 * * * * ?
+     * 自动更新设施/设备检查信息（当天检查还处于待完成状态：修改状态为未完成，并添加下一次巡检执行情况）
+     */
+    @Scheduled(cron = "0 0 0 1/1 * ? ")
+    public void autoFacilities(){
+        Date date = new Date();
+        //根据当前时间，查询计划当次检查开始时间小于当天的 并状态为待完成的检查执行记录
+        List<FacilitiesExecute> executes = sysFacilitiesPlanDao.findOldExecuteByToday(date);
+        if (executes != null && executes.size()>0){
+            for (FacilitiesExecute execute : executes) {
+                //当 当前时间的日期（年月日）大于添加后的当次检查开始时间的日期（年月日），继续添加检查计划，并将添加后的当次检查计划变为未完成状态
+                Date time = execute.getBeginDate();
+                while (dateCompare(new Date(),time)){
+                    //查询最新的一次计划当次检查开始时间
+                    execute = sysFacilitiesPlanDao.findNewPlan(execute.getFacilitiesPlanId());
+                    //根据检查计划主键id 查询 检查计划情况
+                    FacilitiesPlan plan = sysFacilitiesPlanDao.findById(execute.getFacilitiesPlanId());
+                    if (plan != null && plan.getStatus() ==1){//未被删除，并启用
+                        //添加下一条检查计划
+                        FacilitiesExecute execute3 = new FacilitiesExecute();
+                        execute3.setFacilitiesPlanId(execute.getFacilitiesPlanId());//填入检查计划主键id
+                        execute3.setStatus(1);//添加默认，1.待完成
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(time);
+                        switch (plan.getCheckRateType()){
+                            case 1:
+                                calendar.add(Calendar.DAY_OF_MONTH,1);
+                                break;
+                            case 2:
+                                calendar.add(Calendar.DAY_OF_MONTH,7);
+                                break;
+                            case 3:
+                                calendar.add(Calendar.MONTH,1);
+                                break;
+                            default:
+                                log.info("数据异常,巡检执行情况主键id:"+execute.getId());
+                                continue;
+                        }
+                        time = calendar.getTime();
+                        execute3.setBeginDate(time); //填入计划当次检查开始时间
+
+                        calendar.setTime(time);
+                        calendar.add(Calendar.MINUTE,plan.getSpaceTime());
+                        Date time2 = calendar.getTime();
+                        execute3.setEndDate(time2); //填入计划当次检查结束时间
+
+                        //根据检查计划主键id查询检查执行数量
+                        int count2 = sysFacilitiesPlanDao.countExecuteNumByPlanId(execute.getFacilitiesPlanId());
+                        execute3.setSort(count2+1); //填入排序默认为1
+                        int insert2 = sysFacilitiesPlanDao.insertExecute(execute3);
+                        if (insert2 <=0){
+                            log.info("添加执行检查信息失败,检查执行情况主键id:"+execute.getId());
+                            continue;
+                        }
+                        log.info("添加执行检查信息成功,检查执行情况主键id:"+execute.getId());
+
+                        //修改当次检查情况状态为，3.未完成
+                        int update3 = sysFacilitiesPlanDao.updateExecuteStatus(execute.getId());
+                        if (update3 <= 0){
+                            log.info("修改当次检查情况状态失败,检查执行情况主键id:"+execute.getId());
+                            continue;
+                        }
+                        log.info("修改当次检查情况状态成功,检查执行情况主键id:"+execute.getId());
+
+                    }
+                }
+            }
+        }else {
+            log.info("本次执行没有处理对象");
+        }
+    }
+
 
     /**
      * 比较第一个值date和第二个值time
