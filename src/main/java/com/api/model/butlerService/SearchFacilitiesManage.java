@@ -19,6 +19,10 @@ public class SearchFacilitiesManage {
      */
     private String name;
     /**
+     * 分类类型：1.设施，2.设备
+     */
+    private Integer type;
+    /**
      * 设施分类主键id
      */
     private Integer facilitiesCategoryId;
@@ -45,6 +49,7 @@ public class SearchFacilitiesManage {
                 "pageNum=" + pageNum +
                 ", size=" + size +
                 ", name='" + name + '\'' +
+                ", type=" + type +
                 ", facilitiesCategoryId=" + facilitiesCategoryId +
                 ", code='" + code + '\'' +
                 ", status=" + status +
@@ -75,6 +80,14 @@ public class SearchFacilitiesManage {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getFacilitiesCategoryId() {
@@ -120,10 +133,11 @@ public class SearchFacilitiesManage {
     public SearchFacilitiesManage() {
     }
 
-    public SearchFacilitiesManage(int pageNum, int size, String name, Integer facilitiesCategoryId, String code, Integer status, Date createStartDate, Date createEndDate) {
+    public SearchFacilitiesManage(int pageNum, int size, String name, Integer type, Integer facilitiesCategoryId, String code, Integer status, Date createStartDate, Date createEndDate) {
         this.pageNum = pageNum;
         this.size = size;
         this.name = name;
+        this.type = type;
         this.facilitiesCategoryId = facilitiesCategoryId;
         this.code = code;
         this.status = status;

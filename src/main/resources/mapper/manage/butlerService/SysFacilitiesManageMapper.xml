@@ -28,7 +28,11 @@
             <if test="createEndDate != null">
                 and sfm.create_date <![CDATA[ <= ]]> #{createEndDate}
             </if>
+            <if test="type != null">
+                and sfc.type = #{type}
+            </if>
         </where>
+        order by sfm.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.butlerService.FacilitiesManage">
