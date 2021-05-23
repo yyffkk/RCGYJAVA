@@ -107,4 +107,40 @@
     <select id="findNewPlan" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysInspectionExecute">
         select * from sys_inspection_execute where inspection_plan_id = #{id} order by sort desc limit 1
     </select>
+    <select id="executeList" parameterType="com.api.model.butlerService.SearchInspectionExecute" resultType="com.api.vo.butlerService.VoInspectionExecute">
+        select T.* from (
+            select sie.id,concat(sip.code,'-',sie.sort) as code,sip.name,sie.begin_date,sie.actual_begin_date,sie.actual_end_date,su.actual_name as inspector_name,su.tel as inspector_tel
+            from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_user as su
+            <where>
+                sie.inspection_plan_id = sip.id
+                and sip.inspector = su.id
+                <if test="inspectionStatus == 1">
+                    and sie.actual_begin_date is null
+                    and sie.actual_end_date is null
+                </if>
+                <if test="inspectionStatus == 2">
+                    and sie.actual_begin_date is not null
+                    and sie.actual_end_date is not null
+                </if>
+                <if test="inspectionStatus == 3">
+                    and sie.actual_begin_date is not null
+                    and sie.actual_end_date is null
+                </if>
+                <if test="inspectionStatus == 4">
+                    and sie.actual_begin_date is null
+                    and sie.actual_end_date is not null
+                </if>
+            </where>
+        ) as T
+        <where>
+            <if test="code != null and code != ''">
+                and T.code like concat('%',#{code},'%')
+            </if>
+            <if test="inspectorTel != null and inspectorTel != ''">
+                and T.inspector_tel like concat('%',#{inspectorTel},'%')
+            </if>
+        </where>
+
+
+    </select>
 </mapper>

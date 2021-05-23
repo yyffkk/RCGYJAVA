@@ -1,7 +1,9 @@
 package com.api.manage.service.butlerService;
 
+import com.api.model.butlerService.SearchInspectionExecute;
 import com.api.model.butlerService.SearchInspectionPlan;
 import com.api.model.butlerService.SysInspectionPlan;
+import com.api.vo.butlerService.VoInspectionExecute;
 import com.api.vo.butlerService.VoInspectionPlan;
 
 import java.util.List;
@@ -17,4 +19,6 @@ public interface SysInspectionPlanService {
     Map<String, Object> falseDelete(int[] ids);
 
     Map<String, Object> isEnable(Integer id);
+
+    List<VoInspectionExecute> executeList(SearchInspectionExecute searchInspectionExecute);
 }

@@ -5,13 +5,15 @@ import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.butlerService.SysInspectionRouteDao;
 import com.api.manage.service.butlerService.SysInspectionPlanService;
 import com.api.model.businessManagement.SysUser;
-import com.api.model.butlerService.PlanIdAndStatus;
-import com.api.model.butlerService.SearchInspectionPlan;
-import com.api.model.butlerService.SysInspectionExecute;
-import com.api.model.butlerService.SysInspectionPlan;
+import com.api.model.butlerService.*;
+import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.util.IdWorker;
 import com.api.vo.butlerService.VoFBIInspectionPlan;
+import com.api.vo.butlerService.VoInspectionExecute;
 import com.api.vo.butlerService.VoInspectionPlan;
+import com.api.vo.systemDataBigScreen.SDInspectionExecuteMapVo;
+import com.api.vo.systemDataBigScreen.SDInspectionExecutePointVo;
+import com.api.vo.systemDataBigScreen.SDInspectionExecuteVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
     SysInspectionRouteDao sysInspectionRouteDao;
     @Resource
     ButlerInspectionDao butlerInspectionDao;
+    @Resource
+    SystemDataDao systemDataDao;
     private static Map<String,Object> map = null;
 
 
@@ -217,5 +221,47 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
         map.put("message",msg+"成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public List<VoInspectionExecute> executeList(SearchInspectionExecute searchInspectionExecute) {
+        List<VoInspectionExecute> list = sysInspectionPlanDao.executeList(searchInspectionExecute);
+        if (list != null && list.size()>0){
+            for (VoInspectionExecute inspectionExecuteVo : list) {
+                //判断实际开始时间是否为null
+                if (inspectionExecuteVo.getActualBeginDate() != null){
+                    //判断实际结束时间是否为null
+                    if (inspectionExecuteVo.getActualEndDate() != null){
+                        inspectionExecuteVo.setStatus(2); //实际开始时间与实际结束时间都不为null，2.已巡检
+                    }else {
+                        inspectionExecuteVo.setStatus(3); //实际开始时间不为null,实际结束时间为null，3.巡检中
+                    }
+                }else {
+                    //判断实际结束时间是否为null
+                    if (inspectionExecuteVo.getActualEndDate() != null){
+                        inspectionExecuteVo.setStatus(4); //实际开始时间为null,实际结束时间不为null，4.未巡检
+                    }else {
+                        //实际开始时间与实际结束时间都为null，1.待巡检
+                        inspectionExecuteVo.setStatus(1);
+                    }
+                }
+
+                List<SDInspectionExecutePointVo> executePointVos =null;
+                //如果实际开始实际为null，查询执行计划的巡检点，反之，查询计划的巡检点
+                if (inspectionExecuteVo.getActualBeginDate() != null){
+                    //根据巡检执行计划主键id查询执行计划的巡检点（开始巡检后的巡检点信息）
+                    executePointVos = systemDataDao.findExecutePointByExecuteId(inspectionExecuteVo.getId());
+                }else {
+                    //根据巡检执行计划主键id查询计划的巡检点（开始巡检前的巡检点信息）
+                    executePointVos = systemDataDao.findPlanPointByExecuteId(inspectionExecuteVo.getId());
+                }
+                inspectionExecuteVo.setExecutePointVos(executePointVos);
+
+                //巡检执行路线经纬度
+                List<SDInspectionExecuteMapVo> executeMapVoList = systemDataDao.findAllLocation(inspectionExecuteVo.getId());
+                inspectionExecuteVo.setExecuteMapVos(executeMapVoList);
+            }
+        }
+        return list;
     }
 }

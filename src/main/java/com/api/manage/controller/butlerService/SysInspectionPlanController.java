@@ -3,10 +3,12 @@ package com.api.manage.controller.butlerService;
 import com.api.manage.service.butlerService.SysInspectionPlanService;
 import com.api.manage.service.butlerService.SysInspectionPointService;
 import com.api.manage.shiro.ShiroExceptions;
+import com.api.model.butlerService.SearchInspectionExecute;
 import com.api.model.butlerService.SearchInspectionPlan;
 import com.api.model.butlerService.SysInspectionPlan;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoBorrow;
+import com.api.vo.butlerService.VoInspectionExecute;
 import com.api.vo.butlerService.VoInspectionPlan;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -92,6 +94,21 @@ public class SysInspectionPlanController extends ShiroExceptions {
     }
 
 
-
+    /**
+     * 查询所有的巡检执行记录信息(包含条件搜索)
+     * @param searchInspectionExecute 搜索条件
+     * @return map
+     */
+    @GetMapping("/executeList")
+    public Map<String,Object> executeList(SearchInspectionExecute searchInspectionExecute){
+        PageHelper.startPage(searchInspectionExecute.getPageNum(),searchInspectionExecute.getSize());
+        List<VoInspectionExecute> voInspectionExecuteList = sysInspectionPlanService.executeList(searchInspectionExecute);
+        PageInfo<VoInspectionExecute> pageInfo = new PageInfo<>(voInspectionExecuteList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 
 }

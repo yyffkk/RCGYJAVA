@@ -13,7 +13,7 @@ public class ButlerInspectionSearch {
      */
     private int size;
     /**
-     * 巡检状态（1.待巡检，2.已巡检）
+     * 巡检状态（1.待巡检，2.已巡检,3.巡检中,4.未巡检）
      */
     private Integer inspectionStatus;
     /**

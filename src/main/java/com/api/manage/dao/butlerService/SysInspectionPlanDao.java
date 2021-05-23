@@ -1,10 +1,8 @@
 package com.api.manage.dao.butlerService;
 
-import com.api.model.butlerService.PlanIdAndStatus;
-import com.api.model.butlerService.SearchInspectionPlan;
-import com.api.model.butlerService.SysInspectionExecute;
-import com.api.model.butlerService.SysInspectionPlan;
+import com.api.model.butlerService.*;
 import com.api.vo.butlerService.VoFBIInspectionPlan;
+import com.api.vo.butlerService.VoInspectionExecute;
 import com.api.vo.butlerService.VoInspectionPlan;
 
 import java.util.List;
@@ -65,4 +63,11 @@ public interface SysInspectionPlanDao {
      * @return 巡检计划信息
      */
     SysInspectionExecute findNewPlan(Integer id);
+
+    /**
+     * 查询所有的巡检执行记录信息(包含条件搜索)
+     * @param searchInspectionExecute 搜索条件
+     * @return 巡检执行记录信息
+     */
+    List<VoInspectionExecute> executeList(SearchInspectionExecute searchInspectionExecute);
 }
