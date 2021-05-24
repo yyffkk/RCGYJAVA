@@ -35,7 +35,7 @@
             </if>
             <if test="status == 6">
                 and sga.status <![CDATA[ >= ]]> 3
-                and score != null
+                and score is not null
             </if>
             <if test="status == 8">
                 and sga.status <![CDATA[ >= ]]> 8

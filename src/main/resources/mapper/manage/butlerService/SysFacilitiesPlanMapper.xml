@@ -145,6 +145,7 @@
                 and sfm.is_delete = 1
                 and sfc.is_delete = 1
             </where>
+            order by sfe.begin_date desc
         ) as T
         <where>
             <if test="code != null and code != ''">

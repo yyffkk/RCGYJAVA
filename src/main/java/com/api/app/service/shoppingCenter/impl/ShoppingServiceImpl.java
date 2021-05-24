@@ -231,7 +231,7 @@ public class ShoppingServiceImpl implements ShoppingService {
         map = new HashMap<>();
 
         int status = orderDao.findStatusById(goodsAppointmentId);
-        if (status != 4 && status != 6){
+        if (status != 4){
             map.put("message","该状态不可退换货");
             map.put("status",false);
             return map;

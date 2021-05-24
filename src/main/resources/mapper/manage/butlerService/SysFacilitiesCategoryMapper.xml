@@ -62,12 +62,22 @@
 
     <update id="update" parameterType="com.api.model.butlerService.FacilitiesCategory">
         update sys_facilities_category
-        set name = #{name},
-        code = #{code},
-        open_start_date = #{openStartDate},
-        open_end_date = #{openEndDate},
-        modify_id = #{modifyId},
-        modify_date = #{modifyDate}
+        <set>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="openStartDate != null">
+                open_start_date = #{openStartDate},
+            </if>
+            <if test="openEndDate != null">
+                open_end_date = #{openEndDate},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
         where id = #{id}
     </update>
 

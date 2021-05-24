@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.shoppingCenter.EvaluationDao">
+
+    <select id="list" parameterType="com.api.model.shoppingCenter.EvaluationSearch" resultType="com.api.vo.shoppingCenter.EvaluationVo">
+        select sga.id,sga.code,sga.score,sga.evaluation_date,sga.evaluation_reason,sg.title as goods_name,
+        sc2.name as category_level_two,sc1.name as category_level_one,ur.name as create_name,ur.tel as create_tel
+        from shop_goods_appointment as sga,shop_goods as sg,shop_category as sc2,shop_category as sc1,user_resident as ur
+        <where>
+            sga.goods_id = sg.id
+            and sg.category_id = sc2.id
+            and sc2.parent_id = sc1.id
+            and sga.create_id = ur.id
+            and sga.score is not null
+            <if test="score == 1">
+                and sga.score BETWEEN 1 and 4
+            </if>
+            <if test="score == 2">
+                and sga.score BETWEEN 5 and 6
+            </if>
+            <if test="score == 3">
+                and sga.score BETWEEN 7 and 10
+            </if>
+            <if test="tel != null and tel != ''">
+                and ur.tel like concat('%',#{tel},'%')
+            </if>
+        </where>
+    </select>
+</mapper>
