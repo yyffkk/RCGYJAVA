@@ -184,7 +184,7 @@ public class ShoppingController {
      * @param evaluation 评价model
      * @return map
      */
-    @PostMapping("/evaluation")
+    @GetMapping("/evaluation")
     public Map<String,Object> evaluation(Evaluation evaluation){
         return shoppingService.evaluation(evaluation);
     }

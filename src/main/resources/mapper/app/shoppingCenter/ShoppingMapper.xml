@@ -118,8 +118,11 @@
     <update id="evaluation" parameterType="com.api.model.shoppingCenter.Evaluation">
         update shop_goods_appointment
         <set>
-            receiving_date = #{receivingDate},
-            status = 6
+            score = #{score},
+            evaluation_date = #{evaluationDate},
+            <if test="evaluationReason != null and evaluationReason != ''">
+                evaluation_reason = #{evaluationReason}
+            </if>
         </set>
         where id = #{goodsAppointmentId} and create_id = #{id}
     </update>
