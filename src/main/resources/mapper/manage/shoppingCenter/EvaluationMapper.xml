@@ -6,13 +6,14 @@
 
     <select id="list" parameterType="com.api.model.shoppingCenter.EvaluationSearch" resultType="com.api.vo.shoppingCenter.EvaluationVo">
         select sga.id,sga.code,sga.score,sga.evaluation_date,sga.evaluation_reason,sg.title as goods_name,
-        sc2.name as category_level_two,sc1.name as category_level_one,ur.name as create_name,ur.tel as create_tel
-        from shop_goods_appointment as sga,shop_goods as sg,shop_category as sc2,shop_category as sc1,user_resident as ur
+        sc2.name as category_level_two,sc1.name as category_level_one,ur.name as create_name,ur.tel as create_tel,ss.name as suppiler_name
+        from shop_goods_appointment as sga,shop_goods as sg,shop_category as sc2,shop_category as sc1,user_resident as ur,shop_supplier as ss
         <where>
             sga.goods_id = sg.id
             and sg.category_id = sc2.id
             and sc2.parent_id = sc1.id
             and sga.create_id = ur.id
+            and sg.supplier_id = ss.id
             and sga.score is not null
             <if test="score == 1">
                 and sga.score BETWEEN 1 and 4

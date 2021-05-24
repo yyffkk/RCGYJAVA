@@ -46,6 +46,10 @@ public class EvaluationVo {
      * 评价人手机号
      */
     private String createTel;
+    /**
+     * 供应商名称
+     */
+    private String supplierName;
 
     @Override
     public String toString() {
@@ -60,6 +64,7 @@ public class EvaluationVo {
                 ", categoryLevelTwo='" + categoryLevelTwo + '\'' +
                 ", createName='" + createName + '\'' +
                 ", createTel='" + createTel + '\'' +
+                ", supplierName='" + supplierName + '\'' +
                 '}';
     }
 
@@ -143,10 +148,18 @@ public class EvaluationVo {
         this.createTel = createTel;
     }
 
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
     public EvaluationVo() {
     }
 
-    public EvaluationVo(Integer id, String code, Integer score, Date evaluationDate, String evaluationReason, String goodsName, String categoryLevelOne, String categoryLevelTwo, String createName, String createTel) {
+    public EvaluationVo(Integer id, String code, Integer score, Date evaluationDate, String evaluationReason, String goodsName, String categoryLevelOne, String categoryLevelTwo, String createName, String createTel, String supplierName) {
         this.id = id;
         this.code = code;
         this.score = score;
@@ -157,5 +170,6 @@ public class EvaluationVo {
         this.categoryLevelTwo = categoryLevelTwo;
         this.createName = createName;
         this.createTel = createTel;
+        this.supplierName = supplierName;
     }
 }
