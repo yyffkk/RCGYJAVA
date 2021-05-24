@@ -5,7 +5,7 @@ res:
   #新版访客邀请门禁访客照片转发http 地址
   visitorsUrl: http://192.168.31.130:9001/manage/test2/test2
   #信息服务系统照片存放地址
-  communityLocation: http://test.akuhotel.com:8804/static
+  communityLocation: http://39.103.177.88:8804/static
 
 #立林对讲机系统（人才公寓对接）
 lilin:

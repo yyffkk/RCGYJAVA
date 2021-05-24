@@ -149,10 +149,10 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             }
 
             //根据拜访房产id查询设备号
-//            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
+            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
 
             //连接立林对讲机系统 //TODO 先不接立林对讲系统
-//            connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+            connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
 
             //根据分享连接编号将该连接修改为1.已使用
             appVisitorInviteDao.updateIsUseByCode(visitorsInviteSubmit.getCode());
@@ -192,11 +192,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"selfie","600",30,20);
 
-            //根据拜访房产id查询设备号
-//            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
+//            根据拜访房产id查询设备号
+            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
 
-            //连接立林对讲机系统 //TODO 先不接立林对讲系统
-//            connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+//            连接立林对讲机系统 //TODO 先不接立林对讲系统
+            connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
 
         } catch (Exception e) {
@@ -308,7 +308,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
             //拼接出图片的完整http路径 //TODO 本地测需要改照片路径
             String phoneUrl = COMMUNITY_LOCATION + imgUrl;
-//            String phoneUrl = "http://test.akuhotel.com:8804/static/img/h5/visit/fafdc87cceb04edf8c2b8895212a49d6.jpeg";
+//            String phoneUrl = "http://39.103.177.88:8804/static/img/h5/visit/fafdc87cceb04edf8c2b8895212a49d6.jpeg";
             //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
             String deviceSn = NEIGH_NO + deviceNumber;
 
