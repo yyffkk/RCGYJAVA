@@ -138,6 +138,10 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysArticle", butlerArticleVo.getId(), "articleImg");
                 butlerArticleVo.setImgUrls(imgByDate);
 
+                //根据物品主键id查询正常物品数量（破损不算）
+                int normalNum = butlerBorrowDao.findNormalNum(butlerArticleVo.getId());
+                butlerArticleVo.setQuantity(normalNum);
+
                 //根据物品主键id查询借出数量（查询出的quantity 为 正常物品数量）
                 int borrowNum = butlerBorrowDao.findBorrowNumById(butlerArticleVo.getId());
                 //填入借取数量

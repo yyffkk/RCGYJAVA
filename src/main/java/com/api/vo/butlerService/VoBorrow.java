@@ -35,7 +35,7 @@ public class VoBorrow {
      */
     private Date endDate;
     /**
-     * 出借时长
+     * 出借时长（小时）
      */
     private long borrowDate;
     /**

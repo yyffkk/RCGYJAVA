@@ -151,4 +151,11 @@ public interface ButlerBorrowDao {
      * @return 借取记录数量
      */
     int countRecordNumById(int id);
+
+    /**
+     * 根据物品主键id查询正常物品数量（破损不算）
+     * @param id 物品主键id
+     * @return 正常物品数量
+     */
+    int findNormalNum(Integer id);
 }
