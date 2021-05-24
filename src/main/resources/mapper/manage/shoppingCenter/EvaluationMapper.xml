@@ -6,7 +6,7 @@
 
     <select id="list" parameterType="com.api.model.shoppingCenter.EvaluationSearch" resultType="com.api.vo.shoppingCenter.EvaluationVo">
         select sga.id,sga.code,sga.score,sga.evaluation_date,sga.evaluation_reason,sg.title as goods_name,
-        sc2.name as category_level_two,sc1.name as category_level_one,ur.name as create_name,ur.tel as create_tel,ss.name as suppiler_name
+        sc2.name as category_level_two,sc1.name as category_level_one,ur.name as create_name,ur.tel as create_tel,ss.name as supplier_name
         from shop_goods_appointment as sga,shop_goods as sg,shop_category as sc2,shop_category as sc1,user_resident as ur,shop_supplier as ss
         <where>
             sga.goods_id = sg.id
