@@ -1,8 +1,10 @@
 package com.api.app.dao.butler;
 
+import com.api.model.app.AppFacilitiesIdAndNowDate;
 import com.api.model.app.AppointmentCodeAndUserId;
 import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
+import com.api.vo.app.AppAppointmentDateVo;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
 import com.api.vo.app.AppFacilitiesCategoryVo;
 import com.api.vo.app.IdAndName;
@@ -65,4 +67,11 @@ public interface AppFacilitiesAppointmentDao {
      * @return 影响行数
      */
     int signId(AppointmentCodeAndUserId appointmentCodeAndUserId);
+
+    /**
+     * 查询当前设施当前时间之后的预约时段
+     * @param appFacilitiesIdAndNowDate app 设施主键id 和 当前时间
+     * @return app 设施预约时段Vo list 回显
+     */
+    List<AppAppointmentDateVo> findFacilitiesAppointmentDate(AppFacilitiesIdAndNowDate appFacilitiesIdAndNowDate);
 }

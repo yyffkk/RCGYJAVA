@@ -5,6 +5,8 @@ import com.api.model.app.AppointmentCodeAndUserId;
 import com.api.model.app.AppointmentStopUseFactor;
 import com.api.model.app.SearchAppFacilitiesAppointment;
 import com.api.model.butlerService.FacilitiesAppointment;
+import com.api.vo.app.AppAppointmentDateVo;
+import com.api.vo.app.AppEventVotingVo;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
 import com.api.vo.app.AppFacilitiesCategoryVo;
 import com.github.pagehelper.PageHelper;
@@ -117,4 +119,22 @@ public class AppFacilitiesAppointmentController {
         return facilitiesAppointmentService.signId(appointmentCodeAndUserId);
     }
 
+    /**
+     * 查询当前设施当前时间之后的预约时段
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @param facilitiesId 设施主键id
+     * @return map
+     */
+    @GetMapping("/findFacilitiesAppointmentDate")
+    public Map<String,Object> findFacilitiesAppointmentDate(int pageNum,int size,Integer facilitiesId){
+        PageHelper.startPage(pageNum,size);
+        List<AppAppointmentDateVo> appAppointmentDateVoList =facilitiesAppointmentService.findFacilitiesAppointmentDate(facilitiesId);
+        PageInfo<AppAppointmentDateVo> pageInfo = new PageInfo<>(appAppointmentDateVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 }

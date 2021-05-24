@@ -60,5 +60,16 @@
         where code = #{appointmentCode} and appointment_id = #{id} and status = 1
     </update>
 
+    <select id="findFacilitiesAppointmentDate" parameterType="com.api.model.app.AppFacilitiesIdAndNowDate" resultType="com.api.vo.app.AppAppointmentDateVo">
+        select sfa.id,sfa.appointment_start_date,sfa.appointment_end_date,ur.name as appointment_name
+        from sys_facilities_appointment as sfa,user_resident as ur
+        <where>
+            sfa.appointment_id = ur.id
+            and sfa.facilities_manage_id = #{facilitiesId}
+            and sfa.appointment_end_date <![CDATA[ > ]]> #{nowDate}
+        </where>
+        order by sfa.appointment_start_date
+    </select>
+
 
 </mapper>
