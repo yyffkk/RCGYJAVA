@@ -28,4 +28,11 @@ public interface OrderDao {
      * @return 商品预约状态
      */
     int findStatusById(Integer id);
+
+    /**
+     * 商品到货
+     * @param order 商品预约model（订单）
+     * @return 影响行数
+     */
+    int arrivalGoods(Order order);
 }

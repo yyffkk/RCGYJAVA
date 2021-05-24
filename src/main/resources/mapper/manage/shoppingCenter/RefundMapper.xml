@@ -11,7 +11,7 @@
         <where>
             sga.goods_id = sg.id
             and sga.create_id = ur.id
-            and sga.status  <![CDATA[ > ]]> 3
+            and sga.status  <![CDATA[ >= ]]> 8
             <if test="code != null and code != ''">
                 and sga.code like concat('%',#{code},'%')
             </if>

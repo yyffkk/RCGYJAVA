@@ -78,4 +78,42 @@ public class OrderServiceImpl implements OrderService {
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> arrivalGoods(Order order) {
+        map = new HashMap<>();
+        try {
+            int status = orderDao.findStatusById(order.getId());
+            if (status != 2){
+                throw new RuntimeException("该状态不可到货");
+            }
+
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+
+
+            order.setArrivalDate(new Date());
+            order.setStatus(3);//3.已到货
+            order.setArrivalOperator(sysUser.getId());//填写到货操作人
+
+            int update = orderDao.arrivalGoods(order);
+            if (update <=0){
+                throw new RuntimeException("到货失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","到货成功");
+        map.put("status",true);
+        return map;
+    }
 }

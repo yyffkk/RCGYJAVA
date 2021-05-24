@@ -18,11 +18,27 @@
             <if test="code != null and code != ''">
                 and sga.code like concat('%',#{code},'%')
             </if>
-            <if test="status != null">
-                and sga.status = #{status}
-            </if>
             <if test="userTel != null and userTel != ''">
                 and ur.tel like concat('%',#{userTel},'%')
+            </if>
+            <if test="status == 1">
+                and sga.status = 1
+            </if>
+            <if test="status == 2">
+                and sga.status = 2
+            </if>
+            <if test="status == 3">
+                and sga.status = 3
+            </if>
+            <if test="status == 4">
+                and sga.status = 4
+            </if>
+            <if test="status == 6">
+                and sga.status <![CDATA[ >= ]]> 3
+                and score != null
+            </if>
+            <if test="status == 8">
+                and sga.status <![CDATA[ >= ]]> 8
             </if>
         </where>
         group by sga.id
@@ -46,6 +62,21 @@
             </if>
             <if test="sendOperator != null">
                 send_operator = #{sendOperator},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="arrivalGoods" parameterType="com.api.model.shoppingCenter.Order">
+        update shop_goods_appointment
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="arrivalDate != null">
+                arrival_date = #{arrivalDate},
+            </if>
+            <if test="arrivalOperator != null">
+                arrival_operator = #{arrivalOperator},
             </if>
         </set>
         where id = #{id}

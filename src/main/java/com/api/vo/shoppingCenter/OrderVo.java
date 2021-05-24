@@ -54,7 +54,7 @@ public class OrderVo {
      */
     private String roomName;
     /**
-     * 状态：1.待发货，2.已发货，3.已收货
+     * 状态：1.待发货，2.已发货，3.已到货，4.已收货，6.已评价，8.申请退换货，9.申请通过，10.申请驳回
      */
     private Integer status;
     /**

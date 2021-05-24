@@ -53,4 +53,17 @@ public class OrderController {
     }
 
 
+    /**
+     * 商品到货
+     * @param order 商品预约model（订单）
+     * @return map
+     */
+    @PostMapping("/arrivalGoods")
+    public Map<String,Object> arrivalGoods(@RequestBody Order order){
+        return orderService.arrivalGoods(order);
+    }
+
+
+
+
 }

@@ -35,6 +35,14 @@ public class Order {
      */
     private Integer sendOperator;
     /**
+     * 到货操作人
+     */
+    private Integer arrivalOperator;
+    /**
+     * 到货时间
+     */
+    private Date arrivalDate;
+    /**
      * 收货时间
      */
     private Date receivingDate;
@@ -62,6 +70,18 @@ public class Order {
      * 审核通过/驳回原因
      */
     private String reason;
+    /**
+     * 评分数1-10
+     */
+    private Integer score;
+    /**
+     * 评价时间
+     */
+    private Date evaluationDate;
+    /**
+     * 评价原因
+     */
+    private String evaluationReason;
     /**
      * 用户姓名
      */
@@ -93,6 +113,8 @@ public class Order {
                 ", sendDate=" + sendDate +
                 ", sendDetail='" + sendDetail + '\'' +
                 ", sendOperator=" + sendOperator +
+                ", arrivalOperator=" + arrivalOperator +
+                ", arrivalDate=" + arrivalDate +
                 ", receivingDate=" + receivingDate +
                 ", backType=" + backType +
                 ", backDate=" + backDate +
@@ -100,6 +122,9 @@ public class Order {
                 ", reviewer=" + reviewer +
                 ", auditDate=" + auditDate +
                 ", reason='" + reason + '\'' +
+                ", score=" + score +
+                ", evaluationDate=" + evaluationDate +
+                ", evaluationReason='" + evaluationReason + '\'' +
                 ", userName='" + userName + '\'' +
                 ", userTel='" + userTel + '\'' +
                 ", num=" + num +
@@ -164,6 +189,22 @@ public class Order {
         this.sendOperator = sendOperator;
     }
 
+    public Integer getArrivalOperator() {
+        return arrivalOperator;
+    }
+
+    public void setArrivalOperator(Integer arrivalOperator) {
+        this.arrivalOperator = arrivalOperator;
+    }
+
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(Date arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
     public Date getReceivingDate() {
         return receivingDate;
     }
@@ -220,6 +261,30 @@ public class Order {
         this.reason = reason;
     }
 
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Date getEvaluationDate() {
+        return evaluationDate;
+    }
+
+    public void setEvaluationDate(Date evaluationDate) {
+        this.evaluationDate = evaluationDate;
+    }
+
+    public String getEvaluationReason() {
+        return evaluationReason;
+    }
+
+    public void setEvaluationReason(String evaluationReason) {
+        this.evaluationReason = evaluationReason;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -263,7 +328,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer id, String code, Integer goodsId, Integer status, Date sendDate, String sendDetail, Integer sendOperator, Date receivingDate, Integer backType, Date backDate, String backReason, Integer reviewer, Date auditDate, String reason, String userName, String userTel, Integer num, Integer createId, Date createDate) {
+    public Order(Integer id, String code, Integer goodsId, Integer status, Date sendDate, String sendDetail, Integer sendOperator, Integer arrivalOperator, Date arrivalDate, Date receivingDate, Integer backType, Date backDate, String backReason, Integer reviewer, Date auditDate, String reason, Integer score, Date evaluationDate, String evaluationReason, String userName, String userTel, Integer num, Integer createId, Date createDate) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -271,6 +336,8 @@ public class Order {
         this.sendDate = sendDate;
         this.sendDetail = sendDetail;
         this.sendOperator = sendOperator;
+        this.arrivalOperator = arrivalOperator;
+        this.arrivalDate = arrivalDate;
         this.receivingDate = receivingDate;
         this.backType = backType;
         this.backDate = backDate;
@@ -278,6 +345,9 @@ public class Order {
         this.reviewer = reviewer;
         this.auditDate = auditDate;
         this.reason = reason;
+        this.score = score;
+        this.evaluationDate = evaluationDate;
+        this.evaluationReason = evaluationReason;
         this.userName = userName;
         this.userTel = userTel;
         this.num = num;

@@ -17,7 +17,7 @@ public class OrderSearch {
      */
     private String code;
     /**
-     * 状态：1.待发货，2.已发货，3.已收货
+     * 状态：订单状态：1.待发货，2.已发货，3.已到货，4.已收货，6.已评价，8.退换货申请
      */
     private Integer status;
     /**

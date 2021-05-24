@@ -12,4 +12,6 @@ public interface OrderService {
     List<OrderVo> list(OrderSearch orderSearch);
 
     Map<String, Object> deliverGoods(Order order);
+
+    Map<String, Object> arrivalGoods(Order order);
 }

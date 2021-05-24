@@ -1,6 +1,7 @@
 package com.api.app.service.shoppingCenter;
 
 import com.api.model.app.AppGoodsAppointment;
+import com.api.model.shoppingCenter.Evaluation;
 import com.api.vo.app.AppGoodsVo;
 import com.api.vo.app.AppMyOrderVo;
 
@@ -26,7 +27,9 @@ public interface ShoppingService {
 
     Map<String, Object> cancel(Integer id, Integer goodsAppointmentId);
 
-    Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId);
+    Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId, String backReason);
 
     Map<String, Object> confirmReceipt(Integer id, Integer goodsAppointmentId);
+
+    Map<String, Object> evaluation(Evaluation evaluation);
 }

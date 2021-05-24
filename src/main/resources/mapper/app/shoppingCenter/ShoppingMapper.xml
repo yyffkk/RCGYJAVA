@@ -67,8 +67,24 @@
             and sg.supplier_id = ss.id
             and sg.category_id = sc2.id
             and sc2.parent_id = sc1.id
-            <if test="status != null">
-                and sga.status = #{status}
+            <if test="status == 1">
+                and sga.status = 1
+            </if>
+            <if test="status == 2">
+                and sga.status = 2
+            </if>
+            <if test="status == 3">
+                and sga.status = 3
+            </if>
+            <if test="status == 4">
+                and sga.status = 4
+            </if>
+            <if test="status == 6">
+                and sga.status <![CDATA[ >= ]]> 3
+                and score != null
+            </if>
+            <if test="status == 8">
+                and sga.status <![CDATA[ >= ]]> 8
             </if>
             and sga.create_id = #{createId}
         </where>
@@ -98,6 +114,14 @@
             status = #{status}
         </set>
         where id = #{id} and create_id = #{createId}
+    </update>
+    <update id="evaluation" parameterType="com.api.model.shoppingCenter.Evaluation">
+        update shop_goods_appointment
+        <set>
+            receiving_date = #{receivingDate},
+            status = 6
+        </set>
+        where id = #{goodsAppointmentId} and create_id = #{id}
     </update>
 
 

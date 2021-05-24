@@ -3,6 +3,7 @@ package com.api.app.dao.shoppingCenter;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
+import com.api.model.shoppingCenter.Evaluation;
 import com.api.model.shoppingCenter.Order;
 import com.api.vo.app.AppCategoryVo;
 import com.api.vo.app.AppGoodsDetailVo;
@@ -101,4 +102,11 @@ public interface ShoppingDao {
      * @return 影响行数
      */
     int confirmReceipt(Order order);
+
+    /**
+     * 评价
+     * @param evaluation 评价model
+     * @return 影响行数
+     */
+    int evaluation(Evaluation evaluation);
 }

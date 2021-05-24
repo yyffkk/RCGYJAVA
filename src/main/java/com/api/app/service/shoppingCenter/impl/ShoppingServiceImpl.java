@@ -6,6 +6,7 @@ import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
+import com.api.model.shoppingCenter.Evaluation;
 import com.api.model.shoppingCenter.Order;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
@@ -226,11 +227,11 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId) {
+    public Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId, String backReason) {
         map = new HashMap<>();
 
         int status = orderDao.findStatusById(goodsAppointmentId);
-        if (status != 3){
+        if (status != 4 && status != 6){
             map.put("message","该状态不可退换货");
             map.put("status",false);
             return map;
@@ -240,7 +241,8 @@ public class ShoppingServiceImpl implements ShoppingService {
         order.setId(goodsAppointmentId);//填入预约商品主键Id
         order.setCreateId(id);//填入用户主键id
         order.setBackDate(new Date());//填入申请退货时间
-        order.setStatus(4);//4.申请退货
+        order.setBackReason(backReason);//填入申请原因
+        order.setStatus(8);//8.申请退货
 
         int update = shoppingDao.applicationRefund(order);
         if (update > 0){
@@ -260,7 +262,7 @@ public class ShoppingServiceImpl implements ShoppingService {
         map = new HashMap<>();
 
         int status = orderDao.findStatusById(goodsAppointmentId);
-        if (status != 2){
+        if (status != 3){
             map.put("message","该状态不可确认收货");
             map.put("status",false);
             return map;
@@ -270,7 +272,7 @@ public class ShoppingServiceImpl implements ShoppingService {
         order.setId(goodsAppointmentId);//填入预约商品主键Id
         order.setCreateId(id);//填入用户主键id
         order.setReceivingDate(new Date());//填入收货时间
-        order.setStatus(3);//3.已收货
+        order.setStatus(4);//4.已收货
 
         int update = shoppingDao.confirmReceipt(order);
         if (update > 0){
@@ -278,6 +280,33 @@ public class ShoppingServiceImpl implements ShoppingService {
             map.put("status",true);
         }else {
             map.put("message","确认收货失败");
+            map.put("status",false);
+        }
+
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> evaluation(Evaluation evaluation) {
+        map = new HashMap<>();
+
+        int status = orderDao.findStatusById(evaluation.getGoodsAppointmentId());
+        if (status < 4){
+            map.put("message","该状态不可评价");
+            map.put("status",false);
+            return map;
+        }
+
+
+        evaluation.setEvaluationDate(new Date());//填入收货时间
+
+        int update = shoppingDao.evaluation(evaluation);
+        if (update > 0){
+            map.put("message","评价成功");
+            map.put("status",true);
+        }else {
+            map.put("message","评价失败");
             map.put("status",false);
         }
 

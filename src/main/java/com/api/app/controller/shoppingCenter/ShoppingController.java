@@ -2,6 +2,8 @@ package com.api.app.controller.shoppingCenter;
 
 import com.api.app.service.shoppingCenter.ShoppingService;
 import com.api.model.app.AppGoodsAppointment;
+import com.api.model.shoppingCenter.Evaluation;
+import com.api.model.shoppingCenter.Order;
 import com.api.vo.app.AppActivityVo;
 import com.api.vo.app.AppGoodsVo;
 import com.api.vo.app.AppMyOrderVo;
@@ -127,7 +129,7 @@ public class ShoppingController {
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @param id 用户主键id
-     * @param orderStart 订单状态：1.待发货，2.已发货，3.已收货，4.申请退换货，5.申请通过，6.申请驳回
+     * @param orderStart 订单状态：1.待发货，2.已发货，3.已到货，4.已收货，6.已评价[当状态>=已收货并评价]，8.退换货申请（8-9）
      * @return map
      */
     @GetMapping("/myOrder")
@@ -158,11 +160,12 @@ public class ShoppingController {
      * 申请退换
      * @param id 用户主键id
      * @param goodsAppointmentId 商品预约主键id
+     * @param backReason 退换货原因
      * @return map
      */
     @GetMapping("/applicationRefund")
-    public Map<String,Object> applicationRefund(Integer id,Integer goodsAppointmentId){
-        return shoppingService.applicationRefund(id,goodsAppointmentId);
+    public Map<String,Object> applicationRefund(Integer id,Integer goodsAppointmentId,String backReason){
+        return shoppingService.applicationRefund(id,goodsAppointmentId,backReason);
     }
 
     /**
@@ -174,6 +177,16 @@ public class ShoppingController {
     @GetMapping("/confirmReceipt")
     public Map<String,Object> confirmReceipt(Integer id,Integer goodsAppointmentId){
         return shoppingService.confirmReceipt(id,goodsAppointmentId);
+    }
+
+    /**
+     * 评价
+     * @param evaluation 评价model
+     * @return map
+     */
+    @PostMapping("/evaluation")
+    public Map<String,Object> evaluation(Evaluation evaluation){
+        return shoppingService.evaluation(evaluation);
     }
 
 }

@@ -49,7 +49,7 @@ public class RefundServiceImpl implements RefundService {
         map = new HashMap<>();
         try {
             int status = orderDao.findStatusById(order.getId());
-            if (status != 4){
+            if (status != 8){//8.申请退换货
                 throw new RuntimeException("该状态不可审核");
             }
 
