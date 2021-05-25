@@ -148,11 +148,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 throw new RuntimeException("修改新版访客信息失败");
             }
 
-            //根据拜访房产id查询设备号
-            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
-
-            //连接立林对讲机系统 //TODO 先不接立林对讲系统
-            connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+//            //根据拜访房产id查询设备号
+//            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
+//
+//            //连接立林对讲机系统 //TODO 先不接立林对讲系统
+//            connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
 
             //根据分享连接编号将该连接修改为1.已使用
             appVisitorInviteDao.updateIsUseByCode(visitorsInviteSubmit.getCode());
@@ -191,12 +191,12 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //将照片保存进数据库
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"selfie","600",30,20);
-
-//            根据拜访房产id查询设备号
-            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
-
-//            连接立林对讲机系统 //TODO 先不接立林对讲系统
-            connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+//
+////            根据拜访房产id查询设备号
+//            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
+//
+////            连接立林对讲机系统 //TODO 先不接立林对讲系统
+//            connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
 
         } catch (Exception e) {
