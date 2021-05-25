@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysInterviewDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchInterview" resultType="com.api.vo.operationManagement.VoInterview">
+        select * from sys_interview
+        <where>
+            is_delete = 1
+            <if test="tel != null and tel != ''">
+                and tel like concat('%',#{tel},'%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SearchInterview">
+        insert into sys_interview(
+            name,
+            tel,
+            content,
+            status,
+            interview_date,
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{name},
+            #{tel},
+            #{content},
+            #{status},
+            #{interviewDate},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+    </insert>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        update sys_interview
+        set is_delete = 0
+        where id = #{d}
+    </update>
+
+</mapper>
