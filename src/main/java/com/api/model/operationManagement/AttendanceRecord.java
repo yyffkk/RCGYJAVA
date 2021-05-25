@@ -21,7 +21,7 @@ public class AttendanceRecord {
     /**
      * 打卡人id
      */
-    private String clockId;
+    private Integer clockId;
     /**
      * 补卡时间
      */
@@ -41,7 +41,7 @@ public class AttendanceRecord {
                 "id=" + id +
                 ", startClockDate=" + startClockDate +
                 ", endClockDate=" + endClockDate +
-                ", clockId='" + clockId + '\'' +
+                ", clockId=" + clockId +
                 ", cardReplacementDate=" + cardReplacementDate +
                 ", operator=" + operator +
                 ", createDate=" + createDate +
@@ -72,11 +72,11 @@ public class AttendanceRecord {
         this.endClockDate = endClockDate;
     }
 
-    public String getClockId() {
+    public Integer getClockId() {
         return clockId;
     }
 
-    public void setClockId(String clockId) {
+    public void setClockId(Integer clockId) {
         this.clockId = clockId;
     }
 
@@ -107,7 +107,7 @@ public class AttendanceRecord {
     public AttendanceRecord() {
     }
 
-    public AttendanceRecord(Integer id, Date startClockDate, Date endClockDate, String clockId, Date cardReplacementDate, Integer operator, Date createDate) {
+    public AttendanceRecord(Integer id, Date startClockDate, Date endClockDate, Integer clockId, Date cardReplacementDate, Integer operator, Date createDate) {
         this.id = id;
         this.startClockDate = startClockDate;
         this.endClockDate = endClockDate;
