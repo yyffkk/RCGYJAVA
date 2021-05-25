@@ -19,6 +19,10 @@ public class VoInterview {
      */
     private String tel;
     /**
+     * 访谈人名称
+     */
+    private String interviewersName;
+    /**
      * 访谈内容
      */
     private String content;
@@ -53,6 +57,7 @@ public class VoInterview {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
+                ", interviewersName='" + interviewersName + '\'' +
                 ", content='" + content + '\'' +
                 ", status=" + status +
                 ", interviewDate=" + interviewDate +
@@ -85,6 +90,14 @@ public class VoInterview {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+
+    public String getInterviewersName() {
+        return interviewersName;
+    }
+
+    public void setInterviewersName(String interviewersName) {
+        this.interviewersName = interviewersName;
     }
 
     public String getContent() {
@@ -146,10 +159,11 @@ public class VoInterview {
     public VoInterview() {
     }
 
-    public VoInterview(Integer id, String name, String tel, String content, Integer status, Date interviewDate, String feedbackContent, Date feedbackDate, Integer createId, Date createDate) {
+    public VoInterview(Integer id, String name, String tel, String interviewersName, String content, Integer status, Date interviewDate, String feedbackContent, Date feedbackDate, Integer createId, Date createDate) {
         this.id = id;
         this.name = name;
         this.tel = tel;
+        this.interviewersName = interviewersName;
         this.content = content;
         this.status = status;
         this.interviewDate = interviewDate;

@@ -5,23 +5,26 @@
 <mapper namespace="com.api.manage.dao.operationManagement.SysInterviewDao">
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchInterview" resultType="com.api.vo.operationManagement.VoInterview">
-        select * from sys_interview
+        select si.*,su.actual_name as interviewers_name
+        from sys_interview as si,sys_user as su
         <where>
-            is_delete = 1
+            si.interviewers = su.id
+            and si.is_delete = 1
             <if test="tel != null and tel != ''">
-                and tel like concat('%',#{tel},'%')
+                and si.tel like concat('%',#{tel},'%')
             </if>
             <if test="status != null">
-                and status = #{status}
+                and si.status = #{status}
             </if>
         </where>
-        order by create_date desc
+        order by si.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SearchInterview">
         insert into sys_interview(
             name,
             tel,
+            interviewers,
             content,
             status,
             interview_date,
@@ -31,6 +34,7 @@
         )values (
             #{name},
             #{tel},
+            #{interviewers},
             #{content},
             #{status},
             #{interviewDate},

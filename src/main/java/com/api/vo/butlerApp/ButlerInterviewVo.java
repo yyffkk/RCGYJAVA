@@ -1,11 +1,11 @@
-package com.api.model.operationManagement;
+package com.api.vo.butlerApp;
 
 import java.util.Date;
 
 /**
- * 客户访谈model
+ * 管家app 客户访谈Vo list 回显
  */
-public class Interview {
+public class ButlerInterviewVo {
     /**
      * 主键id
      */
@@ -19,15 +19,11 @@ public class Interview {
      */
     private String tel;
     /**
-     * 访谈人id
-     */
-    private Integer interviewers;
-    /**
      * 访谈内容
      */
     private String content;
     /**
-     * 访谈状态：1.未访谈，2.已访谈
+     * 访谈状态：1.待访谈，2.已访谈
      */
     private Integer status;
     /**
@@ -43,33 +39,27 @@ public class Interview {
      */
     private Date feedbackDate;
     /**
-     * 创建人id
+     * 创建人姓名
      */
-    private Integer createId;
+    private String createName;
     /**
      * 创建时间
      */
     private Date createDate;
-    /**
-     * 是否删除：1.非删，0.删除
-     */
-    private Integer isDelete;
 
     @Override
     public String toString() {
-        return "Interview{" +
+        return "ButlerInterviewVo{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
-                ", interviewers=" + interviewers +
                 ", content='" + content + '\'' +
                 ", status=" + status +
                 ", interviewDate=" + interviewDate +
                 ", feedbackContent='" + feedbackContent + '\'' +
                 ", feedbackDate=" + feedbackDate +
-                ", createId=" + createId +
+                ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
-                ", isDelete=" + isDelete +
                 '}';
     }
 
@@ -95,14 +85,6 @@ public class Interview {
 
     public void setTel(String tel) {
         this.tel = tel;
-    }
-
-    public Integer getInterviewers() {
-        return interviewers;
-    }
-
-    public void setInterviewers(Integer interviewers) {
-        this.interviewers = interviewers;
     }
 
     public String getContent() {
@@ -145,12 +127,12 @@ public class Interview {
         this.feedbackDate = feedbackDate;
     }
 
-    public Integer getCreateId() {
-        return createId;
+    public String getCreateName() {
+        return createName;
     }
 
-    public void setCreateId(Integer createId) {
-        this.createId = createId;
+    public void setCreateName(String createName) {
+        this.createName = createName;
     }
 
     public Date getCreateDate() {
@@ -161,29 +143,19 @@ public class Interview {
         this.createDate = createDate;
     }
 
-    public Integer getIsDelete() {
-        return isDelete;
+    public ButlerInterviewVo() {
     }
 
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public Interview() {
-    }
-
-    public Interview(Integer id, String name, String tel, Integer interviewers, String content, Integer status, Date interviewDate, String feedbackContent, Date feedbackDate, Integer createId, Date createDate, Integer isDelete) {
+    public ButlerInterviewVo(Integer id, String name, String tel, String content, Integer status, Date interviewDate, String feedbackContent, Date feedbackDate, String createName, Date createDate) {
         this.id = id;
         this.name = name;
         this.tel = tel;
-        this.interviewers = interviewers;
         this.content = content;
         this.status = status;
         this.interviewDate = interviewDate;
         this.feedbackContent = feedbackContent;
         this.feedbackDate = feedbackDate;
-        this.createId = createId;
+        this.createName = createName;
         this.createDate = createDate;
-        this.isDelete = isDelete;
     }
 }
