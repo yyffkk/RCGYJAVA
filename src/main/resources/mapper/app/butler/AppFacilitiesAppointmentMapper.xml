@@ -16,6 +16,7 @@
             ) as status
             from sys_facilities_appointment as sfa,sys_facilities_manage as sfm
             where sfa.facilities_manage_id = sfm.id
+            order by sfa.create_date desc
         ) as T
         <where>
             <if test="facilitiesType == 1">
@@ -25,7 +26,6 @@
                 and T.status <![CDATA[ >= ]]> 3
             </if>
         </where>
-
     </select>
     <select id="findCategoryList" resultType="com.api.vo.app.AppFacilitiesCategoryVo">
         select id,name,open_start_date,open_end_date,num from sys_facilities_category where is_delete = 1

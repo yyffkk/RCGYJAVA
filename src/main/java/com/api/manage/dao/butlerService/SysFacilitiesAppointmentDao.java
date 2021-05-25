@@ -35,4 +35,12 @@ public interface SysFacilitiesAppointmentDao {
      * @return 影响行数
      */
     int countAppointmentNow(Date date);
+
+    /**
+     * 先查询是否处于预约时段
+     * @param facilitiesAppointment 设施预约管理model
+     * @return 处于预约时段中的行数
+     */
+    int findIsBeInAppointmentDate(FacilitiesAppointment facilitiesAppointment);
+
 }

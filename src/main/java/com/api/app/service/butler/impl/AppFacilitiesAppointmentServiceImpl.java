@@ -40,6 +40,14 @@ public class AppFacilitiesAppointmentServiceImpl implements AppFacilitiesAppoint
     public Map<String, Object> insert(FacilitiesAppointment facilitiesAppointment) {
         map = new HashMap<>();
 
+        //先查询是否处于预约时段
+        int beIn = sysFacilitiesAppointmentDao.findIsBeInAppointmentDate(facilitiesAppointment);
+        if (beIn >0){
+            map.put("message","该时段已被预约");
+            map.put("status",false);
+            return map;
+        }
+
         facilitiesAppointment.setCreateId(-1); //app添加 为-1
         facilitiesAppointment.setCreateDate(new Date());
         facilitiesAppointment.setStatus(1); //填入预约状态,默认为1.未签到
