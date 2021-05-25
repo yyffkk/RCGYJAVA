@@ -5,10 +5,11 @@
 <mapper namespace="com.api.manage.dao.operationManagement.SysInterviewDao">
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchInterview" resultType="com.api.vo.operationManagement.VoInterview">
-        select si.*,su.actual_name as interviewers_name
-        from sys_interview as si,sys_user as su
+        select si.*,su1.actual_name as interviewers_name,su2.actual_name as create_name
+        from sys_interview as si,sys_user as su1,sys_user as su2
         <where>
-            si.interviewers = su.id
+            si.interviewers = su1.id
+            and si.create_id = su2.id
             and si.is_delete = 1
             <if test="tel != null and tel != ''">
                 and si.tel like concat('%',#{tel},'%')

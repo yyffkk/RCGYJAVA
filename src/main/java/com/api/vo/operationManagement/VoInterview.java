@@ -43,9 +43,9 @@ public class VoInterview {
      */
     private Date feedbackDate;
     /**
-     * 创建人id
+     * 创建人名称
      */
-    private Integer createId;
+    private String createName;
     /**
      * 创建时间
      */
@@ -63,7 +63,7 @@ public class VoInterview {
                 ", interviewDate=" + interviewDate +
                 ", feedbackContent='" + feedbackContent + '\'' +
                 ", feedbackDate=" + feedbackDate +
-                ", createId=" + createId +
+                ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
                 '}';
     }
@@ -140,12 +140,12 @@ public class VoInterview {
         this.feedbackDate = feedbackDate;
     }
 
-    public Integer getCreateId() {
-        return createId;
+    public String getCreateName() {
+        return createName;
     }
 
-    public void setCreateId(Integer createId) {
-        this.createId = createId;
+    public void setCreateName(String createName) {
+        this.createName = createName;
     }
 
     public Date getCreateDate() {
@@ -159,7 +159,7 @@ public class VoInterview {
     public VoInterview() {
     }
 
-    public VoInterview(Integer id, String name, String tel, String interviewersName, String content, Integer status, Date interviewDate, String feedbackContent, Date feedbackDate, Integer createId, Date createDate) {
+    public VoInterview(Integer id, String name, String tel, String interviewersName, String content, Integer status, Date interviewDate, String feedbackContent, Date feedbackDate, String createName, Date createDate) {
         this.id = id;
         this.name = name;
         this.tel = tel;
@@ -169,7 +169,7 @@ public class VoInterview {
         this.interviewDate = interviewDate;
         this.feedbackContent = feedbackContent;
         this.feedbackDate = feedbackDate;
-        this.createId = createId;
+        this.createName = createName;
         this.createDate = createDate;
     }
 }
