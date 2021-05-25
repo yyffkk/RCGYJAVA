@@ -1,5 +1,6 @@
 package com.api.manage.config;
 
+import com.api.butlerApp.dao.butler.ButlerAttendanceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.butlerService.BorrowDao;
@@ -7,9 +8,11 @@ import com.api.manage.dao.butlerService.SysFacilitiesPlanDao;
 import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
 import com.api.manage.dao.remind.RemindDao;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
 import com.api.model.butlerApp.ButlerPlanIdAndActualBeginDate;
 import com.api.model.butlerService.*;
+import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.systemDataBigScreen.DailyActivity;
@@ -84,6 +87,8 @@ public class SysAutoRemind {
     SysInspectionPlanDao sysInspectionPlanDao;
     @Resource
     SysFacilitiesPlanDao sysFacilitiesPlanDao;
+    @Resource
+    ButlerAttendanceDao butlerAttendanceDao;
 
 
     /**
@@ -380,6 +385,31 @@ public class SysAutoRemind {
         }
     }
 
+
+    /**
+     * 每晚定时任务，自动为每一个物业账号生成当日考勤任务
+     */
+    @Scheduled(cron = "1 0 0 1/1 * ? ")
+    public void autoAttendanceRecord(){
+
+        //查询所有的需要执行考勤任务的物业人员信息(用户未删除，状态正常)
+        List<SysUser> sysUserList = butlerAttendanceDao.findAllSysUer();
+
+        if (sysUserList != null && sysUserList.size()>0){
+            AttendanceRecord attendanceRecord = new AttendanceRecord();
+            attendanceRecord.setCreateDate(new Date());
+            for (SysUser sysUser : sysUserList) {
+                attendanceRecord.setClockId(sysUser.getId());
+                //添加考勤任务记录
+                int insert = butlerAttendanceDao.autoAttendanceRecord(attendanceRecord);
+                if (insert <=0){
+                    log.info("添加用户考勤任务失败,用户主键id:"+sysUser.getId());
+                }
+            }
+        }else {
+            log.info("本次执行没有处理对象");
+        }
+    }
 
     /**
      * 比较第一个值date和第二个值time

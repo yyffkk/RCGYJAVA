@@ -63,4 +63,19 @@
         )
     </insert>
 
+    <select id="findAllSysUer" parameterType="com.api.model.businessManagement.SysUser" resultType="com.api.model.businessManagement.SysUser">
+        select * from sys_user where is_delete = 1 and status = 1
+    </select>
+
+    <insert id="autoAttendanceRecord" parameterType="com.api.model.operationManagement.AttendanceRecord">
+        insert into sys_attendance_record(
+            clock_id,
+            create_date
+        )values (
+            #{clockId},
+            #{createDate}
+        )
+    </insert>
+
+
 </mapper>

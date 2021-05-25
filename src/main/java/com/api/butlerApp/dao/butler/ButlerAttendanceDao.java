@@ -1,5 +1,6 @@
 package com.api.butlerApp.dao.butler;
 
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerUserIdAndToDay;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SysAttendanceLeaveRecord;
@@ -43,4 +44,17 @@ public interface ButlerAttendanceDao {
      * @return 影响行数
      */
     int apply(SysAttendanceLeaveRecord sysAttendanceLeaveRecord);
+
+    /**
+     * 查询所有的需要执行考勤任务的物业人员信息(用户未删除，状态正常)
+     * @return 需要执行考勤任务的物业人员信息
+     */
+    List<SysUser> findAllSysUer();
+
+    /**
+     * 添加考勤任务记录
+     * @param attendanceRecord 考勤记录model
+     * @return 影响行数
+     */
+    int autoAttendanceRecord(AttendanceRecord attendanceRecord);
 }
