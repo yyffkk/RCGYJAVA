@@ -80,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> arrivalGoods(Order order) {
         map = new HashMap<>();
         try {

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysAttendanceRecordDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchAttendanceRecord" resultType="com.api.vo.operationManagement.VoAttendanceRecord">
+        select sar.id,sar.start_clock_date,sar.end_clock_date,su1.actual_name as clock_name,
+        su1.tel as clock_tel,sar.card_replacement_date,su2.actual_name as operator_name,sar.create_date
+        from sys_user as su1,sys_attendance_record as sar
+        LEFT JOIN sys_user as su2 on sar.operator = su2.id
+        <where>
+            sar.clock_id = su1.id
+            <if test="createDate != null">
+                and date_format(sar.create_date,'%Y%m%d') = date_format(#{createDate},'%Y%m%d')
+            </if>
+            <if test="clockTel != null and clockTel != ''">
+                and su1.tel like concat('%',#{clockTel},'%')
+            </if>
+            <if test="status == 1">
+                and sar.start_clock_date is null
+            </if>
+            <if test="status == 2">
+                and sar.end_clock_date is null
+            </if>
+        </where>
+        order by sar.create_date desc
+    </select>
+    <select id="leaveList" parameterType="com.api.model.operationManagement.SearchAttendanceLeaveRecord" resultType="com.api.vo.operationManagement.VoAttendanceLeaveRecord">
+        select salr.id,salr.reason,salr.status,salr.type,salr.start_date,salr.end_date,
+        su1.actual_name as create_name,su1.tel as create_tel,salr.create_date,
+        su2.actual_name as reviewer_name,salr.reviewer_date
+        from sys_user as su1,sys_attendance_leave_record as salr
+        LEFT JOIN sys_user as su2 on salr.reviewer = su2.id
+        <where>
+            salr.create_id = su1.id
+            <if test="status != null">
+                and salr.status = #{status}
+            </if>
+            <if test="type != null">
+                and salr.type = #{type}
+            </if>
+            <if test="createTel != null and createTel != ''">
+                and su1.tel like concat('%',#{createTel},'%')
+            </if>
+        </where>
+        order by salr.create_date desc
+    </select>
+
+    <update id="cardReplacement" parameterType="com.api.model.operationManagement.AttendanceRecord">
+        update sys_attendance_record
+        set card_replacement_date = #{cardReplacementDate},
+        operator = #{operator}
+        where id = #{id}
+    </update>
+
+</mapper>
