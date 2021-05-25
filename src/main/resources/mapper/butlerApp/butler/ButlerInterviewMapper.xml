@@ -17,4 +17,13 @@
         </where>
         order by si.create_date desc
     </select>
+
+    <update id="feedBack" parameterType="com.api.model.operationManagement.Interview">
+        update sys_interview
+        set status = #{status},
+        feedback_content = #{feedbackContent},
+        feedback_date = #{feedbackDate}
+        where id = #{id} and interviewers = #{interviewers}
+    </update>
+
 </mapper>

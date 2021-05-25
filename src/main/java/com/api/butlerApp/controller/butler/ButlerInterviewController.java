@@ -2,15 +2,15 @@ package com.api.butlerApp.controller.butler;
 
 import com.api.butlerApp.service.butler.ButlerInterviewService;
 import com.api.model.butlerApp.ButlerInterviewSearch;
+import com.api.model.operationManagement.Interview;
 import com.api.vo.butlerApp.ButlerInterviewVo;
 import com.api.vo.butlerApp.ButlerRegulationManagementVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,5 +39,18 @@ public class ButlerInterviewController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 访谈回复
+     * @param interview 客户访谈model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/feedBack")
+    public Map<String,Object> feedBack(@RequestBody Interview interview, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return butlerInterviewService.feedBack(interview,id);
     }
 }
