@@ -53,5 +53,12 @@
         operator = #{operator}
         where id = #{id}
     </update>
+    <update id="reviewer" parameterType="com.api.model.operationManagement.SysAttendanceLeaveRecord">
+        update sys_attendance_leave_record
+        set status = #{status},
+        reviewer = #{reviewer},
+        reviewer_date = #{reviewerDate}
+        where id = #{id}
+    </update>
 
 </mapper>

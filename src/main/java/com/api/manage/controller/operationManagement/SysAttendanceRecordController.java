@@ -5,14 +5,13 @@ import com.api.manage.service.operationManagement.SysAttendanceRecordService;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SearchAttendanceLeaveRecord;
 import com.api.model.operationManagement.SearchAttendanceRecord;
+import com.api.model.operationManagement.SysAttendanceLeaveRecord;
 import com.api.vo.operationManagement.VoAnnouncementManagement;
 import com.api.vo.operationManagement.VoAttendanceLeaveRecord;
 import com.api.vo.operationManagement.VoAttendanceRecord;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -71,4 +70,16 @@ public class SysAttendanceRecordController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 审核
+     * @param sysAttendanceLeaveRecord 考勤请假/加班记录model
+     * @return map
+     */
+    @PostMapping("/reviewer")
+    public Map<String,Object> reviewer(@RequestBody SysAttendanceLeaveRecord sysAttendanceLeaveRecord){
+        return sysAttendanceRecordService.reviewer(sysAttendanceLeaveRecord);
+    }
+
+
 }

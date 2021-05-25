@@ -6,11 +6,13 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SearchAttendanceLeaveRecord;
 import com.api.model.operationManagement.SearchAttendanceRecord;
+import com.api.model.operationManagement.SysAttendanceLeaveRecord;
 import com.api.vo.operationManagement.VoAttendanceLeaveRecord;
 import com.api.vo.operationManagement.VoAttendanceRecord;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -52,5 +54,27 @@ public class SysAttendanceRecordServiceImpl implements SysAttendanceRecordServic
     @Override
     public List<VoAttendanceLeaveRecord> leaveList(SearchAttendanceLeaveRecord searchAttendanceLeaveRecord) {
         return sysAttendanceRecordDao.leaveList(searchAttendanceLeaveRecord);
+    }
+
+    @Override
+    public Map<String, Object> reviewer(SysAttendanceLeaveRecord sysAttendanceLeaveRecord) {
+        map = new HashMap<>();
+
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        sysAttendanceLeaveRecord.setReviewer(sysUser.getId());
+        sysAttendanceLeaveRecord.setReviewerDate(new Date());
+
+        int update = sysAttendanceRecordDao.reviewer(sysAttendanceLeaveRecord);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
     }
 }

@@ -3,6 +3,7 @@ package com.api.manage.dao.operationManagement;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SearchAttendanceLeaveRecord;
 import com.api.model.operationManagement.SearchAttendanceRecord;
+import com.api.model.operationManagement.SysAttendanceLeaveRecord;
 import com.api.vo.operationManagement.VoAttendanceLeaveRecord;
 import com.api.vo.operationManagement.VoAttendanceRecord;
 
@@ -29,4 +30,11 @@ public interface SysAttendanceRecordDao {
      * @return 所有的请假/加班记录
      */
     List<VoAttendanceLeaveRecord> leaveList(SearchAttendanceLeaveRecord searchAttendanceLeaveRecord);
+
+    /**
+     * 审核
+     * @param sysAttendanceLeaveRecord 考勤请假/加班记录model
+     * @return 影响行数
+     */
+    int reviewer(SysAttendanceLeaveRecord sysAttendanceLeaveRecord);
 }
