@@ -3,6 +3,7 @@ package com.api.vo.app;
 import com.api.vo.resources.VoResourcesImg;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class AppMyOrderVo {
@@ -55,13 +56,57 @@ public class AppMyOrderVo {
      */
     private String levelTwoCategory;
     /**
-     * 状态：1.待发货，2.已发货，3.已收货，4.申请退换货，5.申请通过，6.申请驳回
+     * 状态：状态：1.待发货，2.已发货，3.已到货，4.已收货，6.已评价[当状态>=4.已收货并评价]，8.申请退换货，9.申请通过，10.申请驳回
      */
     private Integer status;
+    /**
+     * 发货时间
+     */
+    private Date sendDate;
+    /**
+     * 发货详情
+     */
+    private String sendDetail;
+    /**
+     * 到货时间
+     */
+    private Date arrivalDate;
+    /**
+     * 收货时间
+     */
+    private Date receivingDate;
+    /**
+     * 申请退货时间
+     */
+    private Date backDate;
+    /**
+     * 退换货理由
+     */
+    private String backReason;
+    /**
+     * 审核通过/驳回原因
+     */
+    private String reason;
+    /**
+     * 评分数1-10分
+     */
+    private Integer score;
+    /**
+     * 评价时间
+     */
+    private Date evaluationDate;
+    /**
+     * 评价原因
+     */
+    private String evaluationReason;
     /**
      * 到货时间说明
      */
     private String arrivalTime;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
 
     @Override
     public String toString() {
@@ -79,7 +124,18 @@ public class AppMyOrderVo {
                 ", levelOneCategory='" + levelOneCategory + '\'' +
                 ", levelTwoCategory='" + levelTwoCategory + '\'' +
                 ", status=" + status +
+                ", sendDate=" + sendDate +
+                ", sendDetail='" + sendDetail + '\'' +
+                ", arrivalDate=" + arrivalDate +
+                ", receivingDate=" + receivingDate +
+                ", backDate=" + backDate +
+                ", backReason='" + backReason + '\'' +
+                ", reason='" + reason + '\'' +
+                ", score=" + score +
+                ", evaluationDate=" + evaluationDate +
+                ", evaluationReason='" + evaluationReason + '\'' +
                 ", arrivalTime='" + arrivalTime + '\'' +
+                ", createDate=" + createDate +
                 '}';
     }
 
@@ -187,6 +243,86 @@ public class AppMyOrderVo {
         this.status = status;
     }
 
+    public Date getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
+    }
+
+    public String getSendDetail() {
+        return sendDetail;
+    }
+
+    public void setSendDetail(String sendDetail) {
+        this.sendDetail = sendDetail;
+    }
+
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(Date arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public Date getReceivingDate() {
+        return receivingDate;
+    }
+
+    public void setReceivingDate(Date receivingDate) {
+        this.receivingDate = receivingDate;
+    }
+
+    public Date getBackDate() {
+        return backDate;
+    }
+
+    public void setBackDate(Date backDate) {
+        this.backDate = backDate;
+    }
+
+    public String getBackReason() {
+        return backReason;
+    }
+
+    public void setBackReason(String backReason) {
+        this.backReason = backReason;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Date getEvaluationDate() {
+        return evaluationDate;
+    }
+
+    public void setEvaluationDate(Date evaluationDate) {
+        this.evaluationDate = evaluationDate;
+    }
+
+    public String getEvaluationReason() {
+        return evaluationReason;
+    }
+
+    public void setEvaluationReason(String evaluationReason) {
+        this.evaluationReason = evaluationReason;
+    }
+
     public String getArrivalTime() {
         return arrivalTime;
     }
@@ -195,10 +331,18 @@ public class AppMyOrderVo {
         this.arrivalTime = arrivalTime;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     public AppMyOrderVo() {
     }
 
-    public AppMyOrderVo(Integer id, String code, Integer goodsId, String goodsName, Integer backType, List<VoResourcesImg> goodsImgList, BigDecimal sellingPrice, BigDecimal markingPrice, Integer num, String supplierName, String levelOneCategory, String levelTwoCategory, Integer status, String arrivalTime) {
+    public AppMyOrderVo(Integer id, String code, Integer goodsId, String goodsName, Integer backType, List<VoResourcesImg> goodsImgList, BigDecimal sellingPrice, BigDecimal markingPrice, Integer num, String supplierName, String levelOneCategory, String levelTwoCategory, Integer status, Date sendDate, String sendDetail, Date arrivalDate, Date receivingDate, Date backDate, String backReason, String reason, Integer score, Date evaluationDate, String evaluationReason, String arrivalTime, Date createDate) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -212,6 +356,17 @@ public class AppMyOrderVo {
         this.levelOneCategory = levelOneCategory;
         this.levelTwoCategory = levelTwoCategory;
         this.status = status;
+        this.sendDate = sendDate;
+        this.sendDetail = sendDetail;
+        this.arrivalDate = arrivalDate;
+        this.receivingDate = receivingDate;
+        this.backDate = backDate;
+        this.backReason = backReason;
+        this.reason = reason;
+        this.score = score;
+        this.evaluationDate = evaluationDate;
+        this.evaluationReason = evaluationReason;
         this.arrivalTime = arrivalTime;
+        this.createDate = createDate;
     }
 }

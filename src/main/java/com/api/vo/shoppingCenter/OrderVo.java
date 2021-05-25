@@ -3,6 +3,7 @@ package com.api.vo.shoppingCenter;
 import com.api.vo.resources.VoResourcesImg;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**

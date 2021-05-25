@@ -27,6 +27,14 @@ public class SysRegulationManagement {
      */
     private Date releaseDate;
     /**
+     * 上传doc文件路径
+     */
+    private String fileDocUrl;
+    /**
+     * 上传doc文件名称
+     */
+    private String fileDocName;
+    /**
      * 创建人
      */
     private Integer createId;
@@ -51,6 +59,8 @@ public class SysRegulationManagement {
                 ", content='" + content + '\'' +
                 ", status=" + status +
                 ", releaseDate=" + releaseDate +
+                ", fileDocUrl='" + fileDocUrl + '\'' +
+                ", fileDocName='" + fileDocName + '\'' +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
@@ -98,6 +108,22 @@ public class SysRegulationManagement {
         this.releaseDate = releaseDate;
     }
 
+    public String getFileDocUrl() {
+        return fileDocUrl;
+    }
+
+    public void setFileDocUrl(String fileDocUrl) {
+        this.fileDocUrl = fileDocUrl;
+    }
+
+    public String getFileDocName() {
+        return fileDocName;
+    }
+
+    public void setFileDocName(String fileDocName) {
+        this.fileDocName = fileDocName;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -133,12 +159,14 @@ public class SysRegulationManagement {
     public SysRegulationManagement() {
     }
 
-    public SysRegulationManagement(Integer id, String title, String content, Integer status, Date releaseDate, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public SysRegulationManagement(Integer id, String title, String content, Integer status, Date releaseDate, String fileDocUrl, String fileDocName, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.status = status;
         this.releaseDate = releaseDate;
+        this.fileDocUrl = fileDocUrl;
+        this.fileDocName = fileDocName;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;

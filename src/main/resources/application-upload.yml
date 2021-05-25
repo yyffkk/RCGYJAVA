@@ -55,6 +55,8 @@ prop:
   upload-electronic-commerce: /img/electronicCommerce/
   #运营管理-社区介绍管理：新增社区介绍信息 照片上传路径
   upload-community-introduction: /img/communityIntroduction/
+  #运营管理-规程管理：规程doc,docx文件上传路径
+  upload-regulation-management-doc: /img/regulationManagement/
 
   #系统管理-合同管理：合同doc,docx文件上传路径
   upload-contract-doc: /doc/contract/

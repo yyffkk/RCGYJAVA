@@ -5,6 +5,7 @@ import com.api.manage.service.operationManagement.SysRegulationManagementService
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SearchRegulationManagement;
 import com.api.model.operationManagement.SysRegulationManagement;
+import com.api.util.UploadUtil;
 import com.api.vo.operationManagement.VoFBIRegulationManagement;
 import com.api.vo.operationManagement.VoRegulationManagement;
 import org.apache.shiro.SecurityUtils;
@@ -72,6 +73,7 @@ public class SysRegulationManagementServiceImpl implements SysRegulationManageme
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
 
+
         sysRegulationManagement.setModifyId(sysUser.getId());
         sysRegulationManagement.setModifyDate(new Date());
         if (sysRegulationManagement.getStatus() == 1){ //1.已发布
@@ -93,7 +95,12 @@ public class SysRegulationManagementServiceImpl implements SysRegulationManageme
     public Map<String, Object> delete(int[] ids) {
         map = new HashMap<>();
         try {
+            UploadUtil uploadUtil = new UploadUtil();
             for (int id : ids) {
+                //根据主键id查询规程信息
+                VoFBIRegulationManagement byId = sysRegulationManagementDao.findById(id);
+                //再删除doc文件信息
+                uploadUtil.deleteDoc(byId.getFileDocUrl());
                 int delete = sysRegulationManagementDao.delete(id);
                 if (delete <= 0){
                     throw new RuntimeException("删除失败");

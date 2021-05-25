@@ -19,6 +19,14 @@ public class ButlerRegulationManagementVo {
      */
     private String content;
     /**
+     * 上传doc文件路径
+     */
+    private String fileDocUrl;
+    /**
+     * 上传doc文件名称
+     */
+    private String fileDocName;
+    /**
      * 发布时间
      */
     private Date releaseDate;
@@ -29,6 +37,8 @@ public class ButlerRegulationManagementVo {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", fileDocUrl='" + fileDocUrl + '\'' +
+                ", fileDocName='" + fileDocName + '\'' +
                 ", releaseDate=" + releaseDate +
                 '}';
     }
@@ -57,6 +67,22 @@ public class ButlerRegulationManagementVo {
         this.content = content;
     }
 
+    public String getFileDocUrl() {
+        return fileDocUrl;
+    }
+
+    public void setFileDocUrl(String fileDocUrl) {
+        this.fileDocUrl = fileDocUrl;
+    }
+
+    public String getFileDocName() {
+        return fileDocName;
+    }
+
+    public void setFileDocName(String fileDocName) {
+        this.fileDocName = fileDocName;
+    }
+
     public Date getReleaseDate() {
         return releaseDate;
     }
@@ -68,10 +94,12 @@ public class ButlerRegulationManagementVo {
     public ButlerRegulationManagementVo() {
     }
 
-    public ButlerRegulationManagementVo(Integer id, String title, String content, Date releaseDate) {
+    public ButlerRegulationManagementVo(Integer id, String title, String content, String fileDocUrl, String fileDocName, Date releaseDate) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.fileDocUrl = fileDocUrl;
+        this.fileDocName = fileDocName;
         this.releaseDate = releaseDate;
     }
 }

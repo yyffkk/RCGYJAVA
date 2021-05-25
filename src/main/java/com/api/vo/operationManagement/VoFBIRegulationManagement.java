@@ -17,6 +17,14 @@ public class VoFBIRegulationManagement {
      */
     private String content;
     /**
+     * 上传doc文件路径
+     */
+    private String fileDocUrl;
+    /**
+     * 上传doc文件名称
+     */
+    private String fileDocName;
+    /**
      * 发布状态，1.已发布，2.未发布
      */
     private Integer status;
@@ -27,6 +35,8 @@ public class VoFBIRegulationManagement {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", fileDocUrl='" + fileDocUrl + '\'' +
+                ", fileDocName='" + fileDocName + '\'' +
                 ", status=" + status +
                 '}';
     }
@@ -55,6 +65,22 @@ public class VoFBIRegulationManagement {
         this.content = content;
     }
 
+    public String getFileDocUrl() {
+        return fileDocUrl;
+    }
+
+    public void setFileDocUrl(String fileDocUrl) {
+        this.fileDocUrl = fileDocUrl;
+    }
+
+    public String getFileDocName() {
+        return fileDocName;
+    }
+
+    public void setFileDocName(String fileDocName) {
+        this.fileDocName = fileDocName;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -66,10 +92,12 @@ public class VoFBIRegulationManagement {
     public VoFBIRegulationManagement() {
     }
 
-    public VoFBIRegulationManagement(Integer id, String title, String content, Integer status) {
+    public VoFBIRegulationManagement(Integer id, String title, String content, String fileDocUrl, String fileDocName, Integer status) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.fileDocUrl = fileDocUrl;
+        this.fileDocName = fileDocName;
         this.status = status;
     }
 }

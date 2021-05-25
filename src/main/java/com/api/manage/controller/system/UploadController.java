@@ -270,4 +270,16 @@ public class UploadController {
     public Map<String,Object> uploadFacilitiesCheckPhoto(MultipartFile file){
         return uploadService.uploadFacilitiesCheckPhoto(file);
     }
+
+
+    /**
+     * 上传规程信息doc,docx文件
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadRegulationManagementDoc")
+    public Map<String,Object> uploadRegulationManagementDoc(MultipartFile file){
+        return uploadService.uploadRegulationManagementDoc(file);
+    }
+
 }

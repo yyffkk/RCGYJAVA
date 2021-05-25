@@ -43,6 +43,12 @@
             content,
             status,
             release_date,
+            <if test="fileDocUrl != null and fileDocUrl != ''">
+                file_doc_url,
+            </if>
+            <if test="fileDocName != null and fileDocName != ''">
+                file_doc_name,
+            </if>
             create_id,
             create_date
         )values (
@@ -50,9 +56,18 @@
             #{content},
             #{status},
             #{releaseDate},
+            <if test="fileDocUrl != null and fileDocUrl != ''">
+                #{fileDocUrl},
+            </if>
+            <if test="fileDocName != null and fileDocName != ''">
+                #{fileDocName},
+            </if>
             #{createId},
             #{createDate}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIRegulationManagement">
@@ -70,6 +85,12 @@
             </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="fileDocUrl != null and fileDocUrl != ''">
+                file_doc_url = #{fileDocUrl},
+            </if>
+            <if test="fileDocName != null and fileDocName != ''">
+                file_doc_name = #{fileDocName},
             </if>
             <if test="releaseDate != null">
                 release_date = #{releaseDate},
