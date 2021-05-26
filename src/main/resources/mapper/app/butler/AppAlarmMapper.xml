@@ -15,4 +15,12 @@
             #{createDate}
         )
     </insert>
+    <select id="findRoomNameByEstateId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cbue.id = #{estateId}
+    </select>
+    <select id="findNameByResidentId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select name from user_resident where id = #{createId}
+    </select>
 </mapper>

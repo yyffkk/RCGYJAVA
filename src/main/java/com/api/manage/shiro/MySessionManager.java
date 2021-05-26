@@ -11,11 +11,15 @@ import java.io.Serializable;
 
 public class MySessionManager extends DefaultWebSessionManager {
     public static final String LOGIN_TOKEN_KEY = "X-Admin-Token";
+    public static final String LOGIN_TOKEN_KEY_LOWER = "x-admin-token";
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
 
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
         String id = WebUtils.toHttp(request).getHeader(LOGIN_TOKEN_KEY);
+        if (id == null || id.isEmpty()){
+            id = WebUtils.toHttp(request).getHeader(LOGIN_TOKEN_KEY_LOWER);
+        }
         //如果请求头中有 Authorization 则其值为sessionId
         System.out.println("Authorization"+"-------------"+id);
         if (!StringUtils.isEmpty(id)) {

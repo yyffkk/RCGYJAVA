@@ -9,4 +9,18 @@ public interface AppAlarmDao {
      * @return 影响行数
      */
     int insertAlarmRecord(AppAlarm appAlarm);
+
+    /**
+     * 根据房产主键id查询房产名称
+     * @param estateId 房产主键id
+     * @return 房产名称
+     */
+    String findRoomNameByEstateId(Integer estateId);
+
+    /**
+     * 根据住户主键id查询住户名称
+     * @param createId 住户主键id
+     * @return 住户名称
+     */
+    String findNameByResidentId(Integer createId);
 }
