@@ -5,6 +5,7 @@ import com.api.manage.service.system.UploadFileService;
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.operationManagement.SysServiceBrowsing;
 import com.api.util.ExcelReadUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -70,6 +71,61 @@ public class UploadFileServiceImpl implements UploadFileService {
 
                 //添加楼栋信息
                 int ret = uploadFileDao.insertEstate(cpmBuildingUnitEstate);
+                if(ret == 0){
+                    throw new RuntimeException("插入数据库失败");
+                }
+            }
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","导入成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> UploadServiceBrowsingFile(MultipartFile file) {
+        map = new HashMap<>();
+
+        try {
+            //创建处理EXCEL的类
+            ExcelReadUtils readExcel = new ExcelReadUtils();
+            //解析excel，获取上传的事件单
+            List<Map<String, Object>> userList = readExcel.getExcelInfo(file);
+
+            if(userList == null || userList.isEmpty()){
+                throw new RuntimeException("导入失败");
+            }
+
+            //至此已经将excel中的数据转换到list里面了,接下来就可以操作list,可以进行保存到数据库,或者其他操作,
+            for(Map<String, Object> user:userList){
+                SysServiceBrowsing sysServiceBrowsing = new SysServiceBrowsing();
+
+                sysServiceBrowsing.setName(user.get("服务名称").toString());
+                sysServiceBrowsing.setContent(user.get("服务介绍").toString());
+
+                //获取登录用户信息
+                Subject subject = SecurityUtils.getSubject();
+                SysUser sysUser = (SysUser) subject.getPrincipal();
+
+                sysServiceBrowsing.setCreateId(sysUser.getId());
+                sysServiceBrowsing.setCreateDate(new Date());
+
+
+
+                //添加服务浏览信息
+                int ret = uploadFileDao.insertServiceBrowsing(sysServiceBrowsing);
                 if(ret == 0){
                     throw new RuntimeException("插入数据库失败");
                 }

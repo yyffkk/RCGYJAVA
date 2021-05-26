@@ -6,4 +6,6 @@ import java.util.Map;
 
 public interface UploadFileService {
     Map<String,Object> UploadEstateFile(MultipartFile file);
+
+    Map<String, Object> UploadServiceBrowsingFile(MultipartFile file);
 }

@@ -2,6 +2,7 @@ package com.api.manage.dao.system;
 
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
+import com.api.model.operationManagement.SysServiceBrowsing;
 
 public interface UploadFileDao {
     /**
@@ -17,4 +18,11 @@ public interface UploadFileDao {
      * @return 影响行数
      */
     int insertEstate(CpmBuildingUnitEstate cpmBuildingUnitEstate);
+
+    /**
+     * 添加服务浏览信息
+     * @param sysServiceBrowsing 服务浏览model信息
+     * @return 影响行数
+     */
+    int insertServiceBrowsing(SysServiceBrowsing sysServiceBrowsing);
 }

@@ -30,4 +30,14 @@ public class UploadFileController {
     public Map<String,Object> UploadEstateFile(MultipartFile file){
         return uploadFileService.UploadEstateFile(file);
     }
+
+    /**
+     * 导入服务浏览信息
+     * @param file 上传Excel文件
+     * @return map
+     */
+    @PostMapping("/UploadServiceBrowsingFile")
+    public Map<String,Object> UploadServiceBrowsingFile(MultipartFile file){
+        return uploadFileService.UploadServiceBrowsingFile(file);
+    }
 }

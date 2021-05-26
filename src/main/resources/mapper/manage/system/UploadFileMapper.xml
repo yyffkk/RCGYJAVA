@@ -28,6 +28,19 @@
             #{deviceNumber}
         )
     </insert>
+    <insert id="insertServiceBrowsing">
+        insert into sys_service_browsing(
+            name,
+            content,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{content},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 
     <select id="findByUnitId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnit">
         select * from cpm_building_unit where id = #{buildingUnitId}
