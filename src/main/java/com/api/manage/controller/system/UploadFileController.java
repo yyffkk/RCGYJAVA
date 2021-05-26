@@ -22,7 +22,7 @@ public class UploadFileController {
 
 
     /**
-     * 导入房屋信息（type 必须为4.未售）
+     * 导入房屋信息（status 必须为4.未售）
      * @param file 上传Excel文件
      * @return map
      */
