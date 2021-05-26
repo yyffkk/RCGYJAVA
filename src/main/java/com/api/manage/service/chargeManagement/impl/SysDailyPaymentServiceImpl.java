@@ -77,6 +77,7 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> push(DailyPaymentPush dailyPaymentPush) {
         SysMessage sysMessage = dailyPaymentPush.getSysMessage();
         map = new HashMap<>();

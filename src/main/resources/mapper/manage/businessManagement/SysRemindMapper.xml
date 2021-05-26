@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.businessManagement.SysRemindDao">
+
+    <select id="list" parameterType="com.api.model.businessManagement.SearchRemind" resultType="com.api.vo.businessManagement.VoRemind">
+        select sm.id,sm.title,sm.content,sm.send_date,sm.type,
+        (case su1.actual_name is null when true then '系统自动提醒' ELSE su1.actual_name end) as sender_name,
+        ur.name as receiver_account_name,ss.send_status
+        from user_resident as ur,sys_sending as ss,sys_message as sm
+        LEFT JOIN sys_user as su1 on sm.sender = su1.id
+        <where>
+            ss.receiver_account = ur.id
+            <if test="title != null and title != ''">
+                and sm.title like concat('%',#{title},'%')
+            </if>
+            <if test="type != null">
+                and sm.type = #{type}
+            </if>
+        </where>
+    </select>
+</mapper>
