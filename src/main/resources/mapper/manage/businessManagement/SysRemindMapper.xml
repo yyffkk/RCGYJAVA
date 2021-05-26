@@ -12,6 +12,7 @@
         LEFT JOIN sys_user as su1 on sm.sender = su1.id
         <where>
             ss.receiver_account = ur.id
+            and ss.message_id = sm.id
             <if test="title != null and title != ''">
                 and sm.title like concat('%',#{title},'%')
             </if>

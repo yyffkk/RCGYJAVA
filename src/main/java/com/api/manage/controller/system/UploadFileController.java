@@ -40,4 +40,6 @@ public class UploadFileController {
     public Map<String,Object> UploadServiceBrowsingFile(MultipartFile file){
         return uploadFileService.UploadServiceBrowsingFile(file);
     }
+
+
 }
