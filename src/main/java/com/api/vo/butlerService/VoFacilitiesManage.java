@@ -31,6 +31,18 @@ public class VoFacilitiesManage {
      */
     private Integer status;
     /**
+     * 上传doc文件路径
+     */
+    private String fileDocUrl;
+    /**
+     * 上传doc文件名称
+     */
+    private String fileDocName;
+    /**
+     * 备注
+     */
+    private String remakes;
+    /**
      * 添加时间
      */
     private Date createDate;
@@ -44,6 +56,9 @@ public class VoFacilitiesManage {
                 ", name='" + name + '\'' +
                 ", createName='" + createName + '\'' +
                 ", status=" + status +
+                ", fileDocUrl='" + fileDocUrl + '\'' +
+                ", fileDocName='" + fileDocName + '\'' +
+                ", remakes='" + remakes + '\'' +
                 ", createDate=" + createDate +
                 '}';
     }
@@ -96,6 +111,30 @@ public class VoFacilitiesManage {
         this.status = status;
     }
 
+    public String getFileDocUrl() {
+        return fileDocUrl;
+    }
+
+    public void setFileDocUrl(String fileDocUrl) {
+        this.fileDocUrl = fileDocUrl;
+    }
+
+    public String getFileDocName() {
+        return fileDocName;
+    }
+
+    public void setFileDocName(String fileDocName) {
+        this.fileDocName = fileDocName;
+    }
+
+    public String getRemakes() {
+        return remakes;
+    }
+
+    public void setRemakes(String remakes) {
+        this.remakes = remakes;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -107,13 +146,16 @@ public class VoFacilitiesManage {
     public VoFacilitiesManage() {
     }
 
-    public VoFacilitiesManage(Integer id, String code, String facilitiesCategoryName, String name, String createName, Integer status, Date createDate) {
+    public VoFacilitiesManage(Integer id, String code, String facilitiesCategoryName, String name, String createName, Integer status, String fileDocUrl, String fileDocName, String remakes, Date createDate) {
         this.id = id;
         this.code = code;
         this.facilitiesCategoryName = facilitiesCategoryName;
         this.name = name;
         this.createName = createName;
         this.status = status;
+        this.fileDocUrl = fileDocUrl;
+        this.fileDocName = fileDocName;
+        this.remakes = remakes;
         this.createDate = createDate;
     }
 }

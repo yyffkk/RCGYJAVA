@@ -31,6 +31,18 @@ public class VoFacilitiesManageDetail {
      */
     private Integer facilitiesCategoryId;
     /**
+     * 上传doc文件路径
+     */
+    private String fileDocUrl;
+    /**
+     * 上传doc文件名称
+     */
+    private String fileDocName;
+    /**
+     * 备注
+     */
+    private String remakes;
+    /**
      * 创建人名称
      */
     private String createName;
@@ -56,6 +68,9 @@ public class VoFacilitiesManageDetail {
                 ", status=" + status +
                 ", facilitiesCategoryName='" + facilitiesCategoryName + '\'' +
                 ", facilitiesCategoryId=" + facilitiesCategoryId +
+                ", fileDocUrl='" + fileDocUrl + '\'' +
+                ", fileDocName='" + fileDocName + '\'' +
+                ", remakes='" + remakes + '\'' +
                 ", createName='" + createName + '\'' +
                 ", tel='" + tel + '\'' +
                 ", address='" + address + '\'' +
@@ -111,6 +126,30 @@ public class VoFacilitiesManageDetail {
         this.facilitiesCategoryId = facilitiesCategoryId;
     }
 
+    public String getFileDocUrl() {
+        return fileDocUrl;
+    }
+
+    public void setFileDocUrl(String fileDocUrl) {
+        this.fileDocUrl = fileDocUrl;
+    }
+
+    public String getFileDocName() {
+        return fileDocName;
+    }
+
+    public void setFileDocName(String fileDocName) {
+        this.fileDocName = fileDocName;
+    }
+
+    public String getRemakes() {
+        return remakes;
+    }
+
+    public void setRemakes(String remakes) {
+        this.remakes = remakes;
+    }
+
     public String getCreateName() {
         return createName;
     }
@@ -146,13 +185,16 @@ public class VoFacilitiesManageDetail {
     public VoFacilitiesManageDetail() {
     }
 
-    public VoFacilitiesManageDetail(Integer id, String name, String code, Integer status, String facilitiesCategoryName, Integer facilitiesCategoryId, String createName, String tel, String address, Date createDate) {
+    public VoFacilitiesManageDetail(Integer id, String name, String code, Integer status, String facilitiesCategoryName, Integer facilitiesCategoryId, String fileDocUrl, String fileDocName, String remakes, String createName, String tel, String address, Date createDate) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.status = status;
         this.facilitiesCategoryName = facilitiesCategoryName;
         this.facilitiesCategoryId = facilitiesCategoryId;
+        this.fileDocUrl = fileDocUrl;
+        this.fileDocName = fileDocName;
+        this.remakes = remakes;
         this.createName = createName;
         this.tel = tel;
         this.address = address;

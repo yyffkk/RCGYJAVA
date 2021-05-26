@@ -31,6 +31,18 @@ public class FacilitiesManage {
      */
     private Integer status;
     /**
+     * 上传doc文件路径
+     */
+    private String fileDocUrl;
+    /**
+     * 上传doc文件名称
+     */
+    private String fileDocName;
+    /**
+     * 备注
+     */
+    private String remakes;
+    /**
      * 创建人id
      */
     private Integer createId;
@@ -60,6 +72,9 @@ public class FacilitiesManage {
                 ", address='" + address + '\'' +
                 ", facilitiesCategoryId=" + facilitiesCategoryId +
                 ", status=" + status +
+                ", fileDocUrl='" + fileDocUrl + '\'' +
+                ", fileDocName='" + fileDocName + '\'' +
+                ", remakes='" + remakes + '\'' +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
@@ -116,6 +131,30 @@ public class FacilitiesManage {
         this.status = status;
     }
 
+    public String getFileDocUrl() {
+        return fileDocUrl;
+    }
+
+    public void setFileDocUrl(String fileDocUrl) {
+        this.fileDocUrl = fileDocUrl;
+    }
+
+    public String getFileDocName() {
+        return fileDocName;
+    }
+
+    public void setFileDocName(String fileDocName) {
+        this.fileDocName = fileDocName;
+    }
+
+    public String getRemakes() {
+        return remakes;
+    }
+
+    public void setRemakes(String remakes) {
+        this.remakes = remakes;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -159,13 +198,16 @@ public class FacilitiesManage {
     public FacilitiesManage() {
     }
 
-    public FacilitiesManage(Integer id, String code, String name, String address, Integer facilitiesCategoryId, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
+    public FacilitiesManage(Integer id, String code, String name, String address, Integer facilitiesCategoryId, Integer status, String fileDocUrl, String fileDocName, String remakes, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.address = address;
         this.facilitiesCategoryId = facilitiesCategoryId;
         this.status = status;
+        this.fileDocUrl = fileDocUrl;
+        this.fileDocName = fileDocName;
+        this.remakes = remakes;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;

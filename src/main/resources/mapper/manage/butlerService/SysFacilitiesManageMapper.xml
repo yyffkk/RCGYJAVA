@@ -4,7 +4,8 @@
 <mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesManageDao">
 
     <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesManage" resultType="com.api.vo.butlerService.VoFacilitiesManage">
-        select sfm.id,sfm.code,sfc.name as facilities_category_name,sfm.name,su.actual_name as create_name,sfm.status,sfm.create_date
+        select sfm.id,sfm.code,sfc.name as facilities_category_name,sfm.name,su.actual_name as create_name,sfm.status,
+        sfm.create_date,sfm.file_doc_url,sfm.file_doc_name,sfm.remakes
         from sys_facilities_manage as sfm,sys_facilities_category as sfc,sys_user as su
         <where>
             sfm.facilities_category_id = sfc.id
@@ -42,6 +43,15 @@
             address,
             facilities_category_id,
             status,
+            <if test="fileDocUrl != null and fileDocUrl != ''">
+                file_doc_url,
+            </if>
+            <if test="fileDocName != null and fileDocName != ''">
+                file_doc_name,
+            </if>
+            <if test="remakes != null and remakes != ''">
+                remakes,
+            </if>
             create_id,
             create_date,
             is_delete
@@ -51,6 +61,15 @@
             #{address},
             #{facilitiesCategoryId},
             #{status},
+            <if test="fileDocUrl != null and fileDocUrl != ''">
+                #{fileDocUrl},
+            </if>
+            <if test="fileDocName != null and fileDocName != ''">
+                #{fileDocName},
+            </if>
+            <if test="remakes != null and remakes != ''">
+                #{remakes},
+            </if>
             #{createId},
             #{createDate},
             #{isDelete}
@@ -63,13 +82,23 @@
         name = #{name},
         address = #{address},
         facilities_category_id = #{facilitiesCategoryId},
+        <if test="fileDocUrl != null and fileDocUrl != ''">
+            file_doc_url = #{fileDocUrl},
+        </if>
+        <if test="fileDocName != null and fileDocName != ''">
+            file_doc_name = #{fileDocName},
+        </if>
+        <if test="remakes != null and remakes != ''">
+            remakes = #{remakes}
+        </if>
         modify_id = #{modifyId},
         modify_date = #{modifyDate}
         where id = #{id}
     </update>
 
     <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFacilitiesManageDetail">
-        select sfm.id,sfm.code,sfm.facilities_category_id,sfc.name as facilities_category_name,sfm.name,su.actual_name as create_name,sfm.status,sfm.create_date,sfm.address,su.tel
+        select sfm.id,sfm.code,sfm.facilities_category_id,sfc.name as facilities_category_name,sfm.name,su.actual_name as create_name,sfm.status,
+        sfm.file_doc_url,sfm.file_doc_name,sfm.remakes,sfm.create_date,sfm.address,su.tel
         from sys_facilities_manage as sfm,sys_facilities_category as sfc,sys_user as su
         where sfm.facilities_category_id = sfc.id and sfm.create_id = su.id and sfm.id = #{id} and sfm.is_delete = 1
     </select>
