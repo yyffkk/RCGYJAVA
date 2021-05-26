@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.system.UploadFileDao">
+    <insert id="insertEstate" parameterType="com.api.model.basicArchives.CpmBuildingUnitEstate">
+        insert into cpm_building_unit_estate(
+            building_unit_id,
+            room_number,
+            status,
+            type,
+            construction_area,
+            indoor_area,
+            create_id,
+            create_date,
+            is_delete,
+            device_number
+        )values (
+            #{buildingUnitId},
+            #{roomNumber},
+            #{status},
+            #{type},
+            #{constructionArea},
+            #{indoorArea},
+            #{createId},
+            #{createDate},
+            #{isDelete},
+            #{deviceNumber}
+        )
+    </insert>
+
+    <select id="findByUnitId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnit">
+        select * from cpm_building_unit where id = #{buildingUnitId}
+    </select>
+</mapper>

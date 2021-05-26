@@ -83,9 +83,12 @@
         select count(*) from sys_facilities_appointment where DATE(create_date) = DATE(#{date})
     </select>
     <select id="findIsBeInAppointmentDate" parameterType="com.api.model.butlerService.FacilitiesAppointment" resultType="java.lang.Integer">
-        select count(*) from sys_facilities_appointment
-        where #{appointmentStartDate} between appointment_start_date and appointment_end_date
-        or #{appointmentStartDate} between appointment_start_date and appointment_end_date
+        select count(*) from (
+            select * from sys_facilities_appointment
+            where facilities_manage_id = #{facilitiesManageId}
+        ) as T
+        where #{appointmentStartDate} between T.appointment_start_date and T.appointment_end_date
+        or #{appointmentStartDate} between T.appointment_start_date and T.appointment_end_date
     </select>
 
 
