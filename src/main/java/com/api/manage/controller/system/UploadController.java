@@ -282,4 +282,14 @@ public class UploadController {
         return uploadService.uploadRegulationManagementDoc(file);
     }
 
+    /**
+     * 上传设施/设备信息doc,docx文件
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadFacilitiesDoc")
+    public Map<String,Object> uploadFacilitiesDoc(MultipartFile file){
+        return uploadService.uploadFacilitiesDoc(file);
+    }
+
 }

@@ -93,6 +93,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_FACILITIES_CHECK_PHOTO;
     @Value("${prop.upload-regulation-management-doc}")
     private String UPLOAD_REGULATION_MANAGEMENT_DOC;
+    @Value("${prop.upload-facilities-doc}")
+    private String UPLOAD_FACILITIES_DOC;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -353,6 +355,28 @@ public class UploadServiceImpl implements UploadService {
         try {
             UploadUtil uploadUtil = new UploadUtil();
             url = uploadUtil.uploadDoc(file, UPLOAD_REGULATION_MANAGEMENT_DOC);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            map.put("message",message);
+            map.put("url","");
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","上传成功");
+        map.put("url",url);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadFacilitiesDoc(MultipartFile file) {
+        map = new HashMap<>();
+        String url = null;
+        try {
+            UploadUtil uploadUtil = new UploadUtil();
+            url = uploadUtil.uploadDoc(file, UPLOAD_FACILITIES_DOC);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
