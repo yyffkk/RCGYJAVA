@@ -93,6 +93,13 @@ public class AppSearchServiceImpl implements AppSearchService {
         }
         //填入帖子活动搜索内容
         appSearchVo.setGambitVoList(gambitVoList);
+
+        //模糊查询公告信息
+
+
+        //模糊查询资讯信息
+
+
         map.put("message","请求成功");
         map.put("data",appSearchVo);
         map.put("status",true);

@@ -418,6 +418,16 @@ public class SystemDataController {
         return systemDataService.findShopAppointmentNum();
     }
 
+    /***
+     * 查询工单超量的用户
+     * @param threshold 阀值
+     * @return map
+     */
+    @GetMapping("/findExcessiveWorkOrderUserName")
+    public Map<String,Object> findExcessiveWorkOrderUserName(Integer threshold){
+        return systemDataService.findExcessiveWorkOrderUserName(threshold);
+    }
+
 
     /**
      * 第三方 添加资讯信息
@@ -428,4 +438,6 @@ public class SystemDataController {
     public Map<String,Object> insertNews(@RequestBody SysNewsManagement sysNewsManagement){
         return systemDataService.insertNews(sysNewsManagement);
     }
+
+
 }

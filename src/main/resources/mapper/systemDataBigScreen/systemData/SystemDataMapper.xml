@@ -339,6 +339,14 @@
         LEFT JOIN cpm_building_unit_estate as cbue2 on cbue2.id = cbue.id and cbue2.status in (1,5) and cbue2.is_delete = 1
         group by cb.id
     </select>
+    <select id="findExcessiveWorkOrderUserName" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select T.actual_name from (
+            select su.actual_name,count(su.actual_name) as num
+            from sys_report_repair as srr,sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld,sys_user as su
+            where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and sdl.status = 3 and sdld.operator = su.id
+            group by su.actual_name
+        ) as T where T.num <![CDATA[ >= ]]> #{threshold}
+    </select>
 
     <insert id="insertPushAlert" parameterType="com.api.model.systemDataBigScreen.FirePushAlert">
         insert into sys_fire_alarm(

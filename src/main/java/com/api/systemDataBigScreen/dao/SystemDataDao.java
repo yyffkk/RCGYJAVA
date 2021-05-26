@@ -380,4 +380,10 @@ public interface SystemDataDao {
      */
     int insertPushAlert(FirePushAlert firePushAlert);
 
+    /**
+     * 查询工单超量的用户
+     * @param threshold 阀值
+     * @return 用户名称集合
+     */
+    List<String> findExcessiveWorkOrderUserName(Integer threshold);
 }
