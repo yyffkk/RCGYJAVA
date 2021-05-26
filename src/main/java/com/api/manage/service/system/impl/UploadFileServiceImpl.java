@@ -38,7 +38,7 @@ public class UploadFileServiceImpl implements UploadFileService {
             List<Map<String, Object>> userList = readExcel.getExcelInfo(file);
 
             if(userList == null || userList.isEmpty()){
-                throw new RuntimeException("上传失败");
+                throw new RuntimeException("导入失败");
             }
 
             //至此已经将excel中的数据转换到list里面了,接下来就可以操作list,可以进行保存到数据库,或者其他操作,
@@ -87,7 +87,7 @@ public class UploadFileServiceImpl implements UploadFileService {
             map.put("status",false);
             return map;
         }
-        map.put("message","上传成功");
+        map.put("message","导入成功");
         map.put("status",true);
         return map;
     }
