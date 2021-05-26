@@ -5,7 +5,7 @@
 <mapper namespace="com.api.manage.dao.operationManagement.SysAlarmDao">
 
     <select id="fireAlarmList" resultType="com.api.vo.operationManagement.VoFireAlarm">
-        select * from sys_fire_alarm
+        select * from sys_fire_alarm order by create_date desc
     </select>
     <select id="oneButtonAlarmList" resultType="com.api.vo.operationManagement.VoOneButtonAlarm">
         select soba.id,ur.name,ur.tel,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,soba.create_date

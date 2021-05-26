@@ -20,5 +20,6 @@
                 and sm.type = #{type}
             </if>
         </where>
+        order by sm.send_date desc
     </select>
 </mapper>
