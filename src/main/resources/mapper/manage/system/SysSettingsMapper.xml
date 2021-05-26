@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.system.SysSettingsDao">
+
+    <select id="list" resultType="com.api.model.system.SysSettings">
+        select * from sys_settings
+    </select>
+
+    <select id="findOnOffById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select on_off from sys_settings where id = #{id}
+    </select>
+
+    <update id="disEnable" parameterType="java.lang.Integer">
+        update sys_settings
+        set on_off = 2
+        where id = #{id}
+    </update>
+    <update id="enable" parameterType="java.lang.Integer">
+        update sys_settings
+        set on_off = 1
+        where id = #{id}
+    </update>
+
+</mapper>
