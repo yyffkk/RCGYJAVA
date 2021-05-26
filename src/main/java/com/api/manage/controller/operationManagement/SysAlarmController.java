@@ -1,6 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysAlarmService;
+import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
 import com.api.vo.operationManagement.VoFireAlarm;
 import com.api.vo.operationManagement.VoGreenArea;
 import com.api.vo.operationManagement.VoOneButtonAlarm;
@@ -44,7 +45,7 @@ public class SysAlarmController {
 
 
     /**
-     * 查询所有的一键报警记录
+     * 查询业主app的一键报警记录
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @return map
@@ -54,6 +55,24 @@ public class SysAlarmController {
         PageHelper.startPage(pageNum,size);
         List<VoOneButtonAlarm> voOneButtonAlarmList = sysAlarmService.oneButtonAlarmList();
         PageInfo<VoOneButtonAlarm> pageInfo = new PageInfo<>(voOneButtonAlarmList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 查询管家app的一键报警记录
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/butlerOneButtonAlarmList")
+    public Map<String,Object> butlerOneButtonAlarmList(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<VoButlerOneButtonAlarm> voButlerOneButtonAlarmList = sysAlarmService.butlerOneButtonAlarmList();
+        PageInfo<VoButlerOneButtonAlarm> pageInfo = new PageInfo<>(voButlerOneButtonAlarmList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());

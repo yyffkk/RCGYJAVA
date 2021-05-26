@@ -23,6 +23,14 @@ public class AppAlarmServiceImpl implements AppAlarmService {
         String roomName = appAlarmDao.findRoomNameByEstateId(appAlarm.getEstateId());
         String name = appAlarmDao.findNameByResidentId(appAlarm.getCreateId());
 
+        if (roomName == null){
+            roomName = "暂无房产";
+        }
+
+        if (name == null){
+            name = "小蜜蜂用户";
+        }
+
         String content = "于【"+roomName+"】的【"+name+"】使用了一键报警功能";
         WebSocketService ws = new WebSocketService();
         ws.broadcast(content);

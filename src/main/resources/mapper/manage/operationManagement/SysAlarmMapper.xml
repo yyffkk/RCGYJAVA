@@ -14,5 +14,12 @@
         LEFT JOIN cpm_building_unit as cbu on cbue.building_unit_id = cbu.id
         LEFT JOIN cpm_building as cb on cbu.building_id = cb.id
         where soba.create_id = ur.id
+        order by soba.create_date desc
+    </select>
+    <select id="butlerOneButtonAlarmList" resultType="com.api.vo.operationManagement.VoButlerOneButtonAlarm">
+        select sobab.id,su.actual_name as name,su.tel,so.name as organization_name,sobab.create_date
+        from sys_one_button_alarm_butler as sobab,sys_user as su,sys_organization as so
+        where sobab.create_id = su.id and su.organization_id = so.id
+        order by sobab.create_date desc
     </select>
 </mapper>
