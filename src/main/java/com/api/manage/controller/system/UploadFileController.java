@@ -41,5 +41,25 @@ public class UploadFileController {
         return uploadFileService.UploadServiceBrowsingFile(file);
     }
 
+    /**
+     * 导入钥匙信息
+     * @param file 上传Excel文件
+     * @return map
+     */
+    @PostMapping("/UploadKeyFile")
+    public Map<String,Object> UploadKeyFile(MultipartFile file){
+        return uploadFileService.UploadKeyFile(file);
+    }
+
+    /**
+     * 导入绿化区域信息
+     * @param file 上传Excel文件
+     * @return map
+     */
+    @PostMapping("/UploadGreenAreaFile")
+    public Map<String,Object> UploadGreenAreaFile(MultipartFile file){
+        return uploadFileService.UploadGreenAreaFile(file);
+    }
+
 
 }

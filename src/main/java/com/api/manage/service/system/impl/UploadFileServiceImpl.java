@@ -5,8 +5,11 @@ import com.api.manage.service.system.UploadFileService;
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.operationManagement.SysGreenArea;
+import com.api.model.operationManagement.SysKeyManagement;
 import com.api.model.operationManagement.SysServiceBrowsing;
 import com.api.util.ExcelReadUtils;
+import com.api.util.IdWorker;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -54,6 +57,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                 cpmBuildingUnitEstate.setIndoorArea(new BigDecimal(user.get("室内面积").toString()));
                 cpmBuildingUnitEstate.setDeviceNumber(user.get("对讲机设备号").toString());
                 cpmBuildingUnitEstate.setIsDelete(1);//默认1.非删
+
 
                 //获取登录用户信息
                 Subject subject = SecurityUtils.getSubject();
@@ -126,6 +130,120 @@ public class UploadFileServiceImpl implements UploadFileService {
 
                 //添加服务浏览信息
                 int ret = uploadFileDao.insertServiceBrowsing(sysServiceBrowsing);
+                if(ret == 0){
+                    throw new RuntimeException("插入数据库失败");
+                }
+            }
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","导入成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> UploadKeyFile(MultipartFile file) {
+        map = new HashMap<>();
+
+        try {
+            //创建处理EXCEL的类
+            ExcelReadUtils readExcel = new ExcelReadUtils();
+            //解析excel，获取上传的事件单
+            List<Map<String, Object>> userList = readExcel.getExcelInfo(file);
+
+            if(userList == null || userList.isEmpty()){
+                throw new RuntimeException("导入失败");
+            }
+
+            //至此已经将excel中的数据转换到list里面了,接下来就可以操作list,可以进行保存到数据库,或者其他操作,
+            for(Map<String, Object> user:userList){
+                SysKeyManagement sysKeyManagement = new SysKeyManagement();
+
+                sysKeyManagement.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
+                sysKeyManagement.setFacilityName(user.get("设备名称").toString());
+                sysKeyManagement.setNum(Integer.valueOf(user.get("钥匙数量").toString()));
+                sysKeyManagement.setCorrespondingPosition(user.get("对应位置").toString());
+                sysKeyManagement.setStorageLocation(user.get("存放位置").toString());
+                sysKeyManagement.setAdministrator(user.get("管理员名称").toString());
+                sysKeyManagement.setTel(user.get("管理员联系方式").toString());
+
+                //获取登录用户信息
+                Subject subject = SecurityUtils.getSubject();
+                SysUser sysUser = (SysUser) subject.getPrincipal();
+
+                sysKeyManagement.setCreateId(sysUser.getId());
+                sysKeyManagement.setCreateDate(new Date());
+
+
+
+                //添加钥匙信息
+                int ret = uploadFileDao.insertKey(sysKeyManagement);
+                if(ret == 0){
+                    throw new RuntimeException("插入数据库失败");
+                }
+            }
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","导入成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> UploadGreenAreaFile(MultipartFile file) {
+        map = new HashMap<>();
+
+        try {
+            //创建处理EXCEL的类
+            ExcelReadUtils readExcel = new ExcelReadUtils();
+            //解析excel，获取上传的事件单
+            List<Map<String, Object>> userList = readExcel.getExcelInfo(file);
+
+            if(userList == null || userList.isEmpty()){
+                throw new RuntimeException("导入失败");
+            }
+
+            //至此已经将excel中的数据转换到list里面了,接下来就可以操作list,可以进行保存到数据库,或者其他操作,
+            for(Map<String, Object> user:userList){
+                SysGreenArea sysGreenArea = new SysGreenArea();
+
+                sysGreenArea.setName(user.get("区域名称").toString());
+
+                //获取登录用户信息
+                Subject subject = SecurityUtils.getSubject();
+                SysUser sysUser = (SysUser) subject.getPrincipal();
+
+                sysGreenArea.setCreateId(sysUser.getId());
+                sysGreenArea.setCreateDate(new Date());
+
+
+
+                //添加绿化区域信息
+                int ret = uploadFileDao.insertGreenArea(sysGreenArea);
                 if(ret == 0){
                     throw new RuntimeException("插入数据库失败");
                 }

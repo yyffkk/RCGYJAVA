@@ -45,4 +45,39 @@
     <select id="findByUnitId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnit">
         select * from cpm_building_unit where id = #{buildingUnitId}
     </select>
+
+    <insert id="insertKey" parameterType="com.api.model.operationManagement.SysKeyManagement">
+        insert into sys_key(
+            code,
+            facility_name,
+            num,
+            corresponding_position,
+            storage_location,
+            administrator,
+            tel,
+            create_id,
+            create_date
+        )values (
+            #{code},
+            #{facilityName},
+            #{num},
+            #{correspondingPosition},
+            #{storageLocation},
+            #{administrator},
+            #{tel},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+    <insert id="insertGreenArea" parameterType="com.api.model.operationManagement.SysGreenArea">
+        insert into sys_green_area(
+            name,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 </mapper>
