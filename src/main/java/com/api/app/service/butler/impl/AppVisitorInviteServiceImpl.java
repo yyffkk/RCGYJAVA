@@ -101,6 +101,12 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
         map = new HashMap<>();
         //查询分享连接的有效截止时间
         Date effectiveDate = appVisitorInviteDao.findEffectiveDateByCode(code);
+        if (effectiveDate == null){
+            map.put("message","该连接不存在");
+            map.put("status",false);
+            return map;
+        }
+
         if (new Date().getTime() > effectiveDate.getTime()){ //如果当前时间超出有效截止时间，则提示该连接已失效
             map.put("message","该连接已失效");
             map.put("status",false);
