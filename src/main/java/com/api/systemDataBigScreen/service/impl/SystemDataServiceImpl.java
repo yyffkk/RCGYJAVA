@@ -554,4 +554,15 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> findExcessiveGreenTaskUserName(Integer threshold) {
+        map = new HashMap<>();
+        List<String> names = systemDataDao.findExcessiveGreenTaskUserName(threshold);
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",names);
+        return map;
+    }
+
 }

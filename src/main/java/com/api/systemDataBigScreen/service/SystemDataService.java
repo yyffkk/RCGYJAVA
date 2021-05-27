@@ -76,4 +76,6 @@ public interface SystemDataService {
     Map<String, Object> insertNews(SysNewsManagement sysNewsManagement);
 
     Map<String, Object> findExcessiveWorkOrderUserName(Integer threshold);
+
+    Map<String, Object> findExcessiveGreenTaskUserName(Integer threshold);
 }

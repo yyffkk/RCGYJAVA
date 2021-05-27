@@ -347,6 +347,14 @@
             group by su.actual_name
         ) as T where T.num <![CDATA[ >= ]]> #{threshold}
     </select>
+    <select id="findExcessiveGreenTaskUserName" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select T.actual_name from (
+                select su.actual_name,count(su.actual_name) as num
+                from sys_green_task as sgt,sys_user as su
+                where sgt.director= su.id and sgt.status = 1 and sgt.end_date >= NOW()
+                GROUP BY su.actual_name
+        )  as T where T.num <![CDATA[ >= ]]> #{threshold}
+    </select>
 
     <insert id="insertPushAlert" parameterType="com.api.model.systemDataBigScreen.FirePushAlert">
         insert into sys_fire_alarm(

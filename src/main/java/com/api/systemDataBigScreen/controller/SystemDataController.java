@@ -428,6 +428,16 @@ public class SystemDataController {
         return systemDataService.findExcessiveWorkOrderUserName(threshold);
     }
 
+    /***
+     * 查询工单超量的用户（绿化任务）
+     * @param threshold 阀值
+     * @return map
+     */
+    @GetMapping("/findExcessiveGreenTaskUserName")
+    public Map<String,Object> findExcessiveGreenTaskUserName(Integer threshold){
+        return systemDataService.findExcessiveGreenTaskUserName(threshold);
+    }
+
 
     /**
      * 第三方 添加资讯信息

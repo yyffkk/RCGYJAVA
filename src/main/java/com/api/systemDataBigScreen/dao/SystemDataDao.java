@@ -381,9 +381,16 @@ public interface SystemDataDao {
     int insertPushAlert(FirePushAlert firePushAlert);
 
     /**
-     * 查询工单超量的用户
+     * 查询工单超量的用户(报事报修)
      * @param threshold 阀值
      * @return 用户名称集合
      */
     List<String> findExcessiveWorkOrderUserName(Integer threshold);
+
+    /**
+     * 查询工单超量的用户(绿化任务)
+     * @param threshold 阀值
+     * @return 用户名称集合
+     */
+    List<String> findExcessiveGreenTaskUserName(Integer threshold);
 }
