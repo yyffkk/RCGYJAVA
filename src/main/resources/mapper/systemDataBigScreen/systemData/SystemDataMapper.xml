@@ -355,6 +355,17 @@
                 GROUP BY su.actual_name
         )  as T where T.num <![CDATA[ >= ]]> #{threshold}
     </select>
+    <select id="findBorrowExceedWeek" resultType="com.api.vo.systemDataBigScreen.SDBorrowExceedWeek">
+        select GROUP_CONCAT(concat(cb.no,'-',cbu.no,'-',cbue.room_number)) as room_name,GROUP_CONCAT(cb.no) as building_no,GROUP_CONCAT(cbu.no) as unit_no,
+        GROUP_CONCAT(cbue.room_number) as estate_name,ur.name as user_name,sab.begin_date,sad.name as article_name
+        from sys_article_borrow as sab,sys_article_detail as sad,user_resident as ur
+        LEFT JOIN cpm_resident_estate as cre on cre.resident_id = ur.id
+        LEFT JOIN cpm_building_unit_estate as cbue on cre.building_unit_estate_id = cbue.id
+        LEFT JOIN cpm_building_unit as cbu on cbue.building_unit_id = cbu.id
+        LEFT JOIN cpm_building as cb on cbu.building_id = cb.id
+        where sab.create_id = ur.id and sab.article_detail_id = sad.id and sab.borrow_status = 1
+        GROUP BY sab.id
+    </select>
 
     <insert id="insertPushAlert" parameterType="com.api.model.systemDataBigScreen.FirePushAlert">
         insert into sys_fire_alarm(

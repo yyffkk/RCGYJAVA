@@ -27,12 +27,7 @@ import java.util.Map;
 public class PersonalDataController {
     @Resource
     PersonalDataService personalDataService;
-    @Resource
-    CpmBuildingService cpmBuildingService;
-    @Resource
-    CpmBuildingUnitService cpmBuildingUnitService;
-    @Resource
-    CpmBuildingUnitEstateService cpmBuildingUnitEstateService;
+
 
     /**
      * 获取用户信息
@@ -159,34 +154,6 @@ public class PersonalDataController {
 
 
 
-    /**
-     * 查询所有楼栋id和name(管家app)
-     * @return List<VoFindAll>
-     */
-    @GetMapping("/findAll")
-    public List<VoFindAll> findAll(){
-        return cpmBuildingService.findAll();
-    }
-
-    /**
-     * 根据楼栋id查询对应的单元id和name(管家app)
-     * @param buildingId 楼栋id
-     * @return List<VoFindAll>
-     */
-    @GetMapping("/findByBuildingId")
-    public List<VoFindAll> findByBuildingId(Integer buildingId){
-        return cpmBuildingUnitService.findByBuildingId(buildingId);
-    }
-
-    /**
-     * 根据单元id查询对应的房产id和name(管家app)
-     * @param unitId 楼栋单元id
-     * @return List<VoFindAll>
-     */
-    @GetMapping("/findByBuildingUnitId")
-    public List<VoFindAll> findByBuildingUnitId(Integer unitId){
-        return cpmBuildingUnitEstateService.findByBuildingUnitId(unitId);
-    }
 
 
 }

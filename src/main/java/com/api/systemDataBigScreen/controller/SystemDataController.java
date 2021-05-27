@@ -449,5 +449,13 @@ public class SystemDataController {
         return systemDataService.insertNews(sysNewsManagement);
     }
 
+    /***
+     * 查询借还物品时间超出一周的用户及相关信息
+     * @return map
+     */
+    @GetMapping("/findBorrowExceedWeek")
+    public Map<String,Object> findBorrowExceedWeek(){
+        return systemDataService.findBorrowExceedWeek();
+    }
 
 }

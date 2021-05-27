@@ -565,4 +565,24 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> findBorrowExceedWeek() {
+        map = new HashMap<>();
+
+        List<SDBorrowExceedWeek> sdBorrowExceedWeekList = systemDataDao.findBorrowExceedWeek();
+
+        if (sdBorrowExceedWeekList != null && sdBorrowExceedWeekList.size()>0){
+            for (SDBorrowExceedWeek sdBorrowExceedWeek : sdBorrowExceedWeekList) {
+                long hour = (new Date().getTime() - sdBorrowExceedWeek.getBeginDate().getTime())/(60*60*1000);
+                sdBorrowExceedWeek.setBorrowTime(hour);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdBorrowExceedWeekList);
+
+        return map;
+    }
+
 }

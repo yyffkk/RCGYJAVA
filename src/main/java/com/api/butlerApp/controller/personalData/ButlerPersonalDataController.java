@@ -2,9 +2,13 @@ package com.api.butlerApp.controller.personalData;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.personalData.ButlerPersonalDataService;
+import com.api.manage.service.basicArchives.CpmBuildingService;
+import com.api.manage.service.basicArchives.CpmBuildingUnitEstateService;
+import com.api.manage.service.basicArchives.CpmBuildingUnitService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerUpdateHeadPortrait;
 import com.api.model.butlerApp.ButlerUpdateTel;
+import com.api.vo.basicArchives.VoFindAll;
 import com.api.vo.butlerApp.ButlerPersonalDataVo;
 import com.api.vo.butlerApp.ButlerUserDetailVo;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +26,12 @@ public class ButlerPersonalDataController {
     ButlerPersonalDataService butlerPersonalDataService;
     @Resource
     ButlerRepairDao butlerRepairDao;
+    @Resource
+    CpmBuildingService cpmBuildingService;
+    @Resource
+    CpmBuildingUnitService cpmBuildingUnitService;
+    @Resource
+    CpmBuildingUnitEstateService cpmBuildingUnitEstateService;
 
     /**
      * 获取用户信息
@@ -125,4 +135,35 @@ public class ButlerPersonalDataController {
         butlerUpdateTel.setId(id);
         return butlerPersonalDataService.updateTel(butlerUpdateTel,oldTel);
     }
+
+
+    /**
+     * 查询所有楼栋id和name(管家app)
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findAll")
+    public List<VoFindAll> findAll(){
+        return cpmBuildingService.findAll();
+    }
+
+    /**
+     * 根据楼栋id查询对应的单元id和name(管家app)
+     * @param buildingId 楼栋id
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findByBuildingId")
+    public List<VoFindAll> findByBuildingId(Integer buildingId){
+        return cpmBuildingUnitService.findByBuildingId(buildingId);
+    }
+
+    /**
+     * 根据单元id查询对应的房产id和name(管家app)
+     * @param unitId 楼栋单元id
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findByBuildingUnitId")
+    public List<VoFindAll> findByBuildingUnitId(Integer unitId){
+        return cpmBuildingUnitEstateService.findByBuildingUnitId(unitId);
+    }
+
 }

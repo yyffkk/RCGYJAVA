@@ -78,4 +78,7 @@ public interface SystemDataService {
     Map<String, Object> findExcessiveWorkOrderUserName(Integer threshold);
 
     Map<String, Object> findExcessiveGreenTaskUserName(Integer threshold);
+
+    Map<String, Object> findBorrowExceedWeek();
+
 }

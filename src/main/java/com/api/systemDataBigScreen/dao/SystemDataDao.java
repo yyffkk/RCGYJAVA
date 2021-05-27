@@ -393,4 +393,11 @@ public interface SystemDataDao {
      * @return 用户名称集合
      */
     List<String> findExcessiveGreenTaskUserName(Integer threshold);
+
+    /**
+     * 查询借还物品时间超出一周的用户及相关信息
+     * @return 用户及相关信息
+     */
+    List<SDBorrowExceedWeek> findBorrowExceedWeek();
+
 }
