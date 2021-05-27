@@ -20,9 +20,12 @@ import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.util.JiguangUtil;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -387,6 +390,7 @@ public class SysAutoRemind {
 
 
     /**
+     * 0 0/1 * * * ?
      * 每晚定时任务，自动为每一个物业账号生成当日考勤任务
      */
     @Scheduled(cron = "1 0 0 1/1 * ? ")
@@ -435,9 +439,27 @@ public class SysAutoRemind {
     }
 
 
-    @Scheduled(cron = "0 43 * * * ?")
+    @Scheduled(cron = "0 43 * * * ? ")
     public void test(){
-        log.info("测试定时任务");
+//        String curName = Thread.currentThread().getName() ;
+//        System.out.println("当前时间:"+ new Date()+"  任务execute1对应的线程名: "+curName);
+//        try {
+//            Thread.sleep(5000);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        log.info("测试定时任务1");
     }
 
+    @Scheduled(cron = "0 43 * * * ? ")
+    public void test2(){
+//        String curName = Thread.currentThread().getName() ;
+//        System.out.println("当前时间:"+new Date()+"  任务execute2对应的线程名: "+curName);
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        log.info("测试定时任务2");
+    }
 }
