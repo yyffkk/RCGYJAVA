@@ -587,4 +587,16 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> findUnpaidUserInfo() {
+        map = new HashMap<>();
+        List<SDUnpaidUserInfoVo> sdUnpaidUserInfoVoList = systemDataDao.findUnpaidUserInfo();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdUnpaidUserInfoVoList);
+
+        return map;
+    }
+
 }

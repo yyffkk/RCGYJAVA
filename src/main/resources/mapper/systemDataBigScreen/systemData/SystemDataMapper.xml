@@ -367,6 +367,13 @@
         GROUP BY sab.id
         order by sab.create_date
     </select>
+    <select id="findUnpaidUserInfo" resultType="com.api.vo.systemDataBigScreen.SDUnpaidUserInfoVo">
+        select concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,sdp.payment_price,sctd.name as charges_template_detail_name
+        from sys_daily_payment as sdp,sys_charges_template_detail as sctd,cpm_building_unit_estate as cbue,
+        cpm_building_unit as cbu,cpm_building as cb
+        where sdp.charges_template_detail_id = sctd.id and sdp.building_unit_estate_id = cbue.id
+        and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and sdp.payment_price <![CDATA[ > ]]> 0
+    </select>
 
     <insert id="insertPushAlert" parameterType="com.api.model.systemDataBigScreen.FirePushAlert">
         insert into sys_fire_alarm(

@@ -401,4 +401,10 @@ public interface SystemDataDao {
      */
     List<SDBorrowExceedWeek> findBorrowExceedWeek(Date date);
 
+    /**
+     * 查询未缴费用户房屋信息
+     * @return 未缴费用户房屋信息
+     */
+    List<SDUnpaidUserInfoVo> findUnpaidUserInfo();
+
 }

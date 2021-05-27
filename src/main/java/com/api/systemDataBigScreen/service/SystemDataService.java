@@ -81,4 +81,6 @@ public interface SystemDataService {
 
     Map<String, Object> findBorrowExceedWeek();
 
+    Map<String, Object> findUnpaidUserInfo();
+
 }

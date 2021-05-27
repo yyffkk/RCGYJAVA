@@ -458,4 +458,12 @@ public class SystemDataController {
         return systemDataService.findBorrowExceedWeek();
     }
 
+    /**
+     * 查询未缴费用户房屋信息
+     * @return map
+     */
+    @GetMapping("/findUnpaidUserInfo")
+    public Map<String,Object> findUnpaidUserInfo(){
+        return systemDataService.findUnpaidUserInfo();
+    }
 }
