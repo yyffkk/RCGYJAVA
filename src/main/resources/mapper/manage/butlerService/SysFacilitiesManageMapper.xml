@@ -89,7 +89,7 @@
             file_doc_name = #{fileDocName},
         </if>
         <if test="remakes != null and remakes != ''">
-            remakes = #{remakes}
+            remakes = #{remakes},
         </if>
         modify_id = #{modifyId},
         modify_date = #{modifyDate}
