@@ -397,7 +397,8 @@ public interface SystemDataDao {
     /**
      * 查询借还物品时间超出一周的用户及相关信息
      * @return 用户及相关信息
+     * @param date
      */
-    List<SDBorrowExceedWeek> findBorrowExceedWeek();
+    List<SDBorrowExceedWeek> findBorrowExceedWeek(Date date);
 
 }

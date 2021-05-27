@@ -25,10 +25,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SystemDataServiceImpl implements SystemDataService {
@@ -568,19 +565,24 @@ public class SystemDataServiceImpl implements SystemDataService {
     @Override
     public Map<String, Object> findBorrowExceedWeek() {
         map = new HashMap<>();
+        Date date = new Date();
 
-        List<SDBorrowExceedWeek> sdBorrowExceedWeekList = systemDataDao.findBorrowExceedWeek();
+        //新建集合
+        ArrayList<SDBorrowExceedWeek> sdBorrowExceedWeeks = new ArrayList<>();
+
+        List<SDBorrowExceedWeek> sdBorrowExceedWeekList = systemDataDao.findBorrowExceedWeek(date);
 
         if (sdBorrowExceedWeekList != null && sdBorrowExceedWeekList.size()>0){
             for (SDBorrowExceedWeek sdBorrowExceedWeek : sdBorrowExceedWeekList) {
                 long hour = (new Date().getTime() - sdBorrowExceedWeek.getBeginDate().getTime())/(60*60*1000);
                 sdBorrowExceedWeek.setBorrowTime(hour);
+                sdBorrowExceedWeeks.add(sdBorrowExceedWeek);//添加进集合
             }
         }
 
         map.put("message","请求成功");
         map.put("status",true);
-        map.put("data",sdBorrowExceedWeekList);
+        map.put("data",sdBorrowExceedWeeks);
 
         return map;
     }
