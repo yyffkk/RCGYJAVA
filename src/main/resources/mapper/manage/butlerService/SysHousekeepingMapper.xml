@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysHousekeepingDao">
+
+    <select id="list" parameterType="com.api.model.butlerService.SearchHousekeeping" resultType="com.api.vo.butlerService.VoHousekeeping">
+        select sh.*,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,su.actual_name as create_name
+        from sys_housekeeping as sh,sys_user as su,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        <where>
+            sh.create_id = su.id
+            and sh.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="leaderTel != null and leaderTel != ''">
+                and sh.leader_tel like concat('%',#{leaderTel},'%')
+            </if>
+            <if test="createName != null and createName != ''">
+                and su.actual_name like concat('%',#{createName},'%')
+            </if>
+        </where>
+        order by sh.create_date desc
+    </select>
+</mapper>
