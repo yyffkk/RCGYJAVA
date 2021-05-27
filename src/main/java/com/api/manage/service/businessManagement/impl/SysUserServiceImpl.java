@@ -185,6 +185,14 @@ public class SysUserServiceImpl implements SysUserService {
     public Map<String, Object> disableLogins(Integer id) {
         map = new HashMap<>();
 
+        //根据用户主键id查询用户状态
+        Integer status = sysUserDao.findStatusById(id);
+        if (status == 2 || status == 4){
+            map.put("message","当前已禁止登录");
+            map.put("status",false);
+            return map;
+        }
+
         int update = sysUserDao.disableLogins(id);
         if (update > 0){
             map.put("message","禁止登录成功");
@@ -199,6 +207,15 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Map<String, Object> allowLogins(Integer id) {
         map = new HashMap<>();
+
+        //根据用户主键id查询用户状态
+        Integer status = sysUserDao.findStatusById(id);
+        if (status == 1 || status == 3){
+            map.put("message","当前已允许登录");
+            map.put("status",false);
+            return map;
+        }
+
         int update = sysUserDao.allowLogins(id);
         if (update > 0){
             map.put("message","允许登录成功");
@@ -213,6 +230,15 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Map<String, Object> stop(Integer id) {
         map = new HashMap<>();
+
+        //根据用户主键id查询用户状态
+        Integer status = sysUserDao.findStatusById(id);
+        if (status == 3 || status == 4){
+            map.put("message","当前已停用");
+            map.put("status",false);
+            return map;
+        }
+
         int update = sysUserDao.stop(id);
         if (update > 0){
             map.put("message","停用成功");
@@ -227,6 +253,15 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Map<String, Object> recovery(Integer id) {
         map = new HashMap<>();
+
+        //根据用户主键id查询用户状态
+        Integer status = sysUserDao.findStatusById(id);
+        if (status == 1 || status == 2){
+            map.put("message","当前已恢复");
+            map.put("status",false);
+            return map;
+        }
+
         int update = sysUserDao.recovery(id);
         if (update > 0){
             map.put("message","恢复成功");

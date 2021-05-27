@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/dataBase")
-public class sysDataBaseController {
+public class SysDataBaseController {
     @Resource
     SysDataBaseService sysDataBaseService;
 

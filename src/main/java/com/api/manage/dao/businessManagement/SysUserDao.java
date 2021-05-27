@@ -107,4 +107,11 @@ public interface SysUserDao {
      * @return 影响行数
      */
     int updateRole(UserIdAndRoleId userIdAndRoleId);
+
+    /**
+     * 根据用户主键id查询用户状态
+     * @param id 用户主键id
+     * @return 用户状态
+     */
+    Integer findStatusById(Integer id);
 }

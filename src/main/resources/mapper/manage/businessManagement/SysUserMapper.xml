@@ -185,6 +185,9 @@
     <select id="findRoleNameByUserId" parameterType="java.lang.Integer" resultType="java.lang.String">
         select role_id from sys_user where id = #{id}
     </select>
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from sys_user where id = #{id}
+    </select>
 
     <update id="updateRole" parameterType="com.api.model.businessManagement.UserIdAndRoleId">
         update sys_user set role_id = #{roleId} where id =#{id}

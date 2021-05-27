@@ -13,6 +13,9 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 组织（部门）管理
+ */
 @RequestMapping("manage/sysOrganization")
 @RestController
 public class SysOrganizationController extends ShiroExceptions {
