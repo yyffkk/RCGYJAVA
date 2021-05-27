@@ -92,6 +92,9 @@
         <if test="carNumber != null and carNumber != ''">
             car_number = #{carNumber},
         </if>
+        <if test="peers != null">
+            peers = #{peers},
+        </if>
         visit_date_start = #{visitDateStart},
         visit_date_end = #{visitDateEnd}
         where id = #{id}
@@ -112,6 +115,9 @@
             </if>
             visit_date_start,
             visit_date_end,
+            <if test="peers ！= null">
+                peers,
+            </if>
             create_id,
             create_date
         )values (
@@ -124,6 +130,9 @@
             </if>
             #{visitDateStart},
             #{visitDateEnd},
+            <if test="peers ！= null">
+                #{peers},
+            </if>
             #{createId},
             #{createDate}
         )

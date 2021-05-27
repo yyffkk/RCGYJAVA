@@ -40,6 +40,10 @@ public class AppUserQRVisitorsInviteSubmit {
      */
     private Date visitDateEnd;
     /**
+     * 同行（xin）人数【访客数量】
+     */
+    private Integer peers;
+    /**
      * 访客自拍照片
      */
     private String[] imgList;
@@ -63,6 +67,7 @@ public class AppUserQRVisitorsInviteSubmit {
                 ", carNumber='" + carNumber + '\'' +
                 ", visitDateStart=" + visitDateStart +
                 ", visitDateEnd=" + visitDateEnd +
+                ", peers=" + peers +
                 ", imgList=" + Arrays.toString(imgList) +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -133,6 +138,14 @@ public class AppUserQRVisitorsInviteSubmit {
         this.visitDateEnd = visitDateEnd;
     }
 
+    public Integer getPeers() {
+        return peers;
+    }
+
+    public void setPeers(Integer peers) {
+        this.peers = peers;
+    }
+
     public String[] getImgList() {
         return imgList;
     }
@@ -160,7 +173,7 @@ public class AppUserQRVisitorsInviteSubmit {
     public AppUserQRVisitorsInviteSubmit() {
     }
 
-    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, String[] imgList, Integer createId, Date createDate) {
+    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, String[] imgList, Integer createId, Date createDate) {
         this.id = id;
         this.estateId = estateId;
         this.name = name;
@@ -169,6 +182,7 @@ public class AppUserQRVisitorsInviteSubmit {
         this.carNumber = carNumber;
         this.visitDateStart = visitDateStart;
         this.visitDateEnd = visitDateEnd;
+        this.peers = peers;
         this.imgList = imgList;
         this.createId = createId;
         this.createDate = createDate;
