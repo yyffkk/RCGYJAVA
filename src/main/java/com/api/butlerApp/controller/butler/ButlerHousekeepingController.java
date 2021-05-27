@@ -2,7 +2,11 @@ package com.api.butlerApp.controller.butler;
 
 
 import com.api.butlerApp.service.butler.ButlerHousekeepingService;
+import com.api.manage.service.basicArchives.CpmBuildingService;
+import com.api.manage.service.basicArchives.CpmBuildingUnitEstateService;
+import com.api.manage.service.basicArchives.CpmBuildingUnitService;
 import com.api.model.butlerApp.ButlerHousekeeping;
+import com.api.vo.basicArchives.VoFindAll;
 import com.api.vo.butlerApp.ButlerHousekeepingVo;
 import com.api.vo.operationManagement.VoAttendanceRecord;
 import com.github.pagehelper.PageHelper;
@@ -55,5 +59,4 @@ public class ButlerHousekeepingController {
         Integer id = Integer.valueOf(request.getParameter("id"));
         return butlerHousekeepingService.insert(butlerHousekeeping,id);
     }
-
 }
