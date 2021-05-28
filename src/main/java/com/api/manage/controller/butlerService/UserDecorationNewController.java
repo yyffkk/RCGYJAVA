@@ -49,4 +49,8 @@ public class UserDecorationNewController {
     public Map<String,Object> examine(@RequestBody AppUserDecorationNew appUserDecorationNew){
         return userDecorationNewService.examine(appUserDecorationNew);
     }
+
+
+
+
 }

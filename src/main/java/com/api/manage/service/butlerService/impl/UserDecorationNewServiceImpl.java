@@ -39,6 +39,17 @@ public class UserDecorationNewServiceImpl implements UserDecorationNewService {
             return map;
         }
 
+        if (appUserDecorationNew.getStatus() == 3){//3.装修驳回
+            //如果装修驳回，则不允许有检查完工人
+            appUserDecorationNew.setTracker(null);
+        }
+
+        if (appUserDecorationNew.getStatus() == 2 && appUserDecorationNew.getTracker() == null){//2.装修通过
+            map.put("message","请选择检查完工人");
+            map.put("status",false);
+            return map;
+        }
+
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
