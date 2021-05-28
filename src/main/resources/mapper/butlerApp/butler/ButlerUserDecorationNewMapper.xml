@@ -18,7 +18,7 @@
             and cbu.building_id = cb.id
             and udn.tracker = #{id}
             <if test="userDecorationNewStatus != null">
-                and user_decoration_new_status = #{userDecorationNewStatus}
+                and udn.status = #{userDecorationNewStatus}
             </if>
         </where>
 
