@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.UserDecorationNewDao">
+
+    <select id="list" parameterType="com.api.model.butlerService.UserDecorationNewSearch" resultType="com.api.vo.butlerApp.ButlerUserDecorationNewVo">
+        select concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,udn.*,
+        ur.name as create_name,su.actual_name as tracker_name,su2.actual_name as reviewer_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,
+        cpm_building as cb,user_resident as ur,user_decoration_new as udn
+        LEFT JOIN sys_user as su on udn.tracker = su.id
+        LEFT JOIN sys_user as su2 on udn.reviewer = su2.id
+        <where>
+            udn.create_id = ur.id
+            and udn.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="status != null">
+                and udn.status = #{status}
+            </if>
+            <if test="constructionUnit != null and constructionUnit != ''">
+                and udn.construction_unit like concat('%',#{constructionUnit},'%')
+            </if>
+            <if test="directorTel != null and directorTel != ''">
+                and udn.director_tel like concat('%',#{directorTel},'%')
+            </if>
+        </where>
+    </select>
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from user_decoration_new where id = #{id}
+    </select>
+
+    <update id="examine" parameterType="com.api.model.app.AppUserDecorationNew">
+        update user_decoration_new
+        set status = #{status},
+        <if test="rejectReason != null and rejectReason != ''">
+            reject_reason = #{rejectReason},
+        </if>
+        reviewer = #{reviewer},
+        audit_date = #{auditDate}
+        where id = #{id}
+    </update>
+
+</mapper>

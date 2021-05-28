@@ -52,6 +52,14 @@ public class ButlerUserDecorationNewVo {
      */
     private String rejectReason;
     /**
+     * 审核人名称
+     */
+    private String reviewerName;
+    /**
+     * 审核时间
+     */
+    private Date auditDate;
+    /**
      * 检查完工人名称（物业表）
      */
     private String trackerName;
@@ -86,6 +94,8 @@ public class ButlerUserDecorationNewVo {
                 ", actualBegin=" + actualBegin +
                 ", actualEnd=" + actualEnd +
                 ", rejectReason='" + rejectReason + '\'' +
+                ", reviewerName='" + reviewerName + '\'' +
+                ", auditDate=" + auditDate +
                 ", trackerName='" + trackerName + '\'' +
                 ", isQualified=" + isQualified +
                 ", createName='" + createName + '\'' +
@@ -182,6 +192,22 @@ public class ButlerUserDecorationNewVo {
         this.rejectReason = rejectReason;
     }
 
+    public String getReviewerName() {
+        return reviewerName;
+    }
+
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
+    }
+
+    public Date getAuditDate() {
+        return auditDate;
+    }
+
+    public void setAuditDate(Date auditDate) {
+        this.auditDate = auditDate;
+    }
+
     public String getTrackerName() {
         return trackerName;
     }
@@ -225,7 +251,7 @@ public class ButlerUserDecorationNewVo {
     public ButlerUserDecorationNewVo() {
     }
 
-    public ButlerUserDecorationNewVo(Integer id, String roomName, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, String trackerName, Integer isQualified, String createName, Date createDate, List<ButlerUserDecorationNewCheckVo> checkVoList) {
+    public ButlerUserDecorationNewVo(Integer id, String roomName, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, String reviewerName, Date auditDate, String trackerName, Integer isQualified, String createName, Date createDate, List<ButlerUserDecorationNewCheckVo> checkVoList) {
         this.id = id;
         this.roomName = roomName;
         this.status = status;
@@ -237,6 +263,8 @@ public class ButlerUserDecorationNewVo {
         this.actualBegin = actualBegin;
         this.actualEnd = actualEnd;
         this.rejectReason = rejectReason;
+        this.reviewerName = reviewerName;
+        this.auditDate = auditDate;
         this.trackerName = trackerName;
         this.isQualified = isQualified;
         this.createName = createName;

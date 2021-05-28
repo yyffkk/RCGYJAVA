@@ -13,6 +13,10 @@ public class SearchAppUserDecorationNew {
      */
     private int size;
     /**
+     * 用户主键id
+     */
+    private Integer id;
+    /**
      * 装修状态（1.装修申请中，2.装修通过，3.装修驳回，4.装修中，5.申请完工检查，6.检查通过，7.检查不通过）
      */
     private Integer userDecorationNewStatus;
@@ -22,6 +26,7 @@ public class SearchAppUserDecorationNew {
         return "SearchAppUserDecorationNew{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
+                ", id=" + id +
                 ", userDecorationNewStatus=" + userDecorationNewStatus +
                 '}';
     }
@@ -42,6 +47,14 @@ public class SearchAppUserDecorationNew {
         this.size = size;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getUserDecorationNewStatus() {
         return userDecorationNewStatus;
     }
@@ -53,9 +66,10 @@ public class SearchAppUserDecorationNew {
     public SearchAppUserDecorationNew() {
     }
 
-    public SearchAppUserDecorationNew(int pageNum, int size, Integer userDecorationNewStatus) {
+    public SearchAppUserDecorationNew(int pageNum, int size, Integer id, Integer userDecorationNewStatus) {
         this.pageNum = pageNum;
         this.size = size;
+        this.id = id;
         this.userDecorationNewStatus = userDecorationNewStatus;
     }
 }

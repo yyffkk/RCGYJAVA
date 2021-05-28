@@ -51,6 +51,14 @@ public class AppUserDecorationNew {
      */
     private String rejectReason;
     /**
+     * 审核人id
+     */
+    private Integer reviewer;
+    /**
+     * 审核时间
+     */
+    private Date auditDate;
+    /**
      * 检查完工人名称（物业表）
      */
     private Integer tracker;
@@ -81,6 +89,8 @@ public class AppUserDecorationNew {
                 ", actualBegin=" + actualBegin +
                 ", actualEnd=" + actualEnd +
                 ", rejectReason='" + rejectReason + '\'' +
+                ", reviewer=" + reviewer +
+                ", auditDate=" + auditDate +
                 ", tracker=" + tracker +
                 ", isQualified=" + isQualified +
                 ", createId=" + createId +
@@ -176,6 +186,22 @@ public class AppUserDecorationNew {
         this.rejectReason = rejectReason;
     }
 
+    public Integer getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(Integer reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public Date getAuditDate() {
+        return auditDate;
+    }
+
+    public void setAuditDate(Date auditDate) {
+        this.auditDate = auditDate;
+    }
+
     public Integer getTracker() {
         return tracker;
     }
@@ -211,7 +237,7 @@ public class AppUserDecorationNew {
     public AppUserDecorationNew() {
     }
 
-    public AppUserDecorationNew(Integer id, Integer estateId, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, Integer tracker, Integer isQualified, Integer createId, Date createDate) {
+    public AppUserDecorationNew(Integer id, Integer estateId, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, Integer reviewer, Date auditDate, Integer tracker, Integer isQualified, Integer createId, Date createDate) {
         this.id = id;
         this.estateId = estateId;
         this.status = status;
@@ -223,6 +249,8 @@ public class AppUserDecorationNew {
         this.actualBegin = actualBegin;
         this.actualEnd = actualEnd;
         this.rejectReason = rejectReason;
+        this.reviewer = reviewer;
+        this.auditDate = auditDate;
         this.tracker = tracker;
         this.isQualified = isQualified;
         this.createId = createId;
