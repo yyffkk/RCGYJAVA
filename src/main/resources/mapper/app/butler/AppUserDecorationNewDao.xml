@@ -4,4 +4,45 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.butler.AppUserDecorationNewDao">
 
+    <select id="list" parameterType="com.api.model.app.SearchAppUserDecorationNew" resultType="com.api.vo.butlerApp.ButlerUserDecorationNewVo">
+        select concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,udn.*,
+        ur.name as create_name,su.actual_name as tracker_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,
+        cpm_building as cb,user_resident as ur,user_decoration_new as udn
+        LEFT JOIN sys_user as su on udn.tracker = su.id
+        <where>
+            udn.create_id = ur.id
+            and udn.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="userDecorationNewStatus != null">
+                and udn.status = #{userDecorationNewStatus}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.app.AppUserDecorationNew">
+        insert into user_decoration_new(
+            estate_id,
+            status,
+            construction_unit,
+            director,
+            director_tel,
+            expected_begin,
+            expected_end,
+            create_id,
+            create_date
+        )values (
+            #{estateId},
+            #{status},
+            #{constructionUnit},
+            #{director},
+            #{directorTel},
+            #{expectedBegin},
+            #{expectedEnd},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
 </mapper>

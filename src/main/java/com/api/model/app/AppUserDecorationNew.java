@@ -1,12 +1,11 @@
-package com.api.vo.butlerApp;
+package com.api.model.app;
 
 import java.util.Date;
-import java.util.List;
 
 /**
- * 管家app 新版装修管理Vo list 回显
+ * app新版装修 model信息
  */
-public class ButlerUserDecorationNewVo {
+public class AppUserDecorationNew {
     /**
      * 新版装修主键id
      */
@@ -14,7 +13,7 @@ public class ButlerUserDecorationNewVo {
     /**
      * 装修单元房产名称
      */
-    private String roomName;
+    private Integer estateId;
     /**
      * 装修状态（1.装修申请中，2.装修通过，3.装修驳回，4.装修中，5.申请完工检查，6.检查通过，7.检查不通过）
      */
@@ -54,7 +53,7 @@ public class ButlerUserDecorationNewVo {
     /**
      * 检查完工人名称（物业表）
      */
-    private String trackerName;
+    private Integer tracker;
     /**
      * 最后一次完工检查是否合格（1.合格，0.不合格）
      */
@@ -62,21 +61,17 @@ public class ButlerUserDecorationNewVo {
     /**
      * 申请人名称
      */
-    private String createName;
+    private Integer createId;
     /**
      * 申请时间
      */
     private Date createDate;
-    /**
-     * 管家app 新版装修管理-完工检查记录Vo list 回显
-     */
-    private List<ButlerUserDecorationNewCheckVo> checkVoList;
 
     @Override
     public String toString() {
-        return "ButlerUserDecorationNewVo{" +
+        return "AppUserDecorationNew{" +
                 "id=" + id +
-                ", roomName='" + roomName + '\'' +
+                ", estateId=" + estateId +
                 ", status=" + status +
                 ", constructionUnit='" + constructionUnit + '\'' +
                 ", director='" + director + '\'' +
@@ -86,11 +81,10 @@ public class ButlerUserDecorationNewVo {
                 ", actualBegin=" + actualBegin +
                 ", actualEnd=" + actualEnd +
                 ", rejectReason='" + rejectReason + '\'' +
-                ", trackerName='" + trackerName + '\'' +
+                ", tracker=" + tracker +
                 ", isQualified=" + isQualified +
-                ", createName='" + createName + '\'' +
+                ", createId=" + createId +
                 ", createDate=" + createDate +
-                ", checkVoList=" + checkVoList +
                 '}';
     }
 
@@ -102,12 +96,12 @@ public class ButlerUserDecorationNewVo {
         this.id = id;
     }
 
-    public String getRoomName() {
-        return roomName;
+    public Integer getEstateId() {
+        return estateId;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
     }
 
     public Integer getStatus() {
@@ -182,12 +176,12 @@ public class ButlerUserDecorationNewVo {
         this.rejectReason = rejectReason;
     }
 
-    public String getTrackerName() {
-        return trackerName;
+    public Integer getTracker() {
+        return tracker;
     }
 
-    public void setTrackerName(String trackerName) {
-        this.trackerName = trackerName;
+    public void setTracker(Integer tracker) {
+        this.tracker = tracker;
     }
 
     public Integer getIsQualified() {
@@ -198,12 +192,12 @@ public class ButlerUserDecorationNewVo {
         this.isQualified = isQualified;
     }
 
-    public String getCreateName() {
-        return createName;
+    public Integer getCreateId() {
+        return createId;
     }
 
-    public void setCreateName(String createName) {
-        this.createName = createName;
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
     }
 
     public Date getCreateDate() {
@@ -214,20 +208,12 @@ public class ButlerUserDecorationNewVo {
         this.createDate = createDate;
     }
 
-    public List<ButlerUserDecorationNewCheckVo> getCheckVoList() {
-        return checkVoList;
+    public AppUserDecorationNew() {
     }
 
-    public void setCheckVoList(List<ButlerUserDecorationNewCheckVo> checkVoList) {
-        this.checkVoList = checkVoList;
-    }
-
-    public ButlerUserDecorationNewVo() {
-    }
-
-    public ButlerUserDecorationNewVo(Integer id, String roomName, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, String trackerName, Integer isQualified, String createName, Date createDate, List<ButlerUserDecorationNewCheckVo> checkVoList) {
+    public AppUserDecorationNew(Integer id, Integer estateId, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, Integer tracker, Integer isQualified, Integer createId, Date createDate) {
         this.id = id;
-        this.roomName = roomName;
+        this.estateId = estateId;
         this.status = status;
         this.constructionUnit = constructionUnit;
         this.director = director;
@@ -237,10 +223,9 @@ public class ButlerUserDecorationNewVo {
         this.actualBegin = actualBegin;
         this.actualEnd = actualEnd;
         this.rejectReason = rejectReason;
-        this.trackerName = trackerName;
+        this.tracker = tracker;
         this.isQualified = isQualified;
-        this.createName = createName;
+        this.createId = createId;
         this.createDate = createDate;
-        this.checkVoList = checkVoList;
     }
 }
