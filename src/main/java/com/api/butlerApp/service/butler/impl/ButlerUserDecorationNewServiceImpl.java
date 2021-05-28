@@ -5,6 +5,7 @@ import com.api.butlerApp.service.butler.ButlerUserDecorationNewService;
 import com.api.model.app.AppUserDecorationNew;
 import com.api.model.butlerApp.ButlerUserDecorationNewSearch;
 import com.api.model.butlerApp.ButlerUserDecorationNewCheck;
+import com.api.vo.butlerApp.ButlerUserDecorationNewCheckVo;
 import com.api.vo.butlerApp.ButlerUserDecorationNewVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,15 @@ public class ButlerUserDecorationNewServiceImpl implements ButlerUserDecorationN
 
     @Override
     public List<ButlerUserDecorationNewVo> list(ButlerUserDecorationNewSearch butlerUserDecorationNewSearch) {
-        return butlerUserDecorationNewDao.list(butlerUserDecorationNewSearch);
+        List<ButlerUserDecorationNewVo> list = butlerUserDecorationNewDao.list(butlerUserDecorationNewSearch);
+        if (list != null && list.size()>0){
+            for (ButlerUserDecorationNewVo butlerUserDecorationNewVo : list) {
+                //根据新版装修主键id 查询 完工检查记录
+                List<ButlerUserDecorationNewCheckVo> checkVoList = butlerUserDecorationNewDao.findCheckDetailById(butlerUserDecorationNewVo.getId());
+                butlerUserDecorationNewVo.setCheckVoList(checkVoList);
+            }
+        }
+        return list;
     }
 
     @Override

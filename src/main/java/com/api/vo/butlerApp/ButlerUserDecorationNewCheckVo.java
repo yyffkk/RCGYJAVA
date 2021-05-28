@@ -19,7 +19,7 @@ public class ButlerUserDecorationNewCheckVo {
      */
     private String detail;
     /**
-     * 检查完工是否合格，1.合格，2.不合格
+     * 检查完工是否合格，1.合格，0.不合格
      */
     private Integer isQualified;
     /**

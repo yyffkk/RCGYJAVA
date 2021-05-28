@@ -26,6 +26,12 @@
     <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select status from user_decoration_new where id = #{decorationNewId}
     </select>
+    <select id="findCheckDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerUserDecorationNewCheckVo">
+        select udcn.*,su.actual_name as create_name
+        from user_decoration_check_new as udcn,sys_user as su
+        where udcn.create_id = su.id and udcn.decoration_new_id = 1
+        order by udcn.create_date desc
+    </select>
 
     <insert id="submitReport" parameterType="com.api.model.butlerApp.ButlerUserDecorationNewCheck">
         insert into user_decoration_check_new(

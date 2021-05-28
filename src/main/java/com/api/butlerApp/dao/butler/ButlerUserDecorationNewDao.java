@@ -3,6 +3,7 @@ package com.api.butlerApp.dao.butler;
 import com.api.model.app.AppUserDecorationNew;
 import com.api.model.butlerApp.ButlerUserDecorationNewSearch;
 import com.api.model.butlerApp.ButlerUserDecorationNewCheck;
+import com.api.vo.butlerApp.ButlerUserDecorationNewCheckVo;
 import com.api.vo.butlerApp.ButlerUserDecorationNewVo;
 
 import java.util.List;
@@ -35,4 +36,11 @@ public interface ButlerUserDecorationNewDao {
      * @return 新版装修状态
      */
     int findStatusById(Integer decorationNewId);
+
+    /**
+     * 根据新版装修主键id 查询 完工检查记录
+     * @param id 新版装修主键id
+     * @return 完工检查记录
+     */
+    List<ButlerUserDecorationNewCheckVo> findCheckDetailById(Integer id);
 }
