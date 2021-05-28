@@ -20,7 +20,7 @@ lilin:
   #第三方唯一标示
   clientId: 83b4ee0b0c0abb7969f51ec614744c96
   #第三方密钥
-  clientSecret: 72126e68b501d89ca0b490fe95628efe
+  clientSecret: d41cfdbb0ce3e3cfdaa8f4d71cf53c0004993703cab8f867ae81d8a6767f738c
   #立林对讲机系统测试服务器地址
   serviceLocation: https://rd.iot.leelen.com/
   #API接口
