@@ -23,4 +23,35 @@
         </where>
 
     </select>
+    <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select status from user_decoration_new where id = #{decorationNewId}
+    </select>
+
+    <insert id="submitReport" parameterType="com.api.model.butlerApp.ButlerUserDecorationNewCheck">
+        insert into user_decoration_check_new(
+            decoration_new_id,
+            detail,
+            is_qualified,
+            create_id,
+            create_date
+        )values (
+            #{decorationNewId},
+            #{detail},
+            #{isQualified},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+
+    <update id="updateLastCheckInfo" parameterType="com.api.model.app.AppUserDecorationNew">
+        update user_decoration_new
+        set status = #{status},
+        <if test="actualEnd != null">
+            actual_end = #{actualEnd},
+        </if>
+        is_qualified = #{isQualified}
+        where id = #{id}
+    </update>
+
 </mapper>
