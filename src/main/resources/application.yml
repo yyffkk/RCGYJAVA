@@ -23,7 +23,7 @@ spring:
         pool:
             size: 30
     profiles:
-        include: upload,sdk,localdb,alipay,testRes
+        include: upload,sdk,localdb,alipay,devRes
 
 #mybatis
 mybatis:
@@ -38,5 +38,5 @@ logging:
         com:
             api:
                 dao: debug
-
+#    config: classpath:log.xml
 
