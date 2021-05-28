@@ -16,13 +16,13 @@ lilin:
   #签名算法版本。当前为1.0。
   signatureVersion: 1.0
   #小区号
-  neighNo: 450127500001
+  neighNo: 450108500003
   #第三方唯一标示
-  clientId: 70d274b536f930b70314c2d01243ddd3
+  clientId: 83b4ee0b0c0abb7969f51ec614744c96
   #第三方密钥
-  clientSecret: 18d4873936e0e42ac3510402dee8611c
+  clientSecret: 72126e68b501d89ca0b490fe95628efe
   #立林对讲机系统测试服务器地址
-  serviceLocation: http://test.iot.leelen.com/
+  serviceLocation: https://rd.iot.leelen.com/
   #API接口
   api:
     #添加设备人脸识别api方法

@@ -115,7 +115,7 @@
             </if>
             visit_date_start,
             visit_date_end,
-            <if test="peers ！= null">
+            <if test="peers != null">
                 peers,
             </if>
             create_id,
@@ -130,7 +130,7 @@
             </if>
             #{visitDateStart},
             #{visitDateEnd},
-            <if test="peers ！= null">
+            <if test="peers != null">
                 #{peers},
             </if>
             #{createId},

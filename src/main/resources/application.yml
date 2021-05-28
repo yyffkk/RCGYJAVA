@@ -23,7 +23,7 @@ spring:
         pool:
             size: 30
     profiles:
-        include: upload,sdk,localdb,alipay,devRes
+        include: upload,sdk,localdb,alipay,testRes
 
 #mybatis
 mybatis:
