@@ -21,6 +21,7 @@
             </if>
             and udn.create_id = #{id}
         </where>
+        order by udn.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.app.AppUserDecorationNew">

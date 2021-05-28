@@ -2,8 +2,10 @@ package com.api.app.service.butler.impl;
 
 import com.api.app.dao.butler.AppUserDecorationNewDao;
 import com.api.app.service.butler.AppUserDecorationNewService;
+import com.api.butlerApp.dao.butler.ButlerUserDecorationNewDao;
 import com.api.model.app.AppUserDecorationNew;
 import com.api.model.app.SearchAppUserDecorationNew;
+import com.api.vo.butlerApp.ButlerUserDecorationNewCheckVo;
 import com.api.vo.butlerApp.ButlerUserDecorationNewVo;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,20 @@ public class AppUserDecorationNewServiceImpl implements AppUserDecorationNewServ
     private static Map<String,Object> map = null;
     @Resource
     AppUserDecorationNewDao appUserDecorationNewDao;
+    @Resource
+    ButlerUserDecorationNewDao butlerUserDecorationNewDao;
 
     @Override
     public List<ButlerUserDecorationNewVo> list(SearchAppUserDecorationNew searchAppUserDecorationNew) {
-        return appUserDecorationNewDao.list(searchAppUserDecorationNew);
+        List<ButlerUserDecorationNewVo> list = appUserDecorationNewDao.list(searchAppUserDecorationNew);
+        if (list != null && list.size()>0){
+            for (ButlerUserDecorationNewVo butlerUserDecorationNewVo : list) {
+                //根据新版装修主键id 查询 完工检查记录
+                List<ButlerUserDecorationNewCheckVo> checkVoList = butlerUserDecorationNewDao.findCheckDetailById(butlerUserDecorationNewVo.getId());
+                butlerUserDecorationNewVo.setCheckVoList(checkVoList);
+            }
+        }
+        return list;
     }
 
     @Override

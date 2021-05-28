@@ -21,7 +21,7 @@
                 and udn.status = #{userDecorationNewStatus}
             </if>
         </where>
-
+        order by udn.application_check_date desc
     </select>
     <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select status from user_decoration_new where id = #{decorationNewId}

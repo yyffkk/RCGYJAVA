@@ -1,10 +1,12 @@
 package com.api.manage.service.butlerService.impl;
 
+import com.api.butlerApp.dao.butler.ButlerUserDecorationNewDao;
 import com.api.manage.dao.butlerService.UserDecorationNewDao;
 import com.api.manage.service.butlerService.UserDecorationNewService;
 import com.api.model.app.AppUserDecorationNew;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.UserDecorationNewSearch;
+import com.api.vo.butlerApp.ButlerUserDecorationNewCheckVo;
 import com.api.vo.butlerApp.ButlerUserDecorationNewVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -21,10 +23,20 @@ public class UserDecorationNewServiceImpl implements UserDecorationNewService {
     private static Map<String,Object> map = null;
     @Resource
     UserDecorationNewDao userDecorationNewDao;
+    @Resource
+    ButlerUserDecorationNewDao butlerUserDecorationNewDao;
 
     @Override
     public List<ButlerUserDecorationNewVo> list(UserDecorationNewSearch userDecorationNewSearch) {
-        return userDecorationNewDao.list(userDecorationNewSearch);
+        List<ButlerUserDecorationNewVo> list = userDecorationNewDao.list(userDecorationNewSearch);
+        if (list != null && list.size()>0){
+            for (ButlerUserDecorationNewVo butlerUserDecorationNewVo : list) {
+                //根据新版装修主键id 查询 完工检查记录
+                List<ButlerUserDecorationNewCheckVo> checkVoList = butlerUserDecorationNewDao.findCheckDetailById(butlerUserDecorationNewVo.getId());
+                butlerUserDecorationNewVo.setCheckVoList(checkVoList);
+            }
+        }
+        return list;
     }
 
     @Override

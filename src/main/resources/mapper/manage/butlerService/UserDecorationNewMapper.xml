@@ -26,6 +26,7 @@
                 and udn.director_tel like concat('%',#{directorTel},'%')
             </if>
         </where>
+        order by udn.create_date desc
     </select>
     <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select status from user_decoration_new where id = #{id}
