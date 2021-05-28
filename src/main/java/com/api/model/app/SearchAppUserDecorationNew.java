@@ -17,7 +17,7 @@ public class SearchAppUserDecorationNew {
      */
     private Integer id;
     /**
-     * 装修状态（1.装修申请中，2.装修通过，3.装修驳回，4.装修中，5.申请完工检查，6.检查通过，7.检查不通过）
+     * 装修状态（1.装修申请中，2.装修通过(装修中)，3.装修驳回，5.申请完工检查，6.检查通过，7.检查不通过）
      */
     private Integer userDecorationNewStatus;
 

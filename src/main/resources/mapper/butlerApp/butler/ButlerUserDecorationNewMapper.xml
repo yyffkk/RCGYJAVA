@@ -5,6 +5,22 @@
 <mapper namespace="com.api.butlerApp.dao.butler.ButlerUserDecorationNewDao">
 
     <select id="list" parameterType="com.api.model.butlerApp.ButlerUserDecorationNewSearch" resultType="com.api.vo.butlerApp.ButlerUserDecorationNewVo">
+        select concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,udn.*,
+        ur.name as create_name,su.actual_name as tracker_name,su2.actual_name as reviewer_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,
+        cpm_building as cb,user_resident as ur,user_decoration_new as udn
+        LEFT JOIN sys_user as su on udn.tracker = su.id
+		LEFT JOIN sys_user as su2 on udn.reviewer = su2.id
+        <where>
+            udn.create_id = ur.id
+            and udn.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and udn.tracker = #{id}
+            <if test="userDecorationNewStatus != null">
+                and user_decoration_new_status = #{userDecorationNewStatus}
+            </if>
+        </where>
 
     </select>
 </mapper>

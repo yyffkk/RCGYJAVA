@@ -37,11 +37,17 @@
         <if test="rejectReason != null and rejectReason != ''">
             reject_reason = #{rejectReason},
         </if>
-        <if test="tracker != null">
-            tracker = #{tracker},
+        <if test="actualBegin != null">
+            actual_begin = #{actualBegin},
         </if>
         reviewer = #{reviewer},
         audit_date = #{auditDate}
+        where id = #{id}
+    </update>
+    <update id="assign" parameterType="com.api.model.app.AppUserDecorationNew">
+        update user_decoration_new
+        set status = #{status},
+        tracker = #{tracker}
         where id = #{id}
     </update>
 

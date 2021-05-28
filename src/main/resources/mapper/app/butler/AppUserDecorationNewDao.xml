@@ -47,4 +47,12 @@
         )
     </insert>
 
+
+    <update id="applicationCompletion" parameterType="com.api.model.app.AppUserDecorationNew">
+        update user_decoration_new
+        set status = 5,
+        application_check_date = #{applicationCheckDate}
+        where id = #{id} and create_id = #{createId}
+    </update>
+
 </mapper>

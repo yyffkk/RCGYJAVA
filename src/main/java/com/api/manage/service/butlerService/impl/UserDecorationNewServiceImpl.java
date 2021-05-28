@@ -39,15 +39,9 @@ public class UserDecorationNewServiceImpl implements UserDecorationNewService {
             return map;
         }
 
-        if (appUserDecorationNew.getStatus() == 3){//3.装修驳回
-            //如果装修驳回，则不允许有检查完工人
-            appUserDecorationNew.setTracker(null);
-        }
-
-        if (appUserDecorationNew.getStatus() == 2 && appUserDecorationNew.getTracker() == null){//2.装修通过
-            map.put("message","请选择检查完工人");
-            map.put("status",false);
-            return map;
+        if (appUserDecorationNew.getStatus() == 2){//2.装修通过
+            //如果装修通过，则填入装修实际开始时间
+            appUserDecorationNew.setActualBegin(new Date());
         }
 
         //获取登录用户信息
@@ -58,6 +52,32 @@ public class UserDecorationNewServiceImpl implements UserDecorationNewService {
         appUserDecorationNew.setAuditDate(new Date());
 
         int update = userDecorationNewDao.examine(appUserDecorationNew);
+        if (update <= 0){
+            map.put("message","操作失败");
+            map.put("status",false);
+        }else {
+            map.put("message","操作成功");
+            map.put("status",true);
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> assign(AppUserDecorationNew appUserDecorationNew) {
+        map = new HashMap<>();
+
+        //根据新版装修主键id查询新版装修状态
+        int status = userDecorationNewDao.findStatusById(appUserDecorationNew.getId());
+        if (status != 5){
+            map.put("message","当前状态不可指派");
+            map.put("status",false);
+            return map;
+        }
+
+        appUserDecorationNew.setStatus(6);//默认6.完工检查中
+
+        int update = userDecorationNewDao.assign(appUserDecorationNew);
         if (update <= 0){
             map.put("message","操作失败");
             map.put("status",false);

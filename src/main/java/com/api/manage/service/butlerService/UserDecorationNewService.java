@@ -11,4 +11,6 @@ public interface UserDecorationNewService {
     List<ButlerUserDecorationNewVo> list(UserDecorationNewSearch userDecorationNewSearch);
 
     Map<String, Object> examine(AppUserDecorationNew appUserDecorationNew);
+
+    Map<String, Object> assign(AppUserDecorationNew appUserDecorationNew);
 }

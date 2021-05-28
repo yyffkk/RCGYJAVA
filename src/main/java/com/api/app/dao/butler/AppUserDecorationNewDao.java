@@ -20,4 +20,11 @@ public interface AppUserDecorationNewDao {
      * @return 影响行数
      */
     int insert(AppUserDecorationNew appUserDecorationNew);
+
+    /**
+     * 申请完工检查
+     * @param appUserDecorationNew app新版装修 model信息
+     * @return 影响行数
+     */
+    int applicationCompletion(AppUserDecorationNew appUserDecorationNew);
 }

@@ -15,7 +15,7 @@ public class AppUserDecorationNew {
      */
     private Integer estateId;
     /**
-     * 装修状态（1.装修申请中，2.装修通过，3.装修驳回，4.装修中，5.申请完工检查，6.检查通过，7.检查不通过）
+     * 装修状态（1.装修申请中，2.装修通过(装修中)，3.装修驳回，5.申请完工检查，6.检查通过，7.检查不通过）
      */
     private Integer status;
     /**
@@ -59,15 +59,19 @@ public class AppUserDecorationNew {
      */
     private Date auditDate;
     /**
-     * 检查完工人名称（物业表）
+     * 检查完工人id（物业表）
      */
     private Integer tracker;
+    /**
+     * 申请完工检查时间
+     */
+    private Date applicationCheckDate;
     /**
      * 最后一次完工检查是否合格（1.合格，0.不合格）
      */
     private Integer isQualified;
     /**
-     * 申请人名称
+     * 申请人id
      */
     private Integer createId;
     /**
@@ -92,6 +96,7 @@ public class AppUserDecorationNew {
                 ", reviewer=" + reviewer +
                 ", auditDate=" + auditDate +
                 ", tracker=" + tracker +
+                ", applicationCheckDate=" + applicationCheckDate +
                 ", isQualified=" + isQualified +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -210,6 +215,14 @@ public class AppUserDecorationNew {
         this.tracker = tracker;
     }
 
+    public Date getApplicationCheckDate() {
+        return applicationCheckDate;
+    }
+
+    public void setApplicationCheckDate(Date applicationCheckDate) {
+        this.applicationCheckDate = applicationCheckDate;
+    }
+
     public Integer getIsQualified() {
         return isQualified;
     }
@@ -237,7 +250,7 @@ public class AppUserDecorationNew {
     public AppUserDecorationNew() {
     }
 
-    public AppUserDecorationNew(Integer id, Integer estateId, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, Integer reviewer, Date auditDate, Integer tracker, Integer isQualified, Integer createId, Date createDate) {
+    public AppUserDecorationNew(Integer id, Integer estateId, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, Integer reviewer, Date auditDate, Integer tracker, Date applicationCheckDate, Integer isQualified, Integer createId, Date createDate) {
         this.id = id;
         this.estateId = estateId;
         this.status = status;
@@ -252,6 +265,7 @@ public class AppUserDecorationNew {
         this.reviewer = reviewer;
         this.auditDate = auditDate;
         this.tracker = tracker;
+        this.applicationCheckDate = applicationCheckDate;
         this.isQualified = isQualified;
         this.createId = createId;
         this.createDate = createDate;

@@ -27,4 +27,11 @@ public interface UserDecorationNewDao {
      * @return 新版装修状态
      */
     int findStatusById(Integer id);
+
+    /**
+     * 指派完工检查人
+     * @param appUserDecorationNew app新版装修 model信息
+     * @return 影响行数
+     */
+    int assign(AppUserDecorationNew appUserDecorationNew);
 }

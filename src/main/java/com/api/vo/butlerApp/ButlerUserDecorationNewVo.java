@@ -64,6 +64,10 @@ public class ButlerUserDecorationNewVo {
      */
     private String trackerName;
     /**
+     * 申请完工检查时间
+     */
+    private Date applicationCheckDate;
+    /**
      * 最后一次完工检查是否合格（1.合格，0.不合格）
      */
     private Integer isQualified;
@@ -97,6 +101,7 @@ public class ButlerUserDecorationNewVo {
                 ", reviewerName='" + reviewerName + '\'' +
                 ", auditDate=" + auditDate +
                 ", trackerName='" + trackerName + '\'' +
+                ", applicationCheckDate=" + applicationCheckDate +
                 ", isQualified=" + isQualified +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
@@ -216,6 +221,14 @@ public class ButlerUserDecorationNewVo {
         this.trackerName = trackerName;
     }
 
+    public Date getApplicationCheckDate() {
+        return applicationCheckDate;
+    }
+
+    public void setApplicationCheckDate(Date applicationCheckDate) {
+        this.applicationCheckDate = applicationCheckDate;
+    }
+
     public Integer getIsQualified() {
         return isQualified;
     }
@@ -251,7 +264,7 @@ public class ButlerUserDecorationNewVo {
     public ButlerUserDecorationNewVo() {
     }
 
-    public ButlerUserDecorationNewVo(Integer id, String roomName, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, String reviewerName, Date auditDate, String trackerName, Integer isQualified, String createName, Date createDate, List<ButlerUserDecorationNewCheckVo> checkVoList) {
+    public ButlerUserDecorationNewVo(Integer id, String roomName, Integer status, String constructionUnit, String director, String directorTel, Date expectedBegin, Date expectedEnd, Date actualBegin, Date actualEnd, String rejectReason, String reviewerName, Date auditDate, String trackerName, Date applicationCheckDate, Integer isQualified, String createName, Date createDate, List<ButlerUserDecorationNewCheckVo> checkVoList) {
         this.id = id;
         this.roomName = roomName;
         this.status = status;
@@ -266,6 +279,7 @@ public class ButlerUserDecorationNewVo {
         this.reviewerName = reviewerName;
         this.auditDate = auditDate;
         this.trackerName = trackerName;
+        this.applicationCheckDate = applicationCheckDate;
         this.isQualified = isQualified;
         this.createName = createName;
         this.createDate = createDate;

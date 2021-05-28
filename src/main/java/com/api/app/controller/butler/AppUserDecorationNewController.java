@@ -56,5 +56,15 @@ public class AppUserDecorationNewController {
     }
 
 
+    /**
+     * 申请完工检查
+     * @param id 用户主键id
+     * @param userDecorationNewId 新版装修主键id
+     * @return map
+     */
+    @GetMapping("/applicationCompletion")
+    public Map<String,Object> applicationCompletion(Integer id,Integer userDecorationNewId){
+        return appUserDecorationNewService.applicationCompletion(id,userDecorationNewId);
+    }
 
 }

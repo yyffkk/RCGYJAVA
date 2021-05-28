@@ -51,6 +51,17 @@ public class UserDecorationNewController {
     }
 
 
+    /**
+     * 指派完工检查人
+     * @param appUserDecorationNew app新版装修 model信息
+     * @return map
+     */
+    @PostMapping("/assign")
+    public Map<String,Object> assign(@RequestBody AppUserDecorationNew appUserDecorationNew){
+        return userDecorationNewService.assign(appUserDecorationNew);
+    }
+
+
 
 
 }

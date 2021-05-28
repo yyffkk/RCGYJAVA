@@ -44,4 +44,25 @@ public class AppUserDecorationNewServiceImpl implements AppUserDecorationNewServ
 
         return map;
     }
+
+    @Override
+    public Map<String, Object> applicationCompletion(Integer id, Integer userDecorationNewId) {
+        map = new HashMap<>();
+
+        AppUserDecorationNew appUserDecorationNew = new AppUserDecorationNew();
+        appUserDecorationNew.setId(userDecorationNewId);
+        appUserDecorationNew.setCreateId(id);
+        appUserDecorationNew.setApplicationCheckDate(new Date());
+
+        int update = appUserDecorationNewDao.applicationCompletion(appUserDecorationNew);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+
+        return map;
+    }
 }

@@ -13,9 +13,13 @@ public class ButlerUserDecorationNewSearch {
      */
     private int size;
     /**
-     * 装修状态（5.申请完工检查，6.检查通过，7.检查不通过）
+     * 用户主键id
      */
-    private Integer status;
+    private Integer id;
+    /**
+     * 装修状态（6.完工检查中，7.检查通过，8.检查不通过）
+     */
+    private Integer userDecorationNewStatus;
 
 
     @Override
@@ -23,7 +27,8 @@ public class ButlerUserDecorationNewSearch {
         return "ButlerUserDecorationNewSearch{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
-                ", status=" + status +
+                ", id=" + id +
+                ", userDecorationNewStatus=" + userDecorationNewStatus +
                 '}';
     }
 
@@ -43,20 +48,29 @@ public class ButlerUserDecorationNewSearch {
         this.size = size;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getId() {
+        return id;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUserDecorationNewStatus() {
+        return userDecorationNewStatus;
+    }
+
+    public void setUserDecorationNewStatus(Integer userDecorationNewStatus) {
+        this.userDecorationNewStatus = userDecorationNewStatus;
     }
 
     public ButlerUserDecorationNewSearch() {
     }
 
-    public ButlerUserDecorationNewSearch(int pageNum, int size, Integer status) {
+    public ButlerUserDecorationNewSearch(int pageNum, int size, Integer id, Integer userDecorationNewStatus) {
         this.pageNum = pageNum;
         this.size = size;
-        this.status = status;
+        this.id = id;
+        this.userDecorationNewStatus = userDecorationNewStatus;
     }
 }
