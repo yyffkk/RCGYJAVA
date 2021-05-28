@@ -166,8 +166,8 @@ public class SysAutoRemind {
     /**
      * 后台系统日常缴费提醒，如果到月初，则系统则给未缴纳费用的用户自动发出提醒
      */
-    //每月1号，系统则给未缴纳费用的用户自动发出提醒
-    @Scheduled(cron = "0 0 0 1 * ?")
+    //每月1号0点1秒，系统则给未缴纳费用的用户自动发出提醒
+    @Scheduled(cron = "1 0 0 1 * ?")
     private void sysDailyPaymentRemind() {
         System.out.println("【每日定时检查任务】 每到月初（1号）就执行一次日常缴费提醒！");
         try {
@@ -238,9 +238,9 @@ public class SysAutoRemind {
     /**
      * 0 0 0 1/1 * ?
      * 0/5 * * * * ?
-     * 自动更新巡检信息（当天巡检还处于待巡检状态：本次巡检过期，结束时间填写为现在，并添加下一次巡检执行情况）
+     * (每天0点1分)自动更新巡检信息（当天巡检还处于待巡检状态：本次巡检过期，结束时间填写为现在，并添加下一次巡检执行情况）
      */
-    @Scheduled(cron = "0 0 0 1/1 * ? ")
+    @Scheduled(cron = "0 1 0 1/1 * ? ")
     public void autoInspection(){
         Date date = new Date();
         //根据当前时间，查询计划当次巡检开始时间小于当天的 并实际当次巡检结束时间为null的巡检执行情况数据
@@ -316,9 +316,9 @@ public class SysAutoRemind {
     /**
      * 0 0 0 1/1 * ?
      * 0/5 * * * * ?
-     * 自动更新设施/设备检查信息（当天检查还处于1.待完成状态：修改状态为3.未完成，并添加下一次检查执行情况）
+     * （每天0点10秒）自动更新设施/设备检查信息（当天检查还处于1.待完成状态：修改状态为3.未完成，并添加下一次检查执行情况）
      */
-    @Scheduled(cron = "0 0 0 1/1 * ? ")
+    @Scheduled(cron = "10 0 0 1/1 * ? ")
     public void autoFacilities(){
         Date date = new Date();
         //根据当前时间，查询计划当次检查开始时间小于当天的 并状态为待完成的检查执行记录
@@ -391,7 +391,7 @@ public class SysAutoRemind {
 
     /**
      * 0 0/1 * * * ?
-     * 每晚定时任务，自动为每一个物业账号生成当日考勤任务
+     * （每天0点1秒）每晚定时任务，自动为每一个物业账号生成当日考勤任务
      */
     @Scheduled(cron = "1 0 0 1/1 * ? ")
     public void autoAttendanceRecord(){
