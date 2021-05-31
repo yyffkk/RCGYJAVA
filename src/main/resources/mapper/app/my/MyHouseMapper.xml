@@ -3,7 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.my.MyHouseDao">
-    <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.my.MyHouseVo">
+    <select id="houseList" parameterType="java.lang.Integer" resultType="com.api.vo.my.MyHouseListVo">
+        select cre.id,cre.building_unit_estate_id as estate_id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,
+        ur.type,cre.effective_time_start,cre.effective_time_end
+        from cpm_resident_estate as cre,user_resident as ur,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where cre.resident_id = ur.id and cre.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id
+        and cbu.building_id = cb.id and cre.resident_id = #{id}
+    </select>
+
+    <select id="examineList" parameterType="java.lang.Integer" resultType="com.api.vo.my.MyHouseExamineVo">
         select cree.id,cree.building_unit_estate_id as estate_id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,cree.type,cree.status,cree.effective_time_start,cree.effective_time_end
         from cpm_resident_estate_examine as cree,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         where cree.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and cree.resident_id = #{id} and cree.is_delete = 1

@@ -2,21 +2,24 @@ package com.api.app.dao.my;
 
 import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
-import com.api.model.basicArchives.UserResident;
-import com.api.vo.my.MyHouseEstateInfoVo;
-import com.api.vo.my.MyHouseFBIVo;
-import com.api.vo.my.MyHouseResidentInfoVo;
-import com.api.vo.my.MyHouseVo;
+import com.api.vo.my.*;
 
 import java.util.List;
 
 public interface MyHouseDao {
     /**
+     * 查询用户所有拥有的房屋信息
+     * @param id 用户主键id
+     * @return 拥有的房屋信息
+     */
+    List<MyHouseListVo> houseList(Integer id);
+
+    /**
      * 查询所有的房屋审核信息
      * @param id 用户主键id
      * @return 我的房屋Vo list 回显
      */
-    List<MyHouseVo> list(Integer id);
+    List<MyHouseExamineVo> examineList(Integer id);
 
     /**
      * 根据用户主键id 查询该用户的审核中记录数量
@@ -103,4 +106,5 @@ public interface MyHouseDao {
      * @return 影响行数
      */
     int updateEstateExamineId(AppUserIdAndExamineId appUserIdAndExamineId);
+
 }

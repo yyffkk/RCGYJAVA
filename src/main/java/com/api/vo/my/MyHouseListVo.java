@@ -3,9 +3,9 @@ package com.api.vo.my;
 import java.util.Date;
 
 /**
- * 我的房屋Vo list 回显
+ * 我的房屋住房Vo list 回显
  */
-public class MyHouseVo {
+public class MyHouseListVo {
     /**
      * 主键id
      */
@@ -19,13 +19,9 @@ public class MyHouseVo {
      */
     private String roomName;
     /**
-     * 住户类型（1 审核业主，2审核亲属，3审核租客）
+     * 住户类型（1 业主，2亲属，3租客，4.游客）
      */
     private Integer type;
-    /**
-     * 审核状态（1.审核中，3.审核失败，4.审核成功）
-     */
-    private Integer status;
     /**
      * 有效时间开始（只限租客）
      */
@@ -37,12 +33,11 @@ public class MyHouseVo {
 
     @Override
     public String toString() {
-        return "MyHouseVo{" +
+        return "MyHouseListVo{" +
                 "id=" + id +
                 ", estateId=" + estateId +
                 ", roomName='" + roomName + '\'' +
                 ", type=" + type +
-                ", status=" + status +
                 ", effectiveTimeStart=" + effectiveTimeStart +
                 ", effectiveTimeEnd=" + effectiveTimeEnd +
                 '}';
@@ -80,14 +75,6 @@ public class MyHouseVo {
         this.type = type;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public Date getEffectiveTimeStart() {
         return effectiveTimeStart;
     }
@@ -104,15 +91,14 @@ public class MyHouseVo {
         this.effectiveTimeEnd = effectiveTimeEnd;
     }
 
-    public MyHouseVo() {
+    public MyHouseListVo() {
     }
 
-    public MyHouseVo(Integer id, Integer estateId, String roomName, Integer type, Integer status, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public MyHouseListVo(Integer id, Integer estateId, String roomName, Integer type, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.estateId = estateId;
         this.roomName = roomName;
         this.type = type;
-        this.status = status;
         this.effectiveTimeStart = effectiveTimeStart;
         this.effectiveTimeEnd = effectiveTimeEnd;
     }

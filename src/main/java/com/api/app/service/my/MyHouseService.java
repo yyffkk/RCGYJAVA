@@ -5,7 +5,9 @@ import com.api.model.my.MyHouse;
 import java.util.Map;
 
 public interface MyHouseService {
-    Map<String, Object> list(Integer id);
+    Map<String, Object> houseList(Integer id);
+
+    Map<String, Object> examineList(Integer id);
 
     Map<String, Object> authentication(MyHouse myHouse, Integer type);
 

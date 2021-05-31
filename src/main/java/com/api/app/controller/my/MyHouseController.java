@@ -1,20 +1,12 @@
 package com.api.app.controller.my;
 
 import com.api.app.service.my.MyHouseService;
-import com.api.model.basicArchives.ResidentIdAndEstateId;
-import com.api.model.basicArchives.UserResident;
 import com.api.model.my.MyHouse;
-import com.api.vo.app.AppAdviceVo;
 import com.api.vo.basicArchives.VoIds;
-import com.api.vo.my.MyHouseVo;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,14 +19,26 @@ public class MyHouseController {
     MyHouseService myHouseService;
 
 
+
+    /**
+     * 查询用户所有拥有的房屋信息
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/houseList")
+    public Map<String,Object> houseList(Integer id){
+        return myHouseService.houseList(id);
+    }
+
+
     /**
      * 查询所有的房屋审核信息
      * @param id 用户主键id
      * @return map
      */
-    @GetMapping("/list")
-    public Map<String,Object> list(Integer id){
-        return myHouseService.list(id);
+    @GetMapping("/examineList")
+    public Map<String,Object> examineList(Integer id){
+        return myHouseService.examineList(id);
     }
 
     /**
@@ -80,8 +84,8 @@ public class MyHouseController {
 
 
     /**
-     * 修改选中的房产审核id
-     * @param examineId 房产审核id
+     * 修改选中的房产id
+     * @param examineId 房产id
      * @param id 用户主键id
      * @return map
      */

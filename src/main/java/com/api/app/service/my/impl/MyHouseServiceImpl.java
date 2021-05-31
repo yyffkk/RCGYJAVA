@@ -6,10 +6,7 @@ import com.api.app.service.my.MyHouseService;
 import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.my.MyHouse;
-import com.api.vo.my.MyHouseEstateInfoVo;
-import com.api.vo.my.MyHouseFBIVo;
-import com.api.vo.my.MyHouseResidentInfoVo;
-import com.api.vo.my.MyHouseVo;
+import com.api.vo.my.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -28,10 +25,21 @@ public class MyHouseServiceImpl implements MyHouseService {
     AppLoginDao appLoginDao;
     private static Map<String,Object> map = null;
 
+
     @Override
-    public Map<String, Object> list(Integer id) {
+    public Map<String, Object> houseList(Integer id) {
         map = new HashMap<>();
-        List<MyHouseVo> list = myHouseDao.list(id);
+        List<MyHouseListVo> myHouseListVos = myHouseDao.houseList(id);
+        map.put("data",myHouseListVos);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> examineList(Integer id) {
+        map = new HashMap<>();
+        List<MyHouseExamineVo> list = myHouseDao.examineList(id);
         map.put("data",list);
         map.put("message","请求成功");
         map.put("status",true);
@@ -208,4 +216,5 @@ public class MyHouseServiceImpl implements MyHouseService {
         map.put("status",true);
         return map;
     }
+
 }

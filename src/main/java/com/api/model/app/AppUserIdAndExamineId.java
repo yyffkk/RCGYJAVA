@@ -1,7 +1,7 @@
 package com.api.model.app;
 
 /**
- * app 用户主键id 和 房产审核主键id
+ * app 用户主键id 和 房产主键id
  */
 public class AppUserIdAndExamineId {
     /**
@@ -9,7 +9,7 @@ public class AppUserIdAndExamineId {
      */
     private Integer userId;
     /**
-     * 房产审核主键id
+     * 房产主键id
      */
     private Integer examineId;
 
