@@ -67,6 +67,7 @@ public class SysActivityManagementServiceImpl implements SysActivityManagementSe
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(ActivityManagement activityManagement) {
         map = new HashMap<>();
         //获取登录用户信息

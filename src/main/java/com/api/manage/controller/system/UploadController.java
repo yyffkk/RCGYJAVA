@@ -201,7 +201,7 @@ public class UploadController {
     }
 
     /**
-     * 上传分类照片
+     * 上传商品分类照片
      * @param file 上传文件
      * @return map
      */
