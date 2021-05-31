@@ -104,10 +104,10 @@
             <if test="isPublic != null and isPublic != ''">
                 is_public = #{isPublic},
             </if>
-            <if test="effectiveTimeStart != null and effectiveTimeStart != ''">
+            <if test="effectiveTimeStart != null">
                 effective_time_start = #{effectiveTimeStart},
             </if>
-            <if test="effectiveTimeEnd != null and effectiveTimeEnd != ''">
+            <if test="effectiveTimeEnd != null">
                 effective_time_end = #{effectiveTimeEnd},
             </if>
         </set>
