@@ -23,6 +23,6 @@
     <!--添加租户房产关联-->
     <insert id="insertResidentEstate" parameterType="com.api.model.basicArchives.CpmResidentEstate">
         insert into cpm_resident_estate(building_unit_estate_id,resident_id,effective_time_start,effective_time_end)
-        values (#{buildingUnitEstateId},#{residentId},#{effective_time_start},#{effective_time_end})
+        values (#{buildingUnitEstateId},#{residentId},#{effectiveTimeStart},#{effectiveTimeEnd})
     </insert>
 </mapper>
