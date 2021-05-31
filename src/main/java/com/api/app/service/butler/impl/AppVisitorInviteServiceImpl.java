@@ -198,11 +198,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"selfie","600",30,20);
 //
-////            根据拜访房产id查询设备号
-//            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
-//
-////            连接立林对讲机系统 //TODO 先不接立林对讲系统
-//            connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+//            根据拜访房产id查询设备号
+            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
+
+//            连接立林对讲机系统 //TODO 先不接立林对讲系统
+            connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
 
         } catch (Exception e) {
@@ -341,7 +341,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = FormBody.create(mediaType, json);
             Request request = new Request.Builder()
-                    .url("http://iot.leelen.com/third/an/addFaceRecognize")
+                    .url("http://rd.iot.leelen.com/third/an/addFaceRecognize")
                     .post(requestBody)
                     .build();
             Response execute = client.newCall(request).execute();

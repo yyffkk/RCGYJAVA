@@ -263,7 +263,7 @@
     <select id="findPointByExecuteIdBefore" parameterType="java.lang.Integer"
             resultType="com.api.vo.systemDataBigScreen.SDInspectionExecutePointVo">
         select sipo.*
-        from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_inspection_route as sir,
+        from sys_inspection_execute as sie,sys_inspection_plan as sip,
         sys_inspection_point_route as sipr,sys_inspection_point as sipo
         where sie.inspection_plan_id = sip.id and sip.inspection_route_id = sipr.inspection_route_id
         and sipr.inspection_point_id = sipo.id and sie.id = #{executeId}

@@ -319,7 +319,6 @@ public class SystemDataServiceImpl implements SystemDataService {
             }else {
                 //根据执行计划主键id查询巡检前的巡检点信息(巡检前的巡检点)
                 sdInspectionExecutePointVos = systemDataDao.findPointByExecuteIdBefore(executeId);
-
             }
         }
         map.put("data",sdInspectionExecutePointVos);

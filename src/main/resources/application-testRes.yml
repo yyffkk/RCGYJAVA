@@ -5,7 +5,7 @@ res:
   #新版访客邀请门禁访客照片转发http 地址
   visitorsUrl: http://192.168.31.130:9001/manage/test2/test2
   #信息服务系统照片存放地址
-  communityLocation: http://test.akuhotel.com:8804/static
+  communityLocation: http://39.103.177.88:8804/static
 #  #第三方对外接口token值（无法引入代码）
 #  systemDataToken: 9627a35847e640cb92a7067557f09bda
 
@@ -20,7 +20,7 @@ lilin:
   #第三方唯一标示
   clientId: 83b4ee0b0c0abb7969f51ec614744c96
   #第三方密钥
-  clientSecret: d41cfdbb0ce3e3cfdaa8f4d71cf53c0004993703cab8f867ae81d8a6767f738c
+  clientSecret: 72126e68b501d89ca0b490fe95628efe
   #立林对讲机系统测试服务器地址
   serviceLocation: https://rd.iot.leelen.com/
   #API接口

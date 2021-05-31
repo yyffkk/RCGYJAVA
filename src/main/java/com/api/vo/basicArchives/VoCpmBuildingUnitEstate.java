@@ -56,6 +56,10 @@ public class VoCpmBuildingUnitEstate {
      */
     private Integer isDelete;
     /**
+     * 对讲机设备号
+     */
+    private String deviceNumber;
+    /**
      * 楼栋名称
      */
     private String buildingName;
@@ -87,6 +91,7 @@ public class VoCpmBuildingUnitEstate {
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
                 ", isDelete=" + isDelete +
+                ", deviceNumber='" + deviceNumber + '\'' +
                 ", buildingName='" + buildingName + '\'' +
                 ", buildingUnitNo=" + buildingUnitNo +
                 ", userResidentName='" + userResidentName + '\'' +
@@ -190,6 +195,14 @@ public class VoCpmBuildingUnitEstate {
         this.isDelete = isDelete;
     }
 
+    public String getDeviceNumber() {
+        return deviceNumber;
+    }
+
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
+    }
+
     public String getBuildingName() {
         return buildingName;
     }
@@ -225,7 +238,7 @@ public class VoCpmBuildingUnitEstate {
     public VoCpmBuildingUnitEstate() {
     }
 
-    public VoCpmBuildingUnitEstate(Integer id, Integer buildingUnitId, String roomNumber, Integer status, Integer type, BigDecimal constructionArea, BigDecimal indoorArea, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String buildingName, Integer buildingUnitNo, String userResidentName, String userResidentTel) {
+    public VoCpmBuildingUnitEstate(Integer id, Integer buildingUnitId, String roomNumber, Integer status, Integer type, BigDecimal constructionArea, BigDecimal indoorArea, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, String deviceNumber, String buildingName, Integer buildingUnitNo, String userResidentName, String userResidentTel) {
         this.id = id;
         this.buildingUnitId = buildingUnitId;
         this.roomNumber = roomNumber;
@@ -238,6 +251,7 @@ public class VoCpmBuildingUnitEstate {
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
         this.isDelete = isDelete;
+        this.deviceNumber = deviceNumber;
         this.buildingName = buildingName;
         this.buildingUnitNo = buildingUnitNo;
         this.userResidentName = userResidentName;
