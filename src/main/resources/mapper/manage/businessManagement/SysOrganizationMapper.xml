@@ -8,8 +8,10 @@
     </select>
 
     <select id="list" parameterType="java.lang.Integer" resultType="com.api.vo.businessManagement.VoOrganization">
-        select so.*,su.actual_name as leading_name,su.tel as leading_tel from sys_organization as so,sys_user as su
-        where so.leading_id = su.id and parent_id = #{parentId}
+        select so.*,su.actual_name as leading_name,su.tel as leading_tel
+        from sys_organization as so
+        LEFT JOIN sys_user as su on so.leading_id = su.id
+        where  parent_id = #{parentId}
     </select>
 
     <select id="countNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -20,7 +22,9 @@
         insert into sys_organization(
             name,
             parent_id,
-            leading_id,
+            <if test="leadingId != null">
+                leading_id,
+            </if>
             status,
             sort,
             remake,
@@ -30,7 +34,9 @@
         )values (
             #{name},
             #{parentId},
-            #{leadingId},
+            <if test="leadingId != null">
+                #{leadingId},
+            </if>
             #{status},
             #{sort},
             #{remake},
