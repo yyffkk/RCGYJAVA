@@ -29,6 +29,7 @@
                 and sn.create_date <![CDATA[ <= ]]> #{createDateEnd}
             </if>
         </where>
+        order by sn.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SysNewsManagement">
