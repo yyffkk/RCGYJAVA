@@ -202,6 +202,15 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
                 String mapKey = entry.getKey();
                 Object mapValue = entry.getValue();
                 log.info("标题：URl路径 ==》"+mapKey+":"+mapValue);
+
+                //比对数据库是否拥有相同标题信息
+                int count = sysNewsManagementDao.countByTitle(mapKey);
+                if (count >0){
+                    log.info("数据已存在，标题为："+mapKey);
+                    //跳过当前循环,不添加该数据
+                    continue;
+                }
+
                 //爬取医药网详情页
                 Document doc2 = Jsoup.connect(String.valueOf(mapValue)).get();
                 Element body2 = doc2.body();
@@ -217,16 +226,10 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
                 sysNewsManagement.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
                 sysNewsManagement.setTitle(mapKey);
                 sysNewsManagement.setContent(text);
-                sysNewsManagement.setNewsCategoryId(5);//5.医疗教育
+                sysNewsManagement.setNewsCategoryId(18);//18.医药网
                 sysNewsManagement.setCreateId(-1);//-1:外部发布
                 sysNewsManagement.setCreateDate(new Date());
-                //比对数据库是否拥有相同信息
-                int count = sysNewsManagementDao.countByTitle(sysNewsManagement.getTitle());
-                if (count >0){
-                    log.info("数据已存在，标题为："+mapKey);
-                    //跳过当前循环,不添加该数据
-                    continue;
-                }
+
                 //保存数据到数据库
                 sysNewsManagementDao.insert(sysNewsManagement);
                 log.info("数据已保存到数据库，标题为："+mapKey);
@@ -242,6 +245,65 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
 
     @Override
     public int updateEducation() {
-        return 0;
+        int num = 0;//更新条数
+        //爬取医药网列表页面
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("https://www.chsi.com.cn/jyzx").get();
+
+            Element body = doc.body();
+            Elements select = body.select(".content-l .news-list .news-title a");
+            //创建map存储器
+            HashMap<String, Object> map = new HashMap<>();
+            for (Element element : select) {
+                String href = element.attr("href");
+                String text = element.text();
+                //存进map中
+                map.put(text,href);
+            }
+
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                String mapKey = entry.getKey();
+                Object mapValue = entry.getValue();
+                log.info("标题：URl路径 ==》"+mapKey+":"+mapValue);
+
+                //比对数据库是否拥有相同标题信息
+                int count = sysNewsManagementDao.countByTitle(mapKey);
+                if (count >0){
+                    log.info("数据已存在，标题为："+mapKey);
+                    //跳过当前循环,不添加该数据
+                    continue;
+                }
+
+                //爬取医药网详情页
+                Document doc2 = Jsoup.connect("https://www.chsi.com.cn"+mapValue).get();
+                Element body2 = doc2.body();
+                Elements select2 = body2.select(".content-l");
+                String text = select2.text();
+                if (text.length()>10000){
+                    text = text.substring(0,10000);
+                }
+                log.info("文章内容："+text);
+
+                //处理并保存数据到数据库
+                SysNewsManagement sysNewsManagement = new SysNewsManagement();
+                sysNewsManagement.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
+                sysNewsManagement.setTitle(mapKey);
+                sysNewsManagement.setContent(text);
+                sysNewsManagement.setNewsCategoryId(19);//19.学信网
+                sysNewsManagement.setCreateId(-1);//-1:外部发布
+                sysNewsManagement.setCreateDate(new Date());
+
+                //保存数据到数据库
+                sysNewsManagementDao.insert(sysNewsManagement);
+                log.info("数据已保存到数据库，标题为："+mapKey);
+                num = num + 1;//累加更新条数
+            }
+            log.info("信息爬取成功");
+
+        } catch (IOException e) {
+            log.info("网站请求异常");
+        }
+        return num;
     }
 }

@@ -27,10 +27,10 @@ public class TestController2 {
 //        ws.broadcast("这是后台返回的消息");
 
         //爬取医药网列表页面
-        Document doc = Jsoup.connect("http://news.pharmnet.com.cn/").get();
+        Document doc = Jsoup.connect("https://www.chsi.com.cn/jyzx").get();
         Element body = doc.body();
         System.out.println(body);
-        Elements select = body.select(".jkjy dd ul li a");
+        Elements select = body.select(".content-l .news-list .news-title a");
         //创建map存储器
         HashMap<String, Object> map = new HashMap<>();
         for (Element element : select) {
@@ -45,9 +45,9 @@ public class TestController2 {
             Object mapValue = entry.getValue();
             System.out.println(mapKey+":"+mapValue);
             //爬取医药网详情页
-            Document doc2 = Jsoup.connect(String.valueOf(mapValue)).get();
+            Document doc2 = Jsoup.connect("https://www.chsi.com.cn"+mapValue).get();
             Element body2 = doc2.body();
-            Elements select2 = body2.select(".maintext");
+            Elements select2 = body2.select(".content-l");
             String text = select2.text();
             System.out.println(text);
             map.put(mapKey,text);

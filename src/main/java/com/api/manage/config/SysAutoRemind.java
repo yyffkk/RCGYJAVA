@@ -434,7 +434,6 @@ public class SysAutoRemind {
      */
     @Scheduled(cron = "1 0 0 1/1 * ? ")
     public void autoCrawlingMedical(){
-        System.out.println("更新");
         //更新医药网爬取信息并返回更新条数
         int medicalNum = sysNewsManagementService.updateMedical();
         log.info("更新条数为:"+medicalNum);
@@ -444,9 +443,8 @@ public class SysAutoRemind {
      *
      * （每天0点1秒）每晚定时任务，自动爬取更新学信网信息
      */
-    @Scheduled(cron = "1 0 0 1/1 * ? ")
+    @Scheduled(cron = "0 4 * * * ? ")
     public void autoCrawlingEducation(){
-        System.out.println("更新");
         //更新学信网爬取信息并返回更新条数
         int educationNum = sysNewsManagementService.updateEducation();
         log.info("更新条数为:"+educationNum);
