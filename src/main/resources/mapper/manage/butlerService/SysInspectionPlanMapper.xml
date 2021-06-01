@@ -131,6 +131,7 @@
                     and sie.actual_end_date is not null
                 </if>
             </where>
+            order by sie.begin_date
         ) as T
         <where>
             <if test="code != null and code != ''">
@@ -140,7 +141,5 @@
                 and T.inspector_tel like concat('%',#{inspectorTel},'%')
             </if>
         </where>
-
-
     </select>
 </mapper>
