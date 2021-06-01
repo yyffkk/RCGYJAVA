@@ -131,7 +131,7 @@
                     and sie.actual_end_date is not null
                 </if>
             </where>
-            order by sie.begin_date
+            order by sie.begin_date desc
         ) as T
         <where>
             <if test="code != null and code != ''">
