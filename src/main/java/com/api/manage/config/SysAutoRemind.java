@@ -252,9 +252,23 @@ public class SysAutoRemind {
                 while (dateCompare(new Date(),time)){
                     //查询最新的一次计划当次巡检开始时间
                     sysInspectionExecute = sysInspectionPlanDao.findNewPlan(sysInspectionExecute.getInspectionPlanId());
+
+                    //先修改
+                    //修改当次巡检情况实际结束时间
+                    ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate = new ButlerExecuteIdAndActualEndDate();
+                    executeIdAndActualEndDate.setExecuteId(sysInspectionExecute.getId());
+                    executeIdAndActualEndDate.setActualEndDate(new Date());
+                    int update3 = butlerInspectionDao.updateExecute(executeIdAndActualEndDate);
+                    if (update3 <= 0){
+                        log.info("修改当次巡检情况实际结束时间失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                        break;
+                    }
+                    log.info("修改当次巡检情况实际结束时间成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
+
+                    //后添加新执行计划
                     //根据巡检计划主键id 查询 巡检计划情况
                     SysInspectionPlan sysInspectionPlan = butlerInspectionDao.findPlanById(sysInspectionExecute.getInspectionPlanId());
-                    if (sysInspectionPlan.getStatus() ==1){ //启用
+                    if (sysInspectionPlan != null && sysInspectionPlan.getStatus() ==1){ //启用
                         //添加下一条巡检计划
                         SysInspectionExecute sysInspectionExecute3 = new SysInspectionExecute();
                         sysInspectionExecute3.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
@@ -272,7 +286,7 @@ public class SysAutoRemind {
                                 break;
                             default:
                                 log.info("数据异常,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                                continue;
+                                break;
                         }
                         time = calendar.getTime();
                         sysInspectionExecute3.setBeginDate(time); //填入计划当次巡检开始时间
@@ -280,7 +294,7 @@ public class SysAutoRemind {
                         Integer spaceTime = butlerInspectionDao.findSpaceTimeById(sysInspectionPlan.getInspectionRouteId());
                         if (spaceTime == null){
                             log.info("数据异常2,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                            continue;
+                            break;
                         }
                         calendar.setTime(time);
                         calendar.add(Calendar.MINUTE,spaceTime);
@@ -292,19 +306,12 @@ public class SysAutoRemind {
                         int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute3);
                         if (insert2 <=0){
                             log.info("添加执行巡检信息失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                            continue;
+                            break;
                         }
                         log.info("添加执行巡检信息成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                        //修改当次巡检情况实际结束时间
-                        ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate = new ButlerExecuteIdAndActualEndDate();
-                        executeIdAndActualEndDate.setExecuteId(sysInspectionExecute.getId());
-                        executeIdAndActualEndDate.setActualEndDate(new Date());
-                        int update3 = butlerInspectionDao.updateExecute(executeIdAndActualEndDate);
-                        if (update3 <= 0){
-                            log.info("修改当次巡检情况实际结束时间失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
-                            continue;
-                        }
-                        log.info("修改当次巡检情况实际结束时间成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                    }else {
+                        log.info("当前巡检计划已被关闭或删除,检查执行情况主键id:"+sysInspectionExecute.getId());
+                        break;
                     }
                 }
             }
@@ -330,6 +337,14 @@ public class SysAutoRemind {
                 while (dateCompare(new Date(),time)){
                     //查询最新的一次计划当次检查开始时间
                     execute = sysFacilitiesPlanDao.findNewPlan(execute.getFacilitiesPlanId());
+                    //修改当次检查情况状态为，3.未完成
+                    int update3 = sysFacilitiesPlanDao.updateExecuteStatus(execute.getId());
+                    if (update3 <= 0){
+                        log.info("修改当次检查情况状态失败,检查执行情况主键id:"+execute.getId());
+                        break;
+                    }
+                    log.info("修改当次检查情况状态成功,检查执行情况主键id:"+execute.getId());
+
                     //根据检查计划主键id 查询 检查计划情况
                     FacilitiesPlan plan = sysFacilitiesPlanDao.findById(execute.getFacilitiesPlanId());
                     if (plan != null && plan.getStatus() ==1){//未被删除，并启用
@@ -352,7 +367,7 @@ public class SysAutoRemind {
                                 break;
                             default:
                                 log.info("数据异常,巡检执行情况主键id:"+execute.getId());
-                                continue;
+                                break;
                         }
                         time = calendar.getTime();
                         execute3.setBeginDate(time); //填入计划当次检查开始时间
@@ -368,18 +383,12 @@ public class SysAutoRemind {
                         int insert2 = sysFacilitiesPlanDao.insertExecute(execute3);
                         if (insert2 <=0){
                             log.info("添加执行检查信息失败,检查执行情况主键id:"+execute.getId());
-                            continue;
+                            break;
                         }
                         log.info("添加执行检查信息成功,检查执行情况主键id:"+execute.getId());
-
-                        //修改当次检查情况状态为，3.未完成
-                        int update3 = sysFacilitiesPlanDao.updateExecuteStatus(execute.getId());
-                        if (update3 <= 0){
-                            log.info("修改当次检查情况状态失败,检查执行情况主键id:"+execute.getId());
-                            continue;
-                        }
-                        log.info("修改当次检查情况状态成功,检查执行情况主键id:"+execute.getId());
-
+                    }else {
+                        log.info("当前巡检计划已被关闭或删除,检查执行情况主键id:"+execute.getId());
+                        break;
                     }
                 }
             }

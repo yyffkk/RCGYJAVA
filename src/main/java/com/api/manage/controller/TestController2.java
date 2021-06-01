@@ -44,7 +44,7 @@ public class TestController2 {
             String mapKey = entry.getKey();
             Object mapValue = entry.getValue();
             System.out.println(mapKey+":"+mapValue);
-            //爬取水情简报详情页
+            //爬取医药网详情页
             Document doc2 = Jsoup.connect(String.valueOf(mapValue)).get();
             Element body2 = doc2.body();
             Elements select2 = body2.select(".maintext");

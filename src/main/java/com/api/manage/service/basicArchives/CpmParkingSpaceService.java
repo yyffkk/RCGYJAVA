@@ -12,7 +12,7 @@ public interface CpmParkingSpaceService {
 
     Map<String, Object> insert(CpmParkingSpace cpmParkingSpace);
 
-    CpmParkingSpace findById(Integer id);
+    Map<String, Object> findById(Integer id);
 
     Map<String, Object> update(CpmParkingSpace cpmParkingSpace);
 

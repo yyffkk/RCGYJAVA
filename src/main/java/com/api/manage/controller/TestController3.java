@@ -1,16 +1,24 @@
 package com.api.manage.controller;
 
-import com.api.model.test.River;
+import com.api.butlerApp.dao.butler.ButlerAttendanceDao;
+import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
+import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
+import com.api.manage.dao.butlerService.BorrowDao;
+import com.api.manage.dao.butlerService.SysFacilitiesPlanDao;
+import com.api.manage.dao.butlerService.SysInspectionPlanDao;
+import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
+import com.api.manage.dao.remind.RemindDao;
+import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
+import com.api.model.butlerService.FacilitiesExecute;
+import com.api.model.butlerService.FacilitiesPlan;
+import com.api.model.butlerService.SysInspectionExecute;
+import com.api.model.butlerService.SysInspectionPlan;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.helper.StringUtil;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -20,84 +28,201 @@ import java.util.*;
 @Slf4j
 @RequestMapping("manage/test3")
 public class TestController3 {
+    @Resource
+    BorrowDao borrowDao;
+    @Resource
+    RemindDao remindDao;
+    @Resource
+    SysDailyPaymentDao sysDailyPaymentDao;
+    @Resource
+    CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
+    @Resource
+    ButlerInspectionDao butlerInspectionDao;
+    @Resource
+    SysInspectionPlanDao sysInspectionPlanDao;
+    @Resource
+    SysFacilitiesPlanDao sysFacilitiesPlanDao;
+    @Resource
+    ButlerAttendanceDao butlerAttendanceDao;
 
-    //陕西水文信息网址
-    private static String url = "http://www.shxsw.com.cn";
-    //获取数据的地址
-    private static String hedaoAction = "iframe/hdsqxx_list.aspx";
+    @GetMapping("/autoFacilities")
+    public boolean autoFacilities(){
+        Date date = new Date();
+        //根据当前时间，查询计划当次检查开始时间小于当天的 并状态为待完成的检查执行记录
+        List<FacilitiesExecute> executes = sysFacilitiesPlanDao.findOldExecuteByToday(date);
+        if (executes != null && executes.size()>0){
+            for (FacilitiesExecute execute : executes) {
+                //当 当前时间的日期（年月日）大于添加后的当次检查开始时间的日期（年月日），继续添加检查计划，并将添加后的当次检查计划变为未完成状态
+                Date time = execute.getBeginDate();
+                while (dateCompare(new Date(),time)){
+                    //查询最新的一次计划当次检查开始时间
+                    execute = sysFacilitiesPlanDao.findNewPlan(execute.getFacilitiesPlanId());
 
-    @GetMapping("/test3")
-    public Boolean test2(HttpServletRequest request) throws IOException {
-        List hedaoList= getRiverInfoList(url+"/" + hedaoAction);
-        System.out.println(hedaoList.size());
-        if (hedaoList!=null&&hedaoList.size()>0) {
-            System.out.println(hedaoList);
+                    //先修改
+                    //修改当次检查情况状态为，3.未完成
+                    int update3 = sysFacilitiesPlanDao.updateExecuteStatus(execute.getId());
+                    if (update3 <= 0){
+                        log.info("修改当次检查情况状态失败,检查执行情况主键id:"+execute.getId());
+                        break;
+                    }
+                    log.info("修改当次检查情况状态成功,检查执行情况主键id:"+execute.getId());
+
+                    //后添加新执行计划
+                    //根据检查计划主键id 查询 检查计划情况
+                    FacilitiesPlan plan = sysFacilitiesPlanDao.findById(execute.getFacilitiesPlanId());
+                    if (plan != null && plan.getStatus() ==1){//未被删除，并启用
+                        //添加下一条检查计划
+                        FacilitiesExecute execute3 = new FacilitiesExecute();
+                        execute3.setFacilitiesPlanId(execute.getFacilitiesPlanId());//填入检查计划主键id
+                        execute3.setStatus(1);//添加默认，1.待完成
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(time);
+                        switch (plan.getCheckRateType()){
+                            case 1:
+                                calendar.add(Calendar.DAY_OF_MONTH,1);
+                                break;
+                            case 2:
+                                calendar.add(Calendar.DAY_OF_MONTH,7);
+                                break;
+                            case 3:
+                                calendar.add(Calendar.MONTH,1);
+                                break;
+                            default:
+                                log.info("数据异常,巡检执行情况主键id:"+execute.getId());
+                                break;
+                        }
+                        time = calendar.getTime();
+                        execute3.setBeginDate(time); //填入计划当次检查开始时间
+
+                        calendar.setTime(time);
+                        calendar.add(Calendar.MINUTE,plan.getSpaceTime());
+                        Date time2 = calendar.getTime();
+                        execute3.setEndDate(time2); //填入计划当次检查结束时间
+
+                        //根据检查计划主键id查询检查执行数量
+                        int count2 = sysFacilitiesPlanDao.countExecuteNumByPlanId(execute.getFacilitiesPlanId());
+                        execute3.setSort(count2+1); //填入排序默认为1
+                        int insert2 = sysFacilitiesPlanDao.insertExecute(execute3);
+                        if (insert2 <=0){
+                            log.info("添加执行检查信息失败,检查执行情况主键id:"+execute.getId());
+                            break;
+                        }
+                        log.info("添加执行检查信息成功,检查执行情况主键id:"+execute.getId());
+                    }else {
+                        log.info("当前巡检计划已被关闭或删除,检查执行情况主键id:"+execute.getId());
+                        break;
+                    }
+                }
+            }
+        }else {
+            log.info("本次执行没有处理对象");
         }
-        log.info("这个测试log日志");
-        return false;
+        return true;
+    }
+
+
+    @GetMapping("/autoInspection")
+    public Boolean autoInspection(HttpServletRequest request) throws IOException {
+        Date date = new Date();
+        //根据当前时间，查询计划当次巡检开始时间小于当天的 并实际当次巡检结束时间为null的巡检执行情况数据
+        List<SysInspectionExecute> sysInspectionExecuteList = butlerInspectionDao.findOldExecuteByToday(date);
+        if (sysInspectionExecuteList != null && sysInspectionExecuteList.size()>0){
+            for (SysInspectionExecute sysInspectionExecute : sysInspectionExecuteList) {
+                //当 当前时间的日期（年月日）大于添加后的当次巡检开始时间的日期（年月日），继续添加巡检计划，并将添加后的当次巡检计划变为未巡检状态
+                Date time = sysInspectionExecute.getBeginDate();
+                while (dateCompare(new Date(),time)){
+                    //查询最新的一次计划当次巡检开始时间
+                    sysInspectionExecute = sysInspectionPlanDao.findNewPlan(sysInspectionExecute.getInspectionPlanId());
+
+                    //先修改
+                    //修改当次巡检情况实际结束时间
+                    ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate = new ButlerExecuteIdAndActualEndDate();
+                    executeIdAndActualEndDate.setExecuteId(sysInspectionExecute.getId());
+                    executeIdAndActualEndDate.setActualEndDate(new Date());
+                    int update3 = butlerInspectionDao.updateExecute(executeIdAndActualEndDate);
+                    if (update3 <= 0){
+                        log.info("修改当次巡检情况实际结束时间失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                        break;
+                    }
+                    log.info("修改当次巡检情况实际结束时间成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
+
+                    //后添加新执行计划
+                    //根据巡检计划主键id 查询 巡检计划情况
+                    SysInspectionPlan sysInspectionPlan = butlerInspectionDao.findPlanById(sysInspectionExecute.getInspectionPlanId());
+                    if (sysInspectionPlan != null && sysInspectionPlan.getStatus() ==1){ //启用
+                        //添加下一条巡检计划
+                        SysInspectionExecute sysInspectionExecute3 = new SysInspectionExecute();
+                        sysInspectionExecute3.setInspectionPlanId(sysInspectionExecute.getInspectionPlanId()); //填入巡检计划主键id
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(time);
+                        switch (sysInspectionPlan.getCheckRateType()){
+                            case 1:
+                                calendar.add(Calendar.DAY_OF_MONTH,1);
+                                break;
+                            case 2:
+                                calendar.add(Calendar.DAY_OF_MONTH,7);
+                                break;
+                            case 3:
+                                calendar.add(Calendar.MONTH,1);
+                                break;
+                            default:
+                                log.info("数据异常,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                                break;
+                        }
+                        time = calendar.getTime();
+                        sysInspectionExecute3.setBeginDate(time); //填入计划当次巡检开始时间
+                        //根据巡检路线主键id查询 持续时间
+                        Integer spaceTime = butlerInspectionDao.findSpaceTimeById(sysInspectionPlan.getInspectionRouteId());
+                        if (spaceTime == null){
+                            log.info("数据异常2,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                            break;
+                        }
+                        calendar.setTime(time);
+                        calendar.add(Calendar.MINUTE,spaceTime);
+                        Date time2 = calendar.getTime();
+                        sysInspectionExecute3.setEndDate(time2); //填入计划当次巡检结束时间
+                        //根据巡检计划主键id查询巡检执行数量
+                        int count2 = butlerInspectionDao.countExecuteNumByPlanId(sysInspectionExecute.getInspectionPlanId());
+                        sysInspectionExecute3.setSort(count2+1); //填入排序默认为1
+                        int insert2 = sysInspectionPlanDao.insertExecute(sysInspectionExecute3);
+                        if (insert2 <=0){
+                            log.info("添加执行巡检信息失败,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                            break;
+                        }
+                        log.info("添加执行巡检信息成功,巡检执行情况主键id:"+sysInspectionExecute.getId());
+                    }else {
+                        log.info("当前巡检计划已被关闭或删除,检查执行情况主键id:"+sysInspectionExecute.getId());
+                        break;
+                    }
+                }
+            }
+        }else {
+            log.info("本次执行没有处理对象");
+        }
+        return true;
     }
 
     /**
-     * 河道水情信息获取
-     * @param dataUrl
-     * @return
+     * 比较第一个值date和第二个值time
+     * @param date 第一个值
+     * @param time 第二个值
+     * @return date>time true date
      */
-    public static List getRiverInfoList (String dataUrl) {
-        Long startDate=System.currentTimeMillis();
-        Document doc = null;
-        List<River> riversList=new ArrayList<>();
-        Map<String, String> zhanmingAndShiDateMap=new LinkedHashMap();
-        String VIEWSTATE="/wEPDwUKMTU1NzczODAwMA9kFgICAw9kFgQCAQ8WAh4LXyFJdGVtQ291bnQCDxYeZg9kFgJmDxUIIOa4reaysyAgICAgICAgICAgICAgICAgICAgICAgICAgIemtj+WutuWgoSAgICAgICAgICAgICAgICAgICAgICAgIAsyMuaXpSAxOOaXtgY0OTQuNjYDMzM5A+iQvQgyNTAwLjAwMAg1MDAwLjAwMGQCAQ9kFgJmDxUIIOaxieaxnyAgICAgICAgICAgICAgICAgICAgICAgICAgIOeZveaysyAgICAgICAgICAgICAgICAgICAgICAgICAgCzIy5pelIDE45pe2BjE3Mi43OAM2NTID5raoCTEzMDAwLjAwMAkyMjUwMC4wMDBkAgIPZBYCZg8VCCHljJfmtJvmsrMgICAgICAgICAgICAgICAgICAgICAgICAg54q2IOWktCAgICAgICAgICAgICAgICAgICAgICAgICALMjLml6UgMTjml7YGMzYyLjU2AzEwNwPmtqgIMjUwMC4wMDAIMzMwMC4wMDBkAgMPZBYCZg8VCCDkuLnmsZ8gICAgICAgICAgICAgICAgICAgICAgICAgICHov4fpo47mpbwgICAgICAgICAgICAgICAgICAgICAgICALMjLml6UgMTjml7YFOTMuMzUEMTYuMQPlubMAAGQCBA9kFgJmDxUIIOaxieaxnyAgICAgICAgICAgICAgICAgICAgICAgICAgIOefs+aziSAgICAgICAgICAgICAgICAgICAgICAgICAgCzIy5pelIDE45pe2BjM2MS41NQAD5raoCTEyMDAwLjAwMAkxNTAwMC4wMDBkAgUPZBYCZg8VCCDkuLnmsZ8gICAgICAgICAgICAgICAgICAgICAgICAgICDkuLnlh6QgICAgICAgICAgICAgICAgICAgICAgICAgIAsyMuaXpSAxOOaXtgY1NDYuOTcEMTYuMgPokL0HODAwLjAwMAgxNTAwLjAwMGQCBg9kFgJmDxUIIOa4reaysyAgICAgICAgICAgICAgICAgICAgICAgICAgIOS4tOa9vCAgICAgICAgICAgICAgICAgICAgICAgICAgCzIy5pelIDE45pe2BTM1Mi43AzM2OAPmtqgIMzAwMC4wMDAIODAwMC4wMDBkAgcPZBYCZg8VCCDms77msrMgICAgICAgICAgICAgICAgICAgICAgICAgICHlvKDlrrblsbEgICAgICAgICAgICAgICAgICAgICAgICALMjLml6UgMTfml7YGNDIzLjQ4AzYyMwPokL0IMzAwMC4wMDAINjAwMC4wMDBkAggPZBYCZg8VCCDms77msrMgICAgICAgICAgICAgICAgICAgICAgICAgICHlvKDlrrblsbEgICAgICAgICAgICAgICAgICAgICAgICALMjLml6UgMTfml7YFNDIzLjUDNjEwA+W5swgzMDAwLjAwMAg2MDAwLjAwMGQCCQ9kFgJmDxUIIOa4reaysyAgICAgICAgICAgICAgICAgICAgICAgICAgIOWSuOmYsyAgICAgICAgICAgICAgICAgICAgICAgICAgCzIy5pelIDE35pe2BjM4Mi4xMgMyNDgD5raoCDMwMDAuMDAwCDUwMDAuMDAwZAIKD2QWAmYPFQgh5YyX5rSb5rKzICAgICAgICAgICAgICAgICAgICAgICAgIOeKtiDlpLQgICAgICAgICAgICAgICAgICAgICAgICAgCzIy5pelIDE35pe2BjM2Mi41MQMxMDED5raoCDI1MDAuMDAwCDMzMDAuMDAwZAILD2QWAmYPFQgg5Li55rGfICAgICAgICAgICAgICAgICAgICAgICAgICAh6L+H6aOO5qW8ICAgICAgICAgICAgICAgICAgICAgICAgCzIy5pelIDE35pe2BTkzLjM1BDE2LjED5raoAABkAgwPZBYCZg8VCCDkuLnmsZ8gICAgICAgICAgICAgICAgICAgICAgICAgICDkuLnlh6QgICAgICAgICAgICAgICAgICAgICAgICAgIAsyMuaXpSAxN+aXtgY1NDYuOTgEMTcuMQPokL0HODAwLjAwMAgxNTAwLjAwMGQCDQ9kFgJmDxUIIOaxieaxnyAgICAgICAgICAgICAgICAgICAgICAgICAgIOefs+aziSAgICAgICAgICAgICAgICAgICAgICAgICAgCzIy5pelIDE35pe2BTM2MS40AAPlubMJMTIwMDAuMDAwCTE1MDAwLjAwMGQCDg9kFgJmDxUIIOaxieaxnyAgICAgICAgICAgICAgICAgICAgICAgICAgIOeZveaysyAgICAgICAgICAgICAgICAgICAgICAgICAgCzIy5pelIDE35pe2BjE3Mi43NgM2NDID5raoCTEzMDAwLjAwMAkyMjUwMC4wMDBkAgMPDxYEHhBDdXJyZW50UGFnZUluZGV4Ag4eC1JlY29yZGNvdW50AtYCZGRk";
-        int num=1;
-        Date now=new Date();
-        while(num<=30){
-            try {
-                Connection con = Jsoup.connect(dataUrl).userAgent("Mozilla/5.0").timeout(3000);
-                con.data("__EVENTTARGET","pager");
-                con.data("__EVENTARGUMENT", num+"");
-                con.data("__VIEWSTATE",VIEWSTATE);
-                doc=con.post();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            VIEWSTATE=doc.getElementById("__VIEWSTATE").val();
-            Elements elements = doc.getElementsByTag("tr");
-            SimpleDateFormat fro1=new SimpleDateFormat("dd日 HH时");
-            for (int j=1; j<elements.size();j++) {
-                River river=new River();
-                String rivers[]=elements.get(j).toString().replace("<tr>", "").replace("</tr>", "").replace("<td>", "").replace("<td bgcolor=\"#D8EDFF\">", "").split("</td>");
-                String riverName=rivers[0].trim();
-                String zhanName=rivers[1].trim();
-                String date=rivers[2].trim();
-                String shuiWei=rivers[3].trim();
-                String liuliang=rivers[4].trim();
-                String shuishi=rivers[5].trim();
-                String jingjieliangliang=rivers[6].trim();
-                String baozhengliuliang=rivers[7].trim();
-                //封装数据
-                river.setRiverName(riverName);
-                river.setZhanName(zhanName);
-                //"--"标识无效数据
-                river.setWaterLevel(StringUtil.isBlank(shuiWei)?"--":shuiWei);
-                river.setTraffic(StringUtil.isBlank(liuliang)?"--":liuliang);
-                river.setAlertTraffic((StringUtil.isBlank(jingjieliangliang)?"--":jingjieliangliang));
-                river.setEnsureTraffic((StringUtil.isBlank(baozhengliuliang)?"--":baozhengliuliang));
-                river.setShuiShi(shuishi);
-                try {
-                    river.setDate(fro1.parse(date));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                //对今日重复数据进行过滤
-                if (!date.equals(zhanmingAndShiDateMap.get(date+zhanName))) {
-                    riversList.add(river);
-                    zhanmingAndShiDateMap.put(date+zhanName, date);
-                }
-            }
-            num++;
+    private boolean dateCompare(Date date, Date time) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String dateFirst = dateFormat.format(date);
+        String dateLast = dateFormat.format(time);
+        int dateFirstIntVal = Integer.parseInt(dateFirst);
+        int dateLastIntVal = Integer.parseInt(dateLast);
+        if (dateFirstIntVal > dateLastIntVal) {
+            //第一个值大于第二个值true
+            return true;
+        } else if (dateFirstIntVal < dateLastIntVal) {
+            //第一个值小于第二个值false
+            return false;
         }
-        Long endDate=System.currentTimeMillis();
-        log.info(new SimpleDateFormat("yyyy月MM月dd日 HH时mm分").format(now)+"共爬取爬取"+riversList.size()+"河道水情信息,共耗时"+(endDate-startDate)/1000+"秒");
-        return riversList;
+        //第一个值等于第二个值false
+        return false;
     }
 }

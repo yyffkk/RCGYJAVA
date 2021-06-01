@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Service
 public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
-    private final Map<String,Object> map = new HashMap<>();
+    private static Map<String,Object> map = null;
     @Resource
     CpmParkingSpaceDao cpmParkingSpaceDao;
 
@@ -31,6 +31,7 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
 
     @Override
     public Map<String, Object> insert(CpmParkingSpace cpmParkingSpace) {
+        map = new HashMap<>();
 //        //是否有业主信息填入
 //        CpmParkingSpace cpmParkingSpace = parkingSpaceAndResident.getCpmParkingSpace();
 
@@ -66,12 +67,19 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
     }
 
     @Override
-    public CpmParkingSpace findById(Integer id) {
-        return cpmParkingSpaceDao.findById(id);
+    public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
+        CpmParkingSpace byId = cpmParkingSpaceDao.findById(id);
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",byId);
+        return map;
     }
 
     @Override
     public Map<String, Object> update(CpmParkingSpace cpmParkingSpace) {
+        map = new HashMap<>();
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
@@ -91,6 +99,7 @@ public class CpmParkingSpaceServiceImpl implements CpmParkingSpaceService {
     @Override
     @Transactional
     public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
         try {
             for (int id : ids) {
                 //先查询是否有关联业主信息

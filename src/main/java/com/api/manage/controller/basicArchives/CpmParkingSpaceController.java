@@ -62,7 +62,7 @@ public class CpmParkingSpaceController extends ShiroExceptions {
      */
     @GetMapping("/findById")
     @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
-    public CpmParkingSpace findById(Integer id){
+    public Map<String,Object> findById(Integer id){
         return cpmParkingSpaceService.findById(id);
     }
 
