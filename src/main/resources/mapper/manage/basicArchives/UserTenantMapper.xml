@@ -5,12 +5,14 @@
 <mapper namespace="com.api.manage.dao.basicArchives.UserTenantDao">
     <select id="list" parameterType="com.api.model.basicArchives.UserResident" resultType="com.api.vo.basicArchives.VoUserTenant">
         SELECT a.*, uc.code as car_code
-		from (select ur.id,ur.type,ur.name,ur.tel,ur.id_type,ur.id_number,cre.effective_time_start,cre.effective_time_end,cbue.id as room_id
-		from user_resident as ur,cpm_building_unit_estate as cbue,cpm_resident_estate as cre
-		where ur.id = cre.resident_id and cbue.id = cre.building_unit_estate_id  and  ur.type = 3) as a LEFT JOIN user_car as uc
-		on a.id = uc.owner
-		<where>
-		    a.type = 3
+        from (
+        select ur.id,ur.type,ur.name,ur.tel,ur.id_type,ur.id_number,cre.effective_time_start,cre.effective_time_end,cbue.id as room_id,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from user_resident as ur,cpm_building_unit_estate as cbue,cpm_resident_estate as cre,cpm_building_unit as cbu,cpm_building as cb
+        where ur.id = cre.resident_id and cbue.id = cre.building_unit_estate_id and cbue.building_unit_id =cbu.id and cbu.building_id = cb.id and  ur.type = 3
+        ) as a LEFT JOIN user_car as uc
+        on a.id = uc.owner
+        <where>
+            a.type = 3
             <if test="name != null and name != ''">
                 and a.name = #{name}
             </if>

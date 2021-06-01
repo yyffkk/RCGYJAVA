@@ -48,12 +48,6 @@ public class UserTenantServiceImpl implements UserTenantService {
                     userTenantList.setRoomStatus(1);
                 }
             }
-            //根据房产主键id查询对应的单元号
-            CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(userTenantList.getRoomId());
-            //根据单元主键id查询对应的楼栋号
-            CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
-            //楼栋，单元，房产（房间）
-            userTenantList.setRoomName(cpmBuilding.getNo()+"-"+cpmBuildingUnit.getNo()+"-"+userTenantList.getRoomId());
         }
         return voUserTenantList;
     }
