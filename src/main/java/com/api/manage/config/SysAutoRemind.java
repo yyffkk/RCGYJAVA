@@ -443,7 +443,7 @@ public class SysAutoRemind {
      *
      * （每天0点1秒）每晚定时任务，自动爬取更新学信网信息
      */
-    @Scheduled(cron = "0 4 * * * ? ")
+    @Scheduled(cron = "1 0 0 1/1 * ? ")
     public void autoCrawlingEducation(){
         //更新学信网爬取信息并返回更新条数
         int educationNum = sysNewsManagementService.updateEducation();
