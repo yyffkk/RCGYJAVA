@@ -12,19 +12,26 @@ import com.api.util.UploadUtil;
 import com.api.vo.operationManagement.VoFBINewsManagement;
 import com.api.vo.operationManagement.VoNewsManagement;
 import com.api.vo.resources.VoResourcesImg;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class SysNewsManagementServiceImpl implements SysNewsManagementService {
     private static Map<String,Object> map = null;
     @Resource
@@ -170,5 +177,71 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
         map.put("message","删除资讯成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public int updateMedical() {
+        int num = 0;//更新条数
+        //爬取医药网列表页面
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("http://news.pharmnet.com.cn/").get();
+
+            Element body = doc.body();
+            Elements select = body.select(".jkjy dd ul li a");
+            //创建map存储器
+            HashMap<String, Object> map = new HashMap<>();
+            for (Element element : select) {
+                String href = element.attr("href");
+                String text = element.text();
+                //存进map中
+                map.put(text,href);
+            }
+
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                String mapKey = entry.getKey();
+                Object mapValue = entry.getValue();
+                log.info("标题：URl路径 ==》"+mapKey+":"+mapValue);
+                //爬取医药网详情页
+                Document doc2 = Jsoup.connect(String.valueOf(mapValue)).get();
+                Element body2 = doc2.body();
+                Elements select2 = body2.select(".maintext");
+                String text = select2.text();
+                if (text.length()>10000){
+                    text = text.substring(0,10000);
+                }
+                log.info("文章内容："+text);
+
+                //处理并保存数据到数据库
+                SysNewsManagement sysNewsManagement = new SysNewsManagement();
+                sysNewsManagement.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
+                sysNewsManagement.setTitle(mapKey);
+                sysNewsManagement.setContent(text);
+                sysNewsManagement.setNewsCategoryId(5);//5.医疗教育
+                sysNewsManagement.setCreateId(-1);//-1:外部发布
+                sysNewsManagement.setCreateDate(new Date());
+                //比对数据库是否拥有相同信息
+                int count = sysNewsManagementDao.countByTitle(sysNewsManagement.getTitle());
+                if (count >0){
+                    log.info("数据已存在，标题为："+mapKey);
+                    //跳过当前循环,不添加该数据
+                    continue;
+                }
+                //保存数据到数据库
+                sysNewsManagementDao.insert(sysNewsManagement);
+                log.info("数据已保存到数据库，标题为："+mapKey);
+                num = num + 1;//累加更新条数
+            }
+            log.info("信息爬取成功");
+
+        } catch (IOException e) {
+            log.info("网站请求异常");
+        }
+        return num;
+    }
+
+    @Override
+    public int updateEducation() {
+        return 0;
     }
 }

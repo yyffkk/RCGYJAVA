@@ -42,4 +42,12 @@ public interface SysNewsManagementDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 查询数据库是否存在该资讯标题
+     * @param title 资讯标题
+     * @return 存在数量
+     */
+    int countByTitle(String title);
+
 }

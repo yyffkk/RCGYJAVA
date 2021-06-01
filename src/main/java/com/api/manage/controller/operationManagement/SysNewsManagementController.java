@@ -83,4 +83,25 @@ public class SysNewsManagementController extends ShiroExceptions {
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysNewsManagementService.delete(ids.getIds());
     }
+
+    /**
+     * 手动更新爬取信息（医药网，学信网）
+     * @return map
+     */
+    @GetMapping("/updateCrawling")
+    public Map<String,Object> updateCrawling(){
+        HashMap<String, Object> map = new HashMap<>();
+        int num = 0;
+        //更新医药网爬取信息并返回更新条数
+        int medicalNum = sysNewsManagementService.updateMedical();
+        //更新学信网爬取信息并返回更新条数
+        int educationNum = sysNewsManagementService.updateEducation();
+
+        num = medicalNum + educationNum;
+
+        map.put("message","更新成功");
+        map.put("status",true);
+        map.put("num",num);//更新条数
+        return map;
+    }
 }

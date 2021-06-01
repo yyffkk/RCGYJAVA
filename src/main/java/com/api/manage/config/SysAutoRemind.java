@@ -7,33 +7,34 @@ import com.api.manage.dao.butlerService.BorrowDao;
 import com.api.manage.dao.butlerService.SysFacilitiesPlanDao;
 import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
+import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.manage.dao.remind.RemindDao;
+import com.api.manage.service.operationManagement.SysNewsManagementService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
-import com.api.model.butlerApp.ButlerPlanIdAndActualBeginDate;
 import com.api.model.butlerService.*;
 import com.api.model.operationManagement.AttendanceRecord;
+import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
-import com.api.model.systemDataBigScreen.DailyActivity;
-import com.api.systemDataBigScreen.dao.SystemDataDao;
+import com.api.util.IdWorker;
 import com.api.util.JiguangUtil;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 系统自动 提醒/推送
@@ -92,6 +93,8 @@ public class SysAutoRemind {
     SysFacilitiesPlanDao sysFacilitiesPlanDao;
     @Resource
     ButlerAttendanceDao butlerAttendanceDao;
+    @Resource
+    SysNewsManagementService sysNewsManagementService;
 
 
     /**
@@ -422,6 +425,31 @@ public class SysAutoRemind {
         }else {
             log.info("本次执行没有处理对象");
         }
+    }
+
+
+    /**
+     *
+     * （每天0点1秒）每晚定时任务，自动爬取更新医药网健康家园信息
+     */
+    @Scheduled(cron = "1 0 0 1/1 * ? ")
+    public void autoCrawlingMedical(){
+        System.out.println("更新");
+        //更新医药网爬取信息并返回更新条数
+        int medicalNum = sysNewsManagementService.updateMedical();
+        log.info("更新条数为:"+medicalNum);
+    }
+
+    /**
+     *
+     * （每天0点1秒）每晚定时任务，自动爬取更新学信网信息
+     */
+    @Scheduled(cron = "1 0 0 1/1 * ? ")
+    public void autoCrawlingEducation(){
+        System.out.println("更新");
+        //更新学信网爬取信息并返回更新条数
+        int educationNum = sysNewsManagementService.updateEducation();
+        log.info("更新条数为:"+educationNum);
     }
 
     /**

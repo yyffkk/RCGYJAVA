@@ -80,5 +80,8 @@
         delete from sys_news where id = #{id}
     </delete>
 
+    <select id="countByTitle" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from sys_news where title like concat('%',#{title},'%')
+    </select>
 
 </mapper>

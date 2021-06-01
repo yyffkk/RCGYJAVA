@@ -17,4 +17,8 @@ public interface SysNewsManagementService {
     Map<String, Object> update(SysNewsManagement sysNewsManagement);
 
     Map<String, Object> delete(int[] ids);
+
+    int updateMedical();
+
+    int updateEducation();
 }
