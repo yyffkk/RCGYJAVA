@@ -25,4 +25,8 @@
         select name from sys_role where id = #{id}
     </select>
 
+<!--    <select id="roleCheckList" parameterType="com.api.model.businessManagement.UserIdAndParentId" resultType="com.api.vo.system.VoCheckRole">-->
+<!--        -->
+<!--    </select>-->
+
 </mapper>

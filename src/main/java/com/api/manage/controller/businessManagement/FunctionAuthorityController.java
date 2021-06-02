@@ -6,6 +6,7 @@ import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.businessManagement.*;
 import com.api.vo.businessManagement.VoFunctionAuthority;
 import com.api.vo.businessManagement.VoListJurisdiction;
+import com.api.vo.system.VoCheckRole;
 import com.api.vo.system.VoRole;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,6 +38,16 @@ public class FunctionAuthorityController extends ShiroExceptions {
     @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
     public List<VoRole> roleList(){
         return sysRoleService.roleList();
+    }
+
+    /**
+     * 查询当前用户的所有角色信息（带选择字段）
+     * @return 用户角色信息
+     */
+    @GetMapping("/roleCheckList")
+    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
+    public List<VoCheckRole> roleCheckList(Integer id){
+        return sysRoleService.roleCheckList(id);
     }
 
     /**

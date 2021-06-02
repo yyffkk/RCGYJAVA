@@ -1,6 +1,8 @@
 package com.api.manage.dao.system;
 
+import com.api.model.businessManagement.UserIdAndParentId;
 import com.api.model.system.SysRole;
+import com.api.vo.system.VoCheckRole;
 import com.api.vo.system.VoRole;
 import org.springframework.stereotype.Component;
 
@@ -43,4 +45,11 @@ public interface SysRoleDao {
      * @return 角色名称
      */
     String findNameByRoleId(Integer s);
+
+//    /**
+//     * 查询当前用户的所有角色信息（带选择字段）
+//     * @param userIdAndParentId 用户主键id 和 上级权限id
+//     * @return 当前用户的所有角色信息（带选择字段）
+//     */
+//    List<VoCheckRole> roleCheckList(UserIdAndParentId userIdAndParentId);
 }

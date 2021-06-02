@@ -1,6 +1,7 @@
 package com.api.manage.service.system;
 
 import com.api.model.system.SysRole;
+import com.api.vo.system.VoCheckRole;
 import com.api.vo.system.VoRole;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface SysRoleService {
     List<SysRole> findByIdentityId(Integer positionId);
 
     List<VoRole> roleList();
+
+    List<VoCheckRole> roleCheckList(Integer id);
 }
