@@ -13,11 +13,11 @@ public class SDBorrowExceedWeek {
     /**
      * 楼栋号
      */
-    private Integer buildingNo;
+    private String buildingNo;
     /**
      * 单元号
      */
-    private Integer unitNo;
+    private String unitNo;
     /**
      * 房间名称
      */
@@ -43,8 +43,8 @@ public class SDBorrowExceedWeek {
     public String toString() {
         return "SDBorrowExceedWeek{" +
                 "roomName='" + roomName + '\'' +
-                ", buildingNo=" + buildingNo +
-                ", unitNo=" + unitNo +
+                ", buildingNo='" + buildingNo + '\'' +
+                ", unitNo='" + unitNo + '\'' +
                 ", estateName='" + estateName + '\'' +
                 ", userName='" + userName + '\'' +
                 ", beginDate=" + beginDate +
@@ -61,19 +61,19 @@ public class SDBorrowExceedWeek {
         this.roomName = roomName;
     }
 
-    public Integer getBuildingNo() {
+    public String getBuildingNo() {
         return buildingNo;
     }
 
-    public void setBuildingNo(Integer buildingNo) {
+    public void setBuildingNo(String buildingNo) {
         this.buildingNo = buildingNo;
     }
 
-    public Integer getUnitNo() {
+    public String getUnitNo() {
         return unitNo;
     }
 
-    public void setUnitNo(Integer unitNo) {
+    public void setUnitNo(String unitNo) {
         this.unitNo = unitNo;
     }
 
@@ -120,7 +120,7 @@ public class SDBorrowExceedWeek {
     public SDBorrowExceedWeek() {
     }
 
-    public SDBorrowExceedWeek(String roomName, Integer buildingNo, Integer unitNo, String estateName, String userName, Date beginDate, long borrowTime, String articleName) {
+    public SDBorrowExceedWeek(String roomName, String buildingNo, String unitNo, String estateName, String userName, Date beginDate, long borrowTime, String articleName) {
         this.roomName = roomName;
         this.buildingNo = buildingNo;
         this.unitNo = unitNo;
