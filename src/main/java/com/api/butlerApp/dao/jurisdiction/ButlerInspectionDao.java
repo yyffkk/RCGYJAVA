@@ -143,18 +143,32 @@ public interface ButlerInspectionDao {
     int updateExecute(ButlerExecuteIdAndActualEndDate executeIdAndActualEndDate);
 
     /**
-     * 根据巡检执行点主键id查询巡检执行点信息
+     * 根据巡检执行点主键id查询巡检执行点信息（当前巡检执行计划状态为2.已巡检，3.巡检中）
      * @param executePointId 巡检执行点主键id
      * @return 巡检执行点信息
      */
-    ButlerExecutePointFBIVo findExecutePointById2(Integer executePointId);
+    ButlerExecutePointFBIVo findExecutePointById(Integer executePointId);
 
     /**
-     * 根据巡检执行点主键id查询巡检执行检查项
+     * 根据计划巡检点主键id查询计划巡检点信息（当前巡检执行计划状态为1.待巡检，4.未巡检）
+     * @param planPointId 计划巡检点主键id
+     * @return 巡检执行点信息
+     */
+    ButlerExecutePointFBIVo findExecutePointById2(Integer planPointId);
+
+    /**
+     * 根据巡检执行点主键id查询巡检执行检查项（当前巡检执行计划状态为2.已巡检，3.巡检中）
      * @param executePointId 巡检执行点主键id
      * @return 巡检执行检查项集合
      */
     List<ButlerExecuteCheckFBIVo> findExecuteCheckByPointId2(Integer executePointId);
+
+    /**
+     * 根据计划巡检点主键id查询计划巡检点检查项（当前巡检执行计划状态为1.待巡检，4.未巡检）
+     * @param planPointId 计划巡检点主键id
+     * @return 巡检执行检查项集合
+     */
+    List<ButlerExecuteCheckFBIVo> findExecuteCheckByPointId3(Integer planPointId);
 
     /**
      * 修改当前巡检计划的实际开始时间
@@ -211,4 +225,5 @@ public interface ButlerInspectionDao {
      * @return 巡检执行路线地图经纬度信息集合
      */
     List<ButlerExecuteMapVo> getLocation(Integer executeId);
+
 }

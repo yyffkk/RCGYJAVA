@@ -25,7 +25,10 @@ public interface ButlerInspectionService {
 
     Map<String, Object> findCheckDetailById(Integer executePointId);
 
+    Map<String, Object> findCheckDetailById2(Integer planPointId);
+
     Map<String, Object> uploadLocation(ButlerExecuteMap butlerExecuteMap, String roleId);
 
     Map<String, Object> getLocation(Integer executeId);
+
 }

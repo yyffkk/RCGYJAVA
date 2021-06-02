@@ -147,12 +147,20 @@
         where id = #{executeId}
     </update>
 
-    <select id="findExecutePointById2" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecutePointFBIVo">
+    <select id="findExecutePointById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecutePointFBIVo">
         select * from sys_inspection_execute_point where id = #{executePointId}
+    </select>
+
+    <select id="findExecutePointById2" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecutePointFBIVo">
+        select * from sys_inspection_point where id = #{planPointId}
     </select>
 
     <select id="findExecuteCheckByPointId2" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteCheckFBIVo">
         select * from sys_inspection_execute_check_items where execute_point_id = #{executePointId}
+    </select>
+
+    <select id="findExecuteCheckByPointId3" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerExecuteCheckFBIVo">
+        select * from sys_inspection_check_items where inspection_point_id = #{planPointId}
     </select>
 
     <update id="updatePlanByPlanId" parameterType="com.api.model.butlerApp.ButlerPlanIdAndActualBeginDate">

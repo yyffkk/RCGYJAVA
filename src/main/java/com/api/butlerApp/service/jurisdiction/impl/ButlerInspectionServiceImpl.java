@@ -353,10 +353,10 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     @Override
     public Map<String, Object> findCheckDetailById(Integer executePointId) {
         map = new HashMap<>();
-        //根据巡检执行点主键id查询巡检执行点信息
-        ButlerExecutePointFBIVo executePointFBIVo = butlerInspectionDao.findExecutePointById2(executePointId);
+        //根据巡检执行点主键id查询巡检执行点信息（当前巡检执行计划状态为2.已巡检，3.巡检中）
+        ButlerExecutePointFBIVo executePointFBIVo = butlerInspectionDao.findExecutePointById(executePointId);
         if (executePointFBIVo != null){
-            //根据巡检执行点主键id查询巡检执行检查项
+            //根据巡检执行点主键id查询巡检执行检查项（当前巡检执行计划状态为2.已巡检，3.巡检中）
             List<ButlerExecuteCheckFBIVo> checkFBIVoList = butlerInspectionDao.findExecuteCheckByPointId2(executePointId);
             executePointFBIVo.setCheckFBIVoList(checkFBIVoList);
             UploadUtil uploadUtil = new UploadUtil();
@@ -366,6 +366,22 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
             //查询巡更人员拍摄现场
             List<VoResourcesImg> byDate2 = uploadUtil.findImgByDate("sysInspectionExecutePoint", executePointId, "inspectionSpace");
             executePointFBIVo.setSpaceImg(byDate2);
+        }
+        map.put("data",executePointFBIVo);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findCheckDetailById2(Integer planPointId) {
+        map = new HashMap<>();
+        //根据计划巡检点主键id查询计划巡检点信息（当前巡检执行计划状态为1.待巡检，4.未巡检）
+        ButlerExecutePointFBIVo executePointFBIVo = butlerInspectionDao.findExecutePointById2(planPointId);
+        if (executePointFBIVo != null){
+            //根据计划巡检点主键id查询计划巡检点检查项（当前巡检执行计划状态为1.待巡检，4.未巡检）
+            List<ButlerExecuteCheckFBIVo> checkFBIVoList = butlerInspectionDao.findExecuteCheckByPointId3(planPointId);
+            executePointFBIVo.setCheckFBIVoList(checkFBIVoList);
         }
         map.put("data",executePointFBIVo);
         map.put("message","请求成功");

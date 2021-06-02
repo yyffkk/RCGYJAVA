@@ -111,13 +111,23 @@ public class ButlerInspectionController {
 
 
     /**
-     * 查询巡检执行点信息（点击已巡检）
+     * 查询巡检执行点信息（当前巡检执行计划状态为2.已巡检，3.巡检中）
      * @param executePointId 巡检执行点主键id
      * @return map
      */
     @GetMapping("/findCheckDetailById")
     public Map<String,Object> findCheckDetailById(Integer executePointId){
         return butlerInspectionService.findCheckDetailById(executePointId);
+    }
+
+    /**
+     * 查询巡检执行点信息（当前巡检执行计划状态为1.待巡检，4.未巡检）
+     * @param planPointId 计划巡检点主键id
+     * @return map
+     */
+    @GetMapping("/findCheckDetailById2")
+    public Map<String,Object> findCheckDetailById2(Integer planPointId){
+        return butlerInspectionService.findCheckDetailById2(planPointId);
     }
 
     /**
