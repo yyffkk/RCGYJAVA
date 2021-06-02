@@ -109,7 +109,7 @@
     </select>
     <select id="executeList" parameterType="com.api.model.butlerService.SearchInspectionExecute" resultType="com.api.vo.butlerService.VoInspectionExecute">
         select T.* from (
-            select sie.id,concat(sip.code,'-',sie.sort) as code,sip.name,sie.begin_date,sie.actual_begin_date,sie.actual_end_date,su.actual_name as inspector_name,su.tel as inspector_tel
+            select sie.id,concat(sip.code,'-',sie.sort) as code,sip.name,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date,su.actual_name as inspector_name,su.tel as inspector_tel
             from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_user as su
             <where>
                 sie.inspection_plan_id = sip.id
