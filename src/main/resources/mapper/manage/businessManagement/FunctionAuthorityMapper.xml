@@ -18,7 +18,7 @@
         ) as T
         <where>
             <if test="roleId != null">
-                and T.role_id like concat(#{roleId},',%') or T.role_id like concat('%,',#{roleId} ,',%') or T.role_id like concat('%,',#{roleId})
+                and T.role_id like concat(#{roleId},',%') or T.role_id like concat('%,',#{roleId} ,',%') or T.role_id like concat('%,',#{roleId}) or T.role_id = #{roleId}
             </if>
         </where>
     </select>
