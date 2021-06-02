@@ -374,6 +374,20 @@
         where sdp.charges_template_detail_id = sctd.id and sdp.building_unit_estate_id = cbue.id
         and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and sdp.payment_price <![CDATA[ > ]]> 0
     </select>
+    <select id="findPointByExecuteIdAll"
+            resultType="com.api.vo.systemDataBigScreen.SDInspectionExecutePointAllVo">
+        select sie.id as execute_id,sipo.name,sipo.longitude,sipo.latitude,null as complete_date
+        from sys_inspection_execute as sie,sys_inspection_plan as sip,
+        sys_inspection_point_route as sipr,sys_inspection_point as sipo
+        where sie.inspection_plan_id = sip.id and sip.inspection_route_id = sipr.inspection_route_id
+        and sipr.inspection_point_id = sipo.id and date_format(sie.begin_date,'%Y%m%d') = date_format(now(),'%Y%m%d')
+        and sie.actual_begin_date is null
+        UNION
+        select siep.execute_id,siep.name,siep.longitude,siep.latitude,siep.complete_date
+        from sys_inspection_execute_point as siep,sys_inspection_execute as sie
+        where siep.execute_id = sie.id and date_format(sie.begin_date,'%Y%m%d') = date_format(now(),'%Y%m%d')
+        and sie.actual_begin_date is not null
+    </select>
 
     <insert id="insertPushAlert" parameterType="com.api.model.systemDataBigScreen.FirePushAlert">
         insert into sys_fire_alarm(

@@ -407,4 +407,10 @@ public interface SystemDataDao {
      */
     List<SDUnpaidUserInfoVo> findUnpaidUserInfo();
 
+    /**
+     * 查询所有的巡检点信息
+     * @return 巡检点信息
+     */
+    List<SDInspectionExecutePointAllVo> findPointByExecuteIdAll();
+
 }
