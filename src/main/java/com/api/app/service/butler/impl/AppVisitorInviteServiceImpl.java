@@ -341,7 +341,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = FormBody.create(mediaType, json);
             Request request = new Request.Builder()
-                    .url("http://rd.iot.leelen.com/third/an/addFaceRecognize")
+                    .url(SERVICE_LOCATION+"third/an/"+FACE_METHOD)
                     .post(requestBody)
                     .build();
             Response execute = client.newCall(request).execute();

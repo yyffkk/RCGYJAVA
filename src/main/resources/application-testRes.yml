@@ -22,7 +22,7 @@ lilin:
   #第三方密钥
   clientSecret: 72126e68b501d89ca0b490fe95628efe
   #立林对讲机系统测试服务器地址
-  serviceLocation: https://rd.iot.leelen.com/
+  serviceLocation: http://rd.iot.leelen.com/
   #API接口
   api:
     #添加设备人脸识别api方法
