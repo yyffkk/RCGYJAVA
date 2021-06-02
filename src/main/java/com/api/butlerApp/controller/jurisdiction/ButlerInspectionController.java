@@ -121,7 +121,7 @@ public class ButlerInspectionController {
     }
 
     /**
-     * 查询巡检执行点信息（当前巡检执行计划状态为1.待巡检，4.未巡检）
+     * 查询计划巡检点信息（当前巡检执行计划状态为1.待巡检，4.未巡检）
      * @param planPointId 计划巡检点主键id
      * @return map
      */
