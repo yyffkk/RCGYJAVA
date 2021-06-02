@@ -174,9 +174,9 @@ public class UserResidentServiceImpl implements UserResidentService {
         ArrayList<Object> cpmBuildingUnitEstateIdList = new ArrayList<>();
         //遍历查询出房产对应的单元和楼栋
         for (CpmBuildingUnitEstate cpmBuildingUnitEstate : cpmBuildingUnitEstateList) {
-            //根据房产主键id查询对应的单元号
+            //根据单元主键id查询对应的单元号
             CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
-            //根据单元主键id查询对应的楼栋号
+            //根据楼栋主键id查询对应的楼栋号
             CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
             //楼栋，单元，房产（房间）
             cpmBuildingUnitEstateIdList.add(cpmBuilding.getId()+"-"+cpmBuildingUnit.getId()+"-"+cpmBuildingUnitEstate.getId());
@@ -230,9 +230,9 @@ public class UserResidentServiceImpl implements UserResidentService {
         ArrayList<HousingAssociation> housingAssociations = new ArrayList<>();
         //遍历查询出房产对应的单元和楼栋
         for (CpmBuildingUnitEstate cpmBuildingUnitEstate : cpmBuildingUnitEstateList) {
-            //根据房产主键id查询对应的单元号
+            //根据单元主键id查询对应的单元号
             CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
-            //根据单元主键id查询对应的楼栋号
+            //根据楼栋主键id查询对应的楼栋号
             CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
             ResidentIdAndEstateId residentIdAndEstateId = new ResidentIdAndEstateId();
             //填入业主id

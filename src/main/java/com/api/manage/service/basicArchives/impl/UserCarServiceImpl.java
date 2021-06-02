@@ -2,11 +2,9 @@ package com.api.manage.service.basicArchives.impl;
 
 import com.api.manage.dao.basicArchives.CpmBuildingDao;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitDao;
+import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.basicArchives.UserCarDao;
-import com.api.model.basicArchives.CpmBuilding;
-import com.api.model.basicArchives.CpmBuildingUnit;
-import com.api.model.basicArchives.SearchUserCar;
-import com.api.model.basicArchives.UserCar;
+import com.api.model.basicArchives.*;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.basicArchives.UserCarService;
 import com.api.vo.basicArchives.VoUserCar;
@@ -28,6 +26,8 @@ public class UserCarServiceImpl implements UserCarService {
     CpmBuildingUnitDao cpmBuildingUnitDao;
     @Resource
     CpmBuildingDao cpmBuildingDao;
+    @Resource
+    CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
 
     @Override
     public List<VoUserCar> list(SearchUserCar searchUserCar) {
@@ -113,9 +113,11 @@ public class UserCarServiceImpl implements UserCarService {
     @Override
     public VoUserCarFindById findById(Integer id) {
         VoUserCarFindById voUserCarFindById = userCarDao.findById(id);
-        //根据房产主键id查询对应的单元号
-        CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(voUserCarFindById.getBuildingUnitEstateId());
-        //根据单元主键id查询对应的楼栋号
+        //根据房产主键id查询房产信息
+        CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(voUserCarFindById.getBuildingUnitEstateId());
+        //根据单元主键id查询对应的单元号
+        CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
+        //根据楼栋主键id查询对应的楼栋号
         CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
         //设置 楼栋id，单元id，房产id
         voUserCarFindById.setBuildingUnitId(cpmBuildingUnit.getId());
