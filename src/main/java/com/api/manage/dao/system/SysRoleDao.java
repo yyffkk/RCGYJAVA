@@ -60,6 +60,26 @@ public interface SysRoleDao {
      */
     int updateRole(SysRole sysRole);
 
+    /**
+     * 判断是否有员工所属
+     * @param roleId 角色主键id
+     * @return 绑定员工数量
+     */
+    int countUserByRoleId(Integer roleId);
+
+    /**
+     * 删除角色信息
+     * @param roleId 角色主键id
+     * @return 影响行数
+     */
+    int deleteRole(Integer roleId);
+
+    /**
+     * 根据角色主键id删除角色权限关联表信息
+     * @param roleId 角色主键id
+     */
+    int deleteRoleJurisdictionByRoleId(Integer roleId);
+
 //    /**
 //     * 查询当前用户的所有角色信息（带选择字段）
 //     * @param userIdAndParentId 用户主键id 和 上级权限id

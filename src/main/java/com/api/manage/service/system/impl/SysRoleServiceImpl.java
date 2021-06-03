@@ -140,10 +140,20 @@ public class SysRoleServiceImpl implements SysRoleService {
         map = new HashMap<>();
         try {
             //判断是否有员工所属
+            int count = sysRoleDao.countUserByRoleId(sysRole.getId());
+            if (count >0 ){
+                throw new RuntimeException("此角色存在绑定员工，不可删除");
+            }
+
+            //根据角色主键id删除角色权限关联表信息
+            sysRoleDao.deleteRoleJurisdictionByRoleId(sysRole.getId());
 
             //删除角色信息
+            int delete = sysRoleDao.deleteRole(sysRole.getId());
+            if (delete <= 0){
+                throw new RuntimeException("删除失败，角色不存在");
+            }
 
-            //删除角色对应的权限信息
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

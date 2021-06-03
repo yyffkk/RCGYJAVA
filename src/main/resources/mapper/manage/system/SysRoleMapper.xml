@@ -24,8 +24,11 @@
     <select id="findNameByRoleId" parameterType="java.lang.Integer" resultType="java.lang.String">
         select name from sys_role where id = #{id}
     </select>
+    <select id="countUserByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_user where FIND_IN_SET(#{roleId},role_id) > 0
+    </select>
 
-<!--    <select id="roleCheckList" parameterType="com.api.model.businessManagement.UserIdAndParentId" resultType="com.api.vo.system.VoCheckRole">-->
+    <!--    <select id="roleCheckList" parameterType="com.api.model.businessManagement.UserIdAndParentId" resultType="com.api.vo.system.VoCheckRole">-->
 <!--        -->
 <!--    </select>-->
 
@@ -46,6 +49,14 @@
             #{createDate}
         )
     </insert>
+
+    <delete id="deleteRole" parameterType="java.lang.Integer">
+        delete from sys_role where id = #{roleId}
+    </delete>
+    <delete id="deleteRoleJurisdictionByRoleId" parameterType="java.lang.Integer">
+        delete from sys_role_jurisdiction where role_id = #{roleId}
+    </delete>
+
 
     <update id="updateRole" parameterType="com.api.model.system.SysRole">
         update sys_role
