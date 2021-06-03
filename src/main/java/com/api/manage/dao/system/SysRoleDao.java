@@ -46,6 +46,20 @@ public interface SysRoleDao {
      */
     String findNameByRoleId(Integer s);
 
+    /**
+     * 添加角色信息
+     * @param sysRole 角色表
+     * @return 影响行数
+     */
+    int insertRole(SysRole sysRole);
+
+    /**
+     * 修改角色信息
+     * @param sysRole 角色表
+     * @return 影响行数
+     */
+    int updateRole(SysRole sysRole);
+
 //    /**
 //     * 查询当前用户的所有角色信息（带选择字段）
 //     * @param userIdAndParentId 用户主键id 和 上级权限id

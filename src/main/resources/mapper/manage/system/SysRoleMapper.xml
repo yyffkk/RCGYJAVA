@@ -29,4 +29,39 @@
 <!--        -->
 <!--    </select>-->
 
+    <insert id="insertRole" parameterType="com.api.model.system.SysRole">
+        insert into sys_role(
+            name,
+            code,
+            parent_id,
+            action_id,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{code},
+            #{parentId},
+            #{actionId},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="updateRole" parameterType="com.api.model.system.SysRole">
+        update sys_role
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+
+
 </mapper>

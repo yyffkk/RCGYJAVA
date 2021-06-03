@@ -1,5 +1,7 @@
 package com.api.model.system;
 
+import java.util.Date;
+
 /**
  * 角色表
  */
@@ -24,6 +26,22 @@ public class SysRole {
      * 系统编码ID
      */
     private Integer actionId;
+    /**
+     * 创建人
+     */
+    private Integer createId;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+    /**
+     * 修改人
+     */
+    private Integer modifyId;
+    /**
+     * 修改时间
+     */
+    private Date modifyDate;
 
     @Override
     public String toString() {
@@ -33,6 +51,10 @@ public class SysRole {
                 ", code='" + code + '\'' +
                 ", parentId=" + parentId +
                 ", actionId=" + actionId +
+                ", createId=" + createId +
+                ", createDate=" + createDate +
+                ", modifyId=" + modifyId +
+                ", modifyDate=" + modifyDate +
                 '}';
     }
 
@@ -76,14 +98,50 @@ public class SysRole {
         this.actionId = actionId;
     }
 
+    public Integer getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Integer getModifyId() {
+        return modifyId;
+    }
+
+    public void setModifyId(Integer modifyId) {
+        this.modifyId = modifyId;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
     public SysRole() {
     }
 
-    public SysRole(Integer id, String name, String code, Integer parentId, Integer actionId) {
+    public SysRole(Integer id, String name, String code, Integer parentId, Integer actionId, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.parentId = parentId;
         this.actionId = actionId;
+        this.createId = createId;
+        this.createDate = createDate;
+        this.modifyId = modifyId;
+        this.modifyDate = modifyDate;
     }
 }

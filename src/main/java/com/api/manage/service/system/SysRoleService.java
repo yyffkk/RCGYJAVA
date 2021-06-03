@@ -5,6 +5,7 @@ import com.api.vo.system.VoCheckRole;
 import com.api.vo.system.VoRole;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色service接口
@@ -31,7 +32,37 @@ public interface SysRoleService {
      */
     List<SysRole> findByIdentityId(Integer positionId);
 
+    /**
+     * 查询全部用户角色信息
+     * @return 用户角色信息
+     */
     List<VoRole> roleList();
 
+    /**
+     * 查询当前选中用户的所有角色信息（带选择字段）
+     * @param id 角色主键id
+     * @return 用户角色信息
+     */
     List<VoCheckRole> roleCheckList(Integer id);
+
+    /**
+     * 添加角色信息
+     * @param sysRole 角色表
+     * @return map
+     */
+    Map<String, Object> insertRole(SysRole sysRole);
+
+    /**
+     * 修改角色信息
+     * @param sysRole 角色表
+     * @return map
+     */
+    Map<String, Object> updateRole(SysRole sysRole);
+
+    /**
+     * 删除角色信息
+     * @param sysRole 角色表
+     * @return map
+     */
+    Map<String, Object> deleteRole(SysRole sysRole);
 }

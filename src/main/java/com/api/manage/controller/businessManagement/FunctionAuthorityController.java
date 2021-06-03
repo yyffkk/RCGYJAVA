@@ -4,6 +4,7 @@ import com.api.manage.service.businessManagement.FunctionAuthorityService;
 import com.api.manage.service.system.SysRoleService;
 import com.api.manage.shiro.ShiroExceptions;
 import com.api.model.businessManagement.*;
+import com.api.model.system.SysRole;
 import com.api.vo.businessManagement.VoFunctionAuthority;
 import com.api.vo.businessManagement.VoListJurisdiction;
 import com.api.vo.system.VoCheckRole;
@@ -41,7 +42,38 @@ public class FunctionAuthorityController extends ShiroExceptions {
     }
 
     /**
-     * 查询当前用户的所有角色信息（带选择字段）
+     * 添加角色信息
+     * @param sysRole 角色表
+     * @return map
+     */
+    @PostMapping("/insertRole")
+    public Map<String,Object> insertRole(@RequestBody SysRole sysRole){
+        return sysRoleService.insertRole(sysRole);
+    }
+
+    /**
+     * 修改角色信息
+     * @param sysRole 角色表
+     * @return map
+     */
+    @PostMapping("/updateRole")
+    public Map<String,Object> updateRole(@RequestBody SysRole sysRole){
+        return sysRoleService.updateRole(sysRole);
+    }
+
+    /**
+     * 删除角色信息
+     * @param sysRole 角色表
+     * @return map
+     */
+    @PostMapping("/deleteRole")
+    public Map<String,Object> deleteRole(@RequestBody SysRole sysRole){
+        return sysRoleService.deleteRole(sysRole);
+    }
+
+    /**
+     * 查询当前选中用户的所有角色信息（带选择字段）【目前没用，废除】
+     * @param id 角色主键id
      * @return 用户角色信息
      */
     @GetMapping("/roleCheckList")
