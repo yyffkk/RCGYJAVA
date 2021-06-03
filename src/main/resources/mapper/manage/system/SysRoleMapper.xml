@@ -28,10 +28,6 @@
         select count(*) from sys_user where FIND_IN_SET(#{roleId},role_id) > 0
     </select>
 
-    <!--    <select id="roleCheckList" parameterType="com.api.model.businessManagement.UserIdAndParentId" resultType="com.api.vo.system.VoCheckRole">-->
-<!--        -->
-<!--    </select>-->
-
     <insert id="insertRole" parameterType="com.api.model.system.SysRole">
         insert into sys_role(
             name,

@@ -78,18 +78,6 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public List<VoCheckRole> roleCheckList(Integer id) {
-        UserIdAndParentId userIdAndParentId = new UserIdAndParentId();
-        userIdAndParentId.setUserId(id);
-        userIdAndParentId.setParentId(0);
-
-        //TODO 查询当前用户的所有角色信息（带选择字段）
-//        List<VoCheckRole> roleCheckList = findRoleCheckList(userIdAndParentId);
-        List<VoCheckRole> roleCheckList = null;
-        return roleCheckList;
-    }
-
-    @Override
     public Map<String, Object> insertRole(SysRole sysRole) {
         map = new HashMap<>();
 
@@ -169,18 +157,4 @@ public class SysRoleServiceImpl implements SysRoleService {
         map.put("status",true);
         return map;
     }
-
-//    private List<VoCheckRole> findRoleCheckList(UserIdAndParentId userIdAndParentId) {
-//        List<VoCheckRole> voCheckRoleList = sysRoleDao.roleCheckList(userIdAndParentId);
-//        if (voCheckRoleList != null && voCheckRoleList.size()>0){
-//            for (VoCheckRole voCheckRole : voCheckRoleList) {
-//                //填入上级权限id
-//                userIdAndParentId.setParentId(voCheckRole.getParentId());
-//                //递归查询下级，并填入集合中
-//                List<VoCheckRole> roleList = findRoleCheckList(userIdAndParentId);
-//                voCheckRole.setVoRoleList(roleList);
-//            }
-//        }
-//        return voCheckRoleList;
-//    }
 }

@@ -79,11 +79,4 @@ public interface SysRoleDao {
      * @param roleId 角色主键id
      */
     int deleteRoleJurisdictionByRoleId(Integer roleId);
-
-//    /**
-//     * 查询当前用户的所有角色信息（带选择字段）
-//     * @param userIdAndParentId 用户主键id 和 上级权限id
-//     * @return 当前用户的所有角色信息（带选择字段）
-//     */
-//    List<VoCheckRole> roleCheckList(UserIdAndParentId userIdAndParentId);
 }

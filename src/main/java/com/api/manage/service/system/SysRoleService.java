@@ -39,13 +39,6 @@ public interface SysRoleService {
     List<VoRole> roleList();
 
     /**
-     * 查询当前选中用户的所有角色信息（带选择字段）
-     * @param id 角色主键id
-     * @return 用户角色信息
-     */
-    List<VoCheckRole> roleCheckList(Integer id);
-
-    /**
      * 添加角色信息
      * @param sysRole 角色表
      * @return map

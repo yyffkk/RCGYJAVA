@@ -61,15 +61,4 @@ public class SysRoleController {
         return sysRoleService.deleteRole(sysRole);
     }
 
-    /**
-     * 查询当前选中用户的所有角色信息（带选择字段）【目前没用，废除】
-     * @param id 角色主键id
-     * @return 用户角色信息
-     */
-    @GetMapping("/roleCheckList")
-    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
-    public List<VoCheckRole> roleCheckList(Integer id){
-        return sysRoleService.roleCheckList(id);
-    }
-
 }
