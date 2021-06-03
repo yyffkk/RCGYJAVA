@@ -23,7 +23,12 @@ spring:
         pool:
             size: 30
     profiles:
+        #开发环境
         include: dev
+        #生产环境
+#        include: pro
+        #测试环境
+#        include: test
 
 #mybatis
 mybatis:
