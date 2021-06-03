@@ -26,33 +26,34 @@ public class TestController2 {
 //        ws.onMessage(jo.toString());
 //        ws.broadcast("这是后台返回的消息");
 
-        //爬取医药网列表页面
-        Document doc = Jsoup.connect("https://www.chsi.com.cn/jyzx").get();
-        Element body = doc.body();
-        System.out.println(body);
-        Elements select = body.select(".content-l .news-list .news-title a");
-        //创建map存储器
-        HashMap<String, Object> map = new HashMap<>();
-        for (Element element : select) {
-            String href = element.attr("href");
-            String text = element.text();
-            //存进map中
-            map.put(text,href);
-        }
+//        //爬取医药网列表页面
+//        Document doc = Jsoup.connect("https://www.chsi.com.cn/jyzx").get();
+//        Element body = doc.body();
+//        System.out.println(body);
+//        Elements select = body.select(".content-l .news-list .news-title a");
+//        //创建map存储器
+//        HashMap<String, Object> map = new HashMap<>();
+//        for (Element element : select) {
+//            String href = element.attr("href");
+//            String text = element.text();
+//            //存进map中
+//            map.put(text,href);
+//        }
+//
+//        for (Map.Entry<String, Object> entry : map.entrySet()) {
+//            String mapKey = entry.getKey();
+//            Object mapValue = entry.getValue();
+//            System.out.println(mapKey+":"+mapValue);
+//            //爬取医药网详情页
+//            Document doc2 = Jsoup.connect("https://www.chsi.com.cn"+mapValue).get();
+//            Element body2 = doc2.body();
+//            Elements select2 = body2.select(".content-l");
+//            String text = select2.text();
+//            System.out.println(text);
+//            map.put(mapKey,text);
+//        }
+//        System.out.println(map);
 
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String mapKey = entry.getKey();
-            Object mapValue = entry.getValue();
-            System.out.println(mapKey+":"+mapValue);
-            //爬取医药网详情页
-            Document doc2 = Jsoup.connect("https://www.chsi.com.cn"+mapValue).get();
-            Element body2 = doc2.body();
-            Elements select2 = body2.select(".content-l");
-            String text = select2.text();
-            System.out.println(text);
-            map.put(mapKey,text);
-        }
-        System.out.println(map);
         log.info("这个测试log日志");
         return false;
     }

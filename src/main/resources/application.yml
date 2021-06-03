@@ -23,7 +23,7 @@ spring:
         pool:
             size: 30
     profiles:
-        include: upload,sdk,localdb,alipay,testRes
+        include: dev
 
 #mybatis
 mybatis:
@@ -32,11 +32,4 @@ mybatis:
     configuration:
         map-underscore-to-camel-case: true
 
-#logging debug
-logging:
-    level:
-        com:
-            api:
-                dao: debug
-#    config: classpath:log.xml
 

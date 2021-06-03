@@ -1,0 +1,4 @@
+#测试环境配置文件导入
+spring:
+  profiles:
+    include: upload,sdk,testdb,alipay,testRes,testLog

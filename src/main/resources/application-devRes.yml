@@ -6,6 +6,8 @@ res:
   visitorsUrl: http://192.168.31.130:9001/manage/test2/test2
   #信息服务系统照片存放地址
   communityLocation: http://39.103.177.88:8804/static
+#  #第三方对外接口token值（无法引入代码）
+#  systemDataToken: 9627a35847e640cb92a7067557f09bda
 
 #立林对讲机系统（人才公寓对接）
 lilin:
@@ -19,7 +21,6 @@ lilin:
   clientId: 83b4ee0b0c0abb7969f51ec614744c96
   #第三方密钥
   clientSecret: 72126e68b501d89ca0b490fe95628efe
-#  clientSecret: 72126e68b501d89ca0b490fe95628efe
   #立林对讲机系统测试服务器地址
   serviceLocation: http://rd.iot.leelen.com/
   #API接口

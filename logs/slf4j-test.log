@@ -1,0 +1,76 @@
+[2021-06-03 09:18:51.530+0800] [restartedMain] WARN  o.s.boot.StartupInfoLogger [116]- InetAddress.getLocalHost().getHostName() took 5002 milliseconds to respond. Please verify your network configuration (macOS machines may need to add entries to /etc/hosts).
+[2021-06-03 09:18:56.538+0800] [restartedMain] INFO  com.api.IntelligentCommunityApp [55]- Starting IntelligentCommunityApp on appledeMacBook-Pro-4.local with PID 915 (/Users/AKU001/IdeaProjects/IntelligentCommunity/target/classes started by AKU001 in /Users/AKU001/IdeaProjects/IntelligentCommunity)
+[2021-06-03 09:18:56.539+0800] [restartedMain] INFO  com.api.IntelligentCommunityApp [655]- The following profiles are active: upload,sdk,localdb,alipay,testRes
+[2021-06-03 09:18:56.598+0800] [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [225]- Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2021-06-03 09:18:56.599+0800] [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [225]- For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2021-06-03 09:18:57.983+0800] [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [249]- Multiple Spring Data modules found, entering strict repository configuration mode!
+[2021-06-03 09:18:57.986+0800] [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [127]- Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2021-06-03 09:18:58.148+0800] [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [187]- Finished Spring Data repository scanning in 146ms. Found 0 Redis repository interfaces.
+[2021-06-03 09:18:58.746+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'shiroConfig' of type [com.api.manage.shiro.ShiroConfig$$EnhancerBySpringCGLIB$$1cd18a90] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:18:58.920+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'mybatis-org.mybatis.spring.boot.autoconfigure.MybatisProperties' of type [org.mybatis.spring.boot.autoconfigure.MybatisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:18:58.932+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration' of type [org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$902c24d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:18:58.935+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:18:58.948+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'spring.datasource-org.springframework.boot.autoconfigure.jdbc.DataSourceProperties' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:18:58.980+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'dataSource' of type [com.zaxxer.hikari.HikariDataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.237+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sqlSessionFactory' of type [org.apache.ibatis.session.defaults.DefaultSqlSessionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.244+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sqlSessionTemplate' of type [org.mybatis.spring.SqlSessionTemplate] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.246+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysLoginDao' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.247+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysLoginDao' of type [com.sun.proxy.$Proxy73] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.248+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysLoginServiceImpl' of type [com.api.manage.service.system.impl.SysLoginServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.253+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysRoleDao' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.254+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysRoleDao' of type [com.sun.proxy.$Proxy74] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.255+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysRoleServiceImpl' of type [com.api.manage.service.system.impl.SysRoleServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.259+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysJurisdictionDao' of type [org.mybatis.spring.mapper.MapperFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.260+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysJurisdictionDao' of type [com.sun.proxy.$Proxy75] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.261+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sysJurisdictionServiceImpl' of type [com.api.manage.service.system.impl.SysJurisdictionServiceImpl] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.261+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'myRealm' of type [com.api.manage.shiro.MyRealm] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.484+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'sessionManager' of type [com.api.manage.shiro.MySessionManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.488+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'securityManager' of type [org.apache.shiro.web.mgt.DefaultWebSecurityManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.552+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'authorizationAttributeSourceAdvisor' of type [org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:00.580+0800] [restartedMain] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [330]- Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2021-06-03 09:19:01.115+0800] [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [92]- Tomcat initialized with port(s): 9001 (http)
+[2021-06-03 09:19:01.126+0800] [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [173]- Initializing ProtocolHandler ["http-nio-9001"]
+[2021-06-03 09:19:01.127+0800] [restartedMain] INFO  o.a.catalina.core.StandardService [173]- Starting service [Tomcat]
+[2021-06-03 09:19:01.127+0800] [restartedMain] INFO  o.a.catalina.core.StandardEngine [173]- Starting Servlet engine: [Apache Tomcat/9.0.29]
+[2021-06-03 09:19:01.243+0800] [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [173]- Initializing Spring embedded WebApplicationContext
+[2021-06-03 09:19:01.244+0800] [restartedMain] INFO  o.s.web.context.ContextLoader [284]- Root WebApplicationContext: initialization completed in 4645 ms
+[2021-06-03 09:19:03.208+0800] [restartedMain] INFO  o.s.s.c.ThreadPoolTaskExecutor [171]- Initializing ExecutorService 'applicationTaskExecutor'
+[2021-06-03 09:19:03.580+0800] [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration [106]- Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+[2021-06-03 09:19:04.267+0800] [restartedMain] INFO  org.quartz.impl.StdSchedulerFactory [1184]- Using default implementation for ThreadExecutor
+[2021-06-03 09:19:04.280+0800] [restartedMain] INFO  o.quartz.core.SchedulerSignalerImpl [61]- Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[2021-06-03 09:19:04.281+0800] [restartedMain] INFO  org.quartz.core.QuartzScheduler [240]- Quartz Scheduler v.2.2.1 created.
+[2021-06-03 09:19:04.282+0800] [restartedMain] INFO  org.quartz.simpl.RAMJobStore [155]- RAMJobStore initialized.
+[2021-06-03 09:19:04.283+0800] [restartedMain] INFO  org.quartz.core.QuartzScheduler [305]- Scheduler meta-data: Quartz Scheduler (v2.2.1) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[2021-06-03 09:19:04.283+0800] [restartedMain] INFO  org.quartz.impl.StdSchedulerFactory [1339]- Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+[2021-06-03 09:19:04.284+0800] [restartedMain] INFO  org.quartz.impl.StdSchedulerFactory [1343]- Quartz scheduler version: 2.2.1
+[2021-06-03 09:19:04.284+0800] [restartedMain] INFO  org.quartz.core.QuartzScheduler [2311]- JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@69123602
+[2021-06-03 09:19:04.303+0800] [restartedMain] INFO  o.s.s.c.ThreadPoolTaskScheduler [171]- Initializing ExecutorService 'taskScheduler'
+[2021-06-03 09:19:04.502+0800] [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer [58]- LiveReload server is running on port 35729
+[2021-06-03 09:19:04.779+0800] [restartedMain] INFO  o.s.s.quartz.SchedulerFactoryBean [727]- Starting Quartz Scheduler now
+[2021-06-03 09:19:04.779+0800] [restartedMain] INFO  org.quartz.core.QuartzScheduler [575]- Scheduler quartzScheduler_$_NON_CLUSTERED started.
+[2021-06-03 09:19:04.799+0800] [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [173]- Starting ProtocolHandler ["http-nio-9001"]
+[2021-06-03 09:19:04.846+0800] [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [204]- Tomcat started on port(s): 9001 (http) with context path ''
+[2021-06-03 09:19:04.852+0800] [restartedMain] INFO  com.api.IntelligentCommunityApp [61]- Started IntelligentCommunityApp in 29.065 seconds (JVM running for 35.007)
+[2021-06-03 09:19:17.664+0800] [http-nio-9001-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [173]- Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2021-06-03 09:19:17.665+0800] [http-nio-9001-exec-1] INFO  o.s.web.servlet.DispatcherServlet [525]- Initializing Servlet 'dispatcherServlet'
+[2021-06-03 09:19:17.679+0800] [http-nio-9001-exec-1] INFO  o.s.web.servlet.DispatcherServlet [547]- Completed initialization in 14 ms
+[2021-06-03 09:19:17.700+0800] [http-nio-9001-exec-1] INFO  o.a.s.s.m.AbstractValidatingSessionManager [233]- Enabling session validation scheduler...
+[2021-06-03 09:19:42.674+0800] [http-nio-9001-exec-1] INFO  c.a.m.controller.TestController2 [57]- 这个测试log日志
+[2021-06-03 09:19:59.357+0800] [http-nio-9001-exec-2] INFO  c.a.m.controller.TestController2 [57]- 这个测试log日志
+[2021-06-03 09:20:05.056+0800] [http-nio-9001-exec-3] INFO  c.a.m.controller.TestController2 [57]- 这个测试log日志
+[2021-06-03 09:20:10.705+0800] [http-nio-9001-exec-4] INFO  c.a.m.controller.TestController2 [57]- 这个测试log日志
+[2021-06-03 09:21:04.425+0800] [SpringContextShutdownHook] INFO  org.quartz.core.QuartzScheduler [613]- Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[2021-06-03 09:21:04.429+0800] [SpringContextShutdownHook] INFO  o.s.s.c.ThreadPoolTaskScheduler [208]- Shutting down ExecutorService 'taskScheduler'
+[2021-06-03 09:21:04.430+0800] [SpringContextShutdownHook] INFO  o.s.s.quartz.SchedulerFactoryBean [845]- Shutting down Quartz Scheduler
+[2021-06-03 09:21:04.431+0800] [SpringContextShutdownHook] INFO  org.quartz.core.QuartzScheduler [694]- Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+[2021-06-03 09:21:04.431+0800] [SpringContextShutdownHook] INFO  org.quartz.core.QuartzScheduler [613]- Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[2021-06-03 09:21:04.432+0800] [SpringContextShutdownHook] INFO  org.quartz.core.QuartzScheduler [771]- Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+[2021-06-03 09:21:04.454+0800] [SpringContextShutdownHook] INFO  o.s.s.c.ThreadPoolTaskExecutor [208]- Shutting down ExecutorService 'applicationTaskExecutor'
+[2021-06-03 09:21:04.457+0800] [SpringContextShutdownHook] INFO  o.a.s.s.m.AbstractValidatingSessionManager [250]- Disabled session validation scheduler.
