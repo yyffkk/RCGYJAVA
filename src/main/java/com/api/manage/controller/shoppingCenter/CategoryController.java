@@ -1,7 +1,7 @@
 package com.api.manage.controller.shoppingCenter;
 
 import com.api.manage.service.shoppingCenter.CategoryService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.shoppingCenter.Category;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/shop/category")
-public class CategoryController extends ShiroExceptions {
+public class CategoryController   {
     @Resource
     CategoryService categoryService;
 

@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SysWorkOrderType;
 import com.api.manage.service.butlerService.SysWorkOrderTypeService;
 import com.api.vo.butlerService.VoWorkOrderType;
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/workOrderType")
 @RestController
-public class SysWorkOrderTypeController extends ShiroExceptions {
+public class SysWorkOrderTypeController   {
     @Resource
     SysWorkOrderTypeService sysWorkOrderTypeService;
 

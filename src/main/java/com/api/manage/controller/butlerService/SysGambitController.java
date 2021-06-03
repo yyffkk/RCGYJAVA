@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchGambit;
 import com.api.model.butlerService.SysGambit;
 import com.api.manage.service.butlerService.SysGambitService;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/gambit")
-public class SysGambitController extends ShiroExceptions {
+public class SysGambitController   {
     @Resource
     SysGambitService sysGambitService;
 

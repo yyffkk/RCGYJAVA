@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SysWorkOrderTimeLimit;
 import com.api.manage.service.butlerService.SysWorkOrderTimeLimitService;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/workOrderTimeLimit")
-public class SysWorkOrderTimeLimitController extends ShiroExceptions {
+public class SysWorkOrderTimeLimitController   {
     @Resource
     SysWorkOrderTimeLimitService sysWorkOrderTimeLimitService;
 

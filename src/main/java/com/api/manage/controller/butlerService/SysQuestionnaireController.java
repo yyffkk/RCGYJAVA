@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchQuestionnaire;
 import com.api.model.butlerService.SearchShortAnswer;
 import com.api.model.butlerService.SysQuestionnaire;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/questionnaire")
-public class SysQuestionnaireController extends ShiroExceptions {
+public class SysQuestionnaireController   {
     @Resource
     SysQuestionnaireService sysQuestionnaireService;
 

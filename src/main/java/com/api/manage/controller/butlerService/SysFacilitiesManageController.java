@@ -1,7 +1,7 @@
 package com.api.manage.controller.butlerService;
 
 import com.api.manage.service.butlerService.SysFacilitiesManageService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.FacilitiesManage;
 import com.api.model.butlerService.SearchFacilitiesManage;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/facilitiesManage")
-public class SysFacilitiesManageController extends ShiroExceptions {
+public class SysFacilitiesManageController   {
     @Resource
     SysFacilitiesManageService sysFacilitiesManageService;
 

@@ -1,6 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.basicArchives.SearchCpmBuildingUnitEstate;
 import com.api.model.basicArchives.UserResident;
@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/cpmBuildingUnitEstate")
 @RestController
-public class CpmBuildingUnitEstateController extends ShiroExceptions {
+public class CpmBuildingUnitEstateController   {
     //房产状态为4时，未售
     private static final int ESTATE_STATUS = 4;
     @Resource

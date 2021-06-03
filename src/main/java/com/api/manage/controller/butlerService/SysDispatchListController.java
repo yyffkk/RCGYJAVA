@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.CancelWorkOrder;
 import com.api.model.butlerService.RevisitWorkOrder;
 import com.api.model.butlerService.SearchDispatchList;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/dispatch")
-public class SysDispatchListController extends ShiroExceptions {
+public class SysDispatchListController   {
     @Resource
     SysDispatchListService sysDispatchListService;
 

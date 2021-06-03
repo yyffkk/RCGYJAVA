@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchUserVisitors;
 import com.api.model.butlerService.UserVisitors;
 import com.api.manage.service.butlerService.UserVisitorsService;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/visitors")
-public class UserVisitorsController extends ShiroExceptions {
+public class UserVisitorsController   {
     @Resource
     UserVisitorsService userVisitorsService;
 

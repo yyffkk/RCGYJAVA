@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchVoiceHousekeeper;
 import com.api.model.butlerService.VoiceHousekeeperRemake;
 import com.api.manage.service.butlerService.SysVoiceHousekeeperService;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/voiceHousekeeper")
-public class SysVoiceHousekeeperController extends ShiroExceptions {
+public class SysVoiceHousekeeperController   {
     @Resource
     SysVoiceHousekeeperService sysVoiceHousekeeperService;
 

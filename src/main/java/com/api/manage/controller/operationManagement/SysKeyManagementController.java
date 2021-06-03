@@ -1,7 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysKeyManagementService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchKeyManagement;
 import com.api.model.operationManagement.SysKeyManagement;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/keyManagement")
-public class SysKeyManagementController extends ShiroExceptions {
+public class SysKeyManagementController   {
     @Resource
     SysKeyManagementService sysKeyManagementService;
 

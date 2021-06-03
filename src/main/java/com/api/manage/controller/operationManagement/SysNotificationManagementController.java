@@ -1,6 +1,6 @@
 package com.api.manage.controller.operationManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.NotificationManagement;
 import com.api.model.operationManagement.SearchNotificationManagement;
 import com.api.manage.service.operationManagement.SysNotificationManagementService;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/notificationManagement")
-public class SysNotificationManagementController extends ShiroExceptions {
+public class SysNotificationManagementController   {
     @Resource
     SysNotificationManagementService sysNotificationManagementService;
 

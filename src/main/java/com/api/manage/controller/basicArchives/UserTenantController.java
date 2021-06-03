@@ -1,6 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.basicArchives.*;
 import com.api.manage.service.basicArchives.UserTenantService;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/tenant")
 @RestController
-public class UserTenantController extends ShiroExceptions {
+public class UserTenantController   {
     @Resource
     UserTenantService userTenantService;
 

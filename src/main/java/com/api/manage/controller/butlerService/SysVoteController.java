@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchVote;
 import com.api.model.butlerService.SearchVotePersonnel;
 import com.api.model.butlerService.SysVote;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/vote")
-public class SysVoteController extends ShiroExceptions {
+public class SysVoteController   {
     @Resource
     SysVoteService sysVoteService;
 

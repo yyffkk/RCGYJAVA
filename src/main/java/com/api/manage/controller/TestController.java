@@ -1,6 +1,6 @@
 package com.api.manage.controller;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.util.Base64Util;
 import com.api.util.EmojiUtils;
 import com.api.util.IdWorker;
@@ -19,7 +19,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("manage/test")
-public class TestController extends ShiroExceptions {
+public class TestController   {
 //    @RequiresPermissions(value = {"0201"})
     @GetMapping("/test")
     public String test() throws Exception {

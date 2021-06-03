@@ -1,6 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.basicArchives.SearchUserCar;
 import com.api.model.basicArchives.UserCar;
 import com.api.manage.service.basicArchives.UserCarService;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/userCar")
-public class UserCarController extends ShiroExceptions {
+public class UserCarController   {
     @Resource
     UserCarService userCarService;
 

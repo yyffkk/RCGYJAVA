@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchOwnersCommittee;
 import com.api.model.butlerService.SysOwnersCommittee;
 import com.api.manage.service.butlerService.SysOwnersCommitteeService;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/ownersCommittee")
-public class SysOwnersCommitteeController extends ShiroExceptions {
+public class SysOwnersCommitteeController   {
     @Resource
     SysOwnersCommitteeService sysOwnersCommitteeService;
 

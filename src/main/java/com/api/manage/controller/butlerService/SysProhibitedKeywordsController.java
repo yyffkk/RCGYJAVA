@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchProhibitedKeywords;
 import com.api.manage.service.butlerService.SysProhibitedKeywordsService;
 import com.api.vo.butlerService.VoProhibitedKeywords;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/prohibitedKeywords")
-public class SysProhibitedKeywordsController extends ShiroExceptions {
+public class SysProhibitedKeywordsController   {
     @Resource
     SysProhibitedKeywordsService sysProhibitedKeywordsService;
 

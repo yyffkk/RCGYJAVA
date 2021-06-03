@@ -1,6 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.manage.service.chargeManagement.SysWorkOrderCostService;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/workOrderCost")
-public class SysWorkOrderCostController extends ShiroExceptions {
+public class SysWorkOrderCostController   {
     @Resource
     SysWorkOrderCostService sysWorkOrderCostService;
 

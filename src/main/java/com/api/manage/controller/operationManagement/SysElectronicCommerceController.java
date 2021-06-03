@@ -1,7 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysElectronicCommerceService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchElectronicCommerce;
 import com.api.model.operationManagement.SysElectronicCommerce;
 import com.api.model.operationManagement.SysNewsManagement;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/electronicCommerce")
-public class SysElectronicCommerceController extends ShiroExceptions {
+public class SysElectronicCommerceController   {
     @Resource
     SysElectronicCommerceService sysElectronicCommerceService;
 

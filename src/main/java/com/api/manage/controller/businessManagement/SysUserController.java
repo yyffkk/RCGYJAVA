@@ -1,7 +1,7 @@
 package com.api.manage.controller.businessManagement;
 
 import com.api.manage.service.businessManagement.SysUserService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.businessManagement.SearchUser;
 import com.api.model.businessManagement.SysUser;
 import com.api.vo.businessManagement.VoFindByIdUser;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/sysUser")
-public class SysUserController extends ShiroExceptions {
+public class SysUserController   {
     @Resource
     SysUserService sysUserService;
 

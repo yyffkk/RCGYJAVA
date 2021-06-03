@@ -1,6 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.chargeManagement.FixedPayment;
 import com.api.model.chargeManagement.SearchFixedAmountAllocation;
 import com.api.model.chargeManagement.SearchFixedAmountAllocationResult;
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/fixedAmountAllocation")
-public class SysFixedAmountAllocationController extends ShiroExceptions {
+public class SysFixedAmountAllocationController   {
     @Resource
     SysFixedAmountAllocationService sysFixedAmountAllocationService;
 

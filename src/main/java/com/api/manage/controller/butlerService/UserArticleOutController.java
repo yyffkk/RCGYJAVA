@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchUserArticleOut;
 import com.api.model.resources.ResourcesImg;
 import com.api.manage.service.butlerService.UserArticleOutService;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/userArticleOut")
-public class UserArticleOutController extends ShiroExceptions {
+public class UserArticleOutController   {
     private static Map<String,Object> map = null;
 
     @Resource

@@ -1,6 +1,6 @@
 package com.api.manage.controller.operationManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.ActivityManagement;
 import com.api.model.operationManagement.SearchActivityManagement;
 import com.api.manage.service.operationManagement.SysActivityManagementService;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/activityManagement")
-public class SysActivityManagementController extends ShiroExceptions {
+public class SysActivityManagementController   {
     @Resource
     SysActivityManagementService sysActivityManagementService;
 

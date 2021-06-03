@@ -1,6 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.chargeManagement.SearchChargesTemplateDetail;
 import com.api.model.chargeManagement.SysChargesTemplateDetail;
 import com.api.manage.service.chargeManagement.SysChargesTemplateDetailService;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/chargesTemplateDetail")
-public class SysChargesTemplateDetailController extends ShiroExceptions {
+public class SysChargesTemplateDetailController   {
     @Resource
     SysChargesTemplateDetailService sysChargesTemplateDetailService;
 

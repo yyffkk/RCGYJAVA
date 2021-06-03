@@ -1,7 +1,7 @@
 package com.api.manage.controller.businessManagement;
 
 import com.api.manage.service.businessManagement.SysRemindService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.businessManagement.Remind;
 import com.api.model.businessManagement.SearchRemind;
 import com.api.vo.businessManagement.VoRemind;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/remind")
 @RestController
-public class SysRemindController extends ShiroExceptions {
+public class SysRemindController   {
     @Resource
     SysRemindService sysRemindService;
 

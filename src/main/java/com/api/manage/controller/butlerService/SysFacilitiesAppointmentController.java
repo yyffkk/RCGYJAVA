@@ -1,7 +1,7 @@
 package com.api.manage.controller.butlerService;
 
 import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.FacilitiesAppointment;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/facilitiesAppointment")
-public class SysFacilitiesAppointmentController extends ShiroExceptions {
+public class SysFacilitiesAppointmentController   {
     @Resource
     SysFacilitiesAppointmentService facilitiesAppointmentService;
 

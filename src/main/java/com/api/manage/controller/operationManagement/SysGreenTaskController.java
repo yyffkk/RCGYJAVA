@@ -2,7 +2,7 @@ package com.api.manage.controller.operationManagement;
 
 
 import com.api.manage.service.operationManagement.SysGreenTaskService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchGreenTask;
 import com.api.model.operationManagement.SysGreenTask;
 import com.api.vo.basicArchives.VoIds;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/greenTask")
-public class SysGreenTaskController extends ShiroExceptions {
+public class SysGreenTaskController   {
     @Resource
     SysGreenTaskService sysGreenTaskService;
 

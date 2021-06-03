@@ -1,6 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.basicArchives.DecorationAndStaff;
 import com.api.model.basicArchives.DecorationIdAndStaffId;
 import com.api.model.basicArchives.SearchDecoration;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RequestMapping("manage//decoration")
 @RestController
-public class CpmDecorationController extends ShiroExceptions {
+public class CpmDecorationController   {
     @Resource
     CpmDecorationService cpmDecorationService;
 

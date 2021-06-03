@@ -1,6 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.basicArchives.*;
 import com.api.vo.basicArchives.*;
 import com.api.manage.service.basicArchives.UserResidentService;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/userResident")
 @RestController
-public class UserResidentController extends ShiroExceptions {
+public class UserResidentController   {
     @Resource
     UserResidentService userResidentService;
 

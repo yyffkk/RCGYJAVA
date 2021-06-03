@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.Article;
 import com.api.model.butlerService.SearchArticle;
 import com.api.model.butlerService.SearchArticleDetail;
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/article")
-public class SysArticleController extends ShiroExceptions {
+public class SysArticleController   {
     @Resource
     SysArticleService sysArticleService;
 

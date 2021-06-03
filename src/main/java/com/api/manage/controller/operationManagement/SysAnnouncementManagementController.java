@@ -1,6 +1,6 @@
 package com.api.manage.controller.operationManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchAnnouncementManagement;
 import com.api.model.operationManagement.SysAnnouncementManagement;
 import com.api.manage.service.operationManagement.SysAnnouncementManagementService;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/announcementManagement")
-public class SysAnnouncementManagementController extends ShiroExceptions {
+public class SysAnnouncementManagementController   {
     @Resource
     SysAnnouncementManagementService sysAnnouncementManagementService;
 

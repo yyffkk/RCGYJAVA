@@ -1,6 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.vo.basicArchives.VoCpmBuildingUnit;
 import com.api.vo.basicArchives.VoFindAll;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/cpmBuildingUnit")
 @RestController
-public class CpmBuildingUnitController extends ShiroExceptions {
+public class CpmBuildingUnitController   {
     @Resource
     CpmBuildingUnitService cpmBuildingUnitService;
 

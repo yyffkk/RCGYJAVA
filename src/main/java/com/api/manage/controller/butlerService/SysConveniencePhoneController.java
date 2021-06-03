@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchConveniencePhone;
 import com.api.model.butlerService.SysConveniencePhone;
 import com.api.model.butlerService.SysConveniencePhoneReminder;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/conveniencePhone")
-public class SysConveniencePhoneController extends ShiroExceptions {
+public class SysConveniencePhoneController   {
     @Resource
     SysConveniencePhoneService sysConveniencePhoneService;
 

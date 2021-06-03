@@ -1,6 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.chargeManagement.*;
 import com.api.manage.service.chargeManagement.SysDailyPaymentService;
 import com.api.vo.chargeManagement.VoDailyPayment;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/dailyPayment")
-public class SysDailyPaymentController extends ShiroExceptions {
+public class SysDailyPaymentController   {
     @Resource
     SysDailyPaymentService sysDailyPaymentService;
 

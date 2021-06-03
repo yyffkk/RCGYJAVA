@@ -1,7 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysGreenAreaService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchGreenArea;
 import com.api.model.operationManagement.SysGreenArea;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/greenArea")
-public class SysGreenAreaController extends ShiroExceptions {
+public class SysGreenAreaController   {
     @Resource
     SysGreenAreaService sysGreenAreaService;
 

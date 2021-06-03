@@ -1,6 +1,6 @@
 package com.api.manage.controller.basicArchives;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.basicArchives.CpmParkingSpace;
 import com.api.model.basicArchives.SearchCpmParkingSpace;
 import com.api.manage.service.basicArchives.CpmParkingSpaceService;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/cpmParkingSpace")
 @RestController
-public class CpmParkingSpaceController extends ShiroExceptions {
+public class CpmParkingSpaceController   {
     @Resource
     CpmParkingSpaceService cpmParkingSpaceService;
 

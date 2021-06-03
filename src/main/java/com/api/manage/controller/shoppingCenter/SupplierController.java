@@ -1,7 +1,7 @@
 package com.api.manage.controller.shoppingCenter;
 
 import com.api.manage.service.shoppingCenter.SupplierService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.shoppingCenter.Supplier;
 import com.api.model.shoppingCenter.SupplierSearch;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/shop/supplier")
-public class SupplierController extends ShiroExceptions {
+public class SupplierController   {
     @Resource
     SupplierService supplierService;
 

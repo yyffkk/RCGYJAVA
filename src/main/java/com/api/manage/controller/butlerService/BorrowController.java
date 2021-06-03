@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.BorrowRemind;
 import com.api.model.butlerService.SearchBorrow;
 import com.api.manage.service.butlerService.BorrowService;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/borrow")
-public class BorrowController extends ShiroExceptions {
+public class BorrowController   {
     @Resource
     BorrowService borrowService;
 

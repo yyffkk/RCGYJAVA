@@ -1,7 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysServiceBrowsingService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchServiceBrowsing;
 import com.api.model.operationManagement.SysServiceBrowsing;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/serviceBrowsing")
-public class SysServiceBrowsingController extends ShiroExceptions {
+public class SysServiceBrowsingController   {
     @Resource
     SysServiceBrowsingService sysServiceBrowsingService;
 

@@ -1,7 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysPackageCollectionService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchPackageCollection;
 import com.api.model.operationManagement.SysPackageCollection;
 import com.api.vo.basicArchives.VoIds;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/packageCollection")
-public class SysPackageCollectionController extends ShiroExceptions {
+public class SysPackageCollectionController   {
     @Resource
     SysPackageCollectionService sysPackageCollectionService;
 

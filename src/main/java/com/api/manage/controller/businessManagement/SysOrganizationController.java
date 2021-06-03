@@ -1,7 +1,7 @@
 package com.api.manage.controller.businessManagement;
 
 import com.api.manage.service.businessManagement.SysOrganizationService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.businessManagement.SysOrganization;
 import com.api.vo.businessManagement.VoFindByIdOrganization;
 import com.api.vo.businessManagement.VoOrganization;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @RequestMapping("manage/sysOrganization")
 @RestController
-public class SysOrganizationController extends ShiroExceptions {
+public class SysOrganizationController   {
     @Resource
     SysOrganizationService sysOrganizationService;
 

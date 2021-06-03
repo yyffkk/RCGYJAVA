@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.SearchUserAdvice;
 import com.api.model.butlerService.SysAdvice;
 import com.api.model.butlerService.SysAdviceDetail;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/complaintPraise")
-public class ComplaintPraiseController extends ShiroExceptions {
+public class ComplaintPraiseController   {
     @Resource
     ComplaintPraiseService complaintPraiseService;
     @Resource

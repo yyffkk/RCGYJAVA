@@ -1,7 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysCommunityIntroductionService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchCommunityIntroduction;
 import com.api.model.operationManagement.SysCommunityIntroduction;
 import com.api.vo.basicArchives.VoIds;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/communityIntroduction")
-public class SysCommunityIntroductionController extends ShiroExceptions {
+public class SysCommunityIntroductionController   {
     @Resource
     SysCommunityIntroductionService sysCommunityIntroductionService;
 

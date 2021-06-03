@@ -1,6 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.manage.service.chargeManagement.SysExpenseBillService;
 import com.api.vo.chargeManagement.VoExpenseBill;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/expenseBill")
-public class SysExpenseBillController extends ShiroExceptions {
+public class SysExpenseBillController   {
     @Resource
     SysExpenseBillService sysExpenseBillService;
 

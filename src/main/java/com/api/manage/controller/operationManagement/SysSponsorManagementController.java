@@ -1,6 +1,6 @@
 package com.api.manage.controller.operationManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.operationManagement.SearchSponsorManagement;
 import com.api.model.operationManagement.SponsorManagement;
 import com.api.manage.service.operationManagement.SysSponsorManagementService;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/sponsorManagement")
-public class SysSponsorManagementController extends ShiroExceptions {
+public class SysSponsorManagementController   {
     @Resource
     SysSponsorManagementService sysSponsorManagementService;
 

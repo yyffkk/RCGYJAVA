@@ -1,7 +1,7 @@
 package com.api.manage.controller.butlerService;
 
 import com.api.app.service.butler.DecorationApplicationService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.app.AppDepositManagement;
 import com.api.model.app.AppUserDecoration;
 import com.api.model.app.AppUserDecorationSubmit;
@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/userDecoration")
-public class UserDecorationController extends ShiroExceptions {
+public class UserDecorationController   {
     @Resource
     UserDecorationService userDecorationService;
     @Resource

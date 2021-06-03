@@ -1,6 +1,6 @@
 package com.api.manage.controller.chargeManagement;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.chargeManagement.SearchDepositManagement;
 import com.api.model.chargeManagement.SysDepositManagement;
 import com.api.model.chargeManagement.SysDepositManagementOrder;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/depositManagement")
-public class SysDepositManagementController extends ShiroExceptions {
+public class SysDepositManagementController   {
     @Resource
     SysDepositManagementService sysDepositManagementService;
 

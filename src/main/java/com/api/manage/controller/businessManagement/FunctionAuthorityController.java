@@ -2,7 +2,7 @@ package com.api.manage.controller.businessManagement;
 
 import com.api.manage.service.businessManagement.FunctionAuthorityService;
 import com.api.manage.service.system.SysRoleService;
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.businessManagement.*;
 import com.api.model.system.SysRole;
 import com.api.vo.businessManagement.VoFunctionAuthority;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/functionAuthority")
-public class FunctionAuthorityController extends ShiroExceptions {
+public class FunctionAuthorityController   {
     @Resource
     FunctionAuthorityService functionAuthorityService;
 

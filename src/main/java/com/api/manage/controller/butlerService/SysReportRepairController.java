@@ -1,6 +1,6 @@
 package com.api.manage.controller.butlerService;
 
-import com.api.manage.shiro.ShiroExceptions;
+
 import com.api.model.butlerService.ReportRepair;
 import com.api.model.butlerService.SearchReportRepair;
 import com.api.manage.service.butlerService.SysReportRepairService;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("manage/reportRepair")
-public class SysReportRepairController extends ShiroExceptions {
+public class SysReportRepairController   {
     @Resource
     SysReportRepairService sysReportRepairService;
 
