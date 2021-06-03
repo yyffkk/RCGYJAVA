@@ -22,7 +22,7 @@ import java.util.Map;
 @RequestMapping("manage/cpmBuilding")
 @RestController
 //基础档案权限
-public class CpmBuildingController extends ShiroExceptions {
+public class CpmBuildingController {
 
     @Resource
     CpmBuildingService cpmBuildingService;

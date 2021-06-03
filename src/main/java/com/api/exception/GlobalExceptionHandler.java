@@ -47,31 +47,31 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 登录认证异常
+     * shiro登录认证异常
      *
      * @param req
      * @param e
      * @return
      */
-    @ExceptionHandler({ UnauthenticatedException.class, AuthenticationException.class })
+    @ExceptionHandler(value = UnauthenticatedException.class)
     @ResponseBody
-    public ResultBody authenticationException(HttpServletRequest req, NullPointerException e) {
+    public ResultBody UnauthenticatedException(HttpServletRequest req, UnauthenticatedException e) {
         log.error("登录认证异常!原因是:",e);
-        return ResultBody.error("-1000","未登录");
+        return ResultBody.error(CommonEnum.NOT_LOGGED_IN);
     }
 
     /**
-     * 权限异常
+     * shiro权限异常
      *
      * @param req
      * @param e
      * @return
      */
-    @ExceptionHandler({ UnauthorizedException.class, AuthorizationException.class })
+    @ExceptionHandler(value = AuthorizationException.class)
     @ResponseBody
-    public ResultBody authorizationException(HttpServletRequest req, NullPointerException e) {
+    public ResultBody authorizationException(HttpServletRequest req, AuthorizationException e) {
         log.error("权限异常!原因是:",e);
-        return ResultBody.error("-1001","无权限");
+        return ResultBody.error(CommonEnum.NOT_PERMISSIONS);
     }
 
 
