@@ -63,6 +63,9 @@
             <if test="code != null and code != ''">
                 code = #{code},
             </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
             modify_id = #{modifyId},
             modify_date = #{modifyDate}
         </set>

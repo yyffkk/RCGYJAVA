@@ -2,11 +2,9 @@ package com.api.manage.service.system.impl;
 
 import com.api.manage.dao.system.SysRoleDao;
 import com.api.model.businessManagement.SysUser;
-import com.api.model.businessManagement.UserIdAndParentId;
 import com.api.model.system.SysRole;
 import com.api.manage.service.system.SysRoleService;
 import com.api.util.IdWorker;
-import com.api.vo.system.VoCheckRole;
 import com.api.vo.system.VoRole;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -123,7 +121,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)//TODO 回滚注解不生效，直接报没添加回滚错误
     public Map<String, Object> deleteRole(SysRole sysRole) {
         map = new HashMap<>();
         try {

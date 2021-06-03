@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * 角色Dao接口
  */
-@Component
 public interface SysRoleDao {
     /**
      * 角色ID查找角色信息
