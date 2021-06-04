@@ -185,11 +185,15 @@ public class JiguangUtil {
             log.error("Connection error. Should retry later. ", e);
             return null;
         } catch (APIRequestException e) {
-            log.error("Error response from JPush server. Should review and fix it. ", e);
-            log.info("HTTP Status: " + e.getStatus());
-            log.info("Error Code: " + e.getErrorCode());
-            log.info("Error Message: " + e.getErrorMessage());
-            log.info("Msg ID: " + e.getMsgId());
+            if (e.getStatus() == 2008){
+                log.error("业主app，app_key广播请求次数超过限制");
+            }else {
+                log.error("Error response from JPush server. Should review and fix it. ", e);
+                log.info("HTTP Status: " + e.getStatus());
+                log.info("Error Code: " + e.getErrorCode());
+                log.info("Error Message: " + e.getErrorMessage());
+                log.info("Msg ID: " + e.getMsgId());
+            }
             return null;
         }
     }
@@ -210,11 +214,15 @@ public class JiguangUtil {
             log.error("Connection error. Should retry later. ", e);
             return null;
         } catch (APIRequestException e) {
-            log.error("Error response from JPush server. Should review and fix it. ", e);
-            log.info("HTTP Status: " + e.getStatus());
-            log.info("Error Code: " + e.getErrorCode());
-            log.info("Error Message: " + e.getErrorMessage());
-            log.info("Msg ID: " + e.getMsgId());
+            if (e.getStatus() == 2008){
+                log.error("管家app，app_key广播请求次数超过限制");
+            }else{
+                log.error("Error response from JPush server. Should review and fix it. ", e);
+                log.info("HTTP Status: " + e.getStatus());
+                log.info("Error Code: " + e.getErrorCode());
+                log.info("Error Message: " + e.getErrorMessage());
+                log.info("Msg ID: " + e.getMsgId());
+            }
             return null;
         }
     }
