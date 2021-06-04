@@ -30,6 +30,10 @@ public class SDUserVisitorsVo {
      * 实际到访时间
      */
     private Date visitDate;
+    /**
+     * 同行（xin）人数【访客数量】
+     */
+    private Integer peers;
 
     @Override
     public String toString() {
@@ -40,6 +44,7 @@ public class SDUserVisitorsVo {
                 ", inviteName='" + inviteName + '\'' +
                 ", expectedVisitDate=" + expectedVisitDate +
                 ", visitDate=" + visitDate +
+                ", peers=" + peers +
                 '}';
     }
 
@@ -91,15 +96,24 @@ public class SDUserVisitorsVo {
         this.visitDate = visitDate;
     }
 
+    public Integer getPeers() {
+        return peers;
+    }
+
+    public void setPeers(Integer peers) {
+        this.peers = peers;
+    }
+
     public SDUserVisitorsVo() {
     }
 
-    public SDUserVisitorsVo(String roomName, String name, String tel, String inviteName, Date expectedVisitDate, Date visitDate) {
+    public SDUserVisitorsVo(String roomName, String name, String tel, String inviteName, Date expectedVisitDate, Date visitDate, Integer peers) {
         this.roomName = roomName;
         this.name = name;
         this.tel = tel;
         this.inviteName = inviteName;
         this.expectedVisitDate = expectedVisitDate;
         this.visitDate = visitDate;
+        this.peers = peers;
     }
 }
