@@ -91,6 +91,9 @@
             </if>
             #{nickName}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">

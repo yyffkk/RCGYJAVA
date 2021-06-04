@@ -1,14 +1,17 @@
 package com.api.manage.service.businessManagement.impl;
 
+import com.api.butlerApp.dao.butler.ButlerAttendanceDao;
 import com.api.manage.dao.businessManagement.SysOrganizationDao;
 import com.api.manage.dao.businessManagement.SysUserDao;
 import com.api.manage.dao.system.SysRoleDao;
 import com.api.manage.service.businessManagement.SysUserService;
 import com.api.model.businessManagement.SearchUser;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.operationManagement.AttendanceRecord;
 import com.api.vo.businessManagement.VoFindByIdUser;
 import com.api.vo.businessManagement.VoFunctionAuthority;
 import com.api.vo.businessManagement.VoUser;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class SysUserServiceImpl implements SysUserService {
     private static Map<String,Object> map = null;
     @Resource
@@ -28,6 +32,8 @@ public class SysUserServiceImpl implements SysUserService {
     SysOrganizationDao sysOrganizationDao;
     @Resource
     SysRoleDao sysRoleDao;
+    @Resource
+    ButlerAttendanceDao butlerAttendanceDao;
 
     @Override
     public List<VoUser> list(SearchUser searchUser) {
@@ -100,7 +106,21 @@ public class SysUserServiceImpl implements SysUserService {
         }else {
             map.put("message","新建员工失败");
             map.put("status",false);
+            log.info("新建用户：添加员工失败,用户手机号:"+sysUser.getTel());
+            return map;
         }
+
+        //添加考勤任务记录
+        AttendanceRecord attendanceRecord = new AttendanceRecord();
+        attendanceRecord.setCreateDate(new Date());
+        attendanceRecord.setClockId(sysUser.getId());
+        int insert2 = butlerAttendanceDao.autoAttendanceRecord(attendanceRecord);
+        if (insert2 <=0){
+            map.put("message","新建员工成功,生成考勤失败");
+            map.put("status",true);
+            log.info("新建用户：添加用户考勤任务失败,用户手机号:"+sysUser.getTel());
+        }
+
         return map;
     }
 
