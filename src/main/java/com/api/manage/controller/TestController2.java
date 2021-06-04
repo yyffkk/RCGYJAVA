@@ -54,7 +54,11 @@ public class TestController2 {
 //        }
 //        System.out.println(map);
 
-        log.info("这个测试log日志");
+        log.trace("日志输出 trace");
+        log.debug("日志输出 debug");
+        log.info("日志输出 info");
+        log.warn("日志输出 warn");
+        log.error("日志输出 error");
         return false;
     }
 }
