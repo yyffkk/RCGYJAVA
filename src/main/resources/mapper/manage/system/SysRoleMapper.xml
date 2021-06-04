@@ -27,6 +27,12 @@
     <select id="countUserByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from sys_user where FIND_IN_SET(#{roleId},role_id) > 0
     </select>
+    <select id="findByRoleId" parameterType="java.lang.Integer" resultType="com.api.vo.businessManagement.VoRoleFBI">
+        select sr1.*,sr2.name as parent_name
+        from sys_role as sr1
+        LEFT JOIN sys_role as sr2 on sr1.parent_id = sr2.id
+        where sr1.id = #{roleId}
+    </select>
 
     <insert id="insertRole" parameterType="com.api.model.system.SysRole">
         insert into sys_role(

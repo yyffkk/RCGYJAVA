@@ -58,4 +58,11 @@ public interface SysRoleService {
      * @return map
      */
     Map<String, Object> deleteRole(SysRole sysRole);
+
+    /**
+     * 根据角色主键id查询角色信息
+     * @param roleId 角色主键id
+     * @return map
+     */
+    Map<String, Object> findByRoleId(Integer roleId);
 }

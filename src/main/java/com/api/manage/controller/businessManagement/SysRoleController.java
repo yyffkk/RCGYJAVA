@@ -42,6 +42,16 @@ public class SysRoleController {
     }
 
     /**
+     * 根据角色主键id查询角色信息
+     * @param roleId 角色主键id
+     * @return map
+     */
+    @GetMapping("/findByRoleId")
+    public Map<String,Object> findByRoleId(Integer roleId){
+        return sysRoleService.findByRoleId(roleId);
+    }
+
+    /**
      * 修改角色信息
      * @param sysRole 角色表
      * @return map

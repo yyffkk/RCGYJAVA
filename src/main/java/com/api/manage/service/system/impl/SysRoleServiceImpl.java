@@ -5,6 +5,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.system.SysRole;
 import com.api.manage.service.system.SysRoleService;
 import com.api.util.IdWorker;
+import com.api.vo.businessManagement.VoRoleFBI;
 import com.api.vo.system.VoRole;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -153,6 +154,16 @@ public class SysRoleServiceImpl implements SysRoleService {
         }
         map.put("message","删除角色成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findByRoleId(Integer roleId) {
+        map = new HashMap<>();
+        VoRoleFBI voRoleFBI = sysRoleDao.findByRoleId(roleId);
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",voRoleFBI);
         return map;
     }
 }

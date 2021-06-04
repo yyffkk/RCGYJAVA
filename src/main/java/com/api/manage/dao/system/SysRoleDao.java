@@ -2,6 +2,7 @@ package com.api.manage.dao.system;
 
 import com.api.model.businessManagement.UserIdAndParentId;
 import com.api.model.system.SysRole;
+import com.api.vo.businessManagement.VoRoleFBI;
 import com.api.vo.system.VoCheckRole;
 import com.api.vo.system.VoRole;
 import org.springframework.stereotype.Component;
@@ -78,4 +79,11 @@ public interface SysRoleDao {
      * @param roleId 角色主键id
      */
     int deleteRoleJurisdictionByRoleId(Integer roleId);
+
+    /**
+     * 根据角色主键id查询角色信息
+     * @param roleId 角色主键id
+     * @return 角色信息
+     */
+    VoRoleFBI findByRoleId(Integer roleId);
 }
