@@ -68,6 +68,30 @@ public class SysLoginServiceImpl implements SysLoginService {
     @Override
     public Map<String,Object> loginSysUser(SysUser sysUser){
         Map<String,Object> map = new HashMap<>();
+        //根据用户名和密码查询物业用户信息
+        SysUser sysUser1 = sysLoginDao.findByUserNameAndPwd(sysUser);
+        if (sysUser1 == null){
+            map.put("message","用户名或密码不正确");
+            map.put("status",false);
+            return map;
+        }
+
+        if (sysUser1.getIsDelete() == 0){
+            map.put("message","该用户已被删除");
+            map.put("status",false);
+            return map;
+        }
+
+        if (sysUser1.getStatus() == 3 || sysUser1.getStatus() == 4){
+            map.put("message","该用户已被停用");
+            map.put("status",false);
+            return map;
+        }else if (sysUser1.getStatus() == 2){
+            map.put("message","该用户已被禁止登录");
+            map.put("status",false);
+            return map;
+        }
+
         //将用户封装成token
         AuthenticationToken token = new UsernamePasswordToken(sysUser.getUserName(), sysUser.getPwd());
         //获取当前的Subject

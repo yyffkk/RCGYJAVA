@@ -51,4 +51,11 @@ public interface SysLoginDao {
      * @param sysUser 手机号 和 减完后的时间
      */
     void updateCodeDateByTel(SysUser sysUser);
+
+    /**
+     * 根据用户名和密码查询物业用户信息
+     * @param sysUser 用户名和密码
+     * @return 物业用户信息
+     */
+    SysUser findByUserNameAndPwd(SysUser sysUser);
 }

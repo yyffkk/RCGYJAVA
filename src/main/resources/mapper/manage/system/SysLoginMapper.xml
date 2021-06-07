@@ -109,6 +109,9 @@
     <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
         select * from sys_user where tel = #{tel}
     </select>
+    <select id="findByUserNameAndPwd" parameterType="com.api.model.businessManagement.SysUser" resultType="com.api.model.businessManagement.SysUser">
+        select * from sys_user where user_name = #{userName} and pwd = #{pwd}
+    </select>
 
     <update id="updateCodeDateByTel" parameterType="com.api.model.businessManagement.SysUser">
         update sys_user set code_send_date = #{codeSendDate} where tel = #{tel}
