@@ -2,6 +2,7 @@ package com.api.app.controller.shoppingCenter;
 
 import com.api.app.service.shoppingCenter.ShoppingService;
 import com.api.model.app.AppGoodsAppointment;
+import com.api.model.app.UserIdAndGoodsAppointmentId;
 import com.api.model.shoppingCenter.Evaluation;
 import com.api.model.shoppingCenter.Order;
 import com.api.vo.app.AppActivityVo;
@@ -39,12 +40,21 @@ public class ShoppingController {
     }
 
     /**
-     * 查询订阅量最高的4件商品
+     * 查询订阅量最高的商品（按订阅量从高到低排序）
+     * @param pageNum 当前页数
+     * @param size 每页记录数
      * @return map
      */
     @GetMapping("/findTopGoods")
-    public Map<String,Object> findTopGoods(){
-        return shoppingService.findTopGoods();
+    public Map<String,Object> findTopGoods(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<AppGoodsVo> appGoodsVos = shoppingService.findTopGoods();
+        PageInfo<AppGoodsVo> pageInfo = new PageInfo<>(appGoodsVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 
@@ -142,6 +152,16 @@ public class ShoppingController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 根据订单主键id查询订单详情
+     * @param UserIdAndGoodsAppointmentId 用户主键id 和 商品预约主键id
+     * @return map
+     */
+    @GetMapping("/findOrderDetailByOrderId")
+    public Map<String,Object> findOrderDetailByOrderId(UserIdAndGoodsAppointmentId UserIdAndGoodsAppointmentId){
+        return shoppingService.findOrderDetailByOrderId(UserIdAndGoodsAppointmentId);
     }
 
 

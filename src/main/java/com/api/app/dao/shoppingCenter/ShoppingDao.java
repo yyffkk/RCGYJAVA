@@ -3,6 +3,7 @@ package com.api.app.dao.shoppingCenter;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
+import com.api.model.app.UserIdAndGoodsAppointmentId;
 import com.api.model.shoppingCenter.Evaluation;
 import com.api.model.shoppingCenter.Order;
 import com.api.vo.app.AppCategoryVo;
@@ -21,7 +22,7 @@ public interface ShoppingDao {
     List<AppCategoryVo> list(Integer parentId);
 
     /**
-     * 查询订阅量最高的4件商品
+     * 查询订阅量最高的商品（按订阅量从高到低排序）
      * @return 商品
      */
     List<AppGoodsVo> findTopGoods();
@@ -109,4 +110,11 @@ public interface ShoppingDao {
      * @return 影响行数
      */
     int evaluation(Evaluation evaluation);
+
+    /**
+     * 根据订单主键id查询订单详情
+     * @param UserIdAndGoodsAppointmentId 用户主键id 和 商品预约主键id
+     * @return 订单详情
+     */
+    AppMyOrderVo findOrderDetailByOrderId(UserIdAndGoodsAppointmentId UserIdAndGoodsAppointmentId);
 }

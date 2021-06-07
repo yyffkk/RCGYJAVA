@@ -44,6 +44,10 @@ public class AppMyOrderVo {
      */
     private Integer num;
     /**
+     * 供应商主键id
+     */
+    private Integer supplierId;
+    /**
      * 供应商名称
      */
     private String supplierName;
@@ -120,6 +124,7 @@ public class AppMyOrderVo {
                 ", sellingPrice=" + sellingPrice +
                 ", markingPrice=" + markingPrice +
                 ", num=" + num +
+                ", supplierId=" + supplierId +
                 ", supplierName='" + supplierName + '\'' +
                 ", levelOneCategory='" + levelOneCategory + '\'' +
                 ", levelTwoCategory='" + levelTwoCategory + '\'' +
@@ -209,6 +214,14 @@ public class AppMyOrderVo {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public Integer getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getSupplierName() {
@@ -342,7 +355,7 @@ public class AppMyOrderVo {
     public AppMyOrderVo() {
     }
 
-    public AppMyOrderVo(Integer id, String code, Integer goodsId, String goodsName, Integer backType, List<VoResourcesImg> goodsImgList, BigDecimal sellingPrice, BigDecimal markingPrice, Integer num, String supplierName, String levelOneCategory, String levelTwoCategory, Integer status, Date sendDate, String sendDetail, Date arrivalDate, Date receivingDate, Date backDate, String backReason, String reason, Integer score, Date evaluationDate, String evaluationReason, String arrivalTime, Date createDate) {
+    public AppMyOrderVo(Integer id, String code, Integer goodsId, String goodsName, Integer backType, List<VoResourcesImg> goodsImgList, BigDecimal sellingPrice, BigDecimal markingPrice, Integer num, Integer supplierId, String supplierName, String levelOneCategory, String levelTwoCategory, Integer status, Date sendDate, String sendDetail, Date arrivalDate, Date receivingDate, Date backDate, String backReason, String reason, Integer score, Date evaluationDate, String evaluationReason, String arrivalTime, Date createDate) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -352,6 +365,7 @@ public class AppMyOrderVo {
         this.sellingPrice = sellingPrice;
         this.markingPrice = markingPrice;
         this.num = num;
+        this.supplierId = supplierId;
         this.supplierName = supplierName;
         this.levelOneCategory = levelOneCategory;
         this.levelTwoCategory = levelTwoCategory;

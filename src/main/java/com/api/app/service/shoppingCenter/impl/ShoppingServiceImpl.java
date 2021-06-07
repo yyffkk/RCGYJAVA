@@ -6,6 +6,7 @@ import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.app.AppGoodsIdAndUserId;
+import com.api.model.app.UserIdAndGoodsAppointmentId;
 import com.api.model.shoppingCenter.Evaluation;
 import com.api.model.shoppingCenter.Order;
 import com.api.util.IdWorker;
@@ -49,7 +50,7 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public Map<String, Object> findTopGoods() {
+    public List<AppGoodsVo> findTopGoods() {
         map = new HashMap<>();
         List<AppGoodsVo> appGoodsVos = shoppingDao.findTopGoods();
         if (appGoodsVos != null && appGoodsVos.size()>0){
@@ -59,10 +60,7 @@ public class ShoppingServiceImpl implements ShoppingService {
                 appGoodsVo.setImgList(imgByDate);
             }
         }
-        map.put("data",appGoodsVos);
-        map.put("message","请求成功");
-        map.put("status",true);
-        return map;
+        return appGoodsVos;
     }
 
     @Override
@@ -207,6 +205,21 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
+    public Map<String, Object> findOrderDetailByOrderId(UserIdAndGoodsAppointmentId UserIdAndGoodsAppointmentId) {
+        map = new HashMap<>();
+        AppMyOrderVo appMyOrderVo = shoppingDao.findOrderDetailByOrderId(UserIdAndGoodsAppointmentId);
+        if (appMyOrderVo != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("shopGoods", appMyOrderVo.getGoodsId(), "goodsImg");
+            appMyOrderVo.setGoodsImgList(imgByDate);
+        }
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",appMyOrderVo);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> cancel(Integer id, Integer goodsAppointmentId) {
         map = new HashMap<>();
         Order order = new Order();
@@ -313,4 +326,5 @@ public class ShoppingServiceImpl implements ShoppingService {
 
         return map;
     }
+
 }

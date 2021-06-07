@@ -8,7 +8,7 @@
         select id,name from shop_category where parent_id = #{parentId}
     </select>
     <select id="findTopGoods" resultType="com.api.vo.app.AppGoodsVo">
-        select * from shop_goods where status = 1 and is_delete = 1 order By subscribe_num desc limit 4
+        select * from shop_goods where status = 1 and is_delete = 1 order By subscribe_num desc
     </select>
     <select id="findGoodsByCategoryId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppGoodsVo">
         select * from shop_goods where category_id = #{categoryId} and  status = 1 and is_delete = 1 order By subscribe_num
@@ -59,7 +59,7 @@
 
     <select id="myOrder" parameterType="com.api.model.shoppingCenter.Order" resultType="com.api.vo.app.AppMyOrderVo">
         select sga.*,sg.title as goods_name,sg.selling_price,sg.marking_price,sg.arrival_time,
-        ss.name as supplier_name,sc2.name as level_two_category,sc1.name as level_one_category
+        ss.id as supplier_id,ss.name as supplier_name,sc2.name as level_two_category,sc1.name as level_one_category
         from shop_goods_appointment as sga,shop_goods as sg,user_resident as ur,shop_supplier as ss,shop_category as sc2,shop_category as sc1
         <where>
             sga.goods_id = sg.id
@@ -89,6 +89,18 @@
             and sga.create_id = #{createId}
         </where>
         order by sga.create_date desc
+    </select>
+    <select id="findOrderDetailByOrderId" parameterType="com.api.model.app.UserIdAndGoodsAppointmentId" resultType="com.api.vo.app.AppMyOrderVo">
+        select sga.*,sg.title as goods_name,sg.selling_price,sg.marking_price,sg.arrival_time,
+        ss.id as supplier_id,ss.name as supplier_name,sc2.name as level_two_category,sc1.name as level_one_category
+        from shop_goods_appointment as sga,shop_goods as sg,user_resident as ur,shop_supplier as ss,shop_category as sc2,shop_category as sc1
+        where sga.goods_id = sg.id
+            and sga.create_id = ur.id
+            and sg.supplier_id = ss.id
+            and sg.category_id = sc2.id
+            and sc2.parent_id = sc1.id
+            and sga.create_id = #{id}
+            and sga.id = #{goodsAppointmentId}
     </select>
 
     <delete id="cancel" parameterType="com.api.model.shoppingCenter.Order">
