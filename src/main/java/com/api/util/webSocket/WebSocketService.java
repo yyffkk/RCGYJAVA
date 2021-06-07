@@ -74,42 +74,52 @@ public class WebSocketService {
     public void onMessage(String message, Session session, @PathParam("nickname") String nickname) {
         System.out.println("来自客户端的消息-->" + nickname + ": " + message);
 
-        //从客户端传过来的数据是json数据，所以这里使用jackson进行转换为SocketMsg对象，
-        // 然后通过socketMsg的type进行判断是单聊还是群聊，进行相应的处理:
-        ObjectMapper objectMapper = new ObjectMapper();
-        SocketMsg socketMsg;
-        try {
-            socketMsg = objectMapper.readValue(message, SocketMsg.class);
-            if (socketMsg.getType() == 1) {
-                //单聊.需要找到发送者和接受者.
-                socketMsg.setFromUser(session.getId());//发送者.
-                Session fromSession = map.get(socketMsg.getFromUser());
-                Session toSession = map.get(socketMsg.getToUser());
-                //发送给接受者.
-                if (toSession != null) {
-                    //发送给发送者.
-                    Map<String,Object> m=new HashMap<String, Object>();
-                    m.put("type",1);
-                    m.put("name",nickname);
-                    m.put("msg",socketMsg.getMsg());
-                    fromSession.getAsyncRemote().sendText(new Gson().toJson(m));
-                    toSession.getAsyncRemote().sendText(new Gson().toJson(m));
+        if (!"heartbeat".equals(message)){
+            //从客户端传过来的数据是json数据，所以这里使用jackson进行转换为SocketMsg对象，
+            // 然后通过socketMsg的type进行判断是单聊还是群聊，进行相应的处理:
+            ObjectMapper objectMapper = new ObjectMapper();
+            SocketMsg socketMsg;
+            try {
+                socketMsg = objectMapper.readValue(message, SocketMsg.class);
+                if (socketMsg.getType() == 1) {
+                    //单聊.需要找到发送者和接受者.
+                    socketMsg.setFromUser(session.getId());//发送者.
+                    Session fromSession = map.get(socketMsg.getFromUser());
+                    Session toSession = map.get(socketMsg.getToUser());
+                    //发送给接受者.
+                    if (toSession != null) {
+                        //发送给发送者.
+                        Map<String,Object> m=new HashMap<String, Object>();
+                        m.put("type",1);
+                        m.put("name",nickname);
+                        m.put("msg",socketMsg.getMsg());
+                        fromSession.getAsyncRemote().sendText(new Gson().toJson(m));
+                        toSession.getAsyncRemote().sendText(new Gson().toJson(m));
+                    } else {
+                        //发送给发送者.
+                        fromSession.getAsyncRemote().sendText("系统消息：对方不在线或者您输入的频道号不对");
+                    }
                 } else {
-                    //发送给发送者.
-                    fromSession.getAsyncRemote().sendText("系统消息：对方不在线或者您输入的频道号不对");
+                    //群发消息
+                    broadcast(nickname + ": " + socketMsg.getMsg());
                 }
-            } else {
-                //群发消息
-                broadcast(nickname + ": " + socketMsg.getMsg());
-            }
 
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (JsonParseException e) {
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            //此为心跳信息，不做业务处理
+            SocketMsg socketMsg2 = new SocketMsg();
+            socketMsg2.setFromUser(session.getId());//发送者.
+            Session fromSession = map.get(socketMsg2.getFromUser());
+            fromSession.getAsyncRemote().sendText("心跳正常");
+            System.out.println("心跳正常");
         }
+
     }
 
     /**
