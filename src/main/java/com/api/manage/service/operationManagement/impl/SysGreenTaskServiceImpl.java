@@ -1,10 +1,13 @@
 package com.api.manage.service.operationManagement.impl;
 
+import com.api.butlerApp.dao.message.ButlerAppMessageDao;
 import com.api.manage.dao.operationManagement.SysGreenTaskDao;
 import com.api.manage.service.operationManagement.SysGreenTaskService;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerApp.ButlerAppSysMessage;
 import com.api.model.operationManagement.SearchGreenTask;
 import com.api.model.operationManagement.SysGreenTask;
+import com.api.util.JiguangUtil;
 import com.api.vo.operationManagement.VoGreenTask;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -23,6 +26,8 @@ public class SysGreenTaskServiceImpl implements SysGreenTaskService {
     private static Map<String,Object> map = null;
     @Resource
     SysGreenTaskDao sysGreenTaskDao;
+    @Resource
+    ButlerAppMessageDao butlerAppMessageDao;
 
     @Override
     public List<VoGreenTask> list(SearchGreenTask searchGreenTask) {
@@ -41,24 +46,44 @@ public class SysGreenTaskServiceImpl implements SysGreenTaskService {
     public Map<String, Object> insert(SysGreenTask sysGreenTask) {
         map = new HashMap<>();
 
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
 
-        sysGreenTask.setCreateId(sysUser.getId());
-        sysGreenTask.setCreateDate(new Date());
-        sysGreenTask.setStatus(1);//填入默认状态 1.待处理
+            sysGreenTask.setCreateId(sysUser.getId());
+            sysGreenTask.setCreateDate(new Date());
+            sysGreenTask.setStatus(1);//填入默认状态 1.待处理
 
-        int insert = sysGreenTaskDao.insert(sysGreenTask);
-        if (insert >0){
-            map.put("message","添加成功");
-            map.put("status",true);
-        }else {
-            map.put("message","添加失败");
+            int insert = sysGreenTaskDao.insert(sysGreenTask);
+            if (insert <= 0){
+                throw new RuntimeException("添加失败");
+            }
+            ButlerAppSysMessage butlerAppSysMessage = new ButlerAppSysMessage();
+            butlerAppSysMessage.setType(3);//3.绿化任务
+            butlerAppSysMessage.setRelationId(sysGreenTask.getId());
+            butlerAppSysMessage.setReceiverAccount(sysGreenTask.getDirector());
+            butlerAppSysMessage.setSendStatus(1);//1.发送成功（未读）
+            butlerAppSysMessage.setSendDate(new Date());
+            //添加系统消息
+            int insert3 = butlerAppMessageDao.insertSysMessage(butlerAppSysMessage);
+            if (insert3 <= 0){
+                throw new RuntimeException("添加系统消息失败");
+            }
+            JiguangUtil.butlerPush(String.valueOf(sysGreenTask.getDirector()), "你有一条新的绿化任务，请立即查看");
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
-
-
+        map.put("message","添加成功");
+        map.put("status",true);
         return map;
     }
 
