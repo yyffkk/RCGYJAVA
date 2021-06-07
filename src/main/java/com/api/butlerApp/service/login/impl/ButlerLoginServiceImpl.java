@@ -47,6 +47,24 @@ public class ButlerLoginServiceImpl implements ButlerLoginService {
             return map;
         }
 
+        //根据手机号查询物业用户信息
+        SysUser sysUserByTel = butlerLoginDao.findSysUserByTel(MOBILE);
+        if (sysUserByTel.getIsDelete() == 0){
+            map.put("message","该用户已被删除");
+            map.put("status",false);
+            return map;
+        }
+
+        if (sysUserByTel.getStatus() == 3 || sysUserByTel.getStatus() == 4){
+            map.put("message","该用户已被停用");
+            map.put("status",false);
+            return map;
+        }else if (sysUserByTel.getStatus() == 2){
+            map.put("message","该用户已被禁止登录");
+            map.put("status",false);
+            return map;
+        }
+
         //根据手机号查询用户验证码
         ButlerUserCode userCode1 = butlerLoginDao.findUserCodeByTel(userCode.getTel());
 
@@ -115,24 +133,6 @@ public class ButlerLoginServiceImpl implements ButlerLoginService {
                 //校验验证码
                 if (!userCodeByTel.getCode().equals(butlerUserCode.getCode())) {
                     map.put("message","验证码错误");
-                    map.put("status",false);
-                    return map;
-                }
-
-                //根据手机号查询物业用户信息
-                SysUser sysUserByTel = butlerLoginDao.findSysUserByTel(butlerUserCode.getTel());
-                if (sysUserByTel.getIsDelete() == 0){
-                    map.put("message","该用户已被删除");
-                    map.put("status",false);
-                    return map;
-                }
-
-                if (sysUserByTel.getStatus() == 3 || sysUserByTel.getStatus() == 4){
-                    map.put("message","该用户已被停用");
-                    map.put("status",false);
-                    return map;
-                }else if (sysUserByTel.getStatus() == 2){
-                    map.put("message","该用户已被禁止登录");
                     map.put("status",false);
                     return map;
                 }
