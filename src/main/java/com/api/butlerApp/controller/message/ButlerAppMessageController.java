@@ -91,4 +91,24 @@ public class ButlerAppMessageController {
     public Map<String,Object> findCommentByDispatchId(Integer dispatchId){
         return butlerAppMessageService.findCommentByDispatchId(dispatchId);
     }
+
+    /**
+     * 系统消息全部已读(进入系统消息列表后调用)
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/allReadSys")
+    public Map<String,Object> allReadSys(Integer id){
+        return butlerAppMessageService.allReadSys(id);
+    }
+
+    /**
+     * 评论消息全部已读(进入评论消息列表后调用)
+     * @param id 用户id
+     * @return map
+     */
+    @GetMapping("/allReadComment")
+    public Map<String,Object> allReadComment(Integer id){
+        return butlerAppMessageService.allReadComment(id);
+    }
 }

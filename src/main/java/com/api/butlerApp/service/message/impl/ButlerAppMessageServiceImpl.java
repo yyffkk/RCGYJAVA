@@ -73,4 +73,34 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> allReadSys(Integer id) {
+        map = new HashMap<>();
+        //修改全部系统通知为已读
+        int update2 = butlerAppMessageDao.allReadSys(id);
+        if (update2 >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> allReadComment(Integer id) {
+        map = new HashMap<>();
+        //修改全部评论通知为已读
+        int update2 = butlerAppMessageDao.allReadComment(id);
+        if (update2 >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
+    }
 }

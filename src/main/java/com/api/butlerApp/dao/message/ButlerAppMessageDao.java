@@ -87,4 +87,18 @@ public interface ButlerAppMessageDao {
      * @return 评论消息最新的第一个发送时间
      */
     Date findFirstCommentDateById(Integer id);
+
+    /**
+     * 系统消息全部已读(进入系统消息列表后调用)
+     * @param id 用户id
+     * @return 影响行数
+     */
+    int allReadSys(Integer id);
+
+    /**
+     * 评论消息全部已读(进入评论消息列表后调用)
+     * @param id 用户id
+     * @return 影响行数
+     */
+    int allReadComment(Integer id);
 }

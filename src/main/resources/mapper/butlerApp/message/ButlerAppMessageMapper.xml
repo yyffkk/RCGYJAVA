@@ -70,4 +70,15 @@
         select send_date from butler_comment_message where receiver_account = #{id} order by send_date DESC limit 1
     </select>
 
+    <update id="allReadSys" parameterType="java.lang.Integer">
+        update butler_sys_message
+        set send_status = 3
+        where receiver_account = #{id}
+    </update>
+    <update id="allReadComment" parameterType="java.lang.Integer">
+        update butler_comment_message
+        set send_status = 3
+        where receiver_account = #{id}
+    </update>
+
 </mapper>
