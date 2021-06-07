@@ -65,6 +65,21 @@ public class ButlerLoginDetectionFilter implements Filter {
         //根据主键id查询管家用户信息
         SysUser sysUser = butlerLoginService.findSysUserById(butlerLoginToken.getSysUserId());
 
+        //如果用户已被删除，返回失败结果json数据
+        if (sysUser.getIsDelete() == 0){
+            this.respFail(response);
+            return;
+        }
+
+        if (sysUser.getStatus() == 3 || sysUser.getStatus() == 4){
+            //如果用户已被停用，返回失败结果json数据
+            this.respFail(response);
+            return;
+        }else if (sysUser.getStatus() == 2){
+            //如果用户已被禁止登录，返回失败结果json数据
+            this.respFail(response);
+            return;
+        }
 
         //每次请求更新一次登录user_login_token时间
         butlerLoginToken.setButlerLoginDate(new Date());
