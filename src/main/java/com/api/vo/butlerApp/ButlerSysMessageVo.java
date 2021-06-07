@@ -11,11 +11,11 @@ public class ButlerSysMessageVo {
      */
     private Integer id;
     /**
-     * 消息类型（1.报事报修，2.装修）
+     * 消息类型（1.报事报修，2.装修,3.绿化任务，4.卫生任务）
      */
     private Integer type;
     /**
-     * 关联的主键id（报事报修id,装修id）
+     * 关联的主键id（报事报修id,装修id,绿化任务id,卫生任务id）
      */
     private Integer relationId;
     /**

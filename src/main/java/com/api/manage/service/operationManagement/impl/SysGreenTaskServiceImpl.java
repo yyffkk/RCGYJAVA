@@ -43,6 +43,7 @@ public class SysGreenTaskServiceImpl implements SysGreenTaskService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(SysGreenTask sysGreenTask) {
         map = new HashMap<>();
 

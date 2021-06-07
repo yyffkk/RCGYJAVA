@@ -15,7 +15,7 @@ public class ButlerAppSysMessage {
      */
     private Integer type;
     /**
-     * 关联的主键id（报事报修id,装修id）
+     * 关联的主键id（报事报修id,装修id,绿化任务id,卫生任务id）
      */
     private Integer relationId;
     /**
