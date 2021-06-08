@@ -414,7 +414,7 @@ public class SysAutoRemind {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         int i = cal.get(Calendar.DAY_OF_WEEK);
-        if (i == 7 || i ==1){
+        if (i == 7 || i ==1){//7.周六，1.周日
             log.info("今日是双休日");
             status = 3;
         }else {

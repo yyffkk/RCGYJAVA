@@ -38,6 +38,10 @@ public class VoAttendanceRecord {
      * 考勤记录创建时间
      */
     private Date createDate;
+    /**
+     * 状态：1.放假日（节假），2.工作日，3.休息日（双休）
+     */
+    private Integer status;
 
     @Override
     public String toString() {
@@ -50,6 +54,7 @@ public class VoAttendanceRecord {
                 ", clockName='" + clockName + '\'' +
                 ", clockTel='" + clockTel + '\'' +
                 ", createDate=" + createDate +
+                ", status=" + status +
                 '}';
     }
 
@@ -117,10 +122,18 @@ public class VoAttendanceRecord {
         this.createDate = createDate;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public VoAttendanceRecord() {
     }
 
-    public VoAttendanceRecord(Integer id, Date startClockDate, Date endClockDate, Date cardReplacementDate, String operatorName, String clockName, String clockTel, Date createDate) {
+    public VoAttendanceRecord(Integer id, Date startClockDate, Date endClockDate, Date cardReplacementDate, String operatorName, String clockName, String clockTel, Date createDate, Integer status) {
         this.id = id;
         this.startClockDate = startClockDate;
         this.endClockDate = endClockDate;
@@ -129,5 +142,6 @@ public class VoAttendanceRecord {
         this.clockName = clockName;
         this.clockTel = clockTel;
         this.createDate = createDate;
+        this.status = status;
     }
 }
