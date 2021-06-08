@@ -27,4 +27,11 @@ public interface SysSalaryDao {
      * @return 薪资信息
      */
     int delete(int id);
+
+    /**
+     * 修改薪资信息
+     * @param sysSalary 薪资信息model
+     * @return 影响行数
+     */
+    int update(SysSalary sysSalary);
 }

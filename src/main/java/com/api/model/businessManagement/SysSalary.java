@@ -35,6 +35,14 @@ public class SysSalary {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 修改人
+     */
+    private Integer modifyId;
+    /**
+     * 修改时间
+     */
+    private Date modifyDate;
 
     @Override
     public String toString() {
@@ -46,6 +54,8 @@ public class SysSalary {
                 ", salary=" + salary +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", modifyId=" + modifyId +
+                ", modifyDate=" + modifyDate +
                 '}';
     }
 
@@ -105,10 +115,26 @@ public class SysSalary {
         this.createDate = createDate;
     }
 
+    public Integer getModifyId() {
+        return modifyId;
+    }
+
+    public void setModifyId(Integer modifyId) {
+        this.modifyId = modifyId;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
     public SysSalary() {
     }
 
-    public SysSalary(Integer id, Integer organizationId, Integer salaryPerson, String wageCardNumber, BigDecimal salary, Integer createId, Date createDate) {
+    public SysSalary(Integer id, Integer organizationId, Integer salaryPerson, String wageCardNumber, BigDecimal salary, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
         this.id = id;
         this.organizationId = organizationId;
         this.salaryPerson = salaryPerson;
@@ -116,5 +142,7 @@ public class SysSalary {
         this.salary = salary;
         this.createId = createId;
         this.createDate = createDate;
+        this.modifyId = modifyId;
+        this.modifyDate = modifyDate;
     }
 }

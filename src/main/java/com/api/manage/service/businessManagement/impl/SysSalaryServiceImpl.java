@@ -77,4 +77,25 @@ public class SysSalaryServiceImpl implements SysSalaryService {
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> update(SysSalary sysSalary) {
+        map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        sysSalary.setModifyId(sysUser.getId());
+        sysSalary.setModifyDate(new Date());
+
+        int update = sysSalaryDao.update(sysSalary);
+        if (update >0){
+            map.put("message","修改成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改失败");
+            map.put("status",false);
+        }
+        return map;
+    }
 }

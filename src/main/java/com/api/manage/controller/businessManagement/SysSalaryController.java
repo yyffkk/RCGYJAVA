@@ -52,6 +52,16 @@ public class SysSalaryController {
     }
 
     /**
+     * 修改薪资信息
+     * @param sysSalary 薪资信息model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysSalary sysSalary){
+        return sysSalaryService.update(sysSalary);
+    }
+
+    /**
      * 批量删除薪资信息
      * @param ids 薪资管理主键id数组
      * @return map

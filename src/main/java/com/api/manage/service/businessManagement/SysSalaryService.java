@@ -13,4 +13,6 @@ public interface SysSalaryService {
     Map<String, Object> insert(SysSalary sysSalary);
 
     Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> update(SysSalary sysSalary);
 }

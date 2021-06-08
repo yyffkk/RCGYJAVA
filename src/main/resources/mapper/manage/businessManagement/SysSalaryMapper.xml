@@ -45,4 +45,18 @@
         delete from sys_salary where id = #{id}
     </delete>
 
+    <update id="update" parameterType="com.api.model.businessManagement.SysSalary">
+        update sys_salary
+        <set>
+            <if test="wageCardNumber != null and wageCardNumber != ''">
+                wage_card_number = #{wageCardNumber},
+            </if>
+            <if test="salary != null">
+                salary = #{salary},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+    </update>
+
 </mapper>
