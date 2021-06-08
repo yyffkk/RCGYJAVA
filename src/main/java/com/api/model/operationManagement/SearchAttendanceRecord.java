@@ -23,7 +23,7 @@ public class SearchAttendanceRecord {
      */
     private String clockTel;
     /**
-     * 状态（1.未上班，2.未下班）
+     * 状态（1.已打卡，2.未打卡，3.已补卡）
      */
     private Integer status;
 

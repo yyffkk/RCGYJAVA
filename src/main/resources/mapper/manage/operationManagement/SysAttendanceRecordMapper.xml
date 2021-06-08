@@ -18,10 +18,15 @@
                 and su1.tel like concat('%',#{clockTel},'%')
             </if>
             <if test="status == 1">
-                and sar.start_clock_date is null
+                and sar.end_clock_date is not null
             </if>
             <if test="status == 2">
                 and sar.end_clock_date is null
+                and sar.card_replacement_date is null
+            </if>
+            <if test="status == 3">
+                and sar.end_clock_date is null
+                and sar.card_replacement_date is not null
             </if>
         </where>
         order by sar.create_date desc
