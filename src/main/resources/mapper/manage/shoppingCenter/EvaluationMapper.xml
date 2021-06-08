@@ -29,4 +29,15 @@
             </if>
         </where>
     </select>
+    <select id="findReplyById" resultType="java.lang.String">
+        select reply_content from shop_goods_appointment where id = #{goodsAppointmentId}
+    </select>
+
+    <update id="reply" parameterType="com.api.model.shoppingCenter.GoodsReply">
+        update shop_goods_appointment
+        set reply_content = #{replyContent},
+        reply_date = #{replyDate}
+        where id = #{goodsAppointmentId}
+    </update>
+
 </mapper>

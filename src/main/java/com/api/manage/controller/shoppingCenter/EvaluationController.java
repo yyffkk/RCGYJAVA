@@ -2,13 +2,11 @@ package com.api.manage.controller.shoppingCenter;
 
 import com.api.manage.service.shoppingCenter.EvaluationService;
 import com.api.model.shoppingCenter.EvaluationSearch;
+import com.api.model.shoppingCenter.GoodsReply;
 import com.api.vo.shoppingCenter.EvaluationVo;
-import com.api.vo.shoppingCenter.GoodsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -39,6 +37,16 @@ public class EvaluationController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 客服回复
+     * @param goodsReply 商品客服回复
+     * @return map
+     */
+    @PostMapping("/reply")
+    public Map<String,Object> reply(@RequestBody GoodsReply goodsReply){
+        return evaluationService.reply(goodsReply);
     }
 
 }
