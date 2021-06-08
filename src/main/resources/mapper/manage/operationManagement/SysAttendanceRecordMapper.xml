@@ -17,14 +17,14 @@
             <if test="clockTel != null and clockTel != ''">
                 and su1.tel like concat('%',#{clockTel},'%')
             </if>
-            <if test="status == 1">
+            <if test="clockStatus == 1">
                 and sar.end_clock_date is not null
             </if>
-            <if test="status == 2">
+            <if test="clockStatus == 2">
                 and sar.end_clock_date is null
                 and sar.card_replacement_date is null
             </if>
-            <if test="status == 3">
+            <if test="clockStatus == 3">
                 and sar.end_clock_date is null
                 and sar.card_replacement_date is not null
             </if>

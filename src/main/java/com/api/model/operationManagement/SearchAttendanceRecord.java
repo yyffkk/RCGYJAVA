@@ -23,9 +23,9 @@ public class SearchAttendanceRecord {
      */
     private String clockTel;
     /**
-     * 状态（1.已打卡，2.未打卡，3.已补卡）
+     * 打卡状态（1.已打卡，2.未打卡，3.已补卡）
      */
-    private Integer status;
+    private Integer clockStatus;
 
     @Override
     public String toString() {
@@ -34,7 +34,7 @@ public class SearchAttendanceRecord {
                 ", size=" + size +
                 ", createDate=" + createDate +
                 ", clockTel='" + clockTel + '\'' +
-                ", status=" + status +
+                ", clockStatus=" + clockStatus +
                 '}';
     }
 
@@ -70,22 +70,22 @@ public class SearchAttendanceRecord {
         this.clockTel = clockTel;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getClockStatus() {
+        return clockStatus;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setClockStatus(Integer clockStatus) {
+        this.clockStatus = clockStatus;
     }
 
     public SearchAttendanceRecord() {
     }
 
-    public SearchAttendanceRecord(int pageNum, int size, Date createDate, String clockTel, Integer status) {
+    public SearchAttendanceRecord(int pageNum, int size, Date createDate, String clockTel, Integer clockStatus) {
         this.pageNum = pageNum;
         this.size = size;
         this.createDate = createDate;
         this.clockTel = clockTel;
-        this.status = status;
+        this.clockStatus = clockStatus;
     }
 }
