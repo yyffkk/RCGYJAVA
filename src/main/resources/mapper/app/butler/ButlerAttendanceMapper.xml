@@ -70,10 +70,12 @@
     <insert id="autoAttendanceRecord" parameterType="com.api.model.operationManagement.AttendanceRecord">
         insert into sys_attendance_record(
             clock_id,
-            create_date
+            create_date,
+            status
         )values (
             #{clockId},
-            #{createDate}
+            #{createDate},
+            #{status}
         )
     </insert>
 

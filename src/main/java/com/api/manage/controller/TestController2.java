@@ -54,11 +54,15 @@ public class TestController2 {
 //        }
 //        System.out.println(map);
 
-        log.trace("日志输出 trace");
-        log.debug("日志输出 debug");
-        log.info("日志输出 info");
-        log.warn("日志输出 warn");
-        log.error("日志输出 error");
+//        log.trace("日志输出 trace");
+//        log.debug("日志输出 debug");
+//        log.info("日志输出 info");
+//        log.warn("日志输出 warn");
+//        log.error("日志输出 error");
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        int i = cal.get(Calendar.DAY_OF_WEEK);
         return false;
     }
 }

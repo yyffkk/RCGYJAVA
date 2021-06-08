@@ -34,6 +34,10 @@ public class AttendanceRecord {
      * 考勤记录创建时间
      */
     private Date createDate;
+    /**
+     * 状态：1.放假日（节假），2.工作日，3.休息日（双休）
+     */
+    private Integer status;
 
     @Override
     public String toString() {
@@ -45,6 +49,7 @@ public class AttendanceRecord {
                 ", cardReplacementDate=" + cardReplacementDate +
                 ", operator=" + operator +
                 ", createDate=" + createDate +
+                ", status=" + status +
                 '}';
     }
 
@@ -104,10 +109,18 @@ public class AttendanceRecord {
         this.createDate = createDate;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public AttendanceRecord() {
     }
 
-    public AttendanceRecord(Integer id, Date startClockDate, Date endClockDate, Integer clockId, Date cardReplacementDate, Integer operator, Date createDate) {
+    public AttendanceRecord(Integer id, Date startClockDate, Date endClockDate, Integer clockId, Date cardReplacementDate, Integer operator, Date createDate, Integer status) {
         this.id = id;
         this.startClockDate = startClockDate;
         this.endClockDate = endClockDate;
@@ -115,5 +128,6 @@ public class AttendanceRecord {
         this.cardReplacementDate = cardReplacementDate;
         this.operator = operator;
         this.createDate = createDate;
+        this.status = status;
     }
 }

@@ -408,6 +408,20 @@ public class SysAutoRemind {
     @Scheduled(cron = "1 0 0 1/1 * ? ")
     public void autoAttendanceRecord(){
 
+
+        int status = 2;//状态：1.放假日（节假），2.工作日，3.休息日（双休）
+        //查询今日是周几，周日是1，依次类推
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        int i = cal.get(Calendar.DAY_OF_WEEK);
+        if (i == 7 || i ==1){
+            log.info("今日是双休日");
+            status = 3;
+        }else {
+            log.info("今日是工作日");
+            status = 2;
+        }
+
         //查询所有的需要执行考勤任务的物业人员信息(用户未删除，状态正常)
         List<SysUser> sysUserList = butlerAttendanceDao.findAllSysUer();
 
@@ -416,6 +430,7 @@ public class SysAutoRemind {
             attendanceRecord.setCreateDate(new Date());
             for (SysUser sysUser : sysUserList) {
                 attendanceRecord.setClockId(sysUser.getId());
+                attendanceRecord.setStatus(status);
                 //添加考勤任务记录
                 int insert = butlerAttendanceDao.autoAttendanceRecord(attendanceRecord);
                 if (insert <=0){
