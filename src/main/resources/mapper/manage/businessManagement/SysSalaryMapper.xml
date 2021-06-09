@@ -57,6 +57,7 @@
             modify_id = #{modifyId},
             modify_date = #{modifyDate}
         </set>
+        where id = #{id}
     </update>
 
 </mapper>

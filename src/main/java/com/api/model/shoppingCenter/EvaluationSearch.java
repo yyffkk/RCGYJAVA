@@ -20,6 +20,10 @@ public class EvaluationSearch {
      * 用户手机号
      */
     private String tel;
+    /**
+     * 回复状态（1.已回复，2.未回复）
+     */
+    private Integer replyStatus;
 
     @Override
     public String toString() {
@@ -28,6 +32,7 @@ public class EvaluationSearch {
                 ", size=" + size +
                 ", score=" + score +
                 ", tel='" + tel + '\'' +
+                ", replyStatus=" + replyStatus +
                 '}';
     }
 
@@ -63,13 +68,22 @@ public class EvaluationSearch {
         this.tel = tel;
     }
 
+    public Integer getReplyStatus() {
+        return replyStatus;
+    }
+
+    public void setReplyStatus(Integer replyStatus) {
+        this.replyStatus = replyStatus;
+    }
+
     public EvaluationSearch() {
     }
 
-    public EvaluationSearch(int pageNum, int size, Integer score, String tel) {
+    public EvaluationSearch(int pageNum, int size, Integer score, String tel, Integer replyStatus) {
         this.pageNum = pageNum;
         this.size = size;
         this.score = score;
         this.tel = tel;
+        this.replyStatus = replyStatus;
     }
 }

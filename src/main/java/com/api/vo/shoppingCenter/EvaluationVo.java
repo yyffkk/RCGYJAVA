@@ -27,6 +27,14 @@ public class EvaluationVo {
      */
     private String evaluationReason;
     /**
+     * 客服回复内容
+     */
+    private String replyContent;
+    /**
+     * 客服回复时间
+     */
+    private Date replyDate;
+    /**
      * 商品名称
      */
     private String goodsName;
@@ -59,6 +67,8 @@ public class EvaluationVo {
                 ", score=" + score +
                 ", evaluationDate=" + evaluationDate +
                 ", evaluationReason='" + evaluationReason + '\'' +
+                ", replyContent='" + replyContent + '\'' +
+                ", replyDate=" + replyDate +
                 ", goodsName='" + goodsName + '\'' +
                 ", categoryLevelOne='" + categoryLevelOne + '\'' +
                 ", categoryLevelTwo='" + categoryLevelTwo + '\'' +
@@ -106,6 +116,22 @@ public class EvaluationVo {
 
     public void setEvaluationReason(String evaluationReason) {
         this.evaluationReason = evaluationReason;
+    }
+
+    public String getReplyContent() {
+        return replyContent;
+    }
+
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
+    }
+
+    public Date getReplyDate() {
+        return replyDate;
+    }
+
+    public void setReplyDate(Date replyDate) {
+        this.replyDate = replyDate;
     }
 
     public String getGoodsName() {
@@ -159,12 +185,14 @@ public class EvaluationVo {
     public EvaluationVo() {
     }
 
-    public EvaluationVo(Integer id, String code, Integer score, Date evaluationDate, String evaluationReason, String goodsName, String categoryLevelOne, String categoryLevelTwo, String createName, String createTel, String supplierName) {
+    public EvaluationVo(Integer id, String code, Integer score, Date evaluationDate, String evaluationReason, String replyContent, Date replyDate, String goodsName, String categoryLevelOne, String categoryLevelTwo, String createName, String createTel, String supplierName) {
         this.id = id;
         this.code = code;
         this.score = score;
         this.evaluationDate = evaluationDate;
         this.evaluationReason = evaluationReason;
+        this.replyContent = replyContent;
+        this.replyDate = replyDate;
         this.goodsName = goodsName;
         this.categoryLevelOne = categoryLevelOne;
         this.categoryLevelTwo = categoryLevelTwo;
