@@ -12,19 +12,19 @@ import java.util.Map;
  * 数据统计(后台配置大屏)
  */
 @RestController
-@RequestMapping("/dataStatistics")
+@RequestMapping("manage/dataStatistics")
 public class DataStatisticsController {
     @Resource
     DataStatisticsService dataStatisticsService;
 
-//    /**
-//     * 查询上月物业缴费情况
-//     * @return map
-//     */
-//    @GetMapping("/findLastMonthPayCostDetail")
-//    public Map<String,Object> findLastMonthPayCostDetail(){
-//
-//    }
+    /**
+     * 查询上月物业缴费情况
+     * @return map
+     */
+    @GetMapping("/findLastMonthPayCostDetail")
+    public Map<String,Object> findLastMonthPayCostDetail(){
+        return dataStatisticsService.findLastMonthPayCostDetail();
+    }
 
 
 }
