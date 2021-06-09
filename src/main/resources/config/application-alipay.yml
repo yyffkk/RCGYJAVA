@@ -26,7 +26,7 @@ alipay:
   reportRepairNotifyUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/reportRepairNotifyInfo"
 
   #页面跳转同步通知页面路径
-  returnUrl: "http://test.akuhotel.com:8804/IntelligentCommunity/alipay/return_url.do"
+  returnUrl: "http://39.103.177.88:8804/IntelligentCommunity/alipay/return_url.do"
 
   #请求支付宝的网关地址
   aliPayGateway: "https://openapi.alipay.com/gateway.do"
