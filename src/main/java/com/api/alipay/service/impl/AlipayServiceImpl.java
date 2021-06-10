@@ -727,7 +727,7 @@ public class AlipayServiceImpl implements AlipayService {
                 log.info("获取签名失败");
                 throw new RuntimeException("获取签名失败");
             }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+            // 返回支付相关信息(此处可以直接将getBody中的内容[就是orderString]直接返回，无需再做一些其他操作)
             body = alipayResponse.getBody();
         } catch (RuntimeException e) {
             //获取抛出的信息
