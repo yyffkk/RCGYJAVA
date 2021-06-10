@@ -26,5 +26,14 @@ public class DataStatisticsController {
         return dataStatisticsService.findLastMonthPayCostDetail();
     }
 
+    /**
+     * 物业缴费统计（6个月内数据）
+     * @return map
+     */
+    @GetMapping("findPaymentStatistics")
+    public Map<String,Object> findPaymentStatistics(){
+        return dataStatisticsService.findPaymentStatistics();
+    }
+
 
 }

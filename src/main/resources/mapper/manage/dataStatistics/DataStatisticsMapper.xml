@@ -28,4 +28,28 @@
         where sdp.charges_template_detail_id = sctd.id and date_format(sdp.begin_date,'%Y-%m')=date_format(DATE_SUB(now(), INTERVAL 1 MONTH),'%Y-%m')
         and sctd.marker = 1
     </select>
+    <select id="findPaymentStatistics" resultType="com.api.vo.dataStatistics.PaymentStatisticsVo">
+        select (case sum(s2.total_price) is null when true then 0 else sum(s2.total_price) end) as should_pay_price,
+        (case sum(s2.paid_price) is null when true then 0 else sum(s2.paid_price) end) as pay_price,
+        year(s.date) as years, MONTH(s.date) as months
+        from
+        (
+            select date_add(NOW(),interval @i:=@i-1 month) as date
+            from (
+            select 1
+            union all select 1
+            union all select 1
+            union all select 1
+            union all select 1
+            union all select 1) as tmp,
+             (select @i:= 0) t
+        ) s
+        LEFT JOIN
+        (
+            select sdp.*
+            from sys_charges_template_detail as sctd,sys_daily_payment as sdp
+            where sdp.charges_template_detail_id = sctd.id and sctd.marker = 1
+        ) as s2 on YEAR(s.date) = YEAR(s2.begin_date) and MONTH(s.date) = MONTH(s2.begin_date)
+        GROUP BY s.date
+    </select>
 </mapper>

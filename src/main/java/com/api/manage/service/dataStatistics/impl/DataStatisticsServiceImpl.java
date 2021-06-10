@@ -3,11 +3,13 @@ package com.api.manage.service.dataStatistics.impl;
 import com.api.manage.dao.dataStatistics.DataStatisticsDao;
 import com.api.manage.service.dataStatistics.DataStatisticsService;
 import com.api.vo.dataStatistics.LastMonthPayCostDetailVo;
+import com.api.vo.dataStatistics.PaymentStatisticsVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,6 +38,16 @@ public class DataStatisticsServiceImpl implements DataStatisticsService {
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",lastMonthPayCostDetailVo);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findPaymentStatistics() {
+        map = new HashMap<>();
+        List<PaymentStatisticsVo> paymentStatisticsVos = dataStatisticsDao.findPaymentStatistics();
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",paymentStatisticsVos);
         return map;
     }
 }

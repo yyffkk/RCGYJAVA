@@ -1,6 +1,9 @@
 package com.api.manage.dao.dataStatistics;
 
+import com.api.vo.dataStatistics.PaymentStatisticsVo;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface DataStatisticsDao {
     /**
@@ -27,4 +30,9 @@ public interface DataStatisticsDao {
      */
     BigDecimal findLastMonthUnpaidHouseholds();
 
+    /**
+     * 物业缴费统计（6个月数据）
+     * @return 物业缴费统计
+     */
+    List<PaymentStatisticsVo> findPaymentStatistics();
 }
