@@ -595,17 +595,6 @@ public class AlipayServiceImpl implements AlipayService {
                         break;
                     case "TRADE_SUCCESS": // 交易支付成功
                         aliPaymentOrder.setStatus(2);
-                        //根据缴费订单支付单号查询缴费信息主键id
-                        List<Integer> dailyPaymentIds = appDailyPaymentDao.findDailyPaymentIdsByOrderCode(outTradeNo);
-                        if (dailyPaymentIds != null && dailyPaymentIds.size()>0){
-                            for (Integer dailyPaymentId : dailyPaymentIds) {
-                                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
-                                int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(dailyPaymentId);
-                                if (update <= 0){
-                                    log.info("===========修改缴费信息失败");
-                                }
-                            }
-                        }
                         break;
                     case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
                         aliPaymentOrder.setStatus(1);
@@ -621,6 +610,18 @@ public class AlipayServiceImpl implements AlipayService {
                 if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
                     if(returnResult>0){
                         log.info("===========异步调用成功");
+                        //根据缴费订单支付单号查询缴费信息主键id
+                        List<Integer> dailyPaymentIds = appDailyPaymentDao.findDailyPaymentIdsByOrderCode(outTradeNo);
+                        if (dailyPaymentIds != null && dailyPaymentIds.size()>0){
+                            for (Integer dailyPaymentId : dailyPaymentIds) {
+                                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
+                                int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(dailyPaymentId);
+                                if (update <= 0){
+                                    log.info("===========更新缴费信息的状态失败");
+                                    return "fail";
+                                }
+                            }
+                        }
                         // 成功要返回success，不然支付宝会不断发送通知。
                         return "success";
                     }else{
