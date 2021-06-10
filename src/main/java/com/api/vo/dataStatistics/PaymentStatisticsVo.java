@@ -3,7 +3,7 @@ package com.api.vo.dataStatistics;
 import java.math.BigDecimal;
 
 /**
- * 缴费统计
+ * 缴费统计Vo 回显
  */
 public class PaymentStatisticsVo {
     /**

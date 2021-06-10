@@ -2,6 +2,7 @@ package com.api.manage.service.dataStatistics.impl;
 
 import com.api.manage.dao.dataStatistics.DataStatisticsDao;
 import com.api.manage.service.dataStatistics.DataStatisticsService;
+import com.api.vo.dataStatistics.EnvironmentalHealthVo;
 import com.api.vo.dataStatistics.LastMonthPayCostDetailVo;
 import com.api.vo.dataStatistics.PaymentStatisticsVo;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,45 @@ public class DataStatisticsServiceImpl implements DataStatisticsService {
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",paymentStatisticsVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findTodayEnvironmentalHealth() {
+        map = new HashMap<>();
+        EnvironmentalHealthVo environmentalHealthVo = new EnvironmentalHealthVo();
+        //查询绿化任务总任务数
+        Integer greenTaskTotal = dataStatisticsDao.findGreenTaskTotal();
+        //查询绿化任务待完成任务数
+        Integer greenTaskPending = dataStatisticsDao.findGreenTaskPending();
+        //查询绿化任务已完成任务数
+        Integer greenTaskCompleted = dataStatisticsDao.findGreenTaskCompleted();
+        //查询绿化任务未完成任务数
+        Integer greenTaskUnFinished = dataStatisticsDao.findGreenTaskUnFinished();
+
+        //查询卫生任务总任务数
+        Integer hygieneTaskTotal = dataStatisticsDao.findHygieneTaskTotal();
+        //查询卫生任务待完成任务数
+        Integer hygieneTaskPending = dataStatisticsDao.findHygieneTaskPending();
+        //查询卫生任务已完成任务数
+        Integer hygieneTaskCompleted = dataStatisticsDao.findHygieneTaskCompleted();
+        //查询卫生任务未完成任务数
+        Integer hygieneTaskUnFinished = dataStatisticsDao.findHygieneTaskUnFinished();
+
+        environmentalHealthVo.setGreenTaskTotal(greenTaskTotal);
+        environmentalHealthVo.setGreenTaskPending(greenTaskPending);
+        environmentalHealthVo.setGreenTaskCompleted(greenTaskCompleted);
+        environmentalHealthVo.setGreenTaskUnFinished(greenTaskUnFinished);
+
+        environmentalHealthVo.setHygieneTaskTotal(hygieneTaskTotal);
+        environmentalHealthVo.setHygieneTaskPending(hygieneTaskPending);
+        environmentalHealthVo.setHygieneTaskCompleted(hygieneTaskCompleted);
+        environmentalHealthVo.setHygieneTaskUnFinished(hygieneTaskUnFinished);
+
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",environmentalHealthVo);
         return map;
     }
 }

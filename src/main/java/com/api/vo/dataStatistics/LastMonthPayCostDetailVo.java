@@ -3,7 +3,7 @@ package com.api.vo.dataStatistics;
 import java.math.BigDecimal;
 
 /**
- * 上个月物业缴费情况
+ * 上个月物业缴费情况Vo 回显
  */
 public class LastMonthPayCostDetailVo {
     /**

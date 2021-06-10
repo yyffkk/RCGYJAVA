@@ -52,4 +52,50 @@
         ) as s2 on YEAR(s.date) = YEAR(s2.begin_date) and MONTH(s.date) = MONTH(s2.begin_date)
         GROUP BY s.date
     </select>
+    <select id="findGreenTaskTotal" resultType="java.lang.Integer">
+        select count(*)
+        from sys_green_task
+        where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
+    </select>
+    <select id="findGreenTaskPending" resultType="java.lang.Integer">
+        select count(*)
+        from sys_green_task
+        where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
+        and status = 1 and NOW() <![CDATA[ < ]]> end_date
+    </select>
+    <select id="findGreenTaskCompleted" resultType="java.lang.Integer">
+        select count(*)
+        from sys_green_task
+        where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
+        and status = 2
+    </select>
+    <select id="findGreenTaskUnFinished" resultType="java.lang.Integer">
+        select count(*)
+        from sys_green_task
+        where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
+        and status = 1 and NOW() <![CDATA[ > ]]> end_date
+    </select>
+    <select id="findHygieneTaskTotal" resultType="java.lang.Integer">
+        select count(*)
+        from sys_hygiene_task
+        where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
+    </select>
+    <select id="findHygieneTaskPending" resultType="java.lang.Integer">
+        select count(*)
+        from sys_hygiene_task
+        where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
+        and status = 1 and NOW() <![CDATA[ < ]]> end_date
+    </select>
+    <select id="findHygieneTaskCompleted" resultType="java.lang.Integer">
+        select count(*)
+        from sys_hygiene_task
+        where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
+        and status = 2
+    </select>
+    <select id="findHygieneTaskUnFinished" resultType="java.lang.Integer">
+        select count(*)
+        from sys_hygiene_task
+        where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
+        and status = 1 and NOW() <![CDATA[ > ]]> end_date
+    </select>
 </mapper>

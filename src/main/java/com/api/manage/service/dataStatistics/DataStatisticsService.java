@@ -6,4 +6,7 @@ public interface DataStatisticsService {
     Map<String, Object> findLastMonthPayCostDetail();
 
     Map<String, Object> findPaymentStatistics();
+
+    Map<String, Object> findTodayEnvironmentalHealth();
+
 }

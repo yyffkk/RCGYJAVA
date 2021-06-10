@@ -35,5 +35,13 @@ public class DataStatisticsController {
         return dataStatisticsService.findPaymentStatistics();
     }
 
+    /**
+     * 查询今日环境卫生任务情况
+     * @return map
+     */
+    @GetMapping("/findTodayEnvironmentalHealth")
+    public Map<String,Object> findTodayEnvironmentalHealth(){
+        return dataStatisticsService.findTodayEnvironmentalHealth();
+    }
 
 }

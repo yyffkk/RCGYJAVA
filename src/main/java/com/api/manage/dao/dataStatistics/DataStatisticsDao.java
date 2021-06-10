@@ -1,5 +1,6 @@
 package com.api.manage.dao.dataStatistics;
 
+import com.api.vo.dataStatistics.EnvironmentalHealthVo;
 import com.api.vo.dataStatistics.PaymentStatisticsVo;
 
 import java.math.BigDecimal;
@@ -35,4 +36,52 @@ public interface DataStatisticsDao {
      * @return 物业缴费统计
      */
     List<PaymentStatisticsVo> findPaymentStatistics();
+
+    /**
+     * 查询绿化任务总任务数
+     * @return 绿化任务总任务数
+     */
+    Integer findGreenTaskTotal();
+
+    /**
+     * 查询绿化任务待完成任务数
+     * @return 绿化任务待完成任务数
+     */
+    Integer findGreenTaskPending();
+
+    /**
+     * 查询绿化任务已完成任务数
+     * @return 绿化任务已完成任务数
+     */
+    Integer findGreenTaskCompleted();
+
+    /**
+     * 查询绿化任务未完成任务数
+     * @return 绿化任务未完成任务数
+     */
+    Integer findGreenTaskUnFinished();
+
+    /**
+     * 查询卫生任务总任务数
+     * @return 卫生任务总任务数
+     */
+    Integer findHygieneTaskTotal();
+
+    /**
+     * 查询卫生任务待完成任务数
+     * @return 卫生任务待完成任务数
+     */
+    Integer findHygieneTaskPending();
+
+    /**
+     * 查询卫生任务已完成任务数
+     * @return 卫生任务已完成任务数
+     */
+    Integer findHygieneTaskCompleted();
+
+    /**
+     * 查询卫生任务未完成任务数
+     * @return 卫生任务未完成任务数
+     */
+    Integer findHygieneTaskUnFinished();
 }
