@@ -36,7 +36,7 @@ public class DataStatisticsController {
     }
 
     /**
-     * 查询今日环境卫生任务情况
+     * 查询今日环境卫生任务情况（按截止时间算）
      * @return map
      */
     @GetMapping("/findTodayEnvironmentalHealth")
