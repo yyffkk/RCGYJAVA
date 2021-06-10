@@ -78,7 +78,7 @@ public class AlipayController {
 
 
     /**
-     * app测试支付
+     * app测试支付(生成 APP 支付订单信息)
      * @param appDailyPaymentOrder app生活缴纳 支付订单信息
      * @param response response
      * @param request request
@@ -116,7 +116,7 @@ public class AlipayController {
     }
 
     /**
-     * app 日常缴费支付宝支付
+     * app 日常缴费支付宝支付(生成 APP 支付订单信息)
      * @param appDailyPaymentOrder app生活缴纳 支付订单信息
      * @param response response
      * @param request request
@@ -159,7 +159,7 @@ public class AlipayController {
     }
 
     /**
-     * app 报事报修完成订单支付宝支付
+     * app 报事报修完成订单支付宝支付(生成 APP 支付订单信息)
      * @param appRepairOrder app 报事报修订单
      * @param response response
      * @param request request
