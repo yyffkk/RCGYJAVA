@@ -9,4 +9,6 @@ public interface DataStatisticsService {
 
     Map<String, Object> findTodayEnvironmentalHealth();
 
+    Map<String, Object> findTodayInspectionRecord();
+
 }

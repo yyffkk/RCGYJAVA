@@ -2,9 +2,10 @@ package com.api.manage.service.dataStatistics.impl;
 
 import com.api.manage.dao.dataStatistics.DataStatisticsDao;
 import com.api.manage.service.dataStatistics.DataStatisticsService;
-import com.api.vo.dataStatistics.EnvironmentalHealthVo;
-import com.api.vo.dataStatistics.LastMonthPayCostDetailVo;
-import com.api.vo.dataStatistics.PaymentStatisticsVo;
+import com.api.vo.dataStatistics.DSEnvironmentalHealthVo;
+import com.api.vo.dataStatistics.DSInspectionRecord;
+import com.api.vo.dataStatistics.DSLastMonthPayCostDetailVo;
+import com.api.vo.dataStatistics.DSPaymentStatisticsVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,7 +31,7 @@ public class DataStatisticsServiceImpl implements DataStatisticsService {
         BigDecimal lastMonthShouldPayPrice = dataStatisticsDao.findLastMonthShouldPayPrice();
         //查询上月账单未缴户数
         BigDecimal lastMonthUnpaidHouseholds = dataStatisticsDao.findLastMonthUnpaidHouseholds();
-        LastMonthPayCostDetailVo lastMonthPayCostDetailVo = new LastMonthPayCostDetailVo();
+        DSLastMonthPayCostDetailVo lastMonthPayCostDetailVo = new DSLastMonthPayCostDetailVo();
         lastMonthPayCostDetailVo.setLastMonthPayPrice(lastMonthPayPrice);
         lastMonthPayCostDetailVo.setLastMonthUnpaidPrice(lastMonthUnpaidPrice);
         lastMonthPayCostDetailVo.setLastMonthShouldPayPrice(lastMonthShouldPayPrice);
@@ -45,7 +46,7 @@ public class DataStatisticsServiceImpl implements DataStatisticsService {
     @Override
     public Map<String, Object> findPaymentStatistics() {
         map = new HashMap<>();
-        List<PaymentStatisticsVo> paymentStatisticsVos = dataStatisticsDao.findPaymentStatistics();
+        List<DSPaymentStatisticsVo> paymentStatisticsVos = dataStatisticsDao.findPaymentStatistics();
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",paymentStatisticsVos);
@@ -55,7 +56,7 @@ public class DataStatisticsServiceImpl implements DataStatisticsService {
     @Override
     public Map<String, Object> findTodayEnvironmentalHealth() {
         map = new HashMap<>();
-        EnvironmentalHealthVo environmentalHealthVo = new EnvironmentalHealthVo();
+        DSEnvironmentalHealthVo environmentalHealthVo = new DSEnvironmentalHealthVo();
         //查询绿化任务总任务数
         Integer greenTaskTotal = dataStatisticsDao.findGreenTaskTotal();
         //查询绿化任务待完成任务数
@@ -88,6 +89,62 @@ public class DataStatisticsServiceImpl implements DataStatisticsService {
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",environmentalHealthVo);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findTodayInspectionRecord() {
+        map = new HashMap<>();
+        List<DSInspectionRecord> list = dataStatisticsDao.findTodayInspectionRecord();
+        if (list != null && list.size()>0){
+            for (DSInspectionRecord dsInspectionRecord : list) {
+                //判断实际开始时间是否为null
+                if (dsInspectionRecord.getActualBeginDate() != null){
+                    //判断实际结束时间是否为null
+                    if (dsInspectionRecord.getActualEndDate() != null){
+                        dsInspectionRecord.setStatus(2); //实际开始时间与实际结束时间都不为null，2.已巡检
+                        //查询巡检执行点总数
+                        Integer totalNum = dataStatisticsDao.findExecutePointTotalNum(dsInspectionRecord.getId());
+                        //查询已完成的巡检执行点数量
+                        Integer unfinishedNum = dataStatisticsDao.findUnfinishedExecutePointNum(dsInspectionRecord.getId());
+                        if (unfinishedNum == 0){
+                            //如果已完成的巡检执行点数量为0，则巡更进度为100
+                            dsInspectionRecord.setProgress(100);
+                        }else {
+                            //如果已完成的巡检执行点数量不为0，则 已完成的巡检执行点数量/巡检执行点总数*100
+                            dsInspectionRecord.setProgress(Math.round(unfinishedNum/totalNum*100));
+                        }
+                    }else {
+                        dsInspectionRecord.setStatus(3); //实际开始时间不为null,实际结束时间为null，3.巡检中
+                        //查询巡检执行点总数
+                        Integer totalNum = dataStatisticsDao.findExecutePointTotalNum(dsInspectionRecord.getId());
+                        //查询已完成的巡检执行点数量
+                        Integer unfinishedNum = dataStatisticsDao.findUnfinishedExecutePointNum(dsInspectionRecord.getId());
+                        if (unfinishedNum == 0){
+                            //如果已完成的巡检执行点数量为0，则巡更进度为100
+                            dsInspectionRecord.setProgress(100);
+                        }else {
+                            //如果已完成的巡检执行点数量不为0，则 已完成的巡检执行点数量/巡检执行点总数*100
+                            dsInspectionRecord.setProgress(Math.round(unfinishedNum/totalNum*100));
+                        }
+                    }
+                }else {
+                    //判断实际结束时间是否为null
+                    if (dsInspectionRecord.getActualEndDate() != null){
+                        dsInspectionRecord.setStatus(4); //实际开始时间为null,实际结束时间不为null，4.未巡检
+                        dsInspectionRecord.setProgress(0);//未巡检，巡更进度默认是0
+                    }else {
+                        //实际开始时间与实际结束时间都为null，1.待巡检
+                        dsInspectionRecord.setStatus(1);
+                        dsInspectionRecord.setProgress(0);//待巡检，巡更进度默认是0
+                    }
+                }
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",list);
         return map;
     }
 }

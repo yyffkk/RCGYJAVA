@@ -3,9 +3,9 @@ package com.api.vo.dataStatistics;
 import java.math.BigDecimal;
 
 /**
- * 上个月物业缴费情况Vo 回显
+ * 数据统计 上个月物业缴费情况Vo 回显
  */
-public class LastMonthPayCostDetailVo {
+public class DSLastMonthPayCostDetailVo {
     /**
      * 上月账单已缴金额
      */
@@ -65,10 +65,10 @@ public class LastMonthPayCostDetailVo {
         this.lastMonthUnpaidHouseholds = lastMonthUnpaidHouseholds;
     }
 
-    public LastMonthPayCostDetailVo() {
+    public DSLastMonthPayCostDetailVo() {
     }
 
-    public LastMonthPayCostDetailVo(BigDecimal lastMonthPayPrice, BigDecimal lastMonthUnpaidPrice, BigDecimal lastMonthShouldPayPrice, BigDecimal lastMonthUnpaidHouseholds) {
+    public DSLastMonthPayCostDetailVo(BigDecimal lastMonthPayPrice, BigDecimal lastMonthUnpaidPrice, BigDecimal lastMonthShouldPayPrice, BigDecimal lastMonthUnpaidHouseholds) {
         this.lastMonthPayPrice = lastMonthPayPrice;
         this.lastMonthUnpaidPrice = lastMonthUnpaidPrice;
         this.lastMonthShouldPayPrice = lastMonthShouldPayPrice;

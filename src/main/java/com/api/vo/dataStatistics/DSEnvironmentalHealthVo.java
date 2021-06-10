@@ -1,9 +1,9 @@
 package com.api.vo.dataStatistics;
 
 /**
- * 环境卫生任务情况Vo 回显
+ * 数据统计 环境卫生任务情况Vo 回显
  */
-public class EnvironmentalHealthVo {
+public class DSEnvironmentalHealthVo {
     /**
      * 绿化任务总任务数
      */
@@ -115,10 +115,10 @@ public class EnvironmentalHealthVo {
         this.hygieneTaskUnFinished = hygieneTaskUnFinished;
     }
 
-    public EnvironmentalHealthVo() {
+    public DSEnvironmentalHealthVo() {
     }
 
-    public EnvironmentalHealthVo(Integer greenTaskTotal, Integer greenTaskPending, Integer greenTaskCompleted, Integer greenTaskUnFinished, Integer hygieneTaskTotal, Integer hygieneTaskPending, Integer hygieneTaskCompleted, Integer hygieneTaskUnFinished) {
+    public DSEnvironmentalHealthVo(Integer greenTaskTotal, Integer greenTaskPending, Integer greenTaskCompleted, Integer greenTaskUnFinished, Integer hygieneTaskTotal, Integer hygieneTaskPending, Integer hygieneTaskCompleted, Integer hygieneTaskUnFinished) {
         this.greenTaskTotal = greenTaskTotal;
         this.greenTaskPending = greenTaskPending;
         this.greenTaskCompleted = greenTaskCompleted;

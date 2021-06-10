@@ -1,7 +1,7 @@
 package com.api.manage.dao.dataStatistics;
 
-import com.api.vo.dataStatistics.EnvironmentalHealthVo;
-import com.api.vo.dataStatistics.PaymentStatisticsVo;
+import com.api.vo.dataStatistics.DSInspectionRecord;
+import com.api.vo.dataStatistics.DSPaymentStatisticsVo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,7 +35,7 @@ public interface DataStatisticsDao {
      * 物业缴费统计（6个月数据）
      * @return 物业缴费统计
      */
-    List<PaymentStatisticsVo> findPaymentStatistics();
+    List<DSPaymentStatisticsVo> findPaymentStatistics();
 
     /**
      * 查询绿化任务总任务数
@@ -84,4 +84,24 @@ public interface DataStatisticsDao {
      * @return 卫生任务未完成任务数
      */
     Integer findHygieneTaskUnFinished();
+
+    /**
+     * 查询今日巡更记录
+     * @return 今日巡更记录
+     */
+    List<DSInspectionRecord> findTodayInspectionRecord();
+
+    /**
+     * 查询巡检执行点总数
+     * @param id 巡检执行情况主键id
+     * @return 巡检执行点总数
+     */
+    Integer findExecutePointTotalNum(Integer id);
+
+    /**
+     * 查询已完成的巡检执行点数量
+     * @param id 巡检执行情况主键id
+     * @return 已完成的巡检执行点数量
+     */
+    Integer findUnfinishedExecutePointNum(Integer id);
 }

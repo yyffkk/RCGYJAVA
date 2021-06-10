@@ -44,4 +44,15 @@ public class DataStatisticsController {
         return dataStatisticsService.findTodayEnvironmentalHealth();
     }
 
+    /**
+     * 查询今日巡更记录
+     * @return map
+     */
+    @GetMapping("/findInspectionRecord")
+    public Map<String,Object> findTodayInspectionRecord(){
+        return dataStatisticsService.findTodayInspectionRecord();
+    }
+
+
+
 }

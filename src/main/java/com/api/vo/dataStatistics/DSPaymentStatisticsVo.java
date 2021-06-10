@@ -3,9 +3,9 @@ package com.api.vo.dataStatistics;
 import java.math.BigDecimal;
 
 /**
- * 缴费统计Vo 回显
+ * 数据统计 缴费统计Vo 回显
  */
-public class PaymentStatisticsVo {
+public class DSPaymentStatisticsVo {
     /**
      * 应缴金额
      */
@@ -65,10 +65,10 @@ public class PaymentStatisticsVo {
         this.months = months;
     }
 
-    public PaymentStatisticsVo() {
+    public DSPaymentStatisticsVo() {
     }
 
-    public PaymentStatisticsVo(BigDecimal shouldPayPrice, BigDecimal payPrice, Integer years, Integer months) {
+    public DSPaymentStatisticsVo(BigDecimal shouldPayPrice, BigDecimal payPrice, Integer years, Integer months) {
         this.shouldPayPrice = shouldPayPrice;
         this.payPrice = payPrice;
         this.years = years;

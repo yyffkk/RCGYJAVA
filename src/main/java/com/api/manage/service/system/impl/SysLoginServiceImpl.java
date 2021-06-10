@@ -99,6 +99,8 @@ public class SysLoginServiceImpl implements SysLoginService {
         try {
             //登录并存入该用户信息
             subject.login(token);
+            //设置session过期时间（-1000表示用不超时）
+//            subject.getSession().setTimeout(1800000);
 
             //认证成功
             map.put("token",subject.getSession().getId());

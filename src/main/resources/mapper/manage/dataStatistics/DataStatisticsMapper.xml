@@ -28,7 +28,7 @@
         where sdp.charges_template_detail_id = sctd.id and date_format(sdp.begin_date,'%Y-%m')=date_format(DATE_SUB(now(), INTERVAL 1 MONTH),'%Y-%m')
         and sctd.marker = 1
     </select>
-    <select id="findPaymentStatistics" resultType="com.api.vo.dataStatistics.PaymentStatisticsVo">
+    <select id="findPaymentStatistics" resultType="com.api.vo.dataStatistics.DSPaymentStatisticsVo">
         select (case sum(s2.total_price) is null when true then 0 else sum(s2.total_price) end) as should_pay_price,
         (case sum(s2.paid_price) is null when true then 0 else sum(s2.paid_price) end) as pay_price,
         year(s.date) as years, MONTH(s.date) as months
@@ -97,5 +97,22 @@
         from sys_hygiene_task
         where date_format(end_date,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')
         and status = 1 and NOW() <![CDATA[ > ]]> end_date
+    </select>
+    <select id="findTodayInspectionRecord" resultType="com.api.vo.dataStatistics.DSInspectionRecord">
+        select sie.id,sie.begin_date,sie.end_date,sie.actual_begin_date,sie.actual_end_date,sir.space_time
+        from sys_inspection_execute as sie,sys_inspection_plan as sip,sys_inspection_route as sir
+        where sie.inspection_plan_id = sip.id and sip.inspection_route_id = sir.id
+        and date_format(sie.begin_date,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+        order by sie.begin_date
+    </select>
+    <select id="findExecutePointTotalNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*)
+        from sys_inspection_execute_point
+        where execute_id = #{id}
+    </select>
+    <select id="findUnfinishedExecutePointNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*)
+        from sys_inspection_execute_point
+        where execute_id = #{id} and complete_date is null
     </select>
 </mapper>
