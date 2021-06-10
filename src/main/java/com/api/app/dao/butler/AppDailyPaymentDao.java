@@ -107,4 +107,11 @@ public interface AppDailyPaymentDao {
      * @return 影响行数
      */
     int updateDPOrderStatusByCode(AppDailyPaymentOrder aliPaymentOrder);
+
+    /**
+     * 根据缴费订单支付单号查询缴费信息主键id
+     * @param outTradeNo 缴费订单支付单号
+     * @return 信息主键id
+     */
+    List<Integer> findDailyPaymentIdsByOrderCode(String outTradeNo);
 }

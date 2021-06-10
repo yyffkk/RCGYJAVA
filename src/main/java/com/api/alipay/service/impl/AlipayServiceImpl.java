@@ -493,12 +493,6 @@ public class AlipayServiceImpl implements AlipayService {
                 if (orderList <= 0){
                     throw new RuntimeException("添加缴费订单清单信息失败");
                 }
-
-                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
-                int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(id);
-                if (update <= 0){
-                    throw new RuntimeException("修改缴费信息失败");
-                }
             }
 
             // 开始使用支付宝SDK中提供的API
@@ -601,6 +595,17 @@ public class AlipayServiceImpl implements AlipayService {
                         break;
                     case "TRADE_SUCCESS": // 交易支付成功
                         aliPaymentOrder.setStatus(2);
+                        //根据缴费订单支付单号查询缴费信息主键id
+                        List<Integer> dailyPaymentIds = appDailyPaymentDao.findDailyPaymentIdsByOrderCode(outTradeNo);
+                        if (dailyPaymentIds != null && dailyPaymentIds.size()>0){
+                            for (Integer dailyPaymentId : dailyPaymentIds) {
+                                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
+                                int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(dailyPaymentId);
+                                if (update <= 0){
+                                    log.info("===========修改缴费信息失败");
+                                }
+                            }
+                        }
                         break;
                     case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
                         aliPaymentOrder.setStatus(1);

@@ -116,6 +116,11 @@
     <select id="findDailPaymentOrderByCode" parameterType="java.lang.String" resultType="com.api.model.app.AppDailyPaymentOrder">
         select * from sys_daily_payment_order where code = #{outTradeNo}
     </select>
+    <select id="findDailyPaymentIdsByOrderCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select sdp.id
+        from sys_daily_payment as sdp,sys_daily_payment_order as sdpo,sys_daily_payment_order_list as sdpol
+        where sdp.id = sdpol.daily_payment_id and sdpo.id = sdpol.daily_payment_order_id and sdpo.code = #{outTradeNo}
+    </select>
 
     <update id="updateDPOrderStatusByCode" parameterType="com.api.model.app.AppDailyPaymentOrder">
         update sys_daily_payment_order set status = #{status} where code = #{code}
