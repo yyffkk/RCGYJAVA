@@ -137,6 +137,9 @@
     <select id="findGoodsOrderByCode" resultType="com.api.model.app.AppGoodsAppointment">
         select * from shop_goods_appointment where code = #{outTradeNo}
     </select>
+    <select id="findBackGoodsOrder" resultType="com.api.model.app.AppGoodsAppointment">
+        select * from shop_goods_appointment where status = -1 and back_library = 0
+    </select>
 
     <delete id="cancel" parameterType="com.api.model.shoppingCenter.Order">
         delete from shop_goods_appointment where id = #{id} and create_id = #{createId} and status = #{status}

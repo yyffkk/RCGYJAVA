@@ -1,5 +1,6 @@
 package com.api.manage.config;
 
+import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.butlerApp.dao.butler.ButlerAttendanceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
@@ -9,7 +10,9 @@ import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.manage.dao.remind.RemindDao;
+import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
+import com.api.model.app.AppGoodsAppointment;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
 import com.api.model.butlerService.*;
@@ -28,6 +31,7 @@ import org.jsoup.select.Elements;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -95,6 +99,8 @@ public class SysAutoRemind {
     ButlerAttendanceDao butlerAttendanceDao;
     @Resource
     SysNewsManagementService sysNewsManagementService;
+    @Resource
+    ShoppingDao shoppingDao;
 
 
     /**
@@ -464,6 +470,30 @@ public class SysAutoRemind {
         int educationNum = sysNewsManagementService.updateEducation();
         log.info("更新条数为:"+educationNum);
     }
+
+    /**
+     * 0 0 0/1 * * ?
+     * （每1小时执行一次）轮询定时任务，进行超时，支付失败的商品订单的库存回库处理
+     */
+//    @Scheduled(cron = "0 0 0/1 * * ? ")
+//    @Transactional
+//    public void autoShoppingBackLibrary(){
+//        //查询已超时的需要进行回库的商品预约订单
+//        List<AppGoodsAppointment> appGoodsAppointments = shoppingDao.findBackGoodsOrder();
+//        if (appGoodsAppointments != null && appGoodsAppointments.size()>0){
+//            for (AppGoodsAppointment appGoodsAppointment : appGoodsAppointments) {
+//
+//                //增加对应商品的库存
+//
+//                //更新商品预约订单的back_library（是否库存回库）为1.已回库
+////                 shoppingDao.updateBackLibraryByOrderId(appGoodsAppointment.getId());
+//
+//                log.info("回库成功,回库订单号为:"+appGoodsAppointment.getCode());
+//            }
+//        }else {
+//            log.info("暂无回库订单");
+//        }
+//    }
 
     /**
      * 比较第一个值date和第二个值time

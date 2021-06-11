@@ -146,4 +146,10 @@ public interface ShoppingDao {
      * @return 影响行数
      */
     int insertGoodsOrder(AppGoodsAppointment appGoodsAppointment);
+
+    /**
+     * 查询已超时的需要进行回库的商品预约订单
+     * @return 商品预约订单
+     */
+    List<AppGoodsAppointment> findBackGoodsOrder();
 }
