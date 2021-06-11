@@ -47,6 +47,7 @@
                 and a.status = #{status}
             </if>
         </where>
+        order by a.begin_date desc
     </select>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoFindByIdDailyPayment">

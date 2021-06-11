@@ -24,6 +24,8 @@ alipay:
   dailyPaymentNotifyUrl: "http://39.103.177.88:8804/IntelligentCommunity/alipay/dailyPaymentNotifyInfo"
   ##报事报修
   reportRepairNotifyUrl: "http://39.103.177.88:8804/IntelligentCommunity/alipay/reportRepairNotifyInfo"
+  ##商城购物
+  shoppingNotifyUrl: "http://39.103.177.88:8804/IntelligentCommunity/alipay/shoppingNotifyInfo"
 
   #页面跳转同步通知页面路径
   returnUrl: "http://39.103.177.88:8804/IntelligentCommunity/alipay/return_url.do"

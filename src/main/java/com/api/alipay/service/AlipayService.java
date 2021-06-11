@@ -1,8 +1,8 @@
 package com.api.alipay.service;
 
 import com.api.model.app.AppDailyPaymentOrder;
+import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppRepairOrder;
-import com.api.model.app.UserIdAndRepairId;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -30,4 +30,9 @@ public interface AlipayService {
 
     Map<String, Object> reportRepairCheckAlipay(String outTradeNo);
 
+    Map<String, Object> shoppingAlipay(AppGoodsAppointment appGoodsAppointment, Integer type, Integer id);
+
+    String shoppingNotifyInfo(HttpServletRequest request, String userName, Integer userId);
+
+    Map<String, Object> shoppingCheckAlipay(String outTradeNo);
 }

@@ -14,10 +14,9 @@ import com.api.alipay.dao.AlipayDao;
 import com.api.alipay.service.AlipayService;
 import com.api.app.dao.butler.AppDailyPaymentDao;
 import com.api.app.dao.butler.AppReportRepairDao;
+import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
-import com.api.model.app.AppDailyPaymentOrder;
-import com.api.model.app.AppRepairOrder;
-import com.api.model.app.UserIdAndRepairId;
+import com.api.model.app.*;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.util.IdWorker;
@@ -48,6 +47,8 @@ public class AlipayServiceImpl implements AlipayService {
     private String DAILY_PAYMENT_NOTIFY_URL;
     @Value("${alipay.reportRepairNotifyUrl}")
     private String REPORT_REPAIR_NOTIFY_URL;
+    @Value("${alipay.shoppingNotifyUrl}")
+    private String SHOPPING_NOTIFY_URL;
     @Value("${alipay.returnUrl}")
     private String RETURN_URL;
     @Value("${alipay.aliPayGateway}")
@@ -66,6 +67,8 @@ public class AlipayServiceImpl implements AlipayService {
     AppReportRepairDao appReportRepairDao;
     @Resource
     SysProcessRecordDao sysProcessRecordDao;
+    @Resource
+    ShoppingDao shoppingDao;
     private static Map<String,Object> map = null;
 
 //    /**
@@ -920,6 +923,87 @@ public class AlipayServiceImpl implements AlipayService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> shoppingAlipay(AppGoodsAppointment appGoodsAppointment, Integer type, Integer id) {
+        map = new HashMap<>();
+        String body = "";
+        try {
+            if (type == 4){//4.游客
+                throw new RuntimeException("您的身份为游客，不可进行此操作");
+            }
+            //查询该用户是否有报名该商品
+            AppGoodsIdAndUserId goodsIdAndUserId = new AppGoodsIdAndUserId();
+            goodsIdAndUserId.setUserId(id);
+            goodsIdAndUserId.setGoodsId(appGoodsAppointment.getGoodsId());
+            int count = shoppingDao.countAppointmentByGIdAndUId(goodsIdAndUserId);
+            if (count >0){
+                throw new RuntimeException("您已预约成功，不可进行再次进行该操作");
+            }
+
+            //创建报事报修初始订单信息
+            createShoppingOrder(appGoodsAppointment,id);
+
+            //执行支付宝操作
+            // 开始使用支付宝SDK中提供的API
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            model.setBody("商城购物支付");
+            model.setSubject("商城购物");
+            // 唯一订单号 根据项目中实际需要获取相应的
+            model.setOutTradeNo(appGoodsAppointment.getCode());
+            // 支付超时时间（根据项目需要填写）
+            model.setTimeoutExpress("30m");
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            model.setTotalAmount(String.valueOf(appGoodsAppointment.getPayPrice()));
+            //app支付 固定值 填写QUICK_MSECURITY_PAY
+            model.setProductCode("QUICK_MSECURITY_PAY");
+            alipayRequest.setBizModel(model);
+            // 支付成功后支付宝异步通知的接收地址url
+            alipayRequest.setNotifyUrl(SHOPPING_NOTIFY_URL);
+            //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+            // 注意：每个请求的相应对象不同，与请求对象是对应。
+            AlipayTradeAppPayResponse alipayResponse = null;
+            try {
+                alipayResponse = alipayClient.sdkExecute(alipayRequest);
+            } catch (AlipayApiException e) {
+                e.printStackTrace();
+                log.info("获取签名失败");
+                throw new RuntimeException("获取签名失败");
+            }
+            // 返回支付相关信息(此处可以直接将getBody中的内容[就是orderString]直接返回，无需再做一些其他操作)
+            body = alipayResponse.getBody();
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        log.info("body:"+body);
+        map.put("message",body);
+        map.put("status",true);
+        return map;
+    }
+
+
+    @Override
+    public String shoppingNotifyInfo(HttpServletRequest request, String userName, Integer userId) {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> shoppingCheckAlipay(String outTradeNo) {
+        return null;
+    }
+
 
     private void createRepairOrder(AppRepairOrder appRepairOrder) {
         //查询付款金额
@@ -940,5 +1024,41 @@ public class AlipayServiceImpl implements AlipayService {
         if (i<=0){
             throw new RuntimeException("添加报事报修订单信息失败");
         }
+    }
+
+    private void createShoppingOrder(AppGoodsAppointment appGoodsAppointment, Integer id) {
+        //根据商品主键id查询商品售卖金额单价
+        BigDecimal sellingPrice = shoppingDao.findSellingPriceByGoodsId(appGoodsAppointment.getGoodsId());
+        //计算出真实的付款金额
+        BigDecimal realPrice = sellingPrice.multiply(BigDecimal.valueOf(appGoodsAppointment.getNum()));
+
+        if (realPrice.compareTo(appGoodsAppointment.getPayPrice()) != 0){
+            throw new RuntimeException("支付金额有误，请重新支付");
+        }
+        if (realPrice.equals(BigDecimal.ZERO)){
+            throw new RuntimeException("支付金额不可为0");
+        }
+
+        appGoodsAppointment.setCreateId(id);
+        appGoodsAppointment.setCreateDate(new Date());
+        appGoodsAppointment.setStatus(-2);//-2.交易创建并等待买家付款
+        appGoodsAppointment.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));//填入预约编号
+
+        AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum = new AppGoodsIdAndAppointmentNum();
+        appGoodsIdAndAppointmentNum.setGoodsId(appGoodsAppointment.getGoodsId());
+        appGoodsIdAndAppointmentNum.setAppointmentNum(appGoodsAppointment.getNum());
+
+        //累加商品预约量
+        int update = shoppingDao.incGoodsAppointmentNum(appGoodsIdAndAppointmentNum);
+        if (update <= 0){
+            log.info("预约失败，库存已无,商品主键id："+appGoodsAppointment.getGoodsId());
+            throw new RuntimeException("预约失败，库存已无");
+        }
+
+        int insert = shoppingDao.goodsAppointment(appGoodsAppointment);
+        if (insert <= 0){
+            throw new RuntimeException("添加成功");
+        }
+
     }
 }

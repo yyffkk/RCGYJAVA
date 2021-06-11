@@ -11,6 +11,7 @@ import com.api.vo.app.AppGoodsDetailVo;
 import com.api.vo.app.AppGoodsVo;
 import com.api.vo.app.AppMyOrderVo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ShoppingDao {
@@ -117,4 +118,11 @@ public interface ShoppingDao {
      * @return 订单详情
      */
     AppMyOrderVo findOrderDetailByOrderId(UserIdAndGoodsAppointmentId UserIdAndGoodsAppointmentId);
+
+    /**
+     * 根据商品主键id查询商品售卖金额单价
+     * @param goodsId 商品主键id
+     * @return 商品售卖金额单价
+     */
+    BigDecimal findSellingPriceByGoodsId(Integer goodsId);
 }

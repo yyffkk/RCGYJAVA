@@ -102,6 +102,9 @@
             and sga.create_id = #{id}
             and sga.id = #{goodsAppointmentId}
     </select>
+    <select id="findSellingPriceByGoodsId" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select selling_price from shop_goods where id = #{goodsId}
+    </select>
 
     <delete id="cancel" parameterType="com.api.model.shoppingCenter.Order">
         delete from shop_goods_appointment where id = #{id} and create_id = #{createId} and status = #{status}

@@ -100,7 +100,7 @@ public class ShoppingController {
 
 
     /**
-     * 商品预约
+     * 商品预约（已废弃，转到支付宝支付流程）
      * @param appGoodsAppointment app 商品预约信息
      * @param request app-admin-token获取的request用户信息
      * @return map

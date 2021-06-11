@@ -1,5 +1,6 @@
 package com.api.model.app;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ public class AppGoodsAppointment {
      */
     private Integer goodsId;
     /**
-     * 状态：1.待发货，2.已发货，3.已收货
+     * 状态：-2.交易创建并等待买家付款，-1.未付款交易超时关闭或支付完成后全额退款，1.待发货（交易支付成功），2.已发货，3.已到货，4.已收货，6.已评价[当状态>=4.已收货并评价]，8.申请退换货，9.申请通过，10.申请驳回
      */
     private Integer status;
     /**
@@ -42,6 +43,18 @@ public class AppGoodsAppointment {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 商品单价
+     */
+    private Integer unitPrice;
+    /**
+     * 付款方式（1.支付宝，2.微信，3.现金，3.pos）
+     */
+    private Integer payType;
+    /**
+     * 付款金额
+     */
+    private BigDecimal payPrice;
 
     @Override
     public String toString() {
@@ -55,6 +68,9 @@ public class AppGoodsAppointment {
                 ", num=" + num +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", unitPrice=" + unitPrice +
+                ", payType=" + payType +
+                ", payPrice=" + payPrice +
                 '}';
     }
 
@@ -130,10 +146,34 @@ public class AppGoodsAppointment {
         this.createDate = createDate;
     }
 
+    public Integer getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Integer unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public Integer getPayType() {
+        return payType;
+    }
+
+    public void setPayType(Integer payType) {
+        this.payType = payType;
+    }
+
+    public BigDecimal getPayPrice() {
+        return payPrice;
+    }
+
+    public void setPayPrice(BigDecimal payPrice) {
+        this.payPrice = payPrice;
+    }
+
     public AppGoodsAppointment() {
     }
 
-    public AppGoodsAppointment(Integer id, String code, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate) {
+    public AppGoodsAppointment(Integer id, String code, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate, Integer unitPrice, Integer payType, BigDecimal payPrice) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -143,5 +183,8 @@ public class AppGoodsAppointment {
         this.num = num;
         this.createId = createId;
         this.createDate = createDate;
+        this.unitPrice = unitPrice;
+        this.payType = payType;
+        this.payPrice = payPrice;
     }
 }
