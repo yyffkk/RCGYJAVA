@@ -48,6 +48,35 @@
             #{createDate}
         )
     </insert>
+    <insert id="insertGoodsOrder" parameterType="com.api.model.app.AppGoodsAppointment">
+        insert into shop_goods_appointment(
+            code,
+            goods_id,
+            status,
+            user_name,
+            user_tel,
+            num,
+            create_id,
+            create_date,
+            unit_price,
+            pay_type,
+            pay_price,
+            back_library
+        )values (
+            #{code},
+            #{goodsId},
+            #{status},
+            #{userName},
+            #{userTel},
+            #{num},
+            #{createId},
+            #{createDate},
+            #{unitPrice},
+            #{payType},
+            #{payPrice},
+            #{backLibrary}
+        )
+    </insert>
 
     <select id="goodsSearch" parameterType="java.lang.String" resultType="com.api.vo.app.AppGoodsVo">
         select * from shop_goods where title like concat('%',#{searchName},'%')
@@ -105,6 +134,9 @@
     <select id="findSellingPriceByGoodsId" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
         select selling_price from shop_goods where id = #{goodsId}
     </select>
+    <select id="findGoodsOrderByCode" resultType="com.api.model.app.AppGoodsAppointment">
+        select * from shop_goods_appointment where code = #{outTradeNo}
+    </select>
 
     <delete id="cancel" parameterType="com.api.model.shoppingCenter.Order">
         delete from shop_goods_appointment where id = #{id} and create_id = #{createId} and status = #{status}
@@ -140,6 +172,11 @@
             </if>
         </set>
         where id = #{goodsAppointmentId} and create_id = #{id}
+    </update>
+    <update id="updateSGAStatusByCode" parameterType="com.api.model.app.AppGoodsAppointment">
+        update shop_goods_appointment
+        set status = #{status}
+        where code = #{code}
     </update>
 
 

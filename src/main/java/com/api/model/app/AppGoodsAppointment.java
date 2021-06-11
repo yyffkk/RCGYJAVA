@@ -55,6 +55,10 @@ public class AppGoodsAppointment {
      * 付款金额
      */
     private BigDecimal payPrice;
+    /**
+     * 是否库存回库，0.未回库，1.已回库
+     */
+    private Integer backLibrary;
 
     @Override
     public String toString() {
@@ -71,6 +75,7 @@ public class AppGoodsAppointment {
                 ", unitPrice=" + unitPrice +
                 ", payType=" + payType +
                 ", payPrice=" + payPrice +
+                ", backLibrary=" + backLibrary +
                 '}';
     }
 
@@ -170,10 +175,18 @@ public class AppGoodsAppointment {
         this.payPrice = payPrice;
     }
 
+    public Integer getBackLibrary() {
+        return backLibrary;
+    }
+
+    public void setBackLibrary(Integer backLibrary) {
+        this.backLibrary = backLibrary;
+    }
+
     public AppGoodsAppointment() {
     }
 
-    public AppGoodsAppointment(Integer id, String code, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate, Integer unitPrice, Integer payType, BigDecimal payPrice) {
+    public AppGoodsAppointment(Integer id, String code, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate, Integer unitPrice, Integer payType, BigDecimal payPrice, Integer backLibrary) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -186,5 +199,6 @@ public class AppGoodsAppointment {
         this.unitPrice = unitPrice;
         this.payType = payType;
         this.payPrice = payPrice;
+        this.backLibrary = backLibrary;
     }
 }

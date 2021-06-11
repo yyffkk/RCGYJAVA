@@ -996,7 +996,90 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     public String shoppingNotifyInfo(HttpServletRequest request, String userName, Integer userId) {
-        return null;
+        //获取支付宝POST过来反馈信息
+        Map<String,String> params = new HashMap<>();
+        Map<String,String[]> requestParams = request.getParameterMap();
+        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+
+            // 官方demo中使用如下方式解决中文乱码，在此本人不推荐使用，可能会出现中文乱码解决无效的问题。
+            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
+
+            params.put(name, valueStr);
+        }
+        boolean signVerified = false;
+        try {
+            //调用SDK验证签名
+            signVerified = AlipaySignature.rsaCheckV1(params, RSA_ALIPAY_PUBLIC_KEY, ALIPAY_CHARSET, SIGN_TYPE);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            // 验签异常  笔者在这里是输出log，可以根据需要做一些其他操作
+            log.info("异步调用失败");
+            return "fail";
+        }
+        if(signVerified) {
+            //验签通过
+            //获取需要保存的数据
+            String appId=params.get("app_id");//支付宝分配给开发者的应用Id
+            String outTradeNo = params.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
+            String buyerPayAmount=params.get("buyer_pay_amount");//付款金额:用户在交易中支付的金额
+            String tradeStatus = params.get("trade_status");// 获取交易状态
+            // 验证通知后执行自己项目需要的业务操作
+            // 一般需要判断支付状态是否为TRADE_SUCCESS
+            // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
+            //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+            AppGoodsAppointment appGoodsAppointment = shoppingDao.findGoodsOrderByCode(outTradeNo);
+            //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
+            if(appGoodsAppointment!=null && buyerPayAmount.equals(appGoodsAppointment.getPayPrice().toString()) && AlipayConfig.APPID.equals(appId)){
+                switch (tradeStatus) // 判断交易结果
+                {
+                    case "TRADE_FINISHED": // 交易结束并不可退款
+                        appGoodsAppointment.setStatus(15);
+                        break;
+                    case "TRADE_SUCCESS": // 交易支付成功
+                        appGoodsAppointment.setStatus(1);
+                        break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        appGoodsAppointment.setStatus(-1);
+                        break;
+                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+                        appGoodsAppointment.setStatus(-2);
+                        break;
+                    default:
+                        break;
+                }
+                //更新表的状态
+                int returnResult =  shoppingDao.updateSGAStatusByCode(appGoodsAppointment);
+                if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
+                    if(returnResult>0){
+                        log.info("===========异步调用成功");
+                        // 成功要返回success，不然支付宝会不断发送通知。
+                        return "success";
+                    }else{
+                        log.info("===========更新表的状态失败");
+                        return "fail";
+                    }
+                }else{
+                    log.info("===========不是支付成功的订单");
+                    return "fail";
+                }
+            }else{
+                log.info("==================支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
+                return"fail";
+            }
+        }else {
+            // 验签失败  笔者在这里是输出log，可以根据需要做一些其他操作
+            log.info("=========验签不通过！");
+
+            // 失败要返回fail，不然支付宝会不断发送通知。
+            return "fail";
+        }
     }
 
     @Override
@@ -1042,6 +1125,7 @@ public class AlipayServiceImpl implements AlipayService {
         appGoodsAppointment.setCreateId(id);
         appGoodsAppointment.setCreateDate(new Date());
         appGoodsAppointment.setStatus(-2);//-2.交易创建并等待买家付款
+        appGoodsAppointment.setBackLibrary(0);//是否库存回库，默认0.未回库
         appGoodsAppointment.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));//填入预约编号
 
         AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum = new AppGoodsIdAndAppointmentNum();
@@ -1055,7 +1139,8 @@ public class AlipayServiceImpl implements AlipayService {
             throw new RuntimeException("预约失败，库存已无");
         }
 
-        int insert = shoppingDao.goodsAppointment(appGoodsAppointment);
+        //生成商品预约订单
+        int insert = shoppingDao.insertGoodsOrder(appGoodsAppointment);
         if (insert <= 0){
             throw new RuntimeException("添加成功");
         }

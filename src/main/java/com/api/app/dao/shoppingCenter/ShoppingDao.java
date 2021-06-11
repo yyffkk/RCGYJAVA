@@ -125,4 +125,25 @@ public interface ShoppingDao {
      * @return 商品售卖金额单价
      */
     BigDecimal findSellingPriceByGoodsId(Integer goodsId);
+
+    /**
+     * 根据code【商品预约编号】查询信息 pay_price【付款金额】
+     * @param outTradeNo 商品预约编号
+     * @return
+     */
+    AppGoodsAppointment findGoodsOrderByCode(String outTradeNo);
+
+    /**
+     * 根据code【商品预约编号】修改商品预约状态
+     * @param appGoodsAppointment app 商品预约信息
+     * @return 影响行数
+     */
+    int updateSGAStatusByCode(AppGoodsAppointment appGoodsAppointment);
+
+    /**
+     * 生成商品预约订单
+     * @param appGoodsAppointment app 商品预约信息
+     * @return 影响行数
+     */
+    int insertGoodsOrder(AppGoodsAppointment appGoodsAppointment);
 }
