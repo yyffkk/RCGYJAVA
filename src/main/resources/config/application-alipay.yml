@@ -28,7 +28,7 @@ alipay:
   shoppingNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/shoppingNotifyInfo"
 
   #页面跳转同步通知页面路径
-  returnUrl: "http://test.kaidalai.cn/api/app/user/alipay/return_url.do"
+  returnUrl: "https://test.kaidalai.cn/api/app/user/alipay/return_url.do"
 
   #请求支付宝的网关地址
   aliPayGateway: "https://openapi.alipay.com/gateway.do"
