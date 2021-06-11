@@ -9,7 +9,6 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
-import com.api.alipay.config.AlipayConfig;
 import com.api.alipay.dao.AlipayDao;
 import com.api.alipay.service.AlipayService;
 import com.api.app.dao.butler.AppDailyPaymentDao;
@@ -357,7 +356,7 @@ public class AlipayServiceImpl implements AlipayService {
             //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
             AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
             //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
-            if(aliPaymentOrder!=null && buyerPayAmount.equals(aliPaymentOrder.getPayPrice().toString()) && AlipayConfig.APPID.equals(appId)){
+            if(aliPaymentOrder!=null && buyerPayAmount.equals(aliPaymentOrder.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
                 switch (tradeStatus) // 判断交易结果
                 {
                     case "TRADE_FINISHED": // 交易结束并不可退款
@@ -550,6 +549,7 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     public String dailyPaymentNotifyInfo(HttpServletRequest request) {
+        log.info("开始异步调用");
         //获取支付宝POST过来反馈信息
         Map<String,String> params = new HashMap<>();
         Map<String,String[]> requestParams = request.getParameterMap();
@@ -590,7 +590,7 @@ public class AlipayServiceImpl implements AlipayService {
             //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
             AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
             //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
-            if(aliPaymentOrder!=null && buyerPayAmount.equals(aliPaymentOrder.getPayPrice().toString()) && AlipayConfig.APPID.equals(appId)){
+            if(aliPaymentOrder!=null && buyerPayAmount.equals(aliPaymentOrder.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
                 switch (tradeStatus) // 判断交易结果
                 {
                     case "TRADE_FINISHED": // 交易结束并不可退款
@@ -797,7 +797,7 @@ public class AlipayServiceImpl implements AlipayService {
             //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
             AppRepairOrder appRepairOrder = appReportRepairDao.findRepairOrderByCode(outTradeNo);
             //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
-            if(appRepairOrder!=null && buyerPayAmount.equals(appRepairOrder.getPayPrice().toString()) && AlipayConfig.APPID.equals(appId)){
+            if(appRepairOrder!=null && buyerPayAmount.equals(appRepairOrder.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
                 switch (tradeStatus) // 判断交易结果
                 {
                     case "TRADE_FINISHED": // 交易结束并不可退款
@@ -1036,7 +1036,7 @@ public class AlipayServiceImpl implements AlipayService {
             //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
             AppGoodsAppointment appGoodsAppointment = shoppingDao.findGoodsOrderByCode(outTradeNo);
             //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
-            if(appGoodsAppointment!=null && buyerPayAmount.equals(appGoodsAppointment.getPayPrice().toString()) && AlipayConfig.APPID.equals(appId)){
+            if(appGoodsAppointment!=null && buyerPayAmount.equals(appGoodsAppointment.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
                 switch (tradeStatus) // 判断交易结果
                 {
                     case "TRADE_FINISHED": // 交易结束并不可退款

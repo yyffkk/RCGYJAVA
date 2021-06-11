@@ -19,16 +19,16 @@ alipay:
 
   #服务器异步通知页面路径
   ##测试
-  notifyUrl: "http://39.103.177.88:8804/IntelligentCommunity/app/user/alipay/getAlipayNotifyInfo"
+  notifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/getAlipayNotifyInfo"
   ##日常缴费
-  dailyPaymentNotifyUrl: "http://39.103.177.88:8804/IntelligentCommunity/app/user/alipay/dailyPaymentNotifyInfo"
+  dailyPaymentNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/dailyPaymentNotifyInfo"
   ##报事报修
-  reportRepairNotifyUrl: "http://39.103.177.88:8804/IntelligentCommunity/app/user/alipay/reportRepairNotifyInfo"
+  reportRepairNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/reportRepairNotifyInfo"
   ##商城购物
-  shoppingNotifyUrl: "http://39.103.177.88:8804/IntelligentCommunity/app/user/alipay/shoppingNotifyInfo"
+  shoppingNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/shoppingNotifyInfo"
 
   #页面跳转同步通知页面路径
-  returnUrl: "http://39.103.177.88:8804/IntelligentCommunity/app/user/alipay/return_url.do"
+  returnUrl: "http://test.kaidalai.cn/api/app/user/alipay/return_url.do"
 
   #请求支付宝的网关地址
   aliPayGateway: "https://openapi.alipay.com/gateway.do"
