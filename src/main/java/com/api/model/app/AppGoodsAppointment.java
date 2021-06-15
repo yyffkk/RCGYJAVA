@@ -46,7 +46,7 @@ public class AppGoodsAppointment {
     /**
      * 商品单价
      */
-    private Integer unitPrice;
+    private BigDecimal unitPrice;
     /**
      * 付款方式（1.支付宝，2.微信，3.现金，3.pos）
      */
@@ -151,11 +151,11 @@ public class AppGoodsAppointment {
         this.createDate = createDate;
     }
 
-    public Integer getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Integer unitPrice) {
+    public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
 
@@ -186,7 +186,7 @@ public class AppGoodsAppointment {
     public AppGoodsAppointment() {
     }
 
-    public AppGoodsAppointment(Integer id, String code, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate, Integer unitPrice, Integer payType, BigDecimal payPrice, Integer backLibrary) {
+    public AppGoodsAppointment(Integer id, String code, Integer goodsId, Integer status, String userName, String userTel, Integer num, Integer createId, Date createDate, BigDecimal unitPrice, Integer payType, BigDecimal payPrice, Integer backLibrary) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;

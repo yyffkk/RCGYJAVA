@@ -1202,6 +1202,7 @@ public class AlipayServiceImpl implements AlipayService {
         appGoodsAppointment.setStatus(-2);//-2.交易创建并等待买家付款
         appGoodsAppointment.setBackLibrary(0);//是否库存回库，默认0.未回库
         appGoodsAppointment.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));//填入预约编号
+        appGoodsAppointment.setUnitPrice(sellingPrice);//填入商品售卖金额单价
 
         AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum = new AppGoodsIdAndAppointmentNum();
         appGoodsIdAndAppointmentNum.setGoodsId(appGoodsAppointment.getGoodsId());
@@ -1217,7 +1218,7 @@ public class AlipayServiceImpl implements AlipayService {
         //生成商品预约订单
         int insert = shoppingDao.insertGoodsOrder(appGoodsAppointment);
         if (insert <= 0){
-            throw new RuntimeException("添加成功");
+            throw new RuntimeException("添加失败");
         }
 
     }
