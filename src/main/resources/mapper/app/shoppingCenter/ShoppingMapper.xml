@@ -83,7 +83,10 @@
     </select>
 
     <update id="incGoodsAppointmentNum" parameterType="com.api.model.app.AppGoodsIdAndAppointmentNum">
-        update shop_goods set subscribe_num = subscribe_num + #{appointmentNum} where id = #{goodsId} and subscribe_num + #{appointmentNum} <![CDATA[ <= ]]> stock
+        update shop_goods
+        set subscribe_num = subscribe_num + #{appointmentNum},
+        stock = stock - #{appointmentNum}
+        where id = #{goodsId} and #{appointmentNum} <![CDATA[ <= ]]> stock
     </update>
 
     <select id="myOrder" parameterType="com.api.model.shoppingCenter.Order" resultType="com.api.vo.app.AppMyOrderVo">
@@ -180,6 +183,17 @@
         update shop_goods_appointment
         set status = #{status}
         where code = #{code}
+    </update>
+    <update id="decGoodsAppointmentNum" parameterType="com.api.model.app.AppGoodsIdAndAppointmentNum">
+        update shop_goods
+        set subscribe_num = subscribe_num - #{appointmentNum},
+        stock = stock + #{appointmentNum}
+        where id = #{goodsId} and #{appointmentNum} <![CDATA[ <= ]]> subscribe_num
+    </update>
+    <update id="updateBackLibraryByOrderId" parameterType="java.lang.Integer">
+        update shop_goods_appointment
+        set back_library = 1
+        where id = #{id}
     </update>
 
 

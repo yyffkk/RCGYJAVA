@@ -1208,7 +1208,7 @@ public class AlipayServiceImpl implements AlipayService {
         appGoodsIdAndAppointmentNum.setGoodsId(appGoodsAppointment.getGoodsId());
         appGoodsIdAndAppointmentNum.setAppointmentNum(appGoodsAppointment.getNum());
 
-        //累加商品预约量
+        //累加商品预约量,累减商品库存量
         int update = shoppingDao.incGoodsAppointmentNum(appGoodsIdAndAppointmentNum);
         if (update <= 0){
             log.info("预约失败，库存已无,商品主键id："+appGoodsAppointment.getGoodsId());

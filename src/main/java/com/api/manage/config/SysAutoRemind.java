@@ -13,6 +13,7 @@ import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
 import com.api.model.app.AppGoodsAppointment;
+import com.api.model.app.AppGoodsIdAndAppointmentNum;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
 import com.api.model.butlerService.*;
@@ -472,28 +473,39 @@ public class SysAutoRemind {
     }
 
     /**
-     * 0 0 0/1 * * ?
-     * （每1小时执行一次）轮询定时任务，进行超时，支付失败的商品订单的库存回库处理
+     * 0 0/30 * * * ?
+     * （每30分钟执行一次）轮询定时任务，进行超时，支付失败的商品订单的库存回库处理
      */
-//    @Scheduled(cron = "0 0 0/1 * * ? ")
-//    @Transactional
-//    public void autoShoppingBackLibrary(){
-//        //查询已超时的需要进行回库的商品预约订单
-//        List<AppGoodsAppointment> appGoodsAppointments = shoppingDao.findBackGoodsOrder();
-//        if (appGoodsAppointments != null && appGoodsAppointments.size()>0){
-//            for (AppGoodsAppointment appGoodsAppointment : appGoodsAppointments) {
-//
-//                //增加对应商品的库存
-//
-//                //更新商品预约订单的back_library（是否库存回库）为1.已回库
-////                 shoppingDao.updateBackLibraryByOrderId(appGoodsAppointment.getId());
-//
-//                log.info("回库成功,回库订单号为:"+appGoodsAppointment.getCode());
-//            }
-//        }else {
-//            log.info("暂无回库订单");
-//        }
-//    }
+    @Scheduled(cron = "0 0/30 * * * ? ")
+    @Transactional
+    public void autoShoppingBackLibrary(){
+        //查询已超时的需要进行回库的商品预约订单
+        List<AppGoodsAppointment> appGoodsAppointments = shoppingDao.findBackGoodsOrder();
+        if (appGoodsAppointments != null && appGoodsAppointments.size()>0){
+            for (AppGoodsAppointment appGoodsAppointment : appGoodsAppointments) {
+                AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum = new AppGoodsIdAndAppointmentNum();
+                appGoodsIdAndAppointmentNum.setGoodsId(appGoodsAppointment.getGoodsId());
+                appGoodsIdAndAppointmentNum.setAppointmentNum(appGoodsAppointment.getNum());
+
+                //增加对应商品的库存
+                int update = shoppingDao.decGoodsAppointmentNum(appGoodsIdAndAppointmentNum);
+                if (update <= 0){
+                    log.info("库存回库失败,商品预约订单主键id："+appGoodsAppointment.getId());
+                    throw new RuntimeException("库存回库失败");
+                }
+
+                //更新商品预约订单的back_library（是否库存回库）为1.已回库
+                int update2 = shoppingDao.updateBackLibraryByOrderId(appGoodsAppointment.getId());
+                if (update2 <= 0){
+                    log.info("商品预约订单的back_library更新失败,商品预约订单主键id："+appGoodsAppointment.getId());
+                    throw new RuntimeException("商品预约订单的back_library更新失败");
+                }
+                log.info("回库成功,回库订单号为:"+appGoodsAppointment.getCode());
+            }
+        }else {
+            log.info("暂无回库订单");
+        }
+    }
 
     /**
      * 比较第一个值date和第二个值time

@@ -152,4 +152,18 @@ public interface ShoppingDao {
      * @return 商品预约订单
      */
     List<AppGoodsAppointment> findBackGoodsOrder();
+
+    /**
+     * 累减商品预约量
+     * @param appGoodsIdAndAppointmentNum 预约商品主键id 和 预约数量
+     * @return 影响行数
+     */
+    int decGoodsAppointmentNum(AppGoodsIdAndAppointmentNum appGoodsIdAndAppointmentNum);
+
+    /**
+     * 更新商品预约订单的back_library（是否库存回库）为1.已回库
+     * @param id 商品预约订单主键id
+     * @return 影响行数
+     */
+    int updateBackLibraryByOrderId(Integer id);
 }
