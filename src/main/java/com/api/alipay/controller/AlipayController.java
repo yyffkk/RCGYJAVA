@@ -151,12 +151,12 @@ public class AlipayController {
 
     /**
      * 日常缴费 向支付宝发起订单查询请求
-     * @param appDailyPaymentOrder  app生活缴纳 支付订单信息 [商户订单号]
+     * @param code  商户订单号
      * @return map
      */
-    @PostMapping("/dailyPaymentCheckAlipay")
-    public Map<String,Object> dailyPaymentCheckAlipay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder){
-        return alipayService.dailyPaymentCheckAlipay(appDailyPaymentOrder);
+    @GetMapping("/dailyPaymentCheckAlipay")
+    public Map<String,Object> dailyPaymentCheckAlipay(String code){
+        return alipayService.dailyPaymentCheckAlipay(code);
     }
 
     /**
@@ -197,12 +197,12 @@ public class AlipayController {
 
     /**
      * 报事报修 向支付宝发起订单查询请求
-     * @param outTradeNo 商户订单号
+     * @param code 商户订单号
      * @return map
      */
-    @PostMapping("/reportRepairCheckAlipay")
-    public Map<String,Object> reportRepairCheckAlipay(@RequestBody String outTradeNo){
-        return alipayService.reportRepairCheckAlipay(outTradeNo);
+    @GetMapping("/reportRepairCheckAlipay")
+    public Map<String,Object> reportRepairCheckAlipay(String code){
+        return alipayService.reportRepairCheckAlipay(code);
     }
 
 

@@ -42,7 +42,7 @@ public class AppDailyPaymentOrder {
      */
     private BigDecimal payPrice;
     /**
-     * 付款状态:1.待支付，2.支付成功，3.支付失败
+     * 付款状态:付款状态:0.交易创建并等待买家付款，1.未付款交易超时关闭或支付完成后全额退款，2.交易支付成功，3.交易结束并不可退款
      */
     private Integer status;
     /**
