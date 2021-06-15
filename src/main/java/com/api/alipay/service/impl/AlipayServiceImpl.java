@@ -350,6 +350,7 @@ public class AlipayServiceImpl implements AlipayService {
             String outTradeNo = params.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
             String buyerPayAmount=params.get("buyer_pay_amount");//付款金额:用户在交易中支付的金额
             String tradeStatus = params.get("trade_status");// 获取交易状态
+            String tradeNo=params.get("trade_no");//支付宝的交易号
             // 验证通知后执行自己项目需要的业务操作
             // 一般需要判断支付状态是否为TRADE_SUCCESS
             // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
@@ -357,6 +358,7 @@ public class AlipayServiceImpl implements AlipayService {
             AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
             //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
             if(aliPaymentOrder!=null && buyerPayAmount.equals(aliPaymentOrder.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
+                aliPaymentOrder.setTradeNo(tradeNo);//填入支付宝的交易号
                 switch (tradeStatus) // 判断交易结果
                 {
                     case "TRADE_FINISHED": // 交易结束并不可退款
@@ -658,7 +660,8 @@ public class AlipayServiceImpl implements AlipayService {
             AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
             AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
             alipayTradeQueryRequest.setBizContent("{" +
-                    "\"out_trade_no\":\""+outTradeNo+"\"" +
+                    "\"out_trade_no\":\""+outTradeNo+"\"," +
+                    "\"trade_no\":\""+null+"\"" +
                     "}");
             AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
             if(alipayTradeQueryResponse.isSuccess()){

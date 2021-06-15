@@ -123,6 +123,13 @@
     </select>
 
     <update id="updateDPOrderStatusByCode" parameterType="com.api.model.app.AppDailyPaymentOrder">
-        update sys_daily_payment_order set status = #{status} where code = #{code}
+        update sys_daily_payment_order
+        <set>
+            <if test="tradeNo != null and tradeNo != ''">
+                trade_no = #{tradeNo},
+            </if>
+            status = #{status}
+        </set>
+        where code = #{code}
     </update>
 </mapper>

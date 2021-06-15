@@ -22,6 +22,10 @@ public class AppDailyPaymentOrder {
      */
     private String code;
     /**
+     * 支付宝的交易号
+     */
+    private String tradeNo;
+    /**
      * 缴费人名称
      */
     private String name;
@@ -57,6 +61,7 @@ public class AppDailyPaymentOrder {
                 "id=" + id +
                 ", ids=" + Arrays.toString(ids) +
                 ", code='" + code + '\'' +
+                ", tradeNo='" + tradeNo + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
                 ", payType=" + payType +
@@ -89,6 +94,14 @@ public class AppDailyPaymentOrder {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getTradeNo() {
+        return tradeNo;
+    }
+
+    public void setTradeNo(String tradeNo) {
+        this.tradeNo = tradeNo;
     }
 
     public String getName() {
@@ -150,10 +163,11 @@ public class AppDailyPaymentOrder {
     public AppDailyPaymentOrder() {
     }
 
-    public AppDailyPaymentOrder(Integer id, int[] ids, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer status, Integer createId, Date createDate) {
+    public AppDailyPaymentOrder(Integer id, int[] ids, String code, String tradeNo, String name, String tel, Integer payType, BigDecimal payPrice, Integer status, Integer createId, Date createDate) {
         this.id = id;
         this.ids = ids;
         this.code = code;
+        this.tradeNo = tradeNo;
         this.name = name;
         this.tel = tel;
         this.payType = payType;
