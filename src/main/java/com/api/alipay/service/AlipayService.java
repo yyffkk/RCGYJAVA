@@ -34,5 +34,5 @@ public interface AlipayService {
 
     String shoppingNotifyInfo(HttpServletRequest request, String userName, Integer userId);
 
-    Map<String, Object> shoppingCheckAlipay(String outTradeNo);
+    Map<String, Object> shoppingCheckAlipay(String code);
 }

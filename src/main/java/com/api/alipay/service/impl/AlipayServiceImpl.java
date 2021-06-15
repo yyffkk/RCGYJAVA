@@ -667,6 +667,11 @@ public class AlipayServiceImpl implements AlipayService {
             if(alipayTradeQueryResponse.isSuccess()){
                 //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
                 AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(code);
+                if (aliPaymentOrder == null){
+                    map.put("status",-1);
+                    map.put("message","订单不存在");
+                    return map;
+                }
                 //修改数据库支付宝订单表
                 switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
                 {
@@ -699,7 +704,7 @@ public class AlipayServiceImpl implements AlipayService {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-        map.put("status",0);
+        map.put("status",-1);
         return map;
     }
 
@@ -899,6 +904,11 @@ public class AlipayServiceImpl implements AlipayService {
             if(alipayTradeQueryResponse.isSuccess()){
                 //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
                 AppRepairOrder appRepairOrder = appReportRepairDao.findRepairOrderByCode(code);
+                if (appRepairOrder == null){
+                    map.put("status",-1);
+                    map.put("message","订单不存在");
+                    return map;
+                }
                 //修改数据库支付宝订单表
                 switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
                 {
@@ -931,7 +941,7 @@ public class AlipayServiceImpl implements AlipayService {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-        map.put("status",0);
+        map.put("status",-1);
         return map;
     }
 
@@ -1095,8 +1105,61 @@ public class AlipayServiceImpl implements AlipayService {
     }
 
     @Override
-    public Map<String, Object> shoppingCheckAlipay(String outTradeNo) {
-        return null;
+    public Map<String, Object> shoppingCheckAlipay(String code) {
+        map = new HashMap<>();
+        log.info("================商城向支付宝发起查询，查询商户订单号为："+code);
+
+        try {
+            //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
+            alipayTradeQueryRequest.setBizContent("{" +
+                    "\"out_trade_no\":\""+code+"\"," +
+                    "\"trade_no\":"+null +
+                    "}");
+            AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
+            if(alipayTradeQueryResponse.isSuccess()){
+                //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+                AppGoodsAppointment goodsOrderByCode = shoppingDao.findGoodsOrderByCode(code);
+                if (goodsOrderByCode == null){
+                    map.put("status",-1);
+                    map.put("message","订单不存在");
+                    return map;
+                }
+                //修改数据库支付宝订单表
+                switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
+                {
+                    case "TRADE_FINISHED": // 交易结束并不可退款
+                        goodsOrderByCode.setStatus(3);
+                        break;
+                    case "TRADE_SUCCESS": // 交易支付成功
+                        goodsOrderByCode.setStatus(2);
+                        break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        goodsOrderByCode.setStatus(1);
+                        break;
+                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+                        goodsOrderByCode.setStatus(0);
+                        break;
+                    default:
+                        break;
+                }
+                //更新表的状态
+                shoppingDao.updateSGAStatusByCode(goodsOrderByCode);
+                map.put("status",goodsOrderByCode.getStatus());
+                map.put("message",alipayTradeQueryResponse.getBody());
+                return map; //交易状态
+            } else {
+                String body = alipayTradeQueryResponse.getBody();
+                log.info("==================调用支付宝查询接口失败！");
+                log.info("==================错误码:"+body);
+                map.put("message",alipayTradeQueryResponse.getBody());
+            }
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        map.put("status",-1);
+        return map;
     }
 
 

@@ -246,12 +246,12 @@ public class AlipayController {
 
     /**
      * 商城购物 向支付宝发起订单查询请求
-     * @param outTradeNo 商户订单号
+     * @param code 商户订单号
      * @return map
      */
-    @PostMapping("/shoppingCheckAlipay")
-    public Map<String,Object> shoppingCheckAlipay(@RequestBody String outTradeNo){
-        return alipayService.shoppingCheckAlipay(outTradeNo);
+    @GetMapping("/shoppingCheckAlipay")
+    public Map<String,Object> shoppingCheckAlipay(String code){
+        return alipayService.shoppingCheckAlipay(code);
     }
 
 }
