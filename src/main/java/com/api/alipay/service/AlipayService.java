@@ -22,7 +22,7 @@ public interface AlipayService {
 
     String dailyPaymentNotifyInfo(HttpServletRequest request);
 
-    Map<String,Object> dailyPaymentCheckAlipay(String outTradeNo);
+    Map<String,Object> dailyPaymentCheckAlipay(AppDailyPaymentOrder appDailyPaymentOrder);
 
     Map<String, Object> reportRepairAlipay(AppRepairOrder appRepairOrder);
 

@@ -151,12 +151,12 @@ public class AlipayController {
 
     /**
      * 日常缴费 向支付宝发起订单查询请求
-     * @param outTradeNo 商户订单号
+     * @param appDailyPaymentOrder  app生活缴纳 支付订单信息 [商户订单号]
      * @return map
      */
     @PostMapping("/dailyPaymentCheckAlipay")
-    public Map<String,Object> dailyPaymentCheckAlipay(@RequestBody String outTradeNo){
-        return alipayService.dailyPaymentCheckAlipay(outTradeNo);
+    public Map<String,Object> dailyPaymentCheckAlipay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder){
+        return alipayService.dailyPaymentCheckAlipay(appDailyPaymentOrder);
     }
 
     /**

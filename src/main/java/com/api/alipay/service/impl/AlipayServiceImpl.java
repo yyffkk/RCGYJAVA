@@ -651,22 +651,22 @@ public class AlipayServiceImpl implements AlipayService {
     }
 
     @Override
-    public Map<String,Object> dailyPaymentCheckAlipay(String outTradeNo) {
+    public Map<String,Object> dailyPaymentCheckAlipay(AppDailyPaymentOrder appDailyPaymentOrder) {
         map = new HashMap<>();
-        log.info("================日常缴费向支付宝发起查询，查询商户订单号为："+outTradeNo);
+        log.info("================日常缴费向支付宝发起查询，查询商户订单号为："+appDailyPaymentOrder.getCode());
 
         try {
             //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
             AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
             AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
             alipayTradeQueryRequest.setBizContent("{" +
-                    "\"out_trade_no\":\""+outTradeNo+"\"," +
-                    "\"trade_no\":\""+null+"\"" +
+                    "\"out_trade_no\":\""+appDailyPaymentOrder.getCode()+"\"," +
+                    "\"trade_no\":\""+appDailyPaymentOrder.getTradeNo()+"\"" +
                     "}");
             AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
             if(alipayTradeQueryResponse.isSuccess()){
                 //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
-                AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
+                AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(appDailyPaymentOrder.getCode());
                 //修改数据库支付宝订单表
                 switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
                 {
@@ -690,7 +690,9 @@ public class AlipayServiceImpl implements AlipayService {
                 map.put("status",aliPaymentOrder.getStatus());
                 return map; //交易状态
             } else {
+                String body = alipayTradeQueryResponse.getBody();
                 log.info("==================调用支付宝查询接口失败！");
+                log.info("==================错误码:"+body);
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();
