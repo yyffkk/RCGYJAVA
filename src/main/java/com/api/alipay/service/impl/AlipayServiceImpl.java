@@ -920,9 +920,13 @@ public class AlipayServiceImpl implements AlipayService {
                 //更新表的状态
                 appReportRepairDao.updateDPOrderStatusByCode(appRepairOrder);
                 map.put("status",appRepairOrder.getStatus());
+                map.put("message",alipayTradeQueryResponse.getBody());
                 return map; //交易状态
             } else {
+                String body = alipayTradeQueryResponse.getBody();
                 log.info("==================调用支付宝查询接口失败！");
+                log.info("==================错误码:"+body);
+                map.put("message",alipayTradeQueryResponse.getBody());
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();
