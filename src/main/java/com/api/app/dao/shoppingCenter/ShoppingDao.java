@@ -166,4 +166,10 @@ public interface ShoppingDao {
      * @return 影响行数
      */
     int updateBackLibraryByOrderId(Integer id);
+
+    /**
+     * 查询未缴纳订单信息
+     * @return 商品预约订单
+     */
+    List<AppGoodsAppointment> findUnPaymentOrder();
 }

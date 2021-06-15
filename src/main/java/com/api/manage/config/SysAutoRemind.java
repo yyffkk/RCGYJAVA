@@ -1,5 +1,6 @@
 package com.api.manage.config;
 
+import com.api.alipay.service.AlipayService;
 import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.butlerApp.dao.butler.ButlerAttendanceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
@@ -102,6 +103,8 @@ public class SysAutoRemind {
     SysNewsManagementService sysNewsManagementService;
     @Resource
     ShoppingDao shoppingDao;
+    @Resource
+    AlipayService alipayService;
 
 
     /**
@@ -478,6 +481,24 @@ public class SysAutoRemind {
      */
     @Scheduled(cron = "0 0/30 * * * ? ")
     public void autoShoppingBackLibrary(){
+        //查询未缴纳订单信息
+        List<AppGoodsAppointment> appGoodsAppointments2 =  shoppingDao.findUnPaymentOrder();
+        if (appGoodsAppointments2 != null && appGoodsAppointments2.size()>0){
+            for (AppGoodsAppointment appGoodsAppointment : appGoodsAppointments2) {
+                //先进行查询未缴纳订单信息，查询是否超时
+                Map<String, Object> map = alipayService.shoppingCheckAlipay(appGoodsAppointment.getCode());
+                int status = (int)map.get("status");
+                if (status != -1){
+                    log.info("订单查询成功,订单号为："+appGoodsAppointment.getCode()+",message:"+map.get("message"));
+                }else {
+                    log.info("订单查询失败,订单号为："+appGoodsAppointment.getCode()+",message:"+map.get("message"));
+                }
+            }
+        }else {
+            log.info("暂无待付款订单");
+        }
+
+
         //查询已超时的需要进行回库的商品预约订单
         List<AppGoodsAppointment> appGoodsAppointments = shoppingDao.findBackGoodsOrder();
         if (appGoodsAppointments != null && appGoodsAppointments.size()>0){
@@ -490,14 +511,12 @@ public class SysAutoRemind {
                 int update = shoppingDao.decGoodsAppointmentNum(appGoodsIdAndAppointmentNum);
                 if (update <= 0){
                     log.info("库存回库失败,商品预约订单主键id："+appGoodsAppointment.getId());
-                    throw new RuntimeException("库存回库失败");
                 }
 
                 //更新商品预约订单的back_library（是否库存回库）为1.已回库
                 int update2 = shoppingDao.updateBackLibraryByOrderId(appGoodsAppointment.getId());
                 if (update2 <= 0){
                     log.info("商品预约订单的back_library更新失败,商品预约订单主键id："+appGoodsAppointment.getId());
-                    throw new RuntimeException("商品预约订单的back_library更新失败");
                 }
                 log.info("回库成功,回库订单号为:"+appGoodsAppointment.getCode());
             }
