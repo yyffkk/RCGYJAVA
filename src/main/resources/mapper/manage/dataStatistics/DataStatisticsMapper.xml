@@ -26,7 +26,7 @@
         select count(*) as last_month_unpaid_households
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
         where sdp.charges_template_detail_id = sctd.id and date_format(sdp.begin_date,'%Y-%m')=date_format(DATE_SUB(now(), INTERVAL 1 MONTH),'%Y-%m')
-        and sctd.marker = 1
+        and sdp.status in (1,2) and sctd.marker = 1
     </select>
     <select id="findPaymentStatistics" resultType="com.api.vo.dataStatistics.DSPaymentStatisticsVo">
         select (case sum(s2.total_price) is null when true then 0 else sum(s2.total_price) end) as should_pay_price,
