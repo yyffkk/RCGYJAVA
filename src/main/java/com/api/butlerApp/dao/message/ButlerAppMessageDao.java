@@ -2,6 +2,8 @@ package com.api.butlerApp.dao.message;
 
 import com.api.model.butlerApp.ButlerAppCommentMessage;
 import com.api.model.butlerApp.ButlerAppSysMessage;
+import com.api.model.butlerApp.ButlerGreenTaskMesVo;
+import com.api.model.butlerApp.ButlerHygieneTaskMesVo;
 import com.api.vo.butlerApp.ButlerCommentMessageVo;
 import com.api.vo.butlerApp.ButlerRepairCommentMesVo;
 import com.api.vo.butlerApp.ButlerRepairMessageVo;
@@ -61,11 +63,25 @@ public interface ButlerAppMessageDao {
     int insertSysMessage(ButlerAppSysMessage butlerAppSysMessage);
 
     /**
-     * 根据报事报修主键id 查询报事报修信息（异步）
+     * 根据报事报修主键id 查询报事报修信息（同步）
      * @param repairId 报事报修主键id
      * @return 报事报修消息信息
      */
     ButlerRepairMessageVo findRepairByRepairId(Integer repairId);
+
+    /**
+     * 根据绿化任务主键id 查询绿化任务信息（同步）
+     * @param greenTaskId 绿化任务主键id
+     * @return 绿化任务信息
+     */
+    ButlerGreenTaskMesVo findGreenTaskByGreenId(Integer greenTaskId);
+
+    /**
+     * 根据卫生任务主键id 查询卫生任务信息（同步）
+     * @param hygieneTaskId 卫生任务主键id
+     * @return 绿化任务信息
+     */
+    ButlerHygieneTaskMesVo findHygieneTaskByHygieneId(Integer hygieneTaskId);
 
     /**
      * 根据工单主键id同步查询报事报修评论（同步）
@@ -101,4 +117,5 @@ public interface ButlerAppMessageDao {
      * @return 影响行数
      */
     int allReadComment(Integer id);
+
 }

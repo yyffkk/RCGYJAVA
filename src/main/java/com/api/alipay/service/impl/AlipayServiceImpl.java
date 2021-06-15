@@ -946,6 +946,7 @@ public class AlipayServiceImpl implements AlipayService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> shoppingAlipay(AppGoodsAppointment appGoodsAppointment, Integer type, Integer id) {
         map = new HashMap<>();
         String body = "";

@@ -477,7 +477,6 @@ public class SysAutoRemind {
      * （每30分钟执行一次）轮询定时任务，进行超时，支付失败的商品订单的库存回库处理
      */
     @Scheduled(cron = "0 0/30 * * * ? ")
-    @Transactional
     public void autoShoppingBackLibrary(){
         //查询已超时的需要进行回库的商品预约订单
         List<AppGoodsAppointment> appGoodsAppointments = shoppingDao.findBackGoodsOrder();
@@ -487,7 +486,7 @@ public class SysAutoRemind {
                 appGoodsIdAndAppointmentNum.setGoodsId(appGoodsAppointment.getGoodsId());
                 appGoodsIdAndAppointmentNum.setAppointmentNum(appGoodsAppointment.getNum());
 
-                //增加对应商品的库存
+                //增加对应商品的库存，减少预约量
                 int update = shoppingDao.decGoodsAppointmentNum(appGoodsIdAndAppointmentNum);
                 if (update <= 0){
                     log.info("库存回库失败,商品预约订单主键id："+appGoodsAppointment.getId());

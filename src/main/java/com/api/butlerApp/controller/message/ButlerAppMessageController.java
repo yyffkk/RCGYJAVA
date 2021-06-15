@@ -83,6 +83,26 @@ public class ButlerAppMessageController {
     }
 
     /**
+     * 根据绿化任务主键id 同步查询绿化任务消息信息（同步）
+     * @param greenTaskId 绿化任务主键id
+     * @return map
+     */
+    @GetMapping("/findGreenTaskByGreenId")
+    public Map<String,Object> findGreenTaskByGreenId(Integer greenTaskId){
+        return butlerAppMessageService.findGreenTaskByGreenId(greenTaskId);
+    }
+
+    /**
+     * 根据卫生任务主键id 同步查询卫生任务消息信息（同步）
+     * @param hygieneTaskId 卫生任务主键id
+     * @return map
+     */
+    @GetMapping("/findHygieneTaskByGreenId")
+    public Map<String,Object> findHygieneTaskByGreenId(Integer hygieneTaskId){
+        return butlerAppMessageService.findHygieneTaskByHygieneId(hygieneTaskId);
+    }
+
+    /**
      * 根据工单主键id同步查询报事报修评论（同步）
      * @param dispatchId 工单主键id
      * @return map

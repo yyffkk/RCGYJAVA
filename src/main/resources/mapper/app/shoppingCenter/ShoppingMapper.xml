@@ -188,7 +188,7 @@
         update shop_goods
         set subscribe_num = subscribe_num - #{appointmentNum},
         stock = stock + #{appointmentNum}
-        where id = #{goodsId} and #{appointmentNum} <![CDATA[ <= ]]> subscribe_num
+        where id = #{goodsId}
     </update>
     <update id="updateBackLibraryByOrderId" parameterType="java.lang.Integer">
         update shop_goods_appointment

@@ -69,6 +69,16 @@
     <select id="findFirstCommentDateById" parameterType="java.lang.Integer" resultType="java.util.Date">
         select send_date from butler_comment_message where receiver_account = #{id} order by send_date DESC limit 1
     </select>
+    <select id="findGreenTaskByGreenId" parameterType="java.lang.Integer" resultType="com.api.model.butlerApp.ButlerGreenTaskMesVo">
+        select sgt.id,su.actual_name as name,su.tel as tel,sga.name as area_name
+        from sys_green_task as sgt,sys_green_area as sga,sys_user as su
+        where sgt.green_area_id = sga.id and sgt.director = su.id and sgt.id = #{greenTaskId}
+    </select>
+    <select id="findHygieneTaskByHygieneId" parameterType="java.lang.Integer" resultType="com.api.model.butlerApp.ButlerHygieneTaskMesVo">
+        select sht.id,su.actual_name as name,su.tel as tel,sha.name as area_name
+        from sys_hygiene_task as sht,sys_hygiene_area as sha,sys_user as su
+        where sht.hygiene_area_id = sha.id and sht.director = su.id and sht.id = #{hygieneTaskId}
+    </select>
 
     <update id="allReadSys" parameterType="java.lang.Integer">
         update butler_sys_message

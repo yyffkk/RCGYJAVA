@@ -2,6 +2,8 @@ package com.api.butlerApp.service.message.impl;
 
 import com.api.butlerApp.dao.message.ButlerAppMessageDao;
 import com.api.butlerApp.service.message.ButlerAppMessageService;
+import com.api.model.butlerApp.ButlerGreenTaskMesVo;
+import com.api.model.butlerApp.ButlerHygieneTaskMesVo;
 import com.api.vo.butlerApp.ButlerCommentMessageVo;
 import com.api.vo.butlerApp.ButlerRepairCommentMesVo;
 import com.api.vo.butlerApp.ButlerRepairMessageVo;
@@ -65,6 +67,26 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
     }
 
     @Override
+    public Map<String, Object> findGreenTaskByGreenId(Integer greenTaskId) {
+        map = new HashMap<>();
+        ButlerGreenTaskMesVo butlerGreenTaskMesVo = butlerAppMessageDao.findGreenTaskByGreenId(greenTaskId);
+        map.put("data",butlerGreenTaskMesVo);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findHygieneTaskByHygieneId(Integer hygieneTaskId) {
+        map = new HashMap<>();
+        ButlerHygieneTaskMesVo butlerHygieneTaskMesVo = butlerAppMessageDao.findHygieneTaskByHygieneId(hygieneTaskId);
+        map.put("data",butlerHygieneTaskMesVo);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
     public Map<String, Object> findCommentByDispatchId(Integer dispatchId) {
         map = new HashMap<>();
         ButlerRepairCommentMesVo butlerRepairCommentMesVo = butlerAppMessageDao.findCommentByDispatchId(dispatchId);
@@ -103,4 +125,5 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
         }
         return map;
     }
+
 }
