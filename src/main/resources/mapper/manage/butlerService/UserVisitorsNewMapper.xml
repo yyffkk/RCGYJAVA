@@ -5,12 +5,12 @@
 <mapper namespace="com.api.manage.dao.butlerService.UserVisitorsNewDao">
 
     <select id="list" parameterType="com.api.model.butlerService.SearchVisitorsNew" resultType="com.api.vo.butlerService.VoVisitorsNew">
-        select uvn.*,ur.name as create_name,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
-        from user_visitors_new as uvn,user_resident as ur,cpm_building_unit_estate as cbue,
-        cpm_building_unit as cbu,cpm_building as cb
+        select uvn.*,(case uvn.create_id = -1 when true then '扫码录入' else ur.name end)as create_name,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,
+        user_visitors_new as uvn
+        LEFT JOIN user_resident as ur on uvn.create_id = ur.id
         <where>
-            uvn.create_id = ur.id
-            and uvn.estate_id = cbue.id
+            uvn.estate_id = cbue.id
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
             <if test="name != null and name != ''">

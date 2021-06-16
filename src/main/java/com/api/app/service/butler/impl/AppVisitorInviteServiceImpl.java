@@ -21,6 +21,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -337,7 +338,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
             log.info("json字符串："+json);
 
-            OkHttpClient client = new OkHttpClient();
+//            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(10000, TimeUnit.MILLISECONDS)
+                    .readTimeout(10000, TimeUnit.MILLISECONDS)
+                    .build();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = FormBody.create(mediaType, json);
             Request request = new Request.Builder()
