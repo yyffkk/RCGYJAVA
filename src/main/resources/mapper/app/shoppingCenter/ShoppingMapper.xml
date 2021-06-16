@@ -144,7 +144,7 @@
         select * from shop_goods_appointment where status = -1 and back_library = 0
     </select>
     <select id="findUnPaymentOrder" resultType="com.api.model.app.AppGoodsAppointment">
-        select * from shop_goods_appointment where status = -2
+        select * from shop_goods_appointment where status = -2 and NOW() <![CDATA[ >= ]]> DATE_ADD(create_date,INTERVAL 30 MINUTE)
     </select>
 
     <delete id="cancel" parameterType="com.api.model.shoppingCenter.Order">

@@ -97,7 +97,7 @@
         select * from sys_report_repair_order where code = #{outTradeNo}
     </select>
     <select id="findUnPaymentOrder" resultType="com.api.model.app.AppRepairOrder">
-        select * from sys_report_repair_order where status = 0
+        select * from sys_report_repair_order where status = 0 and NOW() <![CDATA[ >= ]]> DATE_ADD(create_date,INTERVAL 30 MINUTE)
     </select>
 
     <update id="updateDPOrderStatusByCode" parameterType="com.api.model.app.AppRepairOrder">

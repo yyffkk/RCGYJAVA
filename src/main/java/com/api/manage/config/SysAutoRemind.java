@@ -489,7 +489,7 @@ public class SysAutoRemind {
      */
     @Scheduled(cron = "0 0/10 * * * ? ")
     public void autoCheckOutTimeDailyPayment(){
-        //查询未缴纳订单信息
+        //查询超时未缴纳订单信息
         List<AppDailyPaymentOrder> appDailyPaymentOrders =  appDailyPaymentDao.findUnPaymentOrder();
         if (appDailyPaymentOrders != null && appDailyPaymentOrders.size()>0){
             for (AppDailyPaymentOrder appDailyPaymentOrder : appDailyPaymentOrders) {
