@@ -1,7 +1,10 @@
 package com.api.manage.controller.butlerService;
 
 import com.api.manage.service.butlerService.SysDoorQRCodeService;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SysDoorQRCode;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,7 +38,7 @@ public class SysDoorQRCodeController {
      * @return map
      */
     @GetMapping("/getQrCode")
-    public Map<String,Object> getQrCode(Date startTime,Date endTime){
-        return sysDoorQRCodeService.getQrCode(startTime,endTime);
+    public Map<String,Object> getQrCode(Date startTime,Date endTime,String tel){
+        return sysDoorQRCodeService.getQrCode(startTime,endTime,tel);
     }
 }

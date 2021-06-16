@@ -89,16 +89,13 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
     }
 
     @Override
-    public Map<String, Object> getQrCode(Date startTime, Date endTime) {
+    public Map<String, Object> getQrCode(Date startTime, Date endTime, String tel) {
         map = new HashMap<>();
         String data = null;//返回二维码字符串
         try {
-            //获取登录用户信息
-            Subject subject = SecurityUtils.getSubject();
-            SysUser sysUser = (SysUser) subject.getPrincipal();
 
             //连接立林对讲机系统-获取设备二维码
-            data = connectLiLinGetQrCode(sysUser.getTel(), startTime, endTime);
+            data = connectLiLinGetQrCode(tel, startTime, endTime);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
