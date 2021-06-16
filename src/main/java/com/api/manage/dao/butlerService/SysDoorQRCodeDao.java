@@ -9,4 +9,11 @@ public interface SysDoorQRCodeDao {
      * @return 影响行数
      */
     int addQrCode(SysDoorQRCode sysDoorQRCode);
+
+    /**
+     * 删除设备二维码
+     * @param sysDoorQRCode 门禁二维码model
+     * @return 影响行数
+     */
+    int removeQrCode(SysDoorQRCode sysDoorQRCode);
 }

@@ -89,11 +89,11 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> getQrCode(Date startTime, Date endTime, String tel) {
         map = new HashMap<>();
         String data = null;//返回二维码字符串
         try {
-
             //连接立林对讲机系统-获取设备二维码
             data = connectLiLinGetQrCode(tel, startTime, endTime);
         } catch (Exception e) {
@@ -112,6 +112,156 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         map.put("status",true);
         map.put("data",data);
         return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> removeQrCode(SysDoorQRCode sysDoorQRCode) {
+        map = new HashMap<>();
+        try {
+            //根据拜访房产id查询设备号
+            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(sysDoorQRCode.getEstateId());
+
+            //连接立林对讲机系统-添加设备二维码
+            connectLiLinRemoveQrCode(deviceNumber, sysDoorQRCode.getTel());
+
+            //添加设备二维码进数据库
+            sysDoorQRCodeDao.removeQrCode(sysDoorQRCode);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
+
+    private void connectLiLinRemoveQrCode(String deviceNumber, String tel) {
+        //判断是否成功发送给大华
+        //拼接入口设备号（4个入口）
+//        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
+//        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
+//        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
+//        String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
+
+
+        //第三方删除设备二维码
+        Boolean status = removeLiLinQrCode(deviceNumber, tel);
+        if (!status){
+            throw new RuntimeException("删除房屋门禁设备二维码失败");
+        }
+
+        log.info("删除房屋门禁设备二维码成功");
+
+//        //删除入口1设备二维码
+//        Boolean status1 = removeLiLinQrCode(deviceNumber1, tel);
+//        if (!status1){
+//            throw new RuntimeException("删除入口1设备二维码失败");
+//        }
+//
+//        log.info("删除入口1设备二维码成功");
+//
+//        //删除入口2设备二维码
+//        Boolean status2 = removeLiLinQrCode(deviceNumber2, tel);
+//        if (!status2){
+//            throw new RuntimeException("删除入口2设备二维码失败");
+//        }
+//
+//        log.info("删除入口2设备二维码成功");
+//
+//        //删除入口3设备二维码
+//        Boolean status3 = removeLiLinQrCode(deviceNumber3, tel);
+//        if (!status3){
+//            throw new RuntimeException("删除入口3设备二维码失败");
+//        }
+//
+//        log.info("删除入口3设备二维码成功");
+//
+//        //删除入口4设备二维码
+//        Boolean status4 = removeLiLinQrCode(deviceNumber4, tel);
+//        if (!status4){
+//            throw new RuntimeException("删除入口4设备二维码失败");
+//        }
+//
+//        log.info("删除入口4设备二维码成功");
+    }
+
+    private Boolean removeLiLinQrCode(String deviceNumber, String tel) {
+        try {
+            //第三方账号
+            String phoneNumber = tel;
+
+            //api接口方法
+            String method = REMOVE_QRCODE_METHOD;
+            //请求的时间戳
+            String timestamp = String.valueOf(new Date().getTime());
+            //唯一随机数
+            String nonce = UUID.randomUUID().toString();
+
+            //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
+            String deviceSn = NEIGH_NO + deviceNumber;
+            log.info("正在连接的设备序列号为:"+deviceSn);
+            //梯控权限类型
+            Integer floorType = 2;
+
+            //封装data
+            String data = "{\"neighNo\":\""+NEIGH_NO+"\",\"deviceSn\":\""+deviceSn+
+                    "\",\"phoneNumber\":"+phoneNumber+
+                    ",\"floorType\":"+floorType+"}";
+
+            //获取签名结果串
+            String signature = getSignature(method,timestamp,nonce,data);
+
+
+
+            String json = "{\"version\":\""+VERSION+"\",\"clientId\":\""+CLIENT_ID+"\",\"timestamp\":\""+timestamp+
+                    "\",\"nonce\":\""+nonce+"\",\"method\":\""+method+"\",\"signature\":\""+signature+"\",\"signatureVersion\":\""+SIGNATURE_VERSION+
+                    "\",\"data\":"+data+"}";
+
+            log.info("json字符串："+json);
+
+//            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(10000, TimeUnit.MILLISECONDS)
+                    .readTimeout(10000, TimeUnit.MILLISECONDS)
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+            RequestBody requestBody = FormBody.create(mediaType, json);
+            Request request = new Request.Builder()
+                    .url(SERVICE_LOCATION+"third/an/"+method)
+                    .post(requestBody)
+                    .build();
+            Response execute = client.newCall(request).execute();
+            if (execute.isSuccessful()) {
+                ResponseBody body = execute.body();
+                if (body != null) {
+                    //获取返回值//TODO 4004 设备不存在 或者 亲！物业不在线
+                    String result = body.string();
+                    log.info("返回值:"+result);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String result1 = String.valueOf(jsonObject.get("result"));
+                    //=====判断返回是否成功
+                    if ("1".equals(result1)){
+                        log.info("返回成功");
+                        return true;
+                    }else {
+                        log.info("返回失败");
+                        throw new RuntimeException(String.valueOf(jsonObject.get("message")));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+        return false;
     }
 
     private String connectLiLinGetQrCode(String tel, Date startTime, Date endTime) {

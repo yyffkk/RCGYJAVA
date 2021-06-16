@@ -9,4 +9,6 @@ public interface SysDoorQRCodeService {
     Map<String, Object> addQrCode(SysDoorQRCode sysDoorQRCode);
 
     Map<String, Object> getQrCode(Date startTime, Date endTime, String tel);
+
+    Map<String, Object> removeQrCode(SysDoorQRCode sysDoorQRCode);
 }

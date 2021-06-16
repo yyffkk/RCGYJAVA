@@ -41,4 +41,15 @@ public class SysDoorQRCodeController {
     public Map<String,Object> getQrCode(Date startTime,Date endTime,String tel){
         return sysDoorQRCodeService.getQrCode(startTime,endTime,tel);
     }
+
+
+    /**
+     * 删除设备二维码
+     * @param sysDoorQRCode 门禁二维码model
+     * @return map
+     */
+    @PostMapping("/removeQrCode")
+    public Map<String,Object> removeQrCode(@RequestBody SysDoorQRCode sysDoorQRCode){
+        return sysDoorQRCodeService.removeQrCode(sysDoorQRCode);
+    }
 }

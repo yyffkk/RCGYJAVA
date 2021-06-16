@@ -27,4 +27,7 @@
             #{createDate}
         )
     </insert>
+    <delete id="removeQrCode" parameterType="com.api.model.butlerService.SysDoorQRCode">
+        delete from sys_door_qrcode where id = #{id}
+    </delete>
 </mapper>
