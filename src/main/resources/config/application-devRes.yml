@@ -27,3 +27,9 @@ lilin:
   api:
     #添加设备人脸识别api方法
     faceMethod: addFaceRecognize
+    #添加设备二维码
+    addQrCodeMethod: addQrCode
+    #获取二维码信息
+    getQrCodeMethod: getQrCode
+    #删除设备二维码
+    removeQrCodeMethod: removeQrCode

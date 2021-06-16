@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysDoorQRCodeDao">
+
+    <insert id="addQrCode" parameterType="com.api.model.butlerService.SysDoorQRCode">
+        insert into sys_door_qrcode(
+            id,
+            estate_id,
+            name,
+            tel,
+            id_card,
+            start_time,
+            end_time,
+            create_id,
+            create_date
+        )values (
+            #{id},
+            #{estateId},
+            #{name},
+            #{tel},
+            #{idCard},
+            #{startTime},
+            #{endTime},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+</mapper>
