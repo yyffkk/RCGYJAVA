@@ -96,6 +96,9 @@
     <select id="findRepairOrderByCode" parameterType="java.lang.String" resultType="com.api.model.app.AppRepairOrder">
         select * from sys_report_repair_order where code = #{outTradeNo}
     </select>
+    <select id="findUnPaymentOrder" resultType="com.api.model.app.AppRepairOrder">
+        select * from sys_report_repair_order where status = 0
+    </select>
 
     <update id="updateDPOrderStatusByCode" parameterType="com.api.model.app.AppRepairOrder">
         update sys_report_repair_order set status = #{status} where code = #{code}

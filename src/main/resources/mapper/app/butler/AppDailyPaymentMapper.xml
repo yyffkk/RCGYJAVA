@@ -121,6 +121,9 @@
         from sys_daily_payment as sdp,sys_daily_payment_order as sdpo,sys_daily_payment_order_list as sdpol
         where sdp.id = sdpol.daily_payment_id and sdpo.id = sdpol.daily_payment_order_id and sdpo.code = #{outTradeNo}
     </select>
+    <select id="findUnPaymentOrder" resultType="com.api.model.app.AppDailyPaymentOrder">
+        select * from sys_daily_payment_order where status = 0
+    </select>
 
     <update id="updateDPOrderStatusByCode" parameterType="com.api.model.app.AppDailyPaymentOrder">
         update sys_daily_payment_order

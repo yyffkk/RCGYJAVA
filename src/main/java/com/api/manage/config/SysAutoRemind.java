@@ -1,6 +1,8 @@
 package com.api.manage.config;
 
 import com.api.alipay.service.AlipayService;
+import com.api.app.dao.butler.AppDailyPaymentDao;
+import com.api.app.dao.butler.AppReportRepairDao;
 import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.butlerApp.dao.butler.ButlerAttendanceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
@@ -13,8 +15,10 @@ import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
+import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
+import com.api.model.app.AppRepairOrder;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
 import com.api.model.butlerService.*;
@@ -105,6 +109,10 @@ public class SysAutoRemind {
     ShoppingDao shoppingDao;
     @Resource
     AlipayService alipayService;
+    @Resource
+    AppDailyPaymentDao appDailyPaymentDao;
+    @Resource
+    AppReportRepairDao appReportRepairDao;
 
 
     /**
@@ -476,11 +484,80 @@ public class SysAutoRemind {
     }
 
     /**
-     * 0 0/30 * * * ?
-     * （每30分钟执行一次）轮询定时任务，进行超时，支付失败的商品订单的库存回库处理
+     * 0 0/10 * * * ?
+     * （每10分钟执行一次）轮询定时任务，查询日常缴费未付款订单，是否超时或错误关闭
      */
-    @Scheduled(cron = "0 0/30 * * * ? ")
-    public void autoShoppingBackLibrary(){
+    @Scheduled(cron = "0 0/10 * * * ? ")
+    public void autoCheckOutTimeDailyPayment(){
+        //查询未缴纳订单信息
+        List<AppDailyPaymentOrder> appDailyPaymentOrders =  appDailyPaymentDao.findUnPaymentOrder();
+        if (appDailyPaymentOrders != null && appDailyPaymentOrders.size()>0){
+            for (AppDailyPaymentOrder appDailyPaymentOrder : appDailyPaymentOrders) {
+                //先进行查询未缴纳订单信息，查询是否超时
+                Map<String, Object> map = alipayService.dailyPaymentCheckAlipay(appDailyPaymentOrder.getCode());
+                int status = (int)map.get("status");
+                if (status != -1){
+                    log.info("订单查询成功,订单号为："+appDailyPaymentOrder.getCode()+",message:"+map.get("message"));
+                }else {
+                    log.info("订单查询失败,订单号为："+appDailyPaymentOrder.getCode()+",message:"+map.get("message"));
+                    log.info("关闭 错误或超时的订单，订单号为："+appDailyPaymentOrder.getCode());
+                    AppDailyPaymentOrder appDailyPaymentOrder1 = new AppDailyPaymentOrder();
+                    appDailyPaymentOrder1.setCode(appDailyPaymentOrder.getCode());
+                    appDailyPaymentOrder1.setStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                    int i = appDailyPaymentDao.updateDPOrderStatusByCode(appDailyPaymentOrder1);
+                    if (i >0){
+                        log.info("关闭日常缴费 错误或超时的订单成功！！！");
+                    }else {
+                        log.info("关闭日常缴费 错误或超时的订单失败！！！");
+                    }
+                }
+            }
+        }else {
+            log.info("日常缴费暂无待付款订单");
+        }
+    }
+
+    /**
+     * 0 0/10 * * * ?
+     * （每10分钟执行一次）轮询定时任务，查询报事报修未付款订单，是否超时或错误关闭
+     */
+    @Scheduled(cron = "0 0/10 * * * ? ")
+    public void autoCheckOutTimeReportRepair(){
+        //查询未缴纳订单信息
+        List<AppRepairOrder> appRepairOrders =  appReportRepairDao.findUnPaymentOrder();
+        if (appRepairOrders != null && appRepairOrders.size()>0){
+            for (AppRepairOrder appRepairOrder : appRepairOrders) {
+                //先进行查询未缴纳订单信息，查询是否超时
+                Map<String, Object> map = alipayService.shoppingCheckAlipay(appRepairOrder.getCode());
+                int status = (int)map.get("status");
+                if (status != -1){
+                    log.info("订单查询成功,订单号为："+appRepairOrder.getCode()+",message:"+map.get("message"));
+                }else {
+                    log.info("订单查询失败,订单号为："+appRepairOrder.getCode()+",message:"+map.get("message"));
+                    log.info("关闭 错误或超时的订单，订单号为："+appRepairOrder.getCode());
+
+                    AppRepairOrder appRepairOrder1 = new AppRepairOrder();
+                    appRepairOrder1.setCode(appRepairOrder.getCode());
+                    appRepairOrder1.setStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                    int i = appReportRepairDao.updateDPOrderStatusByCode(appRepairOrder1);
+                    if (i >0){
+                        log.info("关闭报事报修 错误或超时的订单成功！！！");
+                    }else {
+                        log.info("关闭报事报修 错误或超时的订单失败！！！");
+                    }
+                }
+            }
+        }else {
+            log.info("报事报修暂无待付款订单");
+        }
+    }
+
+    /**
+     * 0 0/10 * * * ?
+     * （每10分钟执行一次）轮询定时任务，查询商城未付款订单，是否超时或错误关闭
+     */
+    @Scheduled(cron = "0 0/10 * * * ? ")
+    public void autoCheckOutTimeShopping(){
         //查询未缴纳订单信息
         List<AppGoodsAppointment> appGoodsAppointments2 =  shoppingDao.findUnPaymentOrder();
         if (appGoodsAppointments2 != null && appGoodsAppointments2.size()>0){
@@ -492,14 +569,30 @@ public class SysAutoRemind {
                     log.info("订单查询成功,订单号为："+appGoodsAppointment.getCode()+",message:"+map.get("message"));
                 }else {
                     log.info("订单查询失败,订单号为："+appGoodsAppointment.getCode()+",message:"+map.get("message"));
+                    log.info("关闭 错误或超时的订单，订单号为："+appGoodsAppointment.getCode());
+                    AppGoodsAppointment appGoodsAppointment1 = new AppGoodsAppointment();
+                    appGoodsAppointment1.setCode(appGoodsAppointment.getCode());
+                    appGoodsAppointment1.setStatus(-1);//-1.未付款交易超时关闭或支付完成后全额退款
+                    int i = shoppingDao.updateSGAStatusByCode(appGoodsAppointment1);
+                    if (i >0){
+                        log.info("关闭商城 错误或超时的订单成功！！！");
+                    }else {
+                        log.info("关闭商城 错误或超时的订单失败！！！");
+                    }
                 }
             }
         }else {
-            log.info("暂无待付款订单");
+            log.info("商城暂无待付款订单");
         }
+    }
 
-
-        //查询已超时的需要进行回库的商品预约订单
+    /**
+     * 0 0/30 * * * ?
+     * （每30分钟执行一次）轮询定时任务，进行超时或错误关闭，支付失败的商品订单的库存回库处理
+     */
+    @Scheduled(cron = "0 0/30 * * * ? ")
+    public void autoShoppingBackLibrary(){
+        //查询超时或错误关闭的需要进行回库的商品预约订单
         List<AppGoodsAppointment> appGoodsAppointments = shoppingDao.findBackGoodsOrder();
         if (appGoodsAppointments != null && appGoodsAppointments.size()>0){
             for (AppGoodsAppointment appGoodsAppointment : appGoodsAppointments) {

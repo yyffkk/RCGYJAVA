@@ -317,7 +317,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 //            String phoneUrl = "http://39.103.177.88:8804/static/img/h5/visit/fafdc87cceb04edf8c2b8895212a49d6.jpeg";
             //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
             String deviceSn = NEIGH_NO + deviceNumber;
-
+            log.info("正在连接的设备序列号为:"+deviceSn);
             //梯控权限类型
             Integer floorType = 2;
 

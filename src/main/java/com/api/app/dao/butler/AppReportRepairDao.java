@@ -118,4 +118,9 @@ public interface AppReportRepairDao {
      */
     int updateDPOrderStatusByCode(AppRepairOrder appRepairOrder);
 
+    /**
+     * 查询未付款的订单
+     * @return 未付款的订单信息
+     */
+    List<AppRepairOrder> findUnPaymentOrder();
 }

@@ -1131,16 +1131,16 @@ public class AlipayServiceImpl implements AlipayService {
                 switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
                 {
                     case "TRADE_FINISHED": // 交易结束并不可退款
-                        goodsOrderByCode.setStatus(3);
+                        goodsOrderByCode.setStatus(15);
                         break;
                     case "TRADE_SUCCESS": // 交易支付成功
-                        goodsOrderByCode.setStatus(2);
-                        break;
-                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
                         goodsOrderByCode.setStatus(1);
                         break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        goodsOrderByCode.setStatus(-1);
+                        break;
                     case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
-                        goodsOrderByCode.setStatus(0);
+                        goodsOrderByCode.setStatus(-2);
                         break;
                     default:
                         break;
@@ -1221,6 +1221,6 @@ public class AlipayServiceImpl implements AlipayService {
         if (insert <= 0){
             throw new RuntimeException("添加失败");
         }
-
+        log.info("订单号："+appGoodsAppointment.getCode()+",创建成功!!!");
     }
 }

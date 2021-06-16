@@ -114,4 +114,10 @@ public interface AppDailyPaymentDao {
      * @return 信息主键id
      */
     List<Integer> findDailyPaymentIdsByOrderCode(String outTradeNo);
+
+    /**
+     * 查询未付款的订单
+     * @return 未付款的订单信息
+     */
+    List<AppDailyPaymentOrder> findUnPaymentOrder();
 }
