@@ -335,7 +335,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                     "\",\"nonce\":\""+nonce+"\",\"method\":\""+method+"\",\"signature\":\""+signature+"\",\"signatureVersion\":\""+SIGNATURE_VERSION+
                     "\",\"data\":"+data+"}";
 
-            log.info(json);
+            log.info("json字符串："+json);
 
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
@@ -350,13 +350,15 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 if (body != null) {
                     //获取返回值//TODO 4004 设备不存在 或者 亲！物业不在线
                     String result = body.string();
-                    log.info(result);
+                    log.info("返回值:"+result);
                     JSONObject jsonObject = new JSONObject(result);
                     String result1 = String.valueOf(jsonObject.get("result"));
                     //=====判断返回是否成功
                     if ("1".equals(result1)){
+                        log.info("返回成功");
                         return true;
                     }else {
+                        log.info("返回失败");
                         throw new RuntimeException(String.valueOf(jsonObject.get("message")));
                     }
                 }
@@ -375,7 +377,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
         if (data != null){
             signature = signature + "&data="+data;
         }
-        log.info(signature);
+        log.info("公共参数签名："+signature);
         //签名模版工具类签名
         try {
             signature = LiLinSignGetHmac.genHMAC(signature, CLIENT_SECRET);
@@ -383,7 +385,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             e.printStackTrace();
             throw new RuntimeException("签名异常");
         }
-        log.info(signature);
+        log.info("签名模版工具类签名后签名："+signature);
         return signature;
     }
 }
