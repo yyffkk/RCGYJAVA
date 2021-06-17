@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.chargeManagement.SysPaperDao">
+
+    <select id="list" parameterType="com.api.model.chargeManagement.SearchPaper" resultType="com.api.vo.chargeManagement.SysPaperVo">
+        select sp.*,su.actual_name as create_name,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from sys_paper as sp,sys_user as su,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        <where>
+            sp.create_id = su.id
+            and sp.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="code != null and code != ''">
+                and sp.code like concat('%',#{code},'%')
+            </if>
+            <if test="type != null">
+                and sp.type = #{type}
+            </if>
+            <if test="name != null and name != ''">
+                and sp.name like concat('%',#{name},'%')
+            </if>
+            <if test="invoiceTitleType != null">
+                and sp.invoice_title_type = #{invoiceTitleType}
+            </if>
+            <if test="invoiceTitleName != null and invoiceTitleName != ''">
+                and sp.invoice_title_name like concat('%',#{invoiceTitleName},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and sp.tel like concat('%',#{tel},'%')
+            </if>
+            <if test="status != null">
+                and sp.status = #{status}
+            </if>
+            <if test="recipient != null and recipient !=''">
+                and sp.recipient like concat('%',#{recipient},'%')
+            </if>
+        </where>
+        order by sp.create_date desc
+    </select>
+
+    <insert id="insertEnterprise" parameterType="com.api.model.chargeManagement.SysPaper">
+        insert into sys_paper(
+            estate_id,
+            code,
+            type,
+            name,
+            total_price,
+            rate,
+            taxation,
+            <if test="remake != null and remake != ''">
+                remake,
+            </if>
+            invoice_title_type,
+            invoice_title_name,
+            tel,
+            acquiring_ein,
+            bank,
+            account,
+            drawer,
+            invoice_date,
+            status,
+            create_id,
+            create_date
+        )values (
+            #{estateId},
+            #{code},
+            #{type},
+            #{name},
+            #{totalPrice},
+            #{rate},
+            #{taxation},
+            <if test="remake != null and remake != ''">
+                #{remake},
+            </if>
+            #{invoiceTitleType},
+            #{invoiceTitleName},
+            #{tel},
+            #{acquiringEin},
+            #{bank},
+            #{account},
+            #{drawer},
+            #{invoiceDate},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+    <insert id="insertPersonal" parameterType="com.api.model.chargeManagement.SysPaper">
+        insert into sys_paper(
+            estate_id,
+            code,
+            type,
+            name,
+            total_price,
+            rate,
+            taxation,
+            <if test="remake != null and remake != ''">
+                remake,
+            </if>
+            invoice_title_type,
+            invoice_title_name,
+            tel,
+            drawer,
+            invoice_date,
+            status,
+            create_id,
+            create_date
+        )values (
+            #{estateId},
+            #{code},
+            #{type},
+            #{name},
+            #{totalPrice},
+            #{rate},
+            #{taxation},
+            <if test="remake != null and remake != ''">
+                #{remake},
+            </if>
+            #{invoiceTitleType},
+            #{invoiceTitleName},
+            #{tel},
+            #{drawer},
+            #{invoiceDate},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="recipients" parameterType="com.api.model.chargeManagement.SysPaper">
+        update sys_paper
+        set status = #{status},
+        recipient = #{recipient},
+        recipients_tel = #{recipientsTel},
+        recipients_date = #{recipientsDate}
+        where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.SysPaperVo">
+        select * from sys_paper where id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_paper where id = #{id}
+    </delete>
+
+</mapper>
