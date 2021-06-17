@@ -11,6 +11,10 @@ public class VoDoorQRCode {
      */
     private Integer id;
     /**
+     * 房产主键id
+     */
+    private Integer estateId;
+    /**
      * 房产名称
      */
     private String roomName;
@@ -47,6 +51,7 @@ public class VoDoorQRCode {
     public String toString() {
         return "VoDoorQRCode{" +
                 "id=" + id +
+                ", estateId=" + estateId +
                 ", roomName='" + roomName + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
@@ -64,6 +69,14 @@ public class VoDoorQRCode {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
     }
 
     public String getRoomName() {
@@ -133,8 +146,9 @@ public class VoDoorQRCode {
     public VoDoorQRCode() {
     }
 
-    public VoDoorQRCode(Integer id, String roomName, String name, String tel, String idCard, Date startTime, Date endTime, String createName, Date createDate) {
+    public VoDoorQRCode(Integer id, Integer estateId, String roomName, String name, String tel, String idCard, Date startTime, Date endTime, String createName, Date createDate) {
         this.id = id;
+        this.estateId = estateId;
         this.roomName = roomName;
         this.name = name;
         this.tel = tel;

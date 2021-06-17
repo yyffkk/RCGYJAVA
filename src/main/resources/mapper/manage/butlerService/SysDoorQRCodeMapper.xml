@@ -34,7 +34,7 @@
         select count(*) from sys_door_qrcode where estate_id = #{estateId} and tel = #{tel}
     </select>
     <select id="list" parameterType="com.api.model.butlerService.SearchDoorQRCode" resultType="com.api.vo.butlerService.VoDoorQRCode">
-        select sdq.id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,sdq.name,sdq.tel,sdq.id_card,sdq.start_time,sdq.end_time,su.actual_name as create_name,sdq.create_date
+        select sdq.id,sdq.estate_id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,sdq.name,sdq.tel,sdq.id_card,sdq.start_time,sdq.end_time,su.actual_name as create_name,sdq.create_date
         from sys_door_qrcode as sdq,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su
         <where>
             sdq.estate_id = cbue.id
