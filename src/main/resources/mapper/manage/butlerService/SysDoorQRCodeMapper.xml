@@ -30,4 +30,20 @@
     <delete id="removeQrCode" parameterType="com.api.model.butlerService.SysDoorQRCode">
         delete from sys_door_qrcode where id = #{id}
     </delete>
+    <select id="countQRCodeByEstateIdAndTel" parameterType="com.api.model.butlerService.SysDoorQRCode" resultType="java.lang.Integer">
+        select count(*) from sys_door_qrcode where estate_id = #{estateId} and tel = #{tel}
+    </select>
+    <select id="list" parameterType="com.api.model.butlerService.SearchDoorQRCode" resultType="com.api.vo.butlerService.VoDoorQRCode">
+        select sdq.id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,sdq.name,sdq.tel,sdq.id_card,sdq.start_time,sdq.end_time,su.actual_name as create_name,sdq.create_date
+        from sys_door_qrcode as sdq,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su
+        <where>
+            sdq.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and sdq.create_id = su.id
+            <if test="tel != null and tel != ''">
+                and sdq.tel = #{tel}
+            </if>
+        </where>
+    </select>
 </mapper>

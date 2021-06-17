@@ -4,8 +4,10 @@ import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.butlerService.SysDoorQRCodeDao;
 import com.api.manage.service.butlerService.SysDoorQRCodeService;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerService.SearchDoorQRCode;
 import com.api.model.butlerService.SysDoorQRCode;
 import com.api.util.LiLinSignGetHmac;
+import com.api.vo.butlerService.VoDoorQRCode;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.shiro.SecurityUtils;
@@ -17,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -63,6 +62,12 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
 
             sysDoorQRCode.setCreateId(sysUser.getId());
             sysDoorQRCode.setCreateDate(new Date());
+
+            //根据房产主键id和手机号查询是否存在门禁二维码关联信息
+            int count = sysDoorQRCodeDao.countQRCodeByEstateIdAndTel(sysDoorQRCode);
+            if (count >0){
+                throw new RuntimeException("已存在该门禁二维码关联信息");
+            }
 
             //根据拜访房产id查询设备号
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(sysDoorQRCode.getEstateId());
@@ -141,6 +146,11 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         map.put("message","删除成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public List<VoDoorQRCode> list(SearchDoorQRCode searchDoorQRCode) {
+        return sysDoorQRCodeDao.list(searchDoorQRCode);
     }
 
     private void connectLiLinRemoveQrCode(String deviceNumber, String tel) {
