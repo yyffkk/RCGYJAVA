@@ -62,6 +62,14 @@ public class SysPaperServiceImpl implements SysPaperService {
     @Override
     public Map<String, Object> recipients(SysPaper sysPaper) {
         map = new HashMap<>();
+        //根据票据主键id查询票据信息
+        SysPaperVo sysPaperVo = sysPaperDao.findById(sysPaper.getId());
+        if (sysPaperVo.getStatus() ==2){//2.已领用
+            map.put("message","开票编号为:"+sysPaperVo.getCode()+"的票据已被领用");
+            map.put("status",false);
+            return map;
+        }
+
         sysPaper.setRecipientsDate(new Date());
         sysPaper.setStatus(2);//2.已领用
         int update = sysPaperDao.recipients(sysPaper);
