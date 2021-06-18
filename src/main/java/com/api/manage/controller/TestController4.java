@@ -23,9 +23,9 @@ public class TestController4 {
         PrivateSeal_1();
     }
 
-    public static void main(String[] args) throws Exception {
-        OfficialSeal_1();
-    }
+//    public static void main(String[] args) throws Exception {
+//        OfficialSeal_1();
+//    }
 
     public static void OfficialSeal_1() throws Exception {
         SealUtils.builder()
