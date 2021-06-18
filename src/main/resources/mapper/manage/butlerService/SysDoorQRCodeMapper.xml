@@ -45,5 +45,6 @@
                 and sdq.tel = #{tel}
             </if>
         </where>
+        order by sdq.create_date desc
     </select>
 </mapper>
