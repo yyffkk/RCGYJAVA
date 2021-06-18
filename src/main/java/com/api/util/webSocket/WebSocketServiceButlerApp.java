@@ -17,8 +17,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 
 /**
- *
- * web页面的websocket
+ * 管家app的websocket
  * @author chen
  * @date 2019/10/26
  * @email 15218979950@163.com
@@ -28,14 +27,14 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * 虽然@Component默认是单例模式的，但springboot还是会为每个websocket连接初始化一个bean，
  * 所以可以用一个静态set保存起来
  */
-@ServerEndpoint(value = "/websocket/web/{nickname}")
+@ServerEndpoint(value = "/websocket/butlerApp/{nickname}")
 @Component
-public class WebSocketService {
+public class WebSocketServiceButlerApp {
     private String nickname;
     private Session session;
 
     //用来存放每个客户端对应的MyWebSocket对象。
-    private static CopyOnWriteArraySet<WebSocketService> webSocketSet = new CopyOnWriteArraySet<WebSocketService>();
+    private static CopyOnWriteArraySet<WebSocketServiceButlerApp> webSocketSet = new CopyOnWriteArraySet<WebSocketServiceButlerApp>();
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     //用来记录sessionId和该session进行绑定
     private static Map<String, Session> map = new HashMap<String, Session>();
@@ -137,7 +136,7 @@ public class WebSocketService {
      * 群发自定义消息
      */
     public void broadcast(String message) {
-        for (WebSocketService item : webSocketSet) {
+        for (WebSocketServiceButlerApp item : webSocketSet) {
             item.session.getAsyncRemote().sendText(message);//异步发送消息.
         }
     }

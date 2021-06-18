@@ -4,6 +4,7 @@ import com.api.app.dao.butler.AppAlarmDao;
 import com.api.app.service.butler.AppAlarmService;
 import com.api.model.app.AppAlarm;
 import com.api.util.webSocket.WebSocketService;
+import com.api.util.webSocket.WebSocketServiceButlerApp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,8 +33,12 @@ public class AppAlarmServiceImpl implements AppAlarmService {
         }
 
         String content = "于【"+roomName+"】的【"+name+"】使用了一键报警功能";
+        //web页面的websocket
         WebSocketService ws = new WebSocketService();
         ws.broadcast(content);
+        //管家app的websocket
+        WebSocketServiceButlerApp wsButlerApp = new WebSocketServiceButlerApp();
+        wsButlerApp.broadcast(content);
 
         int insert = appAlarmDao.insertAlarmRecord(appAlarm);
         if (insert >0){

@@ -13,6 +13,8 @@ import com.api.util.IdWorker;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.util.webSocket.WebSocketService;
+import com.api.util.webSocket.WebSocketServiceApp;
+import com.api.util.webSocket.WebSocketServiceButlerApp;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
@@ -433,8 +435,15 @@ public class SystemDataServiceImpl implements SystemDataService {
 //             key:type value:1 火警
             JiguangUtil.sendPushAll(content,"1");
             JiguangUtil.sendButlerPushAll(content,"1");
+            //web页面的websocket
             WebSocketService ws = new WebSocketService();
             ws.broadcast(content);
+            //业主app的websocket
+            WebSocketServiceApp wsApp = new WebSocketServiceApp();
+            wsApp.broadcast(content);
+            //管家app的websocket
+            WebSocketServiceButlerApp wsButlerApp = new WebSocketServiceButlerApp();
+            wsButlerApp.broadcast(content);
 
         } catch (Exception e) {
             e.printStackTrace();
