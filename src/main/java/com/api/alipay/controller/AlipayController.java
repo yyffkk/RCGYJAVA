@@ -78,43 +78,43 @@ public class AlipayController {
 //    }
 
 
-    /**
-     * app测试支付(生成 APP 支付订单信息)
-     * @param appDailyPaymentOrder app生活缴纳 支付订单信息
-     * @param response response
-     * @param request request
-     * @return map
-     */
-    @PostMapping(value = "/alipay")
-    public Map<String,Object> alipay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder, HttpServletResponse response, HttpServletRequest request) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        return alipayService.alipay(appDailyPaymentOrder);
-    }
-
-    /**
-     * 测试接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
-     * @param request request
-     * @param response response
-     * @return map
-     * @throws UnsupportedEncodingException 异常
-     */
-    @PostMapping(value = "/getAlipayNotifyInfo")
-    public String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
-        request.setCharacterEncoding("UTF-8");
-        return alipayService.getAlipayNotifyInfoOfCombinedPayment(request);
-    }
-
-    /**
-     * 测试向支付宝发起订单查询请求
-     * @param outTradeNo 商户订单号
-     * @return map
-     */
-    @PostMapping("/checkAlipay")
-    public Integer checkAlipay(@RequestBody String outTradeNo){
-        return alipayService.checkAlipay(outTradeNo);
-    }
+//    /**
+//     * app测试支付(生成 APP 支付订单信息)
+//     * @param appDailyPaymentOrder app生活缴纳 支付订单信息
+//     * @param response response
+//     * @param request request
+//     * @return map
+//     */
+//    @PostMapping(value = "/alipay")
+//    public Map<String,Object> alipay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder, HttpServletResponse response, HttpServletRequest request) {
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+//        return alipayService.alipay(appDailyPaymentOrder);
+//    }
+//
+//    /**
+//     * 测试接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+//     * @param request request
+//     * @param response response
+//     * @return map
+//     * @throws UnsupportedEncodingException 异常
+//     */
+//    @PostMapping(value = "/getAlipayNotifyInfo")
+//    public String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+//        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+//        request.setCharacterEncoding("UTF-8");
+//        return alipayService.getAlipayNotifyInfoOfCombinedPayment(request);
+//    }
+//
+//    /**
+//     * 测试向支付宝发起订单查询请求
+//     * @param outTradeNo 商户订单号
+//     * @return map
+//     */
+//    @PostMapping("/checkAlipay")
+//    public Integer checkAlipay(@RequestBody String outTradeNo){
+//        return alipayService.checkAlipay(outTradeNo);
+//    }
 
     /**
      * app 日常缴费支付宝支付(生成 APP 支付订单信息)

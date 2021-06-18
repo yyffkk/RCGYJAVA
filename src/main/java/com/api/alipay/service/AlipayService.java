@@ -12,11 +12,11 @@ public interface AlipayService {
 //
 //    String notify(Map<String, String> conversionParams);
 
-    Map<String,Object> alipay(AppDailyPaymentOrder appDailyPaymentOrder);
-
-    String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request);
-
-    Integer checkAlipay(String outTradeNo);
+//    Map<String,Object> alipay(AppDailyPaymentOrder appDailyPaymentOrder);
+//
+//    String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request);
+//
+//    Integer checkAlipay(String outTradeNo);
 
     Map<String, Object> dailyPaymentAlipay(AppDailyPaymentOrder appDailyPaymentOrder);
 

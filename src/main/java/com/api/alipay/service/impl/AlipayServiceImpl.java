@@ -232,223 +232,223 @@ public class AlipayServiceImpl implements AlipayService {
 //    }
 
 
-    @Override
-    @Transactional
-    public Map<String,Object> alipay(AppDailyPaymentOrder appDailyPaymentOrder) {
-        map = new HashMap<>();
-        String body = "";
-        //模拟填写姓名
-        appDailyPaymentOrder.setName("张三");
-        //模拟填写手机号
-        appDailyPaymentOrder.setTel("1231241");
-
-
-        // 获取项目中实际的订单的信息
-        // 此处是相关业务代码
-        try {
-            //填写付款金额
-            appDailyPaymentOrder.setPayPrice(BigDecimal.valueOf(0.01));
-
-            //填写支付单号(自动生成订单号)
-            appDailyPaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
-            //填写创建人 app为-1
-            appDailyPaymentOrder.setCreateId(-1);
-            //填入创建时间
-            appDailyPaymentOrder.setCreateDate(new Date());
-            //填入付款状态，0.交易创建并等待买家付款
-            appDailyPaymentOrder.setStatus(0);
-            //添加缴费订单信息
-            int i = appDailyPaymentDao.insertOrder(appDailyPaymentOrder);
-            if (i<=0){
-                throw new RuntimeException("添加缴费订单信息失败");
-            }
-
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("日常缴费测试支付");
-            model.setSubject("日常缴费");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(appDailyPaymentOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(appDailyPaymentOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
-            }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
-
-        } catch (RuntimeException e) {
-            //获取抛出的信息
-            String message = e.getMessage();
-            e.printStackTrace();
-            //设置手动回滚
-            TransactionAspectSupport.currentTransactionStatus()
-                    .setRollbackOnly();
-            map.put("message",message);
-            map.put("status",false);
-            return map;
-        }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
-        return map;
-    }
-
-    @Override
-    public String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request) {
-        //获取支付宝POST过来反馈信息
-        Map<String,String> params = new HashMap<>();
-        Map<String,String[]> requestParams = request.getParameterMap();
-        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
-            String name = (String) iter.next();
-            String[] values = (String[]) requestParams.get(name);
-            String valueStr = "";
-            for (int i = 0; i < values.length; i++) {
-                valueStr = (i == values.length - 1) ? valueStr + values[i]
-                        : valueStr + values[i] + ",";
-            }
-
-            // 官方demo中使用如下方式解决中文乱码，在此本人不推荐使用，可能会出现中文乱码解决无效的问题。
-            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
-
-            params.put(name, valueStr);
-        }
-        boolean signVerified = false;
-        try {
-            //调用SDK验证签名
-            signVerified = AlipaySignature.rsaCheckV1(params, RSA_ALIPAY_PUBLIC_KEY, ALIPAY_CHARSET, SIGN_TYPE);
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-            // 验签异常  笔者在这里是输出log，可以根据需要做一些其他操作
-            log.info("异步调用失败");
-
-            return "fail";
-        }
-        if(signVerified) {
-            //验签通过
-            //获取需要保存的数据
-            String appId=params.get("app_id");//支付宝分配给开发者的应用Id
-            String outTradeNo = params.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
-            String buyerPayAmount=params.get("buyer_pay_amount");//付款金额:用户在交易中支付的金额
-            String tradeStatus = params.get("trade_status");// 获取交易状态
-            String tradeNo=params.get("trade_no");//支付宝的交易号
-            // 验证通知后执行自己项目需要的业务操作
-            // 一般需要判断支付状态是否为TRADE_SUCCESS
-            // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
-            //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
-            AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
-            //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
-            if(aliPaymentOrder!=null && buyerPayAmount.equals(aliPaymentOrder.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
-                aliPaymentOrder.setTradeNo(tradeNo);//填入支付宝的交易号
-                switch (tradeStatus) // 判断交易结果
-                {
-                    case "TRADE_FINISHED": // 交易结束并不可退款
-                        aliPaymentOrder.setStatus(3);
-                        break;
-                    case "TRADE_SUCCESS": // 交易支付成功
-                        aliPaymentOrder.setStatus(2);
-                        break;
-                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
-                        aliPaymentOrder.setStatus(1);
-                        break;
-                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
-                        aliPaymentOrder.setStatus(0);
-                        break;
-                    default:
-                        break;
-                }
-                //更新表的状态
-                int returnResult = appDailyPaymentDao.updateDPOrderStatusByCode(aliPaymentOrder);
-                if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
-                    if(returnResult>0){
-                        log.info("异步调用成功");
-                        // 成功要返回success，不然支付宝会不断发送通知。
-                        return "success";
-                    }else{
-                        return "fail";
-                    }
-                }else{
-                    return "fail";
-                }
-            }else{
-                log.info("==================支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
-                return"fail";
-            }
-        }else {
-            // 验签失败  笔者在这里是输出log，可以根据需要做一些其他操作
-            log.info("=========验签不通过！");
-
-            // 失败要返回fail，不然支付宝会不断发送通知。
-            return "fail";
-        }
-    }
-
-
-
-    @Override
-    public Integer checkAlipay(String outTradeNo) {
-        log.info("==================向支付宝发起查询，查询商户订单号为："+outTradeNo);
-
-        try {
-            //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
-            alipayTradeQueryRequest.setBizContent("{" +
-                    "\"out_trade_no\":\""+outTradeNo+"\"" +
-                    "}");
-            AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
-            if(alipayTradeQueryResponse.isSuccess()){
-                //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
-                AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
-                //修改数据库支付宝订单表
-                switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
-                {
-                    case "TRADE_FINISHED": // 交易结束并不可退款
-                        aliPaymentOrder.setStatus(3);
-                        break;
-                    case "TRADE_SUCCESS": // 交易支付成功
-                        aliPaymentOrder.setStatus(2);
-                        break;
-                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
-                        aliPaymentOrder.setStatus(1);
-                        break;
-                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
-                        aliPaymentOrder.setStatus(0);
-                        break;
-                    default:
-                        break;
-                }
-                //更新表的状态
-                appDailyPaymentDao.updateDPOrderStatusByCode(aliPaymentOrder);
-                return aliPaymentOrder.getStatus(); //交易状态
-            } else {
-                log.info("==================调用支付宝查询接口失败！");
-            }
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-        }
-        return 0;
-
-    }
+//    @Override
+//    @Transactional
+//    public Map<String,Object> alipay(AppDailyPaymentOrder appDailyPaymentOrder) {
+//        map = new HashMap<>();
+//        String body = "";
+//        //模拟填写姓名
+//        appDailyPaymentOrder.setName("张三");
+//        //模拟填写手机号
+//        appDailyPaymentOrder.setTel("1231241");
+//
+//
+//        // 获取项目中实际的订单的信息
+//        // 此处是相关业务代码
+//        try {
+//            //填写付款金额
+//            appDailyPaymentOrder.setPayPrice(BigDecimal.valueOf(0.01));
+//
+//            //填写支付单号(自动生成订单号)
+//            appDailyPaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
+//            //填写创建人 app为-1
+//            appDailyPaymentOrder.setCreateId(-1);
+//            //填入创建时间
+//            appDailyPaymentOrder.setCreateDate(new Date());
+//            //填入付款状态，0.交易创建并等待买家付款
+//            appDailyPaymentOrder.setStatus(0);
+//            //添加缴费订单信息
+//            int i = appDailyPaymentDao.insertOrder(appDailyPaymentOrder);
+//            if (i<=0){
+//                throw new RuntimeException("添加缴费订单信息失败");
+//            }
+//
+//            // 开始使用支付宝SDK中提供的API
+//            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+//            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+//            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+//            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+//            model.setBody("日常缴费测试支付");
+//            model.setSubject("日常缴费");
+//            // 唯一订单号 根据项目中实际需要获取相应的
+//            model.setOutTradeNo(appDailyPaymentOrder.getCode());
+//            // 支付超时时间（根据项目需要填写）
+//            model.setTimeoutExpress("30m");
+//            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+//            model.setTotalAmount(String.valueOf(appDailyPaymentOrder.getPayPrice()));
+//            //app支付 固定值 填写QUICK_MSECURITY_PAY
+//            model.setProductCode("QUICK_MSECURITY_PAY");
+//            alipayRequest.setBizModel(model);
+//            // 支付成功后支付宝异步通知的接收地址url
+//            alipayRequest.setNotifyUrl(NOTIFY_URL);
+//            //支付成功后支付宝同步通知的接收地址url（回跳地址）
+////            alipayRequest.setReturnUrl(RETURN_URL);
+//
+//            // 注意：每个请求的相应对象不同，与请求对象是对应。
+//            AlipayTradeAppPayResponse alipayResponse = null;
+//            try {
+//                alipayResponse = alipayClient.sdkExecute(alipayRequest);
+//            } catch (AlipayApiException e) {
+//                e.printStackTrace();
+//                log.info("获取签名失败");
+//                throw new RuntimeException("获取签名失败");
+//            }
+//            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+//            body = alipayResponse.getBody();
+//
+//        } catch (RuntimeException e) {
+//            //获取抛出的信息
+//            String message = e.getMessage();
+//            e.printStackTrace();
+//            //设置手动回滚
+//            TransactionAspectSupport.currentTransactionStatus()
+//                    .setRollbackOnly();
+//            map.put("message",message);
+//            map.put("status",false);
+//            return map;
+//        }
+//        log.info("body:"+body);
+//        map.put("message",body);
+//        map.put("status",true);
+//        return map;
+//    }
+//
+//    @Override
+//    public String getAlipayNotifyInfoOfCombinedPayment(HttpServletRequest request) {
+//        //获取支付宝POST过来反馈信息
+//        Map<String,String> params = new HashMap<>();
+//        Map<String,String[]> requestParams = request.getParameterMap();
+//        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
+//            String name = (String) iter.next();
+//            String[] values = (String[]) requestParams.get(name);
+//            String valueStr = "";
+//            for (int i = 0; i < values.length; i++) {
+//                valueStr = (i == values.length - 1) ? valueStr + values[i]
+//                        : valueStr + values[i] + ",";
+//            }
+//
+//            // 官方demo中使用如下方式解决中文乱码，在此本人不推荐使用，可能会出现中文乱码解决无效的问题。
+//            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
+//
+//            params.put(name, valueStr);
+//        }
+//        boolean signVerified = false;
+//        try {
+//            //调用SDK验证签名
+//            signVerified = AlipaySignature.rsaCheckV1(params, RSA_ALIPAY_PUBLIC_KEY, ALIPAY_CHARSET, SIGN_TYPE);
+//        } catch (AlipayApiException e) {
+//            e.printStackTrace();
+//            // 验签异常  笔者在这里是输出log，可以根据需要做一些其他操作
+//            log.info("异步调用失败");
+//
+//            return "fail";
+//        }
+//        if(signVerified) {
+//            //验签通过
+//            //获取需要保存的数据
+//            String appId=params.get("app_id");//支付宝分配给开发者的应用Id
+//            String outTradeNo = params.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
+//            String buyerPayAmount=params.get("buyer_pay_amount");//付款金额:用户在交易中支付的金额
+//            String tradeStatus = params.get("trade_status");// 获取交易状态
+//            String tradeNo=params.get("trade_no");//支付宝的交易号
+//            // 验证通知后执行自己项目需要的业务操作
+//            // 一般需要判断支付状态是否为TRADE_SUCCESS
+//            // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
+//            //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+//            AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
+//            //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
+//            if(aliPaymentOrder!=null && buyerPayAmount.equals(aliPaymentOrder.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
+//                aliPaymentOrder.setTradeNo(tradeNo);//填入支付宝的交易号
+//                switch (tradeStatus) // 判断交易结果
+//                {
+//                    case "TRADE_FINISHED": // 交易结束并不可退款
+//                        aliPaymentOrder.setStatus(3);
+//                        break;
+//                    case "TRADE_SUCCESS": // 交易支付成功
+//                        aliPaymentOrder.setStatus(2);
+//                        break;
+//                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+//                        aliPaymentOrder.setStatus(1);
+//                        break;
+//                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+//                        aliPaymentOrder.setStatus(0);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                //更新表的状态
+//                int returnResult = appDailyPaymentDao.updateDPOrderStatusByCode(aliPaymentOrder);
+//                if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
+//                    if(returnResult>0){
+//                        log.info("异步调用成功");
+//                        // 成功要返回success，不然支付宝会不断发送通知。
+//                        return "success";
+//                    }else{
+//                        return "fail";
+//                    }
+//                }else{
+//                    return "fail";
+//                }
+//            }else{
+//                log.info("==================支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
+//                return"fail";
+//            }
+//        }else {
+//            // 验签失败  笔者在这里是输出log，可以根据需要做一些其他操作
+//            log.info("=========验签不通过！");
+//
+//            // 失败要返回fail，不然支付宝会不断发送通知。
+//            return "fail";
+//        }
+//    }
+//
+//
+//
+//    @Override
+//    public Integer checkAlipay(String outTradeNo) {
+//        log.info("==================向支付宝发起查询，查询商户订单号为："+outTradeNo);
+//
+//        try {
+//            //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
+//            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+//            AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
+//            alipayTradeQueryRequest.setBizContent("{" +
+//                    "\"out_trade_no\":\""+outTradeNo+"\"" +
+//                    "}");
+//            AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
+//            if(alipayTradeQueryResponse.isSuccess()){
+//                //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+//                AppDailyPaymentOrder aliPaymentOrder = appDailyPaymentDao.findDailPaymentOrderByCode(outTradeNo);
+//                //修改数据库支付宝订单表
+//                switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
+//                {
+//                    case "TRADE_FINISHED": // 交易结束并不可退款
+//                        aliPaymentOrder.setStatus(3);
+//                        break;
+//                    case "TRADE_SUCCESS": // 交易支付成功
+//                        aliPaymentOrder.setStatus(2);
+//                        break;
+//                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+//                        aliPaymentOrder.setStatus(1);
+//                        break;
+//                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+//                        aliPaymentOrder.setStatus(0);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                //更新表的状态
+//                appDailyPaymentDao.updateDPOrderStatusByCode(aliPaymentOrder);
+//                return aliPaymentOrder.getStatus(); //交易状态
+//            } else {
+//                log.info("==================调用支付宝查询接口失败！");
+//            }
+//        } catch (AlipayApiException e) {
+//            e.printStackTrace();
+//        }
+//        return 0;
+//
+//    }
 
     @Override
     @Transactional
