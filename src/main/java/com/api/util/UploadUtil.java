@@ -60,8 +60,8 @@ public class UploadUtil {
         }
         //获取文件后缀
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
-        if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
-            throw new RuntimeException("请选择jpg,jpeg,gif,png格式的图片");
+        if (!"jpg,jpeg,gif,png,pdf".toUpperCase().contains(suffix.toUpperCase())) {
+            throw new RuntimeException("请选择jpg,jpeg,gif,png,pdf格式的图片");
         }
         //临时文件夹目录
         String temp = "/temp";
