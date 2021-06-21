@@ -292,4 +292,14 @@ public class UploadController {
         return uploadService.uploadFacilitiesDoc(file);
     }
 
+    /**
+     * 上传租赁合同模版pdf
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadLeaseContractPdf")
+    public Map<String,Object> uploadLeaseContractPdf(MultipartFile file){
+        return uploadService.uploadLeaseContractPdf(file);
+    }
+
 }

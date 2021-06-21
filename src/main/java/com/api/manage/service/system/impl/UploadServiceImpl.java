@@ -95,6 +95,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_REGULATION_MANAGEMENT_DOC;
     @Value("${prop.upload-facilities-doc}")
     private String UPLOAD_FACILITIES_DOC;
+    @Value("${prop.upload-lease-contract-pdf}")
+    private String UPLOAD_LEASE_CONTRACT_PDF;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -389,6 +391,12 @@ public class UploadServiceImpl implements UploadService {
         map.put("message","上传成功");
         map.put("url",url);
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadLeaseContractPdf(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_LEASE_CONTRACT_PDF);
         return map;
     }
 

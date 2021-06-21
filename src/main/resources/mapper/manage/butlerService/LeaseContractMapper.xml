@@ -4,4 +4,52 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.LeaseContractDao">
 
+    <select id="list" parameterType="com.api.model.butlerService.SearchLeaseContract" resultType="com.api.vo.butlerService.VoLeaseContract">
+        select slc.id,slc.name,slc.status,slc.create_date,su.actual_name as create_name
+        from sys_lease_contract as slc,sys_user as su
+        <where>
+            slc.create_id = su.id
+            <if test="name != null and name != ''">
+                and su.actual_name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and slc.status = #{status}
+            </if>
+        </where>
+    </select>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoLeaseContract">
+        select * from sys_lease_contract where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.SysLeaseContract">
+        insert into sys_lease_contract(
+            name,
+            status,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="updateStatus" parameterType="com.api.model.butlerService.SysLeaseContract">
+        update sys_lease_contract
+        set status = #{status}
+        where id = #{id}
+    </update>
+    <update id="disEnableAll">
+        update sys_lease_contract
+        set status = 2
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_lease_contract where id = #{id}
+    </delete>
+
 </mapper>

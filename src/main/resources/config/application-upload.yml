@@ -42,6 +42,8 @@ prop:
   upload-facilities-check-photo: /img/facilities/checkPhone/
   #管家服务-设施/设备管理：设施/设备doc,docx文件上传路径
   upload-facilities-doc: /doc/facilitiesDoc/
+  #管家服务-租赁合同管理：租赁合同模版上传路径
+  upload-lease-contract-pdf: /pdf/leaseContract/
 
   #运营管理-公告管理：新增公告信息照片上传路径
   upload-announcement: /img/announcement/
