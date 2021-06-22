@@ -41,6 +41,7 @@
 
     <insert id="insert" parameterType="com.api.model.butlerService.SysLease">
         insert into sys_lease(
+            code,
             name,
             sex,
             id_card,
@@ -59,6 +60,7 @@
             create_id,
             create_date
         )values (
+            #{code},
             #{name},
             #{sex},
             #{idCard},
@@ -82,6 +84,9 @@
     <update id="update" parameterType="com.api.model.butlerService.SysLease">
         update sys_lease
         <set>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
             <if test="name != null and name != ''">
                 name = #{name},
             </if>

@@ -14,6 +14,10 @@ public class VoLease {
      * 主键id
      */
     private Integer id;
+    /**
+     * 合同编号
+     */
+    private String code;
     /***
      * 租户名称
      */
@@ -83,6 +87,7 @@ public class VoLease {
     public String toString() {
         return "VoLease{" +
                 "id=" + id +
+                ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
                 ", idCard='" + idCard + '\'' +
@@ -108,6 +113,14 @@ public class VoLease {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -241,8 +254,9 @@ public class VoLease {
     public VoLease() {
     }
 
-    public VoLease(Integer id, String name, Integer sex, String idCard, String roomName, Integer type, String estateType, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate) {
+    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String roomName, Integer type, String estateType, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate) {
         this.id = id;
+        this.code = code;
         this.name = name;
         this.sex = sex;
         this.idCard = idCard;

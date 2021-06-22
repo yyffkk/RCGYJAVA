@@ -12,6 +12,10 @@ public class SysLease {
      */
     private Integer id;
     /**
+     * 合同编号
+     */
+    private String code;
+    /**
      * 租户名称
      */
     private String name;
@@ -96,6 +100,7 @@ public class SysLease {
     public String toString() {
         return "SysLease{" +
                 "id=" + id +
+                ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
                 ", idCard='" + idCard + '\'' +
@@ -125,6 +130,14 @@ public class SysLease {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -290,8 +303,9 @@ public class SysLease {
     public SysLease() {
     }
 
-    public SysLease(Integer id, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate) {
+    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate) {
         this.id = id;
+        this.code = code;
         this.name = name;
         this.sex = sex;
         this.idCard = idCard;
