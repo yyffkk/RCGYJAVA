@@ -154,53 +154,82 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
     }
 
     private void connectLiLinRemoveQrCode(String deviceNumber, String tel) {
+//        //第三方删除设备二维码
+//        Boolean status = removeLiLinQrCode(deviceNumber, tel);
+//        if (!status){
+//            throw new RuntimeException("删除房屋门禁设备二维码失败");
+//        }
+//
+//        log.info("删除房屋门禁设备二维码成功");
+
         //判断是否成功发送给大华
         //拼接入口设备号（4个入口）
-//        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
-//        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
-//        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
-//        String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
+        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
+        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
+        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
 
-
-        //第三方删除设备二维码
-        Boolean status = removeLiLinQrCode(deviceNumber, tel);
-        if (!status){
-            throw new RuntimeException("删除房屋门禁设备二维码失败");
+        //删除入口1设备二维码
+        Boolean status1 = removeLiLinQrCode(entranceNumber1, tel);
+        if (!status1){
+            throw new RuntimeException("删除入口1设备二维码失败");
         }
 
-        log.info("删除房屋门禁设备二维码成功");
+        log.info("删除入口1设备二维码成功");
 
-//        //删除入口1设备二维码
-//        Boolean status1 = removeLiLinQrCode(deviceNumber1, tel);
-//        if (!status1){
-//            throw new RuntimeException("删除入口1设备二维码失败");
-//        }
-//
-//        log.info("删除入口1设备二维码成功");
-//
-//        //删除入口2设备二维码
-//        Boolean status2 = removeLiLinQrCode(deviceNumber2, tel);
-//        if (!status2){
-//            throw new RuntimeException("删除入口2设备二维码失败");
-//        }
-//
-//        log.info("删除入口2设备二维码成功");
-//
-//        //删除入口3设备二维码
-//        Boolean status3 = removeLiLinQrCode(deviceNumber3, tel);
-//        if (!status3){
-//            throw new RuntimeException("删除入口3设备二维码失败");
-//        }
-//
-//        log.info("删除入口3设备二维码成功");
-//
-//        //删除入口4设备二维码
-//        Boolean status4 = removeLiLinQrCode(deviceNumber4, tel);
-//        if (!status4){
-//            throw new RuntimeException("删除入口4设备二维码失败");
-//        }
-//
-//        log.info("删除入口4设备二维码成功");
+        //删除入口2设备二维码
+        Boolean status2 = removeLiLinQrCode(entranceNumber2, tel);
+        if (!status2){
+            throw new RuntimeException("删除入口2设备二维码失败");
+        }
+
+        log.info("删除入口2设备二维码成功");
+
+        //删除入口3设备二维码
+        Boolean status3 = removeLiLinQrCode(entranceNumber3, tel);
+        if (!status3){
+            throw new RuntimeException("删除入口3设备二维码失败");
+        }
+
+        log.info("删除入口3设备二维码成功");
+
+        //查询第2个字符，代表楼栋号
+        int buildingNo = Integer.parseInt(String.valueOf(deviceNumber.charAt(1)));
+        //查询第4个字符，代表单元号
+        int unitNo = Integer.parseInt(String.valueOf(deviceNumber.charAt(3)));
+
+        //判断是否有第4个入口
+        if (buildingNo == 4){
+            //如果4栋，则只有3个入口
+        }else {
+            String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
+
+
+            //删除入口4设备二维码
+            Boolean status4 = removeLiLinQrCode(entranceNumber4, tel);
+            if (!status4){
+                throw new RuntimeException("删除入口4设备二维码失败");
+            }
+
+            log.info("删除入口4设备二维码成功");
+        }
+
+        //判断是否有第5个入口
+        if (buildingNo == 2 && unitNo == 2){
+            //如果是2栋2单元，则删除第5个入口
+            String entranceNumber5 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10005");
+
+            //删除入口5设备二维码
+            Boolean status4 = removeLiLinQrCode(entranceNumber5, tel);
+            if (!status4){
+                throw new RuntimeException("删除入口5设备二维码失败");
+            }
+
+            log.info("删除入口5设备二维码成功");
+        }
+
+
+
+
     }
 
     private Boolean removeLiLinQrCode(String deviceNumber, String tel) {
