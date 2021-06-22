@@ -1,5 +1,7 @@
 package com.api.app.service.my;
 
+import com.api.model.basicArchives.UserResident;
+import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
 
 import java.util.Map;
@@ -16,4 +18,6 @@ public interface MyHouseService {
     Map<String, Object> findById(Integer estateExamineId);
 
     Map<String, Object> changeSelectExamineId(Integer examineId, Integer id);
+
+    Map<String, Object> leaseCertification(UserResident userResident);
 }

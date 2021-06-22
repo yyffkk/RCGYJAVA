@@ -2,6 +2,7 @@ package com.api.app.dao.my;
 
 import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
+import com.api.model.butlerService.SysLease;
 import com.api.vo.my.*;
 
 import java.util.List;
@@ -107,4 +108,10 @@ public interface MyHouseDao {
      */
     int updateEstateExamineId(AppUserIdAndExamineId appUserIdAndExamineId);
 
+    /**
+     * 根据手机号
+     * @param tel 手机号
+     * @return 租赁管理信息集合
+     */
+    List<SysLease> findLeaseByTel(String tel);
 }

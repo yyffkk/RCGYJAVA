@@ -60,4 +60,9 @@
     <update id="updateEstateExamineId" parameterType="com.api.model.app.AppUserIdAndExamineId">
         update user_resident set now_estate_examine_id = #{examineId} where id = #{userId}
     </update>
+
+    <select id="findLeaseByTel" parameterType="java.lang.String" resultType="com.api.model.butlerService.SysLease">
+        select * from sys_lease where tel = #{tel}
+    </select>
+
 </mapper>

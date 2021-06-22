@@ -5,11 +5,15 @@ import com.api.app.dao.my.MyHouseDao;
 import com.api.app.service.my.MyHouseService;
 import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
+import com.api.model.basicArchives.UserResident;
+import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
 import com.api.vo.my.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -214,6 +218,19 @@ public class MyHouseServiceImpl implements MyHouseService {
         }
         map.put("message","更改成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> leaseCertification(UserResident userResident) {
+        List<SysLease> sysLease = myHouseDao.findLeaseByTel(userResident.getTel());
+        if (sysLease == null){
+            map.put("message","用户并未具备相关的资格");
+            map.put("status",false);
+            return map;
+        }
+
+
         return map;
     }
 

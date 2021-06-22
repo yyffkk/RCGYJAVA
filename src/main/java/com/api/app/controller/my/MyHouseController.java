@@ -1,6 +1,8 @@
 package com.api.app.controller.my;
 
 import com.api.app.service.my.MyHouseService;
+import com.api.model.basicArchives.UserResident;
+import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
 import com.api.vo.basicArchives.VoIds;
 import org.springframework.web.bind.annotation.*;
@@ -92,6 +94,17 @@ public class MyHouseController {
     @GetMapping("/changeSelectExamineId")
     public Map<String,Object> changeSelectExamineId(Integer examineId,Integer id){
         return myHouseService.changeSelectExamineId(examineId,id);
+    }
+
+
+    /**
+     * 租赁认证
+     * @param userResident 住户信息表
+     * @return map
+     */
+    @PostMapping
+    public Map<String,Object> leaseCertification(@RequestBody UserResident userResident){
+        return myHouseService.leaseCertification(userResident);
     }
 
 }
