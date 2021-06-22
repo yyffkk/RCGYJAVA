@@ -413,12 +413,12 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
             log.info("添加入口4设备二维码成功");
         }
 
-        //判断是否有第4个入口
+        //判断是否有第5个入口
         if ("2".equals(buildingNo) && "2".equals(unitNo)){
-            //如果2栋2单元，则添加第5个入口
+            //如果是2栋2单元，则添加第5个入口
             String entranceNumber5 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10005");
 
-            //添加入口4设备二维码
+            //添加入口5设备二维码
             Boolean status4 = addLiLinQrCode(entranceNumber5, tel,startTime,endTime);
             if (!status4){
                 throw new RuntimeException("添加入口5设备二维码失败");
