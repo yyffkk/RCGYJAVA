@@ -357,13 +357,6 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
 
     private void connectLiLinAddQrCode(String deviceNumber, String tel, Date startTime, Date endTime) {
         //判断是否成功发送给大华
-        //拼接入口设备号（4个入口）
-//        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
-//        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
-//        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
-//        String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
-
-
         //第三方添加设备二维码
         Boolean status = addLiLinQrCode(deviceNumber, tel,startTime,endTime);
         if (!status){
@@ -372,37 +365,68 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
 
         log.info("添加房屋门禁设备二维码成功");
 
-//        //添加入口1设备二维码
-//        Boolean status1 = addLiLinQrCode(deviceNumber1, tel,startTime,endTime);
-//        if (!status1){
-//            throw new RuntimeException("添加入口1设备二维码失败");
-//        }
-//
-//        log.info("添加入口1设备二维码成功");
-//
-//        //添加入口2设备二维码
-//        Boolean status2 = addLiLinQrCode(deviceNumber2, tel,startTime,endTime);
-//        if (!status2){
-//            throw new RuntimeException("添加入口2设备二维码失败");
-//        }
-//
-//        log.info("添加入口2设备二维码成功");
-//
-//        //添加入口3设备二维码
-//        Boolean status3 = addLiLinQrCode(deviceNumber3, tel,startTime,endTime);
-//        if (!status3){
-//            throw new RuntimeException("添加入口3设备二维码失败");
-//        }
-//
-//        log.info("添加入口3设备二维码成功");
-//
-//        //添加入口4设备二维码
-//        Boolean status4 = addLiLinQrCode(deviceNumber4, tel,startTime,endTime);
-//        if (!status4){
-//            throw new RuntimeException("添加入口4设备二维码失败");
-//        }
-//
-//        log.info("添加入口4设备二维码成功");
+        //拼接入口设备号（4个入口）
+        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
+        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
+        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
+
+
+        //添加入口1设备二维码
+        Boolean status1 = addLiLinQrCode(entranceNumber1, tel,startTime,endTime);
+        if (!status1){
+            throw new RuntimeException("添加入口1设备二维码失败");
+        }
+        log.info("添加入口1设备二维码成功");
+
+        //添加入口2设备二维码
+        Boolean status2 = addLiLinQrCode(entranceNumber2, tel,startTime,endTime);
+        if (!status2){
+            throw new RuntimeException("添加入口2设备二维码失败");
+        }
+        log.info("添加入口2设备二维码成功");
+
+        //添加入口3设备二维码
+        Boolean status3 = addLiLinQrCode(entranceNumber3, tel,startTime,endTime);
+        if (!status3){
+            throw new RuntimeException("添加入口3设备二维码失败");
+        }
+        log.info("添加入口3设备二维码成功");
+
+        //查询第2个字符，代表楼栋号
+        String buildingNo = deviceNumber.substring(1, 1);
+        //查询第4个字符，代表单元号
+        String unitNo = deviceNumber.substring(3, 1);
+
+        //判断是否有第4个入口
+        if ("4".equals(buildingNo)){
+            //如果4栋，则只有3个入口
+        }else {
+            //添加第4个入口
+            String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
+
+            //添加入口4设备二维码
+            Boolean status4 = addLiLinQrCode(entranceNumber4, tel,startTime,endTime);
+            if (!status4){
+                throw new RuntimeException("添加入口4设备二维码失败");
+            }
+
+            log.info("添加入口4设备二维码成功");
+        }
+
+        //判断是否有第4个入口
+        if ("2".equals(buildingNo) && "2".equals(unitNo)){
+            //如果2栋2单元，则添加第5个入口
+            String entranceNumber5 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10005");
+
+            //添加入口4设备二维码
+            Boolean status4 = addLiLinQrCode(entranceNumber5, tel,startTime,endTime);
+            if (!status4){
+                throw new RuntimeException("添加入口5设备二维码失败");
+            }
+
+            log.info("添加入口5设备二维码成功");
+        }
+
     }
 
     private Boolean addLiLinQrCode(String deviceNumber, String tel, Date startTime, Date endTime) {
