@@ -393,9 +393,9 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         log.info("添加入口3设备二维码成功");
 
         //查询第2个字符，代表楼栋号
-        int buildingNo = Integer.parseInt(deviceNumber.substring(1, 1));
+        int buildingNo = Integer.parseInt(String.valueOf(deviceNumber.charAt(1)));
         //查询第4个字符，代表单元号
-        int unitNo = Integer.parseInt(deviceNumber.substring(3,3));
+        int unitNo = Integer.parseInt(String.valueOf(deviceNumber.charAt(3)));
 
         //判断是否有第4个入口
         if (buildingNo == 4){
