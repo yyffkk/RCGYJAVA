@@ -21,7 +21,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("manage/lease")
 public class LeaseController {
-    private static Map<String,Object> map = null;
     @Resource
     LeaseService leaseService;
 
