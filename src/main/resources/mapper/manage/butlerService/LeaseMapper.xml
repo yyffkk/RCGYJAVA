@@ -4,4 +4,115 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.LeaseDao">
 
+    <select id="list" parameterType="com.api.model.butlerService.SearchLease" resultType="com.api.vo.butlerService.VoLease">
+        select sl.*,su1.actual_name as reviewer_name,su2.actual_name as create_name,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from sys_lease as sl,sys_user as su1,sys_user su2,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where sl.reviewer = su1.id and sl.create_id = su2.id
+        and sl.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+    </select>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBILease">
+
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.SysLease">
+        insert into sys_lease(
+            name,
+            sex,
+            id_card,
+            tel,
+            estate_id,
+            type,
+            estate_type,
+            estate_structure,
+            construction_area,
+            indoor_area,
+            rent_standard,
+            margin,
+            lease_date_start,
+            lease_date_end,
+            status,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{sex},
+            #{idCard},
+            #{tel},
+            #{estateId},
+            #{type},
+            #{estateType},
+            #{estateStructure},
+            #{constructionArea},
+            #{indoorArea},
+            #{rentStandard},
+            #{margin},
+            #{leaseDateStart},
+            #{leaseDateEnd},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.api.model.butlerService.SysLease">
+        update sys_lease
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="idCard != null and idCard != ''">
+                id_card = #{idCard},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="estateId != null">
+                estate_id = #{estateId},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="estateType != null and estateType != ''">
+                estate_type = #{estateType},
+            </if>
+            <if test="estateStructure != null and estateStructure != ''">
+                estate_structure = #{estateStructure},
+            </if>
+            <if test="constructionArea != null">
+                construction_area = #{constructionArea},
+            </if>
+            <if test="indoorArea != null">
+                indoor_area = #{indoor_area},
+            </if>
+            <if test="rentStandard != null">
+                rent_standard = #{rentStandard},
+            </if>
+            <if test="margin != null">
+                margin = #{margin},
+            </if>
+            <if test="leaseDateStart != null">
+                lease_date_start = #{leaseDateStart},
+            </if>
+            <if test="leaseDateEnd != null">
+                lease_date_end = #{leaseDateEnd},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="reviewer">
+        update sys_lease
+        set status = #{status},
+        reviewer = #{reviewer},
+        audit_date = #{auditDate},
+        audit_remake = #{auditRemake}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_lease where id = #{id}
+    </delete>
+
 </mapper>
