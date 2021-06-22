@@ -358,12 +358,12 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
     private void connectLiLinAddQrCode(String deviceNumber, String tel, Date startTime, Date endTime) {
         //判断是否成功发送给大华
         //第三方添加设备二维码
-        Boolean status = addLiLinQrCode(deviceNumber, tel,startTime,endTime);
-        if (!status){
-            throw new RuntimeException("添加房屋门禁设备二维码失败");
-        }
-
-        log.info("添加房屋门禁设备二维码成功");
+//        Boolean status = addLiLinQrCode(deviceNumber, tel,startTime,endTime);
+//        if (!status){
+//            throw new RuntimeException("添加房屋门禁设备二维码失败");
+//        }
+//
+//        log.info("添加房屋门禁设备二维码成功");
 
         //拼接入口设备号（4个入口）
         String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
@@ -393,12 +393,12 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         log.info("添加入口3设备二维码成功");
 
         //查询第2个字符，代表楼栋号
-        String buildingNo = deviceNumber.substring(1, 1);
+        int buildingNo = Integer.parseInt(deviceNumber.substring(1, 1));
         //查询第4个字符，代表单元号
-        String unitNo = deviceNumber.substring(3, 1);
+        int unitNo = Integer.parseInt(deviceNumber.substring(3,3));
 
         //判断是否有第4个入口
-        if ("4".equals(buildingNo)){
+        if (buildingNo == 4){
             //如果4栋，则只有3个入口
         }else {
             //添加第4个入口
@@ -414,7 +414,7 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         }
 
         //判断是否有第5个入口
-        if ("2".equals(buildingNo) && "2".equals(unitNo)){
+        if (buildingNo == 2 && unitNo == 2){
             //如果是2栋2单元，则添加第5个入口
             String entranceNumber5 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10005");
 
