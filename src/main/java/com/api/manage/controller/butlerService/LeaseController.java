@@ -73,7 +73,7 @@ public class LeaseController {
 
     /**
      * 批量删除租赁信息
-     * @param ids 租赁信息主键id
+     * @param ids 租赁信息主键id数组
      * @return map
      */
     @PostMapping("/delete")

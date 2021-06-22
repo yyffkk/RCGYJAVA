@@ -6,12 +6,37 @@
 
     <select id="list" parameterType="com.api.model.butlerService.SearchLease" resultType="com.api.vo.butlerService.VoLease">
         select sl.*,su1.actual_name as reviewer_name,su2.actual_name as create_name,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
-        from sys_lease as sl,sys_user as su1,sys_user su2,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
-        where sl.reviewer = su1.id and sl.create_id = su2.id
-        and sl.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+        from sys_user as su2,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_lease as sl
+		left JOIN sys_user as su1 on sl.reviewer = su1.id
+		<where>
+            sl.create_id = su2.id
+            and sl.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="name != null and name != ''">
+                and sl.name like concat('%',#{name},'%')
+            </if>
+            <if test="idCard != null and idCard != ''">
+                and sl.id_card like concat('%',#{idCard},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and sl.tel like concat('%',#{tel},'%')
+            </if>
+            <if test="estateId != null">
+                and sl.estate_id = #{estateId}
+            </if>
+            <if test="type != null">
+                and sl.type = #{type}
+            </if>
+            <if test="status != null">
+                and sl.status = #{status}
+            </if>
+        </where>
     </select>
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBILease">
-
+        select sl.*,cb.id as building_id,cb.no as building_no,cbu.id as unit_id,cbu.no as unit_no,cbue.id as estate_id,cbue.room_number as room_number
+        from sys_lease as sl,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where sl.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and sl.id = #{id}
     </select>
 
     <insert id="insert" parameterType="com.api.model.butlerService.SysLease">
@@ -85,7 +110,7 @@
                 construction_area = #{constructionArea},
             </if>
             <if test="indoorArea != null">
-                indoor_area = #{indoor_area},
+                indoor_area = #{indoorArea},
             </if>
             <if test="rentStandard != null">
                 rent_standard = #{rentStandard},

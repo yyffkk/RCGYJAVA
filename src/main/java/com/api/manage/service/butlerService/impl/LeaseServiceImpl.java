@@ -121,6 +121,13 @@ public class LeaseServiceImpl implements LeaseService {
     @Override
     public Map<String, Object> reviewer(SysLease sysLease) {
         map = new HashMap<>();
+        VoFBILease byId = leaseDao.findById(sysLease.getId());
+        if (byId.getStatus() != 3){//3.审核中
+            map.put("message","该状态不可审核");
+            map.put("status",false);
+            return map;
+        }
+
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
