@@ -433,8 +433,9 @@ public class SystemDataServiceImpl implements SystemDataService {
             String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
 //            System.out.printf(content);
 //             key:type value:1 火警
-            JiguangUtil.sendPushAll(content,"1");
-            JiguangUtil.sendButlerPushAll(content,"1");
+                //不使用第三方极光推送，该用websocket来实现推送
+//            JiguangUtil.sendPushAll(content,"1");
+//            JiguangUtil.sendButlerPushAll(content,"1");
             //web页面的websocket
             WebSocketService ws = new WebSocketService();
             ws.broadcast(content);
