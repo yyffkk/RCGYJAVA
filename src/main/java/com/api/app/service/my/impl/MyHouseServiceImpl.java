@@ -223,14 +223,34 @@ public class MyHouseServiceImpl implements MyHouseService {
 
     @Override
     public Map<String, Object> leaseCertification(UserResident userResident) {
-        List<SysLease> sysLease = myHouseDao.findLeaseByTel(userResident.getTel());
-        if (sysLease == null){
+        List<SysLease> sysLeaseList = myHouseDao.findLeaseByTel(userResident.getTel());
+        if (sysLeaseList == null){
             map.put("message","用户并未具备相关的资格");
             map.put("status",false);
             return map;
         }
+        SysLease sysLease = sysLeaseList.get(0);
 
-
+        if (sysLease.getTel().equals(userResident.getTel())
+                && sysLease.getName().equals(userResident.getName())
+                && sysLease.getSex() == userResident.getSex()
+                && sysLease.getIdCard().equals(userResident.getIdNumber())){
+            //认证通过
+            //更新用户信息
+            userResident.setIdType(1);//默认1.身份证
+            int update = myHouseDao.updateUserResidentInfo(userResident);
+            if (update >0){
+                map.put("message","认证成功");
+                map.put("status",true);
+            }else {
+                map.put("message","信息更新失败,认证失败");
+                map.put("status",false);
+            }
+        }else {
+            //认证失败
+            map.put("message","认证失败");
+            map.put("status",false);
+        }
         return map;
     }
 

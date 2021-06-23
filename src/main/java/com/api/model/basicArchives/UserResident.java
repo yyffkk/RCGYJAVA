@@ -19,6 +19,10 @@ public class UserResident {
      */
     private Integer type;
     /**
+     * 性别：1.男，2.女
+     */
+    private Integer sex;
+    /**
      * 联系电话
      */
     private String tel;
@@ -73,6 +77,7 @@ public class UserResident {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", sex=" + sex +
                 ", tel='" + tel + '\'' +
                 ", idType=" + idType +
                 ", idNumber='" + idNumber + '\'' +
@@ -110,6 +115,14 @@ public class UserResident {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
     public String getTel() {
@@ -211,10 +224,11 @@ public class UserResident {
     public UserResident() {
     }
 
-    public UserResident(Integer id, String name, Integer type, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName, Integer nowEstateId) {
+    public UserResident(Integer id, String name, Integer type, Integer sex, String tel, Integer idType, String idNumber, String pwd, String confuse, String email, Integer createId, Date createDate, Integer identity, Integer roomStatus, String nickName, Integer nowEstateId) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.sex = sex;
         this.tel = tel;
         this.idType = idType;
         this.idNumber = idNumber;

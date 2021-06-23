@@ -2,6 +2,7 @@ package com.api.app.dao.my;
 
 import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
+import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.vo.my.*;
 
@@ -114,4 +115,11 @@ public interface MyHouseDao {
      * @return 租赁管理信息集合
      */
     List<SysLease> findLeaseByTel(String tel);
+
+    /**
+     * 更新用户信息
+     * @param userResident 住户信息表
+     * @return 影响行数
+     */
+    int updateUserResidentInfo(UserResident userResident);
 }
