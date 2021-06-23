@@ -190,10 +190,9 @@ public class PdfUtils {
 
     /**
      * 替换pdf中指定文字
-     * @param pdfReplaceMaps 替换的新旧文字 数组集合
      * @param src 目标pdf路径
      * @param dest 新pdf的路径
-     * @param pdfReplaceMaps
+     * @param pdfReplaceMaps 替换的新旧文字 数组集合
      * @throws Exception
      */
     public static void pdfReplace(String src, String dest, ArrayList<PdfReplaceMap> pdfReplaceMaps) throws Exception{
