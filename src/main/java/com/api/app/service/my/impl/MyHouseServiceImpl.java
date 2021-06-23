@@ -6,14 +6,15 @@ import com.api.app.service.my.MyHouseService;
 import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
-import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
+import com.api.vo.app.AppLeaseInfoVo;
+import com.api.vo.app.AppLeaseVo;
+import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -223,8 +224,9 @@ public class MyHouseServiceImpl implements MyHouseService {
 
     @Override
     public Map<String, Object> leaseCertification(UserResident userResident) {
+        map = new HashMap<>();
         List<SysLease> sysLeaseList = myHouseDao.findLeaseByTel(userResident.getTel());
-        if (sysLeaseList == null){
+        if (sysLeaseList == null || sysLeaseList.size()<=0){
             map.put("message","用户并未具备相关的资格");
             map.put("status",false);
             return map;
@@ -251,6 +253,36 @@ public class MyHouseServiceImpl implements MyHouseService {
             map.put("message","认证失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> leaseEcho(String tel) {
+        map = new HashMap<>();
+
+        //根据手机号查询认证回显信息
+        AppLeaseInfoVo appLeaseInfoVo = myHouseDao.findLeaseInfoByTel(tel);
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",appLeaseInfoVo);
+
+        return map;
+    }
+
+    @Override
+    public List<AppLeaseVo> leaseList() {
+        return myHouseDao.leaseList();
+    }
+
+    @Override
+    public Map<String, Object> leaseFindById(Integer leaseId) {
+        map = new HashMap<>();
+
+        VoLease voLease = myHouseDao.leaseFindById(leaseId);
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",voLease);
+
         return map;
     }
 

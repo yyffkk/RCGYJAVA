@@ -1,9 +1,10 @@
 package com.api.app.service.my;
 
 import com.api.model.basicArchives.UserResident;
-import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
+import com.api.vo.app.AppLeaseVo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MyHouseService {
@@ -20,4 +21,10 @@ public interface MyHouseService {
     Map<String, Object> changeSelectExamineId(Integer examineId, Integer id);
 
     Map<String, Object> leaseCertification(UserResident userResident);
+
+    Map<String, Object> leaseEcho(String tel);
+
+    List<AppLeaseVo> leaseList();
+
+    Map<String, Object> leaseFindById(Integer leaseId);
 }

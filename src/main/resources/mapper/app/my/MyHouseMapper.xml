@@ -72,5 +72,19 @@
     <select id="findLeaseByTel" parameterType="java.lang.String" resultType="com.api.model.butlerService.SysLease">
         select * from sys_lease where tel = #{tel}
     </select>
+    <select id="findLeaseInfoByTel" parameterType="java.lang.String" resultType="com.api.vo.app.AppLeaseInfoVo">
+        select * from user_resident where tel = #{tel} and type = 4
+    </select>
+    <select id="leaseList" resultType="com.api.vo.app.AppLeaseVo">
+        select sl.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from sys_lease as sl,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where sl.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+    </select>
+    <select id="leaseFindById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoLease">
+        select sl.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,su1.actual_name as create_name,su2.actual_name as reviewer_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su1,sys_lease as sl
+		LEFT JOIN sys_user su2 on sl.reviewer = su2.id
+        where sl.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and sl.create_id = su1.id and sl.id = #{leaseId}
+    </select>
 
 </mapper>

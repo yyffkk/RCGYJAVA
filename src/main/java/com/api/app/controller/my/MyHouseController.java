@@ -4,11 +4,17 @@ import com.api.app.service.my.MyHouseService;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
+import com.api.vo.app.AppAdviceVo;
+import com.api.vo.app.AppLeaseVo;
 import com.api.vo.basicArchives.VoIds;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -102,9 +108,49 @@ public class MyHouseController {
      * @param userResident 住户信息表
      * @return map
      */
-    @PostMapping
+    @PostMapping("/leaseCertification")
     public Map<String,Object> leaseCertification(@RequestBody UserResident userResident){
         return myHouseService.leaseCertification(userResident);
     }
+
+
+    /**
+     * 租赁认证信息回显
+     * @param tel 用户的手机号
+     * @return map
+     */
+    @GetMapping("/leaseEcho")
+    public Map<String,Object> leaseEcho(String tel){
+        return myHouseService.leaseEcho(tel);
+    }
+
+    /**
+     * 查询所有的租赁信息
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/leaseList")
+    public Map<String,Object> leaseList(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<AppLeaseVo> appLeaseVoList =myHouseService.leaseList();
+        PageInfo<AppLeaseVo> pageInfo = new PageInfo<>(appLeaseVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 根据租赁主键id查询租赁信息
+     * @param leaseId 租赁主键id
+     * @return map
+     */
+    @GetMapping("/leaseFindById")
+    public Map<String,Object> leaseFindById(Integer leaseId){
+        return myHouseService.leaseFindById(leaseId);
+    }
+
 
 }

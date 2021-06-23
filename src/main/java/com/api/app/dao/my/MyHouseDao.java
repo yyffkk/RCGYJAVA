@@ -4,6 +4,9 @@ import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
+import com.api.vo.app.AppLeaseInfoVo;
+import com.api.vo.app.AppLeaseVo;
+import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
 
 import java.util.List;
@@ -122,4 +125,24 @@ public interface MyHouseDao {
      * @return 影响行数
      */
     int updateUserResidentInfo(UserResident userResident);
+
+    /**
+     * 根据手机号查询认证回显信息
+     * @param tel 手机号
+     * @return 认证回显信息
+     */
+    AppLeaseInfoVo findLeaseInfoByTel(String tel);
+
+    /**
+     * 查询所有的租赁信息
+     * @return 租赁信息
+     */
+    List<AppLeaseVo> leaseList();
+
+    /**
+     * 根据租赁主键id查询租赁信息
+     * @param leaseId 租赁主键id
+     * @return 租赁信息
+     */
+    VoLease leaseFindById(Integer leaseId);
 }
