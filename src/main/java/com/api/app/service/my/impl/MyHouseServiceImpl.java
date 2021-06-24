@@ -285,10 +285,10 @@ public class MyHouseServiceImpl implements MyHouseService {
             UploadUtil uploadUtil = new UploadUtil();
             //查询身份证照正面
             List<VoResourcesImg> idCardFront = uploadUtil.findImgByDate("sysLease", voLease.getId(), "idCardFront");
-            voLease.setIdCardFrontImgUrl(idCardFront);
+            voLease.setIdCardFrontFiles(idCardFront);
             //查询身份证照背面
             List<VoResourcesImg> idCardBack = uploadUtil.findImgByDate("sysLease", voLease.getId(), "idCardBack");
-            voLease.setIdCardBackImgUrl(idCardBack);
+            voLease.setIdCardBackFiles(idCardBack);
         }
         map.put("message","请求成功");
         map.put("status",true);
