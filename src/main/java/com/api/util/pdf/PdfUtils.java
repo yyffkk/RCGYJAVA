@@ -164,7 +164,8 @@ public class PdfUtils {
                 canvas = stamper.getOverContent(page);
                 float x = item.getX();
                 float y = item.getY();
-                float fontWidth = item.getFontWidth();
+                //因为模版是${xxx}第一位$的字体宽度是中文的一半，所以字体宽度*2
+                float fontWidth = item.getFontWidth()*2;
                 float fontHeight = item.getFontHeight();
                 canvas.saveState();
                 canvas.setColorFill(BaseColor.WHITE);
