@@ -372,11 +372,11 @@ public class MyHouseServiceImpl implements MyHouseService {
 
                 //插入图片
                 if (voLease.getType() == 1){
-                    pdfReplaceMaps.add(new PdfReplaceMap("\uF0A3一类人才","☑️一类人才"));
+                    pdfReplaceMaps.add(new PdfReplaceMap("${️一类人才}","/Users/AKU001/pdf/黑色.jpeg"));
                 }else if (voLease.getType() == 2){
-                    pdfReplaceMaps.add(new PdfReplaceMap("\uF0A3一类人才","☑️二类人才"));
+                    pdfReplaceMaps.add(new PdfReplaceMap("${二类人才}","/Users/AKU001/pdf/黑色.jpeg"));
                 }else if (voLease.getType() == 3){
-                    pdfReplaceMaps.add(new PdfReplaceMap("\uF0A3一类人才","☑️三类人才"));
+                    pdfReplaceMaps.add(new PdfReplaceMap("${三类人才}","/Users/AKU001/pdf/黑色.jpeg"));
                 }
 
                 PdfUtils.pdfReplace(src,dest,pdfReplaceMaps);

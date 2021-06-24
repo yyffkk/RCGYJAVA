@@ -5,11 +5,11 @@ package com.api.util.pdf;
  */
 public class PdfReplaceMap {
     /**
-     * 原字符串
+     * 原字符串/占位符
      */
     private String oldStr;
     /**
-     * 新字符串
+     * 新字符串/照片路径
      */
     private String newStr;
 

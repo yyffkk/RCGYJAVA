@@ -2,6 +2,7 @@ package com.api.util.pdf;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
@@ -212,7 +213,33 @@ public class PdfUtils {
             for (PdfReplaceMap pdfReplaceMap : pdfReplaceMaps) {
                 String keyWord2 = pdfReplaceMap.getOldStr();
                 String keyWordNew2 = pdfReplaceMap.getNewStr();
-                manipulatePdf(stamper,matchAll(src,keyWord2),keyWord2,keyWordNew2);
+                if ("${️一类人才}".equals(keyWord2)){
+                    PdfContentByte overContent = stamper.getOverContent(2);//指定在最后一页插入图片
+                    //添加图片
+                    Image image = Image.getInstance(keyWordNew2);//图片名称
+                    image.scaleAbsolute(1000, 1000);//图片大小
+                    image.setAbsolutePosition(164.28f, 841.9f);//左边距、底边距
+                    overContent.addImage(image);
+                    overContent.stroke();
+                }else if ("${️二类人才}".equals(keyWord2)){
+                    PdfContentByte overContent = stamper.getOverContent(1);//指定在最后一页插入图片
+                    //添加图片
+                    Image image = Image.getInstance(keyWordNew2);//图片名称
+                    image.scaleAbsolute(9, 12);//图片大小
+                    image.setAbsolutePosition(164.28f, 510.22568f);//左边距、底边距
+                    overContent.addImage(image);
+                    overContent.stroke();
+                }else if ("${️三类人才}".equals(keyWord2)){
+                    PdfContentByte overContent = stamper.getOverContent(1);//指定在最后一页插入图片
+                    //添加图片
+                    Image image = Image.getInstance(keyWordNew2);//图片名称
+                    image.scaleAbsolute(9, 12);//图片大小
+                    image.setAbsolutePosition(164.28f, 477.1067f);//左边距、底边距
+                    overContent.addImage(image);
+                    overContent.stroke();
+                }else {
+                    manipulatePdf(stamper,matchAll(src,keyWord2),keyWord2,keyWordNew2);
+                }
             }
         }
 
