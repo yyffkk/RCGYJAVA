@@ -19,22 +19,28 @@ import com.api.vo.app.AppLeaseVo;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
 import com.api.vo.resources.VoResourcesImg;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.ResourceUtils;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class MyHouseServiceImpl implements MyHouseService {
+    private static Map<String,Object> map = null;
+    @Value("${prop.upload-lease-contract-pdf}")
+    private String UPLOAD_LEASE_CONTRACT_PDF;
     @Resource
     MyHouseDao myHouseDao;
     @Resource
     AppLoginDao appLoginDao;
-    private static Map<String,Object> map = null;
+
 
 
     @Override
@@ -321,10 +327,20 @@ public class MyHouseServiceImpl implements MyHouseService {
             }
             UploadUtil uploadUtil = new UploadUtil();
 
+            //保存身份证照正面照
+            uploadUtil.saveUrlToDB(sysLease.getIdCardFrontImgUrl(),"sysLease", sysLease.getId(), "idCardFront","600",30,20);
+            //保存身份证照背面照
+            uploadUtil.saveUrlToDB(sysLease.getIdCardBackImgUrl(),"sysLease", sysLease.getId(), "idCardBack","600",30,20);
+
             try {
-                //生成预览合同
+//                // 获取项目同级目录，传入static中
+//                String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
+//                String rootPath = realPath + UPLOAD_LEASE_CONTRACT_PDF;
+//                //生成预览合同
 //                List<VoResourcesImg> sysLeaseContractImgData = uploadUtil.findImgByDate("sysLeaseContract", sysLeaseContract.getId(), "leaseContractPdf");
-//                String src = "/Users/AKU001/pdf/"+sysLeaseContractImgData.get(0).getUrl()+".pdf";
+//                String src = rootPath + sysLeaseContractImgData.get(0).getUrl()+".pdf";
+//                String dest = rootPath + descUrl+".pdf";
+
                 String src = "/Users/AKU001/pdf/模版1.pdf";
                 String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
                 ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
