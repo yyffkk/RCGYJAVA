@@ -188,6 +188,8 @@ public class PdfUtils {
                 canvas.setTextMatrix(x, y+fontWidth/10+0.5f);
                 //要输出的text
                 canvas.showText(keyWordNew);
+                // 读图片
+//                Image image = Image.getInstance(imagePath);
 
                 canvas.endText();
             }

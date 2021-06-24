@@ -353,13 +353,6 @@ public class MyHouseServiceImpl implements MyHouseService {
                 pdfReplaceMaps.add(new PdfReplaceMap("${承租人}",voLease.getName()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${承租人身份证号}",voLease.getIdCard()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${手机号}",voLease.getTel()));
-                if (voLease.getType() == 1){
-                    pdfReplaceMaps.add(new PdfReplaceMap("${c1}","\uF052一类人才"));
-                }else if (voLease.getType() == 2){
-                    pdfReplaceMaps.add(new PdfReplaceMap("${c2}","\uF052二类人才"));
-                }else if (voLease.getType() == 3){
-                    pdfReplaceMaps.add(new PdfReplaceMap("${c3}","\uF052三类人才"));
-                }
                 pdfReplaceMaps.add(new PdfReplaceMap("${房屋户型}",voLease.getEstateType()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${房屋结构}",voLease.getEstateStructure()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${建筑面积}",voLease.getConstructionArea().toString()));
@@ -376,6 +369,15 @@ public class MyHouseServiceImpl implements MyHouseService {
                 pdfReplaceMaps.add(new PdfReplaceMap("${工作单位}",voLease.getWorkUnits()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${代缴银行账户名}",voLease.getBankAccountName()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${代缴银行账户}",voLease.getBankAccount()));
+
+                //插入图片
+                if (voLease.getType() == 1){
+                    pdfReplaceMaps.add(new PdfReplaceMap("\uF0A3一类人才","☑️一类人才"));
+                }else if (voLease.getType() == 2){
+                    pdfReplaceMaps.add(new PdfReplaceMap("\uF0A3一类人才","☑️二类人才"));
+                }else if (voLease.getType() == 3){
+                    pdfReplaceMaps.add(new PdfReplaceMap("\uF0A3一类人才","☑️三类人才"));
+                }
 
                 PdfUtils.pdfReplace(src,dest,pdfReplaceMaps);
             } catch (Exception e) {
