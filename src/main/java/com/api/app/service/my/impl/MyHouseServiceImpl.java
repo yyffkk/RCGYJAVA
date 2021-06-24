@@ -353,7 +353,13 @@ public class MyHouseServiceImpl implements MyHouseService {
                 pdfReplaceMaps.add(new PdfReplaceMap("${承租人}",voLease.getName()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${承租人身份证号}",voLease.getIdCard()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${手机号}",voLease.getTel()));
-//                pdfReplaceMaps.add(new PdfReplaceMap("${人才类型}",voLease.getType()));
+                if (voLease.getType() == 1){
+                    pdfReplaceMaps.add(new PdfReplaceMap("${c1}","\uF052一类人才"));
+                }else if (voLease.getType() == 2){
+                    pdfReplaceMaps.add(new PdfReplaceMap("${c2}","\uF052二类人才"));
+                }else if (voLease.getType() == 3){
+                    pdfReplaceMaps.add(new PdfReplaceMap("${c3}","\uF052三类人才"));
+                }
                 pdfReplaceMaps.add(new PdfReplaceMap("${房屋户型}",voLease.getEstateType()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${房屋结构}",voLease.getEstateStructure()));
                 pdfReplaceMaps.add(new PdfReplaceMap("${建筑面积}",voLease.getConstructionArea().toString()));
