@@ -82,6 +82,42 @@ public class VoLease {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 紧急联系人
+     */
+    private String emergencyContact;
+    /**
+     * 紧急联系人电话
+     */
+    private String emergencyContactNumber;
+    /**
+     * 通讯地址
+     */
+    private String correspondenceAddress;
+    /**
+     * 工作单位
+     */
+    private String workUnits;
+    /**
+     * 代缴银行
+     */
+    private String payBank;
+    /**
+     * 代缴银行账户名
+     */
+    private String bankAccountName;
+    /**
+     * 代缴银行账户
+     */
+    private String bankAccount;
+    /**
+     * 身份证照正面照片路径
+     */
+    private List<VoResourcesImg> idCardFrontImgUrl;
+    /**
+     * 身份证照背面照片路径
+     */
+    private List<VoResourcesImg> idCardBackImgUrl;
 
     @Override
     public String toString() {
@@ -104,6 +140,15 @@ public class VoLease {
                 ", auditDate=" + auditDate +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
+                ", emergencyContact='" + emergencyContact + '\'' +
+                ", emergencyContactNumber='" + emergencyContactNumber + '\'' +
+                ", correspondenceAddress='" + correspondenceAddress + '\'' +
+                ", workUnits='" + workUnits + '\'' +
+                ", payBank='" + payBank + '\'' +
+                ", bankAccountName='" + bankAccountName + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", idCardFrontImgUrl=" + idCardFrontImgUrl +
+                ", idCardBackImgUrl=" + idCardBackImgUrl +
                 '}';
     }
 
@@ -251,10 +296,82 @@ public class VoLease {
         this.createDate = createDate;
     }
 
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public String getEmergencyContactNumber() {
+        return emergencyContactNumber;
+    }
+
+    public void setEmergencyContactNumber(String emergencyContactNumber) {
+        this.emergencyContactNumber = emergencyContactNumber;
+    }
+
+    public String getCorrespondenceAddress() {
+        return correspondenceAddress;
+    }
+
+    public void setCorrespondenceAddress(String correspondenceAddress) {
+        this.correspondenceAddress = correspondenceAddress;
+    }
+
+    public String getWorkUnits() {
+        return workUnits;
+    }
+
+    public void setWorkUnits(String workUnits) {
+        this.workUnits = workUnits;
+    }
+
+    public String getPayBank() {
+        return payBank;
+    }
+
+    public void setPayBank(String payBank) {
+        this.payBank = payBank;
+    }
+
+    public String getBankAccountName() {
+        return bankAccountName;
+    }
+
+    public void setBankAccountName(String bankAccountName) {
+        this.bankAccountName = bankAccountName;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public List<VoResourcesImg> getIdCardFrontImgUrl() {
+        return idCardFrontImgUrl;
+    }
+
+    public void setIdCardFrontImgUrl(List<VoResourcesImg> idCardFrontImgUrl) {
+        this.idCardFrontImgUrl = idCardFrontImgUrl;
+    }
+
+    public List<VoResourcesImg> getIdCardBackImgUrl() {
+        return idCardBackImgUrl;
+    }
+
+    public void setIdCardBackImgUrl(List<VoResourcesImg> idCardBackImgUrl) {
+        this.idCardBackImgUrl = idCardBackImgUrl;
+    }
+
     public VoLease() {
     }
 
-    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String roomName, Integer type, String estateType, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate) {
+    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String roomName, Integer type, String estateType, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontImgUrl, List<VoResourcesImg> idCardBackImgUrl) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -273,5 +390,14 @@ public class VoLease {
         this.auditDate = auditDate;
         this.createName = createName;
         this.createDate = createDate;
+        this.emergencyContact = emergencyContact;
+        this.emergencyContactNumber = emergencyContactNumber;
+        this.correspondenceAddress = correspondenceAddress;
+        this.workUnits = workUnits;
+        this.payBank = payBank;
+        this.bankAccountName = bankAccountName;
+        this.bankAccount = bankAccount;
+        this.idCardFrontImgUrl = idCardFrontImgUrl;
+        this.idCardBackImgUrl = idCardBackImgUrl;
     }
 }

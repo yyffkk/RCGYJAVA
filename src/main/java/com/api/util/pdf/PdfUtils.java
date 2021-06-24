@@ -34,22 +34,22 @@ import java.util.Map;
  */
 public class PdfUtils {
 
-    /**
-     * 测试类
-     * @param args
-     * @throws Exception
-     */
-    public static void main(String[] args) throws Exception{
-        String src = "/Users/AKU001/pdf/模版1.pdf";
-        String dest = "/Users/AKU001/pdf/模版1-副本.pdf";
-        ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
-
-        //填写需要替换的信息
-        pdfReplaceMaps.add(new PdfReplaceMap("${承租人}","张三"));
-        pdfReplaceMaps.add(new PdfReplaceMap("${承租人身份证号}","331022199811261279"));
-
-        pdfReplace(src,dest,pdfReplaceMaps);
-    }
+//    /**
+//     * 测试类
+//     * @param args
+//     * @throws Exception
+//     */
+//    public static void main(String[] args) throws Exception{
+//        String src = "/Users/AKU001/pdf/模版1.pdf";
+//        String dest = "/Users/AKU001/pdf/模版1-副本.pdf";
+//        ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
+//
+//        //填写需要替换的信息
+//        pdfReplaceMaps.add(new PdfReplaceMap("${承租人}","张三"));
+//        pdfReplaceMaps.add(new PdfReplaceMap("${承租人身份证号}","331022199811261279"));
+//
+//        pdfReplace(src,dest,pdfReplaceMaps);
+//    }
 
     /**
      * 根据关键字和pdf路径，全文搜索关键字

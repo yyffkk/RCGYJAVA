@@ -8,10 +8,12 @@ import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
+import com.api.util.UploadUtil;
 import com.api.vo.app.AppLeaseInfoVo;
 import com.api.vo.app.AppLeaseVo;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
+import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -279,6 +281,15 @@ public class MyHouseServiceImpl implements MyHouseService {
         map = new HashMap<>();
 
         VoLease voLease = myHouseDao.leaseFindById(leaseId);
+        if (voLease != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            //查询身份证照正面
+            List<VoResourcesImg> idCardFront = uploadUtil.findImgByDate("sysLease", voLease.getId(), "idCardFront");
+            voLease.setIdCardFrontImgUrl(idCardFront);
+            //查询身份证照背面
+            List<VoResourcesImg> idCardBack = uploadUtil.findImgByDate("sysLease", voLease.getId(), "idCardBack");
+            voLease.setIdCardBackImgUrl(idCardBack);
+        }
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",voLease);
