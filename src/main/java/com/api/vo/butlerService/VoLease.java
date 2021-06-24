@@ -31,6 +31,10 @@ public class VoLease {
      */
     private String idCard;
     /**
+     * 手机号
+     */
+    private String tel;
+    /**
      * 可租房产名称
      */
     private String roomName;
@@ -42,6 +46,18 @@ public class VoLease {
      * 房屋户型
      */
     private String estateType;
+    /**
+     * 房屋结构
+     */
+    private String estateStructure;
+    /**
+     * 建筑面积
+     */
+    private BigDecimal constructionArea;
+    /**
+     * 使用面积（室内面积）
+     */
+    private BigDecimal indoorArea;
     /**
      * 租金标准 x/月
      */
@@ -127,9 +143,13 @@ public class VoLease {
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
                 ", idCard='" + idCard + '\'' +
+                ", tel='" + tel + '\'' +
                 ", roomName='" + roomName + '\'' +
                 ", type=" + type +
                 ", estateType='" + estateType + '\'' +
+                ", estateStructure='" + estateStructure + '\'' +
+                ", constructionArea=" + constructionArea +
+                ", indoorArea=" + indoorArea +
                 ", rentStandard=" + rentStandard +
                 ", margin=" + margin +
                 ", leaseDateStart=" + leaseDateStart +
@@ -192,6 +212,14 @@ public class VoLease {
         this.idCard = idCard;
     }
 
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
     public String getRoomName() {
         return roomName;
     }
@@ -214,6 +242,30 @@ public class VoLease {
 
     public void setEstateType(String estateType) {
         this.estateType = estateType;
+    }
+
+    public String getEstateStructure() {
+        return estateStructure;
+    }
+
+    public void setEstateStructure(String estateStructure) {
+        this.estateStructure = estateStructure;
+    }
+
+    public BigDecimal getConstructionArea() {
+        return constructionArea;
+    }
+
+    public void setConstructionArea(BigDecimal constructionArea) {
+        this.constructionArea = constructionArea;
+    }
+
+    public BigDecimal getIndoorArea() {
+        return indoorArea;
+    }
+
+    public void setIndoorArea(BigDecimal indoorArea) {
+        this.indoorArea = indoorArea;
     }
 
     public BigDecimal getRentStandard() {
@@ -371,15 +423,19 @@ public class VoLease {
     public VoLease() {
     }
 
-    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String roomName, Integer type, String estateType, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontFiles, List<VoResourcesImg> idCardBackFiles) {
+    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String tel, String roomName, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontFiles, List<VoResourcesImg> idCardBackFiles) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.sex = sex;
         this.idCard = idCard;
+        this.tel = tel;
         this.roomName = roomName;
         this.type = type;
         this.estateType = estateType;
+        this.estateStructure = estateStructure;
+        this.constructionArea = constructionArea;
+        this.indoorArea = indoorArea;
         this.rentStandard = rentStandard;
         this.margin = margin;
         this.leaseDateStart = leaseDateStart;

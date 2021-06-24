@@ -7,8 +7,13 @@ import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
+import com.api.model.butlerService.SysLeaseContract;
 import com.api.model.my.MyHouse;
+import com.api.util.ConvertUpMoney;
+import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
+import com.api.util.pdf.PdfReplaceMap;
+import com.api.util.pdf.PdfUtils;
 import com.api.vo.app.AppLeaseInfoVo;
 import com.api.vo.app.AppLeaseVo;
 import com.api.vo.butlerService.VoLease;
@@ -19,10 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class MyHouseServiceImpl implements MyHouseService {
@@ -301,6 +305,7 @@ public class MyHouseServiceImpl implements MyHouseService {
     @Transactional
     public Map<String, Object> submitPersonalLeaseInfo(SysLease sysLease) {
         map = new HashMap<>();
+        long descUrl = new IdWorker(1, 1, 1).nextId();
 
 
         try {
@@ -309,6 +314,51 @@ public class MyHouseServiceImpl implements MyHouseService {
                 throw new RuntimeException("修改数据库失败");
             }
 
+            //查询当前开启的合同模版
+            SysLeaseContract sysLeaseContract = myHouseDao.findEnableLeaseContract();
+            if (sysLeaseContract == null){
+                throw new RuntimeException("当前无启用合同模版");
+            }
+            UploadUtil uploadUtil = new UploadUtil();
+
+            try {
+                //生成预览合同
+//                List<VoResourcesImg> sysLeaseContractImgData = uploadUtil.findImgByDate("sysLeaseContract", sysLeaseContract.getId(), "leaseContractPdf");
+//                String src = "/Users/AKU001/pdf/"+sysLeaseContractImgData.get(0).getUrl()+".pdf";
+                String src = "/Users/AKU001/pdf/模版1.pdf";
+                String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
+                ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
+
+                //查询租赁信息
+                VoLease voLease = myHouseDao.leaseFindById(sysLease.getId());
+
+                //填写需要替换的信息
+                pdfReplaceMaps.add(new PdfReplaceMap("${合同编号}",voLease.getCode()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${承租人}",voLease.getName()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${承租人身份证号}",voLease.getIdCard()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${手机号}",voLease.getTel()));
+//                pdfReplaceMaps.add(new PdfReplaceMap("${人才类型}",voLease.getType()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${房屋户型}",voLease.getEstateType()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${房屋结构}",voLease.getEstateStructure()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${建筑面积}",voLease.getConstructionArea().toString()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${使用面积}",voLease.getIndoorArea().toString()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${保证金大写}", ConvertUpMoney.toChinese(voLease.getMargin().toString())));
+                pdfReplaceMaps.add(new PdfReplaceMap("${保证金数字}",voLease.getMargin().toString()));
+                DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+                pdfReplaceMaps.add(new PdfReplaceMap("${租赁开始时间}",format.format(voLease.getLeaseDateStart())));
+                pdfReplaceMaps.add(new PdfReplaceMap("${租赁结束时间}",format.format(voLease.getLeaseDateEnd())));
+                pdfReplaceMaps.add(new PdfReplaceMap("${办理人}",voLease.getCreateName()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${紧急联系人}",voLease.getEmergencyContact()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${紧急联系人电话}",voLease.getEmergencyContactNumber()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${通讯地址}",voLease.getCorrespondenceAddress()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${工作单位}",voLease.getWorkUnits()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${代缴银行账户名}",voLease.getBankAccountName()));
+                pdfReplaceMaps.add(new PdfReplaceMap("${代缴银行账户}",voLease.getBankAccount()));
+
+                PdfUtils.pdfReplace(src,dest,pdfReplaceMaps);
+            } catch (Exception e) {
+                throw new RuntimeException("生成预览合同异常");
+            }
 
         } catch (RuntimeException e) {
             //获取抛出的信息
@@ -323,7 +373,7 @@ public class MyHouseServiceImpl implements MyHouseService {
         }
         map.put("message","填写成功");
         map.put("status",true);
-        map.put("data",);
+        map.put("data",descUrl+".pdf");
         return map;
     }
 

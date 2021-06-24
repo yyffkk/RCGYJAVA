@@ -4,6 +4,7 @@ import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
+import com.api.model.butlerService.SysLeaseContract;
 import com.api.vo.app.AppLeaseInfoVo;
 import com.api.vo.app.AppLeaseVo;
 import com.api.vo.butlerService.VoLease;
@@ -152,4 +153,10 @@ public interface MyHouseDao {
      * @return 影响行数
      */
     int submitPersonalLeaseInfo(SysLease sysLease);
+
+    /**
+     * 查询当前开启的合同模版
+     * @return 合同模版
+     */
+    SysLeaseContract findEnableLeaseContract();
 }
