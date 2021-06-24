@@ -204,11 +204,11 @@
     </select>
     <select id="findHandledNum" resultType="java.lang.Integer">
         select count(*) from sys_dispatch_list
-        where status <![CDATA[ >= ]]> 4
+        where status <![CDATA[ >= ]]> 4 and sys_delete = 1
     </select>
     <select id="findPendingNum" resultType="java.lang.Integer">
         select count(*) from sys_dispatch_list
-        where status <![CDATA[ < ]]> 4
+        where status <![CDATA[ < ]]> 4 and sys_delete = 1
     </select>
     <select id="findPublicTypeNum" resultType="java.lang.Integer">
         select count(*) from sys_report_repair
