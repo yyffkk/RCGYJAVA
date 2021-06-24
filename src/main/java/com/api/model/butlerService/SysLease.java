@@ -1,6 +1,9 @@
 package com.api.model.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -95,6 +98,42 @@ public class SysLease {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 紧急联系人
+     */
+    private String emergencyContact;
+    /**
+     * 紧急联系人电话
+     */
+    private String emergencyContactNumber;
+    /**
+     * 通讯地址
+     */
+    private String correspondenceAddress;
+    /**
+     * 工作单位
+     */
+    private String workUnits;
+    /**
+     * 代缴银行
+     */
+    private String payBank;
+    /**
+     * 代缴银行账户名
+     */
+    private String bankAccountName;
+    /**
+     * 代缴银行账户
+     */
+    private String bankAccount;
+    /**
+     * 身份证照正面照片路径
+     */
+    private String[] idCardFrontImgUrl;
+    /**
+     * 身份证照背面照片路径
+     */
+    private String[] idCardBackImgUrl;
 
     @Override
     public String toString() {
@@ -121,6 +160,15 @@ public class SysLease {
                 ", auditRemake='" + auditRemake + '\'' +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", emergencyContact='" + emergencyContact + '\'' +
+                ", emergencyContactNumber='" + emergencyContactNumber + '\'' +
+                ", correspondenceAddress='" + correspondenceAddress + '\'' +
+                ", workUnits='" + workUnits + '\'' +
+                ", payBank='" + payBank + '\'' +
+                ", bankAccountName='" + bankAccountName + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", idCardFrontImgUrl=" + Arrays.toString(idCardFrontImgUrl) +
+                ", idCardBackImgUrl=" + Arrays.toString(idCardBackImgUrl) +
                 '}';
     }
 
@@ -300,10 +348,82 @@ public class SysLease {
         this.createDate = createDate;
     }
 
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public String getEmergencyContactNumber() {
+        return emergencyContactNumber;
+    }
+
+    public void setEmergencyContactNumber(String emergencyContactNumber) {
+        this.emergencyContactNumber = emergencyContactNumber;
+    }
+
+    public String getCorrespondenceAddress() {
+        return correspondenceAddress;
+    }
+
+    public void setCorrespondenceAddress(String correspondenceAddress) {
+        this.correspondenceAddress = correspondenceAddress;
+    }
+
+    public String getWorkUnits() {
+        return workUnits;
+    }
+
+    public void setWorkUnits(String workUnits) {
+        this.workUnits = workUnits;
+    }
+
+    public String getPayBank() {
+        return payBank;
+    }
+
+    public void setPayBank(String payBank) {
+        this.payBank = payBank;
+    }
+
+    public String getBankAccountName() {
+        return bankAccountName;
+    }
+
+    public void setBankAccountName(String bankAccountName) {
+        this.bankAccountName = bankAccountName;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public String[] getIdCardFrontImgUrl() {
+        return idCardFrontImgUrl;
+    }
+
+    public void setIdCardFrontImgUrl(String[] idCardFrontImgUrl) {
+        this.idCardFrontImgUrl = idCardFrontImgUrl;
+    }
+
+    public String[] getIdCardBackImgUrl() {
+        return idCardBackImgUrl;
+    }
+
+    public void setIdCardBackImgUrl(String[] idCardBackImgUrl) {
+        this.idCardBackImgUrl = idCardBackImgUrl;
+    }
+
     public SysLease() {
     }
 
-    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate) {
+    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -326,5 +446,14 @@ public class SysLease {
         this.auditRemake = auditRemake;
         this.createId = createId;
         this.createDate = createDate;
+        this.emergencyContact = emergencyContact;
+        this.emergencyContactNumber = emergencyContactNumber;
+        this.correspondenceAddress = correspondenceAddress;
+        this.workUnits = workUnits;
+        this.payBank = payBank;
+        this.bankAccountName = bankAccountName;
+        this.bankAccount = bankAccount;
+        this.idCardFrontImgUrl = idCardFrontImgUrl;
+        this.idCardBackImgUrl = idCardBackImgUrl;
     }
 }

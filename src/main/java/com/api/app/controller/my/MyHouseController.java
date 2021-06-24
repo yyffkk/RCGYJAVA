@@ -152,6 +152,14 @@ public class MyHouseController {
         return myHouseService.leaseFindById(leaseId);
     }
 
-//    public Map<String,Object>
+    /**
+     * 提交个人租赁信息
+     * @param sysLease 租赁管理model
+     * @return map
+     */
+    @PostMapping("/submitPersonalLeaseInfo")
+    public Map<String,Object> submitPersonalLeaseInfo(@RequestBody SysLease sysLease){
+        return null;
+    }
 
 }

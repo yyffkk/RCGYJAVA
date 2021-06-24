@@ -111,13 +111,13 @@ public class VoLease {
      */
     private String bankAccount;
     /**
-     * 身份证照正面照片路径
+     * 身份证照正面照片资源集合
      */
-    private List<VoResourcesImg> idCardFrontImgUrl;
+    private List<VoResourcesImg> idCardFrontFiles;
     /**
-     * 身份证照背面照片路径
+     * 身份证照背面照片路径资源集合
      */
-    private List<VoResourcesImg> idCardBackImgUrl;
+    private List<VoResourcesImg> idCardBackFiles;
 
     @Override
     public String toString() {
@@ -147,8 +147,8 @@ public class VoLease {
                 ", payBank='" + payBank + '\'' +
                 ", bankAccountName='" + bankAccountName + '\'' +
                 ", bankAccount='" + bankAccount + '\'' +
-                ", idCardFrontImgUrl=" + idCardFrontImgUrl +
-                ", idCardBackImgUrl=" + idCardBackImgUrl +
+                ", idCardFrontFiles=" + idCardFrontFiles +
+                ", idCardBackFiles=" + idCardBackFiles +
                 '}';
     }
 
@@ -352,26 +352,26 @@ public class VoLease {
         this.bankAccount = bankAccount;
     }
 
-    public List<VoResourcesImg> getIdCardFrontImgUrl() {
-        return idCardFrontImgUrl;
+    public List<VoResourcesImg> getIdCardFrontFiles() {
+        return idCardFrontFiles;
     }
 
-    public void setIdCardFrontImgUrl(List<VoResourcesImg> idCardFrontImgUrl) {
-        this.idCardFrontImgUrl = idCardFrontImgUrl;
+    public void setIdCardFrontFiles(List<VoResourcesImg> idCardFrontFiles) {
+        this.idCardFrontFiles = idCardFrontFiles;
     }
 
-    public List<VoResourcesImg> getIdCardBackImgUrl() {
-        return idCardBackImgUrl;
+    public List<VoResourcesImg> getIdCardBackFiles() {
+        return idCardBackFiles;
     }
 
-    public void setIdCardBackImgUrl(List<VoResourcesImg> idCardBackImgUrl) {
-        this.idCardBackImgUrl = idCardBackImgUrl;
+    public void setIdCardBackFiles(List<VoResourcesImg> idCardBackFiles) {
+        this.idCardBackFiles = idCardBackFiles;
     }
 
     public VoLease() {
     }
 
-    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String roomName, Integer type, String estateType, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontImgUrl, List<VoResourcesImg> idCardBackImgUrl) {
+    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String roomName, Integer type, String estateType, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontFiles, List<VoResourcesImg> idCardBackFiles) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -397,7 +397,7 @@ public class VoLease {
         this.payBank = payBank;
         this.bankAccountName = bankAccountName;
         this.bankAccount = bankAccount;
-        this.idCardFrontImgUrl = idCardFrontImgUrl;
-        this.idCardBackImgUrl = idCardBackImgUrl;
+        this.idCardFrontFiles = idCardFrontFiles;
+        this.idCardBackFiles = idCardBackFiles;
     }
 }
