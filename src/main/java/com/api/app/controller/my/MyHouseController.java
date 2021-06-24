@@ -152,5 +152,6 @@ public class MyHouseController {
         return myHouseService.leaseFindById(leaseId);
     }
 
+//    public Map<String,Object>
 
 }

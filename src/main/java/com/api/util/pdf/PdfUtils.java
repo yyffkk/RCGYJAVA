@@ -34,6 +34,11 @@ import java.util.Map;
  */
 public class PdfUtils {
 
+    /**
+     * 测试类
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception{
         String src = "/Users/AKU001/pdf/模版1.pdf";
         String dest = "/Users/AKU001/pdf/模版1-副本.pdf";
