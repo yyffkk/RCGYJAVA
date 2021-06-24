@@ -81,6 +81,10 @@ prop:
 
   #App-个人资料：头像照片上传路径
   upload-app-head-sculpture: /img/headSculpture/
+  #App-个人租赁信息：身份证正面上传路径
+  upload-app-id-card-front: /img/idCard/Front/
+  #App-个人租赁信息：身份证背面上传路径
+  upload-app-id-card-back: /img/idCard/back/
 
   #ButlerApp-个人资料：头像照片上传路径
   upload-butler-app-head-sculpture: /img/butlerAppHeadSculpture/

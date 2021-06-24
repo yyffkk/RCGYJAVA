@@ -153,4 +153,24 @@ public class AppUploadController {
         return uploadService.uploadDecorationCommitment(file);
     }
 
+    /**
+     * 上传身份证正面照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadAppIdCardFront")
+    public Map<String,Object> uploadAppIdCardFront(MultipartFile file){
+        return uploadService.uploadAppIdCardFront(file);
+    }
+
+    /**
+     * 上传身份证背面照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadAppIdCardBack")
+    public Map<String,Object> uploadAppIdCardBack(MultipartFile file){
+        return uploadService.uploadAppIdCardBack(file);
+    }
+
 }
