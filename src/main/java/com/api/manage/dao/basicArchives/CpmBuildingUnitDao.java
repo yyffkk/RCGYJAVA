@@ -63,4 +63,11 @@ public interface CpmBuildingUnitDao {
      * @return 楼栋单元信息集合 id as value,no as label
      */
     CpmBuildingUnit findByNo(Integer no);
+
+    /**
+     * 根据楼栋主键id查询绑定的楼栋单元数量
+     * @param id 楼栋主键id
+     * @return 绑定的楼栋单元数量
+     */
+    int countByBuildingId(int id);
 }

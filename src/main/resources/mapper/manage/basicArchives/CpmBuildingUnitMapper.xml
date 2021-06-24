@@ -68,4 +68,7 @@
         from cpm_building_unit
         where no = #{no}
     </select>
+    <select id="countByBuildingId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from cpm_building_unit where building_id = #{id}
+    </select>
 </mapper>

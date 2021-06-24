@@ -333,16 +333,16 @@ public class MyHouseServiceImpl implements MyHouseService {
             uploadUtil.saveUrlToDB(sysLease.getIdCardBackImgUrl(),"sysLease", sysLease.getId(), "idCardBack","600",30,20);
 
             try {
-                // 获取项目同级目录，传入static中
-                String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
-                String rootPath = realPath + UPLOAD_LEASE_CONTRACT_PDF;
-                //生成预览合同
-                List<VoResourcesImg> sysLeaseContractImgData = uploadUtil.findImgByDate("sysLeaseContract", sysLeaseContract.getId(), "leaseContractPdf");
-                String src = rootPath + sysLeaseContractImgData.get(0).getUrl()+".pdf";
-                String dest = rootPath + descUrl+".pdf";
+//                // 获取项目同级目录，传入static中
+//                String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
+//                String rootPath = realPath + UPLOAD_LEASE_CONTRACT_PDF;
+//                //生成预览合同
+//                List<VoResourcesImg> sysLeaseContractImgData = uploadUtil.findImgByDate("sysLeaseContract", sysLeaseContract.getId(), "leaseContractPdf");
+//                String src = rootPath + sysLeaseContractImgData.get(0).getUrl()+".pdf";
+//                String dest = rootPath + descUrl+".pdf";
 
-//                String src = "/Users/AKU001/pdf/模版1.pdf";
-//                String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
+                String src = "/Users/AKU001/pdf/模版1.pdf";
+                String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
                 ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
 
                 //查询租赁信息

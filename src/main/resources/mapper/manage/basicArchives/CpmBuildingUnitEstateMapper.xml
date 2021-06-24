@@ -170,4 +170,7 @@
     <select id="findDeviceNumberByEstateId" parameterType="java.lang.Integer" resultType="java.lang.String">
         select device_number from cpm_building_unit_estate where id = #{estateId}
     </select>
+    <select id="countByBuildingUnitId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from cpm_building_unit_estate where building_unit_id = #{id}
+    </select>
 </mapper>

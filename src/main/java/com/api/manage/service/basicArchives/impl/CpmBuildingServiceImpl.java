@@ -1,6 +1,7 @@
 package com.api.manage.service.basicArchives.impl;
 
 import com.api.manage.dao.basicArchives.CpmBuildingDao;
+import com.api.manage.dao.basicArchives.CpmBuildingUnitDao;
 import com.api.model.basicArchives.CpmBuilding;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.basicArchives.CpmBuildingService;
@@ -21,6 +22,8 @@ public class CpmBuildingServiceImpl implements CpmBuildingService {
 
     @Resource
     CpmBuildingDao cpmBuildingDao;
+    @Resource
+    CpmBuildingUnitDao cpmBuildingUnitDao;
 
     @Override
     public List<CpmBuilding> list(CpmBuilding cpmBuilding) {
@@ -114,6 +117,10 @@ public class CpmBuildingServiceImpl implements CpmBuildingService {
     public Map<String, Object> delete(int[] ids) {
         try {
             for (int id : ids) {
+                int count = cpmBuildingUnitDao.countByBuildingId(id);
+                if (count >0){
+                    throw new RuntimeException("已有单元绑定该楼栋");
+                }
                 int delete = cpmBuildingDao.delete(id);
                 if (delete<=0){
                     throw new RuntimeException("批量删除楼栋信息失败");

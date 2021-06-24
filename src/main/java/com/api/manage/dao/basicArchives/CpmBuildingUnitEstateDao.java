@@ -109,4 +109,11 @@ public interface CpmBuildingUnitEstateDao {
      * @return 设备号
      */
     String findDeviceNumberByEstateId(Integer estateId);
+
+    /**
+     * 根据楼栋单元主键id查询绑定的房屋数量
+     * @param id 楼栋单元主键id
+     * @return 绑定的房屋数量
+     */
+    int countByBuildingUnitId(int id);
 }
