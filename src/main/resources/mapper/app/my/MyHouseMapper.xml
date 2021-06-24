@@ -68,6 +68,17 @@
         id_number = #{idNumber}
         where tel = #{tel} and type = 4
     </update>
+    <update id="submitPersonalLeaseInfo" parameterType="com.api.model.butlerService.SysLease">
+        update sys_lease
+        set emergency_contact = #{emergencyContact},
+        emergency_contact_number = #{emergenctNumber},
+        correspondence_address = #{correspondenceAddresss},
+        work_units = #{workUnits},
+        pay_bank = #{payBank},
+        bank_account_name = #{bankAccountName},
+        bank_account = #{bankAccount}
+        where id = #{id}
+    </update>
 
     <select id="findLeaseByTel" parameterType="java.lang.String" resultType="com.api.model.butlerService.SysLease">
         select * from sys_lease where tel = #{tel}

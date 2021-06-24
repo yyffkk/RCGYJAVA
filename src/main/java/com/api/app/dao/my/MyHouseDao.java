@@ -145,4 +145,11 @@ public interface MyHouseDao {
      * @return 租赁信息
      */
     VoLease leaseFindById(Integer leaseId);
+
+    /**
+     * 提交个人租赁信息
+     * @param sysLease 租赁管理model
+     * @return 影响行数
+     */
+    int submitPersonalLeaseInfo(SysLease sysLease);
 }

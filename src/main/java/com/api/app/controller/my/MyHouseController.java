@@ -159,7 +159,7 @@ public class MyHouseController {
      */
     @PostMapping("/submitPersonalLeaseInfo")
     public Map<String,Object> submitPersonalLeaseInfo(@RequestBody SysLease sysLease){
-        return null;
+        return myHouseService.submitPersonalLeaseInfo(sysLease);
     }
 
 }

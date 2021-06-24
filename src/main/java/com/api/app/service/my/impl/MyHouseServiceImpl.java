@@ -297,4 +297,34 @@ public class MyHouseServiceImpl implements MyHouseService {
         return map;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> submitPersonalLeaseInfo(SysLease sysLease) {
+        map = new HashMap<>();
+
+
+        try {
+            int update = myHouseDao.submitPersonalLeaseInfo(sysLease);
+            if (update <=0){
+                throw new RuntimeException("修改数据库失败");
+            }
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","填写成功");
+        map.put("status",true);
+        map.put("data",);
+        return map;
+    }
+
 }
