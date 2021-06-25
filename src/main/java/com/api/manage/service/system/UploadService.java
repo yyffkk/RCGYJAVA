@@ -83,4 +83,6 @@ public interface UploadService {
     Map<String, Object> uploadAppIdCardFront(MultipartFile file);
 
     Map<String, Object> uploadAppIdCardBack(MultipartFile file);
+
+    Map<String, Object> uploadLeaseContractSignaturePhoto(MultipartFile file);
 }

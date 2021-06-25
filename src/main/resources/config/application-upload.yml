@@ -46,6 +46,9 @@ prop:
   upload-lease-contract-pdf: /pdf/leaseContract/
   #管家服务-租赁合同管理：租赁合同预览上传路径
   upload-lease-contract-preview-pdf: /pdf/leaseContractPreview/
+  #管家服务-租赁合同管理：租赁合同签名照片
+  upload-lease-contract-signature-photo: /img/leaseContractSignature/
+
 
   #运营管理-公告管理：新增公告信息照片上传路径
   upload-announcement: /img/announcement/

@@ -173,4 +173,14 @@ public class AppUploadController {
         return uploadService.uploadAppIdCardBack(file);
     }
 
+    /**
+     * 上传租赁合同签名照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadLeaseContractSignaturePhoto")
+    public Map<String,Object> uploadLeaseContractSignaturePhoto(MultipartFile file){
+        return uploadService.uploadLeaseContractSignaturePhoto(file);
+    }
+
 }
