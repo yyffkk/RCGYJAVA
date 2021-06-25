@@ -55,6 +55,7 @@
                 and sdl.status = #{status}
             </if>
         </where>
+        order by srr.create_date desc
     </select>
 
     <select id="findRepairDetail" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoRepair">
