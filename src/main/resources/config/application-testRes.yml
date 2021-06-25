@@ -3,11 +3,11 @@ res:
   #访客邀请分享有效时长
   visitShareTime: 3
   #新版访客邀请门禁访客照片转发http 地址
-  visitorsUrl: http://39.103.177.88:880/IntelligentCommunity/manage/test2/test2
+  visitorsUrl: http://39.103.177.88:8804/IntelligentCommunity/manage/test2/test2
   #信息服务系统照片存放地址
   communityLocation: http://39.103.177.88:8804/static
   #保存工单号下一次订单的编号的dat文件
-  dispatchCodeDatUrl: http://39.103.177.88:8804/static/res-code-url-dat/EveryDaySerialDispatchNumber.dat
+  dispatchCodeDatUrl: /www/wwwroot/community.kadalai.com/apache-tomcat-8.5.61/webapps/static/res-code-url-dat/EveryDaySerialDispatchNumber.dat
 #  #第三方对外接口token值（无法引入代码）
 #  systemDataToken: 9627a35847e640cb92a7067557f09bda
 
