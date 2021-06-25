@@ -4,10 +4,7 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 
 import java.io.FileOutputStream;
@@ -174,25 +171,44 @@ public class PdfUtils {
                 //因为模版是${xxx}第一位$的字体宽度是中文的一半，所以字体宽度*2
                 float fontWidth = item.getFontWidth()*2;
                 float fontHeight = item.getFontHeight();
-                canvas.saveState();
-                canvas.setColorFill(BaseColor.WHITE);
-                canvas.rectangle(x, y,fontWidth*keyWord.length(),fontHeight);
-                canvas.fill();
-                canvas.restoreState();
-                //开始写入文本
-                canvas.beginText();
-                BaseFont bf = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.EMBEDDED);
-                Font font = new Font(bf,fontWidth,Font.BOLD);
-                //设置字体和大小
-                canvas.setFontAndSize(font.getBaseFont(), fontWidth);
-                //设置字体的输出位置
-                canvas.setTextMatrix(x, y+fontWidth/10+0.5f);
-                //要输出的text
-                canvas.showText(keyWordNew);
-                // 读图片
-//                Image image = Image.getInstance(imagePath);
 
-                canvas.endText();
+                //开始绘画
+                if ("\uF0A3一类人才".equals(keyWord)
+                        || "\uF0A3二类人才".equals(keyWord)
+                        || "\uF0A3三类人才".equals(keyWord)){
+                    //添加三个正方形（当前选择一类人才）
+                    //一类人才的框
+                    //清除原来的框
+                    canvas.saveState();
+                    canvas.setColorFill(BaseColor.WHITE);
+                    canvas.rectangle(x, y, 8.865448f, 12);
+                    canvas.fill();
+                    canvas.restoreState();
+                    //添加画出的框
+                    canvas.setRGBColorStroke(0xFF, 0x00, 0x00);
+                    canvas.setLineWidth(0.5f);
+                    canvas.rectangle(x, y, 8, 8);
+                    canvas.fill();
+                    canvas.stroke();
+                }else {
+                    canvas.saveState();
+                    canvas.setColorFill(BaseColor.WHITE);
+                    canvas.rectangle(x, y,fontWidth*keyWord.length(),fontHeight);
+                    canvas.fill();
+                    canvas.restoreState();
+                    //开始写入文本
+                    canvas.beginText();
+                    BaseFont bf = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.EMBEDDED);
+                    Font font = new Font(bf,fontWidth,Font.BOLD);
+                    //设置字体和大小
+                    canvas.setFontAndSize(font.getBaseFont(), fontWidth);
+                    //设置字体的输出位置
+                    canvas.setTextMatrix(x, y+fontWidth/10+0.5f);
+                    //要输出的text
+                    canvas.showText(keyWordNew);
+
+                    canvas.endText();
+                }
             }
         }
         System.out.println("complete");
@@ -214,18 +230,52 @@ public class PdfUtils {
                 String keyWord2 = pdfReplaceMap.getOldStr();
                 String keyWordNew2 = pdfReplaceMap.getNewStr();
                 if ("${️一类人才}".equals(keyWord2)){
-                    PdfContentByte overContent = stamper.getOverContent(2);//指定在最后一页插入图片
-                    //添加图片
-                    Image image = Image.getInstance(keyWordNew2);//图片名称
-                    image.scaleAbsolute(1000, 1000);//图片大小
-                    image.setAbsolutePosition(164.28f, 841.9f);//左边距、底边距
-                    overContent.addImage(image);
+                    PdfContentByte overContent = stamper.getOverContent(1);//指定在最后一页插入图片
+                    //添加三个正方形（当前选择一类人才）
+                    //一类人才的框
+                    //清除原来的框
+                    overContent.saveState();
+                    overContent.setColorFill(BaseColor.WHITE);
+                    overContent.rectangle(164.28f, 539.2657f, 8.865448f, 12);
+                    overContent.fill();
+                    overContent.restoreState();
+                    //添加画出的框
+                    overContent.setRGBColorStroke(0xFF, 0x00, 0x00);
+                    overContent.setLineWidth(0.5f);
+                    overContent.rectangle(164.28f, 539.2657f, 8, 8);
+                    overContent.fill();
+                    overContent.stroke();
+
+                    //二类人才的框
+                    //清除原来的框
+                    overContent.saveState();
+                    overContent.setColorFill(BaseColor.WHITE);
+                    overContent.rectangle(164.28f, 510.22568f, 8.865448f, 12);
+                    overContent.fill();
+                    overContent.restoreState();
+                    //添加画出的框
+                    overContent.setRGBColorStroke(0x00, 0x00, 0x00);
+                    overContent.setLineWidth(0.5f);
+                    overContent.rectangle(164.28f, 510.22568f, 8, 8);
+                    overContent.stroke();
+
+                    //三类人才的框
+                    //清除原来的框
+                    overContent.saveState();
+                    overContent.setColorFill(BaseColor.WHITE);
+                    overContent.rectangle(164.28f, 477.1067f, 8.865448f, 12);
+                    overContent.fill();
+                    overContent.restoreState();
+                    //添加画出的框
+                    overContent.setRGBColorStroke(0x00, 0x00, 0x00);
+                    overContent.setLineWidth(0.5f);
+                    overContent.rectangle(164.28f, 477.1067f, 8, 8);
                     overContent.stroke();
                 }else if ("${️二类人才}".equals(keyWord2)){
                     PdfContentByte overContent = stamper.getOverContent(1);//指定在最后一页插入图片
                     //添加图片
                     Image image = Image.getInstance(keyWordNew2);//图片名称
-                    image.scaleAbsolute(9, 12);//图片大小
+                    image.scaleAbsolute(8.865448f, 12);//图片大小
                     image.setAbsolutePosition(164.28f, 510.22568f);//左边距、底边距
                     overContent.addImage(image);
                     overContent.stroke();
@@ -233,7 +283,7 @@ public class PdfUtils {
                     PdfContentByte overContent = stamper.getOverContent(1);//指定在最后一页插入图片
                     //添加图片
                     Image image = Image.getInstance(keyWordNew2);//图片名称
-                    image.scaleAbsolute(9, 12);//图片大小
+                    image.scaleAbsolute(8.865448f, 12);//图片大小
                     image.setAbsolutePosition(164.28f, 477.1067f);//左边距、底边距
                     overContent.addImage(image);
                     overContent.stroke();

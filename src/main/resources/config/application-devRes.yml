@@ -1,4 +1,4 @@
-#资源配置文件
+#本地资源配置文件
 res:
   #访客邀请分享有效时长
   visitShareTime: 3
@@ -6,6 +6,8 @@ res:
   visitorsUrl: http://192.168.31.130:9001/manage/test2/test2
   #信息服务系统照片存放地址
   communityLocation: http://39.103.177.88:8804/static
+  #保存工单号下一次订单的编号的dat文件
+  dispatchCodeDatUrl: /Users/AKU001/pdf/EveryDaySerialDispatchNumber.dat
 #  #第三方对外接口token值（无法引入代码）
 #  systemDataToken: 9627a35847e640cb92a7067557f09bda
 

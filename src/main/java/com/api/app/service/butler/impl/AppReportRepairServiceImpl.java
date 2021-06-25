@@ -15,11 +15,13 @@ import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.ReportRepair;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
+import com.api.util.createCode.FileEveryDaySerialNumber;
 import com.api.vo.app.AppDispatchListVo;
 import com.api.vo.app.AppMaintenanceResultVo;
 import com.api.vo.app.AppProcessRecordVo;
 import com.api.vo.app.AppReportRepairVo;
 import com.api.vo.resources.VoResourcesImg;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -29,6 +31,9 @@ import java.util.*;
 
 @Service
 public class AppReportRepairServiceImpl implements AppReportRepairService {
+
+    @Value("${res.dispatchCodeDatUrl}")
+    private String DISPATCH_CODE_DAT_URL;
     @Resource
     AppReportRepairDao appReportRepairDao;
     @Resource
@@ -94,11 +99,12 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
     public Map<String, Object> insert(ReportRepair reportRepair, Integer id, String tel) {
         map = new HashMap<>();
         try {
-            //生成单号
-            String code = UUID.randomUUID().toString().replaceAll("-", "");
+            //生成单号(3位单号)
+            String code = new FileEveryDaySerialNumber(3, DISPATCH_CODE_DAT_URL).getSerialNumber();
+//            String code = UUID.randomUUID().toString().replaceAll("-", "");
             //先创建报修工单
             DispatchList dispatchList = new DispatchList();
-            //填入工单号（UUid随机生成）
+            //填入工单号（根据日期+单号生成）
             dispatchList.setCode(code);
             //填入工单类型（取自工单类型管理）
             dispatchList.setWorkOrderType(1);
