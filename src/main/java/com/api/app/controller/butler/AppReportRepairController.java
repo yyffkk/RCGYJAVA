@@ -4,7 +4,6 @@ import com.api.app.service.butler.AppReportRepairService;
 import com.api.model.app.AppRepairEvaluate;
 import com.api.model.app.UserIdAndRepairId;
 import com.api.model.butlerService.ReportRepair;
-import com.api.vo.app.AppConvenientTelephoneVo;
 import com.api.vo.app.AppReportRepairVo;
 import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
