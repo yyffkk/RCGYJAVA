@@ -3,12 +3,15 @@ package com.api.app.service.my.impl;
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.dao.my.MyHouseDao;
 import com.api.app.service.my.MyHouseService;
+import com.api.manage.dao.resources.ResourcesImgDao;
+import com.api.model.app.AppLeaseValidContract;
 import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.butlerService.SysLeaseContract;
 import com.api.model.my.MyHouse;
+import com.api.model.resources.ResourcesImg;
 import com.api.util.ConvertUpMoney;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
@@ -36,10 +39,14 @@ public class MyHouseServiceImpl implements MyHouseService {
     private static Map<String,Object> map = null;
     @Value("${prop.upload-lease-contract-preview-pdf}")
     private String UPLOAD_LEASE_CONTRACT_PREVIEW_PDF;
+    @Value("${prop.upload-lease-contract-valid-pdf}")
+    private String UPLOAD_LEASE_CONTRACT_VALID_PDF;
     @Resource
     MyHouseDao myHouseDao;
     @Resource
     AppLoginDao appLoginDao;
+    @Resource
+    ResourcesImgDao resourcesImgDao;
 
 
 
@@ -341,7 +348,7 @@ public class MyHouseServiceImpl implements MyHouseService {
                 String src = rootPath + sysLeaseContractImgData.get(0).getUrl()+".pdf";
                 String dest = rootPath + descUrl+".pdf";
 
-//                String src = "/Users/AKU001/pdf/模版1.pdf";
+//                String src = "/Users/AKU001/pdf/模版2.pdf";
 //                String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
                 ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
 
@@ -398,6 +405,77 @@ public class MyHouseServiceImpl implements MyHouseService {
         map.put("message","填写成功");
         map.put("status",true);
         map.put("data","/temp"+UPLOAD_LEASE_CONTRACT_PREVIEW_PDF+descUrl+".pdf");
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> generateValidContract(AppLeaseValidContract appLeaseValidContract) {
+        map = new HashMap<>();
+        long descUrl = new IdWorker(1, 1, 1).nextId();
+
+        try {
+            try {
+                // 获取项目同级目录，传入static中
+                String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
+//                //预览合同作为底板来绘画签名
+//                String src = realPath + appLeaseValidContract.getContractPreviewImgUrl();
+//                String dest = realPath +UPLOAD_LEASE_CONTRACT_VALID_PDF+ descUrl+".pdf";
+
+                //预览合同作为底板来绘画签名
+                String src = "/Users/AKU001/pdf/163458752756977664.pdf";
+                String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
+
+                ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
+//                pdfReplaceMaps.add(new PdfReplaceMap("【$签字区】",appLeaseValidContract.getContractSignatureImgUrl()));
+                pdfReplaceMaps.add(new PdfReplaceMap("【$签字区】","/Users/AKU001/pdf/黑色.jpeg"));
+                PdfUtils.pdfReplace(src,dest,pdfReplaceMaps);
+            } catch (Exception e) {
+                throw new RuntimeException("生成合同异常");
+            }
+            //手动将文件路径存入数据库
+            ResourcesImg resourcesImg = new ResourcesImg();
+            //填入表名称
+            resourcesImg.setTableName("sysLease");
+            //填入数据所属id
+            resourcesImg.setDateId(appLeaseValidContract.getId());
+            //填入类型名称
+            resourcesImg.setTypeName("leaseContractValid");
+            //填入图片路径
+            resourcesImg.setUrl(UPLOAD_LEASE_CONTRACT_VALID_PDF+ descUrl+".pdf");
+            //填入图片大小
+            resourcesImg.setSize("600");
+            //填入长（像素）
+            resourcesImg.setLongs(30);
+            //填入宽（像素）
+            resourcesImg.setParagraph(20);
+            //查询该表，该类型名称的照片数量
+            int count = resourcesImgDao.countByData(resourcesImg);
+            if (count > 0){
+                resourcesImg.setSort(count+1);
+            }else {
+                resourcesImg.setSort(1);
+            }
+            //添加该照片数据到数据库中
+            int insert2 = resourcesImgDao.insert(resourcesImg);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加照片数据失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","签名成功");
+        map.put("status",true);
+        map.put("data",UPLOAD_LEASE_CONTRACT_VALID_PDF+ descUrl+".pdf");
+
         return map;
     }
 

@@ -1,6 +1,7 @@
 package com.api.app.controller.my;
 
 import com.api.app.service.my.MyHouseService;
+import com.api.model.app.AppLeaseValidContract;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
@@ -160,6 +161,16 @@ public class MyHouseController {
     @PostMapping("/submitPersonalLeaseInfo")
     public Map<String,Object> submitPersonalLeaseInfo(@RequestBody SysLease sysLease){
         return myHouseService.submitPersonalLeaseInfo(sysLease);
+    }
+
+    /**
+     * 生成合同
+     * @param appLeaseValidContract app租赁有效合同model
+     * @return map
+     */
+    @PostMapping("/generateValidContract")
+    public Map<String,Object> generateValidContract(@RequestBody AppLeaseValidContract appLeaseValidContract){
+        return myHouseService.generateValidContract(appLeaseValidContract);
     }
 
 }
