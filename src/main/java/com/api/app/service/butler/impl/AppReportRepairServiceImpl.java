@@ -111,7 +111,7 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
             //填入状态（1.待分配，2.已分配未接单，3.已分配处理中，4.已处理，5.已确认已完成，6.已关闭，7.已作废）
             dispatchList.setStatus(1);
             //填入创建人
-            dispatchList.setCreateId(id);
+            dispatchList.setCreateId(-1);
             //填入创建时间
             dispatchList.setCreateDate(new Date());
             //填入 是否删除，0删除，1非删（用户端删除）
