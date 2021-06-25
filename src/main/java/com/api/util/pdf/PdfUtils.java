@@ -191,9 +191,15 @@ public class PdfUtils {
                     canvas.fill();
                     canvas.stroke();
                 }else if ("【$签字区】".equals(keyWord)){
+                    //清除原来的框
+                    canvas.saveState();
+                    canvas.setColorFill(BaseColor.WHITE);
+                    canvas.rectangle(x, y, fontWidth*keyWord.length(),fontHeight);
+                    canvas.fill();
+                    canvas.restoreState();
                     //添加图片
                     Image image = Image.getInstance(keyWordNew);
-                    image.scaleAbsolute(9, 9);//图片大小
+                    image.scaleAbsolute(72, 24);//图片大小
                     image.setAbsolutePosition(x, y);
                     canvas.addImage(image);
                 } else {
