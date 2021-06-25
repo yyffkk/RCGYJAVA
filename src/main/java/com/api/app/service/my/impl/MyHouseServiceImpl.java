@@ -34,8 +34,8 @@ import java.util.*;
 @Service
 public class MyHouseServiceImpl implements MyHouseService {
     private static Map<String,Object> map = null;
-    @Value("${prop.upload-lease-contract-pdf}")
-    private String UPLOAD_LEASE_CONTRACT_PDF;
+    @Value("${prop.upload-lease-contract-preview-pdf}")
+    private String UPLOAD_LEASE_CONTRACT_PREVIEW_PDF;
     @Resource
     MyHouseDao myHouseDao;
     @Resource
@@ -335,7 +335,7 @@ public class MyHouseServiceImpl implements MyHouseService {
             try {
                 // 获取项目同级目录，传入static中
                 String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
-                String rootPath = realPath + UPLOAD_LEASE_CONTRACT_PDF;
+                String rootPath = realPath + "/temp"+ UPLOAD_LEASE_CONTRACT_PREVIEW_PDF;
                 //生成预览合同
                 List<VoResourcesImg> sysLeaseContractImgData = uploadUtil.findImgByDate("sysLeaseContract", sysLeaseContract.getId(), "leaseContractPdf");
                 String src = rootPath + sysLeaseContractImgData.get(0).getUrl()+".pdf";
@@ -397,7 +397,7 @@ public class MyHouseServiceImpl implements MyHouseService {
         }
         map.put("message","填写成功");
         map.put("status",true);
-        map.put("data",descUrl+".pdf");
+        map.put("data","/temp"+UPLOAD_LEASE_CONTRACT_PREVIEW_PDF+descUrl+".pdf");
         return map;
     }
 
