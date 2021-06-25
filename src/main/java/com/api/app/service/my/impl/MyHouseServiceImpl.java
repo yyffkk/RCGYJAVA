@@ -39,6 +39,8 @@ public class MyHouseServiceImpl implements MyHouseService {
     private static Map<String,Object> map = null;
     @Value("${prop.upload-lease-contract-preview-pdf}")
     private String UPLOAD_LEASE_CONTRACT_PREVIEW_PDF;
+    @Value("${prop.upload-lease-contract-signed-pdf}")
+    private String UPLOAD_LEASE_CONTRACT_SIGNED_PDF;
     @Value("${prop.upload-lease-contract-valid-pdf}")
     private String UPLOAD_LEASE_CONTRACT_VALID_PDF;
     @Resource
@@ -442,7 +444,7 @@ public class MyHouseServiceImpl implements MyHouseService {
             //填入类型名称
             resourcesImg.setTypeName("leaseContractValid");
             //填入图片路径
-            resourcesImg.setUrl(UPLOAD_LEASE_CONTRACT_VALID_PDF+ descUrl+".pdf");
+            resourcesImg.setUrl(UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf");
             //填入图片大小
             resourcesImg.setSize("600");
             //填入长（像素）
@@ -474,7 +476,7 @@ public class MyHouseServiceImpl implements MyHouseService {
         }
         map.put("message","签名成功");
         map.put("status",true);
-        map.put("data",UPLOAD_LEASE_CONTRACT_VALID_PDF+ descUrl+".pdf");
+        map.put("data",UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf");
 
         return map;
     }
