@@ -159,4 +159,11 @@ public interface MyHouseDao {
      * @return 合同模版
      */
     SysLeaseContract findEnableLeaseContract();
+
+    /**
+     * 根据租赁主键id 修改租赁状态
+     * @param sysLease 租赁管理model
+     * @return 影响行数
+     */
+    int updateStatusById(SysLease sysLease);
 }

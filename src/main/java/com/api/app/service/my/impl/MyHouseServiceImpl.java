@@ -4,6 +4,7 @@ import com.api.app.dao.login.AppLoginDao;
 import com.api.app.dao.my.MyHouseDao;
 import com.api.app.service.my.MyHouseService;
 import com.api.manage.dao.resources.ResourcesImgDao;
+import com.api.model.app.AppLeaseSubmitAudit;
 import com.api.model.app.AppLeaseValidContract;
 import com.api.model.app.AppUserIdAndExamineId;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
@@ -463,6 +464,17 @@ public class MyHouseServiceImpl implements MyHouseService {
             if (insert2 <= 0){
                 throw new RuntimeException("添加照片数据失败");
             }
+
+            //修改租赁状态
+            //办理状态，1.待签署，2.待提交，3.审核中，4.已驳回，5.待支付，6.已完成
+            SysLease sysLease = new SysLease();
+            sysLease.setId(appLeaseValidContract.getId());//填入租赁主键id
+            sysLease.setStatus(2);//填入状态2.待提交
+            int update = myHouseDao.updateStatusById(sysLease);
+            if (update <=0){
+                throw new RuntimeException("签名失败，状态修改失败");
+            }
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -478,6 +490,38 @@ public class MyHouseServiceImpl implements MyHouseService {
         map.put("status",true);
         map.put("data",UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf");
 
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> submitAudit(AppLeaseSubmitAudit appLeaseSubmitAudit) {
+        map = new HashMap<>();
+
+        try {
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(appLeaseSubmitAudit.getLeaseContractValidPdfUrl(),"sysLease",appLeaseSubmitAudit.getId(),"leaseContractValidPdf","600",30,20);
+            //办理状态，1.待签署，2.待提交，3.审核中，4.已驳回，5.待支付，6.已完成
+            SysLease sysLease = new SysLease();
+            sysLease.setId(appLeaseSubmitAudit.getId());//填入租赁主键id
+            sysLease.setStatus(3);//填入状态3.审核中
+            int update = myHouseDao.updateStatusById(sysLease);
+            if (update <=0){
+                throw new RuntimeException("提交失败，状态修改失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交成功");
+        map.put("status",true);
         return map;
     }
 

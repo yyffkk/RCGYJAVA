@@ -1,5 +1,6 @@
 package com.api.app.service.my;
 
+import com.api.model.app.AppLeaseSubmitAudit;
 import com.api.model.app.AppLeaseValidContract;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
@@ -33,4 +34,6 @@ public interface MyHouseService {
     Map<String, Object> submitPersonalLeaseInfo(SysLease sysLease);
 
     Map<String, Object> generateValidContract(AppLeaseValidContract appLeaseValidContract);
+
+    Map<String, Object> submitAudit(AppLeaseSubmitAudit appLeaseSubmitAudit);
 }

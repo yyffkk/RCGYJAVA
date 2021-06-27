@@ -79,6 +79,11 @@
         bank_account = #{bankAccount}
         where id = #{id}
     </update>
+    <update id="updateStatusById" parameterType="com.api.model.butlerService.SysLease">
+        update sys_lease
+        set status = #{status}
+        where id = #{id}
+    </update>
 
     <select id="findLeaseByTel" parameterType="java.lang.String" resultType="com.api.model.butlerService.SysLease">
         select * from sys_lease where tel = #{tel}
