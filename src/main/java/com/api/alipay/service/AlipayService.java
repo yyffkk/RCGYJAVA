@@ -40,4 +40,6 @@ public interface AlipayService {
     Map<String, Object> leaseAlipay(SysLeaseOrder sysLeaseOrder, Integer type, Integer id);
 
     String leaseNotifyInfo(HttpServletRequest request, String userName, Integer userId);
+
+    Map<String, Object> leaseCheckAlipay(String code);
 }
