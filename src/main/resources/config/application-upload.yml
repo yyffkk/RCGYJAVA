@@ -46,11 +46,11 @@ prop:
   upload-lease-contract-pdf: /pdf/leaseContract/
   #管家服务-租赁合同管理：租赁合同预览上传路径
   upload-lease-contract-preview-pdf: /pdf/leaseContractPreview/
-  #管家服务-租赁合同管理：租赁合同签名照片
+  #管家服务-租赁合同管理：租赁合同签名照片（签名区照片）
   upload-lease-contract-signature-photo: /img/leaseContractSignature/
-  #管家服务-租赁合同管理：租赁签署合同上传路径
+  #管家服务-租赁合同管理：租赁签署合同上传路径（已签署的合同）
   upload-lease-contract-signed-pdf: /pdf/leaseContractSigned/
-  #管家服务-租赁合同管理：租赁有效（正式）合同上传路径
+  #管家服务-租赁合同管理：租赁有效（正式）合同上传路径（盖章后的合同）
   upload-lease-contract-valid-pdf: /pdf/leaseContractValid/
 
 

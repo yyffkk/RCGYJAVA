@@ -422,7 +422,7 @@ public class MyHouseServiceImpl implements MyHouseService {
                 String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
                 //预览合同作为底板来绘画签名
                 String src = realPath + appLeaseValidContract.getContractPreviewImgUrl();
-                String dest = realPath +UPLOAD_LEASE_CONTRACT_VALID_PDF+ descUrl+".pdf";
+                String dest = realPath +UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf";
 
 //                //预览合同作为底板来绘画签名
 //                String src = "/Users/AKU001/pdf/163458752756977664.pdf";
