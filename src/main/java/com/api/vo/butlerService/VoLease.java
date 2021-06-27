@@ -75,7 +75,7 @@ public class VoLease {
      */
     private Date leaseDateEnd;
     /**
-     * 已签署合同,上传文件路径集合
+     * 有效（正式）合同,上传文件路径集合
      */
     private List<VoResourcesImg> imgUrls;
     /**

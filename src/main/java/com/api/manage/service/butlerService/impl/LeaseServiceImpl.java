@@ -5,8 +5,10 @@ import com.api.manage.service.butlerService.LeaseService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFBILease;
 import com.api.vo.butlerService.VoLease;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,15 @@ public class LeaseServiceImpl implements LeaseService {
 
     @Override
     public List<VoLease> list(SearchLease searchLease) {
-        return leaseDao.list(searchLease);
+        List<VoLease> list = leaseDao.list(searchLease);
+        if (list != null && list.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (VoLease voLease : list) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysLease", voLease.getId(), "leaseContractValidPdf");
+                voLease.setImgUrls(imgByDate);
+            }
+        }
+        return list;
     }
 
     @Override
