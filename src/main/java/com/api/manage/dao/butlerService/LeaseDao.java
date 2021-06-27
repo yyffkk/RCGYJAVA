@@ -1,5 +1,6 @@
 package com.api.manage.dao.butlerService;
 
+import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
 import com.api.vo.butlerService.VoFBILease;
@@ -49,4 +50,32 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int reviewer(SysLease sysLease);
+
+    /**
+     * 添加缴费订单信息
+     * @param sysLeaseOrder app 房屋租赁订单model
+     * @return 影响行数
+     */
+    int insertOrder(SysLeaseOrder sysLeaseOrder);
+
+    /**
+     * 根据订单编号查询订单信息
+     * @param outTradeNo 订单编号
+     * @return app 房屋租赁订单model
+     */
+    SysLeaseOrder findSysLeaseOrderByCode(String outTradeNo);
+
+    /**
+     * 根据订单编号更新订单状态
+     * @param sysLeaseOrder app 房屋租赁订单model
+     * @return 影响行数
+     */
+    int updateLeaseOrderStatusByCode(SysLeaseOrder sysLeaseOrder);
+
+    /**
+     * 根据主键id修改租赁状态
+     * @param sysLease 租赁管理model
+     * @return 影响行数
+     */
+    int updateStatusById(SysLease sysLease);
 }

@@ -9,6 +9,7 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.api.alipay.service.AlipayService;
 import com.api.model.alipay.OrderTest;
+import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppRepairOrder;
@@ -252,6 +253,55 @@ public class AlipayController {
     @GetMapping("/shoppingCheckAlipay")
     public Map<String,Object> shoppingCheckAlipay(String code){
         return alipayService.shoppingCheckAlipay(code);
+    }
+
+
+    /**
+     * app 房屋租赁完成订单支付宝支付(生成 APP 支付订单信息)
+     * @param sysLeaseOrder app 房屋租赁订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/leaseAlipay")
+    public Map<String,Object> leaseAlipay(@RequestBody SysLeaseOrder sysLeaseOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        Integer type = Integer.valueOf(request.getParameter("type"));//从request获取用户type
+        sysLeaseOrder.setName(name); //填写付款人姓名
+        sysLeaseOrder.setTel(tel); //填写付款人手机号
+        return alipayService.leaseAlipay(sysLeaseOrder,type,id);
+    }
+
+
+    /**
+     * 房屋租赁 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
+     */
+    @PostMapping(value = "/leaseNotifyInfo")
+    public String leaseNotifyInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+        request.setCharacterEncoding("UTF-8");
+        String userName = request.getParameter("name"); //从request获取用户姓名
+        Integer userId = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        return alipayService.leaseNotifyInfo(request,userName,userId);
+    }
+
+
+    /**
+     * 房屋租赁 向支付宝发起订单查询请求
+     * @param code 商户订单号
+     * @return map
+     */
+    @GetMapping("/leaseCheckAlipay")
+    public Map<String,Object> leaseCheckAlipay(String code){
+        return alipayService.leaseCheckAlipay(code);
     }
 
 }

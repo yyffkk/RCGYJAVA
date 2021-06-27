@@ -81,6 +81,7 @@
         )
     </insert>
 
+
     <update id="update" parameterType="com.api.model.butlerService.SysLease">
         update sys_lease
         <set>
@@ -145,4 +146,42 @@
         delete from sys_lease where id = #{id}
     </delete>
 
+    <insert id="insertOrder" parameterType="com.api.model.alipay.SysLeaseOrder">
+        insert into sys_lease_order(
+            sys_lease_id,
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date,
+            status
+        )values (
+            #{sysLeaseId},
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate},
+            #{status}
+        )
+    </insert>
+
+    <select id="findSysLeaseOrderByCode" parameterType="java.lang.String" resultType="com.api.model.alipay.SysLeaseOrder">
+        select * from sys_lease_order where code = #{code}
+    </select>
+
+    <update id="updateLeaseOrderStatusByCode" parameterType="com.api.model.alipay.SysLeaseOrder">
+        update sys_lease_order
+        set status = #{status}
+        where code = #{code}
+    </update>
+    <update id="updateStatusById" parameterType="com.api.model.butlerService.SysLease">
+        update sys_lease
+        set status = #{status}
+        where id = #{id}
+    </update>
 </mapper>
