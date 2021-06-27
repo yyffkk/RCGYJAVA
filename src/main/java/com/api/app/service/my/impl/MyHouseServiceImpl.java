@@ -347,6 +347,7 @@ public class MyHouseServiceImpl implements MyHouseService {
                 String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
                 String rootPath = realPath + "/temp"+ UPLOAD_LEASE_CONTRACT_PREVIEW_PDF;
                 //生成预览合同
+                //查询可用的合同模版
                 List<VoResourcesImg> sysLeaseContractImgData = uploadUtil.findImgByDate("sysLeaseContract", sysLeaseContract.getId(), "leaseContractPdf");
                 String src = rootPath + sysLeaseContractImgData.get(0).getUrl()+".pdf";
                 String dest = rootPath + descUrl+".pdf";
