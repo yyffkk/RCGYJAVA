@@ -419,19 +419,19 @@ public class MyHouseServiceImpl implements MyHouseService {
 
         try {
             try {
-                // 获取项目同级目录，传入static中
-                String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
-                //预览合同作为底板来绘画签名
-                String src = realPath + appLeaseValidContract.getContractPreviewImgUrl();
-                String dest = realPath +UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf";
-
+//                // 获取项目同级目录，传入static中
+//                String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
 //                //预览合同作为底板来绘画签名
-//                String src = "/Users/AKU001/pdf/163458752756977664.pdf";
-//                String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
+//                String src = realPath + appLeaseValidContract.getContractPreviewImgUrl();
+//                String dest = realPath +UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf";
+
+                //预览合同作为底板来绘画签名
+                String src = "/Users/AKU001/pdf/163458752756977664.pdf";
+                String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
 
                 ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
-                pdfReplaceMaps.add(new PdfReplaceMap("【$签字区】",appLeaseValidContract.getContractSignatureImgUrl()));
-//                pdfReplaceMaps.add(new PdfReplaceMap("【$签字区】","/Users/AKU001/pdf/黑色.jpeg"));
+//                pdfReplaceMaps.add(new PdfReplaceMap("【$签字区】",appLeaseValidContract.getContractSignatureImgUrl()));
+                pdfReplaceMaps.add(new PdfReplaceMap("【$签字区】","/Users/AKU001/pdf/黑色.jpeg"));
                 PdfUtils.pdfReplace(src,dest,pdfReplaceMaps);
             } catch (Exception e) {
                 throw new RuntimeException("生成合同异常");
