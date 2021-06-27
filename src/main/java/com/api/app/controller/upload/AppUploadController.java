@@ -183,4 +183,14 @@ public class AppUploadController {
         return uploadService.uploadLeaseContractSignaturePhoto(file);
     }
 
+    /**
+     * 上传租赁有效（正式）合同pdf
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadLeaseContractValidPdf")
+    public Map<String,Object> uploadLeaseContractValidPdf(MultipartFile file){
+        return uploadService.uploadLeaseContractValidPdf(file);
+    }
+
 }
