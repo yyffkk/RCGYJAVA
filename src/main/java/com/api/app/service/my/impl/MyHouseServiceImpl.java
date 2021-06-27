@@ -443,7 +443,7 @@ public class MyHouseServiceImpl implements MyHouseService {
             //填入数据所属id
             resourcesImg.setDateId(appLeaseValidContract.getId());
             //填入类型名称
-            resourcesImg.setTypeName("leaseContractValid");
+            resourcesImg.setTypeName("leaseContractSignedPdf");
             //填入图片路径
             resourcesImg.setUrl(UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf");
             //填入图片大小
