@@ -117,6 +117,11 @@
         id_number = #{idNumber}
         where id = #{id}
     </update>
+    <update id="updateResidentTypeById" parameterType="com.api.model.basicArchives.UserResident">
+        update user_resident
+        set type = #{type}
+        where id = #{id}
+    </update>
 
     <delete id="deleteByRIDAndEID" parameterType="com.api.model.basicArchives.ResidentIdAndEstateId">
         delete from cpm_resident_estate

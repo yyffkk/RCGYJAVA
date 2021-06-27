@@ -14,11 +14,16 @@ import com.api.alipay.service.AlipayService;
 import com.api.app.dao.butler.AppDailyPaymentDao;
 import com.api.app.dao.butler.AppReportRepairDao;
 import com.api.app.dao.shoppingCenter.ShoppingDao;
+import com.api.manage.dao.basicArchives.AuditManagementDao;
+import com.api.manage.dao.basicArchives.UserResidentDao;
 import com.api.manage.dao.butlerService.LeaseContractDao;
 import com.api.manage.dao.butlerService.LeaseDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
 import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.app.*;
+import com.api.model.basicArchives.CpmBuildingUnitEstate;
+import com.api.model.basicArchives.CpmResidentEstate;
+import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.SysLease;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
@@ -78,6 +83,10 @@ public class AlipayServiceImpl implements AlipayService {
     LeaseDao leaseDao;
     @Resource
     ShoppingDao shoppingDao;
+    @Resource
+    AuditManagementDao auditManagementDao;
+    @Resource
+    UserResidentDao userResidentDao;
     private static Map<String,Object> map = null;
 
 //    /**
@@ -1259,6 +1268,7 @@ public class AlipayServiceImpl implements AlipayService {
     }
 
     @Override
+    @Transactional
     public String leaseNotifyInfo(HttpServletRequest request, String userName, Integer userId) {
         log.info("开始异步调用");
         //获取支付宝POST过来反馈信息
@@ -1334,7 +1344,51 @@ public class AlipayServiceImpl implements AlipayService {
                             return "fail";
                         }
 
-                        //
+                        try {
+                            //根据租赁管理主键id查询租赁信息
+                            VoFBILease byId = leaseDao.findById(sysLeaseOrder.getSysLeaseId());
+
+                            //关联房屋信息
+                            //添加住户房产关联表 TODO 住户房产关联表增加一个字段，【type用户类型】
+                            CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
+                            cpmResidentEstate.setBuildingUnitEstateId(byId.getEstateId()); //填入房产id
+                            //根据用户手机号查询用户主键id
+                            UserResident userResidentByTel = userResidentDao.findByTel(byId.getTel());
+                            cpmResidentEstate.setResidentId(userResidentByTel.getId()); //填入住户id
+                            cpmResidentEstate.setEffectiveTimeStart(byId.getLeaseDateStart()); //填入有效时间开始（只限租客）
+                            cpmResidentEstate.setEffectiveTimeEnd(byId.getLeaseDateEnd()); //填入有效时间结束（只限租客）
+                            int insert = auditManagementDao.insertResidentEstate(cpmResidentEstate);
+                            if (insert <=0){
+                                throw new RuntimeException("===========添加住户房产关联失败");
+                            }
+
+                            //更新房产的状态信息
+                            CpmBuildingUnitEstate cpmBuildingUnitEstate = new CpmBuildingUnitEstate();
+                            cpmBuildingUnitEstate.setId(byId.getEstateId()); //填入房产id
+                            //租客，5.已租
+                            cpmBuildingUnitEstate.setStatus(5);
+                            int update2 = auditManagementDao.updateEstateStatus(cpmBuildingUnitEstate);
+                            if (update2 <= 0){
+                                throw new RuntimeException("===========房产状态更新失败");
+                            }
+
+                            //修改住户类型信息 TODO 用户表减少一个字段，【type用户类型】
+                            UserResident userResident = new UserResident();
+                            userResident.setType(3); //填入住户类型,3.租户
+                            int update3 = auditManagementDao.updateResidentTypeById(userResident);
+                            if (update3 <=0){
+                                throw new RuntimeException("===========住户信息修改失败");
+                            }
+                        } catch (Exception e) {
+                            //获取抛出的信息
+                            String message = e.getMessage();
+                            e.printStackTrace();
+                            //设置手动回滚
+                            TransactionAspectSupport.currentTransactionStatus()
+                                    .setRollbackOnly();
+                            log.info(message);
+                            return "fail";
+                        }
 
                         // 成功要返回success，不然支付宝会不断发送通知。
                         return "success";

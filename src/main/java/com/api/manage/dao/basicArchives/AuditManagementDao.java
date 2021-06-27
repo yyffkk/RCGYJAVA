@@ -86,5 +86,10 @@ public interface AuditManagementDao {
     VoCheckAuditById checkById(Integer estateExamineId);
 
 
-
+    /**
+     * 根据用户主键id修改用户类型
+     * @param userResident 住户信息表
+     * @return 影响行数
+     */
+    int updateResidentTypeById(UserResident userResident);
 }
