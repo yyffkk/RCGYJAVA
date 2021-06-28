@@ -50,4 +50,16 @@ public class RefundController {
     public Map<String,Object> examine(@RequestBody Order order){
         return refundService.examine(order);
     }
+
+
+    /**
+     * 已换货
+     * @param id 商品预约订单主键id
+     * @return map
+     */
+    @GetMapping("/exchangeGoods")
+    public Map<String,Object> exchangeGoods(Integer id){
+        return refundService.exchangeGoods(id);
+    }
+
 }

@@ -42,4 +42,6 @@ public interface OrderDao {
      * @return 商品预约model（订单）
      */
     Order findById(Integer id);
+
+    int updateStatusById(Integer id);
 }

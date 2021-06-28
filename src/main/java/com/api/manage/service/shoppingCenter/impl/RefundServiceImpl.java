@@ -8,6 +8,7 @@ import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.dao.shoppingCenter.RefundDao;
 import com.api.manage.service.shoppingCenter.RefundService;
+import com.api.model.app.AppGoodsAppointment;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.shoppingCenter.Order;
 import com.api.model.shoppingCenter.RefundSearch;
@@ -142,6 +143,33 @@ public class RefundServiceImpl implements RefundService {
         }
         map.put("message","审核成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> exchangeGoods(Integer id) {
+        map = new HashMap<>();
+        Order orderById = orderDao.findById(id);
+        if (orderById.getStatus() != 11){//11.换货中
+            map.put("message","该状态不可进行此操作");
+            map.put("status",false);
+            return map;
+        }
+        AppGoodsAppointment appGoodsAppointment = new AppGoodsAppointment();
+        appGoodsAppointment.setCode(orderById.getCode());
+        appGoodsAppointment.setStatus(12);//12.已换货
+
+
+        //根据code【商品预约编号】修改商品预约状态
+        int update = shoppingDao.updateSGAStatusByCode(appGoodsAppointment);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+
         return map;
     }
 }

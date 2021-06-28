@@ -12,4 +12,5 @@ public interface RefundService {
 
     Map<String, Object> examine(Order order);
 
+    Map<String, Object> exchangeGoods(Integer id);
 }
