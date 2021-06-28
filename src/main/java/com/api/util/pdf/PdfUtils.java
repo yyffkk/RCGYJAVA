@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -231,11 +232,19 @@ public class PdfUtils {
     /**
      * 替换pdf中指定文字
      * @param src 目标pdf路径
+     * @param descRootPath 新pdf的根目录路径
      * @param dest 新pdf的路径
      * @param pdfReplaceMaps 替换的新旧文字 数组集合
      * @throws Exception
      */
-    public static void pdfReplace(String src, String dest, ArrayList<PdfReplaceMap> pdfReplaceMaps) throws Exception{
+    public static void pdfReplace(String src, String descRootPath, String dest, ArrayList<PdfReplaceMap> pdfReplaceMaps) throws Exception{
+        //获取新pdf的根目录路径
+        File savePathFile = new File(descRootPath);
+        if (!savePathFile.exists()) {
+            //若不存在该目录，则创建目录
+            savePathFile.mkdirs();
+        }
+
         PdfReader reader = new PdfReader(src);
         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
 

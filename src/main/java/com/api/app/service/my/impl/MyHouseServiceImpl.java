@@ -347,7 +347,7 @@ public class MyHouseServiceImpl implements MyHouseService {
             try {
                 // 获取项目同级目录，传入static中
                 String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
-                String rootPath = realPath + "/temp"+ UPLOAD_LEASE_CONTRACT_PREVIEW_PDF;
+                String descRootPath = realPath + "/temp"+ UPLOAD_LEASE_CONTRACT_PREVIEW_PDF;
                 //生成预览合同
                 //查询可用的合同模版
                 List<VoResourcesImg> sysLeaseContractImgData = uploadUtil.findImgByDate("sysLeaseContract", sysLeaseContract.getId(), "leaseContractPdf");
@@ -355,7 +355,7 @@ public class MyHouseServiceImpl implements MyHouseService {
                     throw new RuntimeException("无可用合同模版");
                 }
                 String src = realPath + sysLeaseContractImgData.get(0).getUrl();
-                String dest = rootPath + descUrl+".pdf";
+                String dest = descRootPath + descUrl+".pdf";
                 log.info("查询到可用的合同模版,路径为："+src);
                 log.info("预览合同预生成路径："+dest);
 
@@ -396,8 +396,8 @@ public class MyHouseServiceImpl implements MyHouseService {
                 }else if (voLease.getType() == 3){
                     pdfReplaceMaps.add(new PdfReplaceMap("\uF0A3三类人才","正方形"));
                 }
-
-                PdfUtils.pdfReplace(src,dest,pdfReplaceMaps);
+                log.info("信息已填写");
+                PdfUtils.pdfReplace(src,descRootPath,dest,pdfReplaceMaps);
             } catch (Exception e) {
                 throw new RuntimeException("生成预览合同异常");
             }
@@ -431,6 +431,7 @@ public class MyHouseServiceImpl implements MyHouseService {
                 String realPath = new File(ResourceUtils.getURL("classpath:").getPath()).getParentFile().getParentFile().getParent()+"/static";
                 //预览合同作为底板来绘画签名
                 String src = realPath + appLeaseValidContract.getContractPreviewImgUrl();
+                String destRootPath = realPath +UPLOAD_LEASE_CONTRACT_SIGNED_PDF;
                 String dest = realPath +UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf";
 
 //                //预览合同作为底板来绘画签名
@@ -440,7 +441,7 @@ public class MyHouseServiceImpl implements MyHouseService {
                 ArrayList<PdfReplaceMap> pdfReplaceMaps = new ArrayList<>();
                 pdfReplaceMaps.add(new PdfReplaceMap("【$签字区】",appLeaseValidContract.getContractSignatureImgUrl()));
 //                pdfReplaceMaps.add(new PdfReplaceMap("【$签字区】","/Users/AKU001/pdf/黑色.jpeg"));
-                PdfUtils.pdfReplace(src,dest,pdfReplaceMaps);
+                PdfUtils.pdfReplace(src,destRootPath,dest,pdfReplaceMaps);
             } catch (Exception e) {
                 throw new RuntimeException("生成合同异常");
             }
