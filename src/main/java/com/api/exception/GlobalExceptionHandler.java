@@ -5,6 +5,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -72,6 +73,20 @@ public class GlobalExceptionHandler {
     public ResultBody authorizationException(HttpServletRequest req, AuthorizationException e) {
         log.error("权限异常!原因是:",e);
         return ResultBody.error(CommonEnum.NOT_PERMISSIONS);
+    }
+
+    /**
+     * 请求方法异常
+     *
+     * @param req
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    public ResultBody httpRequestMethodNotSupportedException(HttpServletRequest req, AuthorizationException e) {
+        log.error("请求方法异常!原因是:",e);
+        return ResultBody.error(CommonEnum.REQUEST_METHOD_ERROR);
     }
 
 

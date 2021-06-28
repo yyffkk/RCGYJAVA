@@ -23,6 +23,7 @@ import com.api.vo.app.AppLeaseVo;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
 import com.api.vo.resources.VoResourcesImg;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@Slf4j
 public class MyHouseServiceImpl implements MyHouseService {
     private static Map<String,Object> map = null;
     @Value("${prop.upload-lease-contract-preview-pdf}")
@@ -349,8 +351,13 @@ public class MyHouseServiceImpl implements MyHouseService {
                 //生成预览合同
                 //查询可用的合同模版
                 List<VoResourcesImg> sysLeaseContractImgData = uploadUtil.findImgByDate("sysLeaseContract", sysLeaseContract.getId(), "leaseContractPdf");
-                String src = rootPath + sysLeaseContractImgData.get(0).getUrl()+".pdf";
+                if (sysLeaseContractImgData == null || sysLeaseContractImgData.size() <= 0){
+                    throw new RuntimeException("无可用合同模版");
+                }
+                String src = rootPath + sysLeaseContractImgData.get(0).getUrl();
                 String dest = rootPath + descUrl+".pdf";
+                log.info("查询到可用的合同模版,路径为："+src);
+                log.info("预览合同预生成路径："+dest);
 
 //                String src = "/Users/AKU001/pdf/模版2.pdf";
 //                String dest = "/Users/AKU001/pdf/"+descUrl+".pdf";
