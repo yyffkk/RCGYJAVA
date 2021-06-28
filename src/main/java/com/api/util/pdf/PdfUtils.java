@@ -6,6 +6,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.Map;
  * 5.无法匹配目标文字在两页中显示的情况（例如：目标文字：替换工具，第一页页尾有替换两字，第二页页首有工具二字）
  *
  */
+@Slf4j
 public class PdfUtils {
 
 //    /**
@@ -223,7 +225,7 @@ public class PdfUtils {
                 }
             }
         }
-        System.out.println("complete");
+        log.info(keyWordNew+"已替换");
     }
 
     /**
