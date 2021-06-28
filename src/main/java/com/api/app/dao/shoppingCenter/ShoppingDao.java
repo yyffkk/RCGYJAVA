@@ -129,9 +129,16 @@ public interface ShoppingDao {
     /**
      * 根据code【商品预约编号】查询信息 pay_price【付款金额】
      * @param outTradeNo 商品预约编号
-     * @return
+     * @return app 商品预约信息
      */
     AppGoodsAppointment findGoodsOrderByCode(String outTradeNo);
+
+    /**
+     * 根据商品预约主键id查询商品预约订单信息
+     * @param goodsAppointmentId 商品预约主键id
+     * @return app 商品预约信息
+     */
+    AppGoodsAppointment findGoodsOrderById(Integer goodsAppointmentId);
 
     /**
      * 根据code【商品预约编号】修改商品预约状态
@@ -172,4 +179,5 @@ public interface ShoppingDao {
      * @return 商品预约订单
      */
     List<AppGoodsAppointment> findUnPaymentOrder();
+
 }

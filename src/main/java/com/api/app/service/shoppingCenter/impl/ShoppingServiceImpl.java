@@ -1,5 +1,9 @@
 package com.api.app.service.shoppingCenter.impl;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.app.service.shoppingCenter.ShoppingService;
 import com.api.manage.dao.shoppingCenter.OrderDao;
@@ -16,7 +20,11 @@ import com.api.vo.app.AppGoodsDetailVo;
 import com.api.vo.app.AppGoodsVo;
 import com.api.vo.app.AppMyOrderVo;
 import com.api.vo.resources.VoResourcesImg;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -25,8 +33,25 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class ShoppingServiceImpl implements ShoppingService {
     private static Map<String,Object> map = null;
+
+    @Value("${alipay.aliPayAppId}")
+    private String ALIPAY_APP_ID;
+    @Value("${alipay.rsaPrivatKey}")
+    private String RSA_PRIVAT_KEY;
+    @Value("${alipay.rsaAlipayPublicKey}")
+    private String RSA_ALIPAY_PUBLIC_KEY;
+    @Value("${alipay.aliPayGateway}")
+    private String ALIPAY_GATEWAY;
+    @Value("${alipay.signType}")
+    private String SIGN_TYPE;
+    @Value("${alipay.alipayFormat}")
+    private String ALIPAY_FORMAT;
+    @Value("${alipay.alipayCharset}")
+    private String ALIPAY_CHARSET;
+
     @Resource
     ShoppingDao shoppingDao;
     @Resource
@@ -220,22 +245,55 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> cancel(Integer id, Integer goodsAppointmentId) {
         map = new HashMap<>();
-        Order order = new Order();
-        order.setId(goodsAppointmentId);//填入预约商品主键Id
-        order.setCreateId(id);//填入用户主键id
-        order.setStatus(1);//1.待发货
+        try {
+            Order order = new Order();
+            order.setId(goodsAppointmentId);//填入预约商品主键Id
+            order.setCreateId(id);//填入用户主键id
+            order.setStatus(1);//1.待发货
 
-        int delete = shoppingDao.cancel(order);
-        if (delete > 0){
-            map.put("message","取消预约成功");
-            map.put("status",true);
-        }else {
-            map.put("message","取消预约失败");
+            int delete = shoppingDao.cancel(order);
+            if (delete <= 0){
+                throw new RuntimeException("取消预约失败");
+            }
+
+            //根据商品预约主键id查询商品预约订单信息
+            AppGoodsAppointment appGoodsAppointment = shoppingDao.findGoodsOrderById(goodsAppointmentId);
+            String out_request_no= String.valueOf(new IdWorker(1,1,1).nextId());//随机数  不是全额退款，部分退款必须使用该参数
+
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+            request.setBizContent("{" +
+                    "\"out_trade_no\":\"" + appGoodsAppointment.getCode() + "\"," +
+                    "\"trade_no\":\"" + null + "\"," +
+                    "\"refund_amount\":\"" + appGoodsAppointment.getPayPrice() + "\"," +
+
+                    "\"out_request_no\":\"" + out_request_no+ "\"," +
+                    "\"refund_reason\":\"正常退款\"" +
+                    " }");
+            AlipayTradeRefundResponse response;
+            response = alipayClient.execute(request);
+            if (response.isSuccess()) {
+                log.info("支付宝退款成功");
+            } else {
+                throw new RuntimeException(response.getSubMsg());//失败会返回错误信息
+            }
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
-
+        map.put("message","取消预约成功");
+        map.put("status",true);
         return map;
     }
 
