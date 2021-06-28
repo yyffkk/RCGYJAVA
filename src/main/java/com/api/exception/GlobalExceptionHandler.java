@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    public ResultBody httpRequestMethodNotSupportedException(HttpServletRequest req, AuthorizationException e) {
+    public ResultBody httpRequestMethodNotSupportedException(HttpServletRequest req, HttpRequestMethodNotSupportedException e) {
         log.error("请求方法异常!原因是:",e);
         return ResultBody.error(CommonEnum.REQUEST_METHOD_ERROR);
     }
