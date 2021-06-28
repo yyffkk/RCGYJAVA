@@ -82,4 +82,8 @@
         where id = #{id}
     </update>
 
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.shoppingCenter.Order">
+        select * from shop_goods_appointment where id = #{id}
+    </select>
+
 </mapper>

@@ -35,4 +35,11 @@ public interface OrderDao {
      * @return 影响行数
      */
     int arrivalGoods(Order order);
+
+    /**
+     * 根据商品预约订单主键id查询商品预约订单信息
+     * @param id 商品预约订单主键id
+     * @return 商品预约model（订单）
+     */
+    Order findById(Integer id);
 }
