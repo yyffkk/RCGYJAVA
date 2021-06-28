@@ -246,21 +246,24 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     @Transactional
-    public Map<String, Object> cancel(Integer id, Integer goodsAppointmentId) {
+    public Map<String, Object> cancel(Integer goodsAppointmentId) {
         map = new HashMap<>();
         try {
-            Order order = new Order();
-            order.setId(goodsAppointmentId);//填入预约商品主键Id
-            order.setCreateId(id);//填入用户主键id
-            order.setStatus(1);//1.待发货
+            //根据商品预约主键id查询商品预约订单信息
+            AppGoodsAppointment appGoodsAppointment = shoppingDao.findGoodsOrderById(goodsAppointmentId);
 
-            int delete = shoppingDao.cancel(order);
-            if (delete <= 0){
+            if (appGoodsAppointment.getStatus() == 15){//15.交易结束并不可退款
+                throw new RuntimeException("该交易已结束，不可退款");
+            }
+            //修改订单状态为已退款
+            AppGoodsAppointment appGoodsAppointment1 = new AppGoodsAppointment();
+            appGoodsAppointment1.setCode(appGoodsAppointment.getCode());
+            appGoodsAppointment1.setStatus(-3);//-3.支付完成后全额退款
+            int update = shoppingDao.updateSGAStatusByCode(appGoodsAppointment1);
+            if (update <= 0){
                 throw new RuntimeException("取消预约失败");
             }
 
-            //根据商品预约主键id查询商品预约订单信息
-            AppGoodsAppointment appGoodsAppointment = shoppingDao.findGoodsOrderById(goodsAppointmentId);
             String out_request_no= String.valueOf(new IdWorker(1,1,1).nextId());//随机数  不是全额退款，部分退款必须使用该参数
 
             AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
@@ -276,11 +279,6 @@ public class ShoppingServiceImpl implements ShoppingService {
             AlipayTradeRefundResponse response;
             response = alipayClient.execute(request);
             if (response.isSuccess()) {
-                //修改订单状态为已退款
-                AppGoodsAppointment appGoodsAppointment1 = new AppGoodsAppointment();
-                appGoodsAppointment1.setCode(appGoodsAppointment.getCode());
-                appGoodsAppointment1.setStatus(-1);//-1.未付款交易超时关闭或支付完成后全额退款
-                shoppingDao.updateSGAStatusByCode(appGoodsAppointment1);
                 log.info("支付宝退款成功");
             } else {
                 throw new RuntimeException(response.getSubMsg());//失败会返回错误信息

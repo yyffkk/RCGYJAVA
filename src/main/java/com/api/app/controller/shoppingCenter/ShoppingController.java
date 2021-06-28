@@ -167,13 +167,12 @@ public class ShoppingController {
 
     /**
      * 取消预约
-     * @param id 用户主键id
      * @param goodsAppointmentId 商品预约主键id
      * @return map
      */
     @GetMapping("/cancel")
-    public Map<String,Object> cancel(Integer id,Integer goodsAppointmentId){
-        return shoppingService.cancel(id,goodsAppointmentId);
+    public Map<String,Object> cancel(Integer goodsAppointmentId){
+        return shoppingService.cancel(goodsAppointmentId);
     }
 
     /**

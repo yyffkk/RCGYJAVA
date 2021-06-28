@@ -28,7 +28,7 @@ public interface ShoppingService {
 
     Map<String, Object> findOrderDetailByOrderId(UserIdAndGoodsAppointmentId UserIdAndGoodsAppointmentId);
 
-    Map<String, Object> cancel(Integer id, Integer goodsAppointmentId);
+    Map<String, Object> cancel(Integer goodsAppointmentId);
 
     Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId, String backReason);
 

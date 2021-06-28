@@ -85,7 +85,7 @@ public interface ShoppingDao {
     List<AppMyOrderVo> myOrder(Order order);
 
     /**
-     * 取消预约
+     * 取消预约(该接口已废除)
      * @param order 商品预约model（订单）
      * @return 影响行数
      */

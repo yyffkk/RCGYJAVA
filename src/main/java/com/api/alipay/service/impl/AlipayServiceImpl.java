@@ -974,13 +974,13 @@ public class AlipayServiceImpl implements AlipayService {
                 throw new RuntimeException("您的身份为游客，不可进行此操作");
             }
             //查询该用户是否有报名该商品
-            AppGoodsIdAndUserId goodsIdAndUserId = new AppGoodsIdAndUserId();
-            goodsIdAndUserId.setUserId(id);
-            goodsIdAndUserId.setGoodsId(appGoodsAppointment.getGoodsId());
-            int count = shoppingDao.countAppointmentByGIdAndUId(goodsIdAndUserId);
-            if (count >0){
-                throw new RuntimeException("您已预约成功，不可进行再次进行该操作");
-            }
+//            AppGoodsIdAndUserId goodsIdAndUserId = new AppGoodsIdAndUserId();
+//            goodsIdAndUserId.setUserId(id);
+//            goodsIdAndUserId.setGoodsId(appGoodsAppointment.getGoodsId());
+//            int count = shoppingDao.countAppointmentByGIdAndUId(goodsIdAndUserId);
+//            if (count >0){
+//                throw new RuntimeException("您已预约成功，不可进行再次进行该操作");
+//            }
 
             //创建报事报修初始订单信息
             createShoppingOrder(appGoodsAppointment,id);
