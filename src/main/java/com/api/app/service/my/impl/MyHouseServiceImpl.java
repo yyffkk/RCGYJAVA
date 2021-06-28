@@ -294,8 +294,8 @@ public class MyHouseServiceImpl implements MyHouseService {
     }
 
     @Override
-    public List<AppLeaseVo> leaseList() {
-        return myHouseDao.leaseList();
+    public List<AppLeaseVo> leaseList(String tel) {
+        return myHouseDao.leaseList(tel);
     }
 
     @Override

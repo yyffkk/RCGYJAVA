@@ -27,7 +27,7 @@ public interface MyHouseService {
 
     Map<String, Object> leaseEcho(String tel);
 
-    List<AppLeaseVo> leaseList();
+    List<AppLeaseVo> leaseList(String tel);
 
     Map<String, Object> leaseFindById(Integer leaseId);
 

@@ -130,12 +130,13 @@ public class MyHouseController {
      * 查询所有的租赁信息
      * @param pageNum 当前页数
      * @param size 每页记录数
+     * @param tel 用户手机号
      * @return map
      */
     @GetMapping("/leaseList")
-    public Map<String,Object> leaseList(int pageNum,int size){
+    public Map<String,Object> leaseList(int pageNum,int size,String tel){
         PageHelper.startPage(pageNum,size);
-        List<AppLeaseVo> appLeaseVoList =myHouseService.leaseList();
+        List<AppLeaseVo> appLeaseVoList =myHouseService.leaseList(tel);
         PageInfo<AppLeaseVo> pageInfo = new PageInfo<>(appLeaseVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());

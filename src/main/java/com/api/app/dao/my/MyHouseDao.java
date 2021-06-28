@@ -137,8 +137,9 @@ public interface MyHouseDao {
     /**
      * 查询所有的租赁信息
      * @return 租赁信息
+     * @param tel
      */
-    List<AppLeaseVo> leaseList();
+    List<AppLeaseVo> leaseList(String tel);
 
     /**
      * 根据租赁主键id查询租赁信息
