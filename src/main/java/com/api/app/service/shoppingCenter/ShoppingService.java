@@ -30,7 +30,7 @@ public interface ShoppingService {
 
     Map<String, Object> cancel(Integer goodsAppointmentId);
 
-    Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId, String backReason);
+    Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId, Integer backType, String backReason);
 
     Map<String, Object> confirmReceipt(Integer id, Integer goodsAppointmentId);
 

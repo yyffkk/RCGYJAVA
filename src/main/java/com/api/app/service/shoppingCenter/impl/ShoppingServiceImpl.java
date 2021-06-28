@@ -301,7 +301,7 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId, String backReason) {
+    public Map<String, Object> applicationRefund(Integer id, Integer goodsAppointmentId, Integer backType, String backReason) {
         map = new HashMap<>();
 
         int status = orderDao.findStatusById(goodsAppointmentId);
@@ -314,6 +314,7 @@ public class ShoppingServiceImpl implements ShoppingService {
         Order order = new Order();
         order.setId(goodsAppointmentId);//填入预约商品主键Id
         order.setCreateId(id);//填入用户主键id
+        order.setBackType(backType);//填入客户期望：1.退货，2.换货
         order.setBackDate(new Date());//填入申请退货时间
         order.setBackReason(backReason);//填入申请原因
         order.setStatus(8);//8.申请退货

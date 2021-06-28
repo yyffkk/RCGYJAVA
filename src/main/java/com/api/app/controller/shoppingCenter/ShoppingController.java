@@ -179,12 +179,13 @@ public class ShoppingController {
      * 申请退换
      * @param id 用户主键id
      * @param goodsAppointmentId 商品预约主键id
+     * @param backType 客户期望：1.退货，2.换货
      * @param backReason 退换货原因
      * @return map
      */
     @GetMapping("/applicationRefund")
-    public Map<String,Object> applicationRefund(Integer id,Integer goodsAppointmentId,String backReason){
-        return shoppingService.applicationRefund(id,goodsAppointmentId,backReason);
+    public Map<String,Object> applicationRefund(Integer id,Integer goodsAppointmentId,Integer backType,String backReason){
+        return shoppingService.applicationRefund(id,goodsAppointmentId,backType,backReason);
     }
 
     /**
