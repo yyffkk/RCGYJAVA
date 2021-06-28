@@ -267,7 +267,7 @@ public class ShoppingServiceImpl implements ShoppingService {
             AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
             request.setBizContent("{" +
                     "\"out_trade_no\":\"" + appGoodsAppointment.getCode() + "\"," +
-                    "\"trade_no\":\"" + null + "\"," +
+                    "\"trade_no\":" + null + "," +
                     "\"refund_amount\":\"" + appGoodsAppointment.getPayPrice() + "\"," +
 
                     "\"out_request_no\":\"" + out_request_no+ "\"," +
@@ -276,6 +276,11 @@ public class ShoppingServiceImpl implements ShoppingService {
             AlipayTradeRefundResponse response;
             response = alipayClient.execute(request);
             if (response.isSuccess()) {
+                //修改订单状态为已退款
+                AppGoodsAppointment appGoodsAppointment1 = new AppGoodsAppointment();
+                appGoodsAppointment1.setCode(appGoodsAppointment.getCode());
+                appGoodsAppointment1.setStatus(-1);//-1.未付款交易超时关闭或支付完成后全额退款
+                shoppingDao.updateSGAStatusByCode(appGoodsAppointment1);
                 log.info("支付宝退款成功");
             } else {
                 throw new RuntimeException(response.getSubMsg());//失败会返回错误信息
