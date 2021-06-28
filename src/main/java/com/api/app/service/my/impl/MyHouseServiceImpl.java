@@ -354,7 +354,7 @@ public class MyHouseServiceImpl implements MyHouseService {
                 if (sysLeaseContractImgData == null || sysLeaseContractImgData.size() <= 0){
                     throw new RuntimeException("无可用合同模版");
                 }
-                String src = rootPath + sysLeaseContractImgData.get(0).getUrl();
+                String src = realPath + sysLeaseContractImgData.get(0).getUrl();
                 String dest = rootPath + descUrl+".pdf";
                 log.info("查询到可用的合同模版,路径为："+src);
                 log.info("预览合同预生成路径："+dest);
