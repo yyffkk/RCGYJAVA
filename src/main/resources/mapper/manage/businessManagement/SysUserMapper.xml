@@ -103,7 +103,7 @@
     </insert>
 
     <select id="findByTel" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
-        select * from sys_user where tel = #{tel}
+        select * from sys_user where tel = #{tel} and is_delete = 1
     </select>
 
     <select id="findByIdCard" parameterType="java.lang.String" resultType="com.api.model.businessManagement.SysUser">
