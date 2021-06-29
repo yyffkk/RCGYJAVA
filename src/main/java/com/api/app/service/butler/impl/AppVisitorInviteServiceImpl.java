@@ -50,6 +50,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     private String SERVICE_LOCATION;    //立林对讲机系统测试服务器地址
     @Value("${lilin.api.faceMethod}")
     private String FACE_METHOD;     //添加设备人脸识别api方法
+    @Value("${lilin.api.addQrCodeMethod}")
+    private String ADD_QRCODE_METHOD;     //添加设备二维码api方法
 
     private static Map<String,Object> map = null;
 
@@ -161,6 +163,9 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //连接立林对讲机系统（人脸识别）
             connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
 
+            //连接立林对讲机系统-添加设备二维码
+            connectLiLinAddQrCode(deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+
             //根据分享连接编号将该连接修改为1.已使用
             appVisitorInviteDao.updateIsUseByCode(visitorsInviteSubmit.getCode());
         } catch (Exception e) {
@@ -204,6 +209,9 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
 //            连接立林对讲机系统（人脸识别）
             connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+
+            //连接立林对讲机系统-添加设备二维码
+            connectLiLinAddQrCode(deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
 
         } catch (Exception e) {
@@ -305,6 +313,80 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
     }
 
+    private void connectLiLinAddQrCode(String deviceNumber, String tel, Date startTime, Date endTime) {
+        //判断是否成功发送给大华
+        //第三方添加设备二维码
+//        Boolean status = addLiLinQrCode(deviceNumber, tel,startTime,endTime);
+//        if (!status){
+//            throw new RuntimeException("添加房屋门禁设备二维码失败");
+//        }
+//
+//        log.info("添加房屋门禁设备二维码成功");
+
+        //拼接入口设备号（3个入口）
+        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
+        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
+        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
+
+
+        //添加入口1设备二维码
+        Boolean status1 = addLiLinQrCode(entranceNumber1, tel,startTime,endTime);
+        if (!status1){
+            throw new RuntimeException("添加入口1设备二维码失败");
+        }
+        log.info("添加入口1设备二维码成功");
+
+        //添加入口2设备二维码
+        Boolean status2 = addLiLinQrCode(entranceNumber2, tel,startTime,endTime);
+        if (!status2){
+            throw new RuntimeException("添加入口2设备二维码失败");
+        }
+        log.info("添加入口2设备二维码成功");
+
+        //添加入口3设备二维码
+        Boolean status3 = addLiLinQrCode(entranceNumber3, tel,startTime,endTime);
+        if (!status3){
+            throw new RuntimeException("添加入口3设备二维码失败");
+        }
+        log.info("添加入口3设备二维码成功");
+
+        //查询第2个字符，代表楼栋号
+        int buildingNo = Integer.parseInt(String.valueOf(deviceNumber.charAt(1)));
+        //查询第4个字符，代表单元号
+        int unitNo = Integer.parseInt(String.valueOf(deviceNumber.charAt(3)));
+
+        //判断是否有第4个入口
+        if (buildingNo == 4){
+            //如果4栋，则只有3个入口
+        }else {
+            //添加第4个入口
+            String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
+
+            //添加入口4设备二维码
+            Boolean status4 = addLiLinQrCode(entranceNumber4, tel,startTime,endTime);
+            if (!status4){
+                throw new RuntimeException("添加入口4设备二维码失败");
+            }
+
+            log.info("添加入口4设备二维码成功");
+        }
+
+        //判断是否有第5个入口
+        if (buildingNo == 2 && unitNo == 2){
+            //如果是2栋2单元，则添加第5个入口
+            String entranceNumber5 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10005");
+
+            //添加入口5设备二维码
+            Boolean status4 = addLiLinQrCode(entranceNumber5, tel,startTime,endTime);
+            if (!status4){
+                throw new RuntimeException("添加入口5设备二维码失败");
+            }
+
+            log.info("添加入口5设备二维码成功");
+        }
+
+    }
+
 
     /**
      * 上传给设备
@@ -397,6 +479,79 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
         }
         return false;
     }
+
+
+    private Boolean addLiLinQrCode(String deviceNumber, String tel, Date startTime, Date endTime) {
+        try {
+            //第三方账号
+            String phoneNumber = tel;
+
+            //api接口方法
+            String method = ADD_QRCODE_METHOD;
+            //请求的时间戳
+            String timestamp = String.valueOf(new Date().getTime());
+            //唯一随机数
+            String nonce = UUID.randomUUID().toString();
+
+            //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
+            String deviceSn = NEIGH_NO + deviceNumber;
+            log.info("正在连接的设备序列号为:"+deviceSn);
+            //梯控权限类型
+            Integer floorType = 2;
+
+            //封装data
+            String data = "{\"neighNo\":\""+NEIGH_NO+"\",\"deviceSn\":\""+deviceSn+
+                    "\",\"phoneNumber\":"+phoneNumber+",\"startTime\":"+startTime.getTime()+",\"endTime\":"+endTime.getTime()+
+                    ",\"floorType\":"+floorType+"}";
+
+            //获取签名结果串
+            String signature = getSignature(method,timestamp,nonce,data);
+
+
+
+            String json = "{\"version\":\""+VERSION+"\",\"clientId\":\""+CLIENT_ID+"\",\"timestamp\":\""+timestamp+
+                    "\",\"nonce\":\""+nonce+"\",\"method\":\""+method+"\",\"signature\":\""+signature+"\",\"signatureVersion\":\""+SIGNATURE_VERSION+
+                    "\",\"data\":"+data+"}";
+
+            log.info("json字符串："+json);
+
+//            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(10000, TimeUnit.MILLISECONDS)
+                    .readTimeout(10000, TimeUnit.MILLISECONDS)
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+            RequestBody requestBody = FormBody.create(mediaType, json);
+            Request request = new Request.Builder()
+                    .url(SERVICE_LOCATION+"third/an/"+method)
+                    .post(requestBody)
+                    .build();
+            Response execute = client.newCall(request).execute();
+            if (execute.isSuccessful()) {
+                ResponseBody body = execute.body();
+                if (body != null) {
+                    //获取返回值//TODO 4004 设备不存在 或者 亲！物业不在线
+                    String result = body.string();
+                    log.info("返回值:"+result);
+                    JSONObject jsonObject = new JSONObject(result);
+                    String result1 = String.valueOf(jsonObject.get("result"));
+                    //=====判断返回是否成功
+                    if ("1".equals(result1)){
+                        log.info("返回成功");
+                        return true;
+                    }else {
+                        log.info("返回失败");
+                        throw new RuntimeException(String.valueOf(jsonObject.get("message")));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+        return false;
+    }
+
 
 
     private String getSignature(String method, String timestamp, String nonce, String data) {
