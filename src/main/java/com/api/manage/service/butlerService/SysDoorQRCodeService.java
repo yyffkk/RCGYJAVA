@@ -16,4 +16,6 @@ public interface SysDoorQRCodeService {
     Map<String, Object> removeQrCode(SysDoorQRCode sysDoorQRCode);
 
     List<VoDoorQRCode> list(SearchDoorQRCode searchDoorQRCode);
+
+    Map<String, Object> getVisitorsQrCode(Date startTime, Date endTime, String visitorsTel);
 }

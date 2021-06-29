@@ -153,6 +153,32 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         return sysDoorQRCodeDao.list(searchDoorQRCode);
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> getVisitorsQrCode(Date startTime, Date endTime, String visitorsTel) {
+        map = new HashMap<>();
+        String data = null;//返回二维码字符串
+        try {
+            //连接立林对讲机系统-获取设备二维码
+            data = connectLiLinGetQrCode(visitorsTel, startTime, endTime);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            map.put("data",null);
+            return map;
+        }
+        map.put("message","查询成功");
+        map.put("status",true);
+        map.put("data",data);
+        return map;
+    }
+
     private void connectLiLinRemoveQrCode(String deviceNumber, String tel) {
 //        //第三方删除设备二维码
 //        Boolean status = removeLiLinQrCode(deviceNumber, tel);

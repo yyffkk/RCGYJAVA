@@ -4,6 +4,7 @@ import com.api.model.app.AppUserQRVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
 
+import java.util.Date;
 import java.util.Map;
 
 public interface AppVisitorInviteService {

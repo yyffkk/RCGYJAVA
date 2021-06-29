@@ -3,10 +3,7 @@ package com.api.app.controller.butler;
 import com.api.app.service.butler.AppVisitorInviteService;
 import com.api.model.app.AppUserVisitorsInvite;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +13,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * app 新版的访客邀请管理-人脸识别版
+ * app 新版的访客邀请管理-人脸识别版 和 二维码版
  */
 @RestController
 @RequestMapping("app/user/visitorInvite")

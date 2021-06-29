@@ -27,4 +27,18 @@ public class MyDoorQRCodeController {
     public Map<String,Object> getQrCode(Date startTime, Date endTime,String tel){
         return sysDoorQRCodeService.getQrCode(startTime,endTime, tel);
     }
+
+
+
+    /**
+     * 获取访客设备二维码
+     * @param startTime 生效时间戳
+     * @param endTime 失效时间戳
+     * @param visitorsTel 访客手机号
+     * @return map
+     */
+    @GetMapping("/getVisitorsQrCode")
+    public Map<String,Object> getVisitorsQrCode(Date startTime, Date endTime,String visitorsTel){
+        return sysDoorQRCodeService.getVisitorsQrCode(startTime,endTime, visitorsTel);
+    }
 }
