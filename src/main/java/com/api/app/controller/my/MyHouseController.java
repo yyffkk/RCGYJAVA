@@ -186,6 +186,13 @@ public class MyHouseController {
         return myHouseService.submitAudit(appLeaseSubmitAudit);
     }
 
-
+    /**
+     * 提交终止申请
+     * @return map
+     */
+    @PostMapping("/submitTerminateApplication")
+    public Map<String,Object> submitTerminateApplication(){
+        return null;
+    }
 
 }
