@@ -1357,7 +1357,7 @@ public class AlipayServiceImpl implements AlipayService {
                             cpmResidentEstate.setResidentId(userResidentByTel.getId()); //填入住户id
                             cpmResidentEstate.setEffectiveTimeStart(byId.getLeaseDateStart()); //填入有效时间开始（只限租客）
                             cpmResidentEstate.setEffectiveTimeEnd(byId.getLeaseDateEnd()); //填入有效时间结束（只限租客）
-                            cpmResidentEstate.setSysLeaseId(byId.getId());
+                            cpmResidentEstate.setSysLeaseId(byId.getId());//填入租赁主键id（只限租客）
                             int insert = auditManagementDao.insertResidentEstate(cpmResidentEstate);
                             if (insert <=0){
                                 throw new RuntimeException("===========添加住户房产关联失败");
