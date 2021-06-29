@@ -394,7 +394,7 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
 //
 //        log.info("添加房屋门禁设备二维码成功");
 
-        //拼接入口设备号（4个入口）
+        //拼接入口设备号（3个入口）
         String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
         String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
         String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");

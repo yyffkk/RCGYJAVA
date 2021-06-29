@@ -158,7 +158,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //根据拜访房产id查询设备号
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
 
-            //连接立林对讲机系统
+            //连接立林对讲机系统（人脸识别）
             connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
 
             //根据分享连接编号将该连接修改为1.已使用
@@ -202,7 +202,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 //            根据拜访房产id查询设备号
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
 
-//            连接立林对讲机系统
+//            连接立林对讲机系统（人脸识别）
             connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
 
@@ -232,54 +232,77 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
      * @param visitDateEnd 拜访结束时间
      */
     private void connectLiLinFace(String[] imgList, String deviceNumber, String tel, Date visitDateStart, Date visitDateEnd) {
+//        //上传给房屋门禁设备
+//        Boolean status = isUploadFace(imgList, deviceNumber, tel,visitDateStart,visitDateEnd);
+//        if (!status){
+//            throw new RuntimeException("连接房屋门禁失败");
+//        }
+//
+//        log.info("连接房屋门禁成功");
+
         //判断是否成功发送给大华
-        //拼接入口设备号（4个入口）
-//        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
-//        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
-//        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
-//        String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
+        //拼接入口设备号（3个入口）
+        String entranceNumber1 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10001");
+        String entranceNumber2 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10002");
+        String entranceNumber3 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10003");
 
+        //上传给入口1设备
+        Boolean status1 = isUploadFace(imgList, entranceNumber1, tel,visitDateStart,visitDateEnd);
+        if (!status1){
+            throw new RuntimeException("连接入口1失败");
+        }
+        log.info("连接入口1成功");
 
+        //上传给入口2设备
+        Boolean status2 = isUploadFace(imgList, entranceNumber2, tel,visitDateStart,visitDateEnd);
+        if (!status2){
+            throw new RuntimeException("连接入口2失败");
+        }
+        log.info("连接入口2成功");
 
-        //上传给房屋门禁设备
-        Boolean status = isUploadFace(imgList, deviceNumber, tel,visitDateStart,visitDateEnd);
-        if (!status){
-            throw new RuntimeException("连接房屋门禁失败");
+        //上传给入口3设备
+        Boolean status3 = isUploadFace(imgList, entranceNumber3, tel,visitDateStart,visitDateEnd);
+        if (!status3){
+            throw new RuntimeException("连接入口3失败");
+        }
+        log.info("连接入口3成功");
+
+        //查询第2个字符，代表楼栋号
+        int buildingNo = Integer.parseInt(String.valueOf(deviceNumber.charAt(1)));
+        //查询第4个字符，代表单元号
+        int unitNo = Integer.parseInt(String.valueOf(deviceNumber.charAt(3)));
+
+        //判断是否有第4个入口
+        if (buildingNo == 4){
+            //如果4栋，则只有3个入口
+        }else {
+            //添加第4个入口
+            String entranceNumber4 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10004");
+
+            //上传给入口4设备
+            Boolean status4 = isUploadFace(imgList, entranceNumber4, tel,visitDateStart,visitDateEnd);
+            if (!status4){
+                throw new RuntimeException("连接入口4失败");
+            }
+
+            log.info("连接入口4成功");
         }
 
-        log.info("连接房屋门禁成功");
+        //判断是否有第5个入口
+        if (buildingNo == 2 && unitNo == 2){
+            //如果是2栋2单元，则添加第5个入口
+            String entranceNumber5 = deviceNumber.replaceAll("([\\w\\W]*)([\\w\\W]{4})", "$10005");
 
-//        //上传给入口1设备
-//        Boolean status1 = isUploadFace(imgList, entranceNumber1, tel,visitDateStart,visitDateEnd);
-//        if (!status1){
-//            throw new RuntimeException("连接入口1失败");
-//        }
-//
-//        log.info("连接入口1成功");
-//
-//        //上传给入口2设备
-//        Boolean status2 = isUploadFace(imgList, entranceNumber2, tel,visitDateStart,visitDateEnd);
-//        if (!status2){
-//            throw new RuntimeException("连接入口2失败");
-//        }
-//
-//        log.info("连接入口2成功");
-//
-//        //上传给入口3设备
-//        Boolean status3 = isUploadFace(imgList, entranceNumber3, tel,visitDateStart,visitDateEnd);
-//        if (!status3){
-//            throw new RuntimeException("连接入口3失败");
-//        }
-//
-//        log.info("连接入口3成功");
-//
-//        //上传给入口4设备
-//        Boolean status4 = isUploadFace(imgList, entranceNumber4, tel,visitDateStart,visitDateEnd);
-//        if (!status4){
-//            throw new RuntimeException("连接入口4失败");
-//        }
-//
-//        log.info("连接入口4成功");
+            //上传给入口4设备
+            Boolean status5 = isUploadFace(imgList, entranceNumber5, tel,visitDateStart,visitDateEnd);
+            if (!status5){
+                throw new RuntimeException("连接入口5失败");
+            }
+
+            log.info("连接入口5成功");
+        }
+
+
     }
 
 
