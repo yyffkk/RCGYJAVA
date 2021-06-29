@@ -193,4 +193,14 @@ public class AppUploadController {
         return uploadService.uploadLeaseContractValidPdf(file);
     }
 
+    /**
+     * 上传腾空单
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadAppClearingSingle")
+    public Map<String,Object> uploadAppClearingSingle(MultipartFile file){
+        return uploadService.uploadAppClearingSingle(file);
+    }
+
 }

@@ -105,6 +105,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_LEASE_CONTRACT_SIGNATURE_PHONE;
     @Value("${prop.upload-lease-contract-valid-pdf}")
     private String UPLOAD_LEASE_CONTRACT_VALID_PDF;
+    @Value("${prop.upload-app-clearing-single}")
+    private String UPLOAD_APP_CLEARING_SINGLE;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -429,6 +431,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadLeaseContractValidPdf(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_LEASE_CONTRACT_VALID_PDF);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadAppClearingSingle(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_APP_CLEARING_SINGLE);
         return map;
     }
 
