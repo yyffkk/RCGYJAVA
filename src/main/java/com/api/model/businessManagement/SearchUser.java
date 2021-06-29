@@ -25,7 +25,7 @@ public class SearchUser {
      */
     private String actualName;
     /**
-     * 状态
+     * 用户状态（1:正常【1】，2:禁止登录【2】，3:停用【3,4】）
      */
     private Integer status;
 
