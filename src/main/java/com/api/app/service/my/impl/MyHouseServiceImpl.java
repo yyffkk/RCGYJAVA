@@ -432,7 +432,7 @@ public class MyHouseServiceImpl implements MyHouseService {
                 //预览合同作为底板来绘画签名
                 String src = realPath + appLeaseValidContract.getContractPreviewImgUrl();
                 String destRootPath = realPath +UPLOAD_LEASE_CONTRACT_SIGNED_PDF;
-                String dest = realPath +UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf";
+                String dest = realPath+ "/temp" +UPLOAD_LEASE_CONTRACT_SIGNED_PDF+ descUrl+".pdf";
                 log.info("查询到可用的合同模版,路径为："+src);
                 log.info("预览合同预生成路径："+dest);
 
