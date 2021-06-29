@@ -5,7 +5,7 @@
 <mapper namespace="com.api.app.dao.my.MyHouseDao">
     <select id="houseList" parameterType="java.lang.Integer" resultType="com.api.vo.my.MyHouseListVo">
         select cre.id,cre.building_unit_estate_id as estate_id,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,
-        ur.type,cre.effective_time_start,cre.effective_time_end
+        ur.type,cre.effective_time_start,cre.effective_time_end,cre.sys_lease_id
         from cpm_resident_estate as cre,user_resident as ur,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         where cre.resident_id = ur.id and cre.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id
         and cbu.building_id = cb.id and cre.resident_id = #{id}

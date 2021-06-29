@@ -30,6 +30,10 @@ public class MyHouseListVo {
      * 有效时间结束（只限租客）
      */
     private Date effectiveTimeEnd;
+    /**
+     * 租赁主键id（只限租客）
+     */
+    private Integer sysLeaseId;
 
     @Override
     public String toString() {
@@ -40,6 +44,7 @@ public class MyHouseListVo {
                 ", type=" + type +
                 ", effectiveTimeStart=" + effectiveTimeStart +
                 ", effectiveTimeEnd=" + effectiveTimeEnd +
+                ", sysLeaseId=" + sysLeaseId +
                 '}';
     }
 
@@ -91,15 +96,24 @@ public class MyHouseListVo {
         this.effectiveTimeEnd = effectiveTimeEnd;
     }
 
+    public Integer getSysLeaseId() {
+        return sysLeaseId;
+    }
+
+    public void setSysLeaseId(Integer sysLeaseId) {
+        this.sysLeaseId = sysLeaseId;
+    }
+
     public MyHouseListVo() {
     }
 
-    public MyHouseListVo(Integer id, Integer estateId, String roomName, Integer type, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public MyHouseListVo(Integer id, Integer estateId, String roomName, Integer type, Date effectiveTimeStart, Date effectiveTimeEnd, Integer sysLeaseId) {
         this.id = id;
         this.estateId = estateId;
         this.roomName = roomName;
         this.type = type;
         this.effectiveTimeStart = effectiveTimeStart;
         this.effectiveTimeEnd = effectiveTimeEnd;
+        this.sysLeaseId = sysLeaseId;
     }
 }
