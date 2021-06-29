@@ -78,6 +78,9 @@
             <if test="effectiveTimeEnd != null">
                 effective_time_end,
             </if>
+            <if test="sysLeaseId != null">
+                sys_lease_id,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -88,6 +91,9 @@
             </if>
             <if test="effectiveTimeEnd != null">
                 #{effectiveTimeEnd},
+            </if>
+            <if test="sysLeaseId != null">
+                #{sysLeaseId},
             </if>
         </trim>
     </insert>
