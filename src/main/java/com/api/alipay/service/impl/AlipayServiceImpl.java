@@ -474,10 +474,12 @@ public class AlipayServiceImpl implements AlipayService {
     public Map<String, Object> dailyPaymentAlipay(AppDailyPaymentOrder appDailyPaymentOrder) {
         map = new HashMap<>();
         String body = "";
-
         // 获取项目中实际的订单的信息
         // 此处是相关业务代码
         try {
+            if (appDailyPaymentOrder.getIds() == null || appDailyPaymentOrder.getIds().length <= 0){
+                throw new RuntimeException("未选择支付项");
+            }
             //计算出所需支付总金额
             BigDecimal paymentPrice = appDailyPaymentDao.findPaymentPriceById(appDailyPaymentOrder);
             if (paymentPrice.compareTo(appDailyPaymentOrder.getPayPrice()) != 0){
