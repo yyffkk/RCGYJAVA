@@ -51,6 +51,10 @@ public class AppUserVisitorsInviteSubmit {
      * 访客自拍照片
      */
     private String[] imgList;
+    /**
+     * 状态：1.已分享，2.已提交
+     */
+    private Integer status;
 
     @Override
     public String toString() {
@@ -66,6 +70,7 @@ public class AppUserVisitorsInviteSubmit {
                 ", visitDateEnd=" + visitDateEnd +
                 ", peers=" + peers +
                 ", imgList=" + Arrays.toString(imgList) +
+                ", status=" + status +
                 '}';
     }
 
@@ -157,10 +162,18 @@ public class AppUserVisitorsInviteSubmit {
         this.imgList = imgList;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public AppUserVisitorsInviteSubmit() {
     }
 
-    public AppUserVisitorsInviteSubmit(Integer id, Integer estateId, String code, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, String[] imgList) {
+    public AppUserVisitorsInviteSubmit(Integer id, Integer estateId, String code, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, String[] imgList, Integer status) {
         this.id = id;
         this.estateId = estateId;
         this.code = code;
@@ -172,5 +185,6 @@ public class AppUserVisitorsInviteSubmit {
         this.visitDateEnd = visitDateEnd;
         this.peers = peers;
         this.imgList = imgList;
+        this.status = status;
     }
 }

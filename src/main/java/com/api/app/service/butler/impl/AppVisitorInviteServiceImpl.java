@@ -197,6 +197,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(visitorsInviteSubmit.getImgList(),"userVisitorsNew",visitorsInviteSubmit.getId(),"selfie","600",30,20);
             //修改新版访客信息
+            visitorsInviteSubmit.setStatus(2);//2.已提交
             int update = appVisitorInviteDao.updateUserVisitorsNew(visitorsInviteSubmit);
             if (update <= 0){
                 throw new RuntimeException("修改新版访客信息失败");
@@ -240,6 +241,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             qrVisitorsInviteSubmit.setCreateId(-1); //扫门口二维码填写，创建人默认为-1
             qrVisitorsInviteSubmit.setCreateDate(new Date()); //填写创建时间
             //添加新版访客信息
+            qrVisitorsInviteSubmit.setStatus(2);//2.已提交
             int insert = appVisitorInviteDao.insertQRUserVisitorsNew(qrVisitorsInviteSubmit);
             if (insert <= 0){
                 throw new RuntimeException("添加新版访客信息失败");

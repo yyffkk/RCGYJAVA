@@ -44,6 +44,10 @@ public class AppUserQRVisitorsInviteSubmit {
      */
     private Integer peers;
     /**
+     * 状态：1.已分享，2.已提交
+     */
+    private Integer status;
+    /**
      * 访客自拍照片
      */
     private String[] imgList;
@@ -68,6 +72,7 @@ public class AppUserQRVisitorsInviteSubmit {
                 ", visitDateStart=" + visitDateStart +
                 ", visitDateEnd=" + visitDateEnd +
                 ", peers=" + peers +
+                ", status=" + status +
                 ", imgList=" + Arrays.toString(imgList) +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
@@ -146,6 +151,14 @@ public class AppUserQRVisitorsInviteSubmit {
         this.peers = peers;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String[] getImgList() {
         return imgList;
     }
@@ -173,7 +186,7 @@ public class AppUserQRVisitorsInviteSubmit {
     public AppUserQRVisitorsInviteSubmit() {
     }
 
-    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, String[] imgList, Integer createId, Date createDate) {
+    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, Integer status, String[] imgList, Integer createId, Date createDate) {
         this.id = id;
         this.estateId = estateId;
         this.name = name;
@@ -183,6 +196,7 @@ public class AppUserQRVisitorsInviteSubmit {
         this.visitDateStart = visitDateStart;
         this.visitDateEnd = visitDateEnd;
         this.peers = peers;
+        this.status = status;
         this.imgList = imgList;
         this.createId = createId;
         this.createDate = createDate;
