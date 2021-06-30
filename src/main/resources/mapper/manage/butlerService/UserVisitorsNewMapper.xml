@@ -19,6 +19,7 @@
             <if test="tel != null and tel != ''">
                 and uvn.tel like concat('%',#{tel},'%')
             </if>
+            and uvn.status = 2
         </where>
         order by uvn.create_date desc
     </select>
