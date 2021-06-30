@@ -198,9 +198,18 @@
     <select id="findReportDispatch" resultType="com.api.vo.systemDataBigScreen.SDReportDispatchVo">
         select sdl.id,sdl.code,
         (case sdl.status <![CDATA[ < ]]> 4 when true then 1 else 2 end) as status,
-        (case sdl.end_date is null when true then srr.create_date else sdl.end_date end) as date_time
-        from sys_report_repair as srr,sys_dispatch_list as sdl
-        where sdl.id = srr.dispatch_list_id
+        (case sdl.end_date is null when true then srr.create_date else sdl.end_date end) as date_time,
+        srr.type,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,srr.tel,srr.repair_date,
+        srr.froms,srr.report_detail,srr.maintenance_labor_cast,srr.maintenance_material_cost,
+        sdl.evaluation_level,sdl.evaluation_content,sdl.evaluation_date,sdl.revisit_date,sdl.revisit_detail,
+        ur.name as repairman_name,su.actual_name as operator_name,swotl.name as work_order_time_limit
+        from sys_report_repair as srr,user_resident as ur,cpm_building_unit_estate as cbue,cpm_building_unit cbu,
+        cpm_building as cb,sys_dispatch_list as sdl
+        LEFT JOIN sys_dispatch_list_detail as sdld on sdld.dispatch_list_id = sdl.id
+        LEFT JOIN sys_user as su on su.id = sdld.operator
+        LEFT JOIN sys_work_order_time_limit as swotl on swotl.id = sdld.work_order_time_limit
+        where sdl.id = srr.dispatch_list_id and srr.repairman = ur.id and srr.building_unit_estate_id = cbue.id
+        and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
     </select>
     <select id="findHandledNum" resultType="java.lang.Integer">
         select count(*) from sys_dispatch_list

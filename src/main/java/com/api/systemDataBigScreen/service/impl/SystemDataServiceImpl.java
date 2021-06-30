@@ -340,6 +340,13 @@ public class SystemDataServiceImpl implements SystemDataService {
         SDReportDispatchAllVo sdReportDispatchAllVo = new SDReportDispatchAllVo();
         //查询所有的报修工单信息
         List<SDReportDispatchVo> reportDispatch = systemDataDao.findReportDispatch();
+        if (reportDispatch != null && reportDispatch.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (SDReportDispatchVo dispatch : reportDispatch) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportRepair", dispatch.getId(), "repairImg");
+                dispatch.setImgUrls(imgByDate);
+            }
+        }
         sdReportDispatchAllVo.setReportDispatchVoList(reportDispatch);
         //查询已处理数量
         int handledNum = systemDataDao.findHandledNum();
