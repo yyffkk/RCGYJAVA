@@ -36,4 +36,6 @@ public interface MyHouseService {
     Map<String, Object> generateValidContract(AppLeaseValidContract appLeaseValidContract);
 
     Map<String, Object> submitAudit(AppLeaseSubmitAudit appLeaseSubmitAudit);
+
+    Map<String, Object> submitTerminateApplication(SysLease sysLease);
 }

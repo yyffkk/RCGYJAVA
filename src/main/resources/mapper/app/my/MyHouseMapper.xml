@@ -105,5 +105,15 @@
     <select id="findEnableLeaseContract" resultType="com.api.model.butlerService.SysLeaseContract">
         select * from sys_lease_contract where status = 1
     </select>
+    <select id="findLeaseById" resultType="com.api.model.butlerService.SysLease">
+        select * from sys_lease where id = #{id}
+    </select>
+
+    <update id="submitTerminateApplication" parameterType="com.api.model.butlerService.SysLease">
+        update sys_lease
+        set status = #{status},
+        take_date = #{takeDate}
+        where id = #{id}
+    </update>
 
 </mapper>

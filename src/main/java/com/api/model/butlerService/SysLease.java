@@ -134,6 +134,22 @@ public class SysLease {
      * 身份证照背面照片路径
      */
     private String[] idCardBackImgUrl;
+    /**
+     * 腾空单路径
+     */
+    private String[] clearingSingleImgUrl;
+    /**
+     * 收房时间
+     */
+    private Date takeDate;
+    /**
+     * 不再计租时间
+     */
+    private Date notMeterRentDate;
+    /**
+     * 剩余需结清房租（元）
+     */
+    private BigDecimal requiredRent;
 
     @Override
     public String toString() {
@@ -169,6 +185,10 @@ public class SysLease {
                 ", bankAccount='" + bankAccount + '\'' +
                 ", idCardFrontImgUrl=" + Arrays.toString(idCardFrontImgUrl) +
                 ", idCardBackImgUrl=" + Arrays.toString(idCardBackImgUrl) +
+                ", clearingSingleImgUrl=" + Arrays.toString(clearingSingleImgUrl) +
+                ", takeDate=" + takeDate +
+                ", notMeterRentDate=" + notMeterRentDate +
+                ", requiredRent=" + requiredRent +
                 '}';
     }
 
@@ -420,10 +440,42 @@ public class SysLease {
         this.idCardBackImgUrl = idCardBackImgUrl;
     }
 
+    public String[] getClearingSingleImgUrl() {
+        return clearingSingleImgUrl;
+    }
+
+    public void setClearingSingleImgUrl(String[] clearingSingleImgUrl) {
+        this.clearingSingleImgUrl = clearingSingleImgUrl;
+    }
+
+    public Date getTakeDate() {
+        return takeDate;
+    }
+
+    public void setTakeDate(Date takeDate) {
+        this.takeDate = takeDate;
+    }
+
+    public Date getNotMeterRentDate() {
+        return notMeterRentDate;
+    }
+
+    public void setNotMeterRentDate(Date notMeterRentDate) {
+        this.notMeterRentDate = notMeterRentDate;
+    }
+
+    public BigDecimal getRequiredRent() {
+        return requiredRent;
+    }
+
+    public void setRequiredRent(BigDecimal requiredRent) {
+        this.requiredRent = requiredRent;
+    }
+
     public SysLease() {
     }
 
-    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl) {
+    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -455,5 +507,9 @@ public class SysLease {
         this.bankAccount = bankAccount;
         this.idCardFrontImgUrl = idCardFrontImgUrl;
         this.idCardBackImgUrl = idCardBackImgUrl;
+        this.clearingSingleImgUrl = clearingSingleImgUrl;
+        this.takeDate = takeDate;
+        this.notMeterRentDate = notMeterRentDate;
+        this.requiredRent = requiredRent;
     }
 }

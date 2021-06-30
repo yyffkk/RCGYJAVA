@@ -536,4 +536,41 @@ public class MyHouseServiceImpl implements MyHouseService {
         return map;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> submitTerminateApplication(SysLease sysLease) {
+        map = new HashMap<>();
+
+        try {
+            SysLease sysLease1 = myHouseDao.findLeaseById(sysLease.getId());
+            if (!(sysLease1.getStatus() == 6 || sysLease1.getStatus() == 12)){
+                throw new RuntimeException("当前不可申请终止合同");
+            }
+
+            sysLease.setStatus(11);//11.申请终止合同
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(sysLease.getClearingSingleImgUrl(),"sysLease",sysLease.getId(),"clearingSingle","600",30,20);
+
+            int update = myHouseDao.submitTerminateApplication(sysLease);
+            if (update <= 0){
+                throw new RuntimeException("提交审核失败");
+            }
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交审核成功");
+        map.put("status",true);
+        return map;
+    }
+
 }

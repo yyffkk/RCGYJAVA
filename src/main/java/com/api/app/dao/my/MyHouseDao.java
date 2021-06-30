@@ -167,4 +167,18 @@ public interface MyHouseDao {
      * @return 影响行数
      */
     int updateStatusById(SysLease sysLease);
+
+    /**
+     * 提交终止申请
+     * @param sysLease 租赁管理model
+     * @return 影响行数
+     */
+    int submitTerminateApplication(SysLease sysLease);
+
+    /**
+     * 根据租赁主键id查询租赁信息
+     * @param id 租赁主键id
+     * @return 租赁信息
+     */
+    SysLease findLeaseById(Integer id);
 }

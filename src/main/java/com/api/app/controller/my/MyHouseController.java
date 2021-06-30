@@ -6,7 +6,6 @@ import com.api.model.app.AppLeaseValidContract;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
-import com.api.vo.app.AppAdviceVo;
 import com.api.vo.app.AppLeaseVo;
 import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
@@ -186,13 +185,15 @@ public class MyHouseController {
         return myHouseService.submitAudit(appLeaseSubmitAudit);
     }
 
+
     /**
      * 提交终止申请
+     * @param sysLease 租赁管理model
      * @return map
      */
     @PostMapping("/submitTerminateApplication")
-    public Map<String,Object> submitTerminateApplication(){
-        return null;
+    public Map<String,Object> submitTerminateApplication(@RequestBody SysLease sysLease){
+        return myHouseService.submitTerminateApplication(sysLease);
     }
 
 }
