@@ -37,7 +37,7 @@ public interface AlipayService {
 
     Map<String, Object> shoppingCheckAlipay(String code);
 
-    Map<String, Object> leaseAlipay(SysLeaseOrder sysLeaseOrder, Integer type, Integer id);
+    Map<String, Object> leaseAlipay(SysLeaseOrder sysLeaseOrder, Integer id);
 
     String leaseNotifyInfo(HttpServletRequest request, String userName, Integer userId);
 

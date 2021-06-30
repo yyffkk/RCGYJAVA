@@ -269,10 +269,9 @@ public class AlipayController {
         String name = request.getParameter("name"); //从request获取用户姓名
         String tel = request.getParameter("tel"); //从request获取用户联系电话
         Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
-        Integer type = Integer.valueOf(request.getParameter("type"));//从request获取用户type
         sysLeaseOrder.setName(name); //填写付款人姓名
         sysLeaseOrder.setTel(tel); //填写付款人手机号
-        return alipayService.leaseAlipay(sysLeaseOrder,type,id);
+        return alipayService.leaseAlipay(sysLeaseOrder,id);
     }
 
 

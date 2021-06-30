@@ -1184,7 +1184,8 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     @Transactional
-    public Map<String, Object> leaseAlipay(SysLeaseOrder sysLeaseOrder, Integer type, Integer id) {
+    public Map<String, Object> leaseAlipay(SysLeaseOrder sysLeaseOrder, Integer id) {
+        log.info("开始生成支付宝订单");
         map = new HashMap<>();
         String body = "";
 
@@ -1216,7 +1217,7 @@ public class AlipayServiceImpl implements AlipayService {
             if (i<=0){
                 throw new RuntimeException("添加缴费订单信息失败");
             }
-
+            log.info("开始调用支付宝接口");
             // 开始使用支付宝SDK中提供的API
             AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
             // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
