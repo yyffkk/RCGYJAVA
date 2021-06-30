@@ -11,6 +11,10 @@ public class SDSysActivityVo {
      */
     private String title;
     /**
+     * 活动内容
+     */
+    private String content;
+    /**
      * 报名开始时间
      */
     private Date registrationStartTime;
@@ -23,6 +27,7 @@ public class SDSysActivityVo {
     public String toString() {
         return "SDSysActivityVo{" +
                 "title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 ", registrationStartTime=" + registrationStartTime +
                 ", registrationEndTime=" + registrationEndTime +
                 '}';
@@ -34,6 +39,14 @@ public class SDSysActivityVo {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getRegistrationStartTime() {
@@ -55,8 +68,9 @@ public class SDSysActivityVo {
     public SDSysActivityVo() {
     }
 
-    public SDSysActivityVo(String title, Date registrationStartTime, Date registrationEndTime) {
+    public SDSysActivityVo(String title, String content, Date registrationStartTime, Date registrationEndTime) {
         this.title = title;
+        this.content = content;
         this.registrationStartTime = registrationStartTime;
         this.registrationEndTime = registrationEndTime;
     }
