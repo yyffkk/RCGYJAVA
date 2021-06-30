@@ -1192,8 +1192,8 @@ public class AlipayServiceImpl implements AlipayService {
         // 获取项目中实际的订单的信息
         // 此处是相关业务代码
         try {
-            //计算出所需支付总金额
-            VoFBILease byId = leaseDao.findById(sysLeaseOrder.getId());
+            //根据租赁管理主键id查询租赁信息
+            VoFBILease byId = leaseDao.findById(sysLeaseOrder.getSysLeaseId());
             BigDecimal paymentPrice = byId.getMargin();
             if (paymentPrice.compareTo(sysLeaseOrder.getPayPrice()) != 0){
                 throw new RuntimeException("支付金额有误，请重新支付");
@@ -1201,6 +1201,7 @@ public class AlipayServiceImpl implements AlipayService {
             if (paymentPrice.equals(BigDecimal.ZERO)){
                 throw new RuntimeException("支付金额不可为0");
             }
+            log.info("开始填写支付宝订单信息");
             //填写付款金额
             sysLeaseOrder.setPayPrice(paymentPrice);
 
