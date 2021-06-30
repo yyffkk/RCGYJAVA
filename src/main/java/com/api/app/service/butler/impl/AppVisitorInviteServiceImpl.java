@@ -3,10 +3,7 @@ package com.api.app.service.butler.impl;
 import com.api.app.dao.butler.AppVisitorInviteDao;
 import com.api.app.service.butler.AppVisitorInviteService;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
-import com.api.model.app.AppUserQRVisitorsInviteSubmit;
-import com.api.model.app.AppUserVisitorsInvite;
-import com.api.model.app.AppUserVisitorsInviteSubmit;
-import com.api.model.app.AppUserVisitorsUrl;
+import com.api.model.app.*;
 import com.api.util.IdWorker;
 import com.api.util.LiLinSignGetHmac;
 import com.api.util.UploadUtil;
@@ -19,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -55,12 +51,19 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
     private static Map<String,Object> map = null;
 
+
+    @Override
+    public List<AppUserVisitorsInvite> list(SearchAppVisitorInvite searchAppVisitorInvite) {
+        return appVisitorInviteDao.list(searchAppVisitorInvite);
+    }
+
     @Override
     @Transactional
     public Map<String, Object> share(AppUserVisitorsInvite visitorsInvite) {
         map = new HashMap<>();
         String code = "";
         try {
+            visitorsInvite.setStatus(1);//1.分享中
             //添加新版访客信息
             int insert = appVisitorInviteDao.insertUserVisitorsNew(visitorsInvite);
             if (insert <= 0){
@@ -93,6 +96,48 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             map.put("status",false);
             return map;
         }
+        map.put("code",code);
+        map.put("message","分享成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> againShare(Integer visitorsInviteId) {
+        map = new HashMap<>();
+        String code = "";
+        AppUserVisitorsInvite appUserVisitorsInvite = appVisitorInviteDao.findById(visitorsInviteId);
+        if (appUserVisitorsInvite == null){
+            map.put("code",code);
+            map.put("message","该访客邀请记录不存在");
+            map.put("status",false);
+            return map;
+        }
+
+        if (appUserVisitorsInvite.getStatus() == 2){
+            map.put("code",code);
+            map.put("message","该访客邀请记录已被提交，请重新生成分享");
+            map.put("status",false);
+            return map;
+        }
+
+        AppUserVisitorsUrl visitorsUrl = new AppUserVisitorsUrl();
+        visitorsUrl.setUserVisitorsNewId(visitorsInviteId); //填写新版的访客主键id
+        //雪花算法生成分享连接编号
+        code = String.valueOf(new IdWorker(1,1,1).nextId());
+        visitorsUrl.setCode(code); //填写分享连接编号
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.HOUR,VISIT_SHARE_TIME);
+        Date time = calendar.getTime();
+        visitorsUrl.setEffectiveDate(time); //填写有效截止时间
+        visitorsUrl.setIsUse(0); //填写是否使用，默认0.未使用
+        //添加分享连接信息
+        int insert2 = appVisitorInviteDao.insertUserVisitorsUrl(visitorsUrl);
+        if (insert2 <= 0){
+            throw new RuntimeException("添加分享连接信息失败");
+        }
+
         map.put("code",code);
         map.put("message","分享成功");
         map.put("status",true);

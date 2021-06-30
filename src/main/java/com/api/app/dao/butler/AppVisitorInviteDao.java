@@ -1,13 +1,19 @@
 package com.api.app.dao.butler;
 
-import com.api.model.app.AppUserQRVisitorsInviteSubmit;
-import com.api.model.app.AppUserVisitorsInvite;
-import com.api.model.app.AppUserVisitorsInviteSubmit;
-import com.api.model.app.AppUserVisitorsUrl;
+import com.api.model.app.*;
 
 import java.util.Date;
+import java.util.List;
 
 public interface AppVisitorInviteDao {
+
+    /**
+     * 查询所有的新版访客邀请记录
+     * @param searchAppVisitorInvite 新版的访客邀请管理 搜索条件
+     * @return 新版访客邀请记录
+     */
+    List<AppUserVisitorsInvite> list(SearchAppVisitorInvite searchAppVisitorInvite);
+
     /**
      * 添加新版访客信息
      * @param visitorsInvite app 访客邀请填写信息 model
@@ -70,4 +76,11 @@ public interface AppVisitorInviteDao {
      * @return 影响行数
      */
     int insertQRUserVisitorsNew(AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit);
+
+    /**
+     * 根据新版访客邀请主键id查询新版访客邀请信息
+     * @param visitorsInviteId 新版访客邀请主键id
+     * @return 新版访客邀请信息
+     */
+    AppUserVisitorsInvite findById(Integer visitorsInviteId);
 }

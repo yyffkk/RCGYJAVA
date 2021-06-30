@@ -43,6 +43,10 @@ public class AppUserVisitorsInvite {
      */
     private Date visitDateEnd;
     /**
+     * 状态：1.已分享，2.已提交
+     */
+    private Integer status;
+    /**
      * 创建人（访客邀请人）主键id（扫门口二维码为-1）
      */
     private Integer createId;
@@ -63,6 +67,7 @@ public class AppUserVisitorsInvite {
                 ", carNumber='" + carNumber + '\'' +
                 ", visitDateStart=" + visitDateStart +
                 ", visitDateEnd=" + visitDateEnd +
+                ", status=" + status +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 '}';
@@ -140,6 +145,14 @@ public class AppUserVisitorsInvite {
         this.visitDateEnd = visitDateEnd;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -159,7 +172,7 @@ public class AppUserVisitorsInvite {
     public AppUserVisitorsInvite() {
     }
 
-    public AppUserVisitorsInvite(Integer id, Integer estateId, String roomName, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer createId, Date createDate) {
+    public AppUserVisitorsInvite(Integer id, Integer estateId, String roomName, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer status, Integer createId, Date createDate) {
         this.id = id;
         this.estateId = estateId;
         this.roomName = roomName;
@@ -169,6 +182,7 @@ public class AppUserVisitorsInvite {
         this.carNumber = carNumber;
         this.visitDateStart = visitDateStart;
         this.visitDateEnd = visitDateEnd;
+        this.status = status;
         this.createId = createId;
         this.createDate = createDate;
     }

@@ -3,6 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.app.dao.butler.AppVisitorInviteDao">
+    <select id="list" parameterType="com.api.model.app.SearchAppVisitorInvite" resultType="com.api.model.app.AppUserVisitorsInvite">
+        select uvn.*,concat(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from user_visitors_new as uvn,cpm_building_unit_estate as cbue,
+        cpm_building_unit as cbu,cpm_building as cb
+        <where>
+            uvn.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and uvn.create_id = #{id}
+            <if test="visitorInviteStatus != null">
+                and uvn.status = #{visitorInviteStatus}
+            </if>
+        </where>
+    </select>
 
     <insert id="insertUserVisitorsNew" parameterType="com.api.model.app.AppUserVisitorsInvite">
         insert into
@@ -26,6 +40,7 @@
             <if test="visitDateEnd != null">
                 visit_date_end,
             </if>
+            status,
             create_id,
             create_date
         </trim>
@@ -50,6 +65,7 @@
             <if test="visitDateEnd != null">
                 #{visitDateEnd},
             </if>
+            #{status},
             #{createId},
             #{createDate}
         </trim>
@@ -83,6 +99,9 @@
     </select>
     <select id="findIsUseByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
         select is_use from user_visitors_new_url where code = #{code}
+    </select>
+    <select id="findById" resultType="com.api.model.app.AppUserVisitorsInvite">
+        select * from user_visitors_new where id = #{visitorsInviteId}
     </select>
     <update id="updateUserVisitorsNew" parameterType="com.api.model.app.AppUserVisitorsInviteSubmit">
         update user_visitors_new

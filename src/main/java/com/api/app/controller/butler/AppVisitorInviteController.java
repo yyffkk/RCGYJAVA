@@ -2,6 +2,10 @@ package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppVisitorInviteService;
 import com.api.model.app.AppUserVisitorsInvite;
+import com.api.model.app.SearchAppVisitorInvite;
+import com.api.vo.app.VisitorAccessVo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +26,23 @@ import java.util.Map;
 public class AppVisitorInviteController {
     @Resource
     AppVisitorInviteService appVisitorInviteService;
+
+    /**
+     * 查询所有的新版访客邀请记录
+     * @param searchAppVisitorInvite 新版的访客邀请管理 搜索条件
+     * @return map
+     */
+    @GetMapping("/list")
+    public Map<String,Object> list(SearchAppVisitorInvite searchAppVisitorInvite){
+        PageHelper.startPage(searchAppVisitorInvite.getPageNum(),searchAppVisitorInvite.getSize());
+        List<AppUserVisitorsInvite> appUserVisitorsInviteList = appVisitorInviteService.list(searchAppVisitorInvite);
+        PageInfo<AppUserVisitorsInvite> pageInfo = new PageInfo<>(appUserVisitorsInviteList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 
 
     /**
@@ -45,5 +68,15 @@ public class AppVisitorInviteController {
         visitorsInvite.setCreateId(id); //填写创建人
         visitorsInvite.setCreateDate(new Date()); //填写创建时间
         return appVisitorInviteService.share(visitorsInvite);
+    }
+
+    /**
+     * 访客邀请信息再次分享（访客记录中的分享按钮）
+     * @param visitorsInviteId app 新版访客邀请主键id
+     * @return map
+     */
+    @GetMapping("/againShare")
+    public Map<String,Object> againShare(Integer visitorsInviteId) {
+        return appVisitorInviteService.againShare(visitorsInviteId);
     }
 }
