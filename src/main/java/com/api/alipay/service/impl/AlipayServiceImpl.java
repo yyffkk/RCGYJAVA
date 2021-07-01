@@ -1341,7 +1341,7 @@ public class AlipayServiceImpl implements AlipayService {
                         log.info("===========异步调用成功");
                         //根据租赁主键id更新租赁信息状态
                         SysLease sysLease = new SysLease();
-                        sysLease.setId(sysLeaseOrder.getId());
+                        sysLease.setId(sysLeaseOrder.getSysLeaseId());
                         sysLease.setStatus(6);//6.已完成
                         int update = leaseDao.updateStatusById(sysLease);
                         if (update <= 0){
@@ -1633,7 +1633,7 @@ public class AlipayServiceImpl implements AlipayService {
                         log.info("===========异步调用成功");
                         //根据租赁主键id更新租赁信息状态
                         SysLease sysLease = new SysLease();
-                        sysLease.setId(sysLeaseRentOrder.getId());
+                        sysLease.setId(sysLeaseRentOrder.getSysLeaseId());
                         sysLease.setStatus(14);//14.已支付剩余租金
                         int update = leaseDao.updateStatusById(sysLease);
                         if (update <= 0){
