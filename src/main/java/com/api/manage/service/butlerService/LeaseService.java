@@ -21,4 +21,6 @@ public interface LeaseService {
     Map<String, Object> reviewer(SysLease sysLease);
 
     Map<String, Object> reviewTerminationApplication(SysLease sysLease);
+
+    Map<String, Object> reviewDepositRefundApplication(SysLease sysLease);
 }

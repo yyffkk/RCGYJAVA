@@ -225,5 +225,11 @@
         required_rent = #{requiredRent}
         where id = #{id}
     </update>
+    <update id="reviewDepositRefundApplication" parameterType="com.api.model.butlerService.SysLease">
+        update sys_lease
+        set status = #{status},
+        deposit_refund_review_remake = #{depositRefundReviewRemake},
+        where id = #{id}
+    </update>
 
 </mapper>

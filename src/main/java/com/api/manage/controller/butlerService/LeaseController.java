@@ -100,4 +100,14 @@ public class LeaseController {
     public Map<String,Object> reviewTerminationApplication(@RequestBody SysLease sysLease){
         return leaseService.reviewTerminationApplication(sysLease);
     }
+
+    /**
+     * 审核保证金退还申请
+     * @param sysLease 租赁管理model
+     * @return map
+     */
+    @PostMapping("/reviewDepositRefundApplication")
+    public Map<String,Object> reviewDepositRefundApplication(@RequestBody SysLease sysLease){
+        return leaseService.reviewDepositRefundApplication(sysLease);
+    }
 }

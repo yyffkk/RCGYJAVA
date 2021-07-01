@@ -107,4 +107,11 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int reviewTerminationApplication(SysLease sysLease);
+
+    /**
+     * 审核保证金退还申请
+     * @param sysLease 租赁管理model
+     * @return 影响行数
+     */
+    int reviewDepositRefundApplication(SysLease sysLease);
 }

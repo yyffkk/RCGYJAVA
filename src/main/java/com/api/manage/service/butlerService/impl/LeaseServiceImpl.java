@@ -179,4 +179,45 @@ public class LeaseServiceImpl implements LeaseService {
 
         return map;
     }
+
+    @Override
+    public Map<String, Object> reviewDepositRefundApplication(SysLease sysLease) {
+        map = new HashMap<>();
+        try {
+            VoFBILease byId = leaseDao.findById(sysLease.getId());
+            if (byId.getStatus() != 15){//15申请退还保证金
+                throw new RuntimeException("该状态不可审核");
+            }
+
+            //审核合同终止申请(修改租赁状态及合同终止信息)
+            int update = leaseDao.reviewDepositRefundApplication(sysLease);
+            if (update <= 0){
+                throw new RuntimeException("审核失败");
+            }
+
+            if (byId.getStatus() == 16){//16.申请退还保证金驳回
+                //该状态不处理任何数据
+            }else if (byId.getStatus() == 17){//17.申请退还保证金成功（需要内部调用支付宝退款接口）
+                //需要调用支付宝退款接口
+
+            }else {
+                throw new RuntimeException("状态数据异常");
+            }
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","审核成功");
+        map.put("status",true);
+        return map;
+    }
 }
