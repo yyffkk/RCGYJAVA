@@ -222,8 +222,7 @@
         update sys_lease
         set status = #{status},
         not_meter_rent_date = #{notMeterRentDate},
-        required_rent = #{requiredRent},
-        deposit_refund_review_remake = #{depositRefundReviewRemake}
+        required_rent = #{requiredRent}
         where id = #{id}
     </update>
 

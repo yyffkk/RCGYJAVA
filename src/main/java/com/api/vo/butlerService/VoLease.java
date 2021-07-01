@@ -134,6 +134,22 @@ public class VoLease {
      * 身份证照背面照片路径资源集合
      */
     private List<VoResourcesImg> idCardBackFiles;
+    /**
+     * 收房时间
+     */
+    private Date takeDate;
+    /**
+     * 不再计租时间
+     */
+    private Date notMeterRentDate;
+    /**
+     * 剩余需结清房租（元）
+     */
+    private BigDecimal requiredRent;
+    /**
+     * 保证金退还审核备注
+     */
+    private String depositRefundReviewRemake;
 
     @Override
     public String toString() {
@@ -169,6 +185,10 @@ public class VoLease {
                 ", bankAccount='" + bankAccount + '\'' +
                 ", idCardFrontFiles=" + idCardFrontFiles +
                 ", idCardBackFiles=" + idCardBackFiles +
+                ", takeDate=" + takeDate +
+                ", notMeterRentDate=" + notMeterRentDate +
+                ", requiredRent=" + requiredRent +
+                ", depositRefundReviewRemake='" + depositRefundReviewRemake + '\'' +
                 '}';
     }
 
@@ -420,10 +440,42 @@ public class VoLease {
         this.idCardBackFiles = idCardBackFiles;
     }
 
+    public Date getTakeDate() {
+        return takeDate;
+    }
+
+    public void setTakeDate(Date takeDate) {
+        this.takeDate = takeDate;
+    }
+
+    public Date getNotMeterRentDate() {
+        return notMeterRentDate;
+    }
+
+    public void setNotMeterRentDate(Date notMeterRentDate) {
+        this.notMeterRentDate = notMeterRentDate;
+    }
+
+    public BigDecimal getRequiredRent() {
+        return requiredRent;
+    }
+
+    public void setRequiredRent(BigDecimal requiredRent) {
+        this.requiredRent = requiredRent;
+    }
+
+    public String getDepositRefundReviewRemake() {
+        return depositRefundReviewRemake;
+    }
+
+    public void setDepositRefundReviewRemake(String depositRefundReviewRemake) {
+        this.depositRefundReviewRemake = depositRefundReviewRemake;
+    }
+
     public VoLease() {
     }
 
-    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String tel, String roomName, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontFiles, List<VoResourcesImg> idCardBackFiles) {
+    public VoLease(Integer id, String code, String name, Integer sex, String idCard, String tel, String roomName, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontFiles, List<VoResourcesImg> idCardBackFiles, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -455,5 +507,9 @@ public class VoLease {
         this.bankAccount = bankAccount;
         this.idCardFrontFiles = idCardFrontFiles;
         this.idCardBackFiles = idCardBackFiles;
+        this.takeDate = takeDate;
+        this.notMeterRentDate = notMeterRentDate;
+        this.requiredRent = requiredRent;
+        this.depositRefundReviewRemake = depositRefundReviewRemake;
     }
 }
