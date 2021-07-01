@@ -218,5 +218,13 @@
         set status = #{status}
         where code = #{code}
     </update>
+    <update id="reviewTerminationApplication" parameterType="com.api.model.butlerService.SysLease">
+        update sys_lease
+        set status = #{status},
+        not_meter_rent_date = #{notMeterRentDate},
+        required_rent = #{requiredRent},
+        deposit_refund_review_remake = #{depositRefundReviewRemake}
+        where id = #{id}
+    </update>
 
 </mapper>

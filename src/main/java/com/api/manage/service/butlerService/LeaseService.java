@@ -19,4 +19,6 @@ public interface LeaseService {
     Map<String, Object> delete(int[] ids);
 
     Map<String, Object> reviewer(SysLease sysLease);
+
+    Map<String, Object> reviewTerminationApplication(SysLease sysLease);
 }

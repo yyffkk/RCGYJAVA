@@ -101,4 +101,10 @@ public interface LeaseDao {
      */
     int updateLeaseRentOrderStatusByCode(SysLeaseRentOrder sysLeaseRentOrder);
 
+    /**
+     * 审核合同终止申请(修改租赁状态及合同终止信息)
+     * @param sysLease 租赁管理model
+     * @return 影响行数
+     */
+    int reviewTerminationApplication(SysLease sysLease);
 }

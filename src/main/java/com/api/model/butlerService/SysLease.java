@@ -75,7 +75,7 @@ public class SysLease {
      */
     private Date leaseDateEnd;
     /**
-     * 办理状态，1.待签署，2.待提交，3.审核中，4.已驳回，5.待支付，6.已完成
+     * 办理状态，1.待签署，2.待提交，3.审核中，4.已驳回，5.待支付，6.已完成,11.申请终止合同，12.申请终止失败，13.申请终止成功，14.已支付剩余租金，15申请退还保证金，16.申请退还保证金驳回，17.申请退还保证金成功（已退还）
      */
     private Integer status;
     /**
@@ -150,6 +150,10 @@ public class SysLease {
      * 剩余需结清房租（元）
      */
     private BigDecimal requiredRent;
+    /**
+     * 保证金退还审核备注
+     */
+    private String depositRefundReviewRemake;
 
     @Override
     public String toString() {
@@ -189,6 +193,7 @@ public class SysLease {
                 ", takeDate=" + takeDate +
                 ", notMeterRentDate=" + notMeterRentDate +
                 ", requiredRent=" + requiredRent +
+                ", depositRefundReviewRemake='" + depositRefundReviewRemake + '\'' +
                 '}';
     }
 
@@ -472,10 +477,18 @@ public class SysLease {
         this.requiredRent = requiredRent;
     }
 
+    public String getDepositRefundReviewRemake() {
+        return depositRefundReviewRemake;
+    }
+
+    public void setDepositRefundReviewRemake(String depositRefundReviewRemake) {
+        this.depositRefundReviewRemake = depositRefundReviewRemake;
+    }
+
     public SysLease() {
     }
 
-    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent) {
+    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -511,5 +524,6 @@ public class SysLease {
         this.takeDate = takeDate;
         this.notMeterRentDate = notMeterRentDate;
         this.requiredRent = requiredRent;
+        this.depositRefundReviewRemake = depositRefundReviewRemake;
     }
 }

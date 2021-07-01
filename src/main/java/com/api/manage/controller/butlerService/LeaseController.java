@@ -90,4 +90,14 @@ public class LeaseController {
     public Map<String,Object> reviewer(@RequestBody SysLease sysLease){
         return leaseService.reviewer(sysLease);
     }
+
+    /**
+     * 审核合同终止申请
+     * @param sysLease 租赁管理model
+     * @return map
+     */
+    @PostMapping("/reviewTerminationApplication")
+    public Map<String,Object> reviewTerminationApplication(@RequestBody SysLease sysLease){
+        return leaseService.reviewTerminationApplication(sysLease);
+    }
 }

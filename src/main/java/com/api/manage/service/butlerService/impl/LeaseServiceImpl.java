@@ -156,4 +156,27 @@ public class LeaseServiceImpl implements LeaseService {
 
         return map;
     }
+
+    @Override
+    public Map<String, Object> reviewTerminationApplication(SysLease sysLease) {
+        map = new HashMap<>();
+        VoFBILease byId = leaseDao.findById(sysLease.getId());
+        if (byId.getStatus() != 11){//11.申请终止合同
+            map.put("message","该状态不可审核");
+            map.put("status",false);
+            return map;
+        }
+
+        //审核合同终止申请(修改租赁状态及合同终止信息)
+        int update = leaseDao.reviewTerminationApplication(sysLease);
+        if (update > 0){
+            map.put("message","审核成功");
+            map.put("status",true);
+        }else {
+            map.put("message","审核失败");
+            map.put("status",false);
+        }
+
+        return map;
+    }
 }
