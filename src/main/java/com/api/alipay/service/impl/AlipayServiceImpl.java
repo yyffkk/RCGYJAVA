@@ -1380,6 +1380,7 @@ public class AlipayServiceImpl implements AlipayService {
 
                             //修改住户类型信息 TODO 用户表减少一个字段，【type用户类型】
                             UserResident userResident = new UserResident();
+                            userResident.setId(userResidentByTel.getId());//填入用户主键id
                             userResident.setType(3); //填入住户类型,3.租户
                             int update3 = auditManagementDao.updateResidentTypeById(userResident);
                             if (update3 <=0){
