@@ -205,6 +205,7 @@ public class LeaseServiceImpl implements LeaseService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> reviewDepositRefundApplication(SysLease sysLease) {
         map = new HashMap<>();
         try {
@@ -219,11 +220,11 @@ public class LeaseServiceImpl implements LeaseService {
                 throw new RuntimeException("审核失败");
             }
 
-            if (byId.getStatus() == 16){//16.申请退还保证金驳回
+            if (sysLease.getStatus() == 16){//16.申请退还保证金驳回
                 //该状态不处理任何数据
-            }else if (byId.getStatus() == 17){//17.申请退还保证金成功（需要内部调用支付宝退款接口）
+            }else if (sysLease.getStatus() == 17){//17.申请退还保证金成功（需要内部调用支付宝退款接口）
                 //根据租赁主键id查询唯一已支付的保证金订单信息
-                SysLeaseOrder sysLeaseOrder = leaseDao.findPaySysLeaseOrderById(byId.getId());
+                SysLeaseOrder sysLeaseOrder = leaseDao.findPaySysLeaseOrderById(sysLease.getId());
                 if (sysLeaseOrder == null){
                     throw new RuntimeException("不存在未退款的保证金");
                 }
