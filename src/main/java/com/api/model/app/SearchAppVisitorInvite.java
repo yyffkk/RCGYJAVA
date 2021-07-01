@@ -17,7 +17,7 @@ public class SearchAppVisitorInvite {
      */
     private Integer id;
     /**
-     * 新版访客邀请状态
+     * 新版访客邀请状态(状态：1.已分享，2.已提交，3.已过期（此状态数据库不存在，数据判断出来的），为null时，查询所有状态)
      */
     private Integer visitorInviteStatus;
 

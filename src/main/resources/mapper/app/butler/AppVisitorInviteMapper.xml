@@ -12,8 +12,16 @@
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
             and uvn.create_id = #{id}
-            <if test="visitorInviteStatus != null">
-                and uvn.status = #{visitorInviteStatus}
+            <if test="visitorInviteStatus == 1">
+                and uvn.status = 1
+            </if>
+            <if test="visitorInviteStatus == 2">
+                and uvn.status = 2
+                and now() <![CDATA[ <= ]]> uvn.visit_date_end
+            </if>
+            <if test="visitorInviteStatus == 3">
+                and uvn.status = 2
+                and now() <![CDATA[ > ]]> uvn.visit_date_end
             </if>
         </where>
     </select>
