@@ -95,6 +95,18 @@ public class VoFBILease {
      * 办理状态，1.待签署，2.待提交，3.审核中，4.已驳回，5.待支付，6.已完成
      */
     private Integer status;
+    /**
+     * 收房时间
+     */
+    private Date takeDate;
+    /**
+     * 不再计租时间
+     */
+    private Date notMeterRentDate;
+    /**
+     * 剩余需结清房租（元）
+     */
+    private BigDecimal requiredRent;
 
     @Override
     public String toString() {
@@ -121,6 +133,9 @@ public class VoFBILease {
                 ", leaseDateStart=" + leaseDateStart +
                 ", leaseDateEnd=" + leaseDateEnd +
                 ", status=" + status +
+                ", takeDate=" + takeDate +
+                ", notMeterRentDate=" + notMeterRentDate +
+                ", requiredRent=" + requiredRent +
                 '}';
     }
 
@@ -300,10 +315,34 @@ public class VoFBILease {
         this.status = status;
     }
 
+    public Date getTakeDate() {
+        return takeDate;
+    }
+
+    public void setTakeDate(Date takeDate) {
+        this.takeDate = takeDate;
+    }
+
+    public Date getNotMeterRentDate() {
+        return notMeterRentDate;
+    }
+
+    public void setNotMeterRentDate(Date notMeterRentDate) {
+        this.notMeterRentDate = notMeterRentDate;
+    }
+
+    public BigDecimal getRequiredRent() {
+        return requiredRent;
+    }
+
+    public void setRequiredRent(BigDecimal requiredRent) {
+        this.requiredRent = requiredRent;
+    }
+
     public VoFBILease() {
     }
 
-    public VoFBILease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer buildingId, String buildingNo, Integer unitId, String unitNo, Integer estateId, String roomNumber, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status) {
+    public VoFBILease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer buildingId, String buildingNo, Integer unitId, String unitNo, Integer estateId, String roomNumber, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -326,5 +365,8 @@ public class VoFBILease {
         this.leaseDateStart = leaseDateStart;
         this.leaseDateEnd = leaseDateEnd;
         this.status = status;
+        this.takeDate = takeDate;
+        this.notMeterRentDate = notMeterRentDate;
+        this.requiredRent = requiredRent;
     }
 }

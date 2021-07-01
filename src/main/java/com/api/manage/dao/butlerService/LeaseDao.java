@@ -1,6 +1,7 @@
 package com.api.manage.dao.butlerService;
 
 import com.api.model.alipay.SysLeaseOrder;
+import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
 import com.api.vo.butlerService.VoFBILease;
@@ -52,21 +53,21 @@ public interface LeaseDao {
     int reviewer(SysLease sysLease);
 
     /**
-     * 添加缴费订单信息
+     * 添加房屋租赁保证金订单信息
      * @param sysLeaseOrder app 房屋租赁订单model
      * @return 影响行数
      */
     int insertOrder(SysLeaseOrder sysLeaseOrder);
 
     /**
-     * 根据订单编号查询订单信息
+     * 根据订单编号查询保证金订单信息
      * @param outTradeNo 订单编号
      * @return app 房屋租赁订单model
      */
     SysLeaseOrder findSysLeaseOrderByCode(String outTradeNo);
 
     /**
-     * 根据订单编号更新订单状态
+     * 根据房屋租赁保证金订单编号更新订单状态
      * @param sysLeaseOrder app 房屋租赁订单model
      * @return 影响行数
      */
@@ -78,4 +79,26 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int updateStatusById(SysLease sysLease);
+
+    /**
+     * 添加房屋租赁租金订单信息
+     * @param sysLeaseRentOrder app 房屋租赁租金订单model
+     * @return 影响行数
+     */
+    int insertRentOrder(SysLeaseRentOrder sysLeaseRentOrder);
+
+    /**
+     * 根据房屋租赁租金订单编号查询租金订单信息
+     * @param outTradeNo 租金订单编号
+     * @return 租金订单信息
+     */
+    SysLeaseRentOrder findSysLeaseRentOrderByCode(String outTradeNo);
+
+    /**
+     * 根据房屋租赁租金订单编号更新订单状态
+     * @param sysLeaseRentOrder app 房屋租赁租金订单model
+     * @return 影响行数
+     */
+    int updateLeaseRentOrderStatusByCode(SysLeaseRentOrder sysLeaseRentOrder);
+
 }

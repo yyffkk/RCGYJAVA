@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * app 房屋租赁保证金订单model
+ * app 房屋租赁租金订单model
  */
-public class SysLeaseOrder {
+public class SysLeaseRentOrder {
     /**
      * 主键id
      */
@@ -16,7 +16,7 @@ public class SysLeaseOrder {
      */
     private Integer sysLeaseId;
     /**
-     * 保证金支付单号
+     * 租金支付单号
      */
     private String code;
     /**
@@ -50,7 +50,7 @@ public class SysLeaseOrder {
 
     @Override
     public String toString() {
-        return "SysLeaseOrder{" +
+        return "SysLeaseRentOrder{" +
                 "id=" + id +
                 ", sysLeaseId=" + sysLeaseId +
                 ", code='" + code + '\'' +
@@ -144,10 +144,10 @@ public class SysLeaseOrder {
         this.status = status;
     }
 
-    public SysLeaseOrder() {
+    public SysLeaseRentOrder() {
     }
 
-    public SysLeaseOrder(Integer id, Integer sysLeaseId, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer status) {
+    public SysLeaseRentOrder(Integer id, Integer sysLeaseId, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer status) {
         this.id = id;
         this.sysLeaseId = sysLeaseId;
         this.code = code;

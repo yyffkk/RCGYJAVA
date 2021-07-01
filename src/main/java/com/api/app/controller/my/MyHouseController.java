@@ -196,4 +196,6 @@ public class MyHouseController {
         return myHouseService.submitTerminateApplication(sysLease);
     }
 
+
+
 }

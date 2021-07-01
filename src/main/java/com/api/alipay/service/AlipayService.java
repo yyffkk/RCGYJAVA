@@ -1,6 +1,7 @@
 package com.api.alipay.service;
 
 import com.api.model.alipay.SysLeaseOrder;
+import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppRepairOrder;
@@ -42,4 +43,10 @@ public interface AlipayService {
     String leaseNotifyInfo(HttpServletRequest request, String userName, Integer userId);
 
     Map<String, Object> leaseCheckAlipay(String code);
+
+    Map<String, Object> leaseRentOrderAlipay(SysLeaseRentOrder sysLeaseRentOrder, Integer id);
+
+    String leaseRentOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId);
+
+    Map<String, Object> leaseRentOrderCheckAlipay(String code);
 }
