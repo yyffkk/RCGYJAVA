@@ -232,4 +232,8 @@
         where id = #{id}
     </update>
 
+    <select id="findPaySysLeaseOrderById" parameterType="java.lang.Integer" resultType="com.api.model.alipay.SysLeaseOrder">
+        select * from sys_lease_order where sys_lease_id = #{id} and status = 2
+    </select>
+
 </mapper>

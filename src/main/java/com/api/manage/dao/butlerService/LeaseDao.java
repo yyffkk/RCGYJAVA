@@ -114,4 +114,11 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int reviewDepositRefundApplication(SysLease sysLease);
+
+    /**
+     * 根据租赁主键id查询唯一已支付的保证金订单信息
+     * @param id 租赁主键id
+     * @return 保证金订单信息
+     */
+    SysLeaseOrder findPaySysLeaseOrderById(Integer id);
 }
