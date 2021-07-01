@@ -196,6 +196,14 @@ public class MyHouseController {
         return myHouseService.submitTerminateApplication(sysLease);
     }
 
-
+    /**
+     * 保证金退还申请
+     * @param sysLeaseId 租赁信息主键id
+     * @return map
+     */
+    @GetMapping("/depositRefundApplication")
+    public Map<String,Object> depositRefundApplication(Integer sysLeaseId){
+        return myHouseService.depositRefundApplication(sysLeaseId);
+    }
 
 }

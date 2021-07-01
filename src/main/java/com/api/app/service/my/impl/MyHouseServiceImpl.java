@@ -573,4 +573,36 @@ public class MyHouseServiceImpl implements MyHouseService {
         return map;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> depositRefundApplication(Integer sysLeaseId) {
+        map = new HashMap<>();
+        try {
+            SysLease leaseById = myHouseDao.findLeaseById(sysLeaseId);
+
+            if (leaseById.getStatus() != 14){
+                throw new RuntimeException("当前状态不可申请退货保证金");
+            }
+
+            leaseById.setStatus(15);//15.申请退还保证金
+            int update = myHouseDao.updateStatusById(leaseById);
+            if (update <= 0){
+                throw new RuntimeException("修改租赁状态失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交申请成功");
+        map.put("status",true);
+        return map;
+    }
+
 }

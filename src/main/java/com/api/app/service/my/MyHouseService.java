@@ -38,4 +38,6 @@ public interface MyHouseService {
     Map<String, Object> submitAudit(AppLeaseSubmitAudit appLeaseSubmitAudit);
 
     Map<String, Object> submitTerminateApplication(SysLease sysLease);
+
+    Map<String, Object> depositRefundApplication(Integer sysLeaseId);
 }
