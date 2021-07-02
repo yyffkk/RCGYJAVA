@@ -32,6 +32,16 @@ public class UploadFileController {
     }
 
     /**
+     * 导入单元信息
+     * @param file 上传Excel文件
+     * @return map
+     */
+    @PostMapping("/UploadBuildingUnitFile")
+    public Map<String,Object> UploadBuildingUnitFile(MultipartFile file){
+        return uploadFileService.UploadBuildingUnitFile(file);
+    }
+
+    /**
      * 导入房屋信息（status 必须为4.未售）
      * @param file 上传Excel文件
      * @return map

@@ -86,6 +86,72 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     @Override
     @Transactional
+    public Map<String, Object> UploadBuildingUnitFile(MultipartFile file) {
+        map = new HashMap<>();
+
+        try {
+            //创建处理EXCEL的类
+            ExcelReadUtils readExcel = new ExcelReadUtils();
+            //解析excel，获取上传的事件单
+            List<Map<String, Object>> userList = readExcel.getExcelInfo(file);
+
+            if(userList == null || userList.isEmpty()){
+                throw new RuntimeException("导入失败");
+            }
+
+            //至此已经将excel中的数据转换到list里面了,接下来就可以操作list,可以进行保存到数据库,或者其他操作,
+            for(Map<String, Object> user:userList){
+                CpmBuildingUnit cpmBuildingUnit = new CpmBuildingUnit();
+
+                cpmBuildingUnit.setBuildingId(Integer.valueOf(user.get("楼栋导入编号").toString()));
+                cpmBuildingUnit.setNo(Integer.valueOf(user.get("单元号").toString()));
+                cpmBuildingUnit.setTotalFloor(Integer.valueOf(user.get("总层数").toString()));
+                cpmBuildingUnit.setIsElevator(Integer.valueOf(user.get("是否有电梯(1.有，0.无)").toString()));
+
+                if (cpmBuildingUnit.getIsElevator() != 1 && cpmBuildingUnit.getIsElevator() != 0){
+                    throw new RuntimeException("数据有误，是否有电梯（1.有，0.无）");
+                }
+
+                //获取登录用户信息
+                Subject subject = SecurityUtils.getSubject();
+                SysUser sysUser = (SysUser) subject.getPrincipal();
+
+                cpmBuildingUnit.setCreateId(sysUser.getId());
+                cpmBuildingUnit.setCreateDate(new Date());
+
+                //查询是否存在该楼栋导入编号
+                CpmBuilding building = uploadFileDao.findByBuildingId(cpmBuildingUnit.getBuildingId());
+                if (building == null){
+                    throw new RuntimeException("该楼栋不存在");
+                }
+
+
+                //添加楼栋单元信息
+                int ret = uploadFileDao.insertBuildingUnit(cpmBuildingUnit);
+                if(ret == 0){
+                    throw new RuntimeException("插入数据库失败");
+                }
+            }
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","导入成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
     public Map<String,Object> UploadEstateFile(MultipartFile file) {
         map = new HashMap<>();
 

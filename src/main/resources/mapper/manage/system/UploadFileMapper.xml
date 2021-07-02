@@ -77,6 +77,27 @@
     <select id="findByUnitId" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnit">
         select * from cpm_building_unit where id = #{buildingUnitId}
     </select>
+    <select id="findByBuildingId" resultType="com.api.model.basicArchives.CpmBuilding">
+        select * from cpm_building where id = #{buildingId}
+    </select>
+
+    <insert id="insertBuildingUnit" parameterType="com.api.model.basicArchives.CpmBuildingUnit">
+        insert into cpm_building_unit(
+            building_id,
+            no,
+            total_floor,
+            is_elevator,
+            create_id,
+            create_date
+        ) values (
+            #{buildingId},
+            #{no},
+            #{totalFloor},
+            #{isElevator},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 
     <insert id="insertKey" parameterType="com.api.model.operationManagement.SysKeyManagement">
         insert into sys_key(

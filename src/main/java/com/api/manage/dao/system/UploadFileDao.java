@@ -30,6 +30,20 @@ public interface UploadFileDao {
     int insertBuilding(CpmBuilding cpmBuilding);
 
     /**
+     * 查询是否存在该楼栋导入编号
+     * @param buildingId 楼栋导入编号
+     * @return 楼宇信息
+     */
+    CpmBuilding findByBuildingId(Integer buildingId);
+
+    /**
+     * 添加楼栋单元信息
+     * @param cpmBuildingUnit 楼栋单元信息
+     * @return 影响行数
+     */
+    int insertBuildingUnit(CpmBuildingUnit cpmBuildingUnit);
+
+    /**
      * 添加服务浏览信息
      * @param sysServiceBrowsing 服务浏览model信息
      * @return 影响行数
@@ -49,5 +63,6 @@ public interface UploadFileDao {
      * @return 影响行数
      */
     int insertGreenArea(SysGreenArea sysGreenArea);
+
 
 }
