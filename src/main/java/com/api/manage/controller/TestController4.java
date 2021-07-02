@@ -1,5 +1,10 @@
 package com.api.manage.controller;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.api.util.IdWorker;
 import com.api.util.Seal.SealCircle;
 import com.api.util.Seal.SealFont;
 import com.api.util.Seal.SealUtils;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,13 +27,47 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RequestMapping("manage/test4")
 public class TestController4 {
-    @Value("${res.dispatchCodeDatUrl}")
-    private String DISPATCH_CODE_DAT_URL;
+    @Value("${alipay.aliPayAppId}")
+    private String ALIPAY_APP_ID;
+    @Value("${alipay.rsaPrivatKey}")
+    private String RSA_PRIVAT_KEY;
+    @Value("${alipay.rsaAlipayPublicKey}")
+    private String RSA_ALIPAY_PUBLIC_KEY;
+    @Value("${alipay.aliPayGateway}")
+    private String ALIPAY_GATEWAY;
+    @Value("${alipay.signType}")
+    private String SIGN_TYPE;
+    @Value("${alipay.alipayFormat}")
+    private String ALIPAY_FORMAT;
+    @Value("${alipay.alipayCharset}")
+    private String ALIPAY_CHARSET;
+
     @GetMapping("/test4")
-    public String test4(HttpServletRequest request) throws Exception  {
-        FileEveryDaySerialNumber serial = new FileEveryDaySerialNumber(3, DISPATCH_CODE_DAT_URL);
-        return serial.getSerialNumber();
+    public String test4(String code,BigDecimal payPrice) throws Exception  {
+        String out_request_no= String.valueOf(new IdWorker(1,1,1).nextId());//随机数  不是全额退款，部分退款必须使用该参数
+
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+        request.setBizContent("{" +
+                "\"out_trade_no\":\"" + code + "\"," +
+                "\"trade_no\":" + null + "," +
+                "\"refund_amount\":\"" + payPrice + "\"," +
+
+                "\"out_request_no\":\"" + out_request_no+ "\"," +
+                "\"refund_reason\":\"正常退款\"" +
+                " }");
+        AlipayTradeRefundResponse response;
+        response = alipayClient.execute(request);
+        if (response.isSuccess()) {
+            log.info("支付宝退款成功");
+        } else {
+            log.info("支付宝退款失败");
+        }
+        return "";
     }
+
+
+
 //
 ////    public static void main(String[] args) throws Exception {
 ////        OfficialSeal_1();
