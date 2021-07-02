@@ -121,4 +121,18 @@ public interface LeaseDao {
      * @return 保证金订单信息
      */
     SysLeaseOrder findPaySysLeaseOrderById(Integer id);
+
+    /**
+     * 查询未缴纳的保证金订单信息
+     * @return 未缴纳的保证金订单信息
+     */
+    List<SysLeaseOrder> findUnPaymentLeaseOrder();
+
+    /**
+     * 根据code【保证金支付单号】修改保证金订单状态
+     * @param sysLeaseOrder1 app 房屋租赁保证金订单model
+     * @return 影响行数
+     */
+    int updateSLOStatusByCode(SysLeaseOrder sysLeaseOrder1);
+
 }

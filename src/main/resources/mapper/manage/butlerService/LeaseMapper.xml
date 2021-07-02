@@ -235,5 +235,15 @@
     <select id="findPaySysLeaseOrderById" parameterType="java.lang.Integer" resultType="com.api.model.alipay.SysLeaseOrder">
         select * from sys_lease_order where sys_lease_id = #{id} and status = 2
     </select>
+    <select id="findUnPaymentLeaseOrder" resultType="com.api.model.alipay.SysLeaseOrder">
+        select * from sys_lease_order where status = 0 and NOW() <![CDATA[ >= ]]> DATE_ADD(create_date,INTERVAL 30 MINUTE)
+    </select>
+
+    <update id="updateSLOStatusByCode" parameterType="com.api.model.alipay.SysLeaseOrder">
+        update sys_lease_order
+        set status = #{status}
+        where code = #{code}
+    </update>
+
 
 </mapper>

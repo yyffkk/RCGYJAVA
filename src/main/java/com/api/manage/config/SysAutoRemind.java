@@ -8,6 +8,7 @@ import com.api.butlerApp.dao.butler.ButlerAttendanceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.butlerService.BorrowDao;
+import com.api.manage.dao.butlerService.LeaseDao;
 import com.api.manage.dao.butlerService.SysFacilitiesPlanDao;
 import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
@@ -15,6 +16,7 @@ import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
+import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppGoodsIdAndAppointmentNum;
@@ -107,6 +109,8 @@ public class SysAutoRemind {
     SysNewsManagementService sysNewsManagementService;
     @Resource
     ShoppingDao shoppingDao;
+    @Resource
+    LeaseDao leaseDao;
     @Resource
     AlipayService alipayService;
     @Resource
@@ -615,6 +619,40 @@ public class SysAutoRemind {
             }
         }else {
             log.info("暂无回库订单");
+        }
+    }
+
+    /**
+     * 0 0/10 * * * ?
+     * （每10分钟执行一次）轮询定时任务，查询app-房屋租赁保证金支付未付款订单，是否超时或错误关闭
+     */
+    @Scheduled(cron = "0 0/10 * * * ? ")
+    public void autoCheckOutTimeLease(){
+        //查询未缴纳订单信息
+        List<SysLeaseOrder> sysLeaseOrderList = leaseDao.findUnPaymentLeaseOrder();
+        if (sysLeaseOrderList != null && sysLeaseOrderList.size()>0){
+            for (SysLeaseOrder sysLeaseOrder : sysLeaseOrderList) {
+                //先进行查询未缴纳订单信息，查询是否超时
+                Map<String, Object> map = alipayService.leaseCheckAlipay(sysLeaseOrder.getCode());
+                int status = (int)map.get("status");
+                if (status != -1){
+                    log.info("订单查询成功,订单号为："+sysLeaseOrder.getCode()+",message:"+map.get("message"));
+                }else {
+                    log.info("订单查询失败,订单号为："+sysLeaseOrder.getCode()+",message:"+map.get("message"));
+                    log.info("关闭 错误或超时的订单，订单号为："+sysLeaseOrder.getCode());
+                    SysLeaseOrder sysLeaseOrder1 = new SysLeaseOrder();
+                    sysLeaseOrder1.setCode(sysLeaseOrder.getCode());
+                    sysLeaseOrder1.setStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                    int i = leaseDao.updateSLOStatusByCode(sysLeaseOrder1);
+                    if (i >0){
+                        log.info("关闭房屋租赁app-保证金 错误或超时的订单成功！！！");
+                    }else {
+                        log.info("关闭房屋租赁app-保证金 错误或超时的订单失败！！！");
+                    }
+                }
+            }
+        }else {
+            log.info("房屋租赁app-保证金暂无待付款订单");
         }
     }
 
