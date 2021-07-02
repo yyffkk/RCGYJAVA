@@ -1,6 +1,6 @@
 #测试服资源配置文件
 res:
-  #后台shiro session过期时间设置
+  #后台shiro session过期时间设置（-1000表示永不超时）
   shiroSessionTimeOut: 1800000
   #访客邀请分享有效时长
   visitShareTime: 3

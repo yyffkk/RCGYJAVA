@@ -102,7 +102,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         try {
             //登录并存入该用户信息
             subject.login(token);
-            //设置session过期时间（-1000表示用不超时）
+            //设置session过期时间（-1000表示永不超时）
             subject.getSession().setTimeout(Long.parseLong(SHIRO_SESSION_TIME_OUT));
 
             //认证成功
@@ -169,7 +169,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         Subject subject = SecurityUtils.getSubject();
         //登录并存入该用户信息
         subject.login(token);
-        //设置session过期时间（-1000表示用不超时）
+        //设置session过期时间（-1000表示永不超时）
         subject.getSession().setTimeout(Long.parseLong(SHIRO_SESSION_TIME_OUT));
 
         map.put("token",subject.getSession().getId());
