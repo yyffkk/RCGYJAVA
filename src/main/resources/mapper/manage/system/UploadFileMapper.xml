@@ -28,6 +28,38 @@
             #{deviceNumber}
         )
     </insert>
+
+    <insert id="insertBuilding" parameterType="com.api.model.basicArchives.CpmBuilding">
+        insert into
+        <trim prefix="cpm_building(" suffix=")" suffixOverrides=",">
+            no,
+            name,
+            code,
+            <if test="coordinate != null and coordinate != ''">
+                coordinate,
+            </if>
+            <if test="totalFloor != null">
+                total_floor,
+            </if>
+            create_id,
+            create_date
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{no},
+            #{name},
+            #{code},
+            <if test="coordinate != null and coordinate != ''">
+                #{coordinate},
+            </if>
+            <if test="totalFloor != null">
+                #{totalFloor},
+            </if>
+            #{createId},
+            #{createDate}
+        </trim>
+    </insert>
+
     <insert id="insertServiceBrowsing">
         insert into sys_service_browsing(
             name,

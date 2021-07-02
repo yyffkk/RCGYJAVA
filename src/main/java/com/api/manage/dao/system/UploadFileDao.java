@@ -1,5 +1,6 @@
 package com.api.manage.dao.system;
 
+import com.api.model.basicArchives.CpmBuilding;
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.operationManagement.SysGreenArea;
@@ -15,11 +16,18 @@ public interface UploadFileDao {
     CpmBuildingUnit findByUnitId(Integer buildingUnitId);
 
     /**
-     * 添加楼栋信息
+     * 添加房产信息
      * @param cpmBuildingUnitEstate 楼宇单元房产信息
      * @return 影响行数
      */
     int insertEstate(CpmBuildingUnitEstate cpmBuildingUnitEstate);
+
+    /**
+     * 添加楼栋信息
+     * @param cpmBuilding 楼宇管理
+     * @return 影响行数
+     */
+    int insertBuilding(CpmBuilding cpmBuilding);
 
     /**
      * 添加服务浏览信息
@@ -41,4 +49,5 @@ public interface UploadFileDao {
      * @return 影响行数
      */
     int insertGreenArea(SysGreenArea sysGreenArea);
+
 }

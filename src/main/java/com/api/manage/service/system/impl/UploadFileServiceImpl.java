@@ -2,6 +2,7 @@ package com.api.manage.service.system.impl;
 
 import com.api.manage.dao.system.UploadFileDao;
 import com.api.manage.service.system.UploadFileService;
+import com.api.model.basicArchives.CpmBuilding;
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.businessManagement.SysUser;
@@ -19,16 +20,69 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UploadFileServiceImpl implements UploadFileService {
     private static Map<String,Object> map = null;
     @Resource
     UploadFileDao uploadFileDao;
+
+    @Override
+    @Transactional
+    public Map<String, Object> UploadBuildingFile(MultipartFile file) {
+        map = new HashMap<>();
+
+        try {
+            //创建处理EXCEL的类
+            ExcelReadUtils readExcel = new ExcelReadUtils();
+            //解析excel，获取上传的事件单
+            List<Map<String, Object>> userList = readExcel.getExcelInfo(file);
+
+            if(userList == null || userList.isEmpty()){
+                throw new RuntimeException("导入失败");
+            }
+
+            //至此已经将excel中的数据转换到list里面了,接下来就可以操作list,可以进行保存到数据库,或者其他操作,
+            for(Map<String, Object> user:userList){
+                CpmBuilding cpmBuilding = new CpmBuilding();
+
+                cpmBuilding.setNo(Integer.valueOf(user.get("楼栋编号").toString()));
+                cpmBuilding.setName(user.get("房间号").toString());
+
+
+                //获取登录用户信息
+                Subject subject = SecurityUtils.getSubject();
+                SysUser sysUser = (SysUser) subject.getPrincipal();
+
+                cpmBuilding.setCode(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16));
+                cpmBuilding.setCreateId(sysUser.getId());
+                cpmBuilding.setCreateDate(new Date());
+
+
+                //添加楼栋信息
+                int ret = uploadFileDao.insertBuilding(cpmBuilding);
+                if(ret == 0){
+                    throw new RuntimeException("插入数据库失败");
+                }
+            }
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","导入成功");
+        map.put("status",true);
+        return map;
+    }
 
     @Override
     @Transactional

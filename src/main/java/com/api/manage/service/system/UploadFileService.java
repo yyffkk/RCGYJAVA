@@ -5,6 +5,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 public interface UploadFileService {
+    Map<String, Object> UploadBuildingFile(MultipartFile file);
+
     Map<String,Object> UploadEstateFile(MultipartFile file);
 
     Map<String, Object> UploadServiceBrowsingFile(MultipartFile file);
@@ -12,4 +14,5 @@ public interface UploadFileService {
     Map<String, Object> UploadKeyFile(MultipartFile file);
 
     Map<String, Object> UploadGreenAreaFile(MultipartFile file);
+
 }
