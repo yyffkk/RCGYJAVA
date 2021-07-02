@@ -10,6 +10,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +25,8 @@ import java.util.regex.Pattern;
 public class SysLoginServiceImpl implements SysLoginService {
     @Resource
     SysLoginDao sysLoginDao;
+    @Value("${res.shiroSessionTimeOut}")
+    private String SHIRO_SESSION_TIME_OUT;
 
     //验证码过期时间
     private final long EXPIRATION_TIME = 3*60*1000;
@@ -100,7 +103,7 @@ public class SysLoginServiceImpl implements SysLoginService {
             //登录并存入该用户信息
             subject.login(token);
             //设置session过期时间（-1000表示用不超时）
-//            subject.getSession().setTimeout(1800000);
+            subject.getSession().setTimeout(Long.parseLong(SHIRO_SESSION_TIME_OUT));
 
             //认证成功
             map.put("token",subject.getSession().getId());
@@ -166,7 +169,8 @@ public class SysLoginServiceImpl implements SysLoginService {
         Subject subject = SecurityUtils.getSubject();
         //登录并存入该用户信息
         subject.login(token);
-
+        //设置session过期时间（-1000表示用不超时）
+        subject.getSession().setTimeout(Long.parseLong(SHIRO_SESSION_TIME_OUT));
 
         map.put("token",subject.getSession().getId());
         map.put("message","验证码正确");
