@@ -33,10 +33,6 @@ public class SysMaterialRecord {
      */
     private BigDecimal unitPrice;
     /**
-     * 单位
-     */
-    private String unit;
-    /**
      * 折扣率（填%前面的值）
      */
     private Integer discountRate;
@@ -98,7 +94,6 @@ public class SysMaterialRecord {
                 ", type=" + type +
                 ", num=" + num +
                 ", unitPrice=" + unitPrice +
-                ", unit='" + unit + '\'' +
                 ", discountRate=" + discountRate +
                 ", discountFrontal=" + discountFrontal +
                 ", totalPrice=" + totalPrice +
@@ -161,14 +156,6 @@ public class SysMaterialRecord {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public Integer getDiscountRate() {
@@ -278,14 +265,13 @@ public class SysMaterialRecord {
     public SysMaterialRecord() {
     }
 
-    public SysMaterialRecord(Integer id, String code, Integer materialId, Integer type, Integer num, BigDecimal unitPrice, String unit, Integer discountRate, BigDecimal discountFrontal, BigDecimal totalPrice, Integer isInvoice, Integer invoiceTitleType, String invoiceTitleName, String acquiringEin, String tel, Date invoiceDate, String remakes, Integer createId, Date createDate, String[] filesUrl) {
+    public SysMaterialRecord(Integer id, String code, Integer materialId, Integer type, Integer num, BigDecimal unitPrice, Integer discountRate, BigDecimal discountFrontal, BigDecimal totalPrice, Integer isInvoice, Integer invoiceTitleType, String invoiceTitleName, String acquiringEin, String tel, Date invoiceDate, String remakes, Integer createId, Date createDate, String[] filesUrl) {
         this.id = id;
         this.code = code;
         this.materialId = materialId;
         this.type = type;
         this.num = num;
         this.unitPrice = unitPrice;
-        this.unit = unit;
         this.discountRate = discountRate;
         this.discountFrontal = discountFrontal;
         this.totalPrice = totalPrice;

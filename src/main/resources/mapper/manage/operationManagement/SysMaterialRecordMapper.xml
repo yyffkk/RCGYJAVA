@@ -5,7 +5,7 @@
 <mapper namespace="com.api.manage.dao.operationManagement.SysMaterialRecordDao">
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchMaterialRecord" resultType="com.api.vo.operationManagement.VoMaterialRecord">
-        select smr.*,sm.name,su.actual_name as create_name,sm.stock
+        select smr.*,sm.name,sm.unit,su.actual_name as create_name,sm.stock
         from sys_material_record as smr,sys_material as sm,sys_user as su
         <where>
             smr.material_id = sm.id
@@ -20,7 +20,7 @@
         order by smr.create_date desc
     </select>
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIMaterialRecord">
-        select smr.*,sm.name,su.actual_name as create_name
+        select smr.*,sm.unit,sm.name,su.actual_name as create_name
         from sys_material_record as smr,sys_material as sm,sys_user as su
         where smr.material_id = sm.id and smr.create_id = su.id and smr.id = #{id}
     </select>
@@ -43,7 +43,6 @@
             type,
             num,
             unit_price,
-            unit,
             discount_rate,
             discount_frontal,
             total_price,
@@ -74,7 +73,6 @@
             #{type},
             #{num},
             #{unitPrice},
-            #{unit},
             #{discountRate},
             #{discountFrontal},
             #{totalPrice},
