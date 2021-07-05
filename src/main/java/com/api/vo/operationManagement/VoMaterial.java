@@ -16,6 +16,10 @@ public class VoMaterial {
      * 物料库存
      */
     private Integer stock;
+    /**
+     * 单位
+     */
+    private String unit;
 
     @Override
     public String toString() {
@@ -23,6 +27,7 @@ public class VoMaterial {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", stock=" + stock +
+                ", unit='" + unit + '\'' +
                 '}';
     }
 
@@ -50,12 +55,21 @@ public class VoMaterial {
         this.stock = stock;
     }
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     public VoMaterial() {
     }
 
-    public VoMaterial(Integer id, String name, Integer stock) {
+    public VoMaterial(Integer id, String name, Integer stock, String unit) {
         this.id = id;
         this.name = name;
         this.stock = stock;
+        this.unit = unit;
     }
 }

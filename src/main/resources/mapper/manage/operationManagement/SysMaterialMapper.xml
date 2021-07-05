@@ -19,12 +19,14 @@
         insert into sys_material(
             name,
             stock,
+            unit,
             create_id,
             create_date,
             is_delete
         )values (
             #{name},
             #{stock},
+            #{unit},
             #{createId},
             #{createDate},
             #{isDelete}
@@ -39,7 +41,8 @@
 
     <update id="update" parameterType="com.api.model.operationManagement.SysMaterial">
         update sys_material
-        set name = #{name}
+        set name = #{name},
+        unit = #{unit}
         where id = #{id}
     </update>
 

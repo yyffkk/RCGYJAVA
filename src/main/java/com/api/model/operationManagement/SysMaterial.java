@@ -19,6 +19,10 @@ public class SysMaterial {
      */
     private Integer stock;
     /**
+     * 单位
+     */
+    private String unit;
+    /**
      * 创建人
      */
     private Integer createId;
@@ -45,6 +49,7 @@ public class SysMaterial {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", stock=" + stock +
+                ", unit='" + unit + '\'' +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
@@ -75,6 +80,14 @@ public class SysMaterial {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public Integer getCreateId() {
@@ -120,10 +133,11 @@ public class SysMaterial {
     public SysMaterial() {
     }
 
-    public SysMaterial(Integer id, String name, Integer stock, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
+    public SysMaterial(Integer id, String name, Integer stock, String unit, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
         this.id = id;
         this.name = name;
         this.stock = stock;
+        this.unit = unit;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;
