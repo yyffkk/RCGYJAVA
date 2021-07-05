@@ -85,7 +85,7 @@ public class SysMaterialRecord {
      */
     private Date createDate;
     /**
-     * 文件上传路径数组
+     * 发票照片文件上传路径数组
      */
     private String[] filesUrl;
 
