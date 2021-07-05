@@ -4,4 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.operationManagement.SysMaterialInventoryDao">
 
+    <select id="list" parameterType="com.api.model.operationManagement.SearchMaterialInventory" resultType="com.api.vo.operationManagement.VoMaterialInventory">
+        select * from sys_material_inventory
+        <where>
+            <if test="periodTime != null and periodTime != ''">
+                period_time like concat('%',#{periodTime},'%')
+            </if>
+        </where>
+    </select>
 </mapper>
