@@ -50,5 +50,14 @@ public class SysMaterialRecordController {
         return sysMaterialRecordService.insert(sysMaterialRecord);
     }
 
+    /**
+     * 根据物资出库入主键id查询物资出入库记录详情
+     * @param id 物资出库入主键id
+     * @return 物资出入库记录详情
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer id){
+        return sysMaterialRecordService.findById(id);
+    }
 
 }

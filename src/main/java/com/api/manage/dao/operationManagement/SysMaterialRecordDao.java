@@ -2,6 +2,7 @@ package com.api.manage.dao.operationManagement;
 
 import com.api.model.operationManagement.SearchMaterialRecord;
 import com.api.model.operationManagement.SysMaterialRecord;
+import com.api.vo.operationManagement.VoFBIMaterialRecord;
 import com.api.vo.operationManagement.VoMaterialRecord;
 
 import java.util.List;
@@ -35,4 +36,10 @@ public interface SysMaterialRecordDao {
      */
     int insert(SysMaterialRecord sysMaterialRecord);
 
+    /**
+     * 根据物资出库入主键id查询物资出入库记录详情
+     * @param id 物资出库入主键id
+     * @return 物资出入库记录详情
+     */
+    VoFBIMaterialRecord findById(Integer id);
 }

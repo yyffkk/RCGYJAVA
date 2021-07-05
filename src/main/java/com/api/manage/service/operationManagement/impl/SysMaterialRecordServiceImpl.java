@@ -6,7 +6,9 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SearchMaterialRecord;
 import com.api.model.operationManagement.SysMaterialRecord;
 import com.api.util.UploadUtil;
+import com.api.vo.operationManagement.VoFBIMaterialRecord;
 import com.api.vo.operationManagement.VoMaterialRecord;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -83,6 +85,24 @@ public class SysMaterialRecordServiceImpl implements SysMaterialRecordService {
             return map;
         }
         map.put("message",msg+"成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
+
+        VoFBIMaterialRecord voFBIMaterialRecord = sysMaterialRecordDao.findById(id);
+
+        if (voFBIMaterialRecord != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysMaterialRecord", id, "invoicePhone");
+            voFBIMaterialRecord.setImgList(imgByDate);
+        }
+
+        map.put("message","请求成功");
+        map.put("data",voFBIMaterialRecord);
         map.put("status",true);
         return map;
     }

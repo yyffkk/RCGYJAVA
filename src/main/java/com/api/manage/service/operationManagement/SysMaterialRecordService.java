@@ -12,4 +12,5 @@ public interface SysMaterialRecordService {
 
     Map<String, Object> insert(SysMaterialRecord sysMaterialRecord);
 
+    Map<String, Object> findById(Integer id);
 }

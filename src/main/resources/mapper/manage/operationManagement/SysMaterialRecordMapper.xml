@@ -19,6 +19,11 @@
         </where>
         order by smr.create_date desc
     </select>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIMaterialRecord">
+        select smr.*,sm.name,su.actual_name as create_name
+        from sys_material_record as smr,sys_material as sm,sys_user as su
+        where smr.material_id = sm.id and smr.create_id = su.id and smr.id = #{id}
+    </select>
 
     <update id="delivery" parameterType="com.api.model.operationManagement.SysMaterialRecord">
         update sys_material
