@@ -5,7 +5,7 @@
 <mapper namespace="com.api.manage.dao.operationManagement.SysMaterialRecordDao">
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchMaterialRecord" resultType="com.api.vo.operationManagement.VoMaterialRecord">
-        select smr.id,smr.create_date,sm.name,su.actual_name as create_name,smr.type,smr.num
+        select smr.*,sm.name,su.actual_name as create_name,sm.stock
         from sys_material_record as smr,sys_material as sm,sys_user as su
         <where>
             smr.material_id = sm.id
@@ -23,27 +23,81 @@
     <update id="delivery" parameterType="com.api.model.operationManagement.SysMaterialRecord">
         update sys_material
         set stock = stock - #{num}
-        where stock - #{num} <![CDATA[ >= ]]> 0
+        where stock - #{num} <![CDATA[ >= ]]> 0 and id = #{materialId}
     </update>
 
     <update id="warehousing" parameterType="com.api.model.operationManagement.SysMaterialRecord">
         update sys_material
         set stock = stock + #{num}
+        where id = #{materialId}
     </update>
-    <insert id="insert">
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysMaterialRecord">
         insert into sys_material_record(
+            code,
             material_id,
             type,
             num,
+            unit_price,
+            unit,
+            discount_rate,
+            discount_frontal,
+            total_price,
+            is_invoice,
+            <if test="invoiceTitleType != null">
+                invoice_title_type,
+            </if>
+            <if test="invoiceTitleName != null and invoiceTitleName != ''">
+                invoice_title_name,
+            </if>
+            <if test="acquiringEin != null and acquiringEin != ''">
+                acquiring_ein,
+            </if>
+            <if test="tel != null and tel != ''">
+                tel,
+            </if>
+            <if test="invoiceDate != null">
+                invoice_date,
+            </if>
+            <if test="remakes != null and remakes != ''">
+                remakes,
+            </if>
             create_id,
             create_date
         )values (
+            #{code},
             #{materialId},
             #{type},
             #{num},
+            #{unitPrice},
+            #{unit},
+            #{discountRate},
+            #{discountFrontal},
+            #{totalPrice},
+            #{isInvoice},
+            <if test="invoiceTitleType != null">
+                #{invoiceTitleType},
+            </if>
+            <if test="invoiceTitleName != null and invoiceTitleName != ''">
+                #{invoiceTitleName},
+            </if>
+            <if test="acquiringEin != null and acquiringEin != ''">
+                #{acquiringEin},
+            </if>
+            <if test="tel != null and tel != ''">
+                #{tel},
+            </if>
+            <if test="invoiceDate != null">
+                #{invoiceDate},
+            </if>
+            <if test="remakes != null and remakes != ''">
+                #{remakes},
+            </if>
             #{createId},
             #{createDate}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
 

@@ -89,4 +89,6 @@ public interface UploadService {
     Map<String, Object> uploadLeaseContractValidPdf(MultipartFile file);
 
     Map<String, Object> uploadAppClearingSingle(MultipartFile file);
+
+    Map<String, Object> uploadMaterialRecordInvoice(MultipartFile file);
 }

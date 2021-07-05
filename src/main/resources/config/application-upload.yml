@@ -70,6 +70,8 @@ prop:
   upload-community-introduction: /img/communityIntroduction/
   #运营管理-规程管理：规程doc,docx文件上传路径
   upload-regulation-management-doc: /img/regulationManagement/
+  #运营管理：物资出入库记录发票照片上传路径
+  upload-material-record-invoice: /img/meterialRecordInvoice/
 
   #系统管理-合同管理：合同doc,docx文件上传路径
   upload-contract-doc: /doc/contract/

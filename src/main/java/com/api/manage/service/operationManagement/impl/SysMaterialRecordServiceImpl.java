@@ -5,6 +5,7 @@ import com.api.manage.service.operationManagement.SysMaterialRecordService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SearchMaterialRecord;
 import com.api.model.operationManagement.SysMaterialRecord;
+import com.api.util.UploadUtil;
 import com.api.vo.operationManagement.VoMaterialRecord;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -65,6 +66,11 @@ public class SysMaterialRecordServiceImpl implements SysMaterialRecordService {
             if (insert <= 0){
                 throw new RuntimeException(msg+"失败");
             }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(sysMaterialRecord.getFilesUrl(),"sysMaterialRecord",sysMaterialRecord.getId(),"invoicePhone","600",30,20);
+
+
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

@@ -302,4 +302,13 @@ public class UploadController {
         return uploadService.uploadLeaseContractPdf(file);
     }
 
+    /**
+     * 上传物资出入库记录发票照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadMaterialRecordInvoice")
+    public Map<String,Object> uploadMaterialRecordInvoice(MultipartFile file){
+        return uploadService.uploadMaterialRecordInvoice(file);
+    }
 }

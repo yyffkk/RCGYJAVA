@@ -1,5 +1,6 @@
 package com.api.vo.operationManagement;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -11,6 +12,10 @@ public class VoMaterialRecord {
      */
     private Integer id;
     /**
+     * 记录单号
+     */
+    private String code;
+    /**
      * 物料名称
      */
     private String name;
@@ -19,9 +24,33 @@ public class VoMaterialRecord {
      */
     private Integer type;
     /**
+     * 单价
+     */
+    private BigDecimal unitPrice;
+    /**
      * 数量
      */
     private Integer num;
+    /**
+     * 单位
+     */
+    private String unit;
+    /**
+     * 折扣率（填%前面的值）
+     */
+    private Integer discountRate;
+    /**
+     * 折扣额
+     */
+    private BigDecimal discountFrontal;
+    /**
+     * 总金额（单价*单位*（1-折扣率/100））
+     */
+    private BigDecimal totalPrice;
+    /**
+     * 当前可用库存
+     */
+    private Integer nowStock;
     /**
      * 创建人名称
      */
@@ -35,9 +64,16 @@ public class VoMaterialRecord {
     public String toString() {
         return "VoMaterialRecord{" +
                 "id=" + id +
+                ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", unitPrice=" + unitPrice +
                 ", num=" + num +
+                ", unit='" + unit + '\'' +
+                ", discountRate=" + discountRate +
+                ", discountFrontal=" + discountFrontal +
+                ", totalPrice=" + totalPrice +
+                ", nowStock=" + nowStock +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
                 '}';
@@ -49,6 +85,14 @@ public class VoMaterialRecord {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -67,12 +111,60 @@ public class VoMaterialRecord {
         this.type = type;
     }
 
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
     public Integer getNum() {
         return num;
     }
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public Integer getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(Integer discountRate) {
+        this.discountRate = discountRate;
+    }
+
+    public BigDecimal getDiscountFrontal() {
+        return discountFrontal;
+    }
+
+    public void setDiscountFrontal(BigDecimal discountFrontal) {
+        this.discountFrontal = discountFrontal;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Integer getNowStock() {
+        return nowStock;
+    }
+
+    public void setNowStock(Integer nowStock) {
+        this.nowStock = nowStock;
     }
 
     public String getCreateName() {
@@ -94,11 +186,18 @@ public class VoMaterialRecord {
     public VoMaterialRecord() {
     }
 
-    public VoMaterialRecord(Integer id, String name, Integer type, Integer num, String createName, Date createDate) {
+    public VoMaterialRecord(Integer id, String code, String name, Integer type, BigDecimal unitPrice, Integer num, String unit, Integer discountRate, BigDecimal discountFrontal, BigDecimal totalPrice, Integer nowStock, String createName, Date createDate) {
         this.id = id;
+        this.code = code;
         this.name = name;
         this.type = type;
+        this.unitPrice = unitPrice;
         this.num = num;
+        this.unit = unit;
+        this.discountRate = discountRate;
+        this.discountFrontal = discountFrontal;
+        this.totalPrice = totalPrice;
+        this.nowStock = nowStock;
         this.createName = createName;
         this.createDate = createDate;
     }
