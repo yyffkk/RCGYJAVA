@@ -50,5 +50,15 @@ public class SysMaterialInventoryController {
         return sysMaterialInventoryService.insert(sysMaterialInventory);
     }
 
+    /**
+     * 根据物料盘点主键id查询物料盘点信息详情
+     * @param id 物料盘点主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer id){
+        return sysMaterialInventoryService.findById(id);
+    }
+
 
 }

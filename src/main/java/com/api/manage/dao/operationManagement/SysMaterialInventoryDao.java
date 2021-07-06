@@ -4,6 +4,7 @@ import com.api.model.operationManagement.SearchMaterialInventory;
 import com.api.model.operationManagement.SysMaterialInventory;
 import com.api.model.operationManagement.SysMaterialInventoryDetail;
 import com.api.vo.operationManagement.VoMaterialInventory;
+import com.api.vo.operationManagement.VoMaterialInventoryDetail;
 
 import java.util.List;
 
@@ -35,4 +36,18 @@ public interface SysMaterialInventoryDao {
      * @return 影响行数
      */
     int insertDetail(SysMaterialInventoryDetail sysMaterialInventoryDetail);
+
+    /**
+     * 根据物料盘点主键id查询物料盘点信息详情
+     * @param id 物料盘点主键id
+     * @return 物料盘点信息详情
+     */
+    VoMaterialInventory findById(Integer id);
+
+    /**
+     * 根据物料盘点主键id查询物料盘点详情信息
+     * @param sysMaterialId 物料盘点主键id
+     * @return 物料盘点详情信息
+     */
+    List<VoMaterialInventoryDetail> findDetailBySMIDId(Integer sysMaterialId);
 }

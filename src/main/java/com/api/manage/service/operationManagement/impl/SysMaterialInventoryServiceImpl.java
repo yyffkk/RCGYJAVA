@@ -7,6 +7,7 @@ import com.api.model.operationManagement.SearchMaterialInventory;
 import com.api.model.operationManagement.SysMaterialInventory;
 import com.api.model.operationManagement.SysMaterialInventoryDetail;
 import com.api.vo.operationManagement.VoMaterialInventory;
+import com.api.vo.operationManagement.VoMaterialInventoryDetail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,21 @@ public class SysMaterialInventoryServiceImpl implements SysMaterialInventoryServ
         }
         map.put("message","添加成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
+
+        VoMaterialInventory voMaterialInventory = sysMaterialInventoryDao.findById(id);
+        if (voMaterialInventory != null){
+            List<VoMaterialInventoryDetail> materialInventoryDetailList = sysMaterialInventoryDao.findDetailBySMIDId(voMaterialInventory.getId());
+            voMaterialInventory.setVoMaterialInventoryDetailList(materialInventoryDetailList);
+        }
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",voMaterialInventory);
         return map;
     }
 }
