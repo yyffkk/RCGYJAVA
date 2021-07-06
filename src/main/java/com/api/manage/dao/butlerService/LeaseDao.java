@@ -135,4 +135,10 @@ public interface LeaseDao {
      */
     int updateSLOStatusByCode(SysLeaseOrder sysLeaseOrder1);
 
+    /**
+     * 根据主键id修改租赁保证金缴纳时间
+     * @param sysLease 租赁管理model
+     * @return 影响行数
+     */
+    int updateMarginPayDateById(SysLease sysLease);
 }

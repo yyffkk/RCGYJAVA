@@ -67,6 +67,10 @@ public class SysLease {
      */
     private BigDecimal margin;
     /**
+     * 保证金缴纳时间
+     */
+    private Date marginPayDate;
+    /**
      * 租赁开始时间
      */
     private Date leaseDateStart;
@@ -172,6 +176,7 @@ public class SysLease {
                 ", indoorArea=" + indoorArea +
                 ", rentStandard=" + rentStandard +
                 ", margin=" + margin +
+                ", marginPayDate=" + marginPayDate +
                 ", leaseDateStart=" + leaseDateStart +
                 ", leaseDateEnd=" + leaseDateEnd +
                 ", status=" + status +
@@ -307,6 +312,14 @@ public class SysLease {
 
     public void setMargin(BigDecimal margin) {
         this.margin = margin;
+    }
+
+    public Date getMarginPayDate() {
+        return marginPayDate;
+    }
+
+    public void setMarginPayDate(Date marginPayDate) {
+        this.marginPayDate = marginPayDate;
     }
 
     public Date getLeaseDateStart() {
@@ -488,7 +501,7 @@ public class SysLease {
     public SysLease() {
     }
 
-    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
+    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -503,6 +516,7 @@ public class SysLease {
         this.indoorArea = indoorArea;
         this.rentStandard = rentStandard;
         this.margin = margin;
+        this.marginPayDate = marginPayDate;
         this.leaseDateStart = leaseDateStart;
         this.leaseDateEnd = leaseDateEnd;
         this.status = status;

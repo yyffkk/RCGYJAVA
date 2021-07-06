@@ -34,12 +34,33 @@ public class SDSysInspectionPlanVo {
      * 巡检人id
      */
     private Integer inspector;
+    /**
+     * 计划开始时间
+     */
     private Date planBeginDate;
+    /**
+     * 实际开始时间
+     */
     private Date actualBeginDate;
+    /**
+     * 是否按顺序巡检（1.顺序，2.不顺序）
+     */
     private Integer isSort;
+    /**
+     * 检查频率【类型】类型：1.每天，2.每周，3.每月
+     */
     private Integer checkRateType;
+    /**
+     * 创建人
+     */
     private Integer createId;
+    /**
+     * 创建时间
+     */
     private Date createDate;
+    /**
+     * 是否删除，1.非删，0.删除
+     */
     private Integer isDelete;
 
     @Override

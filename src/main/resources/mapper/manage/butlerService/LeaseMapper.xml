@@ -244,6 +244,11 @@
         set status = #{status}
         where code = #{code}
     </update>
+    <update id="updateMarginPayDateById" parameterType="com.api.model.butlerService.SysLease">
+        update sys_lease
+        set margin_pay_date = #{marginPayDate}
+        where id = #{id}
+    </update>
 
 
 </mapper>

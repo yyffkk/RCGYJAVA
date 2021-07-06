@@ -1345,9 +1345,16 @@ public class AlipayServiceImpl implements AlipayService {
                         SysLease sysLease = new SysLease();
                         sysLease.setId(sysLeaseOrder.getSysLeaseId());
                         sysLease.setStatus(6);//6.已完成
+                        //修改状态
                         int update = leaseDao.updateStatusById(sysLease);
                         if (update <= 0){
                             log.info("===========更新租赁信息的状态失败");
+                            return "fail";
+                        }
+                        //修改保证金缴纳时间
+                        int update4 = leaseDao.updateMarginPayDateById(sysLease);
+                        if (update4 <= 0){
+                            log.info("===========更新租赁信息的保证金缴纳时间失败");
                             return "fail";
                         }
 
