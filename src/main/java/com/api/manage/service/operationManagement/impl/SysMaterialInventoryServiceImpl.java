@@ -16,6 +16,13 @@ public class SysMaterialInventoryServiceImpl implements SysMaterialInventoryServ
 
     @Override
     public List<VoMaterialInventory> list(SearchMaterialInventory searchMaterialInventory) {
-        return sysMaterialInventoryDao.list(searchMaterialInventory);
+        List<VoMaterialInventory> list = sysMaterialInventoryDao.list(searchMaterialInventory);
+        if (list != null && list.size()>0){
+            for (VoMaterialInventory voMaterialInventory : list) {
+                int count = sysMaterialInventoryDao.countSMIDBySMIId(voMaterialInventory.getId());
+                voMaterialInventory.setSpeciesNum(count);
+            }
+        }
+        return list;
     }
 }

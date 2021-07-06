@@ -13,4 +13,10 @@ public interface SysMaterialInventoryDao {
      */
     List<VoMaterialInventory> list(SearchMaterialInventory searchMaterialInventory);
 
+    /**
+     * 根据物料盘点主键id查询物料盘点详情数量
+     * @param id 物料盘点主键id
+     * @return 物料盘点详情数量
+     */
+    int countSMIDBySMIId(Integer id);
 }

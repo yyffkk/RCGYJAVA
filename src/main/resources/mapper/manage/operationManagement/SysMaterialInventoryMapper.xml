@@ -12,4 +12,7 @@
             </if>
         </where>
     </select>
+    <select id="countSMIDBySMIId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_material_inventory_detail where material_inventory_id = #{id}
+    </select>
 </mapper>
