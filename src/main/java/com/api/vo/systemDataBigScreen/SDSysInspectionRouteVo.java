@@ -3,7 +3,7 @@ package com.api.vo.systemDataBigScreen;
 import java.util.Date;
 
 /**
- * 巡检路线
+ * 巡检路线 Vo list 回显
  */
 public class SDSysInspectionRouteVo {
     /**
