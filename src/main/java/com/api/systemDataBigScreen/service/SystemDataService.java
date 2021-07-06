@@ -83,4 +83,6 @@ public interface SystemDataService {
 
     Map<String, Object> findUnpaidUserInfo();
 
+    Map<String, Object> sysInspectionCheckItems();
+
 }

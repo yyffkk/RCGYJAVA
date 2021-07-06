@@ -466,4 +466,13 @@ public class SystemDataController {
     public Map<String,Object> findUnpaidUserInfo(){
         return systemDataService.findUnpaidUserInfo();
     }
+
+    /**
+     * 巡检执行点检查项表
+     * @return map
+     */
+    @GetMapping("/sysInspectionCheckItems")
+    public Map<String,Object> sysInspectionCheckItems(){
+        return systemDataService.sysInspectionCheckItems();
+    }
 }

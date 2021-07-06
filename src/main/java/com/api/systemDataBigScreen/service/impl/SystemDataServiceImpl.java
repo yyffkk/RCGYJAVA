@@ -621,4 +621,12 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> sysInspectionCheckItems() {
+        map = new HashMap<>();
+
+
+        return map;
+    }
+
 }

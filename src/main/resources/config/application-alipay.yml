@@ -26,8 +26,11 @@ alipay:
   reportRepairNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/reportRepairNotifyInfo"
   ##商城购物
   shoppingNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/shoppingNotifyInfo"
-  ##房屋租赁
+  ##房屋租赁-保证金支付
   leaseNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/leaseNotifyInfo"
+  ##房屋租赁-租金支付
+  leaseRentOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/leaseRentOrderNotifyInfo"
+
 
   #页面跳转同步通知页面路径
   returnUrl: "https://test.kaidalai.cn/api/app/user/alipay/return_url.do"

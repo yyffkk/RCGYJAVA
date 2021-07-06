@@ -186,7 +186,7 @@
     </update>
 
     <insert id="insertRentOrder" parameterType="com.api.model.alipay.SysLeaseRentOrder">
-        insert into sys_lease_order(
+        insert into sys_lease_rent_order(
             sys_lease_id,
             code,
             name,
