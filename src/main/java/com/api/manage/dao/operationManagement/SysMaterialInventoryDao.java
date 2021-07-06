@@ -50,4 +50,18 @@ public interface SysMaterialInventoryDao {
      * @return 物料盘点详情信息
      */
     List<VoMaterialInventoryDetail> findDetailBySMIDId(Integer sysMaterialId);
+
+    /**
+     * 修改物料盘点信息
+     * @param sysMaterialInventory 物资盘点管理
+     * @return 影响行数
+     */
+    int update(SysMaterialInventory sysMaterialInventory);
+
+    /**
+     * 先删除该物资盘点的所有详情
+     * @param id 物料盘点主键id
+     * @return 影响行数
+     */
+    int deleteDetailByMIId(Integer id);
 }

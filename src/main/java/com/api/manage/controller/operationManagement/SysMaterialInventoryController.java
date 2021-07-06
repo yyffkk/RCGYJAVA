@@ -60,5 +60,13 @@ public class SysMaterialInventoryController {
         return sysMaterialInventoryService.findById(id);
     }
 
-
+    /**
+     * 修改物料盘点管理信息
+     * @param sysMaterialInventory 物资盘点管理
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysMaterialInventory sysMaterialInventory){
+        return sysMaterialInventoryService.update(sysMaterialInventory);
+    }
 }

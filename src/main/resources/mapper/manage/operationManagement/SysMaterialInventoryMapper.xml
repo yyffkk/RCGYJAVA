@@ -54,4 +54,18 @@
     <select id="findDetailBySMIDId" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoMaterialInventoryDetail">
         select * from sys_material_inventory_detail where material_inventory_id = #{sysMaterialId}
     </select>
+
+    <update id="update" parameterType="com.api.model.operationManagement.SysMaterialInventory">
+        update sys_material_inventory
+        set period_time = #{periodTime},
+        inventory_date_start = #{inventoryDateStart},
+        inventory_date_end = #{inventoryDateEnd}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDetailByMIId" parameterType="java.lang.Integer">
+        delete from sys_material_inventory_detail where material_inventory_id = #{id}
+    </delete>
+
+
 </mapper>

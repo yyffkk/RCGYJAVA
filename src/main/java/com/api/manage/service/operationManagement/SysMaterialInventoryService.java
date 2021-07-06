@@ -28,4 +28,11 @@ public interface SysMaterialInventoryService {
      * @return map
      */
     Map<String, Object> findById(Integer id);
+
+    /**
+     * 修改物料盘点管理信息
+     * @param sysMaterialInventory 物资盘点管理
+     * @return map
+     */
+    Map<String, Object> update(SysMaterialInventory sysMaterialInventory);
 }

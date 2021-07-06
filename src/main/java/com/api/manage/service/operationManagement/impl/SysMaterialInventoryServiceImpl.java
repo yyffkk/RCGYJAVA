@@ -96,4 +96,45 @@ public class SysMaterialInventoryServiceImpl implements SysMaterialInventoryServ
         map.put("data",voMaterialInventory);
         return map;
     }
+
+    @Override
+    @Transactional
+    public Map<String, Object> update(SysMaterialInventory sysMaterialInventory) {
+        map = new HashMap<>();
+
+        try {
+            //修改物资盘点
+            int update = sysMaterialInventoryDao.update(sysMaterialInventory);
+            if (update <= 0){
+                throw new RuntimeException("修改失败");
+            }
+
+            //先删除该物资盘点的所有详情
+            sysMaterialInventoryDao.deleteDetailByMIId(sysMaterialInventory.getId());
+            List<SysMaterialInventoryDetail> materialInventoryDetailList = sysMaterialInventory.getMaterialInventoryDetailList();
+            if (materialInventoryDetailList != null && materialInventoryDetailList.size()>0){
+                for (SysMaterialInventoryDetail sysMaterialInventoryDetail : materialInventoryDetailList) {
+                    sysMaterialInventoryDetail.setMaterialInventoryId(sysMaterialInventory.getId());
+                    //再添加该物资盘点的所有详情
+                    int insert = sysMaterialInventoryDao.insertDetail(sysMaterialInventoryDetail);
+                    if (insert <=0){
+                        throw new RuntimeException("添加新详情失败");
+                    }
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","修改成功");
+        map.put("status",true);
+        return map;
+    }
 }
