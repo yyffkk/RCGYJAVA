@@ -468,11 +468,84 @@ public class SystemDataController {
     }
 
     /**
-     * 巡检执行点检查项表
+     * 巡检点检查项
      * @return map
      */
     @GetMapping("/sysInspectionCheckItems")
     public Map<String,Object> sysInspectionCheckItems(){
         return systemDataService.sysInspectionCheckItems();
     }
+
+    /**
+     * 巡检执行情况（巡检计划周期的记录）
+     * @return map
+     */
+    @GetMapping("/sysInspectionExecute")
+    public Map<String,Object> sysInspectionExecute(){
+        return systemDataService.sysInspectionExecute();
+    }
+
+    /**
+     * 巡检执行点检查项
+     * @return map
+     */
+    @GetMapping("/sysInspectionExecuteCheckItems")
+    public Map<String,Object> sysInspectionExecuteCheckItems(){
+        return systemDataService.sysInspectionExecuteCheckItems();
+    }
+
+    /**
+     * 巡检执行路线地图经纬度
+     * @return map
+     */
+    @GetMapping("/sysInspectionExecuteMap")
+    public Map<String,Object> sysInspectionExecuteMap(){
+        return systemDataService.sysInspectionExecuteMap();
+    }
+
+    /**
+     * 巡检执行点（有经纬度）
+     * @return map
+     */
+    @GetMapping("/sysInspectionExecutePoint")
+    public Map<String,Object> sysInspectionExecutePoint(){
+        return systemDataService.sysInspectionExecutePoint();
+    }
+
+    /**
+     * 巡检计划
+     * @return map
+     */
+    @GetMapping("/sysInspectionPlan")
+    public Map<String,Object> sysInspectionPlan(){
+        return systemDataService.sysInspectionPlan();
+    }
+
+    /**
+     * 巡检点管理（有经纬度）
+     * @return map
+     */
+    @GetMapping("/sysInspectionPoint")
+    public Map<String,Object> sysInspectionPoint(){
+        return systemDataService.sysInspectionPoint();
+    }
+
+    /**
+     * 巡检路线-点关联表
+     * @return map
+     */
+    @GetMapping("/sysInspectionPointRoute")
+    public Map<String,Object> sysInspectionPointRoute(){
+        return systemDataService.sysInspectionPointRoute();
+    }
+
+    /**
+     * 巡检路线
+     * @return map
+     */
+    @GetMapping("/sysInspectionRoute")
+    public Map<String,Object> sysInspectionRoute(){
+        return systemDataService.sysInspectionRoute();
+    }
+
 }

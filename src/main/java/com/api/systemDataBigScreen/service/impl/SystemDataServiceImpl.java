@@ -624,8 +624,99 @@ public class SystemDataServiceImpl implements SystemDataService {
     @Override
     public Map<String, Object> sysInspectionCheckItems() {
         map = new HashMap<>();
+        List<SDSysInspectionCheckItemsVo> sdSysInspectionCheckItemsVos = systemDataDao.sysInspectionCheckItems();
 
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionCheckItemsVos);
+        return map;
+    }
 
+    @Override
+    public Map<String, Object> sysInspectionExecute() {
+        map = new HashMap<>();
+        List<SDSysInspectionExecuteVo> sdSysInspectionExecuteVos = systemDataDao.sysInspectionExecute();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionExecuteVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysInspectionExecuteCheckItems() {
+        map = new HashMap<>();
+        List<SDSysInspectionExecuteCheckItemsVo> sdSysInspectionExecuteCheckItemsVos = systemDataDao.sysInspectionExecuteCheckItems();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionExecuteCheckItemsVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysInspectionExecuteMap() {
+        map = new HashMap<>();
+        List<SDSysInspectionExecuteMapVo> sdSysInspectionExecuteMapVos = systemDataDao.sysInspectionExecuteMap();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionExecuteMapVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysInspectionExecutePoint() {
+        map = new HashMap<>();
+        List<SDSysInspectionExecutePointVo> sdSysInspectionExecutePointVos = systemDataDao.sysInspectionExecutePoint();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionExecutePointVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysInspectionPlan() {
+        map = new HashMap<>();
+        List<SDSysInspectionPlanVo> sdSysInspectionPlanVos = systemDataDao.sysInspectionPlan();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionPlanVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysInspectionPoint() {
+        map = new HashMap<>();
+        List<SDSysInspectionPointVo> sdSysInspectionPointVos = systemDataDao.sysInspectionPoint();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionPointVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysInspectionPointRoute() {
+        map = new HashMap<>();
+        List<SDSysInspectionPointRouteVo> sdSysInspectionPointRouteVos = systemDataDao.sysInspectionPointRoute();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionPointRouteVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysInspectionRoute() {
+        map = new HashMap<>();
+        List<SDSysInspectionRouteVo> sdSysInspectionRouteVos = systemDataDao.sysInspectionRoute();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysInspectionRouteVos);
         return map;
     }
 

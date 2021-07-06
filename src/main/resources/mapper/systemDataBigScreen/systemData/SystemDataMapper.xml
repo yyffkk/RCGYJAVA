@@ -398,6 +398,38 @@
         where siep.execute_id = sie.id and date_format(sie.begin_date,'%Y%m%d') = date_format(now(),'%Y%m%d')
         and sie.actual_begin_date is not null
     </select>
+    <select id="sysInspectionCheckItems"
+            resultType="com.api.vo.systemDataBigScreen.SDSysInspectionCheckItemsVo">
+        select * from sys_inspection_check_items
+    </select>
+    <select id="sysInspectionExecute" resultType="com.api.vo.systemDataBigScreen.SDSysInspectionExecuteVo">
+        select * from sys_inspection_execute
+    </select>
+    <select id="sysInspectionExecuteCheckItems"
+            resultType="com.api.vo.systemDataBigScreen.SDSysInspectionExecuteCheckItemsVo">
+        select * from sys_inspection_execute_check_items
+    </select>
+    <select id="sysInspectionExecuteMap"
+            resultType="com.api.vo.systemDataBigScreen.SDSysInspectionExecuteMapVo">
+        select * from sys_inspection_execute_map
+    </select>
+    <select id="sysInspectionExecutePoint"
+            resultType="com.api.vo.systemDataBigScreen.SDSysInspectionExecutePointVo">
+        select * from sys_inspection_execute_point
+    </select>
+    <select id="sysInspectionPlan" resultType="com.api.vo.systemDataBigScreen.SDSysInspectionPlanVo">
+        select * from sys_inspection_plan
+    </select>
+    <select id="sysInspectionPoint" resultType="com.api.vo.systemDataBigScreen.SDSysInspectionPointVo">
+        select * from sys_inspection_point
+    </select>
+    <select id="sysInspectionPointRoute"
+            resultType="com.api.vo.systemDataBigScreen.SDSysInspectionPointRouteVo">
+        select * from sys_inspection_point_route
+    </select>
+    <select id="sysInspectionRoute" resultType="com.api.vo.systemDataBigScreen.SDSysInspectionRouteVo">
+        select * from sys_inspection_route
+    </select>
 
     <insert id="insertPushAlert" parameterType="com.api.model.systemDataBigScreen.FirePushAlert">
         insert into sys_fire_alarm(

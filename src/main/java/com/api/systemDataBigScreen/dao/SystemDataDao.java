@@ -413,4 +413,57 @@ public interface SystemDataDao {
      */
     List<SDInspectionExecutePointAllVo> findPointByExecuteIdAll();
 
+    /**
+     * 巡检点检查项
+     * @return 巡检点检查项集合
+     */
+    List<SDSysInspectionCheckItemsVo> sysInspectionCheckItems();
+
+    /**
+     * 巡检执行情况（巡检计划周期的记录）
+     * @return 巡检执行情况集合
+     */
+    List<SDSysInspectionExecuteVo> sysInspectionExecute();
+
+    /**
+     * 巡检执行点检查项
+     * @return 巡检执行点检查项集合
+     */
+    List<SDSysInspectionExecuteCheckItemsVo> sysInspectionExecuteCheckItems();
+
+    /**
+     * 巡检执行路线地图经纬度
+     * @return 巡检执行路线地图经纬度集合
+     */
+    List<SDSysInspectionExecuteMapVo> sysInspectionExecuteMap();
+
+    /**
+     * 巡检执行点（有经纬度）
+     * @return 巡检执行点集合
+     */
+    List<SDSysInspectionExecutePointVo> sysInspectionExecutePoint();
+
+    /**
+     * 巡检计划
+     * @return 巡检计划集合
+     */
+    List<SDSysInspectionPlanVo> sysInspectionPlan();
+
+    /**
+     * 巡检点管理（有经纬度）
+     * @return 巡检点管理集合
+     */
+    List<SDSysInspectionPointVo> sysInspectionPoint();
+
+    /**
+     * 巡检路线-点关联表
+     * @return 巡检路线-点关联表集合
+     */
+    List<SDSysInspectionPointRouteVo> sysInspectionPointRoute();
+
+    /**
+     * 巡检路线
+     * @return 巡检路线集合
+     */
+    List<SDSysInspectionRouteVo> sysInspectionRoute();
 }

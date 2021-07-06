@@ -85,4 +85,19 @@ public interface SystemDataService {
 
     Map<String, Object> sysInspectionCheckItems();
 
+    Map<String, Object> sysInspectionExecute();
+
+    Map<String, Object> sysInspectionExecuteCheckItems();
+
+    Map<String, Object> sysInspectionExecuteMap();
+
+    Map<String, Object> sysInspectionExecutePoint();
+
+    Map<String, Object> sysInspectionPlan();
+
+    Map<String, Object> sysInspectionPoint();
+
+    Map<String, Object> sysInspectionPointRoute();
+
+    Map<String, Object> sysInspectionRoute();
 }
