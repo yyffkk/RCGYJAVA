@@ -3,6 +3,39 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.operationManagement.SysMaterialInventoryDao">
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysMaterialInventory">
+        insert into sys_material_inventory(
+            period_time,
+            inventory_date_start,
+            inventory_date_end,
+            create_id,
+            create_date
+        )values (
+            #{periodTime},
+            #{inventoryDateStart},
+            #{inventoryDateEnd},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+    <insert id="insertDetail" parameterType="com.api.model.operationManagement.SysMaterialInventoryDetail">
+        insert into sys_material_inventory_detail(
+            material_inventory_id,
+            name,
+            should_inventory,
+            actual_inventory,
+            inventory_surplus_losses
+        )values (
+            #{materialInventoryId},
+            #{name},
+            #{shouldInventory},
+            #{actualInventory},
+            #{inventorySurplusLosses}
+        )
+    </insert>
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchMaterialInventory" resultType="com.api.vo.operationManagement.VoMaterialInventory">
         select * from sys_material_inventory

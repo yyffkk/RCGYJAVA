@@ -2,13 +2,12 @@ package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysMaterialInventoryService;
 import com.api.model.operationManagement.SearchMaterialInventory;
+import com.api.model.operationManagement.SysMaterialInventory;
 import com.api.vo.operationManagement.VoMaterialInventory;
 import com.api.vo.operationManagement.VoMaterialRecord;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -39,6 +38,16 @@ public class SysMaterialInventoryController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 添加物料盘点管理信息
+     * @param sysMaterialInventory 物资盘点管理
+     * @return map
+     */
+    @PostMapping("/insert")
+    public Map<String,Object> insert(@RequestBody SysMaterialInventory sysMaterialInventory){
+        return sysMaterialInventoryService.insert(sysMaterialInventory);
     }
 
 

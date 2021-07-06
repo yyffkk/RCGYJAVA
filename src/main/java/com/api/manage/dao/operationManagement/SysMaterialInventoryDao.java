@@ -1,6 +1,8 @@
 package com.api.manage.dao.operationManagement;
 
 import com.api.model.operationManagement.SearchMaterialInventory;
+import com.api.model.operationManagement.SysMaterialInventory;
+import com.api.model.operationManagement.SysMaterialInventoryDetail;
 import com.api.vo.operationManagement.VoMaterialInventory;
 
 import java.util.List;
@@ -19,4 +21,18 @@ public interface SysMaterialInventoryDao {
      * @return 物料盘点详情数量
      */
     int countSMIDBySMIId(Integer id);
+
+    /**
+     * 添加物料盘点管理信息
+     * @param sysMaterialInventory 物资盘点管理
+     * @return 影响行数
+     */
+    int insert(SysMaterialInventory sysMaterialInventory);
+
+    /**
+     * 添加物料盘点详情管理信息
+     * @param sysMaterialInventoryDetail 物资盘点详情管理
+     * @return 影响行数
+     */
+    int insertDetail(SysMaterialInventoryDetail sysMaterialInventoryDetail);
 }

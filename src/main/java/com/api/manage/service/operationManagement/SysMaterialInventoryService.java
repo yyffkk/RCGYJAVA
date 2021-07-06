@@ -1,9 +1,11 @@
 package com.api.manage.service.operationManagement;
 
 import com.api.model.operationManagement.SearchMaterialInventory;
+import com.api.model.operationManagement.SysMaterialInventory;
 import com.api.vo.operationManagement.VoMaterialInventory;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysMaterialInventoryService {
     /**
@@ -12,4 +14,11 @@ public interface SysMaterialInventoryService {
      * @return 的物料盘点管理信息
      */
     List<VoMaterialInventory> list(SearchMaterialInventory searchMaterialInventory);
+
+    /**
+     * 添加物料盘点管理信息
+     * @param sysMaterialInventory 物资盘点管理
+     * @return map
+     */
+    Map<String, Object> insert(SysMaterialInventory sysMaterialInventory);
 }
