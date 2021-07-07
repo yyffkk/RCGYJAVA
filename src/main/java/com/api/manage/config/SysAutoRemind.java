@@ -677,6 +677,8 @@ public class SysAutoRemind {
                     log.info("租赁主键为"+lease.getId()+"的租金账单生成失败");
                 }
             }
+        }else {
+            log.info("暂无任何租赁租金账单信息");
         }
     }
 
