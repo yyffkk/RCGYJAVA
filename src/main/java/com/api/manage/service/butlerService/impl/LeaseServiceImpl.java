@@ -196,8 +196,8 @@ public class LeaseServiceImpl implements LeaseService {
             return map;
         }
 
-        //审核合同终止申请(修改租赁状态及合同终止信息)[旧接口reviewTerminationApplication]
-        int update = leaseDao.updateStatusById(sysLease);
+        //审核合同终止申请(修改租赁状态及合同终止信息)[确定不再计租时间和剩余需结清房租]
+        int update = leaseDao.reviewTerminationApplication(sysLease);
         if (update > 0){
             map.put("message","审核成功");
             map.put("status",true);
