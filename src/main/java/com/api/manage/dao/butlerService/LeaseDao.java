@@ -145,7 +145,7 @@ public interface LeaseDao {
     int updateMarginPayDateById(SysLease sysLease);
 
     /**
-     * 查询正在生效的租赁信息
+     * 查询正在生效的租赁信息 //TODO 此接口还需改，等合同续签和合同变更功能
      * @return 正在生效的租赁信息
      */
     List<VoLease> findAllEffectLease();
