@@ -195,42 +195,9 @@ public class LeaseServiceImpl implements LeaseService {
             map.put("status",false);
             return map;
         }
-        //获取当前几号//TODO 当前逻辑有误 ==================
-        int day= Integer.parseInt(String.format("%td",byId.getNotMeterRentDate()));
-        if (sysLease.getStatus() == 12){//12.申请终止失败
-            Date date = byId.getTakeDate();
-            if (day > 15){
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-                cal.set(Calendar.DAY_OF_MONTH, 1);
-                cal.add(Calendar.MONTH, 1);
-                cal.add(Calendar.DATE, -1);
-                Date time = cal.getTime();
-                log.info("主键id为"+byId.getId()+"的不再计租时间为："+new SimpleDateFormat("yyyy-MM-dd").format(time));
-                sysLease.setNotMeterRentDate(time);
-                //填入剩余需结清房租（整月）//TODO 目前先填整月，不去计算本月是否缴纳租金
-                sysLease.setRequiredRent(byId.getRentStandard());
 
-            }else {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-                cal.set(Calendar.DAY_OF_MONTH, 1);
-                Date time = cal.getTime();
-                sysLease.setNotMeterRentDate(time);
-                //填入剩余需结清房租（半月）//TODO 目前先填半月，不去计算本月是否缴纳租金
-                sysLease.setRequiredRent(byId.getRentStandard().multiply(new BigDecimal(0.5)));
-            }
-        }else if (sysLease.getStatus() == 13){//13.申请终止成功
-
-        }else {
-            map.put("message","状态有误");
-            map.put("status",false);
-            return map;
-        }
-        //TODO 当前逻辑有误 ==================
-
-        //审核合同终止申请(修改租赁状态及合同终止信息)
-        int update = leaseDao.reviewTerminationApplication(sysLease);
+        //审核合同终止申请(修改租赁状态及合同终止信息)[旧接口reviewTerminationApplication]
+        int update = leaseDao.updateStatusById(sysLease);
         if (update > 0){
             map.put("message","审核成功");
             map.put("status",true);
