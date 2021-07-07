@@ -495,7 +495,7 @@ public class SystemDataController {
     }
 
     /**
-     * 巡检执行路线地图经纬度//TODO 此处以下都没测
+     * 巡检执行路线地图经纬度
      * @return map
      */
     @GetMapping("/sysInspectionExecuteMap")
