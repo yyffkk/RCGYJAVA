@@ -307,7 +307,7 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
             if (execute.isSuccessful()) {
                 ResponseBody body = execute.body();
                 if (body != null) {
-                    //获取返回值//TODO 4004 设备不存在 或者 亲！物业不在线
+                    //获取返回值
                     String result = body.string();
                     log.info("返回值:"+result);
                     JSONObject jsonObject = new JSONObject(result);
@@ -533,7 +533,7 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
             if (execute.isSuccessful()) {
                 ResponseBody body = execute.body();
                 if (body != null) {
-                    //获取返回值//TODO 4004 设备不存在 或者 亲！物业不在线
+                    //获取返回值
                     String result = body.string();
                     log.info("返回值:"+result);
                     JSONObject jsonObject = new JSONObject(result);

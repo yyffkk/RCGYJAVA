@@ -3,6 +3,7 @@ package com.api.manage.controller;
 import com.api.util.webSocket.WebSocketService;
 //import net.sf.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -60,9 +63,31 @@ public class TestController2 {
 //        log.warn("日志输出 warn");
 //        log.error("日志输出 error");
 
+        Date date=new Date();
+        //SimpleDateFormat format =new SimpleDateFormat("yyyy-MM-dd");
+        String year=String.format("%tY",date);
+        String month=String.format("%tB",date);
+        int day= Integer.parseInt(String.format("%td",date));
+        System.out.println("今年是"+year+"年");
+        System.out.println("现在是"+month+"月");
+        System.out.println("今天是"+day+"号");
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse("2008-02-14");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        int i = cal.get(Calendar.DAY_OF_WEEK);
+
+        cal.setTime(date);
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+
+        cal.add(Calendar.MONTH, 1);
+
+        cal.add(Calendar.DATE, -1);
+        Date time = cal.getTime();
+        String format = new SimpleDateFormat("yyyy-MM-dd").format(time);
+
         return false;
     }
 }

@@ -185,7 +185,6 @@ public class MyHouseController {
         return myHouseService.submitAudit(appLeaseSubmitAudit);
     }
 
-
     /**
      * 提交终止申请
      * @param sysLease 租赁管理model

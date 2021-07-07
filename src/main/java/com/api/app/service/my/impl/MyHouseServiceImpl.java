@@ -311,6 +311,8 @@ public class MyHouseServiceImpl implements MyHouseService {
             //查询身份证照背面
             List<VoResourcesImg> idCardBack = uploadUtil.findImgByDate("sysLease", voLease.getId(), "idCardBack");
             voLease.setIdCardBackFiles(idCardBack);
+            //TODO 查询剩余需结清房租（元）
+
         }
         map.put("message","请求成功");
         map.put("status",true);

@@ -465,7 +465,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //唯一随机数
             String nonce = UUID.randomUUID().toString();
 
-            //拼接出图片的完整http路径 //TODO 本地测需要改照片路径
+            //拼接出图片的完整http路径 //本地测需要改照片路径
             String phoneUrl = COMMUNITY_LOCATION + imgUrl;
 //            String phoneUrl = "http://39.103.177.88:8804/static/img/h5/visit/fafdc87cceb04edf8c2b8895212a49d6.jpeg";
             //拼接出设备序列号（20位数字）：小区号（12位）+设备号（8位）
@@ -505,7 +505,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             if (execute.isSuccessful()) {
                 ResponseBody body = execute.body();
                 if (body != null) {
-                    //获取返回值//TODO 4004 设备不存在 或者 亲！物业不在线
+                    //获取返回值
                     String result = body.string();
                     log.info("返回值:"+result);
                     JSONObject jsonObject = new JSONObject(result);
@@ -577,7 +577,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             if (execute.isSuccessful()) {
                 ResponseBody body = execute.body();
                 if (body != null) {
-                    //获取返回值//TODO 4004 设备不存在 或者 亲！物业不在线
+                    //获取返回值
                     String result = body.string();
                     log.info("返回值:"+result);
                     JSONObject jsonObject = new JSONObject(result);
