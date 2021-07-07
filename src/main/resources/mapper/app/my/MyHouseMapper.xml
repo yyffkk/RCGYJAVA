@@ -108,6 +108,11 @@
     <select id="findLeaseById" resultType="com.api.model.butlerService.SysLease">
         select * from sys_lease where id = #{id}
     </select>
+    <select id="findLeaseRemainingRental" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select (case sum(price) is null when true then 0 else sum(price) end) as sum
+        from sys_lease_rent
+        where sys_lease_id = #{leaseId} and status = 0
+    </select>
 
     <update id="submitTerminateApplication" parameterType="com.api.model.butlerService.SysLease">
         update sys_lease
