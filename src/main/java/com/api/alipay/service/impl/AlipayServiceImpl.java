@@ -1924,7 +1924,60 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     public Map<String, Object> leaseRentBillOrderCheckAlipay(String code) {
-        return null;
+        map = new HashMap<>();
+        log.info("================房屋租赁向支付宝发起查询，查询商户租金账单订单号为："+code);
+
+        try {
+            //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            AlipayTradeQueryRequest alipayTradeQueryRequest = new AlipayTradeQueryRequest();
+            alipayTradeQueryRequest.setBizContent("{" +
+                    "\"out_trade_no\":\""+code+"\"," +
+                    "\"trade_no\":"+null +
+                    "}");
+            AlipayTradeQueryResponse alipayTradeQueryResponse = alipayClient.execute(alipayTradeQueryRequest);
+            if(alipayTradeQueryResponse.isSuccess()){
+                //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+                SysLeaseRentBillOrder sysLeaseRentBillOrder = leaseDao.findSysLeaseRentBillOrderByCode(code);
+                if (sysLeaseRentBillOrder == null){
+                    map.put("status",-1);
+                    map.put("message","订单不存在");
+                    return map;
+                }
+                //修改数据库支付宝订单表
+                switch (alipayTradeQueryResponse.getTradeStatus()) // 判断交易结果
+                {
+                    case "TRADE_FINISHED": // 交易结束并不可退款
+                        sysLeaseRentBillOrder.setStatus(3);
+                        break;
+                    case "TRADE_SUCCESS": // 交易支付成功
+                        sysLeaseRentBillOrder.setStatus(2);
+                        break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        sysLeaseRentBillOrder.setStatus(1);
+                        break;
+                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+                        sysLeaseRentBillOrder.setStatus(0);
+                        break;
+                    default:
+                        break;
+                }
+                //更新表的状态
+                leaseDao.updateLeaseRentBillOrderStatusByCode(sysLeaseRentBillOrder);
+                map.put("status",sysLeaseRentBillOrder.getStatus());
+                map.put("message",alipayTradeQueryResponse.getBody());
+                return map; //交易状态
+            } else {
+                String body = alipayTradeQueryResponse.getBody();
+                log.info("==================调用支付宝查询接口失败！");
+                log.info("==================错误码:"+body);
+                map.put("message",alipayTradeQueryResponse.getBody());
+            }
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        map.put("status",-1);
+        return map;
     }
 
 
