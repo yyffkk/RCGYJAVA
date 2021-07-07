@@ -8,6 +8,7 @@ import com.api.model.butlerService.SysLease;
 import com.api.vo.butlerService.VoFBILease;
 import com.api.vo.butlerService.VoLease;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface LeaseDao {
@@ -155,4 +156,12 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int insertRent(AppLeaseRent appLeaseRent);
+
+    /**
+     * 查询租赁剩余需结清房租（元）
+     * @param leaseId 租赁主键id
+     * @return 租赁剩余需结清房租（元）
+     */
+    BigDecimal findLeaseRemainingRental(Integer leaseId);
+
 }

@@ -59,6 +59,38 @@ public class LeaseServiceImpl implements LeaseService {
             for (VoLease voLease : list) {
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysLease", voLease.getId(), "leaseContractValidPdf");
                 voLease.setImgUrls(imgByDate);
+
+                //查询租赁剩余需结清房租（元）
+                BigDecimal requiredRent = leaseDao.findLeaseRemainingRental(voLease.getId());
+                if (voLease.getTakeDate() != null){
+                    //获取收房日期是几号
+                    int day= Integer.parseInt(String.format("%td",voLease.getTakeDate()));
+
+                    Date date = voLease.getTakeDate();
+                    if (day > 15){
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(date);
+                        cal.set(Calendar.DAY_OF_MONTH, 1);
+                        cal.add(Calendar.MONTH, 1);
+                        cal.add(Calendar.DATE, -1);
+                        Date time = cal.getTime();
+                        log.info("主键id为"+voLease.getId()+"的不再计租时间为："+new SimpleDateFormat("yyyy-MM-dd").format(time));
+                        voLease.setNotMeterRentDate(time);
+                        //当大于15号时，租金算整月，剩余需结清房租不减任何租金
+                        requiredRent = requiredRent.subtract(BigDecimal.ZERO);
+                    }else {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(date);
+                        cal.set(Calendar.DAY_OF_MONTH, 1);
+                        Date time = cal.getTime();
+                        voLease.setNotMeterRentDate(time);
+                        //当小于15号及15号时，租金算半月，剩余需结清房租需要减去半个月租金
+                        requiredRent = requiredRent.subtract(voLease.getRentStandard().multiply(new BigDecimal(0.5)));
+                    }
+                }
+
+                //填入剩余需结清房租
+                voLease.setRequiredRent(requiredRent);
             }
         }
         return list;

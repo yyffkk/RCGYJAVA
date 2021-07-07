@@ -266,5 +266,9 @@
         where id = #{id}
     </update>
 
-
+    <select id="findLeaseRemainingRental" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select (case sum(price) is null when true then 0 else sum(price) end) as sum
+        from sys_lease_rent
+        where sys_lease_id = #{leaseId} and status = 0
+    </select>
 </mapper>

@@ -183,11 +183,4 @@ public interface MyHouseDao {
      */
     SysLease findLeaseById(Integer id);
 
-    /**
-     * 查询租赁剩余需结清房租（元）
-     * @param leaseId 租赁主键id
-     * @return 租赁剩余需结清房租（元）
-     */
-    BigDecimal findLeaseRemainingRental(Integer leaseId);
-
 }
