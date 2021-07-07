@@ -178,4 +178,25 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int insertRentBillOrder(SysLeaseRentBillOrder sysLeaseRentBillOrder);
+
+    /**
+     * 根据订单编号查询租赁租金账单订单信息
+     * @param outTradeNo 订单编号
+     * @return 租赁租金账单订单信息
+     */
+    SysLeaseRentBillOrder findSysLeaseRentBillOrderByCode(String outTradeNo);
+
+    /**
+     * 根据房屋租赁租金账单订单编号更新订单状态
+     * @param sysLeaseRentBillOrder app 房屋租赁租金账单订单model
+     * @return 影响行数
+     */
+    int updateLeaseRentBillOrderStatusByCode(SysLeaseRentBillOrder sysLeaseRentBillOrder);
+
+    /**
+     * 根据租赁账单主键id更新租赁账单信息状态
+     * @param appLeaseRent 租赁租金账单表
+     * @return 影响行数
+     */
+    int updateLeaseRentStatusById(AppLeaseRent appLeaseRent);
 }
