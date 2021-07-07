@@ -10,6 +10,7 @@ import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.api.alipay.service.AlipayService;
 import com.api.model.alipay.OrderTest;
 import com.api.model.alipay.SysLeaseOrder;
+import com.api.model.alipay.SysLeaseRentBillOrder;
 import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
@@ -306,8 +307,8 @@ public class AlipayController {
 
 
     /**
-     * app 房屋租赁-租金支付 完成订单支付宝支付(生成 APP 支付订单信息)
-     * @param sysLeaseRentOrder app 房屋租赁租金订单model
+     * app 房屋租赁-剩余需结清租金支付 完成订单支付宝支付(生成 APP 支付订单信息)
+     * @param sysLeaseRentOrder app 房屋租赁剩余需结清租金订单model
      * @param response response
      * @param request request
      * @return map
@@ -325,7 +326,7 @@ public class AlipayController {
 
 
     /**
-     * 房屋租赁-租金支付 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * 房屋租赁-剩余需结清租金支付 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
      * @param request request
      * @param response response
      * @return map
@@ -343,13 +344,60 @@ public class AlipayController {
 
 
     /**
-     * 房屋租赁-租金支付 向支付宝发起订单查询请求
+     * 房屋租赁-剩余需结清租金支付 向支付宝发起订单查询请求
      * @param code 商户订单号
      * @return map
      */
     @GetMapping("/leaseRentOrderCheckAlipay")
     public Map<String,Object> leaseRentOrderCheckAlipay(String code){
         return alipayService.leaseRentOrderCheckAlipay(code);
+    }
+
+    /**
+     * app 房屋租赁-租金账单支付 完成订单支付宝支付(生成 APP 支付订单信息)
+     * @param sysLeaseRentBillOrder app 房屋租赁租金账单订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/leaseRentBillOrderAlipay")
+    public Map<String,Object> leaseRentBillOrderAlipay(@RequestBody SysLeaseRentBillOrder sysLeaseRentBillOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        sysLeaseRentBillOrder.setName(name); //填写付款人姓名
+        sysLeaseRentBillOrder.setTel(tel); //填写付款人手机号
+        return alipayService.leaseRentBillOrderAlipay(sysLeaseRentBillOrder,id);
+    }
+
+
+    /**
+     * 房屋租赁-租金账单支付 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
+     */
+    @PostMapping(value = "/leaseRentBillOrderNotifyInfo")
+    public String leaseRentBillOrderNotifyInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+        request.setCharacterEncoding("UTF-8");
+        String userName = request.getParameter("name"); //从request获取用户姓名
+        Integer userId = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        return alipayService.leaseRentBillOrderNotifyInfo(request,userName,userId);
+    }
+
+
+    /**
+     * 房屋租赁-租金账单支付 向支付宝发起订单查询请求
+     * @param code 商户订单号
+     * @return map
+     */
+    @GetMapping("/leaseRentBillOrderCheckAlipay")
+    public Map<String,Object> leaseRentBillOrderCheckAlipay(String code){
+        return alipayService.leaseRentBillOrderCheckAlipay(code);
     }
 
 }

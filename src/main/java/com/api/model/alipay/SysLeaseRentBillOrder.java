@@ -4,19 +4,19 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * app 房屋租赁剩余需结清租金订单model
+ * app 房屋租赁租金账单订单model
  */
-public class SysLeaseRentOrder {
+public class SysLeaseRentBillOrder {
     /**
      * 主键id
      */
     private Integer id;
     /**
-     * 房屋租赁主键id
+     * 租赁租金账单主键id
      */
-    private Integer sysLeaseId;
+    private Integer sysLeaseRentId;
     /**
-     * 租赁剩余需结清租金支付单号
+     * 租赁租金账单支付单号
      */
     private String code;
     /**
@@ -50,9 +50,9 @@ public class SysLeaseRentOrder {
 
     @Override
     public String toString() {
-        return "SysLeaseRentOrder{" +
+        return "SysLeaseRentBillOrder{" +
                 "id=" + id +
-                ", sysLeaseId=" + sysLeaseId +
+                ", sysLeaseRentId=" + sysLeaseRentId +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
@@ -72,12 +72,12 @@ public class SysLeaseRentOrder {
         this.id = id;
     }
 
-    public Integer getSysLeaseId() {
-        return sysLeaseId;
+    public Integer getSysLeaseRentId() {
+        return sysLeaseRentId;
     }
 
-    public void setSysLeaseId(Integer sysLeaseId) {
-        this.sysLeaseId = sysLeaseId;
+    public void setSysLeaseRentId(Integer sysLeaseRentId) {
+        this.sysLeaseRentId = sysLeaseRentId;
     }
 
     public String getCode() {
@@ -144,12 +144,12 @@ public class SysLeaseRentOrder {
         this.status = status;
     }
 
-    public SysLeaseRentOrder() {
+    public SysLeaseRentBillOrder() {
     }
 
-    public SysLeaseRentOrder(Integer id, Integer sysLeaseId, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer status) {
+    public SysLeaseRentBillOrder(Integer id, Integer sysLeaseRentId, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer status) {
         this.id = id;
-        this.sysLeaseId = sysLeaseId;
+        this.sysLeaseRentId = sysLeaseRentId;
         this.code = code;
         this.name = name;
         this.tel = tel;
