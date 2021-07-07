@@ -1654,6 +1654,13 @@ public class AlipayServiceImpl implements AlipayService {
                             return "fail";
                         }
 
+                        //将当前租赁租金账单所有的未缴纳的租金改为已结算状态
+                        int update2 = leaseDao.updateSLRStatusUnPayToSettledBySLId(sysLeaseRentOrder.getSysLeaseId());
+                        if (update2 <= 0){
+                            log.info("===========将当前租赁租金账单所有的未缴纳的租金改为已结算状态失败");
+                            return "fail";
+                        }
+
                         // 成功要返回success，不然支付宝会不断发送通知。
                         return "success";
                     }else{

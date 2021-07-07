@@ -313,5 +313,10 @@
         set status = #{status}
         where id = #{id}
     </update>
+    <update id="updateSLRStatusUnPayToSettledBySLId" parameterType="java.lang.Integer">
+        update sys_lease_rent
+        set status = 2
+        where sys_lease_id = #{sysLeaseId} and status = 0
+    </update>
 
 </mapper>

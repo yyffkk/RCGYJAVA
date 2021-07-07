@@ -199,4 +199,11 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int updateLeaseRentStatusById(AppLeaseRent appLeaseRent);
+
+    /**
+     * 将当前租赁租金账单所有的未缴纳的租金改为已结算状态
+     * @param sysLeaseId  租赁主键id
+     * @return 影响行数
+     */
+    int updateSLRStatusUnPayToSettledBySLId(Integer sysLeaseId);
 }
