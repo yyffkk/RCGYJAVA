@@ -1,6 +1,7 @@
 package com.api.manage.dao.butlerService;
 
 import com.api.model.alipay.SysLeaseOrder;
+import com.api.model.alipay.SysLeaseRentBillOrder;
 import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.AppLeaseRent;
 import com.api.model.butlerService.SearchLease;
@@ -164,4 +165,17 @@ public interface LeaseDao {
      */
     BigDecimal findLeaseRemainingRental(Integer leaseId);
 
+    /**
+     * 根据租赁账单管理主键id查询租赁账单信息
+     * @param sysLeaseRentId 租赁账单管理主键id
+     * @return 租赁账单信息
+     */
+    AppLeaseRent findLeaseRentById(Integer sysLeaseRentId);
+
+    /**
+     * 添加租赁租金账单订单信息
+     * @param sysLeaseRentBillOrder app 房屋租赁租金账单订单model
+     * @return 影响行数
+     */
+    int insertRentBillOrder(SysLeaseRentBillOrder sysLeaseRentBillOrder);
 }

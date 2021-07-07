@@ -20,6 +20,7 @@ import com.api.manage.dao.butlerService.LeaseContractDao;
 import com.api.manage.dao.butlerService.LeaseDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
 import com.api.model.alipay.SysLeaseOrder;
+import com.api.model.alipay.SysLeaseRentBillOrder;
 import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.*;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
@@ -64,6 +65,8 @@ public class AlipayServiceImpl implements AlipayService {
     private String LEASE_NOTIFY_URL;
     @Value("${alipay.leaseRentOrderNotifyUrl}")
     private String LEASE_RENT_ORDER_NOTIFY_URL;
+    @Value("${alipay.leaseRentBillOrderNotifyUrl}")
+    private String LEASE_RENT_BILL_ORDER_NOTIFY_URL;
     @Value("${alipay.returnUrl}")
     private String RETURN_URL;
     @Value("${alipay.aliPayGateway}")
@@ -1529,8 +1532,8 @@ public class AlipayServiceImpl implements AlipayService {
             // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
             AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
             AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("房屋租赁app支付");
-            model.setSubject("房屋租赁");
+            model.setBody("房屋租赁剩余需结清租金app支付");
+            model.setSubject("房屋剩余需结清租金");
             // 唯一订单号 根据项目中实际需要获取相应的
             model.setOutTradeNo(sysLeaseRentOrder.getCode());
             // 支付超时时间（根据项目需要填写）
@@ -1677,7 +1680,7 @@ public class AlipayServiceImpl implements AlipayService {
     @Override
     public Map<String, Object> leaseRentOrderCheckAlipay(String code) {
         map = new HashMap<>();
-        log.info("================房屋租赁向支付宝发起查询，查询商户租金订单号为："+code);
+        log.info("================房屋租赁向支付宝发起查询，查询商户剩余需结清租金订单号为："+code);
 
         try {
             //实例化客户端（参数：网关地址、商户appid、商户私钥、格式、编码、支付宝公钥、加密类型）
@@ -1730,6 +1733,103 @@ public class AlipayServiceImpl implements AlipayService {
         }
         map.put("status",-1);
         return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> leaseRentBillOrderAlipay(SysLeaseRentBillOrder sysLeaseRentBillOrder, Integer id) {
+        log.info("开始生成支付宝订单");
+        map = new HashMap<>();
+        String body = "";
+
+        // 获取项目中实际的订单的信息
+        // 此处是相关业务代码
+        try {
+            //根据租赁账单管理主键id查询租赁账单信息
+            AppLeaseRent byId = leaseDao.findLeaseRentById(sysLeaseRentBillOrder.getSysLeaseRentId());
+            BigDecimal paymentPrice = byId.getPrice();
+            if (paymentPrice.compareTo(sysLeaseRentBillOrder.getPayPrice()) != 0){
+                throw new RuntimeException("支付金额有误，请重新支付");
+            }
+            if (paymentPrice.equals(BigDecimal.ZERO)){
+                throw new RuntimeException("支付金额不可为0");
+            }
+            log.info("开始填写支付宝订单信息");
+            //填写付款金额
+            sysLeaseRentBillOrder.setPayPrice(paymentPrice);
+
+            //填写支付单号(自动生成订单号)
+            sysLeaseRentBillOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
+            //填写创建人 app为-1
+            sysLeaseRentBillOrder.setCreateId(-1);
+            //填入创建时间
+            sysLeaseRentBillOrder.setCreateDate(new Date());
+            //填入付款状态，0.交易创建并等待买家付款
+            sysLeaseRentBillOrder.setStatus(0);
+            //添加租赁租金账单订单信息
+            int i = leaseDao.insertRentBillOrder(sysLeaseRentBillOrder);
+            if (i<=0){
+                throw new RuntimeException("添加租赁租金账单订单信息失败");
+            }
+            log.info("开始调用支付宝接口");
+            // 开始使用支付宝SDK中提供的API
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            model.setBody("房屋租赁租金账单app支付");
+            model.setSubject("房屋租赁租金账单");
+            // 唯一订单号 根据项目中实际需要获取相应的
+            model.setOutTradeNo(sysLeaseRentBillOrder.getCode());
+            // 支付超时时间（根据项目需要填写）
+            model.setTimeoutExpress("30m");
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            model.setTotalAmount(String.valueOf(sysLeaseRentBillOrder.getPayPrice()));
+            //app支付 固定值 填写QUICK_MSECURITY_PAY
+            model.setProductCode("QUICK_MSECURITY_PAY");
+            alipayRequest.setBizModel(model);
+            // 支付成功后支付宝异步通知的接收地址url
+            alipayRequest.setNotifyUrl(LEASE_RENT_BILL_ORDER_NOTIFY_URL);
+            //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+            // 注意：每个请求的相应对象不同，与请求对象是对应。
+            AlipayTradeAppPayResponse alipayResponse = null;
+            try {
+                alipayResponse = alipayClient.sdkExecute(alipayRequest);
+            } catch (AlipayApiException e) {
+                e.printStackTrace();
+                log.info("获取签名失败");
+                throw new RuntimeException("获取签名失败");
+            }
+            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+            body = alipayResponse.getBody();
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        log.info("body:"+body);
+        map.put("message",body);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public String leaseRentBillOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId) {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> leaseRentBillOrderCheckAlipay(String code) {
+        return null;
     }
 
 

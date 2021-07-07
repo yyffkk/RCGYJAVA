@@ -271,4 +271,32 @@
         from sys_lease_rent
         where sys_lease_id = #{leaseId} and status = 0
     </select>
+    <select id="findLeaseRentById" parameterType="java.lang.Integer" resultType="com.api.model.app.AppLeaseRent">
+        select * from sys_lease_rent where id = #{sysLeaseRentId}
+    </select>
+
+    <insert id="insertRentBillOrder" parameterType="com.api.model.alipay.SysLeaseRentBillOrder">
+        insert into sys_lease_rent_bill_order(
+            sys_lease_rent_id,
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date,
+            status
+        )values (
+            #{sysLeaseRentId},
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate},
+            #{status}
+        )
+    </insert>
+
 </mapper>

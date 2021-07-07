@@ -28,8 +28,10 @@ alipay:
   shoppingNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/shoppingNotifyInfo"
   ##房屋租赁-保证金支付
   leaseNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/leaseNotifyInfo"
-  ##房屋租赁-租金支付
+  ##房屋租赁-剩余需结清租金支付
   leaseRentOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/leaseRentOrderNotifyInfo"
+  ##房屋租赁-租金账单支付
+  leaseRentBillOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/leaseRentBillOrderNotifyInfo"
 
 
   #页面跳转同步通知页面路径
