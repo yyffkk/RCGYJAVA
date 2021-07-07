@@ -1,11 +1,13 @@
 package com.api.app.dao.my;
 
 import com.api.model.app.AppUserIdAndExamineId;
+import com.api.model.app.SearchAppLeaseRent;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.butlerService.SysLeaseContract;
 import com.api.vo.app.AppLeaseInfoVo;
+import com.api.vo.app.AppLeaseRentVo;
 import com.api.vo.app.AppLeaseVo;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
@@ -183,4 +185,10 @@ public interface MyHouseDao {
      */
     SysLease findLeaseById(Integer id);
 
+    /**
+     * 查询所有的缴费查询（包含搜索条件）
+     * @param searchAppLeaseRent app 租赁租金账单 搜索条件
+     * @return 缴费查询
+     */
+    List<AppLeaseRentVo> findLeaseRentList(SearchAppLeaseRent searchAppLeaseRent);
 }

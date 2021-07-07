@@ -2,9 +2,11 @@ package com.api.app.service.my;
 
 import com.api.model.app.AppLeaseSubmitAudit;
 import com.api.model.app.AppLeaseValidContract;
+import com.api.model.app.SearchAppLeaseRent;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
+import com.api.vo.app.AppLeaseRentVo;
 import com.api.vo.app.AppLeaseVo;
 
 import java.util.List;
@@ -40,4 +42,6 @@ public interface MyHouseService {
     Map<String, Object> submitTerminateApplication(SysLease sysLease);
 
     Map<String, Object> depositRefundApplication(Integer sysLeaseId);
+
+    List<AppLeaseRentVo> findLeaseRentList(SearchAppLeaseRent searchAppLeaseRent);
 }

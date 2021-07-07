@@ -7,6 +7,7 @@ import com.api.manage.dao.resources.ResourcesImgDao;
 import com.api.model.app.AppLeaseSubmitAudit;
 import com.api.model.app.AppLeaseValidContract;
 import com.api.model.app.AppUserIdAndExamineId;
+import com.api.model.app.SearchAppLeaseRent;
 import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
@@ -19,6 +20,7 @@ import com.api.util.UploadUtil;
 import com.api.util.pdf.PdfReplaceMap;
 import com.api.util.pdf.PdfUtils;
 import com.api.vo.app.AppLeaseInfoVo;
+import com.api.vo.app.AppLeaseRentVo;
 import com.api.vo.app.AppLeaseVo;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
@@ -604,6 +606,11 @@ public class MyHouseServiceImpl implements MyHouseService {
         map.put("message","提交申请成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public List<AppLeaseRentVo> findLeaseRentList(SearchAppLeaseRent searchAppLeaseRent) {
+        return myHouseDao.findLeaseRentList(searchAppLeaseRent);
     }
 
 }

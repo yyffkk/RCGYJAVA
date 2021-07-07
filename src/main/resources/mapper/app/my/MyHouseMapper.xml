@@ -108,6 +108,17 @@
     <select id="findLeaseById" resultType="com.api.model.butlerService.SysLease">
         select * from sys_lease where id = #{id}
     </select>
+    <select id="findLeaseRentList" parameterType="com.api.model.app.SearchAppLeaseRent" resultType="com.api.vo.app.AppLeaseRentVo">
+        select a.* from (
+            select id,price,status as pay_status,create_date,2 as type from sys_lease_rent where sys_lease_id = #{sysLeaseId}
+            union all
+            select id,pay_price as price,1 as pay_status,create_date,1 as type from sys_lease_order where status = 2 and sys_lease_id = #{sysLeaseId}
+            union all
+            select id,pay_price as price,1 as pay_status,create_date,3 as type from sys_lease_rent_order where status = 2 and sys_lease_id = #{sysLeaseId}
+        ) as a
+        where YEAR(a.create_date) = #{years}
+        order by a.create_date desc
+    </select>
 
     <update id="submitTerminateApplication" parameterType="com.api.model.butlerService.SysLease">
         update sys_lease

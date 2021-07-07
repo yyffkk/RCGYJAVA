@@ -3,10 +3,13 @@ package com.api.app.controller.my;
 import com.api.app.service.my.MyHouseService;
 import com.api.model.app.AppLeaseSubmitAudit;
 import com.api.model.app.AppLeaseValidContract;
+import com.api.model.app.SearchAppLeaseRent;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
+import com.api.vo.app.AppLeaseRentVo;
 import com.api.vo.app.AppLeaseVo;
+import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -203,6 +206,23 @@ public class MyHouseController {
     @GetMapping("/depositRefundApplication")
     public Map<String,Object> depositRefundApplication(Integer sysLeaseId){
         return myHouseService.depositRefundApplication(sysLeaseId);
+    }
+
+    /**
+     * 查询所有的缴费查询（包含搜索条件）
+     * @param searchAppLeaseRent app 租赁租金账单 搜索条件
+     * @return map
+     */
+    @GetMapping("/findLeaseRentList")
+    public Map<String,Object> findLeaseRentList(SearchAppLeaseRent searchAppLeaseRent){
+        PageHelper.startPage(searchAppLeaseRent.getPageNum(),searchAppLeaseRent.getSize());
+        List<AppLeaseRentVo> appLeaseRentVos =myHouseService.findLeaseRentList(searchAppLeaseRent);
+        PageInfo<AppLeaseRentVo> pageInfo = new PageInfo<>(appLeaseRentVos);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 }
