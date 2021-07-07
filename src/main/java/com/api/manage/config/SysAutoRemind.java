@@ -17,10 +17,7 @@ import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
 import com.api.model.alipay.SysLeaseOrder;
-import com.api.model.app.AppDailyPaymentOrder;
-import com.api.model.app.AppGoodsAppointment;
-import com.api.model.app.AppGoodsIdAndAppointmentNum;
-import com.api.model.app.AppRepairOrder;
+import com.api.model.app.*;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
 import com.api.model.butlerService.*;
@@ -30,6 +27,7 @@ import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.util.IdWorker;
 import com.api.util.JiguangUtil;
+import com.api.vo.butlerService.VoLease;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -653,6 +651,32 @@ public class SysAutoRemind {
             }
         }else {
             log.info("房屋租赁app-保证金暂无待付款订单");
+        }
+    }
+
+    /**
+     * 0 0 0 1 1/1 ?
+     * （每月1号执行一次）轮询定时任务，生成租金帐单
+     */
+    @Scheduled(cron = "0 0 0 1 1/1 ? ")
+    public void autoCreateRentBill(){
+        //查询正在生效的租赁信息
+        List<VoLease> voLease = leaseDao.findAllEffectLease();
+        if (voLease != null && voLease.size()>0){
+            for (VoLease lease : voLease) {
+                AppLeaseRent appLeaseRent = new AppLeaseRent();
+                appLeaseRent.setSysLeaseId(lease.getId());//填入租赁主键id
+                appLeaseRent.setPrice(lease.getRentStandard());//需支付金额
+                appLeaseRent.setStatus(0);//默认0.未缴纳
+                appLeaseRent.setCreateDate(new Date());//填入创建时间
+                //添加租金账单
+                int insert = leaseDao.insertRent(appLeaseRent);
+                if (insert >0){
+                    log.info("租赁主键为"+lease.getId()+"的租金账单生成成功");
+                }else {
+                    log.info("租赁主键为"+lease.getId()+"的租金账单生成失败");
+                }
+            }
         }
     }
 

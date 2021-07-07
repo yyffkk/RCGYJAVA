@@ -208,6 +208,19 @@
             #{status}
         )
     </insert>
+    <insert id="insertRent" parameterType="com.api.model.app.AppLeaseRent">
+        insert into sys_lease_rent(
+            sys_lease_id,
+            price,
+            status,
+            create_date
+        )values (
+            #{sysLeaseId},
+            #{price},
+            #{status},
+            #{createDate}
+        )
+    </insert>
 
     <select id="findSysLeaseRentOrderByCode" parameterType="java.lang.String" resultType="com.api.model.alipay.SysLeaseRentOrder">
         select * from sys_lease_rent_order where code = #{outTradeNo}
@@ -237,6 +250,9 @@
     </select>
     <select id="findUnPaymentLeaseOrder" resultType="com.api.model.alipay.SysLeaseOrder">
         select * from sys_lease_order where status = 0 and NOW() <![CDATA[ >= ]]> DATE_ADD(create_date,INTERVAL 30 MINUTE)
+    </select>
+    <select id="findAllEffectLease" resultType="com.api.vo.butlerService.VoLease">
+        select * from sys_lease where status in (6,11,12)
     </select>
 
     <update id="updateSLOStatusByCode" parameterType="com.api.model.alipay.SysLeaseOrder">

@@ -2,6 +2,7 @@ package com.api.manage.dao.butlerService;
 
 import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.alipay.SysLeaseRentOrder;
+import com.api.model.app.AppLeaseRent;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
 import com.api.vo.butlerService.VoFBILease;
@@ -141,4 +142,17 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int updateMarginPayDateById(SysLease sysLease);
+
+    /**
+     * 查询正在生效的租赁信息
+     * @return 正在生效的租赁信息
+     */
+    List<VoLease> findAllEffectLease();
+
+    /**
+     * 添加租金账单
+     * @param appLeaseRent 租赁租金账单表
+     * @return 影响行数
+     */
+    int insertRent(AppLeaseRent appLeaseRent);
 }
