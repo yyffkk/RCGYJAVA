@@ -1,5 +1,6 @@
 package com.api.app.service.my;
 
+import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.AppLeaseSubmitAudit;
 import com.api.model.app.AppLeaseValidContract;
 import com.api.model.app.SearchAppLeaseRent;
@@ -44,4 +45,6 @@ public interface MyHouseService {
     Map<String, Object> depositRefundApplication(Integer sysLeaseId);
 
     List<AppLeaseRentVo> findLeaseRentList(SearchAppLeaseRent searchAppLeaseRent);
+
+    Map<String, Object> leaseRentOrderAlipay(SysLeaseRentOrder sysLeaseRentOrder);
 }

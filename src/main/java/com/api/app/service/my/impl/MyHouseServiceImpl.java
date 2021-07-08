@@ -3,7 +3,9 @@ package com.api.app.service.my.impl;
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.dao.my.MyHouseDao;
 import com.api.app.service.my.MyHouseService;
+import com.api.manage.dao.butlerService.LeaseDao;
 import com.api.manage.dao.resources.ResourcesImgDao;
+import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.AppLeaseSubmitAudit;
 import com.api.model.app.AppLeaseValidContract;
 import com.api.model.app.AppUserIdAndExamineId;
@@ -22,6 +24,7 @@ import com.api.util.pdf.PdfUtils;
 import com.api.vo.app.AppLeaseInfoVo;
 import com.api.vo.app.AppLeaseRentVo;
 import com.api.vo.app.AppLeaseVo;
+import com.api.vo.butlerService.VoFBILease;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
 import com.api.vo.resources.VoResourcesImg;
@@ -55,6 +58,8 @@ public class MyHouseServiceImpl implements MyHouseService {
     AppLoginDao appLoginDao;
     @Resource
     ResourcesImgDao resourcesImgDao;
+    @Resource
+    LeaseDao leaseDao;
 
 
 
@@ -611,6 +616,47 @@ public class MyHouseServiceImpl implements MyHouseService {
     @Override
     public List<AppLeaseRentVo> findLeaseRentList(SearchAppLeaseRent searchAppLeaseRent) {
         return myHouseDao.findLeaseRentList(searchAppLeaseRent);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> leaseRentOrderAlipay(SysLeaseRentOrder sysLeaseRentOrder) {
+        map = new HashMap<>();
+
+        try {
+            VoFBILease byId = leaseDao.findById(sysLeaseRentOrder.getSysLeaseId());
+            BigDecimal paymentPrice = byId.getRequiredRent();
+            if (paymentPrice.compareTo(sysLeaseRentOrder.getPayPrice()) != 0){
+                throw new RuntimeException("支付金额有误，请重新支付");
+            }
+
+            if (paymentPrice.compareTo(BigDecimal.ZERO) >0 ){
+                throw new RuntimeException("该接口支付金额不可大于0");
+            }
+
+            //根据租赁主键id更新租赁信息状态
+            SysLease sysLease = new SysLease();
+            sysLease.setId(sysLeaseRentOrder.getSysLeaseId());
+            sysLease.setStatus(14);//14.已支付剩余租金
+            int update = leaseDao.updateStatusById(sysLease);
+            if (update <= 0){
+                throw new RuntimeException("更新租赁信息的状态失败");
+            }
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","支付成功");
+        map.put("status",true);
+        return map;
     }
 
 }

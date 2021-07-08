@@ -1,6 +1,7 @@
 package com.api.app.controller.my;
 
 import com.api.app.service.my.MyHouseService;
+import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.AppLeaseSubmitAudit;
 import com.api.model.app.AppLeaseValidContract;
 import com.api.model.app.SearchAppLeaseRent;
@@ -196,6 +197,16 @@ public class MyHouseController {
     @PostMapping("/submitTerminateApplication")
     public Map<String,Object> submitTerminateApplication(@RequestBody SysLease sysLease){
         return myHouseService.submitTerminateApplication(sysLease);
+    }
+
+    /**
+     * app 房屋租赁-剩余需结清租金支付(当剩余需结清租金 小于等于 0 时调用)
+     * @param sysLeaseRentOrder 房屋租赁主键id sysLeaseId 付款金额 payPrice
+     * @return map
+     */
+    @PostMapping("/leaseRentOrderAlipay")
+    public Map<String,Object> leaseRentOrderAlipay(@RequestBody SysLeaseRentOrder sysLeaseRentOrder){
+        return myHouseService.leaseRentOrderAlipay(sysLeaseRentOrder);
     }
 
     /**
