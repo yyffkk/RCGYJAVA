@@ -7,6 +7,7 @@ import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.chargeManagement.SysDailyPaymentService;
+import com.api.util.IdWorker;
 import com.api.util.JiguangUtil;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoEnableTemplateDetail;
@@ -159,6 +160,8 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
             }
 
 
+            //填入支付单号
+            dailyPaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
             //填入创建人
             dailyPaymentOrder.setCreateId(sysUser.getId());
             //填入创建时间
