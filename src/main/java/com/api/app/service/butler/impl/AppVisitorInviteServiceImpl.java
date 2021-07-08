@@ -195,13 +195,20 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 throw new RuntimeException("预计到访时间不可小于当前时间");
             }
             UploadUtil uploadUtil = new UploadUtil();
+            //数据库存入自拍照片
             uploadUtil.saveUrlToDB(visitorsInviteSubmit.getImgList(),"userVisitorsNew",visitorsInviteSubmit.getId(),"selfie","600",30,20);
+            //数据库存入访客邀请身份证正面照片
+            uploadUtil.saveUrlToDB(visitorsInviteSubmit.getIdCardFrontImgList(),"userVisitorsNew",visitorsInviteSubmit.getId(),"idCardFrontImg","600",30,20);
+            //数据库存入访客邀请身份证背面照片
+            uploadUtil.saveUrlToDB(visitorsInviteSubmit.getIdCardBackImgList(),"userVisitorsNew",visitorsInviteSubmit.getId(),"idCardBackImg","600",30,20);
+
             //修改新版访客信息
             visitorsInviteSubmit.setStatus(2);//2.已提交
             int update = appVisitorInviteDao.updateUserVisitorsNew(visitorsInviteSubmit);
             if (update <= 0){
                 throw new RuntimeException("修改新版访客信息失败");
             }
+
 
             //根据拜访房产id查询设备号
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
@@ -249,7 +256,12 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
             //将照片保存进数据库
             UploadUtil uploadUtil = new UploadUtil();
+            //数据库存入自拍照片
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"selfie","600",30,20);
+            //数据库存入访客邀请身份证正面照片
+            uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getIdCardFrontImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"idCardFrontImg","600",30,20);
+            //数据库存入访客邀请身份证背面照片
+            uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getIdCardBackImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"idCardBackImg","600",30,20);
 
 //            根据拜访房产id查询设备号
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());

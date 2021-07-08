@@ -203,4 +203,24 @@ public class AppUploadController {
         return uploadService.uploadAppClearingSingle(file);
     }
 
+    /**
+     * 访客邀请上传身份证正面照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadAppVisitIdCardFront")
+    public Map<String,Object> uploadAppVisitIdCardFront(MultipartFile file){
+        return uploadService.uploadAppVisitIdCardFront(file);
+    }
+
+    /**
+     * 访客邀请上传身份证背面照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadAppVisitIdCardBack")
+    public Map<String,Object> uploadAppVisitIdCardBack(MultipartFile file){
+        return uploadService.uploadAppVisitIdCardBack(file);
+    }
+
 }

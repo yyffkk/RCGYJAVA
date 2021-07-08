@@ -109,6 +109,10 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_APP_CLEARING_SINGLE;
     @Value("${prop.upload-material-record-invoice}")
     private String UPLOAD_MATERIAL_RECORD_INVOICE;
+    @Value("${prop.upload-app-visit-id-card-front}")
+    private String UPLOAD_APP_VISIT_ID_CARD_FRONT;
+    @Value("${prop.upload-app-visit-id-card-back}")
+    private String UPLOAD_APP_VISIT_ID_CARD_BACK;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -445,6 +449,18 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadMaterialRecordInvoice(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_MATERIAL_RECORD_INVOICE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadAppVisitIdCardFront(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_APP_VISIT_ID_CARD_FRONT);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadAppVisitIdCardBack(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_APP_VISIT_ID_CARD_BACK);
         return map;
     }
 

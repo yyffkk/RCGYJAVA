@@ -91,4 +91,8 @@ public interface UploadService {
     Map<String, Object> uploadAppClearingSingle(MultipartFile file);
 
     Map<String, Object> uploadMaterialRecordInvoice(MultipartFile file);
+
+    Map<String, Object> uploadAppVisitIdCardFront(MultipartFile file);
+
+    Map<String, Object> uploadAppVisitIdCardBack(MultipartFile file);
 }

@@ -59,6 +59,19 @@ public class AppUserQRVisitorsInviteSubmit {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 身份证号
+     */
+    private String idNumber;
+    /**
+     * 身份证正面上传路径
+     */
+    private String[] idCardFrontImgList;
+    /**
+     * 身份证背面上传路径
+     */
+    private String[] idCardBackImgList;
+
 
     @Override
     public String toString() {
@@ -76,6 +89,9 @@ public class AppUserQRVisitorsInviteSubmit {
                 ", imgList=" + Arrays.toString(imgList) +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", idNumber='" + idNumber + '\'' +
+                ", idCardFrontImgList=" + Arrays.toString(idCardFrontImgList) +
+                ", idCardBackImgList=" + Arrays.toString(idCardBackImgList) +
                 '}';
     }
 
@@ -183,10 +199,34 @@ public class AppUserQRVisitorsInviteSubmit {
         this.createDate = createDate;
     }
 
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String[] getIdCardFrontImgList() {
+        return idCardFrontImgList;
+    }
+
+    public void setIdCardFrontImgList(String[] idCardFrontImgList) {
+        this.idCardFrontImgList = idCardFrontImgList;
+    }
+
+    public String[] getIdCardBackImgList() {
+        return idCardBackImgList;
+    }
+
+    public void setIdCardBackImgList(String[] idCardBackImgList) {
+        this.idCardBackImgList = idCardBackImgList;
+    }
+
     public AppUserQRVisitorsInviteSubmit() {
     }
 
-    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, Integer status, String[] imgList, Integer createId, Date createDate) {
+    public AppUserQRVisitorsInviteSubmit(Integer id, Integer estateId, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, Integer status, String[] imgList, Integer createId, Date createDate, String idNumber, String[] idCardFrontImgList, String[] idCardBackImgList) {
         this.id = id;
         this.estateId = estateId;
         this.name = name;
@@ -200,5 +240,8 @@ public class AppUserQRVisitorsInviteSubmit {
         this.imgList = imgList;
         this.createId = createId;
         this.createDate = createDate;
+        this.idNumber = idNumber;
+        this.idCardFrontImgList = idCardFrontImgList;
+        this.idCardBackImgList = idCardBackImgList;
     }
 }

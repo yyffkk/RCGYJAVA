@@ -122,6 +122,9 @@
         <if test="peers != null">
             peers = #{peers},
         </if>
+        <if test="idNumber != null and idNumber != ''">
+            id_number = #{idNumber},
+        </if>
         visit_date_start = #{visitDateStart},
         visit_date_end = #{visitDateEnd},
         status = #{status}
@@ -147,6 +150,9 @@
                 peers,
             </if>
             status,
+            <if test="idNumber != null and idNumber != ''">
+                id_number,
+            </if>
             create_id,
             create_date
         )values (
@@ -163,6 +169,9 @@
                 #{peers},
             </if>
             #{status},
+            <if test="idNumber != null and idNumber != ''">
+                #{idNumber},
+            </if>
             #{createId},
             #{createDate}
         )

@@ -55,6 +55,19 @@ public class AppUserVisitorsInviteSubmit {
      * 状态：1.已分享，2.已提交
      */
     private Integer status;
+    /**
+     * 身份证号
+     */
+    private String idNumber;
+    /**
+     * 身份证正面上传路径
+     */
+    private String[] idCardFrontImgList;
+    /**
+     * 身份证背面上传路径
+     */
+    private String[] idCardBackImgList;
+
 
     @Override
     public String toString() {
@@ -71,6 +84,9 @@ public class AppUserVisitorsInviteSubmit {
                 ", peers=" + peers +
                 ", imgList=" + Arrays.toString(imgList) +
                 ", status=" + status +
+                ", idNumber='" + idNumber + '\'' +
+                ", idCardFrontImgList=" + Arrays.toString(idCardFrontImgList) +
+                ", idCardBackImgList=" + Arrays.toString(idCardBackImgList) +
                 '}';
     }
 
@@ -170,10 +186,34 @@ public class AppUserVisitorsInviteSubmit {
         this.status = status;
     }
 
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String[] getIdCardFrontImgList() {
+        return idCardFrontImgList;
+    }
+
+    public void setIdCardFrontImgList(String[] idCardFrontImgList) {
+        this.idCardFrontImgList = idCardFrontImgList;
+    }
+
+    public String[] getIdCardBackImgList() {
+        return idCardBackImgList;
+    }
+
+    public void setIdCardBackImgList(String[] idCardBackImgList) {
+        this.idCardBackImgList = idCardBackImgList;
+    }
+
     public AppUserVisitorsInviteSubmit() {
     }
 
-    public AppUserVisitorsInviteSubmit(Integer id, Integer estateId, String code, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, String[] imgList, Integer status) {
+    public AppUserVisitorsInviteSubmit(Integer id, Integer estateId, String code, String name, String tel, Integer sex, String carNumber, Date visitDateStart, Date visitDateEnd, Integer peers, String[] imgList, Integer status, String idNumber, String[] idCardFrontImgList, String[] idCardBackImgList) {
         this.id = id;
         this.estateId = estateId;
         this.code = code;
@@ -186,5 +226,8 @@ public class AppUserVisitorsInviteSubmit {
         this.peers = peers;
         this.imgList = imgList;
         this.status = status;
+        this.idNumber = idNumber;
+        this.idCardFrontImgList = idCardFrontImgList;
+        this.idCardBackImgList = idCardBackImgList;
     }
 }

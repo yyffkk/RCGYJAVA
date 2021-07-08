@@ -98,6 +98,10 @@ prop:
   upload-app-id-card-back: /img/idCard/back/
   #App-租赁合同终止：腾空单上传路径
   upload-app-clearing-single: /img/clearingSingle/
+  #App-访客邀请信息：身份证正面上传路径
+  upload-app-visit-id-card-front: /img/visit/idCard/Front/
+  #App-访客邀请信息：身份证背面上传路径
+  upload-app-visit-id-card-back: /img/visit/idCard/back/
 
   #ButlerApp-个人资料：头像照片上传路径
   upload-butler-app-head-sculpture: /img/butlerAppHeadSculpture/
