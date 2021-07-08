@@ -302,6 +302,12 @@
     <select id="findSysLeaseRentBillOrderByCode" parameterType="java.lang.String" resultType="com.api.model.alipay.SysLeaseRentBillOrder">
         select * from sys_lease_rent_bill_order where code = #{outTradeNo}
     </select>
+    <select id="findUnPaymentLeaseRentOrder" resultType="com.api.model.alipay.SysLeaseRentOrder">
+        select * from sys_lease_rent_order where status = 0 and NOW() <![CDATA[ >= ]]> DATE_ADD(create_date,INTERVAL 30 MINUTE)
+    </select>
+    <select id="findUnPaymentLeaseRentBillOrder" resultType="com.api.model.alipay.SysLeaseRentBillOrder">
+        select * from sys_lease_rent_bill_order where status = 0 and NOW() <![CDATA[ >= ]]> DATE_ADD(create_date,INTERVAL 30 MINUTE)
+    </select>
 
     <update id="updateLeaseRentBillOrderStatusByCode" parameterType="com.api.model.alipay.SysLeaseRentBillOrder">
         update sys_lease_rent_bill_order
@@ -317,6 +323,16 @@
         update sys_lease_rent
         set status = 2
         where sys_lease_id = #{sysLeaseId} and status = 0
+    </update>
+    <update id="updateSLROStatusByCode" parameterType="com.api.model.alipay.SysLeaseRentOrder">
+        update sys_lease_rent_order
+        set status = #{status}
+        where code = #{code}
+    </update>
+    <update id="updateSLRBOStatusByCode" parameterType="com.api.model.alipay.SysLeaseRentBillOrder">
+        update sys_lease_rent_bill_order
+        set status = #{status}
+        where code = #{code}
     </update>
 
 </mapper>

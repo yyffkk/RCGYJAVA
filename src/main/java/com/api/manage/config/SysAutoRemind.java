@@ -17,6 +17,8 @@ import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
 import com.api.model.alipay.SysLeaseOrder;
+import com.api.model.alipay.SysLeaseRentBillOrder;
+import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.*;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
@@ -651,6 +653,74 @@ public class SysAutoRemind {
             }
         }else {
             log.info("房屋租赁app-保证金暂无待付款订单");
+        }
+    }
+
+    /**
+     * 0 0/10 * * * ?
+     * （每10分钟执行一次）轮询定时任务，查询app-房屋租赁剩余需结清租金支付未付款订单，是否超时或错误关闭
+     */
+    @Scheduled(cron = "0 0/10 * * * ? ")
+    public void autoCheckOutTimeLeaseRent(){
+        //查询未缴纳订单信息
+        List<SysLeaseRentOrder> sysLeaseRentOrderList = leaseDao.findUnPaymentLeaseRentOrder();
+        if (sysLeaseRentOrderList != null && sysLeaseRentOrderList.size()>0){
+            for (SysLeaseRentOrder sysLeaseRentOrder : sysLeaseRentOrderList) {
+                //先进行查询未缴纳订单信息，查询是否超时
+                Map<String, Object> map = alipayService.leaseRentOrderCheckAlipay(sysLeaseRentOrder.getCode());
+                int status = (int)map.get("status");
+                if (status != -1){
+                    log.info("订单查询成功,订单号为："+sysLeaseRentOrder.getCode()+",message:"+map.get("message"));
+                }else {
+                    log.info("订单查询失败,订单号为："+sysLeaseRentOrder.getCode()+",message:"+map.get("message"));
+                    log.info("关闭 错误或超时的订单，订单号为："+sysLeaseRentOrder.getCode());
+                    SysLeaseRentOrder sysLeaseRentOrder1 = new SysLeaseRentOrder();
+                    sysLeaseRentOrder1.setCode(sysLeaseRentOrder.getCode());
+                    sysLeaseRentOrder1.setStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                    int i = leaseDao.updateSLROStatusByCode(sysLeaseRentOrder1);
+                    if (i >0){
+                        log.info("关闭房屋租赁app-租赁剩余需结清租金 错误或超时的订单成功！！！");
+                    }else {
+                        log.info("关闭房屋租赁app-租赁剩余需结清租金 错误或超时的订单失败！！！");
+                    }
+                }
+            }
+        }else {
+            log.info("房屋租赁app-租赁剩余需结清租金暂无待付款订单");
+        }
+    }
+
+    /**
+     * 0 0/10 * * * ?
+     * （每10分钟执行一次）轮询定时任务，查询app-房屋租赁租金账单支付未付款订单，是否超时或错误关闭
+     */
+    @Scheduled(cron = "0 0/10 * * * ? ")
+    public void autoCheckOutTimeLeaseRentBill(){
+        //查询未缴纳订单信息
+        List<SysLeaseRentBillOrder> sysLeaseRentBillOrderList = leaseDao.findUnPaymentLeaseRentBillOrder();
+        if (sysLeaseRentBillOrderList != null && sysLeaseRentBillOrderList.size()>0){
+            for (SysLeaseRentBillOrder sysLeaseRentBillOrder : sysLeaseRentBillOrderList) {
+                //先进行查询未缴纳订单信息，查询是否超时
+                Map<String, Object> map = alipayService.leaseRentBillOrderCheckAlipay(sysLeaseRentBillOrder.getCode());
+                int status = (int)map.get("status");
+                if (status != -1){
+                    log.info("订单查询成功,订单号为："+sysLeaseRentBillOrder.getCode()+",message:"+map.get("message"));
+                }else {
+                    log.info("订单查询失败,订单号为："+sysLeaseRentBillOrder.getCode()+",message:"+map.get("message"));
+                    log.info("关闭 错误或超时的订单，订单号为："+sysLeaseRentBillOrder.getCode());
+                    SysLeaseRentBillOrder sysLeaseRentBillOrder1 = new SysLeaseRentBillOrder();
+                    sysLeaseRentBillOrder1.setCode(sysLeaseRentBillOrder.getCode());
+                    sysLeaseRentBillOrder1.setStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                    int i = leaseDao.updateSLRBOStatusByCode(sysLeaseRentBillOrder1);
+                    if (i >0){
+                        log.info("关闭房屋租赁app-租赁租金账单 错误或超时的订单成功！！！");
+                    }else {
+                        log.info("关闭房屋租赁app-租赁租金账单 错误或超时的订单失败！！！");
+                    }
+                }
+            }
+        }else {
+            log.info("房屋租赁app-租赁租金账单暂无待付款订单");
         }
     }
 

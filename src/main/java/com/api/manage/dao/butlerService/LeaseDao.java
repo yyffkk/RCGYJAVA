@@ -206,4 +206,30 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int updateSLRStatusUnPayToSettledBySLId(Integer sysLeaseId);
+
+    /**
+     * 查询未缴纳的租赁剩余需结清租金订单信息
+     * @return 未缴纳的租赁剩余需结清租金订单信息
+     */
+    List<SysLeaseRentOrder> findUnPaymentLeaseRentOrder();
+
+    /**
+     * 根据code【租赁剩余需结清租金支付单号】修改租赁剩余需结清租金订单状态
+     * @param sysLeaseRentOrder1 app 房屋租赁剩余需结清租金订单model
+     * @return 影响行数
+     */
+    int updateSLROStatusByCode(SysLeaseRentOrder sysLeaseRentOrder1);
+
+    /**
+     * 查询未缴纳的租赁租金账单订单信息
+     * @return 未缴纳的租赁租金账单订单信息
+     */
+    List<SysLeaseRentBillOrder> findUnPaymentLeaseRentBillOrder();
+
+    /**
+     * 根据code【租赁租金账单支付单号】修改租赁租金账单订单状态
+     * @param sysLeaseRentBillOrder1 app 房屋租赁租金账单订单model
+     * @return 影响行数
+     */
+    int updateSLRBOStatusByCode(SysLeaseRentBillOrder sysLeaseRentBillOrder1);
 }
