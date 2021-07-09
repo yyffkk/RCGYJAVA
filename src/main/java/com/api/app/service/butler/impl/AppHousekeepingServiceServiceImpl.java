@@ -4,7 +4,9 @@ import com.api.app.dao.butler.AppHousekeepingServiceDao;
 import com.api.app.service.butler.AppHousekeepingServiceService;
 import com.api.model.app.AppHousekeepingService;
 import com.api.model.app.AppHousekeepingServiceProcessRecord;
+import com.api.model.app.SearchAppHousekeepingService;
 import com.api.util.UploadUtil;
+import com.api.vo.app.AppHousekeepingServiceVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -12,6 +14,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -73,5 +76,10 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
         map.put("message","提交成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public List<AppHousekeepingServiceVo> list(SearchAppHousekeepingService searchAppHousekeepingService) {
+        return appHousekeepingServiceDao.list(searchAppHousekeepingService);
     }
 }

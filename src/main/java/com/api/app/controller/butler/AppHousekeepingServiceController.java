@@ -2,14 +2,18 @@ package com.api.app.controller.butler;
 
 import com.api.app.service.butler.AppHousekeepingServiceService;
 import com.api.model.app.AppHousekeepingService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.api.model.app.SearchAppHousekeepingService;
+import com.api.vo.app.AppFacilitiesAppointmentVo;
+import com.api.vo.app.AppHousekeepingServiceVo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +40,23 @@ public class AppHousekeepingServiceController {
         appHousekeepingService.setCreateId(id);
         appHousekeepingService.setCreateDate(new Date());
         return appHousekeepingServiceService.submitHousekeeping(appHousekeepingService);
+    }
+
+    /**
+     * 查询所有的家政服务信息(包含条件搜索)
+     * @param searchAppHousekeepingService app 新版家政服务搜素条件
+     * @return map
+     */
+    @GetMapping("/list")
+    public Map<String,Object> list(SearchAppHousekeepingService searchAppHousekeepingService){
+        PageHelper.startPage(searchAppHousekeepingService.getPageNum(),searchAppHousekeepingService.getSize());
+        List<AppHousekeepingServiceVo> appHousekeepingServiceVoList =appHousekeepingServiceService.list(searchAppHousekeepingService);
+        PageInfo<AppHousekeepingServiceVo> pageInfo = new PageInfo<>(appHousekeepingServiceVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 }

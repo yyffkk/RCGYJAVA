@@ -45,4 +45,16 @@
             #{operatorContent}
         )
     </insert>
+    <select id="list" parameterType="com.api.model.app.SearchAppHousekeepingService" resultType="com.api.vo.app.AppHousekeepingServiceVo">
+        select shs.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
+        from sys_housekeeping_service as shs,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        <where>
+            shs.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            <if test="housekeepingStatus != null">
+                and shs.status = #{housekeepingStatus}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -2,6 +2,10 @@ package com.api.app.dao.butler;
 
 import com.api.model.app.AppHousekeepingService;
 import com.api.model.app.AppHousekeepingServiceProcessRecord;
+import com.api.model.app.SearchAppHousekeepingService;
+import com.api.vo.app.AppHousekeepingServiceVo;
+
+import java.util.List;
 
 public interface AppHousekeepingServiceDao {
     /**
@@ -17,4 +21,11 @@ public interface AppHousekeepingServiceDao {
      * @return 影响行数
      */
     int insertHousekeepingProcessRecord(AppHousekeepingServiceProcessRecord processRecord);
+
+    /**
+     * 查询所有的家政服务信息(包含条件搜索)
+     * @param searchAppHousekeepingService app 新版家政服务搜素条件
+     * @return 家政服务信息集合
+     */
+    List<AppHousekeepingServiceVo> list(SearchAppHousekeepingService searchAppHousekeepingService);
 }
