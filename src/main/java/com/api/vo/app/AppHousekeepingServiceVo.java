@@ -14,6 +14,14 @@ public class AppHousekeepingServiceVo {
      */
     private Integer id;
     /**
+     * 申请人姓名
+     */
+    private String proposerName;
+    /**
+     * 申请人手机号
+     */
+    private String proposerTel;
+    /**
      * 房屋名称
      */
     private String roomName;
@@ -30,6 +38,34 @@ public class AppHousekeepingServiceVo {
      */
     private Integer status;
     /**
+     * 完成情况：1.未完成,2.已完成
+     */
+    private Integer completion;
+    /**
+     * 处理描述
+     */
+    private String processDescription;
+    /**
+     * 处理时间
+     */
+    private Date handlingTime;
+    /**
+     * 支付费用
+     */
+    private Double payFee;
+    /**
+     * 评价，1-10分
+     */
+    private Integer evaluation;
+    /**
+     * 评价内容
+     */
+    private String evaluationContent;
+    /**
+     * 评价时间
+     */
+    private Date evaluationTime;
+    /**
      * 创建时间
      */
     private Date createDate;
@@ -42,10 +78,19 @@ public class AppHousekeepingServiceVo {
     public String toString() {
         return "AppHousekeepingServiceVo{" +
                 "id=" + id +
+                ", proposerName='" + proposerName + '\'' +
+                ", proposerTel='" + proposerTel + '\'' +
                 ", roomName='" + roomName + '\'' +
                 ", type=" + type +
                 ", content='" + content + '\'' +
                 ", status=" + status +
+                ", completion=" + completion +
+                ", processDescription='" + processDescription + '\'' +
+                ", handlingTime=" + handlingTime +
+                ", payFee=" + payFee +
+                ", evaluation=" + evaluation +
+                ", evaluationContent='" + evaluationContent + '\'' +
+                ", evaluationTime=" + evaluationTime +
                 ", createDate=" + createDate +
                 ", submitImgList=" + submitImgList +
                 '}';
@@ -57,6 +102,22 @@ public class AppHousekeepingServiceVo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getProposerName() {
+        return proposerName;
+    }
+
+    public void setProposerName(String proposerName) {
+        this.proposerName = proposerName;
+    }
+
+    public String getProposerTel() {
+        return proposerTel;
+    }
+
+    public void setProposerTel(String proposerTel) {
+        this.proposerTel = proposerTel;
     }
 
     public String getRoomName() {
@@ -91,6 +152,62 @@ public class AppHousekeepingServiceVo {
         this.status = status;
     }
 
+    public Integer getCompletion() {
+        return completion;
+    }
+
+    public void setCompletion(Integer completion) {
+        this.completion = completion;
+    }
+
+    public String getProcessDescription() {
+        return processDescription;
+    }
+
+    public void setProcessDescription(String processDescription) {
+        this.processDescription = processDescription;
+    }
+
+    public Date getHandlingTime() {
+        return handlingTime;
+    }
+
+    public void setHandlingTime(Date handlingTime) {
+        this.handlingTime = handlingTime;
+    }
+
+    public Double getPayFee() {
+        return payFee;
+    }
+
+    public void setPayFee(Double payFee) {
+        this.payFee = payFee;
+    }
+
+    public Integer getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(Integer evaluation) {
+        this.evaluation = evaluation;
+    }
+
+    public String getEvaluationContent() {
+        return evaluationContent;
+    }
+
+    public void setEvaluationContent(String evaluationContent) {
+        this.evaluationContent = evaluationContent;
+    }
+
+    public Date getEvaluationTime() {
+        return evaluationTime;
+    }
+
+    public void setEvaluationTime(Date evaluationTime) {
+        this.evaluationTime = evaluationTime;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -110,12 +227,21 @@ public class AppHousekeepingServiceVo {
     public AppHousekeepingServiceVo() {
     }
 
-    public AppHousekeepingServiceVo(Integer id, String roomName, Integer type, String content, Integer status, Date createDate, List<VoResourcesImg> submitImgList) {
+    public AppHousekeepingServiceVo(Integer id, String proposerName, String proposerTel, String roomName, Integer type, String content, Integer status, Integer completion, String processDescription, Date handlingTime, Double payFee, Integer evaluation, String evaluationContent, Date evaluationTime, Date createDate, List<VoResourcesImg> submitImgList) {
         this.id = id;
+        this.proposerName = proposerName;
+        this.proposerTel = proposerTel;
         this.roomName = roomName;
         this.type = type;
         this.content = content;
         this.status = status;
+        this.completion = completion;
+        this.processDescription = processDescription;
+        this.handlingTime = handlingTime;
+        this.payFee = payFee;
+        this.evaluation = evaluation;
+        this.evaluationContent = evaluationContent;
+        this.evaluationTime = evaluationTime;
         this.createDate = createDate;
         this.submitImgList = submitImgList;
     }

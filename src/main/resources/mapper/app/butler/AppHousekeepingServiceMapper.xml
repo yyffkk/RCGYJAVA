@@ -46,12 +46,13 @@
         )
     </insert>
     <select id="list" parameterType="com.api.model.app.SearchAppHousekeepingService" resultType="com.api.vo.app.AppHousekeepingServiceVo">
-        select shs.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name
-        from sys_housekeeping_service as shs,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        select shs.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,ur.name as proposer_name,ur.tel as proposer_tel
+        from sys_housekeeping_service as shs,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
         <where>
             shs.estate_id = cbue.id
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
+            and shs.proposer = ur.id
             <if test="housekeepingStatus != null">
                 and shs.status = #{housekeepingStatus}
             </if>
