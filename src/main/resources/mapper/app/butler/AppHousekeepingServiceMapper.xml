@@ -28,4 +28,21 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+    <insert id="insertHousekeepingProcessRecord" parameterType="com.api.model.app.AppHousekeepingServiceProcessRecord">
+        insert into sys_housekeeping_service_process_record(
+            housekeeping_service_id,
+            operation_date,
+            operation_type,
+            operator,
+            operator_type,
+            operator_content
+        )values (
+            #{housekeepingServiceId},
+            #{operationDate},
+            #{operationType},
+            #{operator},
+            #{operatorType},
+            #{operatorContent}
+        )
+    </insert>
 </mapper>

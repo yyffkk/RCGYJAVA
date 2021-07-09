@@ -1,6 +1,7 @@
 package com.api.app.dao.butler;
 
 import com.api.model.app.AppHousekeepingService;
+import com.api.model.app.AppHousekeepingServiceProcessRecord;
 
 public interface AppHousekeepingServiceDao {
     /**
@@ -9,4 +10,11 @@ public interface AppHousekeepingServiceDao {
      * @return 影响行数
      */
     int submitHousekeeping(AppHousekeepingService appHousekeepingService);
+
+    /**
+     * 添加家政服务处理进程记录
+     * @param processRecord app 新版家政服务处理进程记录
+     * @return 影响行数
+     */
+    int insertHousekeepingProcessRecord(AppHousekeepingServiceProcessRecord processRecord);
 }
