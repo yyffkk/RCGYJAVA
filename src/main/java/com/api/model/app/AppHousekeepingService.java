@@ -1,5 +1,7 @@
 package com.api.model.app;
 
+
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -82,6 +84,10 @@ public class AppHousekeepingService {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 家政照片提交路径集合
+     */
+    private String[] submitImgUrls;
 
     @Override
     public String toString() {
@@ -105,6 +111,7 @@ public class AppHousekeepingService {
                 ", applyTime=" + applyTime +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", submitImgUrls=" + Arrays.toString(submitImgUrls) +
                 '}';
     }
 
@@ -260,10 +267,18 @@ public class AppHousekeepingService {
         this.createDate = createDate;
     }
 
+    public String[] getSubmitImgUrls() {
+        return submitImgUrls;
+    }
+
+    public void setSubmitImgUrls(String[] submitImgUrls) {
+        this.submitImgUrls = submitImgUrls;
+    }
+
     public AppHousekeepingService() {
     }
 
-    public AppHousekeepingService(Integer id, Integer estateId, Integer type, String content, Integer status, Integer assigner, Date allocateTime, Integer completion, String processDescription, Double payFee, Integer handler, Date handlingTime, Integer evaluation, String evaluationContent, Date evaluationTime, Integer proposer, Date applyTime, Integer createId, Date createDate) {
+    public AppHousekeepingService(Integer id, Integer estateId, Integer type, String content, Integer status, Integer assigner, Date allocateTime, Integer completion, String processDescription, Double payFee, Integer handler, Date handlingTime, Integer evaluation, String evaluationContent, Date evaluationTime, Integer proposer, Date applyTime, Integer createId, Date createDate, String[] submitImgUrls) {
         this.id = id;
         this.estateId = estateId;
         this.type = type;
@@ -283,5 +298,6 @@ public class AppHousekeepingService {
         this.applyTime = applyTime;
         this.createId = createId;
         this.createDate = createDate;
+        this.submitImgUrls = submitImgUrls;
     }
 }
