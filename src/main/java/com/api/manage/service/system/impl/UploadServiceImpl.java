@@ -113,6 +113,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_APP_VISIT_ID_CARD_FRONT;
     @Value("${prop.upload-app-visit-id-card-back}")
     private String UPLOAD_APP_VISIT_ID_CARD_BACK;
+    @Value("${prop.upload-app-housekeeping-service-submit-phone}")
+    private String UPLOAD_APP_HOUSEKEEPING_SERVICE_SUBMIT_PHONE;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -461,6 +463,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadAppVisitIdCardBack(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_APP_VISIT_ID_CARD_BACK);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadAppHousekeepingServiceSubmitPhone(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_APP_HOUSEKEEPING_SERVICE_SUBMIT_PHONE);
         return map;
     }
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppHousekeepingServiceDao">
+
+    <insert id="submitHousekeeping" parameterType="com.api.model.app.AppHousekeepingService">
+        insert into sys_housekeeping_service(
+            estate_id,
+            type,
+            content,
+            status,
+            proposer,
+            apply_time,
+            create_id,
+            create_date
+        )values (
+            #{estateId},
+            #{type},
+            #{content},
+            #{status},
+            #{proposer},
+            #{applyTime},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+</mapper>

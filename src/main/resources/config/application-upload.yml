@@ -102,6 +102,8 @@ prop:
   upload-app-visit-id-card-front: /img/visit/idCard/Front/
   #App-访客邀请信息：身份证背面上传路径
   upload-app-visit-id-card-back: /img/visit/idCard/back/
+  #App-家政服务：家政服务提交照片上传路径
+  upload-app-housekeeping-service-submit-phone: /img/housekeepingService/submitPhone/
 
   #ButlerApp-个人资料：头像照片上传路径
   upload-butler-app-head-sculpture: /img/butlerAppHeadSculpture/

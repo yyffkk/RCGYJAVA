@@ -223,4 +223,14 @@ public class AppUploadController {
         return uploadService.uploadAppVisitIdCardBack(file);
     }
 
+    /**
+     * 家政服务上传提交照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadAppHousekeepingServiceSubmitPhone")
+    public Map<String,Object> uploadAppHousekeepingServiceSubmitPhone(MultipartFile file){
+        return uploadService.uploadAppHousekeepingServiceSubmitPhone(file);
+    }
+
 }
