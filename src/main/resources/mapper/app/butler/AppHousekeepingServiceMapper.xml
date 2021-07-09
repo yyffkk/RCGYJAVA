@@ -53,6 +53,7 @@
             and cbue.building_unit_id = cbu.id
             and cbu.building_id = cb.id
             and shs.proposer = ur.id
+            and shs.proposer = #{id}
             <if test="housekeepingStatus != null">
                 and shs.status = #{housekeepingStatus}
             </if>

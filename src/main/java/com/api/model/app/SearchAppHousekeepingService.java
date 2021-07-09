@@ -13,6 +13,10 @@ public class SearchAppHousekeepingService {
      */
     private int size;
     /**
+     * 用户主键id
+     */
+    private Integer id;
+    /**
      * 家政状态
      */
     private Integer housekeepingStatus;
@@ -22,6 +26,7 @@ public class SearchAppHousekeepingService {
         return "SearchAppHousekeepingService{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
+                ", id=" + id +
                 ", housekeepingStatus=" + housekeepingStatus +
                 '}';
     }
@@ -42,6 +47,14 @@ public class SearchAppHousekeepingService {
         this.size = size;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getHousekeepingStatus() {
         return housekeepingStatus;
     }
@@ -53,9 +66,10 @@ public class SearchAppHousekeepingService {
     public SearchAppHousekeepingService() {
     }
 
-    public SearchAppHousekeepingService(int pageNum, int size, Integer housekeepingStatus) {
+    public SearchAppHousekeepingService(int pageNum, int size, Integer id, Integer housekeepingStatus) {
         this.pageNum = pageNum;
         this.size = size;
+        this.id = id;
         this.housekeepingStatus = housekeepingStatus;
     }
 }
