@@ -91,4 +91,15 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
         }
         return list;
     }
+
+    @Override
+    public Map<String, Object> findHousekeepingProcessRecord(Integer housekeepingServiceId) {
+        map = new HashMap<>();
+        List<AppHousekeepingServiceProcessRecord> processRecords = appHousekeepingServiceDao.findHousekeepingProcessRecord(housekeepingServiceId);
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",processRecords);
+        return map;
+    }
 }

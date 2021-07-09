@@ -59,5 +59,14 @@ public class AppHousekeepingServiceController {
         return map;
     }
 
-//    public Map<String,Object>
+
+    /**
+     * 根据家政服务主键id查询家政服务服务进程
+     * @param housekeepingServiceId 家政服务主键id
+     * @return 家政服务服务进程
+     */
+    @GetMapping("/findHousekeepingProcessRecord")
+    public Map<String,Object> findHousekeepingProcessRecord(Integer housekeepingServiceId){
+        return appHousekeepingServiceService.findHousekeepingProcessRecord(housekeepingServiceId);
+    }
 }

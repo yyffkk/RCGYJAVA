@@ -58,4 +58,9 @@
             </if>
         </where>
     </select>
+    <select id="findHousekeepingProcessRecord" parameterType="java.lang.Integer"
+            resultType="com.api.model.app.AppHousekeepingServiceProcessRecord">
+        select * from sys_housekeeping_service_process_record
+        where housekeeping_service_id = #{housekeepingServiceId}
+    </select>
 </mapper>

@@ -28,4 +28,11 @@ public interface AppHousekeepingServiceDao {
      * @return 家政服务信息集合
      */
     List<AppHousekeepingServiceVo> list(SearchAppHousekeepingService searchAppHousekeepingService);
+
+    /**
+     * 根据家政服务主键id查询家政服务服务进程
+     * @param housekeepingServiceId 家政服务主键id
+     * @return 家政服务服务进程集合
+     */
+    List<AppHousekeepingServiceProcessRecord> findHousekeepingProcessRecord(Integer housekeepingServiceId);
 }

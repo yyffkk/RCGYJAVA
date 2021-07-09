@@ -11,4 +11,6 @@ public interface AppHousekeepingServiceService {
     Map<String, Object> submitHousekeeping(AppHousekeepingService appHousekeepingService);
 
     List<AppHousekeepingServiceVo> list(SearchAppHousekeepingService searchAppHousekeepingService);
+
+    Map<String, Object> findHousekeepingProcessRecord(Integer housekeepingServiceId);
 }
