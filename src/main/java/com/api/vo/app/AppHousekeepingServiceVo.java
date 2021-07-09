@@ -1,6 +1,9 @@
 package com.api.vo.app;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * app新版家政服务 Vo list 回显
@@ -30,6 +33,10 @@ public class AppHousekeepingServiceVo {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 提交照片资源信息
+     */
+    private List<VoResourcesImg> submitImgList;
 
     @Override
     public String toString() {
@@ -40,6 +47,7 @@ public class AppHousekeepingServiceVo {
                 ", content='" + content + '\'' +
                 ", status=" + status +
                 ", createDate=" + createDate +
+                ", submitImgList=" + submitImgList +
                 '}';
     }
 
@@ -91,15 +99,24 @@ public class AppHousekeepingServiceVo {
         this.createDate = createDate;
     }
 
+    public List<VoResourcesImg> getSubmitImgList() {
+        return submitImgList;
+    }
+
+    public void setSubmitImgList(List<VoResourcesImg> submitImgList) {
+        this.submitImgList = submitImgList;
+    }
+
     public AppHousekeepingServiceVo() {
     }
 
-    public AppHousekeepingServiceVo(Integer id, String roomName, Integer type, String content, Integer status, Date createDate) {
+    public AppHousekeepingServiceVo(Integer id, String roomName, Integer type, String content, Integer status, Date createDate, List<VoResourcesImg> submitImgList) {
         this.id = id;
         this.roomName = roomName;
         this.type = type;
         this.content = content;
         this.status = status;
         this.createDate = createDate;
+        this.submitImgList = submitImgList;
     }
 }

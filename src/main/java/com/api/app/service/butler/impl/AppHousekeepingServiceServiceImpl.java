@@ -7,6 +7,7 @@ import com.api.model.app.AppHousekeepingServiceProcessRecord;
 import com.api.model.app.SearchAppHousekeepingService;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppHousekeepingServiceVo;
+import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -80,6 +81,14 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
 
     @Override
     public List<AppHousekeepingServiceVo> list(SearchAppHousekeepingService searchAppHousekeepingService) {
-        return appHousekeepingServiceDao.list(searchAppHousekeepingService);
+        List<AppHousekeepingServiceVo> list = appHousekeepingServiceDao.list(searchAppHousekeepingService);
+        if (list != null && list.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (AppHousekeepingServiceVo appHousekeepingServiceVo : list) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysHouseKeepingService", appHousekeepingServiceVo.getId(), "submitImg");
+                appHousekeepingServiceVo.setSubmitImgList(imgByDate);
+            }
+        }
+        return list;
     }
 }
