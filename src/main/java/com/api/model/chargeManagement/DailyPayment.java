@@ -60,6 +60,14 @@ public class DailyPayment {
      */
     private Integer status;
     /**
+     * 费率
+     */
+    private Integer rate;
+    /**
+     * 缴费期限
+     */
+    private Date paymentTerm;
+    /**
      * 创建人
      */
     private Integer createId;
@@ -100,6 +108,8 @@ public class DailyPayment {
                 ", totalPrice=" + totalPrice +
                 ", paymentPrice=" + paymentPrice +
                 ", status=" + status +
+                ", rate=" + rate +
+                ", paymentTerm=" + paymentTerm +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
@@ -213,6 +223,22 @@ public class DailyPayment {
         this.status = status;
     }
 
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
+
+    public Date getPaymentTerm() {
+        return paymentTerm;
+    }
+
+    public void setPaymentTerm(Date paymentTerm) {
+        this.paymentTerm = paymentTerm;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -264,7 +290,7 @@ public class DailyPayment {
     public DailyPayment() {
     }
 
-    public DailyPayment(Integer id, Integer buildingUnitEstateId, Integer chargesTemplateDetailId, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, DailyPaymentOrder dailyPaymentOrder) {
+    public DailyPayment(Integer id, Integer buildingUnitEstateId, Integer chargesTemplateDetailId, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, Integer rate, Date paymentTerm, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, DailyPaymentOrder dailyPaymentOrder) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.chargesTemplateDetailId = chargesTemplateDetailId;
@@ -278,6 +304,8 @@ public class DailyPayment {
         this.totalPrice = totalPrice;
         this.paymentPrice = paymentPrice;
         this.status = status;
+        this.rate = rate;
+        this.paymentTerm = paymentTerm;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;

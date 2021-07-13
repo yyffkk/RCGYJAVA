@@ -115,6 +115,8 @@
             total_price,
             payment_price,
             status,
+            rate,
+            payment_term,
             create_id,
             create_date,
             is_delete
@@ -131,6 +133,8 @@
             #{totalPrice},
             #{paymentPrice},
             #{status},
+            #{rate},
+            #{paymentTerm},
             #{createId},
             #{createDate},
             #{isDelete}

@@ -63,6 +63,22 @@ public class VoFindByIdDailyPayment {
      * 待缴金额
      */
     private BigDecimal paymentPrice;
+    /**
+     * 状态（1.未缴纳，2.部分缴纳，3.全部缴纳）
+     */
+    private Integer status;
+    /**
+     * 费率
+     */
+    private Integer rate;
+    /**
+     * 缴费期限
+     */
+    private Date paymentTerm;
+    /**
+     * 滞纳金
+     */
+    private BigDecimal overdueFine;
 
     @Override
     public String toString() {
@@ -81,6 +97,10 @@ public class VoFindByIdDailyPayment {
                 ", num=" + num +
                 ", paidPrice=" + paidPrice +
                 ", paymentPrice=" + paymentPrice +
+                ", status=" + status +
+                ", rate=" + rate +
+                ", paymentTerm=" + paymentTerm +
+                ", overdueFine=" + overdueFine +
                 '}';
     }
 
@@ -196,10 +216,42 @@ public class VoFindByIdDailyPayment {
         this.paymentPrice = paymentPrice;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
+
+    public Date getPaymentTerm() {
+        return paymentTerm;
+    }
+
+    public void setPaymentTerm(Date paymentTerm) {
+        this.paymentTerm = paymentTerm;
+    }
+
+    public BigDecimal getOverdueFine() {
+        return overdueFine;
+    }
+
+    public void setOverdueFine(BigDecimal overdueFine) {
+        this.overdueFine = overdueFine;
+    }
+
     public VoFindByIdDailyPayment() {
     }
 
-    public VoFindByIdDailyPayment(Integer id, String roomName, String customerName, BigDecimal totalPrice, String chargesTemplateDetailName, Integer workOrderType, Date beginDate, Date endDate, BigDecimal costPrice, BigDecimal unitPrice, Integer type, Integer num, BigDecimal paidPrice, BigDecimal paymentPrice) {
+    public VoFindByIdDailyPayment(Integer id, String roomName, String customerName, BigDecimal totalPrice, String chargesTemplateDetailName, Integer workOrderType, Date beginDate, Date endDate, BigDecimal costPrice, BigDecimal unitPrice, Integer type, Integer num, BigDecimal paidPrice, BigDecimal paymentPrice, Integer status, Integer rate, Date paymentTerm, BigDecimal overdueFine) {
         this.id = id;
         this.roomName = roomName;
         this.customerName = customerName;
@@ -214,5 +266,9 @@ public class VoFindByIdDailyPayment {
         this.num = num;
         this.paidPrice = paidPrice;
         this.paymentPrice = paymentPrice;
+        this.status = status;
+        this.rate = rate;
+        this.paymentTerm = paymentTerm;
+        this.overdueFine = overdueFine;
     }
 }

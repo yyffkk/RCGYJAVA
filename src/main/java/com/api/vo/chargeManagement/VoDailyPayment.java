@@ -64,6 +64,18 @@ public class VoDailyPayment {
      */
     private String remake;
     /**
+     * 费率
+     */
+    private Integer rate;
+    /**
+     * 缴费期限
+     */
+    private Date paymentTerm;
+    /**
+     * 滞纳金
+     */
+    private BigDecimal overdueFine;
+    /**
      * 创建人
      */
     private String createName;
@@ -101,6 +113,9 @@ public class VoDailyPayment {
                 ", paymentPrice=" + paymentPrice +
                 ", status=" + status +
                 ", remake='" + remake + '\'' +
+                ", rate=" + rate +
+                ", paymentTerm=" + paymentTerm +
+                ", overdueFine=" + overdueFine +
                 ", createName='" + createName + '\'' +
                 ", updateDate=" + updateDate +
                 ", roomNumber='" + roomNumber + '\'' +
@@ -221,6 +236,30 @@ public class VoDailyPayment {
         this.remake = remake;
     }
 
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
+
+    public Date getPaymentTerm() {
+        return paymentTerm;
+    }
+
+    public void setPaymentTerm(Date paymentTerm) {
+        this.paymentTerm = paymentTerm;
+    }
+
+    public BigDecimal getOverdueFine() {
+        return overdueFine;
+    }
+
+    public void setOverdueFine(BigDecimal overdueFine) {
+        this.overdueFine = overdueFine;
+    }
+
     public String getCreateName() {
         return createName;
     }
@@ -264,7 +303,7 @@ public class VoDailyPayment {
     public VoDailyPayment() {
     }
 
-    public VoDailyPayment(Integer id, String name, String roomName, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, String remake, String createName, Date updateDate, String roomNumber, Integer unitNo, Integer estateNo) {
+    public VoDailyPayment(Integer id, String name, String roomName, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, String remake, Integer rate, Date paymentTerm, BigDecimal overdueFine, String createName, Date updateDate, String roomNumber, Integer unitNo, Integer estateNo) {
         this.id = id;
         this.name = name;
         this.roomName = roomName;
@@ -279,6 +318,9 @@ public class VoDailyPayment {
         this.paymentPrice = paymentPrice;
         this.status = status;
         this.remake = remake;
+        this.rate = rate;
+        this.paymentTerm = paymentTerm;
+        this.overdueFine = overdueFine;
         this.createName = createName;
         this.updateDate = updateDate;
         this.roomNumber = roomNumber;
