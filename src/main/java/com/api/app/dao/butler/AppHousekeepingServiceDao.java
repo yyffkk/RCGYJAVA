@@ -3,6 +3,7 @@ package com.api.app.dao.butler;
 import com.api.model.app.AppHousekeepingService;
 import com.api.model.app.AppHousekeepingServiceProcessRecord;
 import com.api.model.app.SearchAppHousekeepingService;
+import com.api.model.app.UserIdAndHousekeepingServiceId;
 import com.api.vo.app.AppHousekeepingServiceVo;
 
 import java.util.List;
@@ -35,4 +36,18 @@ public interface AppHousekeepingServiceDao {
      * @return 家政服务服务进程集合
      */
     List<AppHousekeepingServiceProcessRecord> findHousekeepingProcessRecord(Integer housekeepingServiceId);
+
+    /**
+     * 取消服务
+     * @param userIdAndHousekeepingServiceId 家政服务主键id 和 用户主键id
+     * @return 影响行数
+     */
+    int cancel(UserIdAndHousekeepingServiceId userIdAndHousekeepingServiceId);
+
+    /**
+     * 根据家政服务主键id查询家政服务信息
+     * @param housekeepingServiceId 家政服务主键id
+     * @return 家政服务信息
+     */
+    AppHousekeepingService findHousekeepingServiceById(Integer housekeepingServiceId);
 }

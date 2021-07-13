@@ -3,6 +3,7 @@ package com.api.app.controller.butler;
 import com.api.app.service.butler.AppHousekeepingServiceService;
 import com.api.model.app.AppHousekeepingService;
 import com.api.model.app.SearchAppHousekeepingService;
+import com.api.model.app.UserIdAndHousekeepingServiceId;
 import com.api.vo.app.AppFacilitiesAppointmentVo;
 import com.api.vo.app.AppHousekeepingServiceVo;
 import com.github.pagehelper.PageHelper;
@@ -68,5 +69,16 @@ public class AppHousekeepingServiceController {
     @GetMapping("/findHousekeepingProcessRecord")
     public Map<String,Object> findHousekeepingProcessRecord(Integer housekeepingServiceId){
         return appHousekeepingServiceService.findHousekeepingProcessRecord(housekeepingServiceId);
+    }
+
+
+    /**
+     * 取消服务
+     * @param userIdAndHousekeepingServiceId 家政服务主键id 和 用户主键id
+     * @return map
+     */
+    @GetMapping("/cancel")
+    public Map<String,Object> cancel(UserIdAndHousekeepingServiceId userIdAndHousekeepingServiceId){
+        return appHousekeepingServiceService.cancel(userIdAndHousekeepingServiceId);
     }
 }

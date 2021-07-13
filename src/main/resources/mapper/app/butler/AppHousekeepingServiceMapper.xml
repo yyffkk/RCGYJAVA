@@ -45,6 +45,11 @@
             #{operatorContent}
         )
     </insert>
+    <update id="cancel" parameterType="com.api.model.app.UserIdAndHousekeepingServiceId">
+        update sys_housekeeping_service
+        set status = 9
+        where id = #{housekeepingServiceId} and proposer = #{id}
+    </update>
     <select id="list" parameterType="com.api.model.app.SearchAppHousekeepingService" resultType="com.api.vo.app.AppHousekeepingServiceVo">
         select shs.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,ur.name as proposer_name,ur.tel as proposer_tel
         from sys_housekeeping_service as shs,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur
@@ -63,5 +68,8 @@
             resultType="com.api.model.app.AppHousekeepingServiceProcessRecord">
         select * from sys_housekeeping_service_process_record
         where housekeeping_service_id = #{housekeepingServiceId}
+    </select>
+    <select id="findHousekeepingServiceById" parameterType="java.lang.Integer" resultType="com.api.model.app.AppHousekeepingService">
+        select * from sys_housekeeping_service where id = #{housekeepingServiceId}
     </select>
 </mapper>

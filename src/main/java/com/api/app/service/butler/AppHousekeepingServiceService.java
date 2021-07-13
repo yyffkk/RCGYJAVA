@@ -2,6 +2,7 @@ package com.api.app.service.butler;
 
 import com.api.model.app.AppHousekeepingService;
 import com.api.model.app.SearchAppHousekeepingService;
+import com.api.model.app.UserIdAndHousekeepingServiceId;
 import com.api.vo.app.AppHousekeepingServiceVo;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface AppHousekeepingServiceService {
     List<AppHousekeepingServiceVo> list(SearchAppHousekeepingService searchAppHousekeepingService);
 
     Map<String, Object> findHousekeepingProcessRecord(Integer housekeepingServiceId);
+
+    Map<String, Object> cancel(UserIdAndHousekeepingServiceId userIdAndHousekeepingServiceId);
 }

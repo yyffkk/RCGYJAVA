@@ -5,6 +5,7 @@ import com.api.app.service.butler.AppHousekeepingServiceService;
 import com.api.model.app.AppHousekeepingService;
 import com.api.model.app.AppHousekeepingServiceProcessRecord;
 import com.api.model.app.SearchAppHousekeepingService;
+import com.api.model.app.UserIdAndHousekeepingServiceId;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppHousekeepingServiceVo;
 import com.api.vo.resources.VoResourcesImg;
@@ -100,6 +101,50 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",processRecords);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> cancel(UserIdAndHousekeepingServiceId userIdAndHousekeepingServiceId) {
+        map = new HashMap<>();
+        try {
+            AppHousekeepingService appHousekeepingService = appHousekeepingServiceDao.findHousekeepingServiceById(userIdAndHousekeepingServiceId.getHousekeepingServiceId());
+            if (!(appHousekeepingService.getStatus() == 1 || appHousekeepingService.getStatus() == 2)){
+                throw new RuntimeException("当前状态不可取消服务");
+            }
+
+            int update = appHousekeepingServiceDao.cancel(userIdAndHousekeepingServiceId);
+            if (update <= 0){
+                throw new RuntimeException("取消失败");
+            }
+
+            //添加家政服务处理进程记录
+            AppHousekeepingServiceProcessRecord processRecord = new AppHousekeepingServiceProcessRecord();
+            processRecord.setHousekeepingServiceId(userIdAndHousekeepingServiceId.getHousekeepingServiceId());
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(9);//9.取消
+            processRecord.setOperator(userIdAndHousekeepingServiceId.getId());
+            processRecord.setOperatorType(1);//1.住户
+
+            processRecord.setOperatorContent("住户已取消");
+            int insert2 = appHousekeepingServiceDao.insertHousekeepingProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("提交服务进程失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","取消成功");
+        map.put("status",true);
         return map;
     }
 }
