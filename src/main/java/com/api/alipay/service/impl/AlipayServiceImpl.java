@@ -545,8 +545,8 @@ public class AlipayServiceImpl implements AlipayService {
                             //当前时间不超过缴费期限,滞纳金为0
                             appDailyPaymentDetailsVo.setOverdueFine(BigDecimal.ZERO);
                         }
-                        paymentPrice.add(appDailyPaymentDetailsVo.getPaymentPrice());//增加待缴金额
-                        paymentPrice.add(appDailyPaymentDetailsVo.getOverdueFine());//增加滞纳金
+                        paymentPrice = paymentPrice.add(appDailyPaymentDetailsVo.getPaymentPrice());//增加待缴金额
+                        paymentPrice = paymentPrice.add(appDailyPaymentDetailsVo.getOverdueFine());//增加滞纳金
                     }
 
                 }
