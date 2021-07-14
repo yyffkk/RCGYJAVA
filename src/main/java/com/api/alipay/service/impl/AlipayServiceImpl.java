@@ -674,11 +674,13 @@ public class AlipayServiceImpl implements AlipayService {
         }
         if(signVerified) {
             //验签通过
+            log.info("验签通过");
             //获取需要保存的数据
             String appId=params.get("app_id");//支付宝分配给开发者的应用Id
             String outTradeNo = params.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
             String buyerPayAmount=params.get("buyer_pay_amount");//付款金额:用户在交易中支付的金额
             String tradeStatus = params.get("trade_status");// 获取交易状态
+            log.info("获取数据：app_id="+appId+",out_trade_no="+outTradeNo+",buyer_pay_amount="+buyerPayAmount+",trade_status="+tradeStatus);
             // 验证通知后执行自己项目需要的业务操作
             // 一般需要判断支付状态是否为TRADE_SUCCESS
             // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
