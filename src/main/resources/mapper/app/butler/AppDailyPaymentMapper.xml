@@ -13,7 +13,7 @@
     </select>
 
     <select id="listDetailed" parameterType="com.api.model.app.AppDailyPaymentDetail" resultType="com.api.vo.app.AppDailyPaymentDetailedVo">
-        select T.group_id,sum(T.payment_price) as payment_price from (
+        select T.group_id,sum(T.payment_price) as payment_price,0 as overdue_fine from (
             select sdp.*,CEILING((MONTH(sdp.end_date)/7)) as group_id
             from sys_daily_payment as sdp
             where sdp.building_unit_estate_id = #{estateId} and sdp.charges_template_detail_id =#{chargesTemplateDetailId} and year(sdp.end_date) = #{years} and sdp.status != 3

@@ -43,7 +43,7 @@ public class AppDailyPaymentController {
     }
 
     /**
-     * app 生活缴费 缴费
+     * app 生活缴费 缴费（该接口已舍弃，转支付宝支付）
      * @param appDailyPaymentOrder app生活缴纳 支付订单信息
      * @param request app-admin-token获取的request用户信息
      * @return map

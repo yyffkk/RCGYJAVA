@@ -16,6 +16,10 @@ public class AppDailyPaymentDetailedVo {
      */
     private BigDecimal paymentPrice;
     /**
+     * 滞纳金
+     */
+    private BigDecimal overdueFine;
+    /**
      * app 生活缴费详情Vo list 回显
      */
     private List<AppDailyPaymentDetailsVo> detailsVoList;
@@ -25,6 +29,7 @@ public class AppDailyPaymentDetailedVo {
         return "AppDailyPaymentDetailedVo{" +
                 "groupId=" + groupId +
                 ", paymentPrice=" + paymentPrice +
+                ", overdueFine=" + overdueFine +
                 ", detailsVoList=" + detailsVoList +
                 '}';
     }
@@ -45,6 +50,14 @@ public class AppDailyPaymentDetailedVo {
         this.paymentPrice = paymentPrice;
     }
 
+    public BigDecimal getOverdueFine() {
+        return overdueFine;
+    }
+
+    public void setOverdueFine(BigDecimal overdueFine) {
+        this.overdueFine = overdueFine;
+    }
+
     public List<AppDailyPaymentDetailsVo> getDetailsVoList() {
         return detailsVoList;
     }
@@ -56,9 +69,10 @@ public class AppDailyPaymentDetailedVo {
     public AppDailyPaymentDetailedVo() {
     }
 
-    public AppDailyPaymentDetailedVo(Integer groupId, BigDecimal paymentPrice, List<AppDailyPaymentDetailsVo> detailsVoList) {
+    public AppDailyPaymentDetailedVo(Integer groupId, BigDecimal paymentPrice, BigDecimal overdueFine, List<AppDailyPaymentDetailsVo> detailsVoList) {
         this.groupId = groupId;
         this.paymentPrice = paymentPrice;
+        this.overdueFine = overdueFine;
         this.detailsVoList = detailsVoList;
     }
 }

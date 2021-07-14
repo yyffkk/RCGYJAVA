@@ -43,6 +43,26 @@ public class AppDailyPaymentDetailsVo {
      * 面积/用量/数量
      */
     private Integer num;
+    /**
+     * 待缴金额
+     */
+    private BigDecimal paymentPrice;
+    /**
+     * 状态（1.未缴纳，2.部分缴纳，3.全部缴纳）
+     */
+    private Integer status;
+    /**
+     * 费率
+     */
+    private Integer rate;
+    /**
+     * 缴费期限
+     */
+    private Date paymentTerm;
+    /**
+     * 滞纳金
+     */
+    private BigDecimal overdueFine;
 
     @Override
     public String toString() {
@@ -56,6 +76,11 @@ public class AppDailyPaymentDetailsVo {
                 ", endDate=" + endDate +
                 ", unitPriceType='" + unitPriceType + '\'' +
                 ", num=" + num +
+                ", paymentPrice=" + paymentPrice +
+                ", status=" + status +
+                ", rate=" + rate +
+                ", paymentTerm=" + paymentTerm +
+                ", overdueFine=" + overdueFine +
                 '}';
     }
 
@@ -131,10 +156,50 @@ public class AppDailyPaymentDetailsVo {
         this.num = num;
     }
 
+    public BigDecimal getPaymentPrice() {
+        return paymentPrice;
+    }
+
+    public void setPaymentPrice(BigDecimal paymentPrice) {
+        this.paymentPrice = paymentPrice;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
+
+    public Date getPaymentTerm() {
+        return paymentTerm;
+    }
+
+    public void setPaymentTerm(Date paymentTerm) {
+        this.paymentTerm = paymentTerm;
+    }
+
+    public BigDecimal getOverdueFine() {
+        return overdueFine;
+    }
+
+    public void setOverdueFine(BigDecimal overdueFine) {
+        this.overdueFine = overdueFine;
+    }
+
     public AppDailyPaymentDetailsVo() {
     }
 
-    public AppDailyPaymentDetailsVo(Integer id, String month, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, Date beginDate, Date endDate, String unitPriceType, Integer num) {
+    public AppDailyPaymentDetailsVo(Integer id, String month, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, Date beginDate, Date endDate, String unitPriceType, Integer num, BigDecimal paymentPrice, Integer status, Integer rate, Date paymentTerm, BigDecimal overdueFine) {
         this.id = id;
         this.month = month;
         this.costPrice = costPrice;
@@ -144,5 +209,10 @@ public class AppDailyPaymentDetailsVo {
         this.endDate = endDate;
         this.unitPriceType = unitPriceType;
         this.num = num;
+        this.paymentPrice = paymentPrice;
+        this.status = status;
+        this.rate = rate;
+        this.paymentTerm = paymentTerm;
+        this.overdueFine = overdueFine;
     }
 }
