@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.chargeManagement.SysDailyPaymentPlanDao">
+
+    <select id="list" parameterType="com.api.model.chargeManagement.SearchDailyPaymentPlan" resultType="com.api.vo.chargeManagement.VoDailyPaymentPlan">
+        select sdpp.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,sctd.name as charges_template_detail_name,su.actual_name as create_name
+        from sys_daily_payment_plan as sdpp,cpm_building_unit_estate as cbue,
+        cpm_building_unit as cbu,cpm_building as cb,sys_charges_template_detail as sctd,sys_user as su
+        <where>
+            sdpp.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and sdpp.charges_template_detail_id = sctd.id
+            and sdpp.create_id = su.id
+            <if test="buildingUnitEstateId != null">
+                and sdpp.building_unit_estate_id = #{buildingUnitEstateId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.chargeManagement.DailyPaymentPlan">
+        insert into sys_daily_payment_plan(
+            building_unit_estate_id,
+            charges_template_detail_id,
+            begin_plan_date,
+            end_plan_date,
+            unit_price,
+            type,
+            num,
+            cost_price,
+            cycle,
+            rate,
+            payment_time,
+            remake,
+            create_id,
+            create_date,
+            is_delete
+        )values (
+            #{buildingUnitEstateId},
+            #{chargesTemplateDetailId},
+            #{beginPlanDate},
+            #{endPlanDate},
+            #{unitPrice},
+            #{type},
+            #{num},
+            #{costPrice},
+            #{cycle},
+            #{rate},
+            #{paymentTime},
+            #{remake},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+    </insert>
+
+</mapper>
