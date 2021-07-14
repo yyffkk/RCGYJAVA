@@ -49,4 +49,15 @@ public class SysDailyPaymentPlanController {
     public Map<String,Object> insert(@RequestBody DailyPaymentPlan dailyPaymentPlan){
         return sysDailyPaymentPlanService.insert(dailyPaymentPlan);
     }
+
+    /**
+     * 修改缴费计划
+     * @param dailyPaymentPlan 缴费计划（周期生成缴费记录）
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody DailyPaymentPlan dailyPaymentPlan){
+        return sysDailyPaymentPlanService.update(dailyPaymentPlan);
+    }
+
 }

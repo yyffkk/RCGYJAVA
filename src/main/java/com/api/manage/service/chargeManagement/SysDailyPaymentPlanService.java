@@ -11,4 +11,6 @@ public interface SysDailyPaymentPlanService {
     List<VoDailyPaymentPlan> list(SearchDailyPaymentPlan searchDailyPaymentPlan);
 
     Map<String, Object> insert(DailyPaymentPlan dailyPaymentPlan);
+
+    Map<String, Object> update(DailyPaymentPlan dailyPaymentPlan);
 }

@@ -17,7 +17,9 @@
             <if test="buildingUnitEstateId != null">
                 and sdpp.building_unit_estate_id = #{buildingUnitEstateId}
             </if>
+            and sdpp.is_delete = 1
         </where>
+        order by sdpp.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.chargeManagement.DailyPaymentPlan">
@@ -55,5 +57,47 @@
             #{isDelete}
         )
     </insert>
+
+    <update id="update" parameterType="com.api.model.chargeManagement.DailyPaymentPlan">
+        update sys_daily_payment_plan
+        <set>
+            <if test="chargesTemplateDetailId != null">
+                charges_template_detail_id = #{chargesTemplateDetailId},
+            </if>
+            <if test="beginPlanDate != null">
+                begin_plan_date = #{beginPlanDate},
+            </if>
+            <if test="endPlanDate != null">
+                end_plan_date = #{beginPlanDate},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="costPrice != null">
+                cost_price = #{costPrice},
+            </if>
+            <if test="cycle != null">
+                cycle = #{cycle},
+            </if>
+            <if test="rate != null">
+                rate = #{rate},
+            </if>
+            <if test="paymentTime != null">
+                payment_time = #{paymentTime},
+            </if>
+            <if test="remake != null and remake != ''">
+                remake = #{remake},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

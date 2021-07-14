@@ -20,4 +20,11 @@ public interface SysDailyPaymentPlanDao {
      * @return 影响行数
      */
     int insert(DailyPaymentPlan dailyPaymentPlan);
+
+    /**
+     * 修改缴费计划
+     * @param dailyPaymentPlan 缴费计划（周期生成缴费记录）
+     * @return 影响行数
+     */
+    int update(DailyPaymentPlan dailyPaymentPlan);
 }

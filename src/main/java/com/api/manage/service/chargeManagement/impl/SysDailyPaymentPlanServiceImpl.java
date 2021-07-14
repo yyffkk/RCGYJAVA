@@ -11,6 +11,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ public class SysDailyPaymentPlanServiceImpl implements SysDailyPaymentPlanServic
         dailyPaymentPlan.setCreateId(sysUser.getId());
         dailyPaymentPlan.setCreateDate(new Date());
         dailyPaymentPlan.setIsDelete(1);//默认填1.非删
+        dailyPaymentPlan.setCostPrice(dailyPaymentPlan.getUnitPrice().multiply(new BigDecimal(dailyPaymentPlan.getNum())).setScale(2,BigDecimal.ROUND_HALF_UP));
 
         int insert = sysDailyPaymentPlanDao.insert(dailyPaymentPlan);
         if (insert >0){
@@ -45,6 +47,30 @@ public class SysDailyPaymentPlanServiceImpl implements SysDailyPaymentPlanServic
             map.put("status",true);
         }else {
             map.put("message","添加失败");
+            map.put("status",false);
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> update(DailyPaymentPlan dailyPaymentPlan) {
+        map = new HashMap<>();
+
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        dailyPaymentPlan.setModifyId(sysUser.getId());
+        dailyPaymentPlan.setModifyDate(new Date());
+        dailyPaymentPlan.setCostPrice(dailyPaymentPlan.getUnitPrice().multiply(new BigDecimal(dailyPaymentPlan.getNum())).setScale(2,BigDecimal.ROUND_HALF_UP));
+
+        int update = sysDailyPaymentPlanDao.update(dailyPaymentPlan);
+        if (update >0){
+            map.put("message","修改成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改失败");
             map.put("status",false);
         }
 
