@@ -116,8 +116,8 @@
     <select id="findDailPaymentOrderByCode" parameterType="java.lang.String" resultType="com.api.model.app.AppDailyPaymentOrder">
         select * from sys_daily_payment_order where code = #{outTradeNo}
     </select>
-    <select id="findDailyPaymentIdsByOrderCode" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select sdp.id
+    <select id="findDailyPaymentIdsByOrderCode" parameterType="java.lang.String" resultType="com.api.vo.app.AppDailyPaymentDetailsVo">
+        select sdp.*
         from sys_daily_payment as sdp,sys_daily_payment_order as sdpo,sys_daily_payment_order_list as sdpol
         where sdp.id = sdpol.daily_payment_id and sdpo.id = sdpol.daily_payment_order_id and sdpo.code = #{outTradeNo}
     </select>
@@ -135,4 +135,23 @@
         </set>
         where code = #{code}
     </update>
+
+    <select id="findDailyPaymentByIds" parameterType="com.api.model.app.AppDailyPaymentOrder" resultType="com.api.vo.app.AppDailyPaymentDetailsVo">
+        select * from sys_daily_payment where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <update id="updatePaidPAndPaymentPAndOverdueFine" parameterType="com.api.vo.app.AppDailyPaymentDetailsVo">
+        update sys_daily_payment
+        <set>
+            paid_price = cost_price,
+            payment_price = 0,
+            status = 3,
+            overdue_fine = #{overdueFine}
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

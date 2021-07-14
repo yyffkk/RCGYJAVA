@@ -30,6 +30,7 @@ import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.SysLease;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.util.IdWorker;
+import com.api.vo.app.AppDailyPaymentDetailsVo;
 import com.api.vo.butlerService.VoFBILease;
 import com.api.vo.butlerService.VoLeaseContract;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,8 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -486,12 +489,75 @@ public class AlipayServiceImpl implements AlipayService {
             if (appDailyPaymentOrder.getIds() == null || appDailyPaymentOrder.getIds().length <= 0){
                 throw new RuntimeException("未选择支付项");
             }
-            //计算出所需支付总金额
-            BigDecimal paymentPrice = appDailyPaymentDao.findPaymentPriceById(appDailyPaymentOrder);
+
+            //计算出所需支付总金额(总待缴金额+总滞纳金)
+            BigDecimal paymentPrice = BigDecimal.ZERO;//初始支付总金额
+
+            List<AppDailyPaymentDetailsVo> appDailyPaymentDetailsVos = appDailyPaymentDao.findDailyPaymentByIds(appDailyPaymentOrder);
+            if (appDailyPaymentDetailsVos != null && appDailyPaymentDetailsVos.size()>0){
+                for (AppDailyPaymentDetailsVo appDailyPaymentDetailsVo : appDailyPaymentDetailsVos) {
+
+                    //计算出滞纳金
+                    if (appDailyPaymentDetailsVo.getStatus() != 3) {//3.全部缴纳
+                        //当不为全部缴纳时，滞纳金需要计算，否则取数据库的滞纳金
+                        Date paymentTerm = appDailyPaymentDetailsVo.getPaymentTerm();
+                        Date date = new Date();
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        if (df.format(date).compareTo(df.format(paymentTerm)) > 0) {
+                            //当前时间超过缴费期限(计算公式【总支付金额 = 代缴金额*（1+费率/100），每月累乘】)
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.clear();
+                            calendar.setTime(paymentTerm);
+                            //缴纳期限的年份
+                            int paymentTermYear = calendar.get(Calendar.YEAR);
+                            //缴纳期限的月份
+                            int paymentTermMonth = calendar.get(Calendar.MONTH) + 1;
+                            //缴纳期限的日期
+                            int paymentTermDay = calendar.get(Calendar.DAY_OF_MONTH);
+                            calendar.clear();
+                            calendar.setTime(date);
+                            //当前的年份
+                            int dateYear = calendar.get(Calendar.YEAR);
+                            //当前的月份
+                            int dateMonth = calendar.get(Calendar.MONTH) + 1;
+                            //当前的日期
+                            int dateDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                            //计算相差多少个月
+                            int betweenMonth = Math.abs((dateYear - paymentTermYear) * 12 + (dateMonth - paymentTermMonth));
+                            if (dateDay > paymentTermDay) {
+                                //当 当前时间日期 大于 缴纳期限时日期 时，月份+1
+                                betweenMonth = betweenMonth + 1;
+                            }
+
+                            //计算出 支付总金额【待缴金额+滞纳金】
+                            BigDecimal totalPrice = appDailyPaymentDetailsVo.getPaymentPrice();
+                            //(计算公式【待缴金额*（1+费率/100），每月累乘】)
+                            for (int i = 0; i < betweenMonth; i++) {
+                                //需要先转化成double，不然int类型之间的计算结果会被默认转换成int
+                                Double rate = Double.valueOf(appDailyPaymentDetailsVo.getRate());
+                                totalPrice = totalPrice.multiply(new BigDecimal(1 + rate / 100));
+                            }
+                            //滞纳金 = 支付总金额 - 代缴金额
+                            BigDecimal overdueFine = totalPrice.setScale(2, RoundingMode.HALF_UP).subtract(appDailyPaymentDetailsVo.getPaymentPrice());
+                            appDailyPaymentDetailsVo.setOverdueFine(overdueFine);
+                        } else {
+                            //当前时间不超过缴费期限,滞纳金为0
+                            appDailyPaymentDetailsVo.setOverdueFine(BigDecimal.ZERO);
+                        }
+                        paymentPrice.add(appDailyPaymentDetailsVo.getPaymentPrice());//增加待缴金额
+                        paymentPrice.add(appDailyPaymentDetailsVo.getOverdueFine());//增加滞纳金
+                    }
+
+                }
+            }
+
+            log.info("需支付金额为："+paymentPrice+"，实际支付金额为:"+appDailyPaymentOrder.getPayPrice());
+
             if (paymentPrice.compareTo(appDailyPaymentOrder.getPayPrice()) != 0){
                 throw new RuntimeException("支付金额有误，请重新支付");
             }
-            if (paymentPrice.equals(BigDecimal.ZERO)){
+            if (paymentPrice.compareTo(BigDecimal.ZERO) == 0){
                 throw new RuntimeException("支付金额不可为0");
             }
             //填写付款金额
@@ -643,13 +709,65 @@ public class AlipayServiceImpl implements AlipayService {
                     if(returnResult>0){
                         log.info("===========异步调用成功");
                         //根据缴费订单支付单号查询缴费信息主键id
-                        List<Integer> dailyPaymentIds = appDailyPaymentDao.findDailyPaymentIdsByOrderCode(outTradeNo);
-                        if (dailyPaymentIds != null && dailyPaymentIds.size()>0){
-                            for (Integer dailyPaymentId : dailyPaymentIds) {
-                                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
-                                int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(dailyPaymentId);
+                        List<AppDailyPaymentDetailsVo> appDailyPaymentDetailsVos = appDailyPaymentDao.findDailyPaymentIdsByOrderCode(outTradeNo);
+                        if (appDailyPaymentDetailsVos != null && appDailyPaymentDetailsVos.size()>0){
+                            for (AppDailyPaymentDetailsVo appDailyPaymentDetailsVo : appDailyPaymentDetailsVos) {
+
+                                //计算出滞纳金
+                                if (appDailyPaymentDetailsVo.getStatus() != 3) {//3.全部缴纳
+                                    //当不为全部缴纳时，滞纳金需要计算，否则取数据库的滞纳金
+                                    Date paymentTerm = appDailyPaymentDetailsVo.getPaymentTerm();
+                                    Date date = new Date();
+                                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                    if (df.format(date).compareTo(df.format(paymentTerm)) > 0) {
+                                        //当前时间超过缴费期限(计算公式【总支付金额 = 代缴金额*（1+费率/100），每月累乘】)
+                                        Calendar calendar = Calendar.getInstance();
+                                        calendar.clear();
+                                        calendar.setTime(paymentTerm);
+                                        //缴纳期限的年份
+                                        int paymentTermYear = calendar.get(Calendar.YEAR);
+                                        //缴纳期限的月份
+                                        int paymentTermMonth = calendar.get(Calendar.MONTH) + 1;
+                                        //缴纳期限的日期
+                                        int paymentTermDay = calendar.get(Calendar.DAY_OF_MONTH);
+                                        calendar.clear();
+                                        calendar.setTime(date);
+                                        //当前的年份
+                                        int dateYear = calendar.get(Calendar.YEAR);
+                                        //当前的月份
+                                        int dateMonth = calendar.get(Calendar.MONTH) + 1;
+                                        //当前的日期
+                                        int dateDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                                        //计算相差多少个月
+                                        int betweenMonth = Math.abs((dateYear - paymentTermYear) * 12 + (dateMonth - paymentTermMonth));
+                                        if (dateDay > paymentTermDay) {
+                                            //当 当前时间日期 大于 缴纳期限时日期 时，月份+1
+                                            betweenMonth = betweenMonth + 1;
+                                        }
+
+                                        //计算出 支付总金额【待缴金额+滞纳金】
+                                        BigDecimal totalPrice = appDailyPaymentDetailsVo.getPaymentPrice();
+                                        //(计算公式【待缴金额*（1+费率/100），每月累乘】)
+                                        for (int i = 0; i < betweenMonth; i++) {
+                                            //需要先转化成double，不然int类型之间的计算结果会被默认转换成int
+                                            Double rate = Double.valueOf(appDailyPaymentDetailsVo.getRate());
+                                            totalPrice = totalPrice.multiply(new BigDecimal(1 + rate / 100));
+                                        }
+                                        //滞纳金 = 支付总金额 - 代缴金额
+                                        BigDecimal overdueFine = totalPrice.setScale(2, RoundingMode.HALF_UP).subtract(appDailyPaymentDetailsVo.getPaymentPrice());
+                                        appDailyPaymentDetailsVo.setOverdueFine(overdueFine);
+                                    } else {
+                                        //当前时间不超过缴费期限,滞纳金为0
+                                        appDailyPaymentDetailsVo.setOverdueFine(BigDecimal.ZERO);
+                                    }
+                                }
+
+                                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额和滞纳金，并修改状态
+                                int update = appDailyPaymentDao.updatePaidPAndPaymentPAndOverdueFine(appDailyPaymentDetailsVo);
                                 if (update <= 0){
                                     log.info("===========更新缴费信息的状态失败");
+                                    log.info("data:"+appDailyPaymentDetailsVo.toString());
                                     return "fail";
                                 }
                             }

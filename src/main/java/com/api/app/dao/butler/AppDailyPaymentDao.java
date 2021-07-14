@@ -109,15 +109,29 @@ public interface AppDailyPaymentDao {
     int updateDPOrderStatusByCode(AppDailyPaymentOrder aliPaymentOrder);
 
     /**
-     * 根据缴费订单支付单号查询缴费信息主键id
+     * 根据缴费订单支付单号查询缴费信息
      * @param outTradeNo 缴费订单支付单号
-     * @return 信息主键id
+     * @return 缴费信息
      */
-    List<Integer> findDailyPaymentIdsByOrderCode(String outTradeNo);
+    List<AppDailyPaymentDetailsVo> findDailyPaymentIdsByOrderCode(String outTradeNo);
 
     /**
      * 查询未付款的订单
      * @return 未付款的订单信息
      */
     List<AppDailyPaymentOrder> findUnPaymentOrder();
+
+    /**
+     * 根据缴费主键id查询缴费信息
+     * @param appDailyPaymentOrder app生活缴纳 支付订单信息
+     * @return app 生活缴费详情Vo list 回显
+     */
+    List<AppDailyPaymentDetailsVo> findDailyPaymentByIds(AppDailyPaymentOrder appDailyPaymentOrder);
+
+    /**
+     * 修改缴费信息的已缴金额和待缴金额和滞纳金，并修改状态
+     * @param appDailyPaymentDetailsVo app 生活缴费详情Vo list 回显
+     * @return 影响行数
+     */
+    int updatePaidPAndPaymentPAndOverdueFine(AppDailyPaymentDetailsVo appDailyPaymentDetailsVo);
 }

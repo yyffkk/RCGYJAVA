@@ -24,7 +24,7 @@ public class AppDailyPaymentDetailsVo {
      */
     private BigDecimal paidPrice;
     /**
-     * 本次应收
+     * 本次应收总计
      */
     private BigDecimal totalPrice;
     /**
