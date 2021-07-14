@@ -56,7 +56,7 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
 
                                     for (AppDailyPaymentDetailsVo appDailyPaymentDetailsVo : appDailyPaymentDetailsVos) {
                                         //计算滞纳金
-                                        appDailyPaymentDetailsVo = GetOverdueFine.getOverdueFine(appDailyPaymentDetailsVo);
+                                        appDailyPaymentDetailsVo = GetOverdueFine.getAppOverdueFine(appDailyPaymentDetailsVo);
 
                                         detailedVo.setOverdueFine(detailedVo.getOverdueFine().add(appDailyPaymentDetailsVo.getOverdueFine()));//半年的总滞纳金金额
                                         detailedVo.setDetailsVoList(appDailyPaymentDetailsVos);//app 生活缴费详情Vo list 回显
