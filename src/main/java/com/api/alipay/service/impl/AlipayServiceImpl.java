@@ -1383,6 +1383,7 @@ public class AlipayServiceImpl implements AlipayService {
                             return "fail";
                         }
                         //修改保证金缴纳时间
+                        sysLease.setMarginPayDate(new Date());
                         int update4 = leaseDao.updateMarginPayDateById(sysLease);
                         if (update4 <= 0){
                             log.info("===========更新租赁信息的保证金缴纳时间失败");
