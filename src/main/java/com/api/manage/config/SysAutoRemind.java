@@ -1,5 +1,6 @@
 package com.api.manage.config;
 
+import com.api.alipay.dao.AlipayDao;
 import com.api.alipay.service.AlipayService;
 import com.api.app.dao.butler.AppDailyPaymentDao;
 import com.api.app.dao.butler.AppReportRepairDao;
@@ -17,6 +18,7 @@ import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
+import com.api.model.alipay.EstateIdAndAdvancePaymentPrice;
 import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.alipay.SysLeaseRentBillOrder;
 import com.api.model.alipay.SysLeaseRentOrder;
@@ -25,6 +27,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
 import com.api.model.butlerService.*;
 import com.api.model.chargeManagement.DailyPayment;
+import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.model.chargeManagement.DailyPaymentPlan;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SysNewsManagement;
@@ -124,6 +127,8 @@ public class SysAutoRemind {
     AppReportRepairDao appReportRepairDao;
     @Resource
     SysDailyPaymentPlanDao sysDailyPaymentPlanDao;
+    @Resource
+    AlipayDao alipayDao;
 
 
     /**
@@ -846,6 +851,86 @@ public class SysAutoRemind {
             log.info("自动生成缴费记录成功，自动生成时间："+new Date().toString());
         }else {
             log.info("暂无任何缴费计划信息");
+        }
+    }
+
+    /**
+     * 0 59 23 1/1 * ?
+     * （每日 23.50分 进行预缴扣除，缴纳到达缴费期限的缴费记录）轮询定时任务，自动缴纳到达缴费期限的缴费记录
+     */
+    @Scheduled(cron = "0 59 23 1/1 * ? ")
+    public void autoAdvancePaymentDeducted(){
+        log.info("开始预缴扣除");
+        //创建当前时间
+        Date date = new Date();
+        //查询缴费期限为今日的缴费记录
+        List<DailyPayment> dailyPaymentList = appDailyPaymentDao.findArrivePaymentTerm(date);
+
+        if (dailyPaymentList != null && dailyPaymentList.size()>0){
+            for (DailyPayment dailyPayment : dailyPaymentList) {
+                //查询该房屋是否有充值余额
+                BigDecimal advancePaymentPrice = appDailyPaymentDao.findAdvancePaymentPriceByEstateId(dailyPayment.getBuildingUnitEstateId());
+                if (advancePaymentPrice != null && advancePaymentPrice.compareTo(BigDecimal.ZERO) > 0){
+                    //查询余额是否足够支付该笔缴费记录
+                    if (advancePaymentPrice.compareTo(dailyPayment.getPaymentPrice()) >= 0){
+                        //全部缴纳
+                        log.info("进行全部缴纳");
+                        //生成缴费订单
+                        AppDailyPaymentOrder appDailyPaymentOrder = new AppDailyPaymentOrder();
+
+                        appDailyPaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));//填写支付单号(自动生成订单号)
+                        appDailyPaymentOrder.setName("预缴扣除");//填入缴费人名称
+                        appDailyPaymentOrder.setTel("00000000000");//填入联系方式
+                        appDailyPaymentOrder.setPayType(5);//5.预缴扣除
+                        appDailyPaymentOrder.setPayPrice(dailyPayment.getPaymentPrice());//填写付款金额
+                        appDailyPaymentOrder.setCreateId(-2);//填写创建人 预缴扣除为-2
+                        appDailyPaymentOrder.setCreateDate(new Date());//填入创建时间
+                        appDailyPaymentOrder.setStatus(2);//填入付款状态，2.交易支付成功
+                        //添加缴费订单信息
+                        int i = appDailyPaymentDao.insertOrder(appDailyPaymentOrder);
+                        if (i<=0){
+                            log.info("添加缴费订单信息失败");
+                        }
+
+                        //添加缴费订单清单信息（缴费信息 与 缴费订单信息 关联表）
+                        DailyPaymentOrderList dailyPaymentOrderList = new DailyPaymentOrderList();
+                        dailyPaymentOrderList.setDailyPaymentId(dailyPayment.getId());
+                        dailyPaymentOrderList.setDailyPaymentOrderId(appDailyPaymentOrder.getId());
+                        //根据缴费主键id查询当前缴费信息的缴费金额
+                        dailyPaymentOrderList.setDailyPaymentPrice(dailyPayment.getPaymentPrice());
+                        int orderList = appDailyPaymentDao.insertOrderList(dailyPaymentOrderList);
+                        if (orderList <= 0){
+                            log.info("添加缴费订单清单信息失败");
+                        }
+
+                        //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额
+                        int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(dailyPayment.getId());
+                        if (update <= 0){
+                            log.info("===========更新缴费信息的状态失败");
+                            log.info("缴费主键id:"+dailyPayment.getId());
+                        }
+
+                        //给当前房屋减去扣减金额
+                        EstateIdAndAdvancePaymentPrice estateIdAndAdvancePaymentPrice = new EstateIdAndAdvancePaymentPrice();
+                        estateIdAndAdvancePaymentPrice.setEstateId(dailyPayment.getBuildingUnitEstateId());
+                        estateIdAndAdvancePaymentPrice.setAdvancePaymentPrice(dailyPayment.getPaymentPrice());
+                        //根据房产主键id扣减预付款充值金额
+                        int update2 = appDailyPaymentDao.deductingAdvancePaymentByEstateId(estateIdAndAdvancePaymentPrice);
+                        if (update2 <= 0){
+                            log.info("扣减预付款充值金额失败");
+                        }
+                    }else {
+                        //部分缴纳
+                        log.info("进行部分缴纳");
+
+
+                    }
+                }else {
+                    log.info("暂无余额，预缴失败");
+                }
+            }
+        }else {
+            log.info("暂无任何到达缴费期限的缴费记录");
         }
     }
 

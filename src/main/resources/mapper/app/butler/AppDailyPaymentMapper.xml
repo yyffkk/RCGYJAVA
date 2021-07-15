@@ -158,5 +158,15 @@
         select advance_payment_price from cpm_building_unit_estate where id = #{estateId}
     </select>
 
+    <select id="findArrivePaymentTerm" parameterType="java.util.Date" resultType="com.api.model.chargeManagement.DailyPayment">
+        select * from sys_daily_payment where status in (1,2) and year(payment_term) = year(#{date}) and MONTH(payment_term) = MONTH(#{date}) and DAY(payment_term) = DAY(#{date})
+    </select>
+
+    <update id="deductingAdvancePaymentByEstateId" parameterType="com.api.model.alipay.EstateIdAndAdvancePaymentPrice">
+        update cpm_building_unit_estate
+        set advance_payment_price = advance_payment_price - #{advancePaymentPrice}
+        where id = #{estateId}
+    </update>
+
 
 </mapper>

@@ -1,11 +1,14 @@
 package com.api.app.dao.butler;
 
+import com.api.model.alipay.EstateIdAndAdvancePaymentPrice;
 import com.api.model.app.AppDailyPaymentDetail;
 import com.api.model.app.AppDailyPaymentOrder;
+import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.vo.app.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface AppDailyPaymentDao {
@@ -141,4 +144,18 @@ public interface AppDailyPaymentDao {
      * @return 预付款充值金额
      */
     BigDecimal findAdvancePaymentPriceByEstateId(Integer estateId);
+
+    /***
+     * 查询缴费期限为今日的缴费记录
+     * @param date 当前时间
+     * @return 缴费记录
+     */
+    List<DailyPayment> findArrivePaymentTerm(Date date);
+
+    /**
+     * 根据房产主键id扣减预付款充值金额
+     * @param estateIdAndAdvancePaymentPrice  房产id 和 预付款充值金额
+     * @return 影响行数
+     */
+    int deductingAdvancePaymentByEstateId(EstateIdAndAdvancePaymentPrice estateIdAndAdvancePaymentPrice);
 }

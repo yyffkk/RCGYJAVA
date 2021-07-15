@@ -588,7 +588,7 @@ public class MyHouseServiceImpl implements MyHouseService {
         try {
             SysLease leaseById = myHouseDao.findLeaseById(sysLeaseId);
 
-            if (leaseById.getStatus() != 14){
+            if (!(leaseById.getStatus() == 14  || leaseById.getStatus() == 16)){
                 throw new RuntimeException("当前状态不可申请退货保证金");
             }
 
