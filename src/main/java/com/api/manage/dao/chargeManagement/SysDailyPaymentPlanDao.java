@@ -27,4 +27,11 @@ public interface SysDailyPaymentPlanDao {
      * @return 影响行数
      */
     int update(DailyPaymentPlan dailyPaymentPlan);
+
+    /**
+     * 删除缴费计划
+     * @param id 缴费计划主键id
+     * @return 影响行数
+     */
+    int delete(int id);
 }

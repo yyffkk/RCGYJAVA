@@ -3,6 +3,7 @@ package com.api.manage.controller.chargeManagement;
 import com.api.manage.service.chargeManagement.SysDailyPaymentPlanService;
 import com.api.model.chargeManagement.DailyPaymentPlan;
 import com.api.model.chargeManagement.SearchDailyPaymentPlan;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoDailyPaymentPlan;
 import com.github.pagehelper.PageHelper;
@@ -58,6 +59,16 @@ public class SysDailyPaymentPlanController {
     @PostMapping("/update")
     public Map<String,Object> update(@RequestBody DailyPaymentPlan dailyPaymentPlan){
         return sysDailyPaymentPlanService.update(dailyPaymentPlan);
+    }
+
+    /**
+     * 删除缴费计划
+     * @param ids 缴费计划主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysDailyPaymentPlanService.delete(ids.getIds());
     }
 
 }

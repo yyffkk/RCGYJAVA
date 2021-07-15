@@ -100,4 +100,8 @@
         where id = #{id}
     </update>
 
+    <update id="delete" parameterType="java.lang.Integer">
+        update sys_daily_payment_plan set is_delete = 0 where id = #{id}
+    </update>
+
 </mapper>

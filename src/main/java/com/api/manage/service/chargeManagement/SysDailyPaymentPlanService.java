@@ -13,4 +13,6 @@ public interface SysDailyPaymentPlanService {
     Map<String, Object> insert(DailyPaymentPlan dailyPaymentPlan);
 
     Map<String, Object> update(DailyPaymentPlan dailyPaymentPlan);
+
+    Map<String, Object> delete(int[] ids);
 }
