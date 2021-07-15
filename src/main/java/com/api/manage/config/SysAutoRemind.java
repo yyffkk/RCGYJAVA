@@ -922,7 +922,7 @@ public class SysAutoRemind {
                     }else {
                         //部分缴纳
                         log.info("进行部分缴纳");
-
+                        //TODO 部分缴纳未做
 
                     }
                 }else {
