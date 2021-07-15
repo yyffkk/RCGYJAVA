@@ -49,4 +49,49 @@
         </set>
         where id = #{id}
     </update>
+
+    <insert id="insertAdvancePaymentOrder" parameterType="com.api.model.alipay.SysAdvancePaymentOrder">
+        insert into sys_advance_payment_order(
+            estate_id,
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date,
+            status
+        )values (
+            #{estateId},
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate},
+            #{status}
+        )
+    </insert>
+
+    <select id="findSysAdvancePaymentOrderByCode" parameterType="java.lang.String" resultType="com.api.model.alipay.SysAdvancePaymentOrder">
+        select * from sys_advance_payment_order where code = #{outTradeNo}
+    </select>
+
+    <update id="updateAdvancePaymentOrderStatusByCode" parameterType="com.api.model.alipay.SysAdvancePaymentOrder">
+        update sys_advance_payment_order
+        set status = #{status}
+        where code = #{code}
+    </update>
+
+    <select id="findAPPByEstateId" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select advance_payment_price from cpm_building_unit_estate where id = #{estateId}
+    </select>
+
+    <update id="updateAdvancePaymentPriceByEstateId" parameterType="com.api.model.alipay.EstateIdAndAdvancePaymentPrice">
+        update cpm_building_unit_estate
+        set advance_payment_price = #{advancePaymentPrice}
+        where id = #{estateId}
+    </update>
+
 </mapper>

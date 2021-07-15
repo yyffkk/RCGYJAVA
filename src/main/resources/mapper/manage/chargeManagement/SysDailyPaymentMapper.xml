@@ -5,7 +5,7 @@
 <mapper namespace="com.api.manage.dao.chargeManagement.SysDailyPaymentDao">
     <select id="list" parameterType="com.api.model.chargeManagement.SearchDailyPayment" resultType="com.api.vo.chargeManagement.VoDailyPayment">
         select DISTINCT  a.*,sdpo.name as pay_name from (
-        select sdp.*,sctd.name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no,su.actual_name as create_name,
+        select sdp.*,sctd.name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no,(case su.actual_name is null when true then '计划自动生成' else su.actual_name end) as create_name,
         (case sdp.modify_date is null
             when true
             then
@@ -13,8 +13,9 @@
             else
                 sdp.modify_date
         end) as update_date
-        from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su,sys_charges_template_detail as sctd
-        where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and su.id =sdp.create_id and sctd.id = sdp.charges_template_detail_id and sdp.is_delete = 1
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_charges_template_detail as sctd,sys_daily_payment as sdp
+        LEFT JOIN sys_user as su on su.id = sdp.create_id
+        where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and sctd.id = sdp.charges_template_detail_id and sdp.is_delete = 1
         ) as a
         LEFT JOIN sys_daily_payment_order_list as sdpol on a.id = sdpol.daily_payment_id
         LEFT JOIN sys_daily_payment_order as sdpo on sdpo.id = sdpol.daily_payment_order_id

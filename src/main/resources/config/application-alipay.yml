@@ -32,6 +32,8 @@ alipay:
   leaseRentOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/leaseRentOrderNotifyInfo"
   ##房屋租赁-租金账单支付
   leaseRentBillOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/leaseRentBillOrderNotifyInfo"
+  ##生活缴费-预充值支付
+  advancePaymentOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/advancePaymentOrderNotifyInfo"
 
 
   #页面跳转同步通知页面路径
