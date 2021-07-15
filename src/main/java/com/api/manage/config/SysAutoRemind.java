@@ -12,6 +12,7 @@ import com.api.manage.dao.butlerService.LeaseDao;
 import com.api.manage.dao.butlerService.SysFacilitiesPlanDao;
 import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
+import com.api.manage.dao.chargeManagement.SysDailyPaymentPlanDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
@@ -23,6 +24,8 @@ import com.api.model.app.*;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerExecuteIdAndActualEndDate;
 import com.api.model.butlerService.*;
+import com.api.model.chargeManagement.DailyPayment;
+import com.api.model.chargeManagement.DailyPaymentPlan;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.remind.SysMessage;
@@ -32,6 +35,7 @@ import com.api.util.JiguangUtil;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -45,6 +49,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -117,6 +122,8 @@ public class SysAutoRemind {
     AppDailyPaymentDao appDailyPaymentDao;
     @Resource
     AppReportRepairDao appReportRepairDao;
+    @Resource
+    SysDailyPaymentPlanDao sysDailyPaymentPlanDao;
 
 
     /**
@@ -749,6 +756,96 @@ public class SysAutoRemind {
             }
         }else {
             log.info("暂无任何租赁租金账单信息");
+        }
+    }
+
+    /**
+     * 0 0 0 1 1/1 ?
+     * （每月1号执行一次）轮询定时任务，自动根据缴费计划生成缴费记录
+     */
+    @Scheduled(cron = "0 0 0 1 1/1 ? ")
+    public void autoCreateDailyPayment(){
+        //查询 未删除并且未结束 的缴费计划(可用的缴费计划)
+        List<DailyPaymentPlan> dailyPaymentPlanList = sysDailyPaymentPlanDao.findEnableDPP();
+        if (dailyPaymentPlanList != null && dailyPaymentPlanList.size()>0){
+            for (DailyPaymentPlan dailyPaymentPlan : dailyPaymentPlanList) {
+                //根据缴费计划生成缴费记录
+                DailyPayment dailyPayment = new DailyPayment();
+                //添加房产id
+                dailyPayment.setBuildingUnitEstateId(dailyPaymentPlan.getBuildingUnitEstateId());
+                //添加费用名称类型(取自 物业收费标准明细表)
+                dailyPayment.setChargesTemplateDetailId(dailyPaymentPlan.getChargesTemplateDetailId());
+
+                //添加计费开始时间
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.MONTH,0);
+                calendar.set(Calendar.DAY_OF_MONTH,1);//设置为1号，当前日期即为本月第一天
+                try {
+                    Date beginDate = format.parse(DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd 00:00:00"));
+                    dailyPayment.setBeginDate(beginDate);
+                    log.info("开始时间为："+beginDate.toString());
+                } catch (ParseException e) {
+                    log.info("String转date失败");
+                    e.printStackTrace();
+                }
+                //添加计费结束时间
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(Calendar.DAY_OF_MONTH, calendar1.getActualMaximum(Calendar.DAY_OF_MONTH));
+                try {
+                    Date endDate = format.parse(DateFormatUtils.format(calendar1.getTime(), "yyyy-MM-dd 23:59:59"));
+                    dailyPayment.setEndDate(endDate);
+                    log.info("开始时间为："+endDate.toString());
+                } catch (ParseException e) {
+                    log.info("String转date失败");
+                    e.printStackTrace();
+                }
+                //添加计费单价
+                dailyPayment.setUnitPrice(dailyPaymentPlan.getUnitPrice());
+                //添加计费单位
+                dailyPayment.setType(dailyPaymentPlan.getType());
+                //添加面积/用量/数量
+                dailyPayment.setNum(dailyPaymentPlan.getNum());
+                //填入费用金额(单价*用量)
+                dailyPayment.setCostPrice(dailyPayment.getUnitPrice().multiply(BigDecimal.valueOf(dailyPayment.getNum())));
+                //填入已缴金额
+                dailyPayment.setPaidPrice(BigDecimal.ZERO);
+                //填入应收总计(费用金额)
+                dailyPayment.setTotalPrice(dailyPayment.getCostPrice());
+                //填入待缴金额
+                dailyPayment.setPaymentPrice(dailyPayment.getCostPrice());
+                //填入状态(1.未缴纳)
+                dailyPayment.setStatus(1);
+                //填入费率（%为单位）
+                dailyPayment.setRate(dailyPaymentPlan.getRate());
+                //填入缴费期限
+                //添加计费开始时间
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.add(Calendar.MONTH,0);
+                calendar2.set(Calendar.DAY_OF_MONTH,dailyPaymentPlan.getPaymentTime());//设置为n号，当前日期即为本月第n天
+                try {
+                    Date paymentTerm = format.parse(DateFormatUtils.format(calendar2.getTime(), "yyyy-MM-dd 23:59:59"));
+                    dailyPayment.setPaymentTerm(paymentTerm);
+                    log.info("缴费期限为：" + paymentTerm.toString());
+                } catch (ParseException e) {
+                    log.info("String转date失败");
+                    e.printStackTrace();
+                }
+                //添加创建人id,自动生成填入 -1
+                dailyPayment.setCreateId(-1);
+                //添加创建人时间
+                dailyPayment.setCreateDate(new Date());
+                //填入是否删除，0.删除 1.非删
+                dailyPayment.setIsDelete(1);
+                //添加日常缴费信息,并返回主键id
+                int insert = sysDailyPaymentDao.insert(dailyPayment);
+                if (insert <= 0){
+                    log.info("主键id为"+dailyPaymentPlan.getId()+"的缴费计划添加缴费记录失败");
+                }
+            }
+            log.info("自动生成缴费记录成功，自动生成时间："+new Date().toString());
+        }else {
+            log.info("暂无任何缴费计划信息");
         }
     }
 

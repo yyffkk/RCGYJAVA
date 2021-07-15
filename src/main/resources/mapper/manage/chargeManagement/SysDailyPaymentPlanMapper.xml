@@ -104,4 +104,10 @@
         update sys_daily_payment_plan set is_delete = 0 where id = #{id}
     </update>
 
+    <select id="findEnableDPP" resultType="com.api.model.chargeManagement.DailyPaymentPlan">
+        select * from sys_daily_payment_plan
+        where is_delete = 1 and now() <![CDATA[ >= ]]> begin_plan_date
+        and now() <![CDATA[ <= ]]> end_plan_date
+    </select>
+
 </mapper>

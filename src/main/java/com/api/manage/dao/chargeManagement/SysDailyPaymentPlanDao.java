@@ -34,4 +34,11 @@ public interface SysDailyPaymentPlanDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 查询 未删除并且未结束 的缴费计划(可用的缴费计划)
+     * @return 缴费计划
+     */
+    List<DailyPaymentPlan> findEnableDPP();
+
 }
