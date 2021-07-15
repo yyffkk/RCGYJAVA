@@ -134,4 +134,11 @@ public interface AppDailyPaymentDao {
      * @return 影响行数
      */
     int updatePaidPAndPaymentPAndOverdueFine(AppDailyPaymentDetailsVo appDailyPaymentDetailsVo);
+
+    /**
+     * 根据房产id查询对应的预付款充值金额
+     * @param estateId 房产id
+     * @return 预付款充值金额
+     */
+    BigDecimal findAdvancePaymentPriceByEstateId(Integer estateId);
 }

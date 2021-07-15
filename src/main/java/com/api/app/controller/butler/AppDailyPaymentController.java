@@ -91,6 +91,16 @@ public class AppDailyPaymentController {
         return map;
     }
 
+    /**
+     * 根据房产id查询对应的预付款充值金额
+     * @param estateId 房产id
+     * @return map
+     */
+    @GetMapping("/findAdvancePaymentPriceByEstateId")
+    public Map<String,Object> findAdvancePaymentPriceByEstateId(Integer estateId){
+        return appDailyPaymentService.findAdvancePaymentPriceByEstateId(estateId);
+    }
+
 
 
 }

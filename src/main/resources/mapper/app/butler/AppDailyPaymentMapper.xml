@@ -154,4 +154,9 @@
         where id = #{id}
     </update>
 
+    <select id="findAdvancePaymentPriceByEstateId" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select advance_payment_price from cpm_building_unit_estate where id = #{estateId}
+    </select>
+
+
 </mapper>

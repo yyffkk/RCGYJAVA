@@ -18,4 +18,6 @@ public interface AppDailyPaymentService {
 
     List<AppPaymentRecordVo> paymentRecord(List<Integer> estateIds);
 
+    Map<String, Object> findAdvancePaymentPriceByEstateId(Integer estateId);
+
 }

@@ -158,7 +158,22 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
         return appDailyPaymentDao.paymentRecord(estateIds);
     }
 
+    @Override
+    public Map<String, Object> findAdvancePaymentPriceByEstateId(Integer estateId) {
+        map = new HashMap<>();
+        
+        BigDecimal advancePaymentPrice = appDailyPaymentDao.findAdvancePaymentPriceByEstateId(estateId);
+        
+        if (advancePaymentPrice == null){
+            advancePaymentPrice = BigDecimal.ZERO;
+        }
 
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",advancePaymentPrice);
+        
+        return map;
+    }
 
 
 }
