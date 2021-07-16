@@ -163,8 +163,15 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
     public Map<String, Object> evaluation(AppHousekeepingService appHousekeepingService) {
         map = new HashMap<>();
 
+
         try {
+            AppHousekeepingService byId = appHousekeepingServiceDao.findHousekeepingServiceById(appHousekeepingService.getId());
+            if (byId.getStatus() != 5){
+                throw new RuntimeException("当前状态不可评价");
+            }
+
             appHousekeepingService.setEvaluationTime(new Date());//填入评价时间
+            appHousekeepingService.setStatus(6);//填入状态，6.已完成（已评价）
             int update = appHousekeepingServiceDao.evaluation(appHousekeepingService);
             if (update <= 0){
                 throw new RuntimeException("评价失败");

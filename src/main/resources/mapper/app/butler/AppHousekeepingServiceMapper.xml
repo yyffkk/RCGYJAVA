@@ -74,4 +74,14 @@
     <select id="findHousekeepingServiceById" parameterType="java.lang.Integer" resultType="com.api.model.app.AppHousekeepingService">
         select * from sys_housekeeping_service where id = #{housekeepingServiceId}
     </select>
+
+    <update id="evaluation" parameterType="com.api.model.app.AppHousekeepingService">
+        update sys_housekeeping_service
+        set status = #{status},
+        evaluation = #{evaluation},
+        evaluation_content = #{evaluationContent},
+        evaluation_time = #{evaluationTime}
+        where id = #{id}
+    </update>
+
 </mapper>
