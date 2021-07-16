@@ -69,11 +69,18 @@ public interface AppDailyPaymentDao {
     int insertOrderList(DailyPaymentOrderList dailyPaymentOrderList);
 
     /**
-     * 添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额
+     * 添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额（完全缴纳）
      * @param id 缴费主键id
      * @return 影响行数
      */
     int updatePaidPriceAndPaymentPrice(Integer id);
+
+    /**
+     * 添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额（部分缴纳）
+     * @param dailyPaymentOrderList 日常缴费订单清单信息
+     * @return 影响行数
+     */
+    int updatePaidPriceAndPaymentPrice2(DailyPaymentOrderList dailyPaymentOrderList);
 
     /**
      * 根据当前用户id查询房产缴费信息

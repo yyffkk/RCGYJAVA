@@ -115,7 +115,7 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
                     throw new RuntimeException("添加缴费订单清单信息失败");
                 }
 
-                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态
+                //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额，并修改状态（完全缴纳）
                 int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(id);
                 if (update <= 0){
                     throw new RuntimeException("修改缴费信息失败");

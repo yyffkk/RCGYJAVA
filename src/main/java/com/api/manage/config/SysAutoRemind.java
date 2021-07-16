@@ -873,7 +873,7 @@ public class SysAutoRemind {
                 if (advancePaymentPrice != null && advancePaymentPrice.compareTo(BigDecimal.ZERO) > 0){
                     //查询余额是否足够支付该笔缴费记录
                     if (advancePaymentPrice.compareTo(dailyPayment.getPaymentPrice()) >= 0){
-                        //全部缴纳
+                        //全部缴纳（有足够余额）
                         log.info("进行全部缴纳");
                         //生成缴费订单
                         AppDailyPaymentOrder appDailyPaymentOrder = new AppDailyPaymentOrder();
@@ -903,7 +903,7 @@ public class SysAutoRemind {
                             log.info("添加缴费订单清单信息失败");
                         }
 
-                        //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额
+                        //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额（完全缴纳）
                         int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice(dailyPayment.getId());
                         if (update <= 0){
                             log.info("===========更新缴费信息的状态失败");
@@ -919,11 +919,58 @@ public class SysAutoRemind {
                         if (update2 <= 0){
                             log.info("扣减预付款充值金额失败");
                         }
-                    }else {
-                        //部分缴纳
-                        log.info("进行部分缴纳");
-                        //TODO 部分缴纳未做
 
+                        //通知给用户
+
+                    }else {
+                        //部分缴纳（没有足够余额）
+                        log.info("进行部分缴纳");
+                        //生成缴费订单
+                        AppDailyPaymentOrder appDailyPaymentOrder = new AppDailyPaymentOrder();
+
+                        appDailyPaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));//填写支付单号(自动生成订单号)
+                        appDailyPaymentOrder.setName("预缴扣除");//填入缴费人名称
+                        appDailyPaymentOrder.setTel("00000000000");//填入联系方式
+                        appDailyPaymentOrder.setPayType(5);//5.预缴扣除
+                        appDailyPaymentOrder.setPayPrice(dailyPayment.getPaymentPrice());//填写付款金额
+                        appDailyPaymentOrder.setCreateId(-2);//填写创建人 预缴扣除为-2
+                        appDailyPaymentOrder.setCreateDate(new Date());//填入创建时间
+                        appDailyPaymentOrder.setStatus(2);//填入付款状态，2.交易支付成功
+                        //添加缴费订单信息
+                        int i = appDailyPaymentDao.insertOrder(appDailyPaymentOrder);
+                        if (i<=0){
+                            log.info("添加缴费订单信息失败");
+                        }
+
+                        //添加缴费订单清单信息（缴费信息 与 缴费订单信息 关联表）
+                        DailyPaymentOrderList dailyPaymentOrderList = new DailyPaymentOrderList();
+                        dailyPaymentOrderList.setDailyPaymentId(dailyPayment.getId());
+                        dailyPaymentOrderList.setDailyPaymentOrderId(appDailyPaymentOrder.getId());
+                        //根据缴费主键id查询当前缴费信息的缴费金额
+                        dailyPaymentOrderList.setDailyPaymentPrice(dailyPayment.getPaymentPrice());
+                        int orderList = appDailyPaymentDao.insertOrderList(dailyPaymentOrderList);
+                        if (orderList <= 0){
+                            log.info("添加缴费订单清单信息失败");
+                        }
+
+                        //添加缴费订单信息后，修改缴费信息的已缴金额和待缴金额（部分缴纳）
+                        int update = appDailyPaymentDao.updatePaidPriceAndPaymentPrice2(dailyPaymentOrderList);
+                        if (update <= 0){
+                            log.info("===========更新缴费信息的状态失败");
+                            log.info("缴费主键id:"+dailyPayment.getId());
+                        }
+
+                        //给当前房屋减去扣减金额
+                        EstateIdAndAdvancePaymentPrice estateIdAndAdvancePaymentPrice = new EstateIdAndAdvancePaymentPrice();
+                        estateIdAndAdvancePaymentPrice.setEstateId(dailyPayment.getBuildingUnitEstateId());
+                        estateIdAndAdvancePaymentPrice.setAdvancePaymentPrice(dailyPayment.getPaymentPrice());
+                        //根据房产主键id扣减预付款充值金额
+                        int update2 = appDailyPaymentDao.deductingAdvancePaymentByEstateId(estateIdAndAdvancePaymentPrice);
+                        if (update2 <= 0){
+                            log.info("扣减预付款充值金额失败");
+                        }
+
+                        //通知给用户
                     }
                 }else {
                     log.info("暂无余额，预缴失败");

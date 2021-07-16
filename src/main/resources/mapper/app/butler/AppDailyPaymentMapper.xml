@@ -87,6 +87,18 @@
         where id = #{id}
     </update>
 
+
+    <update id="updatePaidPriceAndPaymentPrice2" parameterType="com.api.model.chargeManagement.DailyPaymentOrderList">
+        update sys_daily_payment
+        <set>
+            paid_price = paid_price + #{dailyPaymentPrice},
+            payment_price = payment_price - #{dailyPaymentPrice},
+            status = 2
+        </set>
+        where id = #{dailyPaymentId}
+    </update>
+
+
     <select id="findEstateIsPayment" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppDailPaymentChooseEstate">
         select cbue.id,concat(cb.no,"幢",cbu.no,"单元",cbue.room_number) as room_name,sum((case sdp.status is null when true then 0 else case sdp.status != 3 when true then 1 else 0 end end)) as status
         from cpm_resident_estate as cre,user_resident as ur,cpm_building as cb,cpm_building_unit as cbu,cpm_building_unit_estate as cbue
