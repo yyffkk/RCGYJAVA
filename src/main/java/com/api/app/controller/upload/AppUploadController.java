@@ -233,4 +233,14 @@ public class AppUploadController {
         return uploadService.uploadAppHousekeepingServiceSubmitPhone(file);
     }
 
+    /**
+     * 家政服务上传评价照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadAppHousekeepingServiceEvaluationPhone")
+    public Map<String,Object> uploadAppHousekeepingServiceEvaluationPhone(MultipartFile file){
+        return uploadService.uploadAppHousekeepingServiceEvaluationPhone(file);
+    }
+
 }
