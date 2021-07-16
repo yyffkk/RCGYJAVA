@@ -79,7 +79,7 @@ public class AppDailyPaymentController {
      */
     @GetMapping("/paymentRecord")
     public Map<String,Object> paymentRecord(int pageNum,int size,Integer estateId){
-        //根据住户id查询房产id集合
+//        //根据住户id查询房产id集合
 //        List<Integer> estateIds = appDailyPaymentService.findEstateIdByResidentId(id);
         Map<String,Object> map = new HashMap<>();
         PageHelper.startPage(pageNum,size);
