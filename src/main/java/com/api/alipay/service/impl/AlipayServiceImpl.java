@@ -2035,8 +2035,8 @@ public class AlipayServiceImpl implements AlipayService {
 
             //填写支付单号(自动生成订单号)
             sysAdvancePaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
-            //填写创建人 app为-1
-            sysAdvancePaymentOrder.setCreateId(-1);
+            //填写创建人
+            sysAdvancePaymentOrder.setCreateId(id);
             //填入创建时间
             sysAdvancePaymentOrder.setCreateDate(new Date());
             //填入付款状态，0.交易创建并等待买家付款

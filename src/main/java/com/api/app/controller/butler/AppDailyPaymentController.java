@@ -71,7 +71,7 @@ public class AppDailyPaymentController {
 
 
     /**
-     * 缴费记录 //TODO 需要重写sql
+     * 缴费记录
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @param id 用户主键id
