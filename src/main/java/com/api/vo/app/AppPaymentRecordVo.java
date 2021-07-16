@@ -28,6 +28,10 @@ public class AppPaymentRecordVo {
      */
     private BigDecimal paidPrice;
     /**
+     * 创建人名称
+     */
+    private String createName;
+    /**
      * 创建时间
      */
     private Date createDate;
@@ -48,6 +52,7 @@ public class AppPaymentRecordVo {
                 ", roomName='" + roomName + '\'' +
                 ", years='" + years + '\'' +
                 ", paidPrice=" + paidPrice +
+                ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
                 ", payType=" + payType +
                 ", code='" + code + '\'' +
@@ -94,6 +99,14 @@ public class AppPaymentRecordVo {
         this.paidPrice = paidPrice;
     }
 
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -121,12 +134,13 @@ public class AppPaymentRecordVo {
     public AppPaymentRecordVo() {
     }
 
-    public AppPaymentRecordVo(Integer id, String chargesTemplateDetailName, String roomName, String years, BigDecimal paidPrice, Date createDate, Integer payType, String code) {
+    public AppPaymentRecordVo(Integer id, String chargesTemplateDetailName, String roomName, String years, BigDecimal paidPrice, String createName, Date createDate, Integer payType, String code) {
         this.id = id;
         this.chargesTemplateDetailName = chargesTemplateDetailName;
         this.roomName = roomName;
         this.years = years;
         this.paidPrice = paidPrice;
+        this.createName = createName;
         this.createDate = createDate;
         this.payType = payType;
         this.code = code;

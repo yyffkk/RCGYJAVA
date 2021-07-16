@@ -112,17 +112,23 @@
         select building_unit_estate_id from cpm_resident_estate where resident_id = #{id}
     </select>
 
-    <select id="paymentRecord" parameterType="java.util.List" resultType="com.api.vo.app.AppPaymentRecordVo">
-        select sdpol.id,sctd.name as charges_template_detail_name,concat(cb.no,"幢",cbu.no,"单元",cbue.room_number) as room_name,YEAR(sdp.create_date) as years,sdpol.daily_payment_price as paid_price,sdpo.create_date,sdpo.pay_type,sdpo.code
-        from sys_daily_payment as sdp,sys_charges_template_detail as sctd,sys_daily_payment_order as sdpo,sys_daily_payment_order_list as sdpol
-        ,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
-        where sdp.charges_template_detail_id = sctd.id and sdp.id = sdpol.daily_payment_id and sdpo.id = sdpol.daily_payment_order_id
-        and sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
-        and sdp.building_unit_estate_id in
-        <foreach collection="list" item="estateId" open="(" separator="," close=")">
-            #{estateId}
-        </foreach>
-        order by sdpo.create_date DESC
+    <select id="paymentRecord" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppPaymentRecordVo">
+        select a.* from (
+            select sdpol.id,sctd.name as charges_template_detail_name,concat(cb.no,"幢",cbu.no,"单元",cbue.room_number) as room_name,
+            YEAR(sdpo.create_date) as years,sdpol.daily_payment_price as paid_price,sdpo.create_date,sdpo.pay_type,sdpo.code,sdpo.name as create_name
+            from sys_daily_payment as sdp,sys_charges_template_detail as sctd,sys_daily_payment_order_list as sdpol
+            ,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_daily_payment_order as sdpo
+            where sdp.charges_template_detail_id = sctd.id and sdp.id = sdpol.daily_payment_id and sdpo.id = sdpol.daily_payment_order_id
+            and sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+            and sdp.building_unit_estate_id = #{estateId}
+            union all
+            select sapo.id,'预缴充值' as charges_template_detail_name,concat(cb.no,"幢",cbu.no,"单元",cbue.room_number) as room_name,
+            YEAR(sapo.create_date) as years,sapo.pay_price as paid_price,sapo.create_date,sapo.pay_type,sapo.code,sapo.name as create_name
+            from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_advance_payment_order as sapo
+            where sapo.estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
+            and sapo.estate_id = #{estateId}
+        ) as a
+        order by a.create_date DESC
     </select>
 
     <select id="findDailPaymentOrderByCode" parameterType="java.lang.String" resultType="com.api.model.app.AppDailyPaymentOrder">

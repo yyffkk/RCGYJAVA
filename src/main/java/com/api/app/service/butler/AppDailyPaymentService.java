@@ -16,7 +16,7 @@ public interface AppDailyPaymentService {
 
     List<Integer> findEstateIdByResidentId(Integer id);
 
-    List<AppPaymentRecordVo> paymentRecord(List<Integer> estateIds);
+    List<AppPaymentRecordVo> paymentRecord(Integer estateId);
 
     Map<String, Object> findAdvancePaymentPriceByEstateId(Integer estateId);
 

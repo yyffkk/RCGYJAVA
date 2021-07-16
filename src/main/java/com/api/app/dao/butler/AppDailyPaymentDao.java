@@ -98,10 +98,10 @@ public interface AppDailyPaymentDao {
 
     /**
      * 缴费记录
-     * @param estateIds 房产id集合
+     * @param estateIds 房产id
      * @return 缴费记录集合信息
      */
-    List<AppPaymentRecordVo> paymentRecord(List<Integer> estateIds);
+    List<AppPaymentRecordVo> paymentRecord(Integer estateId);
 
 
     /**

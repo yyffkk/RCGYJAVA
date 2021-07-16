@@ -154,8 +154,8 @@ public class AppDailyPaymentServiceImpl implements AppDailyPaymentService {
     }
 
     @Override
-    public List<AppPaymentRecordVo> paymentRecord(List<Integer> estateIds) {
-        return appDailyPaymentDao.paymentRecord(estateIds);
+    public List<AppPaymentRecordVo> paymentRecord(Integer estateId) {
+        return appDailyPaymentDao.paymentRecord(estateId);
     }
 
     @Override
