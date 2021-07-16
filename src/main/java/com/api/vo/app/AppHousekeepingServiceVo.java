@@ -42,6 +42,14 @@ public class AppHousekeepingServiceVo {
      */
     private Integer completion;
     /**
+     * 处理人名称
+     */
+    private String handlerName;
+    /**
+     * 处理人电话
+     */
+    private String handlerTel;
+    /**
      * 处理描述
      */
     private String processDescription;
@@ -49,6 +57,10 @@ public class AppHousekeepingServiceVo {
      * 处理时间
      */
     private Date handlingTime;
+    /**
+     * 处理完成照片资源信息
+     */
+    private List<VoResourcesImg> handlerImgList;
     /**
      * 支付费用
      */
@@ -85,8 +97,11 @@ public class AppHousekeepingServiceVo {
                 ", content='" + content + '\'' +
                 ", status=" + status +
                 ", completion=" + completion +
+                ", handlerName='" + handlerName + '\'' +
+                ", handlerTel='" + handlerTel + '\'' +
                 ", processDescription='" + processDescription + '\'' +
                 ", handlingTime=" + handlingTime +
+                ", handlerImgList=" + handlerImgList +
                 ", payFee=" + payFee +
                 ", evaluation=" + evaluation +
                 ", evaluationContent='" + evaluationContent + '\'' +
@@ -160,6 +175,22 @@ public class AppHousekeepingServiceVo {
         this.completion = completion;
     }
 
+    public String getHandlerName() {
+        return handlerName;
+    }
+
+    public void setHandlerName(String handlerName) {
+        this.handlerName = handlerName;
+    }
+
+    public String getHandlerTel() {
+        return handlerTel;
+    }
+
+    public void setHandlerTel(String handlerTel) {
+        this.handlerTel = handlerTel;
+    }
+
     public String getProcessDescription() {
         return processDescription;
     }
@@ -174,6 +205,14 @@ public class AppHousekeepingServiceVo {
 
     public void setHandlingTime(Date handlingTime) {
         this.handlingTime = handlingTime;
+    }
+
+    public List<VoResourcesImg> getHandlerImgList() {
+        return handlerImgList;
+    }
+
+    public void setHandlerImgList(List<VoResourcesImg> handlerImgList) {
+        this.handlerImgList = handlerImgList;
     }
 
     public Double getPayFee() {
@@ -227,7 +266,7 @@ public class AppHousekeepingServiceVo {
     public AppHousekeepingServiceVo() {
     }
 
-    public AppHousekeepingServiceVo(Integer id, String proposerName, String proposerTel, String roomName, Integer type, String content, Integer status, Integer completion, String processDescription, Date handlingTime, Double payFee, Integer evaluation, String evaluationContent, Date evaluationTime, Date createDate, List<VoResourcesImg> submitImgList) {
+    public AppHousekeepingServiceVo(Integer id, String proposerName, String proposerTel, String roomName, Integer type, String content, Integer status, Integer completion, String handlerName, String handlerTel, String processDescription, Date handlingTime, List<VoResourcesImg> handlerImgList, Double payFee, Integer evaluation, String evaluationContent, Date evaluationTime, Date createDate, List<VoResourcesImg> submitImgList) {
         this.id = id;
         this.proposerName = proposerName;
         this.proposerTel = proposerTel;
@@ -236,8 +275,11 @@ public class AppHousekeepingServiceVo {
         this.content = content;
         this.status = status;
         this.completion = completion;
+        this.handlerName = handlerName;
+        this.handlerTel = handlerTel;
         this.processDescription = processDescription;
         this.handlingTime = handlingTime;
+        this.handlerImgList = handlerImgList;
         this.payFee = payFee;
         this.evaluation = evaluation;
         this.evaluationContent = evaluationContent;
