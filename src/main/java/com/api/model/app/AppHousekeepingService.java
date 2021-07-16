@@ -57,6 +57,10 @@ public class AppHousekeepingService {
      */
     private Date handlingTime;
     /**
+     * 处理完成照片提交路径集合
+     */
+    private String[] handlerImgUrls;
+    /**
      * 评价，1-10分
      */
     private Integer evaluation;
@@ -68,6 +72,10 @@ public class AppHousekeepingService {
      * 评价时间
      */
     private Date evaluationTime;
+    /**
+     * 评价照片提交路径集合
+     */
+    private String[] evaluationImgUrls;
     /**
      * 申请人
      */
@@ -104,9 +112,11 @@ public class AppHousekeepingService {
                 ", payFee=" + payFee +
                 ", handler=" + handler +
                 ", handlingTime=" + handlingTime +
+                ", handlerImgUrls=" + Arrays.toString(handlerImgUrls) +
                 ", evaluation=" + evaluation +
                 ", evaluationContent='" + evaluationContent + '\'' +
                 ", evaluationTime=" + evaluationTime +
+                ", evaluationImgUrls=" + Arrays.toString(evaluationImgUrls) +
                 ", proposer=" + proposer +
                 ", applyTime=" + applyTime +
                 ", createId=" + createId +
@@ -211,6 +221,14 @@ public class AppHousekeepingService {
         this.handlingTime = handlingTime;
     }
 
+    public String[] getHandlerImgUrls() {
+        return handlerImgUrls;
+    }
+
+    public void setHandlerImgUrls(String[] handlerImgUrls) {
+        this.handlerImgUrls = handlerImgUrls;
+    }
+
     public Integer getEvaluation() {
         return evaluation;
     }
@@ -233,6 +251,14 @@ public class AppHousekeepingService {
 
     public void setEvaluationTime(Date evaluationTime) {
         this.evaluationTime = evaluationTime;
+    }
+
+    public String[] getEvaluationImgUrls() {
+        return evaluationImgUrls;
+    }
+
+    public void setEvaluationImgUrls(String[] evaluationImgUrls) {
+        this.evaluationImgUrls = evaluationImgUrls;
     }
 
     public Integer getProposer() {
@@ -278,7 +304,7 @@ public class AppHousekeepingService {
     public AppHousekeepingService() {
     }
 
-    public AppHousekeepingService(Integer id, Integer estateId, Integer type, String content, Integer status, Integer assigner, Date allocateTime, Integer completion, String processDescription, Double payFee, Integer handler, Date handlingTime, Integer evaluation, String evaluationContent, Date evaluationTime, Integer proposer, Date applyTime, Integer createId, Date createDate, String[] submitImgUrls) {
+    public AppHousekeepingService(Integer id, Integer estateId, Integer type, String content, Integer status, Integer assigner, Date allocateTime, Integer completion, String processDescription, Double payFee, Integer handler, Date handlingTime, String[] handlerImgUrls, Integer evaluation, String evaluationContent, Date evaluationTime, String[] evaluationImgUrls, Integer proposer, Date applyTime, Integer createId, Date createDate, String[] submitImgUrls) {
         this.id = id;
         this.estateId = estateId;
         this.type = type;
@@ -291,9 +317,11 @@ public class AppHousekeepingService {
         this.payFee = payFee;
         this.handler = handler;
         this.handlingTime = handlingTime;
+        this.handlerImgUrls = handlerImgUrls;
         this.evaluation = evaluation;
         this.evaluationContent = evaluationContent;
         this.evaluationTime = evaluationTime;
+        this.evaluationImgUrls = evaluationImgUrls;
         this.proposer = proposer;
         this.applyTime = applyTime;
         this.createId = createId;

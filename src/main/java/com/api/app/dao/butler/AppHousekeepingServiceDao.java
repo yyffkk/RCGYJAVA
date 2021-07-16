@@ -50,4 +50,11 @@ public interface AppHousekeepingServiceDao {
      * @return 家政服务信息
      */
     AppHousekeepingService findHousekeepingServiceById(Integer housekeepingServiceId);
+
+    /**
+     * 评价
+     * @param appHousekeepingService app 新版家政服务 model
+     * @return 影响行数
+     */
+    int evaluation(AppHousekeepingService appHousekeepingService);
 }

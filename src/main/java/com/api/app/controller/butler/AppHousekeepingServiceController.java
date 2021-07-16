@@ -81,4 +81,14 @@ public class AppHousekeepingServiceController {
     public Map<String,Object> cancel(UserIdAndHousekeepingServiceId userIdAndHousekeepingServiceId){
         return appHousekeepingServiceService.cancel(userIdAndHousekeepingServiceId);
     }
+
+    /**
+     * 评价
+     * @param appHousekeepingService app 新版家政服务 model
+     * @return map
+     */
+    @PostMapping("/evaluation")
+    public Map<String,Object> evaluation(@RequestBody AppHousekeepingService appHousekeepingService){
+        return appHousekeepingServiceService.evaluation(appHousekeepingService);
+    }
 }

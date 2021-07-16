@@ -86,8 +86,18 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
         if (list != null && list.size()>0){
             UploadUtil uploadUtil = new UploadUtil();
             for (AppHousekeepingServiceVo appHousekeepingServiceVo : list) {
-                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysHouseKeepingService", appHousekeepingServiceVo.getId(), "submitImg");
-                appHousekeepingServiceVo.setSubmitImgList(imgByDate);
+                //填入提交照片资源信息
+                List<VoResourcesImg> submitImg = uploadUtil.findImgByDate("sysHouseKeepingService", appHousekeepingServiceVo.getId(), "submitImg");
+                appHousekeepingServiceVo.setSubmitImgList(submitImg);
+
+                //填入评价照片资源信息
+                List<VoResourcesImg> evaluationImg = uploadUtil.findImgByDate("sysHouseKeepingService", appHousekeepingServiceVo.getId(), "evaluationImg");
+                appHousekeepingServiceVo.setEvaluationImgList(evaluationImg);
+
+                //填入处理完成照片资源信息
+                List<VoResourcesImg> handlerImg = uploadUtil.findImgByDate("sysHouseKeepingService", appHousekeepingServiceVo.getId(), "handlerImg");
+                appHousekeepingServiceVo.setHandlerImgList(handlerImg);
+
             }
         }
         return list;
@@ -144,6 +154,36 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
             return map;
         }
         map.put("message","取消成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> evaluation(AppHousekeepingService appHousekeepingService) {
+        map = new HashMap<>();
+
+        try {
+            appHousekeepingService.setEvaluationTime(new Date());//填入评价时间
+            int update = appHousekeepingServiceDao.evaluation(appHousekeepingService);
+            if (update <= 0){
+                throw new RuntimeException("评价失败");
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(appHousekeepingService.getEvaluationImgUrls(),"sysHousekeepingService",appHousekeepingService.getId(),"evaluationImg","600",30,20);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","评价成功");
         map.put("status",true);
         return map;
     }

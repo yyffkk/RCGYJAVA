@@ -78,6 +78,10 @@ public class AppHousekeepingServiceVo {
      */
     private Date evaluationTime;
     /**
+     * 评价照片资源信息
+     */
+    private List<VoResourcesImg> evaluationImgList;
+    /**
      * 创建时间
      */
     private Date createDate;
@@ -106,6 +110,7 @@ public class AppHousekeepingServiceVo {
                 ", evaluation=" + evaluation +
                 ", evaluationContent='" + evaluationContent + '\'' +
                 ", evaluationTime=" + evaluationTime +
+                ", evaluationImgList=" + evaluationImgList +
                 ", createDate=" + createDate +
                 ", submitImgList=" + submitImgList +
                 '}';
@@ -247,6 +252,14 @@ public class AppHousekeepingServiceVo {
         this.evaluationTime = evaluationTime;
     }
 
+    public List<VoResourcesImg> getEvaluationImgList() {
+        return evaluationImgList;
+    }
+
+    public void setEvaluationImgList(List<VoResourcesImg> evaluationImgList) {
+        this.evaluationImgList = evaluationImgList;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -266,7 +279,7 @@ public class AppHousekeepingServiceVo {
     public AppHousekeepingServiceVo() {
     }
 
-    public AppHousekeepingServiceVo(Integer id, String proposerName, String proposerTel, String roomName, Integer type, String content, Integer status, Integer completion, String handlerName, String handlerTel, String processDescription, Date handlingTime, List<VoResourcesImg> handlerImgList, Double payFee, Integer evaluation, String evaluationContent, Date evaluationTime, Date createDate, List<VoResourcesImg> submitImgList) {
+    public AppHousekeepingServiceVo(Integer id, String proposerName, String proposerTel, String roomName, Integer type, String content, Integer status, Integer completion, String handlerName, String handlerTel, String processDescription, Date handlingTime, List<VoResourcesImg> handlerImgList, Double payFee, Integer evaluation, String evaluationContent, Date evaluationTime, List<VoResourcesImg> evaluationImgList, Date createDate, List<VoResourcesImg> submitImgList) {
         this.id = id;
         this.proposerName = proposerName;
         this.proposerTel = proposerTel;
@@ -284,6 +297,7 @@ public class AppHousekeepingServiceVo {
         this.evaluation = evaluation;
         this.evaluationContent = evaluationContent;
         this.evaluationTime = evaluationTime;
+        this.evaluationImgList = evaluationImgList;
         this.createDate = createDate;
         this.submitImgList = submitImgList;
     }

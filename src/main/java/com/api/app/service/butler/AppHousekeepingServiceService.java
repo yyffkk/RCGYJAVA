@@ -16,4 +16,6 @@ public interface AppHousekeepingServiceService {
     Map<String, Object> findHousekeepingProcessRecord(Integer housekeepingServiceId);
 
     Map<String, Object> cancel(UserIdAndHousekeepingServiceId userIdAndHousekeepingServiceId);
+
+    Map<String, Object> evaluation(AppHousekeepingService appHousekeepingService);
 }
