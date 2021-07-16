@@ -180,5 +180,9 @@
         where id = #{estateId}
     </update>
 
+    <select id="findThreeDaysLaterPayment" parameterType="java.util.Date" resultType="com.api.model.chargeManagement.DailyPayment">
+        select * from sys_daily_payment where status in (1,2) and year(payment_term) = year(#{threeDaysLater}) and MONTH(payment_term) = MONTH(#{threeDaysLater}) and DAY(payment_term) = DAY(#{threeDaysLater})
+    </select>
+
 
 </mapper>

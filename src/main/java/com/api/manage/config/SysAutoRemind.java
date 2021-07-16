@@ -200,77 +200,77 @@ public class SysAutoRemind {
     }
 
 
-    /**
-     * 后台系统日常缴费提醒，如果到月初，则系统则给未缴纳费用的用户自动发出提醒
-     */
-    //每月1号0点1秒，系统则给未缴纳费用的用户自动发出提醒
-    @Scheduled(cron = "1 0 0 1 * ?")
-    private void sysDailyPaymentRemind() {
-        System.out.println("【每日定时检查任务】 每到月初（1号）就执行一次日常缴费提醒！");
-        try {
-            //查询所有的日常缴费信息
-            List<VoFindAllDailyPayment> voFindAllDailyPaymentList = sysDailyPaymentDao.findAll();
-            //判断是否有缴费信息
-            if (voFindAllDailyPaymentList != null && voFindAllDailyPaymentList.size()>0){
-                for (VoFindAllDailyPayment voFindAllDailyPayment : voFindAllDailyPaymentList) {
-                    //如果待缴金额大于0，则系统自动发送日常缴费提醒，否则不发送
-                    if (voFindAllDailyPayment.getPaymentPrice().compareTo(BigDecimal.ZERO) == 1 ){
-                        //如果待缴金额大于0，则系统自动发送日常缴费提醒
-                        SysMessage sysMessage = new SysMessage();
-                        //填入标题
-                        sysMessage.setTitle("日常缴费提醒");
-                        //填入消息内容
-                        sysMessage.setContent("亲，您的物业费已经到期了，为了不影响您的居住环境，请登入app或者来物业大厅缴费，谢谢");
-                        //填入发送人id（系统发送为-1）
-                        sysMessage.setSender(-1);
-                        //填入创建时间
-                        sysMessage.setGenerateDate(new Date());
-                        //填入发送时间
-                        sysMessage.setSendDate(new Date());
-                        //填入发送类型（1.系统广播，2.管理员消息）
-                        sysMessage.setType(1);
-                        //添加提醒 消息列表 并返回主键id
-                        int insert = remindDao.insertMessage(sysMessage);
-                        if (insert <= 0){
-                            throw new RuntimeException("添加消息列表失败");
-                        }
-
-                        SysSending sysSending = new SysSending();
-                        //填入消息id
-                        sysSending.setMessageId(sysMessage.getId());
-                        //填入接收人id
-                        //根据房产id查询业主id
-                        List<Integer> residentIds = cpmBuildingUnitEstateDao.findResidentIdByEstateId(voFindAllDailyPayment.getBuildingUnitEstateId());
-                        //传入业主id,如果有2个，则取数据库中排序的第一个
-                        sysSending.setReceiverAccount(residentIds.get(0));
-                        //填入发送状态（0.未发或不成功1.发送成功，3.已读）[初始为0，用户打开app为1，查看为3]
-                        sysSending.setSendStatus(1);
-                        //填入发送日期
-                        sysSending.setSendDate(new Date());
-                        //添加消息接收列表
-                        int i = remindDao.insertSending(sysSending);
-                        if (i <= 0){
-                            throw new RuntimeException("添加消息接收列表失败");
-                        }
-                        JiguangUtil.push(String.valueOf(residentIds.get(0)),"日常缴费提醒");
-                    }else {
-                        //如果待缴金额不大于0，则跳过，不发送日常缴费提醒
-                    }
-                }
-            }
-        } catch (RuntimeException e) {
-            //获取抛出的信息
-            String message = e.getMessage();
-            e.printStackTrace();
-            //设置手动回滚
-            TransactionAspectSupport.currentTransactionStatus()
-                    .setRollbackOnly();
-            //打印日志地方
-            log.info(message);
-        }
-        //打印日志地方
-        log.info("已到月初，发送日常缴费提醒");
-    }
+//    /**
+//     * 后台系统日常缴费提醒，如果到月初，则系统则给未缴纳费用的用户自动发出提醒
+//     */
+//    //每月1号0点1秒，系统则给未缴纳费用的用户自动发出提醒
+//    @Scheduled(cron = "1 0 0 1 * ?")
+//    private void sysDailyPaymentRemind() {
+//        System.out.println("【每日定时检查任务】 每到月初（1号）就执行一次日常缴费提醒！");
+//        try {
+//            //查询所有的日常缴费信息
+//            List<VoFindAllDailyPayment> voFindAllDailyPaymentList = sysDailyPaymentDao.findAll();
+//            //判断是否有缴费信息
+//            if (voFindAllDailyPaymentList != null && voFindAllDailyPaymentList.size()>0){
+//                for (VoFindAllDailyPayment voFindAllDailyPayment : voFindAllDailyPaymentList) {
+//                    //如果待缴金额大于0，则系统自动发送日常缴费提醒，否则不发送
+//                    if (voFindAllDailyPayment.getPaymentPrice().compareTo(BigDecimal.ZERO) == 1 ){
+//                        //如果待缴金额大于0，则系统自动发送日常缴费提醒
+//                        SysMessage sysMessage = new SysMessage();
+//                        //填入标题
+//                        sysMessage.setTitle("日常缴费提醒");
+//                        //填入消息内容
+//                        sysMessage.setContent("亲，您的物业费已经到期了，为了不影响您的居住环境，请登入app或者来物业大厅缴费，谢谢");
+//                        //填入发送人id（系统发送为-1）
+//                        sysMessage.setSender(-1);
+//                        //填入创建时间
+//                        sysMessage.setGenerateDate(new Date());
+//                        //填入发送时间
+//                        sysMessage.setSendDate(new Date());
+//                        //填入发送类型（1.系统广播，2.管理员消息）
+//                        sysMessage.setType(1);
+//                        //添加提醒 消息列表 并返回主键id
+//                        int insert = remindDao.insertMessage(sysMessage);
+//                        if (insert <= 0){
+//                            throw new RuntimeException("添加消息列表失败");
+//                        }
+//
+//                        SysSending sysSending = new SysSending();
+//                        //填入消息id
+//                        sysSending.setMessageId(sysMessage.getId());
+//                        //填入接收人id
+//                        //根据房产id查询业主id
+//                        List<Integer> residentIds = cpmBuildingUnitEstateDao.findResidentIdByEstateId(voFindAllDailyPayment.getBuildingUnitEstateId());
+//                        //传入业主id,如果有2个，则取数据库中排序的第一个
+//                        sysSending.setReceiverAccount(residentIds.get(0));
+//                        //填入发送状态（0.未发或不成功1.发送成功，3.已读）[初始为0，用户打开app为1，查看为3]
+//                        sysSending.setSendStatus(1);
+//                        //填入发送日期
+//                        sysSending.setSendDate(new Date());
+//                        //添加消息接收列表
+//                        int i = remindDao.insertSending(sysSending);
+//                        if (i <= 0){
+//                            throw new RuntimeException("添加消息接收列表失败");
+//                        }
+//                        JiguangUtil.push(String.valueOf(residentIds.get(0)),"日常缴费提醒");
+//                    }else {
+//                        //如果待缴金额不大于0，则跳过，不发送日常缴费提醒
+//                    }
+//                }
+//            }
+//        } catch (RuntimeException e) {
+//            //获取抛出的信息
+//            String message = e.getMessage();
+//            e.printStackTrace();
+//            //设置手动回滚
+//            TransactionAspectSupport.currentTransactionStatus()
+//                    .setRollbackOnly();
+//            //打印日志地方
+//            log.info(message);
+//        }
+//        //打印日志地方
+//        log.info("已到月初，发送日常缴费提醒");
+//    }
 
     /**
      * 0 0 0 1/1 * ?
@@ -847,6 +847,34 @@ public class SysAutoRemind {
                 if (insert <= 0){
                     log.info("主键id为"+dailyPaymentPlan.getId()+"的缴费计划添加缴费记录失败");
                 }
+
+                //通知给用户
+                SysMessage sysMessage = new SysMessage();
+                sysMessage.setTitle("日常缴费提醒");//填入标题
+                sysMessage.setContent("亲，您的本月小区费用账单已经生成，为了不影响您的生活体验，请及时登入app或者来物业大厅缴费，谢谢");//填入消息内容
+                sysMessage.setSender(-1);//填入发送人id（系统发送为-1）
+                sysMessage.setGenerateDate(new Date());//填入创建时间
+                sysMessage.setSendDate(new Date());//填入发送时间
+                sysMessage.setType(1);//填入发送类型（1.系统广播，2.管理员消息）
+                //添加提醒 消息列表 并返回主键id
+                int insert2 = remindDao.insertMessage(sysMessage);
+                if (insert2 <= 0){
+                    log.info("添加消息列表失败");
+                }
+                SysSending sysSending = new SysSending();
+                sysSending.setMessageId(sysMessage.getId());//填入消息id
+                //根据房产id查询业主id
+                List<Integer> residentIds = cpmBuildingUnitEstateDao.findResidentIdByEstateId(dailyPayment.getBuildingUnitEstateId());
+                for (Integer residentId : residentIds) {
+                    sysSending.setReceiverAccount(residentId);//填入接收人id
+                    sysSending.setSendStatus(1);//填入发送状态（0.未发或不成功1.发送成功，3.已读）[初始为0，用户打开app为1，查看为3]
+                    sysSending.setSendDate(new Date());//填入发送日期
+                    int insert3 = remindDao.insertSending(sysSending);//添加消息接收列表
+                    if (insert3 <= 0){
+                        log.info("添加消息接收列表失败");
+                    }
+                    JiguangUtil.push(String.valueOf(residentId),"账单生成提醒");
+                }
             }
             log.info("自动生成缴费记录成功，自动生成时间："+new Date().toString());
         }else {
@@ -921,6 +949,32 @@ public class SysAutoRemind {
                         }
 
                         //通知给用户
+                        SysMessage sysMessage = new SysMessage();
+                        sysMessage.setTitle("日常缴费提醒");//填入标题
+                        sysMessage.setContent("本月生活缴费账单已经自动扣除，请查看扣款明细");//填入消息内容
+                        sysMessage.setSender(-1);//填入发送人id（系统发送为-1）
+                        sysMessage.setGenerateDate(new Date());//填入创建时间
+                        sysMessage.setSendDate(new Date());//填入发送时间
+                        sysMessage.setType(1);//填入发送类型（1.系统广播，2.管理员消息）
+                        //添加提醒 消息列表 并返回主键id
+                        int insert = remindDao.insertMessage(sysMessage);
+                        if (insert <= 0){
+                            log.info("添加消息列表失败");
+                        }
+                        SysSending sysSending = new SysSending();
+                        sysSending.setMessageId(sysMessage.getId());//填入消息id
+                        //根据房产id查询业主id
+                        List<Integer> residentIds = cpmBuildingUnitEstateDao.findResidentIdByEstateId(dailyPayment.getBuildingUnitEstateId());
+                        for (Integer residentId : residentIds) {
+                            sysSending.setReceiverAccount(residentId);//填入接收人id
+                            sysSending.setSendStatus(1);//填入发送状态（0.未发或不成功1.发送成功，3.已读）[初始为0，用户打开app为1，查看为3]
+                            sysSending.setSendDate(new Date());//填入发送日期
+                            int insert2 = remindDao.insertSending(sysSending);//添加消息接收列表
+                            if (insert2 <= 0){
+                                log.info("添加消息接收列表失败");
+                            }
+                            JiguangUtil.push(String.valueOf(residentId),"本月生活缴费账单已经自动扣除，请查看扣款明细");
+                        }
 
                     }else {
                         //部分缴纳（没有足够余额）
@@ -971,6 +1025,33 @@ public class SysAutoRemind {
                         }
 
                         //通知给用户
+                        SysMessage sysMessage = new SysMessage();
+                        sysMessage.setTitle("日常缴费提醒");//填入标题
+                        sysMessage.setContent("因预缴金额不足，本月生活缴费账单已自动扣除预缴部分的金额，请查看扣款明细，及时缴纳剩余金额");//填入消息内容
+                        sysMessage.setSender(-1);//填入发送人id（系统发送为-1）
+                        sysMessage.setGenerateDate(new Date());//填入创建时间
+                        sysMessage.setSendDate(new Date());//填入发送时间
+                        sysMessage.setType(1);//填入发送类型（1.系统广播，2.管理员消息）
+                        //添加提醒 消息列表 并返回主键id
+                        int insert = remindDao.insertMessage(sysMessage);
+                        if (insert <= 0){
+                            log.info("添加消息列表失败");
+                        }
+                        SysSending sysSending = new SysSending();
+                        sysSending.setMessageId(sysMessage.getId());//填入消息id
+                        //根据房产id查询业主id
+                        List<Integer> residentIds = cpmBuildingUnitEstateDao.findResidentIdByEstateId(dailyPayment.getBuildingUnitEstateId());
+                        for (Integer residentId : residentIds) {
+                            sysSending.setReceiverAccount(residentId);//填入接收人id
+                            sysSending.setSendStatus(1);//填入发送状态（0.未发或不成功1.发送成功，3.已读）[初始为0，用户打开app为1，查看为3]
+                            sysSending.setSendDate(new Date());//填入发送日期
+                            int insert2 = remindDao.insertSending(sysSending);//添加消息接收列表
+                            if (insert2 <= 0){
+                                log.info("添加消息接收列表失败");
+                            }
+                            JiguangUtil.push(String.valueOf(residentId),"因预缴金额不足，本月生活缴费账单已自动扣除预缴部分的金额，请查看扣款明细，及时缴纳剩余金额");
+                        }
+
                     }
                 }else {
                     log.info("暂无余额，预缴失败");
@@ -978,6 +1059,55 @@ public class SysAutoRemind {
             }
         }else {
             log.info("暂无任何到达缴费期限的缴费记录");
+        }
+    }
+
+    /**
+     * 0 1 0 1/1 * ?
+     * （每日 00.01分 进行缴费提醒）轮询定时任务，提醒三天后到达缴费期限的未缴纳缴费记录
+     */
+    @Scheduled(cron = "0 59 23 1/1 * ? ")
+    public void autoRemindToPay(){
+        log.info("开始缴费提醒");
+        //创建当前时间
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 3);//给当前时间加上3天
+        Date threeDaysLater = calendar.getTime();
+        //查询三天后到达缴费期限的未缴纳缴费记录
+        List<DailyPayment> dailyPaymentList = appDailyPaymentDao.findThreeDaysLaterPayment(threeDaysLater);
+
+        if (dailyPaymentList != null && dailyPaymentList.size()>0){
+            for (DailyPayment dailyPayment : dailyPaymentList) {
+                //通知给用户
+                SysMessage sysMessage = new SysMessage();
+                sysMessage.setTitle("日常缴费提醒");//填入标题
+                sysMessage.setContent("亲，您本月有费用账单尚未缴纳，即将在三天后逾期，之后会按天数计算额外滞纳金费用，请尽快登录app或线下前往物业服务中心缴纳相关费用，谢谢");//填入消息内容
+                sysMessage.setSender(-1);//填入发送人id（系统发送为-1）
+                sysMessage.setGenerateDate(new Date());//填入创建时间
+                sysMessage.setSendDate(new Date());//填入发送时间
+                sysMessage.setType(1);//填入发送类型（1.系统广播，2.管理员消息）
+                //添加提醒 消息列表 并返回主键id
+                int insert = remindDao.insertMessage(sysMessage);
+                if (insert <= 0){
+                    log.info("添加消息列表失败");
+                }
+                SysSending sysSending = new SysSending();
+                sysSending.setMessageId(sysMessage.getId());//填入消息id
+                //根据房产id查询业主id
+                List<Integer> residentIds = cpmBuildingUnitEstateDao.findResidentIdByEstateId(dailyPayment.getBuildingUnitEstateId());
+                for (Integer residentId : residentIds) {
+                    sysSending.setReceiverAccount(residentId);//填入接收人id
+                    sysSending.setSendStatus(1);//填入发送状态（0.未发或不成功1.发送成功，3.已读）[初始为0，用户打开app为1，查看为3]
+                    sysSending.setSendDate(new Date());//填入发送日期
+                    int insert2 = remindDao.insertSending(sysSending);//添加消息接收列表
+                    if (insert2 <= 0){
+                        log.info("添加消息接收列表失败");
+                    }
+                    JiguangUtil.push(String.valueOf(residentId),"亲，您本月有费用账单尚未缴纳，即将在三天后逾期，之后会按天数计算额外滞纳金费用，请尽快登录app或线下前往物业服务中心缴纳相关费用，谢谢");
+                }
+            }
+        }else {
+            log.info("暂无任何三天后到达缴费期限的缴费记录");
         }
     }
 

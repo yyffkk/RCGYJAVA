@@ -165,4 +165,11 @@ public interface AppDailyPaymentDao {
      * @return 影响行数
      */
     int deductingAdvancePaymentByEstateId(EstateIdAndAdvancePaymentPrice estateIdAndAdvancePaymentPrice);
+
+    /**
+     * 查询三天后到达缴费期限的未缴纳缴费记录
+     * @param threeDaysLater 三天后的时间
+     * @return 缴费记录
+     */
+    List<DailyPayment> findThreeDaysLaterPayment(Date threeDaysLater);
 }
