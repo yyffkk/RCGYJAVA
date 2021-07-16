@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 管家app 家政管理
+ * 管家app 家政管理(无权限分配版)
  */
 @RestController
 @RequestMapping("butlerApp/user/housekeeping")
