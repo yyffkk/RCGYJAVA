@@ -32,8 +32,11 @@ public class ButlerHousekeepingServiceController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch){
+        //查询用户所属权限,type:1.派单人 2.维修人 3.其他角色
+        int type = butlerHousekeepingServiceService.findJurisdictionByUserId(butlerHousekeepingServiceSearch.getRoleId());
+        //分页查询信息
         PageHelper.startPage(butlerHousekeepingServiceSearch.getPageNum(),butlerHousekeepingServiceSearch.getSize());
-        List<AppHousekeepingServiceVo> appHousekeepingServiceVoList =butlerHousekeepingServiceService.list(butlerHousekeepingServiceSearch);
+        List<AppHousekeepingServiceVo> appHousekeepingServiceVoList =butlerHousekeepingServiceService.list(butlerHousekeepingServiceSearch,type);
         PageInfo<AppHousekeepingServiceVo> pageInfo = new PageInfo<>(appHousekeepingServiceVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());

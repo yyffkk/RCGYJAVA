@@ -6,5 +6,7 @@ import com.api.vo.app.AppHousekeepingServiceVo;
 import java.util.List;
 
 public interface ButlerHousekeepingServiceService {
-    List<AppHousekeepingServiceVo> list(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch);
+    List<AppHousekeepingServiceVo> list(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch, int type);
+
+    int findJurisdictionByUserId(String roleIds);
 }

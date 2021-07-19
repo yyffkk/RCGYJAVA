@@ -6,7 +6,6 @@ import com.api.butlerApp.service.jurisdiction.ButlerHousekeepingServiceService;
 import com.api.model.butlerApp.ButlerHousekeepingServiceSearch;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppHousekeepingServiceVo;
-import com.api.vo.butlerApp.ButlerRepairVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +23,7 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
     ButlerRepairDao butlerRepairDao;
 
     @Override
-    public List<AppHousekeepingServiceVo> list(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch) {
-        //查询用户所属权限,type:1.派单人 2.维修人 3.其他角色
-        int type = findJurisdictionByUserId(butlerHousekeepingServiceSearch.getRoleId());
+    public List<AppHousekeepingServiceVo> list(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch, int type) {
         List<AppHousekeepingServiceVo> housekeepingServiceVoList = new ArrayList<>();
         switch (type){
             case 1:
@@ -62,7 +59,8 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
         return housekeepingServiceVoList;
     }
 
-    private int findJurisdictionByUserId(String roleIds) {
+    @Override
+    public int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");
         if (split.length >0){
             for (String s : split) {

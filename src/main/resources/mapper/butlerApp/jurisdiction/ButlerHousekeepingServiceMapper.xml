@@ -5,20 +5,21 @@
 <mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerHousekeepingServiceDao">
 
     <select id="list1" parameterType="com.api.model.butlerApp.ButlerHousekeepingServiceSearch" resultType="com.api.vo.app.AppHousekeepingServiceVo">
-        select shs.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,ur.name as proposer_name,ur.tel as proposer_tel,
-        su.actual_name as handler_name,su.tel as handler_tel
-        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,sys_housekeeping_service as shs
-        left join sys_user as su on shs.handler = su.id
-        <where>
-            shs.estate_id = cbue.id
-            and cbue.building_unit_id = cbu.id
-            and cbu.building_id = cb.id
-            and shs.proposer = ur.id
-            and assigner in (null,#{id})
-            <if test="housekeepingServiceStatus != null">
-                and shs.status = #{housekeepingServiceStatus}
-            </if>
-        </where>
+        select a.* from (
+            select shs.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,ur.name as proposer_name,ur.tel as proposer_tel,
+            su.actual_name as handler_name,su.tel as handler_tel
+            from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,sys_housekeeping_service as shs
+            left join sys_user as su on shs.handler = su.id
+            <where>
+                shs.estate_id = cbue.id
+                and cbue.building_unit_id = cbu.id
+                and cbu.building_id = cb.id
+                and shs.proposer = ur.id
+                <if test="housekeepingServiceStatus != null">
+                    and shs.status = #{housekeepingServiceStatus}
+                </if>
+            </where>
+        ) as a where a.assigner is null or a.assigner =  #{id}
     </select>
     <select id="list2" parameterType="com.api.model.butlerApp.ButlerHousekeepingServiceSearch" resultType="com.api.vo.app.AppHousekeepingServiceVo">
         select shs.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,ur.name as proposer_name,ur.tel as proposer_tel,
