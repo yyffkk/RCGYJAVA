@@ -1,6 +1,7 @@
 package com.api.model.app;
 
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -44,6 +45,14 @@ public class AppHousekeepingService {
      * 处理描述
      */
     private String processDescription;
+    /**
+     * 物料费
+     */
+    private BigDecimal materialFee;
+    /**
+     * 服务费
+     */
+    private BigDecimal serviceFee;
     /**
      * 支付费用
      */
@@ -109,6 +118,8 @@ public class AppHousekeepingService {
                 ", allocateTime=" + allocateTime +
                 ", completion=" + completion +
                 ", processDescription='" + processDescription + '\'' +
+                ", materialFee=" + materialFee +
+                ", serviceFee=" + serviceFee +
                 ", payFee=" + payFee +
                 ", handler=" + handler +
                 ", handlingTime=" + handlingTime +
@@ -195,6 +206,22 @@ public class AppHousekeepingService {
 
     public void setProcessDescription(String processDescription) {
         this.processDescription = processDescription;
+    }
+
+    public BigDecimal getMaterialFee() {
+        return materialFee;
+    }
+
+    public void setMaterialFee(BigDecimal materialFee) {
+        this.materialFee = materialFee;
+    }
+
+    public BigDecimal getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(BigDecimal serviceFee) {
+        this.serviceFee = serviceFee;
     }
 
     public Double getPayFee() {
@@ -304,7 +331,7 @@ public class AppHousekeepingService {
     public AppHousekeepingService() {
     }
 
-    public AppHousekeepingService(Integer id, Integer estateId, Integer type, String content, Integer status, Integer assigner, Date allocateTime, Integer completion, String processDescription, Double payFee, Integer handler, Date handlingTime, String[] handlerImgUrls, Integer evaluation, String evaluationContent, Date evaluationTime, String[] evaluationImgUrls, Integer proposer, Date applyTime, Integer createId, Date createDate, String[] submitImgUrls) {
+    public AppHousekeepingService(Integer id, Integer estateId, Integer type, String content, Integer status, Integer assigner, Date allocateTime, Integer completion, String processDescription, BigDecimal materialFee, BigDecimal serviceFee, Double payFee, Integer handler, Date handlingTime, String[] handlerImgUrls, Integer evaluation, String evaluationContent, Date evaluationTime, String[] evaluationImgUrls, Integer proposer, Date applyTime, Integer createId, Date createDate, String[] submitImgUrls) {
         this.id = id;
         this.estateId = estateId;
         this.type = type;
@@ -314,6 +341,8 @@ public class AppHousekeepingService {
         this.allocateTime = allocateTime;
         this.completion = completion;
         this.processDescription = processDescription;
+        this.materialFee = materialFee;
+        this.serviceFee = serviceFee;
         this.payFee = payFee;
         this.handler = handler;
         this.handlingTime = handlingTime;

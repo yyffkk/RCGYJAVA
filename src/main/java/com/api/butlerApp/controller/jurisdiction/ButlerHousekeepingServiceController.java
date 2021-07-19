@@ -74,5 +74,22 @@ public class ButlerHousekeepingServiceController {
         return butlerHousekeepingServiceService.sendSingle(appHousekeepingService,roleId);
     }
 
+    /**
+     * 接单
+     * @param appHousekeepingService app 新版家政服务 model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/orderReceiving")
+    public Map<String,Object> orderReceiving(@RequestBody AppHousekeepingService appHousekeepingService, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return butlerHousekeepingServiceService.orderReceiving(appHousekeepingService,id);
+    }
+
+
+
+
+
 
 }

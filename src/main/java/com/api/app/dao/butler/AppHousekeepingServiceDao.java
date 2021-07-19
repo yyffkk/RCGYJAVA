@@ -65,4 +65,11 @@ public interface AppHousekeepingServiceDao {
      * @return 被指派人信息
      */
     SysUser findUserInfoById(Integer handler);
+
+    /**
+     * 接单
+     * @param appHousekeepingService app 新版家政服务 model
+     * @return 影响行数
+     */
+    int orderReceiving(AppHousekeepingService appHousekeepingService);
 }

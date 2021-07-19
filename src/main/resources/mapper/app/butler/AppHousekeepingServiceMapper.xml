@@ -88,5 +88,11 @@
         select * from sys_user where id = #{handler}
     </select>
 
+    <update id="orderReceiving" parameterType="com.api.model.app.AppHousekeepingService">
+        update sys_housekeeping_service
+        set status = #{status}
+        where id = #{id}
+    </update>
+
 
 </mapper>

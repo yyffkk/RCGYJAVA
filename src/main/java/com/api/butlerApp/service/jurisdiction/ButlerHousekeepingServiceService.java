@@ -14,6 +14,9 @@ public interface ButlerHousekeepingServiceService {
 
     Map<String, Object> sendSingle(AppHousekeepingService appHousekeepingService, String roleId);
 
+    Map<String, Object> orderReceiving(AppHousekeepingService appHousekeepingService, Integer id);
+
     int findJurisdictionByUserId(String roleIds);
+
 
 }
