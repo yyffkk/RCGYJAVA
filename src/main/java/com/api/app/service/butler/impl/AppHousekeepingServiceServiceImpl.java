@@ -60,7 +60,7 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
                 throw new RuntimeException("提交服务进程失败");
             }
 
-
+            //上传家政服务提交照片
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(appHousekeepingService.getSubmitImgUrls(),"sysHouseKeepingService",appHousekeepingService.getId(),"submitImg","600",30,20);
 

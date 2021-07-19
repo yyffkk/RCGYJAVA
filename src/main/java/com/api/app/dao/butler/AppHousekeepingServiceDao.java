@@ -4,6 +4,7 @@ import com.api.model.app.AppHousekeepingService;
 import com.api.model.app.AppHousekeepingServiceProcessRecord;
 import com.api.model.app.SearchAppHousekeepingService;
 import com.api.model.app.UserIdAndHousekeepingServiceId;
+import com.api.model.businessManagement.SysUser;
 import com.api.vo.app.AppHousekeepingServiceVo;
 
 import java.util.List;
@@ -57,4 +58,11 @@ public interface AppHousekeepingServiceDao {
      * @return 影响行数
      */
     int evaluation(AppHousekeepingService appHousekeepingService);
+
+    /**
+     * 根据被指派人主键id查询被指派人信息
+     * @param handler 被指派人主键id
+     * @return 被指派人信息
+     */
+    SysUser findUserInfoById(Integer handler);
 }

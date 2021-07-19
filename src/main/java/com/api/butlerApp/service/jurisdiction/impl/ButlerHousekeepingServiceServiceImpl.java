@@ -1,18 +1,22 @@
 package com.api.butlerApp.service.jurisdiction.impl;
 
+import com.api.app.dao.butler.AppHousekeepingServiceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerHousekeepingServiceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerHousekeepingServiceService;
+import com.api.model.app.AppHousekeepingService;
+import com.api.model.app.AppHousekeepingServiceProcessRecord;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerHousekeepingServiceSearch;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppHousekeepingServiceVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingServiceService {
@@ -21,6 +25,8 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
     ButlerHousekeepingServiceDao butlerHousekeepingServiceDao;
     @Resource
     ButlerRepairDao butlerRepairDao;
+    @Resource
+    AppHousekeepingServiceDao appHousekeepingServiceDao;
 
     @Override
     public List<AppHousekeepingServiceVo> list(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch, int type) {
@@ -57,6 +63,70 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
             }
         }
         return housekeepingServiceVoList;
+    }
+
+
+    @Override
+    public Map<String, Object> findPickUpSinglePersonnel(int organizationId) {
+        map = new HashMap<>();
+        List<SysUser> sysUser = butlerHousekeepingServiceDao.findPickUpSinglePersonnel(organizationId);
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sysUser);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> sendSingle(AppHousekeepingService appHousekeepingService, String roleId) {
+        map = new HashMap<>();
+        try {
+            int type = findJurisdictionByUserId(roleId);
+            if (type != 1){
+                throw new RuntimeException("派单权限不足");
+            }
+
+            AppHousekeepingService housekeepingServiceById = appHousekeepingServiceDao.findHousekeepingServiceById(appHousekeepingService.getId());
+            if (housekeepingServiceById.getStatus() != 1){
+                throw new RuntimeException("当前状态不可派单");
+            }
+
+            appHousekeepingService.setStatus(2);//2.已派单
+            int update = butlerHousekeepingServiceDao.sendSingle(appHousekeepingService);
+            if (update <= 0){
+                throw new RuntimeException("派单失败");
+            }
+
+            //添加家政服务处理进程记录
+            AppHousekeepingServiceProcessRecord processRecord = new AppHousekeepingServiceProcessRecord();
+            processRecord.setHousekeepingServiceId(appHousekeepingService.getId());
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(2);//2.派单
+            processRecord.setOperator(appHousekeepingService.getAssigner());
+            processRecord.setOperatorType(3);//3.操作人（物业）
+
+            //查询被指派人信息
+            SysUser sysUser  = appHousekeepingServiceDao.findUserInfoById(appHousekeepingService.getHandler());
+
+            processRecord.setOperatorContent("分派给"+sysUser.getActualName()+"师傅");
+            int insert2 = appHousekeepingServiceDao.insertHousekeepingProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("提交服务进程失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","派单成功");
+        map.put("status",true);
+        return map;
     }
 
     @Override

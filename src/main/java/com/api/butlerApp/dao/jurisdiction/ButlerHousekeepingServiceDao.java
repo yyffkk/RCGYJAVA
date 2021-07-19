@@ -1,5 +1,7 @@
 package com.api.butlerApp.dao.jurisdiction;
 
+import com.api.model.app.AppHousekeepingService;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerHousekeepingServiceSearch;
 import com.api.vo.app.AppHousekeepingServiceVo;
 
@@ -19,4 +21,18 @@ public interface ButlerHousekeepingServiceDao {
      * @return 接单人界面
      */
     List<AppHousekeepingServiceVo> list2(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch);
+
+    /**
+     * 查询所有的接单人员
+     * @param organizationId 部门id
+     * @return 接单人员
+     */
+    List<SysUser> findPickUpSinglePersonnel(int organizationId);
+
+    /**
+     * 派单
+     * @param appHousekeepingService app 新版家政服务 model
+     * @return 影响行数
+     */
+    int sendSingle(AppHousekeepingService appHousekeepingService);
 }

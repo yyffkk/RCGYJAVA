@@ -1,16 +1,17 @@
 package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerHousekeepingServiceService;
+import com.api.model.app.AppHousekeepingService;
 import com.api.model.butlerApp.ButlerHousekeepingServiceSearch;
 import com.api.vo.app.AppHousekeepingServiceVo;
 import com.api.vo.butlerApp.ButlerGreenVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,5 +45,34 @@ public class ButlerHousekeepingServiceController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 查询所有的接单人员
+     * @return map
+     */
+    @GetMapping("/findPickUpSinglePersonnel")
+    public Map<String,Object> findPickUpSinglePersonnel(){
+        //12.环境卫生部
+        int organizationId = 12;
+        return butlerHousekeepingServiceService.findPickUpSinglePersonnel(organizationId);
+    }
+
+    /**
+     * 派单
+     * @param appHousekeepingService app 新版家政服务 model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/sendSingle")
+    public Map<String,Object> sendSingle(@RequestBody AppHousekeepingService appHousekeepingService, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        appHousekeepingService.setAssigner(id);//填入分配人id
+        appHousekeepingService.setAllocateTime(new Date());
+        return butlerHousekeepingServiceService.sendSingle(appHousekeepingService,roleId);
+    }
+
 
 }

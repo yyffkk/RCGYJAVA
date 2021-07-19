@@ -37,4 +37,17 @@
             </if>
         </where>
     </select>
+    <select id="findPickUpSinglePersonnel" resultType="com.api.model.businessManagement.SysUser">
+        select id,actual_name,tel from sys_user where organization_id_path like concat('%:',#{organizationId},':%')
+    </select>
+
+    <update id="sendSingle" parameterType="com.api.model.app.AppHousekeepingService">
+        update sys_housekeeping_service
+        set status = #{status},
+        assigner = #{assigner},
+        allocate_time = #{allocateTime},
+        handler = #{handler}
+        where id = #{id}
+    </update>
+
 </mapper>

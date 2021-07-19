@@ -84,4 +84,9 @@
         where id = #{id}
     </update>
 
+    <select id="findUserInfoById" parameterType="java.lang.Integer" resultType="com.api.model.businessManagement.SysUser">
+        select * from sys_user where id = #{handler}
+    </select>
+
+
 </mapper>
