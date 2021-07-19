@@ -32,7 +32,7 @@ public class ButlerHousekeepingServiceController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch){
-        //查询用户所属权限,type:1.派单人 2.维修人 3.其他角色
+        //查询用户所属权限,type:1.派单人 2.接单人 3.没有权限
         int type = butlerHousekeepingServiceService.findJurisdictionByUserId(butlerHousekeepingServiceSearch.getRoleId());
         //分页查询信息
         PageHelper.startPage(butlerHousekeepingServiceSearch.getPageNum(),butlerHousekeepingServiceSearch.getSize());

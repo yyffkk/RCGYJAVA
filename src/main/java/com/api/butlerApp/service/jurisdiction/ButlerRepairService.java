@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ButlerRepairService {
-    List<ButlerRepairVo> list(ButlerRepairSearch butlerRepairSearch);
+    List<ButlerRepairVo> list(ButlerRepairSearch butlerRepairSearch, int type);
 
     Map<String, Object> findById(Integer repairId, Integer id, String roleId);
 
@@ -29,4 +29,6 @@ public interface ButlerRepairService {
     Map<String, Object> applyDelayed(ButlerApplyDelayed butlerApplyDelayed, Integer id);
 
     Map<String, Object> handleResult(ButlerHandleCompleteDetail handleCompleteDetail, Integer id, String roleId);
+
+    int findJurisdictionByUserId(String roleIds);
 }

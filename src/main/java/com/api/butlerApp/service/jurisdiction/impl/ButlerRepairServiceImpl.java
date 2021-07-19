@@ -29,9 +29,7 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
     private static Map<String,Object> map = null;
 
     @Override
-    public List<ButlerRepairVo> list(ButlerRepairSearch butlerRepairSearch) {
-        //查询用户所属权限,type:1.派单人 2.维修人 3.其他角色
-        int type = findJurisdictionByUserId(butlerRepairSearch.getRoleId());
+    public List<ButlerRepairVo> list(ButlerRepairSearch butlerRepairSearch, int type) {
         List<ButlerRepairVo> butlerRepairVos = new ArrayList<>();
         switch (type){
             case 1:
@@ -544,7 +542,8 @@ public class ButlerRepairServiceImpl implements ButlerRepairService {
         return map;
     }
 
-    private int findJurisdictionByUserId(String roleIds) {
+    @Override
+    public int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");
         if (split.length >0){
             for (String s : split) {

@@ -33,8 +33,11 @@ public class ButlerRepairController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(ButlerRepairSearch butlerRepairSearch){
+        //查询用户所属权限,type:1.派单人 2.维修人 3.其他角色
+        int type = butlerRepairService.findJurisdictionByUserId(butlerRepairSearch.getRoleId());
+        //分页查询信息
         PageHelper.startPage(butlerRepairSearch.getPageNum(),butlerRepairSearch.getSize());
-        List<ButlerRepairVo> butlerRepairVos =butlerRepairService.list(butlerRepairSearch);
+        List<ButlerRepairVo> butlerRepairVos =butlerRepairService.list(butlerRepairSearch,type);
         PageInfo<ButlerRepairVo> pageInfo = new PageInfo<>(butlerRepairVos);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
