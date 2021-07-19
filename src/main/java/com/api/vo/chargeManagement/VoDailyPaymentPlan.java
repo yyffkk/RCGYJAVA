@@ -16,6 +16,10 @@ public class VoDailyPaymentPlan {
      */
     private String roomName;
     /**
+     * 物业收费标准明细收费主键id
+     */
+    private Integer chargesTemplateDetailId;
+    /**
      * 物业收费标准明细收费名称
      */
     private String chargesTemplateDetailName;
@@ -73,6 +77,7 @@ public class VoDailyPaymentPlan {
         return "VoDailyPaymentPlan{" +
                 "id=" + id +
                 ", roomName='" + roomName + '\'' +
+                ", chargesTemplateDetailId=" + chargesTemplateDetailId +
                 ", chargesTemplateDetailName='" + chargesTemplateDetailName + '\'' +
                 ", beginPlanDate=" + beginPlanDate +
                 ", endPlanDate=" + endPlanDate +
@@ -103,6 +108,14 @@ public class VoDailyPaymentPlan {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public Integer getChargesTemplateDetailId() {
+        return chargesTemplateDetailId;
+    }
+
+    public void setChargesTemplateDetailId(Integer chargesTemplateDetailId) {
+        this.chargesTemplateDetailId = chargesTemplateDetailId;
     }
 
     public String getChargesTemplateDetailName() {
@@ -212,9 +225,10 @@ public class VoDailyPaymentPlan {
     public VoDailyPaymentPlan() {
     }
 
-    public VoDailyPaymentPlan(Integer id, String roomName, String chargesTemplateDetailName, Date beginPlanDate, Date endPlanDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, Integer cycle, Integer rate, Integer paymentTime, String remake, String createName, Date createDate) {
+    public VoDailyPaymentPlan(Integer id, String roomName, Integer chargesTemplateDetailId, String chargesTemplateDetailName, Date beginPlanDate, Date endPlanDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, Integer cycle, Integer rate, Integer paymentTime, String remake, String createName, Date createDate) {
         this.id = id;
         this.roomName = roomName;
+        this.chargesTemplateDetailId = chargesTemplateDetailId;
         this.chargesTemplateDetailName = chargesTemplateDetailName;
         this.beginPlanDate = beginPlanDate;
         this.endPlanDate = endPlanDate;
