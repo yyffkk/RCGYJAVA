@@ -1,5 +1,6 @@
 package com.api.manage.controller.butlerService;
 
+import com.api.app.service.butler.AppHousekeepingServiceService;
 import com.api.manage.service.butlerService.SysHousekeepingServiceService;
 import com.api.model.butlerService.SearchHousekeepingService;
 import com.api.vo.app.AppHousekeepingServiceVo;
@@ -24,6 +25,9 @@ public class SysHousekeepingServiceController {
     @Resource
     SysHousekeepingServiceService sysHousekeepingServiceService;
 
+    @Resource
+    AppHousekeepingServiceService appHousekeepingServiceService;
+
     /**
      * 查询所有的家政服务信息（包含条件搜索）
      * @param searchHousekeepingService 家政服务搜索条件
@@ -39,5 +43,15 @@ public class SysHousekeepingServiceController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 根据家政服务主键id查询家政服务服务进程
+     * @param housekeepingServiceId 家政服务主键id
+     * @return 家政服务服务进程 3007663862
+     */
+    @GetMapping("/findHousekeepingProcessRecord")
+    public Map<String,Object> findHousekeepingProcessRecord(Integer housekeepingServiceId){
+        return appHousekeepingServiceService.findHousekeepingProcessRecord(housekeepingServiceId);
     }
 }
