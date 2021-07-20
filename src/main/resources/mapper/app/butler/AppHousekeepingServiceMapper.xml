@@ -102,7 +102,6 @@
         material_fee = #{materialFee},
         service_fee = #{serviceFee},
         pay_fee = #{payFee},
-        handler = #{handler},
         handling_time = #{handlingTime}
         where id = #{id}
     </update>

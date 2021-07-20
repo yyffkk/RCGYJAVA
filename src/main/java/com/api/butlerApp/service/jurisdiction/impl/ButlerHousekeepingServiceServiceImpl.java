@@ -200,6 +200,9 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
                 throw new RuntimeException("总计费用计算有误");
             }
 
+            appHousekeepingService.setStatus(4);//填入4.待支付
+            appHousekeepingService.setHandlingTime(new Date());//填入处理时间
+
             int update = appHousekeepingServiceDao.submitReport(appHousekeepingService);
             if (update <= 0){
                 throw new RuntimeException("提交失败");
@@ -221,6 +224,9 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
             if (insert2 <= 0){
                 throw new RuntimeException("提交服务进程失败");
             }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(appHousekeepingService.getHandlerImgUrls(),"sysHouseKeepingService", appHousekeepingService.getId(), "handlerImg","600",30,20);
 
         } catch (Exception e) {
             //获取抛出的信息
