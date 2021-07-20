@@ -160,7 +160,7 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
 
     @Override
     @Transactional
-    public Map<String, Object> evaluation(AppHousekeepingService appHousekeepingService) {
+    public Map<String, Object> evaluation(AppHousekeepingService appHousekeepingService, Integer id) {
         map = new HashMap<>();
 
 
@@ -175,6 +175,20 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
             int update = appHousekeepingServiceDao.evaluation(appHousekeepingService);
             if (update <= 0){
                 throw new RuntimeException("评价失败");
+            }
+
+            //添加家政服务处理进程记录
+            AppHousekeepingServiceProcessRecord processRecord = new AppHousekeepingServiceProcessRecord();
+            processRecord.setHousekeepingServiceId(appHousekeepingService.getId());
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(6);//6.评价
+            processRecord.setOperator(id);
+            processRecord.setOperatorType(1);//1.住户
+
+            processRecord.setOperatorContent("住户已评价");
+            int insert2 = appHousekeepingServiceDao.insertHousekeepingProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("提交服务进程失败");
             }
 
             UploadUtil uploadUtil = new UploadUtil();

@@ -85,10 +85,13 @@ public class AppHousekeepingServiceController {
     /**
      * 评价
      * @param appHousekeepingService app 新版家政服务 model
+     * @param request app-admin-token获取的request用户信息
      * @return map
      */
     @PostMapping("/evaluation")
-    public Map<String,Object> evaluation(@RequestBody AppHousekeepingService appHousekeepingService){
-        return appHousekeepingServiceService.evaluation(appHousekeepingService);
+    public Map<String,Object> evaluation(@RequestBody AppHousekeepingService appHousekeepingService, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return appHousekeepingServiceService.evaluation(appHousekeepingService,id);
     }
 }
