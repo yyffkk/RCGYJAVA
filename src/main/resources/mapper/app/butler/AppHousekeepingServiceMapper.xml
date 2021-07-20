@@ -106,5 +106,11 @@
         where id = #{id}
     </update>
 
+    <update id="updateStatusById" parameterType="com.api.model.app.AppHousekeepingService">
+        update sys_housekeeping_service
+        set status = #{status}
+        where id = #{housekeepingServiceId}
+    </update>
+
 
 </mapper>

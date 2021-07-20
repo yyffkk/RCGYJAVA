@@ -94,4 +94,42 @@
         where id = #{estateId}
     </update>
 
+    <insert id="insertHousekeepingServiceOrder" parameterType="com.api.model.alipay.SysHousekeepingServiceOrder">
+        insert into sys_housekeeping_service_order(
+            housekeeping_service_id,
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date,
+            remake,
+            status
+        )values (
+            #{housekeepingServiceId},
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate},
+            #{remake},
+            #{status}
+        )
+    </insert>
+
+    <select id="findSysHousekeepingServiceOrderByCode" parameterType="java.lang.String"
+            resultType="com.api.model.alipay.SysHousekeepingServiceOrder">
+        select * from sys_housekeeping_service_order where code = #{outTradeNo}
+    </select>
+
+    <update id="updateHousekeepingServiceOrderStatusByCode" parameterType="com.api.model.alipay.SysHousekeepingServiceOrder">
+        update sys_housekeeping_service_order
+        set status = #{status}
+        where code = #{code}
+    </update>
+
+
 </mapper>

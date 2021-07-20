@@ -12,6 +12,7 @@ import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.api.alipay.dao.AlipayDao;
 import com.api.alipay.service.AlipayService;
 import com.api.app.dao.butler.AppDailyPaymentDao;
+import com.api.app.dao.butler.AppHousekeepingServiceDao;
 import com.api.app.dao.butler.AppReportRepairDao;
 import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.common.GetOverdueFine;
@@ -71,6 +72,8 @@ public class AlipayServiceImpl implements AlipayService {
     private String LEASE_RENT_BILL_ORDER_NOTIFY_URL;
     @Value("${alipay.advancePaymentOrderNotifyUrl}")
     private String ADVANCE_PAYMENT_ORDER_NOTIFY_URL;
+    @Value("${alipay.housekeepingServiceOrderNotifyUrl}")
+    private String HOUSEKEEPING_SERVICE_ORDER_NOTIFY_URL;
     @Value("${alipay.returnUrl}")
     private String RETURN_URL;
     @Value("${alipay.aliPayGateway}")
@@ -97,6 +100,8 @@ public class AlipayServiceImpl implements AlipayService {
     AuditManagementDao auditManagementDao;
     @Resource
     UserResidentDao userResidentDao;
+    @Resource
+    AppHousekeepingServiceDao appHousekeepingServiceDao;
     private static Map<String,Object> map = null;
 
 //    /**
@@ -2265,6 +2270,199 @@ public class AlipayServiceImpl implements AlipayService {
         }
         map.put("status",-1);
         return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> housekeepingServiceOrderAlipay(SysHousekeepingServiceOrder sysHousekeepingServiceOrder, Integer id) {
+        log.info("开始生成支付宝订单");
+        map = new HashMap<>();
+        String body = "";
+
+        // 获取项目中实际的订单的信息
+        // 此处是相关业务代码
+        try {
+            BigDecimal paymentPrice = sysHousekeepingServiceOrder.getPayPrice();
+
+            if (paymentPrice.compareTo(BigDecimal.ZERO) <= 0){
+                throw new RuntimeException("支付金额小于或等于0");
+            }
+
+            AppHousekeepingService byId = appHousekeepingServiceDao.findHousekeepingServiceById(sysHousekeepingServiceOrder.getHousekeepingServiceId());
+            if (byId.getPayFee().compareTo(sysHousekeepingServiceOrder.getPayPrice()) != 0){
+                throw new RuntimeException("输入金额与需支付金额不一致");
+            }
+
+
+            log.info("开始填写支付宝订单信息");
+
+            //填写支付单号(自动生成订单号)
+            sysHousekeepingServiceOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
+            //填写创建人
+            sysHousekeepingServiceOrder.setCreateId(id);
+            //填入创建时间
+            sysHousekeepingServiceOrder.setCreateDate(new Date());
+            //填入付款状态，0.交易创建并等待买家付款
+            sysHousekeepingServiceOrder.setStatus(0);
+            //添加家政服务-服务费用支付订单信息
+            int i = alipayDao.insertHousekeepingServiceOrder(sysHousekeepingServiceOrder);
+            if (i<=0){
+                throw new RuntimeException("添加家政服务-服务费用支付订单信息失败");
+            }
+            log.info("开始调用支付宝接口");
+            // 开始使用支付宝SDK中提供的API
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            model.setBody("家政服务-服务费用支付");
+            model.setSubject("家政服务-服务费用账单");
+            // 唯一订单号 根据项目中实际需要获取相应的
+            model.setOutTradeNo(sysHousekeepingServiceOrder.getCode());
+            // 支付超时时间（根据项目需要填写）
+            model.setTimeoutExpress("30m");
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            model.setTotalAmount(String.valueOf(sysHousekeepingServiceOrder.getPayPrice()));
+            //app支付 固定值 填写QUICK_MSECURITY_PAY
+            model.setProductCode("QUICK_MSECURITY_PAY");
+            alipayRequest.setBizModel(model);
+            // 支付成功后支付宝异步通知的接收地址url
+            alipayRequest.setNotifyUrl(HOUSEKEEPING_SERVICE_ORDER_NOTIFY_URL);
+            //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+            // 注意：每个请求的相应对象不同，与请求对象是对应。
+            AlipayTradeAppPayResponse alipayResponse = null;
+            try {
+                alipayResponse = alipayClient.sdkExecute(alipayRequest);
+            } catch (AlipayApiException e) {
+                e.printStackTrace();
+                log.info("获取签名失败");
+                throw new RuntimeException("获取签名失败");
+            }
+            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+            body = alipayResponse.getBody();
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        log.info("body:"+body);
+        map.put("message",body);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public String housekeepingServiceOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId) {
+        log.info("开始异步调用");
+        //获取支付宝POST过来反馈信息
+        Map<String,String> params = new HashMap<>();
+        Map<String,String[]> requestParams = request.getParameterMap();
+        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+
+            // 官方demo中使用如下方式解决中文乱码，在此本人不推荐使用，可能会出现中文乱码解决无效的问题。
+            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
+
+            params.put(name, valueStr);
+        }
+        boolean signVerified = false;
+        try {
+            //调用SDK验证签名
+            signVerified = AlipaySignature.rsaCheckV1(params, RSA_ALIPAY_PUBLIC_KEY, ALIPAY_CHARSET, SIGN_TYPE);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            // 验签异常  笔者在这里是输出log，可以根据需要做一些其他操作
+            log.info("异步调用失败");
+            return "fail";
+        }
+        if(signVerified) {
+            //验签通过
+            //获取需要保存的数据
+            String appId=params.get("app_id");//支付宝分配给开发者的应用Id
+            String outTradeNo = params.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
+            String buyerPayAmount=params.get("buyer_pay_amount");//付款金额:用户在交易中支付的金额
+            String tradeStatus = params.get("trade_status");// 获取交易状态
+            // 验证通知后执行自己项目需要的业务操作
+            // 一般需要判断支付状态是否为TRADE_SUCCESS
+            // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
+            //根据out_trade_no【商户系统的唯一订单号】查询信息 pay_price【订单金额】
+            SysHousekeepingServiceOrder sysHousekeepingServiceOrder = alipayDao.findSysHousekeepingServiceOrderByCode(outTradeNo);
+            //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
+            if(sysHousekeepingServiceOrder!=null && buyerPayAmount.equals(sysHousekeepingServiceOrder.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
+                switch (tradeStatus) // 判断交易结果
+                {
+                    case "TRADE_FINISHED": // 交易结束并不可退款
+                        sysHousekeepingServiceOrder.setStatus(3);
+                        break;
+                    case "TRADE_SUCCESS": // 交易支付成功
+                        sysHousekeepingServiceOrder.setStatus(2);
+                        break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        sysHousekeepingServiceOrder.setStatus(1);
+                        break;
+                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+                        sysHousekeepingServiceOrder.setStatus(0);
+                        break;
+                    default:
+                        break;
+                }
+                //更新表的状态
+                int returnResult = alipayDao.updateHousekeepingServiceOrderStatusByCode(sysHousekeepingServiceOrder);
+                if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
+                    if(returnResult>0){
+                        log.info("===========异步调用成功");
+                        AppHousekeepingService appHousekeepingService = new AppHousekeepingService();
+                        appHousekeepingService.setId(sysHousekeepingServiceOrder.getHousekeepingServiceId());
+                        appHousekeepingService.setStatus(5);//填入5.待评价
+
+                        int update = appHousekeepingServiceDao.updateStatusById(appHousekeepingService);
+                        if (update <= 0){
+                            log.info("===========更新家新版政服务的状态失败");
+                            return "fail";
+                        }
+
+                        // 成功要返回success，不然支付宝会不断发送通知。
+                        return "success";
+                    }else{
+                        log.info("===========更新表的状态失败");
+                        return "fail";
+                    }
+                }else{
+                    log.info("===========不是支付成功的订单");
+                    return "fail";
+                }
+            }else{
+                log.info("==================支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
+                return"fail";
+            }
+        }else {
+            // 验签失败  笔者在这里是输出log，可以根据需要做一些其他操作
+            log.info("=========验签不通过！");
+
+            // 失败要返回fail，不然支付宝会不断发送通知。
+            return "fail";
+        }
+    }
+
+    @Override
+    public Map<String, Object> housekeepingServiceOrderCheckAlipay(String code) {
+        return null;
     }
 
 

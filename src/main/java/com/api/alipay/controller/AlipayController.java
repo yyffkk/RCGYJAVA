@@ -445,5 +445,50 @@ public class AlipayController {
         return alipayService.advancePaymentOrderCheckAlipay(code);
     }
 
+    /**
+     * app 家政服务-服务费用支付 完成订单支付宝支付(生成 APP 支付订单信息)
+     * @param sysHousekeepingServiceOrder app 家政服务-服务费用支付订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/housekeepingServiceOrderAlipay")
+    public Map<String,Object> housekeepingServiceOrderAlipay(@RequestBody SysHousekeepingServiceOrder sysHousekeepingServiceOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        sysHousekeepingServiceOrder.setName(name); //填写付款人姓名
+        sysHousekeepingServiceOrder.setTel(tel); //填写付款人手机号
+        return alipayService.housekeepingServiceOrderAlipay(sysHousekeepingServiceOrder,id);
+    }
 
+
+    /**
+     * 家政服务-服务费用支付 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
+     */
+    @PostMapping(value = "/housekeepingServiceOrderNotifyInfo")
+    public String housekeepingServiceOrderNotifyInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+        request.setCharacterEncoding("UTF-8");
+        String userName = request.getParameter("name"); //从request获取用户姓名
+        Integer userId = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        return alipayService.housekeepingServiceOrderNotifyInfo(request,userName,userId);
+    }
+
+
+    /**
+     * 家政服务-服务费用支付 向支付宝发起订单查询请求
+     * @param code 商户订单号
+     * @return map
+     */
+    @GetMapping("/housekeepingServiceOrderCheckAlipay")
+    public Map<String,Object> housekeepingServiceOrderCheckAlipay(String code){
+        return alipayService.housekeepingServiceOrderCheckAlipay(code);
+    }
 }

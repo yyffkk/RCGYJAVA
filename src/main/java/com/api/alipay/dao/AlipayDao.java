@@ -3,6 +3,7 @@ package com.api.alipay.dao;
 import com.api.model.alipay.AliPaymentOrder;
 import com.api.model.alipay.EstateIdAndAdvancePaymentPrice;
 import com.api.model.alipay.SysAdvancePaymentOrder;
+import com.api.model.alipay.SysHousekeepingServiceOrder;
 
 import java.math.BigDecimal;
 
@@ -62,4 +63,25 @@ public interface AlipayDao {
      * @return 影响行数
      */
     int updateAdvancePaymentPriceByEstateId(EstateIdAndAdvancePaymentPrice estateIdAndAPPrice);
+
+    /**
+     * 添加家政服务-服务费用支付订单信息
+     * @param sysHousekeepingServiceOrder app 家政服务-服务费用支付订单model
+     * @return 影响行数
+     */
+    int insertHousekeepingServiceOrder(SysHousekeepingServiceOrder sysHousekeepingServiceOrder);
+
+    /**
+     * 根据out_trade_no【商户系统的唯一订单号】查询信息 pay_price【订单金额】
+     * @param outTradeNo 商户系统的唯一订单号
+     * @return app 家政服务-服务费用支付订单model
+     */
+    SysHousekeepingServiceOrder findSysHousekeepingServiceOrderByCode(String outTradeNo);
+
+    /**
+     * 根据家政服务-服务费用支付单号更新表的状态
+     * @param sysHousekeepingServiceOrder app 家政服务-服务费用支付订单model
+     * @return 影响行数
+     */
+    int updateHousekeepingServiceOrderStatusByCode(SysHousekeepingServiceOrder sysHousekeepingServiceOrder);
 }
