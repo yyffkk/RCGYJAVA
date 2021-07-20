@@ -3,14 +3,13 @@ package com.api.butlerApp.service.jurisdiction.impl;
 import com.api.app.dao.butler.AppHousekeepingServiceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerHousekeepingServiceDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
+import com.api.butlerApp.dao.message.ButlerAppMessageDao;
 import com.api.butlerApp.service.jurisdiction.ButlerHousekeepingServiceService;
-import com.api.manage.dao.remind.RemindDao;
 import com.api.model.app.AppHousekeepingService;
 import com.api.model.app.AppHousekeepingServiceProcessRecord;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerApp.ButlerAppSysMessage;
 import com.api.model.butlerApp.ButlerHousekeepingServiceSearch;
-import com.api.model.remind.SysMessage;
-import com.api.model.remind.SysSending;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.vo.app.AppHousekeepingServiceVo;
@@ -32,7 +31,7 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
     @Resource
     AppHousekeepingServiceDao appHousekeepingServiceDao;
     @Resource
-    RemindDao remindDao;
+    ButlerAppMessageDao butlerAppMessageDao;
 
     @Override
     public List<AppHousekeepingServiceVo> list(ButlerHousekeepingServiceSearch butlerHousekeepingServiceSearch, int type) {
@@ -265,40 +264,20 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
                 throw new RuntimeException("当前状态不可催促人员");
             }
 
-            SysMessage sysMessage = new SysMessage();
-            //填入标题
-            sysMessage.setTitle("家政服务接单提醒");
-            //填入内容
-            sysMessage.setContent("您有新订单，请立即处理");
-            //填入发送人id（系统发送为-1）
-            sysMessage.setSender(id);
-            //填入创建时间
-            sysMessage.setGenerateDate(new Date());
-            //填入发送时间
-            sysMessage.setSendDate(new Date());
-            //填入发送类型（1.系统广播，2.管理员消息）
-            sysMessage.setType(2);
-            //添加提醒 消息列表 并返回主键id
-            int insert = remindDao.insertMessage(sysMessage);
-            if (insert <= 0){
-                throw new RuntimeException("推送失败");
+            ButlerAppSysMessage butlerAppSysMessage = new ButlerAppSysMessage();
+            butlerAppSysMessage.setType(5);//5.家政服务主键id接单提醒
+            butlerAppSysMessage.setRelationId(byId.getId());//新版家政服务主键id
+            butlerAppSysMessage.setReceiverAccount(byId.getHandler());//填写接收人id
+            butlerAppSysMessage.setSendStatus(1);//1.发送成功(未读)
+            butlerAppSysMessage.setSendDate(new Date());//填写发送时间
+            //添加管家app系统消息
+            int insert3 = butlerAppMessageDao.insertSysMessage(butlerAppSysMessage);
+            if (insert3 <= 0){
+                throw new RuntimeException("添加系统消息失败");
             }
 
-            SysSending sysSending = new SysSending();
-            //填入消息id
-            sysSending.setMessageId(sysMessage.getId());
-            //填入接收人id
-            sysSending.setReceiverAccount(byId.getHandler());
-            //填入发送状态（0.未发或不成功1.发送成功（未读），3.已读）[初始为1，查看为3]
-            sysSending.setSendStatus(1);
-            //填入发送日期
-            sysSending.setSendDate(new Date());
-            //添加消息接收列表
-            int i = remindDao.insertSending(sysSending);
-            if (i <= 0){
-                throw new RuntimeException("推送失败");
-            }
-            JiguangUtil.push(String.valueOf(byId.getHandler()),"家政服务接单提醒");
+
+            JiguangUtil.butlerPush(String.valueOf(byId.getHandler()),"家政服务接单提醒");
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
