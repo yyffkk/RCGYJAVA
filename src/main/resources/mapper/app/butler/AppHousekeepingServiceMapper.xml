@@ -94,5 +94,18 @@
         where id = #{id}
     </update>
 
+    <update id="submitReport" parameterType="com.api.model.app.AppHousekeepingService">
+        update sys_housekeeping_service
+        set status = #{status},
+        completion = #{completion},
+        process_description = #{processDescription},
+        material_fee = #{materialFee},
+        service_fee = #{serviceFee},
+        pay_fee = #{payFee},
+        handler = #{handler},
+        handling_time = #{handlingTime}
+        where id = #{id}
+    </update>
+
 
 </mapper>

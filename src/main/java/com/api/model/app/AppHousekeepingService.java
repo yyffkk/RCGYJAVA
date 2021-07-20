@@ -56,7 +56,7 @@ public class AppHousekeepingService {
     /**
      * 支付费用
      */
-    private Double payFee;
+    private BigDecimal payFee;
     /**
      * 处理人
      */
@@ -224,11 +224,11 @@ public class AppHousekeepingService {
         this.serviceFee = serviceFee;
     }
 
-    public Double getPayFee() {
+    public BigDecimal getPayFee() {
         return payFee;
     }
 
-    public void setPayFee(Double payFee) {
+    public void setPayFee(BigDecimal payFee) {
         this.payFee = payFee;
     }
 
@@ -331,7 +331,7 @@ public class AppHousekeepingService {
     public AppHousekeepingService() {
     }
 
-    public AppHousekeepingService(Integer id, Integer estateId, Integer type, String content, Integer status, Integer assigner, Date allocateTime, Integer completion, String processDescription, BigDecimal materialFee, BigDecimal serviceFee, Double payFee, Integer handler, Date handlingTime, String[] handlerImgUrls, Integer evaluation, String evaluationContent, Date evaluationTime, String[] evaluationImgUrls, Integer proposer, Date applyTime, Integer createId, Date createDate, String[] submitImgUrls) {
+    public AppHousekeepingService(Integer id, Integer estateId, Integer type, String content, Integer status, Integer assigner, Date allocateTime, Integer completion, String processDescription, BigDecimal materialFee, BigDecimal serviceFee, BigDecimal payFee, Integer handler, Date handlingTime, String[] handlerImgUrls, Integer evaluation, String evaluationContent, Date evaluationTime, String[] evaluationImgUrls, Integer proposer, Date applyTime, Integer createId, Date createDate, String[] submitImgUrls) {
         this.id = id;
         this.estateId = estateId;
         this.type = type;

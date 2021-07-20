@@ -88,6 +88,18 @@ public class ButlerHousekeepingServiceController {
     }
 
 
+    /**
+     * 提交报告
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/submitReport")
+    public Map<String,Object> submitReport(@RequestBody AppHousekeepingService appHousekeepingService, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        return butlerHousekeepingServiceService.submitReport(appHousekeepingService,id);
+    }
+
 
 
 

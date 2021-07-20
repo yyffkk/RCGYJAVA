@@ -99,4 +99,6 @@ public interface UploadService {
     Map<String, Object> uploadAppHousekeepingServiceSubmitPhone(MultipartFile file);
 
     Map<String, Object> uploadAppHousekeepingServiceEvaluationPhone(MultipartFile file);
+
+    Map<String, Object> uploadHousekeepingServiceHandlerPhone(MultipartFile file);
 }

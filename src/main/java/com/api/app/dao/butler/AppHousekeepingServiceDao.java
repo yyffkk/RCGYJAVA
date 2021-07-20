@@ -72,4 +72,11 @@ public interface AppHousekeepingServiceDao {
      * @return 影响行数
      */
     int orderReceiving(AppHousekeepingService appHousekeepingService);
+
+    /**
+     * 提交报告
+     * @param appHousekeepingService app 新版家政服务 model
+     * @return 影响行数
+     */
+    int submitReport(AppHousekeepingService appHousekeepingService);
 }

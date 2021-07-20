@@ -90,4 +90,14 @@ public class ButlerAppUploadController {
     public Map<String,Object> uploadFacilitiesCheckPhoto(MultipartFile file){
         return uploadService.uploadFacilitiesCheckPhoto(file);
     }
+
+    /**
+     * 上传处理完成照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadHousekeepingServiceHandlerPhone")
+    public Map<String,Object> uploadHousekeepingServiceHandlerPhone(MultipartFile file){
+        return uploadService.uploadHousekeepingServiceHandlerPhone(file);
+    }
 }

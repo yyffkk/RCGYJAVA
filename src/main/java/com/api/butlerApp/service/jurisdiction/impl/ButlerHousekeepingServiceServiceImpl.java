@@ -182,6 +182,63 @@ public class ButlerHousekeepingServiceServiceImpl implements ButlerHousekeepingS
     }
 
     @Override
+    @Transactional
+    public Map<String, Object> submitReport(AppHousekeepingService appHousekeepingService, Integer id) {
+        map = new HashMap<>();
+
+        try {
+            AppHousekeepingService housekeepingServiceById = appHousekeepingServiceDao.findHousekeepingServiceById(appHousekeepingService.getId());
+            if (housekeepingServiceById.getHandler() != id){
+                throw new RuntimeException("操作失败,操作人有误");
+            }
+
+            if (housekeepingServiceById.getStatus() != 3){//3.处理中
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
+            if (!(appHousekeepingService.getMaterialFee().add(appHousekeepingService.getServiceFee()).compareTo(appHousekeepingService.getPayFee()) == 0)){
+                throw new RuntimeException("总计费用计算有误");
+            }
+
+            int update = appHousekeepingServiceDao.submitReport(appHousekeepingService);
+            if (update <= 0){
+                throw new RuntimeException("提交失败");
+            }
+
+            //添加家政服务处理进程记录
+            AppHousekeepingServiceProcessRecord processRecord = new AppHousekeepingServiceProcessRecord();
+            processRecord.setHousekeepingServiceId(appHousekeepingService.getId());
+            processRecord.setOperationDate(new Date());
+            processRecord.setOperationType(4);//4.处理完成
+            processRecord.setOperator(id);
+            processRecord.setOperatorType(3);//3.操作人（物业）
+
+            //查询被指派人信息
+            SysUser sysUser  = appHousekeepingServiceDao.findUserInfoById(housekeepingServiceById.getHandler());
+
+            processRecord.setOperatorContent(sysUser.getActualName()+"师傅已提交工作汇报");
+            int insert2 = appHousekeepingServiceDao.insertHousekeepingProcessRecord(processRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("提交服务进程失败");
+            }
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
     public int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");
         if (split.length >0){

@@ -52,6 +52,8 @@ prop:
   upload-lease-contract-signed-pdf: /pdf/leaseContractSigned/
   #管家服务-租赁合同管理：租赁有效（正式）合同上传路径（盖章后的合同）
   upload-lease-contract-valid-pdf: /pdf/leaseContractValid/
+  #管家服务-新版家政服务管理：处理完成照片上传路径
+  upload-housekeeping-service-handler-phone: /img/housekeepingService/handlerPhone/
 
 
   #运营管理-公告管理：新增公告信息照片上传路径
