@@ -100,6 +100,16 @@ public class ButlerHousekeepingServiceController {
         return butlerHousekeepingServiceService.submitReport(appHousekeepingService,id);
     }
 
+    /**
+     * 催促人员
+     * @param housekeepingServiceId 家政服务主键id
+     * @param id 角色主键id
+     * @return map
+     */
+    @GetMapping("/urgedWorkers")
+    public Map<String,Object> urgedWorkers(Integer housekeepingServiceId,Integer id){
+        return butlerHousekeepingServiceService.urgedWorkers(housekeepingServiceId,id);
+    }
 
 
 

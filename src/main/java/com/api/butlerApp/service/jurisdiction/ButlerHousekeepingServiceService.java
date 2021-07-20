@@ -18,5 +18,8 @@ public interface ButlerHousekeepingServiceService {
 
     Map<String, Object> submitReport(AppHousekeepingService appHousekeepingService, Integer id);
 
+    Map<String, Object> urgedWorkers(Integer housekeepingServiceId,Integer id);
+
     int findJurisdictionByUserId(String roleIds);
+
 }
