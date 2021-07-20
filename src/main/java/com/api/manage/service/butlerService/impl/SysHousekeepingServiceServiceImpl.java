@@ -9,10 +9,13 @@ import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysHousekeepingServiceServiceImpl implements SysHousekeepingServiceService {
+    private static Map<String,Object> map = null;
     @Resource
     SysHousekeepingServiceDao sysHousekeepingServiceDao;
 
@@ -37,5 +40,20 @@ public class SysHousekeepingServiceServiceImpl implements SysHousekeepingService
             }
         }
         return list;
+    }
+
+    @Override
+    public Map<String, Object> invalid(Integer housekeepingServiceId) {
+        map = new HashMap<>();
+        int update = sysHousekeepingServiceDao.invalid(housekeepingServiceId);
+        if (update >0){
+            map.put("message","作废成功");
+            map.put("status",true);
+        }else {
+            map.put("message","作废失败");
+            map.put("status",false);
+        }
+
+        return map;
     }
 }

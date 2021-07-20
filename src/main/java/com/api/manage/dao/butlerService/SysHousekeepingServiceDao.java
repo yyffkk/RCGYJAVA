@@ -12,4 +12,11 @@ public interface SysHousekeepingServiceDao {
      * @return 家政服务信息
      */
     List<AppHousekeepingServiceVo> list(SearchHousekeepingService searchHousekeepingService);
+
+    /**
+     * 作废
+     * @param housekeepingServiceId 家政服务主键id
+     * @return 影响行数
+     */
+    int invalid(Integer housekeepingServiceId);
 }

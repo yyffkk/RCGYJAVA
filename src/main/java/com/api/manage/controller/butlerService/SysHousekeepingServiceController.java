@@ -54,4 +54,14 @@ public class SysHousekeepingServiceController {
     public Map<String,Object> findHousekeepingProcessRecord(Integer housekeepingServiceId){
         return appHousekeepingServiceService.findHousekeepingProcessRecord(housekeepingServiceId);
     }
+
+    /**
+     * 作废
+     * @param housekeepingServiceId 家政服务主键id
+     * @return map
+     */
+    @GetMapping("/invalid")
+    public Map<String,Object> invalid(Integer housekeepingServiceId){
+        return sysHousekeepingServiceService.invalid(housekeepingServiceId);
+    }
 }

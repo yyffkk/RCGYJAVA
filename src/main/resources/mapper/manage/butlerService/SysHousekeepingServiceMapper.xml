@@ -26,4 +26,11 @@
         </where>
 
     </select>
+
+    <update id="invalid" parameterType="java.lang.Integer">
+        update sys_housekeeping_service
+        set status = 10
+        where id = #{housekeepingServiceId}
+    </update>
+
 </mapper>
