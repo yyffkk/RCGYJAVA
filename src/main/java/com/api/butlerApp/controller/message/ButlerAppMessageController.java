@@ -103,6 +103,16 @@ public class ButlerAppMessageController {
     }
 
     /**
+     * 根据新版家政服务主键id 同步查询新版家政服务消息信息（同步）
+     * @param housekeepingServiceId 新版家政服务主键id
+     * @return map
+     */
+    @GetMapping("/findHousekeepingByHousekeepingId")
+    public Map<String,Object> findHousekeepingByHousekeepingId(Integer housekeepingServiceId){
+        return butlerAppMessageService.findHousekeepingByHousekeepingId(housekeepingServiceId);
+    }
+
+    /**
      * 根据工单主键id同步查询报事报修评论（同步）
      * @param dispatchId 工单主键id
      * @return map

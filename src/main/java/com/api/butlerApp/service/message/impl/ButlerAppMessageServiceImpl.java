@@ -4,6 +4,7 @@ import com.api.butlerApp.dao.message.ButlerAppMessageDao;
 import com.api.butlerApp.service.message.ButlerAppMessageService;
 import com.api.model.butlerApp.ButlerGreenTaskMesVo;
 import com.api.model.butlerApp.ButlerHygieneTaskMesVo;
+import com.api.vo.app.AppHousekeepingServiceVo;
 import com.api.vo.butlerApp.ButlerCommentMessageVo;
 import com.api.vo.butlerApp.ButlerRepairCommentMesVo;
 import com.api.vo.butlerApp.ButlerRepairMessageVo;
@@ -81,6 +82,16 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
         map = new HashMap<>();
         ButlerHygieneTaskMesVo butlerHygieneTaskMesVo = butlerAppMessageDao.findHygieneTaskByHygieneId(hygieneTaskId);
         map.put("data",butlerHygieneTaskMesVo);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findHousekeepingByHousekeepingId(Integer housekeepingServiceId) {
+        map = new HashMap<>();
+        AppHousekeepingServiceVo appHousekeepingServiceVo = butlerAppMessageDao.findHousekeepingByHousekeepingId(housekeepingServiceId);
+        map.put("data",appHousekeepingServiceVo);
         map.put("message","请求成功");
         map.put("status",true);
         return map;

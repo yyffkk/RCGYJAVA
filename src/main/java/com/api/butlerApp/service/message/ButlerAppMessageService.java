@@ -19,6 +19,8 @@ public interface ButlerAppMessageService {
 
     Map<String, Object> findHygieneTaskByHygieneId(Integer hygieneTaskId);
 
+    Map<String, Object> findHousekeepingByHousekeepingId(Integer housekeepingServiceId);
+
     Map<String, Object> findCommentByDispatchId(Integer dispatchId);
 
     Map<String, Object> allReadSys(Integer id);

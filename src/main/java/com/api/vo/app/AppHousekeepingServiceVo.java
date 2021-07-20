@@ -34,7 +34,7 @@ public class AppHousekeepingServiceVo {
      */
     private String content;
     /**
-     * 状态：1.待派单，2.已派单（待接单），3.处理中，4.待支付，5.待评价，6.已完成，9.已取消
+     * 状态：1.待派单，2.已派单（待接单），3.处理中，4.待支付，5.待评价，6.已完成，9.已取消，10.已作废
      */
     private Integer status;
     /**

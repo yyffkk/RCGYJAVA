@@ -4,6 +4,7 @@ import com.api.model.butlerApp.ButlerAppCommentMessage;
 import com.api.model.butlerApp.ButlerAppSysMessage;
 import com.api.model.butlerApp.ButlerGreenTaskMesVo;
 import com.api.model.butlerApp.ButlerHygieneTaskMesVo;
+import com.api.vo.app.AppHousekeepingServiceVo;
 import com.api.vo.butlerApp.ButlerCommentMessageVo;
 import com.api.vo.butlerApp.ButlerRepairCommentMesVo;
 import com.api.vo.butlerApp.ButlerRepairMessageVo;
@@ -118,4 +119,10 @@ public interface ButlerAppMessageDao {
      */
     int allReadComment(Integer id);
 
+    /**
+     * 根据家政服务主键id查询家政服务信息
+     * @param housekeepingServiceId 家政服务主键id
+     * @return 家政服务信息
+     */
+    AppHousekeepingServiceVo findHousekeepingByHousekeepingId(Integer housekeepingServiceId);
 }
