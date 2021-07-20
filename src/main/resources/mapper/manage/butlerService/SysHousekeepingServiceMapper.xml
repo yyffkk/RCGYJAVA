@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysHousekeepingServiceDao">
+
+    <select id="list" parameterType="com.api.model.butlerService.SearchHousekeepingService" resultType="com.api.vo.app.AppHousekeepingServiceVo">
+        select shs.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,ur.name as proposer_name,ur.tel as proposer_tel,
+        su.actual_name as handler_name,su.tel as handler_tel
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,user_resident as ur,sys_housekeeping_service as shs
+        left join sys_user as su on shs.handler = su.id
+        <where>
+            shs.estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and shs.proposer = ur.id
+            <if test="estateId != null">
+                and shs.estate_id = #{estateId}
+            </if>
+            <if test="type != null">
+                and shs.type = #{type}
+            </if>
+            <if test="status != null">
+                and shs.status = #{status}
+            </if>
+        </where>
+
+    </select>
+</mapper>
