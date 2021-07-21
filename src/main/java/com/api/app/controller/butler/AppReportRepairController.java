@@ -66,7 +66,9 @@ public class AppReportRepairController {
         Integer id = Integer.valueOf(request.getParameter("id"));
         //从request获取用户联系方式
         String tel = request.getParameter("tel");
-        return appReportRepairService.insert(reportRepair,id,tel);
+        //从request获取用户联系方式
+        String name = request.getParameter("name");
+        return appReportRepairService.insert(reportRepair,id,tel,name);
     }
 
     /**

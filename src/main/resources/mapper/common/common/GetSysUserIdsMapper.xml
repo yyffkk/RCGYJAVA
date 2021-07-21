@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.common.dao.GetSysUserIdsDao">
+
+    <select id="findRoleIdsByJurisdictionId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select DISTINCT sr.id
+        from sys_role as sr,sys_role_jurisdiction as srj,sys_jurisdiction as sj
+        where srj.role_id = sr.id and srj.jurisdiction_id = sj.id and sj.id = #{jurisdictionId}
+    </select>
+
+    <select id="findUserIdsByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from sys_user
+        where FIND_IN_SET(#{roleId},role_id)
+    </select>
+
+    <select id="findUserIdsByJurisdictionId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select DISTINCT su.id
+        from sys_user as su,sys_identity as si,sys_identity_role as sir,
+        sys_role as sr,sys_role_jurisdiction as srj,sys_jurisdiction as sj
+        where su.position_id = si.id and sir.identity_id =  si.id and sir.role_id = sr.id
+        and srj.role_id = sr.id and srj.jurisdiction_id = sj.id and sj.id = #{jurisdictionId}
+    </select>
+
+
+</mapper>

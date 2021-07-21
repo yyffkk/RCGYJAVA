@@ -13,7 +13,7 @@ public interface AppReportRepairService {
 
     Map<String, Object> findById(UserIdAndRepairId userIdAndRepairId);
 
-    Map<String, Object> insert(ReportRepair reportRepair, Integer id, String tel);
+    Map<String, Object> insert(ReportRepair reportRepair, Integer id, String tel, String name);
 
     Map<String, Object> falseDelete(int[] ids, Integer id);
 

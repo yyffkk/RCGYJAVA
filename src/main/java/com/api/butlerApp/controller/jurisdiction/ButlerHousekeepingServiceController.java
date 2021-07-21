@@ -1,5 +1,6 @@
 package com.api.butlerApp.controller.jurisdiction;
 
+import com.api.app.service.butler.AppHousekeepingServiceService;
 import com.api.butlerApp.service.jurisdiction.ButlerHousekeepingServiceService;
 import com.api.model.app.AppHousekeepingService;
 import com.api.model.butlerApp.ButlerHousekeepingServiceSearch;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class ButlerHousekeepingServiceController {
     @Resource
     ButlerHousekeepingServiceService butlerHousekeepingServiceService;
+    @Resource
+    AppHousekeepingServiceService appHousekeepingServiceService;
 
 
     /**
@@ -111,7 +114,15 @@ public class ButlerHousekeepingServiceController {
         return butlerHousekeepingServiceService.urgedWorkers(housekeepingServiceId,id);
     }
 
-
+    /**
+     * 根据家政服务主键id查询家政服务服务进程
+     * @param housekeepingServiceId 家政服务主键id
+     * @return 家政服务服务进程 3007663862
+     */
+    @GetMapping("/findHousekeepingProcessRecord")
+    public Map<String,Object> findHousekeepingProcessRecord(Integer housekeepingServiceId){
+        return appHousekeepingServiceService.findHousekeepingProcessRecord(housekeepingServiceId);
+    }
 
 
 }

@@ -1,18 +1,20 @@
 package com.api.app.service.butler.impl;
 
-import cn.jpush.api.push.PushResult;
 import com.api.app.dao.butler.AppReportRepairDao;
 import com.api.app.service.butler.AppReportRepairService;
 import com.api.butlerApp.dao.message.ButlerAppMessageDao;
+import com.api.common.GetSysUserIds;
 import com.api.manage.dao.butlerService.SysDispatchListDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
 import com.api.manage.dao.butlerService.SysReportRepairDao;
+import com.api.manage.dao.message.ManageSysMessageDao;
 import com.api.model.app.AppRepairEvaluate;
 import com.api.model.app.UserIdAndRepairId;
 import com.api.model.butlerApp.ButlerAppCommentMessage;
 import com.api.model.butlerService.DispatchList;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.ReportRepair;
+import com.api.model.message.ManageSysMessage;
 import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.util.createCode.FileEveryDaySerialNumber;
@@ -44,6 +46,8 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
     SysProcessRecordDao sysProcessRecordDao;
     @Resource
     ButlerAppMessageDao butlerAppMessageDao;
+    @Resource
+    ManageSysMessageDao manageSysMessageDao;
     private static Map<String,Object> map = null;
 
     @Override
@@ -96,7 +100,7 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
 
     @Override
     @Transactional
-    public Map<String, Object> insert(ReportRepair reportRepair, Integer id, String tel) {
+    public Map<String, Object> insert(ReportRepair reportRepair, Integer id, String tel, String name) {
         map = new HashMap<>();
         try {
             //生成单号(3位单号)
@@ -167,6 +171,27 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
             if (insert3 <= 0){
                 throw new RuntimeException("添加处理进程记录失败");
             }
+
+            GetSysUserIds getSysUserIds = new GetSysUserIds();
+            HashSet<Integer> userIds = getSysUserIds.FindSysUserIdsByJurisdictionId(52);//52.报事报修派单
+            for (Integer userId : userIds) {
+                //添加后台消息列表
+                ManageSysMessage manageSysMessage = new ManageSysMessage();
+                manageSysMessage.setContent("有住户"+name+"发起新的报事报修，请及时查看并进行派单分配给维修部");
+                manageSysMessage.setType(1);//1.报事报修
+                manageSysMessage.setRelationId(reportRepair.getId());//填入报事报修id
+                manageSysMessage.setReceiverAccountId(userId);//填入接收人
+                manageSysMessage.setSenderId(id);//填入发送人id
+                manageSysMessage.setSenderType(2);//2.业主
+                manageSysMessage.setSendStatus(1);//1.发送成功（未读）
+                manageSysMessage.setSendDate(new Date());
+                int insert4 = manageSysMessageDao.insert(manageSysMessage);
+                if (insert4 <= 0){
+                    throw new RuntimeException("后台消息列表发送失败");
+                }
+            }
+
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
