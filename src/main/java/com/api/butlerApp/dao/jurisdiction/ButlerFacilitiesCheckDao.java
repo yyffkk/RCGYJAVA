@@ -2,6 +2,7 @@ package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.butlerApp.ButlerFacilitiesCheckSearch;
 import com.api.model.butlerService.FacilitiesExecute;
+import com.api.model.butlerService.FacilitiesPlan;
 import com.api.vo.butlerApp.ButlerFacilitiesCheckVo;
 
 import java.util.List;
@@ -27,4 +28,11 @@ public interface ButlerFacilitiesCheckDao {
      * @return 设施设备检查记录信息
      */
     FacilitiesExecute findById(Integer id);
+
+    /**
+     * 根据设施设备检查记录主键id查询设施/设备管理计划信息
+     * @param id 设施设备检查记录主键id
+     * @return 设施/设备管理计划信息
+     */
+    FacilitiesPlan findPlanById(Integer id);
 }

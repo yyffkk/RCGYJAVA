@@ -3,12 +3,14 @@ package com.api.butlerApp.service.jurisdiction.impl;
 import com.api.butlerApp.dao.jurisdiction.ButlerFacilitiesCheckDao;
 import com.api.butlerApp.service.jurisdiction.ButlerFacilitiesCheckService;
 import com.api.manage.dao.butlerService.SysFacilitiesPlanDao;
+import com.api.manage.dao.message.ManageSysMessageDao;
+import com.api.model.businessManagement.SysOrganization;
 import com.api.model.butlerApp.ButlerFacilitiesCheckSearch;
 import com.api.model.butlerService.FacilitiesExecute;
 import com.api.model.butlerService.FacilitiesPlan;
+import com.api.model.message.ManageSysMessage;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.ButlerFacilitiesCheckVo;
-import com.api.vo.butlerService.VoFacilitiesExecute;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
     ButlerFacilitiesCheckDao butlerFacilitiesCheckDao;
     @Resource
     SysFacilitiesPlanDao sysFacilitiesPlanDao;
+    @Resource
+    ManageSysMessageDao manageSysMessageDao;
 
     @Override
     public List<ButlerFacilitiesCheckVo> list(ButlerFacilitiesCheckSearch butlerFacilitiesCheckSearch) {
@@ -40,7 +44,7 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
 
     @Override
     @Transactional
-    public Map<String, Object> submitCheck(FacilitiesExecute facilitiesExecute) {
+    public Map<String, Object> submitCheck(FacilitiesExecute facilitiesExecute, Integer id, String name, Integer organizationId) {
         map = new HashMap<>();
         try {
             //根据设施设备检查记录主键id查询设施设备检查记录信息
@@ -66,6 +70,28 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
             int update = butlerFacilitiesCheckDao.submitCheck(facilitiesExecute);
             if (update <= 0){
                 throw new RuntimeException("提交失败");
+            }
+
+
+            //根据设施设备检查记录主键id查询设施/设备管理计划信息
+            FacilitiesPlan facilitiesPlan = butlerFacilitiesCheckDao.findPlanById(facilitiesExecute.getId());
+
+            //根据组织id查询组织信息
+            SysOrganization sysOrganization = manageSysMessageDao.findOrganizationByOrganizationId(organizationId);
+
+            //添加后台消息列表
+            ManageSysMessage manageSysMessage = new ManageSysMessage();
+            manageSysMessage.setContent(sysOrganization.getName()+" "+name+" 提交了检查报告，请确认");
+            manageSysMessage.setType(1);//1.报事报修
+            manageSysMessage.setRelationId(facilitiesExecute2.getId());//填入报事报修id
+            manageSysMessage.setReceiverAccountId(facilitiesPlan.getCreateId());//填入接收人
+            manageSysMessage.setSenderId(id);//填入发送人id
+            manageSysMessage.setSenderType(2);//2.业主
+            manageSysMessage.setSendStatus(1);//1.发送成功（未读）
+            manageSysMessage.setSendDate(new Date());
+            int insert4 = manageSysMessageDao.insert(manageSysMessage);
+            if (insert4 <= 0){
+                throw new RuntimeException("后台消息列表发送失败");
             }
 
             //添加下一条检查记录

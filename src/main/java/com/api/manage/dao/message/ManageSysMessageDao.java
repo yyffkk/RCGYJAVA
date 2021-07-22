@@ -1,5 +1,6 @@
 package com.api.manage.dao.message;
 
+import com.api.model.businessManagement.SysOrganization;
 import com.api.model.message.ManageSysMessage;
 import com.api.model.message.SearchManageSysMessage;
 
@@ -19,4 +20,11 @@ public interface ManageSysMessageDao {
      * @return 影响行数
      */
     int insert(ManageSysMessage manageSysMessage);
+
+    /**
+     * 根据组织id查询组织信息
+     * @param organizationId 组织id
+     * @return 组织信息
+     */
+    SysOrganization findOrganizationByOrganizationId(Integer organizationId);
 }

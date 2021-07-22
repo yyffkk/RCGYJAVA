@@ -177,7 +177,7 @@ public class AppReportRepairServiceImpl implements AppReportRepairService {
             for (Integer userId : userIds) {
                 //添加后台消息列表
                 ManageSysMessage manageSysMessage = new ManageSysMessage();
-                manageSysMessage.setContent("有住户"+name+"发起新的报事报修，请及时查看并进行派单分配给维修部");
+                manageSysMessage.setContent("有住户 "+name+" 发起新的报事报修，请及时查看并进行派单分配给维修部");
                 manageSysMessage.setType(1);//1.报事报修
                 manageSysMessage.setRelationId(reportRepair.getId());//填入报事报修id
                 manageSysMessage.setReceiverAccountId(userId);//填入接收人

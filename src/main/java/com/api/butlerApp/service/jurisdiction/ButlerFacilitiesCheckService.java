@@ -10,5 +10,5 @@ import java.util.Map;
 public interface ButlerFacilitiesCheckService {
     List<ButlerFacilitiesCheckVo> list(ButlerFacilitiesCheckSearch butlerFacilitiesCheckSearch);
 
-    Map<String, Object> submitCheck(FacilitiesExecute facilitiesExecute);
+    Map<String, Object> submitCheck(FacilitiesExecute facilitiesExecute, Integer id, String name, Integer organizationId);
 }

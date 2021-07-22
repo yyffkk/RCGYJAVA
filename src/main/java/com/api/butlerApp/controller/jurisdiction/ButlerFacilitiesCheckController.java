@@ -10,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +44,17 @@ public class ButlerFacilitiesCheckController {
     /**
      * 提交报告
      * @param facilitiesExecute 设施/设备检查执行情况
+     * @param request app-admin-token获取的request用户信息
      * @return map
      */
     @PostMapping("/submitCheck")
-    public Map<String,Object> submitCheck(@RequestBody FacilitiesExecute facilitiesExecute){
-        return butlerFacilitiesCheckService.submitCheck(facilitiesExecute);
+    public Map<String,Object> submitCheck(@RequestBody FacilitiesExecute facilitiesExecute, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户联系方式
+        String name = request.getParameter("name");
+        //从request获取组织ID organizationId
+        Integer organizationId = Integer.valueOf(request.getParameter("organizationId"));
+        return butlerFacilitiesCheckService.submitCheck(facilitiesExecute,id,name,organizationId);
     }
 }

@@ -43,4 +43,10 @@
         )
     </insert>
 
+    <select id="findOrganizationByOrganizationId" parameterType="java.lang.Integer"
+            resultType="com.api.model.businessManagement.SysOrganization">
+        select * from sys_organization where id = #{organizationId}
+    </select>
+
+
 </mapper>
