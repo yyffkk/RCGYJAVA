@@ -20,4 +20,11 @@ public interface ButlerHygieneDao {
      * @return 影响行数
      */
     int complete(SysHygieneTask sysHygieneTask);
+
+    /**
+     * 根据卫生任务主键id查询卫生任务信息
+     * @param id 卫生任务主键id
+     * @return 卫生任务信息
+     */
+    SysHygieneTask findTaskById(Integer id);
 }

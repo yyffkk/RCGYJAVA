@@ -36,11 +36,6 @@ mybatis:
     #下划线自动转换成实体
     configuration:
         map-underscore-to-camel-case: true
-logging:
-    level:
-        com:
-            api:
-                butlerApp:
-                    dao: DEBUG
+
 
 

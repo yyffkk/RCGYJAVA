@@ -5,6 +5,8 @@ logging:
     com:
       api:
         dao: debug
+        butlerApp:
+          dao: DEBUG
   file:
     # 输出的log文件名
     name: intelligent-community

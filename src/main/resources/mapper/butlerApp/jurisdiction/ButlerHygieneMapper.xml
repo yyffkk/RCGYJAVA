@@ -27,4 +27,9 @@
         where id = #{id} and director = #{director}
     </update>
 
+    <select id="findTaskById" parameterType="java.lang.Integer" resultType="com.api.model.operationManagement.SysHygieneTask">
+        select * from sys_hygiene_task where id = #{id}
+    </select>
+
+
 </mapper>

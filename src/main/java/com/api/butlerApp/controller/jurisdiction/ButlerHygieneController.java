@@ -53,7 +53,11 @@ public class ButlerHygieneController {
     public Map<String,Object> complete(@RequestBody SysHygieneTask sysHygieneTask, HttpServletRequest request){
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户联系方式
+        String name = request.getParameter("name");
+        //从request获取组织ID organizationId
+        Integer organizationId = Integer.valueOf(request.getParameter("organizationId"));
         sysHygieneTask.setDirector(id);//填入负责人员id
-        return butlerHygieneService.complete(sysHygieneTask);
+        return butlerHygieneService.complete(sysHygieneTask,name,organizationId);
     }
 }

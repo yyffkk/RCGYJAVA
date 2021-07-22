@@ -46,6 +46,7 @@ public class ButlerGreenServiceImpl implements ButlerGreenService {
                 throw new RuntimeException("完成失败");
             }
 
+            //根据绿化任务主键id查询绿化任务信息
             SysGreenTask sysGreenTask1 = butlerGreenDao.findTaskById(sysGreenTask.getId());
 
             //根据组织id查询组织信息
