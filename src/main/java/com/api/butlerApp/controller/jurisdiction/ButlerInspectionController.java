@@ -104,9 +104,15 @@ public class ButlerInspectionController {
      */
     @PostMapping("/submitPointDetail")
     public Map<String,Object> submitPointDetail(@RequestBody ButlerExecutePointSubmit executePointSubmit, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户联系方式
+        String name = request.getParameter("name");
+        //从request获取组织ID organizationId
+        Integer organizationId = Integer.valueOf(request.getParameter("organizationId"));
         //从request获取用户拥有的角色id
         String roleId = request.getParameter("roleId");
-        return butlerInspectionService.submitPointDetail(executePointSubmit,roleId);
+        return butlerInspectionService.submitPointDetail(executePointSubmit,roleId,id,name,organizationId);
     }
 
 

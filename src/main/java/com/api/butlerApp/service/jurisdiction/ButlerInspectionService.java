@@ -21,7 +21,7 @@ public interface ButlerInspectionService {
 
     Map<String, Object> findCheckDetailByQR(Integer executeId, String executePointCode, String roleId);
 
-    Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId);
+    Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId, Integer id, String name, Integer organizationId);
 
     Map<String, Object> findCheckDetailById(Integer executePointId);
 

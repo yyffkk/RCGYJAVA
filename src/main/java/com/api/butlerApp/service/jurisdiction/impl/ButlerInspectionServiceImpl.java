@@ -4,11 +4,15 @@ import com.api.butlerApp.dao.jurisdiction.ButlerInspectionDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
 import com.api.manage.dao.butlerService.SysInspectionPlanDao;
+import com.api.manage.dao.message.ManageSysMessageDao;
+import com.api.model.businessManagement.SysOrganization;
 import com.api.model.butlerApp.*;
 import com.api.model.butlerService.SysInspectionExecute;
 import com.api.model.butlerService.SysInspectionPlan;
+import com.api.model.message.ManageSysMessage;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.*;
+import com.api.vo.butlerService.VoFBIInspectionPlan;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +29,8 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
     ButlerRepairDao butlerRepairDao;
     @Resource
     SysInspectionPlanDao sysInspectionPlanDao;
+    @Resource
+    ManageSysMessageDao manageSysMessageDao;
     private static Map<String,Object> map = null;
 
 
@@ -244,7 +250,7 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
 
     @Override
     @Transactional
-    public Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId) {
+    public Map<String, Object> submitPointDetail(ButlerExecutePointSubmit executePointSubmit, String roleId, Integer id, String name, Integer organizationId) {
         map = new HashMap<>();
         try {
             //查询该巡检点是否已被执行
@@ -331,6 +337,28 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
                     if (insert2 <=0){
                         map.put("message","添加第一次执行巡检信息失败");
                     }
+                }
+
+                //根据巡检计划主键id查询巡检计划
+                VoFBIInspectionPlan byId = sysInspectionPlanDao.findById(sysInspectionExecute.getInspectionPlanId());
+                //根据组织id查询组织信息
+                SysOrganization sysOrganization = manageSysMessageDao.findOrganizationByOrganizationId(organizationId);
+
+
+
+                //添加后台消息列表
+                ManageSysMessage manageSysMessage = new ManageSysMessage();
+                manageSysMessage.setContent(sysOrganization.getName()+" "+name+" 完成了巡检检查，请确认");
+                manageSysMessage.setType(8);//8.巡检执行情况
+                manageSysMessage.setRelationId(sysInspectionExecute.getId());//填入巡检执行情况主键id
+                manageSysMessage.setReceiverAccountId(byId.getInspectorId());//填入接收人
+                manageSysMessage.setSenderId(id);//填入发送人id
+                manageSysMessage.setSenderType(2);//2.业主
+                manageSysMessage.setSendStatus(1);//1.发送成功（未读）
+                manageSysMessage.setSendDate(new Date());
+                int insert4 = manageSysMessageDao.insert(manageSysMessage);
+                if (insert4 <= 0){
+                    throw new RuntimeException("后台消息列表发送失败");
                 }
 
             }

@@ -82,8 +82,8 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
             //添加后台消息列表
             ManageSysMessage manageSysMessage = new ManageSysMessage();
             manageSysMessage.setContent(sysOrganization.getName()+" "+name+" 提交了检查报告，请确认");
-            manageSysMessage.setType(1);//1.报事报修
-            manageSysMessage.setRelationId(facilitiesExecute2.getId());//填入报事报修id
+            manageSysMessage.setType(8);//8.设施/设备管理
+            manageSysMessage.setRelationId(facilitiesExecute2.getId());//填入设施/设备管理主键id
             manageSysMessage.setReceiverAccountId(facilitiesPlan.getCreateId());//填入接收人
             manageSysMessage.setSenderId(id);//填入发送人id
             manageSysMessage.setSenderType(2);//2.业主
