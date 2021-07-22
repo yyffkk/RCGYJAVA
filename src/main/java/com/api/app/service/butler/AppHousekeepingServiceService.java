@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface AppHousekeepingServiceService {
-    Map<String, Object> submitHousekeeping(AppHousekeepingService appHousekeepingService);
+    Map<String, Object> submitHousekeeping(AppHousekeepingService appHousekeepingService, String name);
 
     List<AppHousekeepingServiceVo> list(SearchAppHousekeepingService searchAppHousekeepingService);
 

@@ -36,11 +36,13 @@ public class AppHousekeepingServiceController {
     public Map<String,Object> submitHousekeeping(@RequestBody AppHousekeepingService appHousekeepingService, HttpServletRequest request){
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户联系方式
+        String name = request.getParameter("name");
         appHousekeepingService.setProposer(id);
         appHousekeepingService.setApplyTime(new Date());
         appHousekeepingService.setCreateId(id);
         appHousekeepingService.setCreateDate(new Date());
-        return appHousekeepingServiceService.submitHousekeeping(appHousekeepingService);
+        return appHousekeepingServiceService.submitHousekeeping(appHousekeepingService,name);
     }
 
     /**
