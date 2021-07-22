@@ -10,6 +10,6 @@ import java.util.Map;
 public interface ButlerGreenService {
     List<ButlerGreenVo> list(ButlerGreenSearch butlerGreenSearch);
 
-    Map<String, Object> complete(SysGreenTask sysGreenTask);
+    Map<String, Object> complete(SysGreenTask sysGreenTask, String name, Integer organizationId);
 
 }

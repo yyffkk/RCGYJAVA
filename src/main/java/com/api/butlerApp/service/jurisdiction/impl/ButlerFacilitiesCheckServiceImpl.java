@@ -86,7 +86,7 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
             manageSysMessage.setRelationId(facilitiesExecute2.getId());//填入设施/设备管理主键id
             manageSysMessage.setReceiverAccountId(facilitiesPlan.getCreateId());//填入接收人
             manageSysMessage.setSenderId(id);//填入发送人id
-            manageSysMessage.setSenderType(2);//2.业主
+            manageSysMessage.setSenderType(1);//1.管家
             manageSysMessage.setSendStatus(1);//1.发送成功（未读）
             manageSysMessage.setSendDate(new Date());
             int insert4 = manageSysMessageDao.insert(manageSysMessage);

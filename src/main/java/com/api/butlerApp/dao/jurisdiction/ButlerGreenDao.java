@@ -20,4 +20,11 @@ public interface ButlerGreenDao {
      * @return 影响行数
      */
     int complete(SysGreenTask sysGreenTask);
+
+    /**
+     * 根据绿化任务主键id查询绿化任务信息
+     * @param id 绿化任务主键id
+     * @return 绿化任务信息
+     */
+    SysGreenTask findTaskById(Integer id);
 }

@@ -353,7 +353,7 @@ public class ButlerInspectionServiceImpl implements ButlerInspectionService {
                 manageSysMessage.setRelationId(sysInspectionExecute.getId());//填入巡检执行情况主键id
                 manageSysMessage.setReceiverAccountId(byId.getInspectorId());//填入接收人
                 manageSysMessage.setSenderId(id);//填入发送人id
-                manageSysMessage.setSenderType(2);//2.业主
+                manageSysMessage.setSenderType(1);//1.管家
                 manageSysMessage.setSendStatus(1);//1.发送成功（未读）
                 manageSysMessage.setSendDate(new Date());
                 int insert4 = manageSysMessageDao.insert(manageSysMessage);

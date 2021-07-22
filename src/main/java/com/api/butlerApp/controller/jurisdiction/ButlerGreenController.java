@@ -53,8 +53,12 @@ public class ButlerGreenController {
     public Map<String,Object> complete(@RequestBody SysGreenTask sysGreenTask, HttpServletRequest request){
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户联系方式
+        String name = request.getParameter("name");
+        //从request获取组织ID organizationId
+        Integer organizationId = Integer.valueOf(request.getParameter("organizationId"));
         sysGreenTask.setDirector(id);//填入负责人员id
-        return butlerGreenService.complete(sysGreenTask);
+        return butlerGreenService.complete(sysGreenTask,name,organizationId);
     }
 
 }
