@@ -213,7 +213,7 @@ public class AppHousekeepingServiceServiceImpl implements AppHousekeepingService
             }
 
             UploadUtil uploadUtil = new UploadUtil();
-            uploadUtil.saveUrlToDB(appHousekeepingService.getEvaluationImgUrls(),"sysHousekeepingService",appHousekeepingService.getId(),"evaluationImg","600",30,20);
+            uploadUtil.saveUrlToDB(appHousekeepingService.getEvaluationImgUrls(),"sysHouseKeepingService",appHousekeepingService.getId(),"evaluationImg","600",30,20);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

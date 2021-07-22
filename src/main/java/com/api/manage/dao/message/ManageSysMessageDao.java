@@ -27,4 +27,18 @@ public interface ManageSysMessageDao {
      * @return 组织信息
      */
     SysOrganization findOrganizationByOrganizationId(Integer organizationId);
+
+    /**
+     * 已读
+     * @param manageSysMessage 后台消息列表 model
+     * @return 影响行数
+     */
+    int read(ManageSysMessage manageSysMessage);
+
+    /**
+     * 一键已读
+     * @param manageSysMessage 后台消息列表 model
+     * @return 影响行数
+     */
+    int allRead(ManageSysMessage manageSysMessage);
 }

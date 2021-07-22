@@ -48,5 +48,16 @@
         select * from sys_organization where id = #{organizationId}
     </select>
 
+    <update id="read" parameterType="com.api.model.message.ManageSysMessage">
+        update manage_sys_message
+        set send_status = #{sendStatus}
+        where id = #{id} and receiver_account_id = #{receiverAccountId}
+    </update>
+    <update id="allRead" parameterType="com.api.model.message.ManageSysMessage">
+        update manage_sys_message
+        set send_status = #{sendStatus}
+        where receiver_account_id = #{receiverAccountId}
+    </update>
+
 
 </mapper>

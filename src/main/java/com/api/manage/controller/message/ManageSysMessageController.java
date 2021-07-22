@@ -42,4 +42,24 @@ public class ManageSysMessageController {
         return map;
     }
 
+
+    /**
+     * 已读
+     * @param manageSysMessageId 后台消息列表主键id
+     * @return map
+     */
+    @GetMapping("/read")
+    public Map<String,Object> read(Integer manageSysMessageId){
+        return manageSysMessageService.read(manageSysMessageId);
+    }
+
+    /**
+     * 一键已读
+     * @return map
+     */
+    @GetMapping("/allRead")
+    public Map<String,Object> allRead(){
+        return manageSysMessageService.allRead();
+    }
+
 }
