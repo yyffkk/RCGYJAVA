@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysOperationsDao">
+
+    <select id="list" parameterType="com.api.model.butlerService.SearchOperations" resultType="com.api.vo.butlerService.VoOperations">
+        select so.*,su.actual_name as create_name
+        from sys_operations as so,sys_user as su
+        <where>
+            so.create_id = su.id
+            <if test="code != null and code != ''">
+                and so.code like concat('%',#{code},'%')
+            </if>
+            <if test="equipment != null and equipment != ''">
+                and so.equipment like concat('%',#{equipment},'%')
+            </if>
+            <if test="type != null">
+                and so.type = #{type}
+            </if>
+            <if test="results != null">
+                and so.results = #{results}
+            </if>
+        </where>
+        order by so.create_date desc
+    </select>
+
+<!--    <insert id="insert" parameterType="com.api.model.butlerService.SysOperations">-->
+<!--        insert into sys_operations(-->
+<!--            code,-->
+<!--            equipment,-->
+<!--            type,-->
+<!--            people,-->
+<!--            materials-->
+<!--        )values (-->
+
+<!--        )-->
+<!--    </insert>-->
+
+</mapper>
