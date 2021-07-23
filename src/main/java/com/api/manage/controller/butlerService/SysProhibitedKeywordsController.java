@@ -4,6 +4,7 @@ package com.api.manage.controller.butlerService;
 import com.api.model.butlerService.SearchProhibitedKeywords;
 import com.api.manage.service.butlerService.SysProhibitedKeywordsService;
 import com.api.model.butlerService.SysProhibitedKeywords;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoProhibitedKeywords;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -61,6 +62,16 @@ public class SysProhibitedKeywordsController   {
     @PostMapping("/update")
     public Map<String,Object> update(@RequestBody SysProhibitedKeywords sysProhibitedKeywords){
         return sysProhibitedKeywordsService.update(sysProhibitedKeywords);
+    }
+
+    /**
+     * 根据违禁关键字信息主键id删除违禁关键字信息
+     * @param ids 违禁关键字信息主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysProhibitedKeywordsService.delete(ids.getIds());
     }
 
 

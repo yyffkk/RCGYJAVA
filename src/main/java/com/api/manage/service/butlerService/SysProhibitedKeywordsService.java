@@ -13,4 +13,6 @@ public interface SysProhibitedKeywordsService {
     Map<String, Object> insert(SysProhibitedKeywords sysProhibitedKeywords);
 
     Map<String, Object> update(SysProhibitedKeywords sysProhibitedKeywords);
+
+    Map<String, Object> delete(int[] ids);
 }

@@ -27,4 +27,11 @@ public interface SysProhibitedKeywordsDao {
      * @return 影响行数
      */
     int update(SysProhibitedKeywords sysProhibitedKeywords);
+
+    /**
+     * 根据违禁关键字信息主键id删除违禁关键字信息
+     * @param id 违禁关键字信息主键id
+     * @return 影响行数
+     */
+    int delete(int id);
 }
