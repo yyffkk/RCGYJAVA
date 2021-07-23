@@ -3,14 +3,13 @@ package com.api.manage.controller.butlerService;
 
 import com.api.model.butlerService.SearchProhibitedKeywords;
 import com.api.manage.service.butlerService.SysProhibitedKeywordsService;
+import com.api.model.butlerService.SysProhibitedKeywords;
 import com.api.vo.butlerService.VoProhibitedKeywords;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -42,6 +41,26 @@ public class SysProhibitedKeywordsController   {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 添加违禁关键字信息
+     * @param sysProhibitedKeywords 违禁关键字model
+     * @return map
+     */
+    @PostMapping("/insert")
+    public Map<String,Object> insert(@RequestBody SysProhibitedKeywords sysProhibitedKeywords){
+        return sysProhibitedKeywordsService.insert(sysProhibitedKeywords);
+    }
+
+    /**
+     * 修改违禁关键字信息
+     * @param sysProhibitedKeywords 违禁关键字model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysProhibitedKeywords sysProhibitedKeywords){
+        return sysProhibitedKeywordsService.update(sysProhibitedKeywords);
     }
 
 

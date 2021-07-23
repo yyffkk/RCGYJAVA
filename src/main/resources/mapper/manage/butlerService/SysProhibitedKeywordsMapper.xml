@@ -15,4 +15,27 @@
         </where>
     </select>
 
+    <insert id="insert" parameterType="com.api.model.butlerService.SysProhibitedKeywords">
+        insert into sys_prohibited_keywords(
+            keywords,
+            replaces,
+            create_id,
+            create_date
+        )values (
+            #{keywords},
+            #{replaces},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.api.model.butlerService.SysProhibitedKeywords">
+        update sys_prohibited_keywords
+        set keywords = #{keywords},
+        replaces = #{replaces},
+        modify_id = #{modifyId},
+        modify_date = #{modifyDate}
+        where id = #{id}
+    </update>
+
 </mapper>
