@@ -4,11 +4,8 @@ import com.api.app.dao.community.AppGambitDao;
 import com.api.app.dao.message.AppMessageDao;
 import com.api.app.service.community.AppGambitService;
 import com.api.model.app.*;
-import com.api.util.Base64Util;
-import com.api.util.EmojiUtils;
-import com.api.util.JiguangUtil;
+import com.api.util.*;
 import com.api.vo.app.IdAndName;
-import com.api.util.UploadUtil;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
 import com.api.vo.app.AppGambitVo;
@@ -271,6 +268,10 @@ public class AppGambitServiceImpl implements AppGambitService {
     public Map<String, Object> comment(AppGambitThemeComment appGambitThemeComment) {
         map = new HashMap<>();
         try {
+            //替换违禁关键字
+            ReplaceKeywordsUtil replaceKeywordsUtil = new ReplaceKeywordsUtil();
+            appGambitThemeComment.setContent(replaceKeywordsUtil.replaceProhibitedKeywords(appGambitThemeComment.getContent()));
+
             //过滤掉emoji表情 或者 其他非文字类型的字符
             String content = EmojiUtils.filterEmoji(appGambitThemeComment.getContent(), "/表情");
             appGambitThemeComment.setContent(content);
@@ -362,6 +363,10 @@ public class AppGambitServiceImpl implements AppGambitService {
     public Map<String, Object> writePost(AppGambitTheme appGambitTheme) {
         map = new HashMap<>();
         try {
+            //替换违禁关键字
+            ReplaceKeywordsUtil replaceKeywordsUtil = new ReplaceKeywordsUtil();
+            appGambitTheme.setContent(replaceKeywordsUtil.replaceProhibitedKeywords(appGambitTheme.getContent()));
+
             //过滤掉emoji表情 或者 其他非文字类型的字符
             String content = EmojiUtils.filterEmoji(appGambitTheme.getContent(), "/表情");
             appGambitTheme.setContent(content);
