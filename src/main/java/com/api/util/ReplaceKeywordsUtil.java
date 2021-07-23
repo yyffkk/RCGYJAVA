@@ -3,6 +3,7 @@ package com.api.util;
 import com.api.manage.dao.butlerService.SysProhibitedKeywordsDao;
 import com.api.model.butlerService.SearchProhibitedKeywords;
 import com.api.vo.butlerService.VoProhibitedKeywords;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * 替换关键字工具类
  */
+@Component
 public class ReplaceKeywordsUtil {
 
     @Resource
