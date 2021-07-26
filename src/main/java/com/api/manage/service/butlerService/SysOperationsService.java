@@ -13,4 +13,6 @@ public interface SysOperationsService {
     Map<String, Object> insert(SysOperations sysOperations);
 
     Map<String, Object> update(SysOperations sysOperations);
+
+    Map<String, Object> delete(int[] ids);
 }

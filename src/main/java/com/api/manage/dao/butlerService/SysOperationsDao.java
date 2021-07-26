@@ -27,4 +27,11 @@ public interface SysOperationsDao {
      * @return 影响行数
      */
     int update(SysOperations sysOperations);
+
+    /**
+     * 根据运维主键id删除运维管理信息
+     * @param id 运维主键id
+     * @return 运维管理信息
+     */
+    int delete(int id);
 }

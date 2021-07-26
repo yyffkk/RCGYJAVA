@@ -100,4 +100,8 @@
         where id = #{id}
     </update>
 
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_operations where id = #{id}
+    </delete>
+
 </mapper>

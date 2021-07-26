@@ -3,6 +3,7 @@ package com.api.manage.controller.butlerService;
 import com.api.manage.service.butlerService.SysOperationsService;
 import com.api.model.butlerService.SearchOperations;
 import com.api.model.butlerService.SysOperations;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoOperations;
 import com.api.vo.butlerService.VoUserAdvice;
 import com.github.pagehelper.PageHelper;
@@ -59,5 +60,15 @@ public class SysOperationsController {
     @PostMapping("/update")
     public Map<String,Object> update(@RequestBody SysOperations sysOperations){
         return sysOperationsService.update(sysOperations);
+    }
+
+    /**
+     * 删除运维管理
+     * @param voIds 运维管理主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds voIds){
+        return sysOperationsService.delete(voIds.getIds());
     }
 }
