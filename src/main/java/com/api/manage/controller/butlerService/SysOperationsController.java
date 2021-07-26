@@ -51,4 +51,13 @@ public class SysOperationsController {
         return sysOperationsService.insert(sysOperations);
     }
 
+    /**
+     * 修改运维管理信息
+     * @param sysOperations 运维管理model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysOperations sysOperations){
+        return sysOperationsService.update(sysOperations);
+    }
 }

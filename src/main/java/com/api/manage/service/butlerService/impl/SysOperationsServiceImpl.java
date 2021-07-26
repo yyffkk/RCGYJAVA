@@ -51,4 +51,27 @@ public class SysOperationsServiceImpl implements SysOperationsService {
 
         return map;
     }
+
+    @Override
+    public Map<String, Object> update(SysOperations sysOperations) {
+        map = new HashMap<>();
+
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        sysOperations.setModifyId(sysUser.getId());
+        sysOperations.setModifyDate(new Date());
+
+        int update = sysOperationsDao.update(sysOperations);
+        if (update > 0){
+            map.put("message","修改成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改失败");
+            map.put("status",false);
+        }
+
+        return map;
+    }
 }

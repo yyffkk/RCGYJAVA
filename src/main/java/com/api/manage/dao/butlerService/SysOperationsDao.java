@@ -20,4 +20,11 @@ public interface SysOperationsDao {
      * @return 影响行数
      */
     int insert(SysOperations sysOperations);
+
+    /**
+     * 修改运维管理信息
+     * @param sysOperations 运维管理model
+     * @return 影响行数
+     */
+    int update(SysOperations sysOperations);
 }

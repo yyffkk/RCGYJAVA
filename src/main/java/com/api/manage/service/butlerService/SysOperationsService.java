@@ -11,4 +11,6 @@ public interface SysOperationsService {
     List<VoOperations> list(SearchOperations searchOperations);
 
     Map<String, Object> insert(SysOperations sysOperations);
+
+    Map<String, Object> update(SysOperations sysOperations);
 }

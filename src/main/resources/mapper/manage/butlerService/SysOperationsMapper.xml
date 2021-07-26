@@ -61,4 +61,43 @@
         )
     </insert>
 
+    <update id="update" parameterType="com.api.model.butlerService.SysOperations">
+        update sys_operations
+        <set>
+            <if test="equipment != null and equipment != ''">
+                equipment = #{equipment},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="people != null and people != ''">
+                people = #{people},
+            </if>
+            <if test="materials != null and materials != ''">
+                materials = #{materials},
+            </if>
+            <if test="costs != null">
+                costs = #{costs},
+            </if>
+            <if test="department != null and department != ''">
+                department = #{department},
+            </if>
+            <if test="results != null">
+                results = #{results},
+            </if>
+            <if test="times != null">
+                times = #{times},
+            </if>
+            <if test="remakes != null and remakes != ''">
+                remakes = #{remakes},
+            </if>
+            <if test="maintenanceDate != null">
+                maintenance_date = #{maintenanceDate},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

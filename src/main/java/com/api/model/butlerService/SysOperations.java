@@ -8,6 +8,10 @@ import java.util.Date;
  */
 public class SysOperations {
     /**
+     * 主键id
+     */
+    private Integer id;
+    /**
      * 记录编号
      */
     private String code;
@@ -59,11 +63,20 @@ public class SysOperations {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 修改人
+     */
+    private Integer modifyId;
+    /**
+     * 修改时间
+     */
+    private Date modifyDate;
 
     @Override
     public String toString() {
         return "SysOperations{" +
-                "code='" + code + '\'' +
+                "id=" + id +
+                ", code='" + code + '\'' +
                 ", equipment='" + equipment + '\'' +
                 ", type=" + type +
                 ", people='" + people + '\'' +
@@ -76,7 +89,17 @@ public class SysOperations {
                 ", maintenanceDate=" + maintenanceDate +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", modifyId=" + modifyId +
+                ", modifyDate=" + modifyDate +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -183,10 +206,27 @@ public class SysOperations {
         this.createDate = createDate;
     }
 
+    public Integer getModifyId() {
+        return modifyId;
+    }
+
+    public void setModifyId(Integer modifyId) {
+        this.modifyId = modifyId;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
     public SysOperations() {
     }
 
-    public SysOperations(String code, String equipment, Integer type, String people, String materials, BigDecimal costs, String department, Integer results, Integer times, String remakes, Date maintenanceDate, Integer createId, Date createDate) {
+    public SysOperations(Integer id, String code, String equipment, Integer type, String people, String materials, BigDecimal costs, String department, Integer results, Integer times, String remakes, Date maintenanceDate, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+        this.id = id;
         this.code = code;
         this.equipment = equipment;
         this.type = type;
@@ -200,5 +240,7 @@ public class SysOperations {
         this.maintenanceDate = maintenanceDate;
         this.createId = createId;
         this.createDate = createDate;
+        this.modifyId = modifyId;
+        this.modifyDate = modifyDate;
     }
 }
