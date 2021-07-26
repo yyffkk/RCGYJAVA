@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysAttendanceSchedulingPlanDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchAttendanceSchedulingPlan" resultType="com.api.vo.operationManagement.VoAttendanceSchedulingPlan">
+        select sasp.*,su.actual_name as create_name,so.name as organization_name,sat.name as team_name
+        from sys_attendance_scheduling_plan as sasp,sys_user as su,
+        sys_attendance_team as sat,sys_organization as so
+        <where>
+            sasp.create_id = su.id
+            and sasp.team_id = sat.id
+            and sat.organization_id = so.id
+            <if test="name != null and name != ''">
+                and sasp.name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and sasp.status = #{status}
+            </if>
+            <if test="organizationId != null">
+                and so.id = #{organizationId}
+            </if>
+            <if test="createId != null">
+                and sasp.create_id = #{createId}
+            </if>
+            <if test="teamId != null">
+                and sasp.team_id = #{teamId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
+        insert into sys_attendance_scheduling_plan(
+            name,
+            first_time_start,
+            first_time_end,
+            second_time_start,
+            second_time_end,
+            team_id,
+            status,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{firstTimeStart},
+            #{firstTimeEnd},
+            #{secondTimeStart},
+            #{secondTimeEnd},
+            #{teamId},
+            #{status},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+</mapper>
