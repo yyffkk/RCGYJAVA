@@ -35,4 +35,10 @@ public interface SysAttendanceTeamDao {
      */
     int update(SysAttendanceTeam sysAttendanceTeam);
 
+    /**
+     * 根据考勤小组主键id查询考勤小组信息
+     * @param id 考勤小组主键id
+     * @return 影响行数
+     */
+    int delete(int id);
 }

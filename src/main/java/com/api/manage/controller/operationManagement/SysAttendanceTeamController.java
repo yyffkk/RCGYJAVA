@@ -3,6 +3,7 @@ package com.api.manage.controller.operationManagement;
 import com.api.manage.service.operationManagement.SysAttendanceTeamService;
 import com.api.model.operationManagement.SearchAttendanceTeam;
 import com.api.model.operationManagement.SysAttendanceTeam;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.operationManagement.VoAttendanceRecord;
 import com.api.vo.operationManagement.VoAttendanceTeam;
 import com.github.pagehelper.PageHelper;
@@ -60,6 +61,18 @@ public class SysAttendanceTeamController {
     public Map<String,Object> update(@RequestBody SysAttendanceTeam sysAttendanceTeam){
         return sysAttendanceTeamService.update(sysAttendanceTeam);
     }
+
+
+    /**
+     * 删除考勤小组
+     * @param ids 考勤小组主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysAttendanceTeamService.delete(ids.getIds());
+    }
+
 
 
 }

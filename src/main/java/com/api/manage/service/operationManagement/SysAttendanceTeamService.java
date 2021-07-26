@@ -13,4 +13,6 @@ public interface SysAttendanceTeamService {
     Map<String, Object> insert(SysAttendanceTeam sysAttendanceTeam);
 
     Map<String, Object> update(SysAttendanceTeam sysAttendanceTeam);
+
+    Map<String, Object> delete(int[] ids);
 }
