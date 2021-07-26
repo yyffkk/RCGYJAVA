@@ -25,16 +25,40 @@
         order by so.create_date desc
     </select>
 
-<!--    <insert id="insert" parameterType="com.api.model.butlerService.SysOperations">-->
-<!--        insert into sys_operations(-->
-<!--            code,-->
-<!--            equipment,-->
-<!--            type,-->
-<!--            people,-->
-<!--            materials-->
-<!--        )values (-->
-
-<!--        )-->
-<!--    </insert>-->
+    <insert id="insert" parameterType="com.api.model.butlerService.SysOperations">
+        insert into sys_operations(
+            code,
+            equipment,
+            type,
+            people,
+            materials,
+            costs,
+            department,
+            results,
+            times,
+            <if test="remakes != null and remakes != ''">
+                remakes,
+            </if>
+            maintenance_date,
+            create_id,
+            create_date
+        )values (
+            #{code},
+            #{equipment},
+            #{type},
+            #{people},
+            #{materials},
+            #{costs},
+            #{department},
+            #{results},
+            #{times},
+            <if test="remakes != null and remakes != ''">
+                #{remakes},
+            </if>
+            #{maintenanceDate},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 
 </mapper>
