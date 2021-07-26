@@ -24,6 +24,9 @@
             </if>
         </where>
     </select>
+    <select id="findUserNameById" parameterType="java.lang.String" resultType="java.lang.String">
+        select actual_name as name from sys_user where id = #{s}
+    </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SysAttendanceTeam">
         insert into sys_attendance_team(

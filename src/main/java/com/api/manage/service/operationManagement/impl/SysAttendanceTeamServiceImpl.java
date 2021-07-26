@@ -24,7 +24,29 @@ public class SysAttendanceTeamServiceImpl implements SysAttendanceTeamService {
 
     @Override
     public List<VoAttendanceTeam> list(SearchAttendanceTeam searchAttendanceTeam) {
-        return sysAttendanceTeamDao.list(searchAttendanceTeam);
+        List<VoAttendanceTeam> list = sysAttendanceTeamDao.list(searchAttendanceTeam);
+        if (list != null && list.size()>0){
+            for (VoAttendanceTeam voAttendanceTeam : list) {
+                //初始化小组成员名称
+                String teamMembers = "";
+
+                //将小组成员id 字符串转数组【逗号分隔】
+                String[] split = voAttendanceTeam.getTeamMembers().split(",");
+                for (int i = 0; i < split.length; i++) {
+                    //根据小组成员主键id查询小组成员名称
+                    String name = sysAttendanceTeamDao.findUserNameById(split[i]);
+                    if (i == 0){
+                        teamMembers = teamMembers + name;
+                    }else {
+                        teamMembers = teamMembers + "," + name;
+                    }
+                }
+
+                //传出小组成员名称
+                voAttendanceTeam.setTeamMembersName(teamMembers);
+            }
+        }
+        return list;
     }
 
     @Override

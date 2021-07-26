@@ -23,9 +23,13 @@ public class VoAttendanceTeam {
      */
     private String organizationName;
     /**
-     * 小组成员名称（名称、名称、名称）
+     * 小组成员主键ID（ID、ID、ID）
      */
     private String teamMembers;
+    /**
+     * 小组成员名称（名称、名称、名称）
+     */
+    private String teamMembersName;
     /**
      * 创建时间
      */
@@ -47,6 +51,7 @@ public class VoAttendanceTeam {
                 ", organizationId=" + organizationId +
                 ", organizationName='" + organizationName + '\'' +
                 ", teamMembers='" + teamMembers + '\'' +
+                ", teamMembersName='" + teamMembersName + '\'' +
                 ", createDate=" + createDate +
                 ", createId=" + createId +
                 ", createName='" + createName + '\'' +
@@ -93,6 +98,14 @@ public class VoAttendanceTeam {
         this.teamMembers = teamMembers;
     }
 
+    public String getTeamMembersName() {
+        return teamMembersName;
+    }
+
+    public void setTeamMembersName(String teamMembersName) {
+        this.teamMembersName = teamMembersName;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -120,12 +133,13 @@ public class VoAttendanceTeam {
     public VoAttendanceTeam() {
     }
 
-    public VoAttendanceTeam(Integer id, String name, Integer organizationId, String organizationName, String teamMembers, Date createDate, Integer createId, String createName) {
+    public VoAttendanceTeam(Integer id, String name, Integer organizationId, String organizationName, String teamMembers, String teamMembersName, Date createDate, Integer createId, String createName) {
         this.id = id;
         this.name = name;
         this.organizationId = organizationId;
         this.organizationName = organizationName;
         this.teamMembers = teamMembers;
+        this.teamMembersName = teamMembersName;
         this.createDate = createDate;
         this.createId = createId;
         this.createName = createName;

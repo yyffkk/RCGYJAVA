@@ -20,4 +20,11 @@ public interface SysAttendanceTeamDao {
      * @return 影响行数
      */
     int insert(SysAttendanceTeam sysAttendanceTeam);
+
+    /**
+     * 根据小组成员主键id查询小组成员名称
+     * @param s 小组成员主键id
+     * @return 小组成员名称
+     */
+    String findUserNameById(String s);
 }
