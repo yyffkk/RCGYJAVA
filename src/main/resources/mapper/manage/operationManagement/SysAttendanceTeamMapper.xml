@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.operationManagement.SysAttendanceTeamDao">
+
+    <select id="list" parameterType="com.api.model.operationManagement.SearchAttendanceTeam" resultType="com.api.vo.operationManagement.VoAttendanceTeam">
+        select sat.*,su.actual_name as create_name,so.name as organization_name
+        from sys_attendance_team as sat,sys_user as su,sys_organization as so
+        <where>
+            sat.create_id = su.id
+            and sat.organization_id = so.id
+            <if test="name != null and name != ''">
+                and sat.name like concat('%',#{name},'%')
+            </if>
+            <if test="organizationId != null">
+                and sat.organization_id = #{organizationId}
+            </if>
+            <if test="teamMembersId != null">
+                and find_in_set(#{teamMembersId},sat.team_members)
+            </if>
+            <if test="createId != null">
+                and sat.create_id = #{createId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.api.model.operationManagement.SysAttendanceTeam">
+        insert into sys_attendance_team(
+            name,
+            organization_id,
+            team_members,
+            create_id,
+            create_date
+        )values (
+            #{name},
+            #{organizationId},
+            #{teamMembers},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+</mapper>
