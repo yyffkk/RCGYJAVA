@@ -44,4 +44,22 @@
         )
     </insert>
 
+    <update id="update" parameterType="com.api.model.operationManagement.SysAttendanceTeam">
+        update sys_attendance_team
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="organizationId != null">
+                organization_id = #{organizationId},
+            </if>
+            <if test="teamMembers != null and teamMembers != ''">
+                team_members = #{teamMembers},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

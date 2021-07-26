@@ -51,4 +51,15 @@ public class SysAttendanceTeamController {
     }
 
 
+    /**
+     * 修改考勤小组
+     * @param sysAttendanceTeam 考勤小组管理model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysAttendanceTeam sysAttendanceTeam){
+        return sysAttendanceTeamService.update(sysAttendanceTeam);
+    }
+
+
 }

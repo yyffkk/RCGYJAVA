@@ -27,4 +27,12 @@ public interface SysAttendanceTeamDao {
      * @return 小组成员名称
      */
     String findUserNameById(String s);
+
+    /**
+     * 修改考勤小组
+     * @param sysAttendanceTeam 考勤小组管理model
+     * @return 影响行数
+     */
+    int update(SysAttendanceTeam sysAttendanceTeam);
+
 }

@@ -11,4 +11,6 @@ public interface SysAttendanceTeamService {
     List<VoAttendanceTeam> list(SearchAttendanceTeam searchAttendanceTeam);
 
     Map<String, Object> insert(SysAttendanceTeam sysAttendanceTeam);
+
+    Map<String, Object> update(SysAttendanceTeam sysAttendanceTeam);
 }
