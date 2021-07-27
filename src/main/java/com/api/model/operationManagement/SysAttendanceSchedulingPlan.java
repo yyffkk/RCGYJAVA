@@ -32,6 +32,14 @@ public class SysAttendanceSchedulingPlan {
      */
     private Integer createId;
     /**
+     * 修改时间
+     */
+    private Date modifyDate;
+    /**
+     * 修改人id
+     */
+    private Integer modifyId;
+    /**
      * 排班计划详情集合
      */
     private List<SysAttendanceSchedulingPlanDetail> sysAttendanceSchedulingPlanDetails;
@@ -49,6 +57,8 @@ public class SysAttendanceSchedulingPlan {
                 ", status=" + status +
                 ", createDate=" + createDate +
                 ", createId=" + createId +
+                ", modifyDate=" + modifyDate +
+                ", modifyId=" + modifyId +
                 ", sysAttendanceSchedulingPlanDetails=" + sysAttendanceSchedulingPlanDetails +
                 ", sysAttendanceSchedulingPlanExceptionList=" + sysAttendanceSchedulingPlanExceptionList +
                 '}';
@@ -102,6 +112,22 @@ public class SysAttendanceSchedulingPlan {
         this.createId = createId;
     }
 
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
+    public Integer getModifyId() {
+        return modifyId;
+    }
+
+    public void setModifyId(Integer modifyId) {
+        this.modifyId = modifyId;
+    }
+
     public List<SysAttendanceSchedulingPlanDetail> getSysAttendanceSchedulingPlanDetails() {
         return sysAttendanceSchedulingPlanDetails;
     }
@@ -121,13 +147,15 @@ public class SysAttendanceSchedulingPlan {
     public SysAttendanceSchedulingPlan() {
     }
 
-    public SysAttendanceSchedulingPlan(Integer id, String name, Integer teamId, Integer status, Date createDate, Integer createId, List<SysAttendanceSchedulingPlanDetail> sysAttendanceSchedulingPlanDetails, List<SysAttendanceSchedulingPlanException> sysAttendanceSchedulingPlanExceptionList) {
+    public SysAttendanceSchedulingPlan(Integer id, String name, Integer teamId, Integer status, Date createDate, Integer createId, Date modifyDate, Integer modifyId, List<SysAttendanceSchedulingPlanDetail> sysAttendanceSchedulingPlanDetails, List<SysAttendanceSchedulingPlanException> sysAttendanceSchedulingPlanExceptionList) {
         this.id = id;
         this.name = name;
         this.teamId = teamId;
         this.status = status;
         this.createDate = createDate;
         this.createId = createId;
+        this.modifyDate = modifyDate;
+        this.modifyId = modifyId;
         this.sysAttendanceSchedulingPlanDetails = sysAttendanceSchedulingPlanDetails;
         this.sysAttendanceSchedulingPlanExceptionList = sysAttendanceSchedulingPlanExceptionList;
     }

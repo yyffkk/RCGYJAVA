@@ -101,4 +101,20 @@
         delete from sys_attendance_scheduling_plan where id = #{id}
     </delete>
 
+    <update id="update" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
+        update sys_attendance_scheduling_plan
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="teamId != null">
+                team_id = #{teamId},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+
 </mapper>

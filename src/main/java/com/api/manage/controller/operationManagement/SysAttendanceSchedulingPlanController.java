@@ -61,6 +61,16 @@ public class SysAttendanceSchedulingPlanController {
         return sysAttendanceSchedulingPlanService.delete(ids.getIds());
     }
 
+    /**
+     * 修改考勤排班计划
+     * @param sysAttendanceSchedulingPlan 考勤排班计划model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan){
+        return sysAttendanceSchedulingPlanService.update(sysAttendanceSchedulingPlan);
+    }
+
 
 
 

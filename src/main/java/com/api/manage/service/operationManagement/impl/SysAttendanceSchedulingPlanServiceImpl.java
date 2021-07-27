@@ -133,4 +133,84 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
         map.put("status",true);
         return map;
     }
+
+    @Override
+    @Transactional
+    public Map<String, Object> update(SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan) {
+        map = new HashMap<>();
+
+        try {
+            //根据考勤排班计划主键id查询考勤排班计划
+            SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan2 = sysAttendanceSchedulingPlanDao.findById(sysAttendanceSchedulingPlan.getId());
+            if (sysAttendanceSchedulingPlan2.getStatus() == 1){
+                throw new RuntimeException("该计划已启用，请先停用");
+            }
+
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+
+            sysAttendanceSchedulingPlan.setModifyId(sysUser.getId());
+            sysAttendanceSchedulingPlan.setModifyDate(new Date());
+
+            //先根据考勤排班计划主键id 修改 考勤排班计划
+            int update = sysAttendanceSchedulingPlanDao.update(sysAttendanceSchedulingPlan);
+            if (update <= 0){
+                throw new RuntimeException("修改失败");
+            }
+
+            //再修改考勤排班计划其他信息
+            //先删除
+            //根据考勤排班计划主键id删除考勤排班计划例外情况
+            int delete = sysAttendanceSchedulingPlanDao.deleteException(sysAttendanceSchedulingPlan.getId());
+            if (delete <= 0){
+                throw new RuntimeException("删除例外情况失败");
+            }
+            //根据考勤排班计划主键id删除考勤排班计划详情
+            int delete2 = sysAttendanceSchedulingPlanDao.deleteDetail(sysAttendanceSchedulingPlan.getId());
+            if (delete2 <= 0){
+                throw new RuntimeException("删除详情失败");
+            }
+            //再添加
+            //添加考勤排班计划详情
+            List<SysAttendanceSchedulingPlanDetail> planDetails = sysAttendanceSchedulingPlan.getSysAttendanceSchedulingPlanDetails();
+            if (planDetails != null && planDetails.size() >0){
+                for (SysAttendanceSchedulingPlanDetail planDetail : planDetails) {
+                    planDetail.setAttendanceSchedulingPlanId(sysAttendanceSchedulingPlan.getId());
+                    int insert2 = sysAttendanceSchedulingPlanDao.insertDetail(planDetail);
+                    if (insert2 <= 0){
+                        throw new RuntimeException("添加详情失败");
+                    }
+                }
+            }
+
+            //添加考勤排班计划例外情况
+            List<SysAttendanceSchedulingPlanException> planExceptionList = sysAttendanceSchedulingPlan.getSysAttendanceSchedulingPlanExceptionList();
+            if (planExceptionList != null && planExceptionList.size()>0){
+                for (SysAttendanceSchedulingPlanException planException : planExceptionList) {
+                    planException.setAttendanceSchedulingPlanId(sysAttendanceSchedulingPlan.getId());
+                    int insert3 = sysAttendanceSchedulingPlanDao.insertException(planException);
+                    if (insert3 <= 0){
+                        throw new RuntimeException("添加例外情况失败");
+                    }
+                }
+            }
+
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","修改成功");
+        map.put("status",true);
+        return map;
+    }
 }

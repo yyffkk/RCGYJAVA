@@ -64,4 +64,11 @@ public interface SysAttendanceSchedulingPlanDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 先根据考勤排班计划主键id 修改 考勤排班计划
+     * @param sysAttendanceSchedulingPlan 考勤排班计划主键id
+     * @return 影响行数
+     */
+    int update(SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan);
 }

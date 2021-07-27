@@ -13,4 +13,6 @@ public interface SysAttendanceSchedulingPlanService {
     Map<String, Object> insert(SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan);
 
     Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> update(SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan);
 }
