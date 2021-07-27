@@ -1,12 +1,10 @@
 package com.api.manage.service.operationManagement.impl;
 
 import com.api.manage.dao.operationManagement.SysAttendanceSchedulingPlanDao;
+import com.api.manage.dao.operationManagement.SysAttendanceTeamDao;
 import com.api.manage.service.operationManagement.SysAttendanceSchedulingPlanService;
 import com.api.model.businessManagement.SysUser;
-import com.api.model.operationManagement.SearchAttendanceSchedulingPlan;
-import com.api.model.operationManagement.SysAttendanceSchedulingPlan;
-import com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail;
-import com.api.model.operationManagement.SysAttendanceSchedulingPlanException;
+import com.api.model.operationManagement.*;
 import com.api.vo.operationManagement.VoAttendanceSchedulingPlan;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -25,6 +23,8 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
     private static Map<String,Object> map = null;
     @Resource
     SysAttendanceSchedulingPlanDao sysAttendanceSchedulingPlanDao;
+    @Resource
+    SysAttendanceTeamDao sysAttendanceTeamDao;
 
     @Override
     public List<VoAttendanceSchedulingPlan> list(SearchAttendanceSchedulingPlan searchAttendanceSchedulingPlan) {
@@ -210,6 +210,60 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
             return map;
         }
         map.put("message","修改成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> enable(Integer id) {
+        map = new HashMap<>();
+        String msg = "";
+        try {
+            SysAttendanceSchedulingPlan byId = sysAttendanceSchedulingPlanDao.findById(id);
+            if (byId.getStatus() == 1){//1.启用
+                msg = "停用";
+                byId.setStatus(2);//填入状态：2.停用
+                int update = sysAttendanceSchedulingPlanDao.updateStatusById(byId);
+                if (update <= 0){
+                    throw new RuntimeException(msg+"失败");
+                }
+            }else {//2.停用
+                //先根据考勤小组主键id查询考勤人员
+                SysAttendanceTeam sysAttendanceTeam = sysAttendanceTeamDao.findById(byId.getTeamId());
+                //将小组成员id 字符串转数组【逗号分隔】
+                String[] split = sysAttendanceTeam.getTeamMembers().split(",");
+
+                //再根据考勤人员查询是否存在开启的排班计划
+                for (String s : split) {
+                    int count = sysAttendanceTeamDao.countPlanByUserId(s);
+                    if (count >0 ){
+                        String userName = sysAttendanceTeamDao.findUserNameById(s);
+                        throw new RuntimeException("存在人员【"+userName+"】有开启的排班计划");
+                    }
+                }
+
+                msg = "启用";
+                byId.setStatus(1);//填入状态：1.启用
+                int update = sysAttendanceSchedulingPlanDao.updateStatusById(byId);
+                if (update <= 0){
+                    throw new RuntimeException(msg+"失败");
+                }
+
+
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message",msg+"成功");
         map.put("status",true);
         return map;
     }

@@ -15,4 +15,6 @@ public interface SysAttendanceSchedulingPlanService {
     Map<String, Object> delete(int[] ids);
 
     Map<String, Object> update(SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan);
+
+    Map<String, Object> enable(Integer id);
 }

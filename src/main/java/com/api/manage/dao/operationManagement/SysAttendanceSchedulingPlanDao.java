@@ -86,4 +86,11 @@ public interface SysAttendanceSchedulingPlanDao {
      * @return 排班计划
      */
     List<SysAttendanceSchedulingPlanDetail> findExceptionByWeek(int i);
+
+    /**
+     * 根据排班计划主键id修改排班计划状态
+     * @param byId 考勤排班计划model
+     * @return 影响行数
+     */
+    int updateStatusById(SysAttendanceSchedulingPlan byId);
 }

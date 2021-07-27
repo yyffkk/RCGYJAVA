@@ -66,4 +66,13 @@
         delete from sys_attendance_team where id = #{id}
     </delete>
 
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.operationManagement.SysAttendanceTeam">
+        select * from sys_attendance_team where id =#{teamId}
+    </select>
+    <select id="countPlanByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*)
+        from sys_attendance_team as sat,sys_attendance_scheduling_plan as sasp
+        where sasp.team_id = sat.id and FIND_IN_SET(#{s},sat.team_members)
+    </select>
+
 </mapper>

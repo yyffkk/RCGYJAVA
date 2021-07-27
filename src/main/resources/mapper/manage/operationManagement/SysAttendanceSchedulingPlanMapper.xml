@@ -129,5 +129,11 @@
         where sacpd.attendance_scheduling_plan_id = sasp.id  and sasp.status = 1 and sacpd.working_days = #{i}
     </select>
 
+    <update id="updateStatusById" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
+        update sys_attendance_scheduling_plan
+        set status = #{status}
+        where id = #{id}
+    </update>
+
 
 </mapper>

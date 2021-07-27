@@ -71,6 +71,15 @@ public class SysAttendanceSchedulingPlanController {
         return sysAttendanceSchedulingPlanService.update(sysAttendanceSchedulingPlan);
     }
 
+    /**
+     * 开启/关闭考勤排班计划//TODO 未完成
+     * @param id 考勤排班计划主键Id
+     * @return map
+     */
+    @GetMapping("/enable")
+    public Map<String,Object> enable(Integer id){
+        return sysAttendanceSchedulingPlanService.enable(id);
+    }
 
 
 
