@@ -6,6 +6,7 @@ import com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanException;
 import com.api.vo.operationManagement.VoAttendanceSchedulingPlan;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SysAttendanceSchedulingPlanDao {
@@ -71,4 +72,18 @@ public interface SysAttendanceSchedulingPlanDao {
      * @return 影响行数
      */
     int update(SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan);
+
+    /**
+     * 查询该用户今日（按年月日算）是否有开启的排班计划例外情况
+     * @param date 日期
+     * @return 排班计划例外情况
+     */
+    SysAttendanceSchedulingPlanException findExceptionByToday(Date date);
+
+    /**
+     * 查询该用户今日（按周几来算）是否有开启的排班计划
+     * @param i 周几
+     * @return 排班计划
+     */
+    List<SysAttendanceSchedulingPlanDetail> findExceptionByWeek(int i);
 }

@@ -14,6 +14,7 @@ import com.api.manage.dao.butlerService.SysFacilitiesPlanDao;
 import com.api.manage.dao.butlerService.SysInspectionPlanDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentDao;
 import com.api.manage.dao.chargeManagement.SysDailyPaymentPlanDao;
+import com.api.manage.dao.operationManagement.SysAttendanceSchedulingPlanDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
@@ -30,6 +31,8 @@ import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.model.chargeManagement.DailyPaymentPlan;
 import com.api.model.operationManagement.AttendanceRecord;
+import com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail;
+import com.api.model.operationManagement.SysAttendanceSchedulingPlanException;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.remind.SysMessage;
 import com.api.model.remind.SysSending;
@@ -129,6 +132,8 @@ public class SysAutoRemind {
     SysDailyPaymentPlanDao sysDailyPaymentPlanDao;
     @Resource
     AlipayDao alipayDao;
+    @Resource
+    SysAttendanceSchedulingPlanDao sysAttendanceSchedulingPlanDao;
 
 
     /**
@@ -444,7 +449,8 @@ public class SysAutoRemind {
 
 
         int status = 2;//状态：1.放假日（节假），2.工作日，3.休息日（双休）
-        //查询今日是周几，周日是1，依次类推
+        log.info("进入默认排班流程");
+        //查询今日是周几，周日是1，依次类推（默认无排班计划情况下的状态）
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         int i = cal.get(Calendar.DAY_OF_WEEK);
@@ -463,6 +469,28 @@ public class SysAutoRemind {
             AttendanceRecord attendanceRecord = new AttendanceRecord();
             attendanceRecord.setCreateDate(new Date());
             for (SysUser sysUser : sysUserList) {
+
+                log.info("进入排班计划流程");
+                //查询该用户今日（按周几来算）是否有开启的排班计划
+                List<SysAttendanceSchedulingPlanDetail> planDetails = sysAttendanceSchedulingPlanDao.findExceptionByWeek(i);
+                if (planDetails != null && planDetails.size() > 0){
+                    status = 2;//2.工作日
+                }
+                log.info("结束排班计划流程");
+
+
+                log.info("进入排班计划例外情况流程");
+                //查询该用户今日（按年月日算）是否有开启的排班计划例外情况（排班优先级：例外情况》排班计划》默认）
+                SysAttendanceSchedulingPlanException planException = sysAttendanceSchedulingPlanDao.findExceptionByToday(new Date());
+                if (planException != null){
+                    if (planException.getType() == 1){//1.休假
+                        status = 1;//1.放假日（节假）
+                    }else if (planException.getType() == 2){//2.上班
+                        status = 2;//2.工作日
+                    }
+                }
+                log.info("结束排班计划例外情况流程");
+
                 attendanceRecord.setClockId(sysUser.getId());
                 attendanceRecord.setStatus(status);
                 //添加考勤任务记录
