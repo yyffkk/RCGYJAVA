@@ -461,6 +461,7 @@ public class SysAutoRemind {
             log.info("今日是工作日");
             status = 2;
         }
+        log.info("结束默认排班流程");
 
         //查询所有的需要执行考勤任务的物业人员信息(用户未删除，状态正常)
         List<SysUser> sysUserList = butlerAttendanceDao.findAllSysUer();
