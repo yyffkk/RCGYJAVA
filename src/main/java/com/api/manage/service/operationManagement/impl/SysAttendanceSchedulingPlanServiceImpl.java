@@ -89,4 +89,48 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
         map.put("status",true);
         return map;
     }
+
+    @Override
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
+
+        try {
+            for (int id : ids) {
+                //根据考勤排班计划主键id查询考勤排班计划
+                SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan = sysAttendanceSchedulingPlanDao.findById(id);
+                if (sysAttendanceSchedulingPlan.getStatus() == 1){
+                    throw new RuntimeException("该计划已启用，请先停用");
+                }
+                //根据考勤排班计划主键id删除考勤排班计划例外情况
+                int delete = sysAttendanceSchedulingPlanDao.deleteException(id);
+                if (delete <= 0){
+                    throw new RuntimeException("删除例外情况失败");
+                }
+                //根据考勤排班计划主键id删除考勤排班计划详情
+                int delete2 = sysAttendanceSchedulingPlanDao.deleteDetail(id);
+                if (delete2 <= 0){
+                    throw new RuntimeException("删除详情失败");
+                }
+                //根据考勤排班计划主键id删除考勤排班计划
+                int delete3 = sysAttendanceSchedulingPlanDao.delete(id);
+                if (delete3 <= 0){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
+        map.put("status",true);
+        return map;
+    }
 }

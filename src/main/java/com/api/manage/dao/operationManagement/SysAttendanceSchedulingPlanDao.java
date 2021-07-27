@@ -36,4 +36,32 @@ public interface SysAttendanceSchedulingPlanDao {
      * @return 影响行数
      */
     int insertException(SysAttendanceSchedulingPlanException planException);
+
+    /**
+     * 根据考勤排班计划主键id查询考勤排班计划
+     * @param id 考勤排班计划主键id
+     * @return 考勤排班计划
+     */
+    SysAttendanceSchedulingPlan findById(int id);
+
+    /**
+     * 根据考勤排班计划主键id删除考勤排班计划例外情况
+     * @param id 根据考勤排班计划主键id
+     * @return 影响行数
+     */
+    int deleteException(int id);
+
+    /**
+     * 根据考勤排班计划主键id删除考勤排班计划详情
+     * @param id 根据考勤排班计划主键id
+     * @return 影响行数
+     */
+    int deleteDetail(int id);
+
+    /**
+     * 根据考勤排班计划主键id删除考勤排班计划
+     * @param id 根据考勤排班计划主键id
+     * @return 影响行数
+     */
+    int delete(int id);
 }

@@ -30,6 +30,9 @@
         </where>
         order by sasp.create_date desc
     </select>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
+        select * from sys_attendance_scheduling_plan where id = #{id}
+    </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
         insert into sys_attendance_scheduling_plan(
@@ -87,5 +90,15 @@
             #{remakes}
         )
     </insert>
+
+    <delete id="deleteException" parameterType="java.lang.Integer">
+        delete from sys_attendance_scheduling_plan_exception where attendance_scheduling_plan_id = #{id}
+    </delete>
+    <delete id="deleteDetail" parameterType="java.lang.Integer">
+        delete from sys_attendance_scheduling_plan_detail where attendance_scheduling_plan_id = #{id}
+    </delete>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_attendance_scheduling_plan where id = #{id}
+    </delete>
 
 </mapper>

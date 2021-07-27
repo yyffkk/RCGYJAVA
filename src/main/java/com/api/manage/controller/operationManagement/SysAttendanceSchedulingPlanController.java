@@ -3,6 +3,7 @@ package com.api.manage.controller.operationManagement;
 import com.api.manage.service.operationManagement.SysAttendanceSchedulingPlanService;
 import com.api.model.operationManagement.SearchAttendanceSchedulingPlan;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlan;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.operationManagement.VoAttendanceSchedulingPlan;
 import com.api.vo.operationManagement.VoAttendanceTeam;
 import com.github.pagehelper.PageHelper;
@@ -49,6 +50,18 @@ public class SysAttendanceSchedulingPlanController {
     public Map<String,Object> insert(@RequestBody SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan){
         return sysAttendanceSchedulingPlanService.insert(sysAttendanceSchedulingPlan);
     }
+
+    /**
+     * 删除考勤排班计划
+     * @param ids 考勤排班计划主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysAttendanceSchedulingPlanService.delete(ids.getIds());
+    }
+
+
 
 
 }
