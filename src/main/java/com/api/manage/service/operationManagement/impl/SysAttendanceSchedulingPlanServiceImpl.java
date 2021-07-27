@@ -5,10 +5,14 @@ import com.api.manage.service.operationManagement.SysAttendanceSchedulingPlanSer
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SearchAttendanceSchedulingPlan;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlan;
+import com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail;
+import com.api.model.operationManagement.SysAttendanceSchedulingPlanException;
 import com.api.vo.operationManagement.VoAttendanceSchedulingPlan;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -28,24 +32,61 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan) {
         map = new HashMap<>();
 
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
 
-        sysAttendanceSchedulingPlan.setCreateId(sysUser.getId());
-        sysAttendanceSchedulingPlan.setCreateDate(new Date());
+            sysAttendanceSchedulingPlan.setCreateId(sysUser.getId());
+            sysAttendanceSchedulingPlan.setCreateDate(new Date());
 
-        int insert = sysAttendanceSchedulingPlanDao.insert(sysAttendanceSchedulingPlan);
-        if (insert >0){
-            map.put("message","添加成功");
-            map.put("status",true);
-        }else {
-            map.put("message","添加失败");
+            //添加考勤排班计划
+            int insert = sysAttendanceSchedulingPlanDao.insert(sysAttendanceSchedulingPlan);
+            if (insert <= 0){
+                throw new RuntimeException("添加失败");
+            }
+
+            //添加考勤排班计划详情
+            List<SysAttendanceSchedulingPlanDetail> planDetails = sysAttendanceSchedulingPlan.getSysAttendanceSchedulingPlanDetails();
+            if (planDetails != null && planDetails.size() >0){
+                for (SysAttendanceSchedulingPlanDetail planDetail : planDetails) {
+                    planDetail.setAttendanceSchedulingPlanId(sysAttendanceSchedulingPlan.getId());
+                    int insert2 = sysAttendanceSchedulingPlanDao.insertDetail(planDetail);
+                    if (insert2 <= 0){
+                        throw new RuntimeException("添加详情失败");
+                    }
+                }
+            }
+
+            //添加考勤排班计划例外情况
+            List<SysAttendanceSchedulingPlanException> planExceptionList = sysAttendanceSchedulingPlan.getSysAttendanceSchedulingPlanExceptionList();
+            if (planExceptionList != null && planExceptionList.size()>0){
+                for (SysAttendanceSchedulingPlanException planException : planExceptionList) {
+                    planException.setAttendanceSchedulingPlanId(sysAttendanceSchedulingPlan.getId());
+                    int insert3 = sysAttendanceSchedulingPlanDao.insertException(planException);
+                    if (insert3 <= 0){
+                        throw new RuntimeException("添加例外情况失败");
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
+        map.put("message","添加成功");
+        map.put("status",true);
         return map;
     }
 }

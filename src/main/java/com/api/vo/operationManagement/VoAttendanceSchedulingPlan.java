@@ -1,7 +1,6 @@
 package com.api.vo.operationManagement;
 
 import java.sql.Date;
-import java.sql.Time;
 
 /**
  * 考勤排班计划 Vo list 回显
@@ -15,22 +14,6 @@ public class VoAttendanceSchedulingPlan {
      * 计划名称
      */
     private String name;
-    /**
-     * 第一时段开始（第一时段全填或都不填）
-     */
-    private Time firstTimeStart;
-    /**
-     * 第一时段结束
-     */
-    private Time firstTimeEnd;
-    /**
-     * 第二时段开始（第二时段全填或都不填）
-     */
-    private Time secondTimeStart;
-    /**
-     * 第二时段结束
-     */
-    private Time secondTimeEnd;
     /**
      * 考勤小组主键id
      */
@@ -65,10 +48,6 @@ public class VoAttendanceSchedulingPlan {
         return "VoAttendanceSchedulingPlan{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", firstTimeStart=" + firstTimeStart +
-                ", firstTimeEnd=" + firstTimeEnd +
-                ", secondTimeStart=" + secondTimeStart +
-                ", secondTimeEnd=" + secondTimeEnd +
                 ", teamId=" + teamId +
                 ", teamName='" + teamName + '\'' +
                 ", status=" + status +
@@ -93,38 +72,6 @@ public class VoAttendanceSchedulingPlan {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Time getFirstTimeStart() {
-        return firstTimeStart;
-    }
-
-    public void setFirstTimeStart(Time firstTimeStart) {
-        this.firstTimeStart = firstTimeStart;
-    }
-
-    public Time getFirstTimeEnd() {
-        return firstTimeEnd;
-    }
-
-    public void setFirstTimeEnd(Time firstTimeEnd) {
-        this.firstTimeEnd = firstTimeEnd;
-    }
-
-    public Time getSecondTimeStart() {
-        return secondTimeStart;
-    }
-
-    public void setSecondTimeStart(Time secondTimeStart) {
-        this.secondTimeStart = secondTimeStart;
-    }
-
-    public Time getSecondTimeEnd() {
-        return secondTimeEnd;
-    }
-
-    public void setSecondTimeEnd(Time secondTimeEnd) {
-        this.secondTimeEnd = secondTimeEnd;
     }
 
     public Integer getTeamId() {
@@ -186,13 +133,9 @@ public class VoAttendanceSchedulingPlan {
     public VoAttendanceSchedulingPlan() {
     }
 
-    public VoAttendanceSchedulingPlan(Integer id, String name, Time firstTimeStart, Time firstTimeEnd, Time secondTimeStart, Time secondTimeEnd, Integer teamId, String teamName, Integer status, String organizationName, Date createDate, Integer createId, String createName) {
+    public VoAttendanceSchedulingPlan(Integer id, String name, Integer teamId, String teamName, Integer status, String organizationName, Date createDate, Integer createId, String createName) {
         this.id = id;
         this.name = name;
-        this.firstTimeStart = firstTimeStart;
-        this.firstTimeEnd = firstTimeEnd;
-        this.secondTimeStart = secondTimeStart;
-        this.secondTimeEnd = secondTimeEnd;
         this.teamId = teamId;
         this.teamName = teamName;
         this.status = status;

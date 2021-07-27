@@ -28,29 +28,63 @@
                 and sasp.team_id = #{teamId}
             </if>
         </where>
+        order by sasp.create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
         insert into sys_attendance_scheduling_plan(
             name,
-            first_time_start,
-            first_time_end,
-            second_time_start,
-            second_time_end,
             team_id,
             status,
             create_id,
             create_date
         )values (
             #{name},
-            #{firstTimeStart},
-            #{firstTimeEnd},
-            #{secondTimeStart},
-            #{secondTimeEnd},
             #{teamId},
             #{status},
             #{createId},
             #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+    <insert id="insertDetail" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail">
+        insert into sys_attendance_scheduling_plan_detail(
+            attendance_scheduling_plan_id,
+            working_days,
+            first_time_start,
+            first_time_end,
+            second_time_start,
+            second_time_end
+        )values (
+            #{attendanceSchedulingPlanId},
+            #{workingDays},
+            #{firstTimeStart},
+            #{firstTimeEnd},
+            #{secondTimeStart},
+            #{secondTimeEnd}
+        )
+    </insert>
+    <insert id="insertException" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlanException">
+        insert into sys_attendance_scheduling_plan_exception(
+            attendance_scheduling_plan_id,
+            date_range,
+            first_time_start,
+            first_time_end,
+            second_time_start,
+            second_time_end,
+            type,
+            remakes
+        )values (
+            #{attendanceSchedulingPlanId},
+            #{dateRange},
+            #{firstTimeStart},
+            #{firstTimeEnd},
+            #{secondTimeStart},
+            #{secondTimeEnd},
+            #{type},
+            #{remakes}
         )
     </insert>
 

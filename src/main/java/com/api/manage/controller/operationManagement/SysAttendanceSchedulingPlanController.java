@@ -41,7 +41,7 @@ public class SysAttendanceSchedulingPlanController {
     }
 
     /**
-     * 添加考勤排班计划//TODO 未完成
+     * 添加考勤排班计划
      * @param sysAttendanceSchedulingPlan 考勤排班计划model
      * @return map
      */
@@ -49,4 +49,6 @@ public class SysAttendanceSchedulingPlanController {
     public Map<String,Object> insert(@RequestBody SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan){
         return sysAttendanceSchedulingPlanService.insert(sysAttendanceSchedulingPlan);
     }
+
+
 }

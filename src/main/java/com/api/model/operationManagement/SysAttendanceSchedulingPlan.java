@@ -1,7 +1,7 @@
 package com.api.model.operationManagement;
 
 import java.util.Date;
-import java.sql.Time;
+import java.util.List;
 
 /**
  * 考勤排班计划model
@@ -15,22 +15,6 @@ public class SysAttendanceSchedulingPlan {
      * 计划名称
      */
     private String name;
-    /**
-     * 第一时段开始（第一时段全填或都不填）
-     */
-    private Time firstTimeStart;
-    /**
-     * 第一时段结束
-     */
-    private Time firstTimeEnd;
-    /**
-     * 第二时段开始（第二时段全填或都不填）
-     */
-    private Time secondTimeStart;
-    /**
-     * 第二时段结束
-     */
-    private Time secondTimeEnd;
     /**
      * 考勤小组主键id
      */
@@ -47,20 +31,26 @@ public class SysAttendanceSchedulingPlan {
      * 创建人id
      */
     private Integer createId;
+    /**
+     * 排班计划详情集合
+     */
+    private List<SysAttendanceSchedulingPlanDetail> sysAttendanceSchedulingPlanDetails;
+    /**
+     * 考勤排班计划例外情况集合
+     */
+    private List<SysAttendanceSchedulingPlanException> sysAttendanceSchedulingPlanExceptionList;
 
     @Override
     public String toString() {
         return "SysAttendanceSchedulingPlan{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", firstTimeStart=" + firstTimeStart +
-                ", firstTimeEnd=" + firstTimeEnd +
-                ", secondTimeStart=" + secondTimeStart +
-                ", secondTimeEnd=" + secondTimeEnd +
                 ", teamId=" + teamId +
                 ", status=" + status +
                 ", createDate=" + createDate +
                 ", createId=" + createId +
+                ", sysAttendanceSchedulingPlanDetails=" + sysAttendanceSchedulingPlanDetails +
+                ", sysAttendanceSchedulingPlanExceptionList=" + sysAttendanceSchedulingPlanExceptionList +
                 '}';
     }
 
@@ -78,38 +68,6 @@ public class SysAttendanceSchedulingPlan {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Time getFirstTimeStart() {
-        return firstTimeStart;
-    }
-
-    public void setFirstTimeStart(Time firstTimeStart) {
-        this.firstTimeStart = firstTimeStart;
-    }
-
-    public Time getFirstTimeEnd() {
-        return firstTimeEnd;
-    }
-
-    public void setFirstTimeEnd(Time firstTimeEnd) {
-        this.firstTimeEnd = firstTimeEnd;
-    }
-
-    public Time getSecondTimeStart() {
-        return secondTimeStart;
-    }
-
-    public void setSecondTimeStart(Time secondTimeStart) {
-        this.secondTimeStart = secondTimeStart;
-    }
-
-    public Time getSecondTimeEnd() {
-        return secondTimeEnd;
-    }
-
-    public void setSecondTimeEnd(Time secondTimeEnd) {
-        this.secondTimeEnd = secondTimeEnd;
     }
 
     public Integer getTeamId() {
@@ -144,19 +102,33 @@ public class SysAttendanceSchedulingPlan {
         this.createId = createId;
     }
 
+    public List<SysAttendanceSchedulingPlanDetail> getSysAttendanceSchedulingPlanDetails() {
+        return sysAttendanceSchedulingPlanDetails;
+    }
+
+    public void setSysAttendanceSchedulingPlanDetails(List<SysAttendanceSchedulingPlanDetail> sysAttendanceSchedulingPlanDetails) {
+        this.sysAttendanceSchedulingPlanDetails = sysAttendanceSchedulingPlanDetails;
+    }
+
+    public List<SysAttendanceSchedulingPlanException> getSysAttendanceSchedulingPlanExceptionList() {
+        return sysAttendanceSchedulingPlanExceptionList;
+    }
+
+    public void setSysAttendanceSchedulingPlanExceptionList(List<SysAttendanceSchedulingPlanException> sysAttendanceSchedulingPlanExceptionList) {
+        this.sysAttendanceSchedulingPlanExceptionList = sysAttendanceSchedulingPlanExceptionList;
+    }
+
     public SysAttendanceSchedulingPlan() {
     }
 
-    public SysAttendanceSchedulingPlan(Integer id, String name, Time firstTimeStart, Time firstTimeEnd, Time secondTimeStart, Time secondTimeEnd, Integer teamId, Integer status, Date createDate, Integer createId) {
+    public SysAttendanceSchedulingPlan(Integer id, String name, Integer teamId, Integer status, Date createDate, Integer createId, List<SysAttendanceSchedulingPlanDetail> sysAttendanceSchedulingPlanDetails, List<SysAttendanceSchedulingPlanException> sysAttendanceSchedulingPlanExceptionList) {
         this.id = id;
         this.name = name;
-        this.firstTimeStart = firstTimeStart;
-        this.firstTimeEnd = firstTimeEnd;
-        this.secondTimeStart = secondTimeStart;
-        this.secondTimeEnd = secondTimeEnd;
         this.teamId = teamId;
         this.status = status;
         this.createDate = createDate;
         this.createId = createId;
+        this.sysAttendanceSchedulingPlanDetails = sysAttendanceSchedulingPlanDetails;
+        this.sysAttendanceSchedulingPlanExceptionList = sysAttendanceSchedulingPlanExceptionList;
     }
 }
