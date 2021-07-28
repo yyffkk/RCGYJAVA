@@ -72,7 +72,7 @@ public class SysAttendanceSchedulingPlanController {
     }
 
     /**
-     * 开启/关闭考勤排班计划//TODO 未完成
+     * 开启/关闭考勤排班计划
      * @param id 考勤排班计划主键Id
      * @return map
      */

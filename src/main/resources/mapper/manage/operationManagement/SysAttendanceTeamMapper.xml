@@ -72,7 +72,7 @@
     <select id="countPlanByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*)
         from sys_attendance_team as sat,sys_attendance_scheduling_plan as sasp
-        where sasp.team_id = sat.id and FIND_IN_SET(#{s},sat.team_members)
+        where sasp.team_id = sat.id and sasp.status = 1 and FIND_IN_SET(#{s},sat.team_members)
     </select>
 
 </mapper>
