@@ -1,7 +1,10 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 租赁管理 vo findById 回显
@@ -84,6 +87,10 @@ public class VoFBILease {
      */
     private BigDecimal margin;
     /**
+     * 保证金缴纳时间
+     */
+    private Date marginPayDate;
+    /**
      * 租赁开始时间
      */
     private Date leaseDateStart;
@@ -92,9 +99,65 @@ public class VoFBILease {
      */
     private Date leaseDateEnd;
     /**
+     * 有效（正式）合同,上传文件路径集合
+     */
+    private List<VoResourcesImg> imgUrls;
+    /**
      * 办理状态，1.待签署，2.待提交，3.审核中，4.已驳回，5.待支付，6.已完成,11.申请终止合同，12.申请终止失败，13.申请终止成功，14.已支付剩余租金，15申请退还保证金，16.申请退还保证金驳回，17.申请退还保证金成功（系统自动退还保证金）
      */
     private Integer status;
+    /**
+     * 审核人姓名
+     */
+    private String reviewerName;
+    /**
+     * 审核时间
+     */
+    private Date auditDate;
+    /**
+     * 创建人姓名
+     */
+    private String createName;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+    /**
+     * 紧急联系人
+     */
+    private String emergencyContact;
+    /**
+     * 紧急联系人电话
+     */
+    private String emergencyContactNumber;
+    /**
+     * 通讯地址
+     */
+    private String correspondenceAddress;
+    /**
+     * 工作单位
+     */
+    private String workUnits;
+    /**
+     * 代缴银行
+     */
+    private String payBank;
+    /**
+     * 代缴银行账户名
+     */
+    private String bankAccountName;
+    /**
+     * 代缴银行账户
+     */
+    private String bankAccount;
+    /**
+     * 身份证照正面照片资源集合
+     */
+    private List<VoResourcesImg> idCardFrontFiles;
+    /**
+     * 身份证照背面照片路径资源集合
+     */
+    private List<VoResourcesImg> idCardBackFiles;
     /**
      * 收房时间
      */
@@ -107,6 +170,10 @@ public class VoFBILease {
      * 剩余需结清房租（元）
      */
     private BigDecimal requiredRent;
+    /**
+     * 保证金退还审核备注
+     */
+    private String depositRefundReviewRemake;
 
     @Override
     public String toString() {
@@ -130,12 +197,28 @@ public class VoFBILease {
                 ", indoorArea=" + indoorArea +
                 ", rentStandard=" + rentStandard +
                 ", margin=" + margin +
+                ", marginPayDate=" + marginPayDate +
                 ", leaseDateStart=" + leaseDateStart +
                 ", leaseDateEnd=" + leaseDateEnd +
+                ", imgUrls=" + imgUrls +
                 ", status=" + status +
+                ", reviewerName='" + reviewerName + '\'' +
+                ", auditDate=" + auditDate +
+                ", createName='" + createName + '\'' +
+                ", createDate=" + createDate +
+                ", emergencyContact='" + emergencyContact + '\'' +
+                ", emergencyContactNumber='" + emergencyContactNumber + '\'' +
+                ", correspondenceAddress='" + correspondenceAddress + '\'' +
+                ", workUnits='" + workUnits + '\'' +
+                ", payBank='" + payBank + '\'' +
+                ", bankAccountName='" + bankAccountName + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", idCardFrontFiles=" + idCardFrontFiles +
+                ", idCardBackFiles=" + idCardBackFiles +
                 ", takeDate=" + takeDate +
                 ", notMeterRentDate=" + notMeterRentDate +
                 ", requiredRent=" + requiredRent +
+                ", depositRefundReviewRemake='" + depositRefundReviewRemake + '\'' +
                 '}';
     }
 
@@ -291,6 +374,14 @@ public class VoFBILease {
         this.margin = margin;
     }
 
+    public Date getMarginPayDate() {
+        return marginPayDate;
+    }
+
+    public void setMarginPayDate(Date marginPayDate) {
+        this.marginPayDate = marginPayDate;
+    }
+
     public Date getLeaseDateStart() {
         return leaseDateStart;
     }
@@ -307,12 +398,124 @@ public class VoFBILease {
         this.leaseDateEnd = leaseDateEnd;
     }
 
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getReviewerName() {
+        return reviewerName;
+    }
+
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
+    }
+
+    public Date getAuditDate() {
+        return auditDate;
+    }
+
+    public void setAuditDate(Date auditDate) {
+        this.auditDate = auditDate;
+    }
+
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public String getEmergencyContactNumber() {
+        return emergencyContactNumber;
+    }
+
+    public void setEmergencyContactNumber(String emergencyContactNumber) {
+        this.emergencyContactNumber = emergencyContactNumber;
+    }
+
+    public String getCorrespondenceAddress() {
+        return correspondenceAddress;
+    }
+
+    public void setCorrespondenceAddress(String correspondenceAddress) {
+        this.correspondenceAddress = correspondenceAddress;
+    }
+
+    public String getWorkUnits() {
+        return workUnits;
+    }
+
+    public void setWorkUnits(String workUnits) {
+        this.workUnits = workUnits;
+    }
+
+    public String getPayBank() {
+        return payBank;
+    }
+
+    public void setPayBank(String payBank) {
+        this.payBank = payBank;
+    }
+
+    public String getBankAccountName() {
+        return bankAccountName;
+    }
+
+    public void setBankAccountName(String bankAccountName) {
+        this.bankAccountName = bankAccountName;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public List<VoResourcesImg> getIdCardFrontFiles() {
+        return idCardFrontFiles;
+    }
+
+    public void setIdCardFrontFiles(List<VoResourcesImg> idCardFrontFiles) {
+        this.idCardFrontFiles = idCardFrontFiles;
+    }
+
+    public List<VoResourcesImg> getIdCardBackFiles() {
+        return idCardBackFiles;
+    }
+
+    public void setIdCardBackFiles(List<VoResourcesImg> idCardBackFiles) {
+        this.idCardBackFiles = idCardBackFiles;
     }
 
     public Date getTakeDate() {
@@ -339,10 +542,18 @@ public class VoFBILease {
         this.requiredRent = requiredRent;
     }
 
+    public String getDepositRefundReviewRemake() {
+        return depositRefundReviewRemake;
+    }
+
+    public void setDepositRefundReviewRemake(String depositRefundReviewRemake) {
+        this.depositRefundReviewRemake = depositRefundReviewRemake;
+    }
+
     public VoFBILease() {
     }
 
-    public VoFBILease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer buildingId, String buildingNo, Integer unitId, String unitNo, Integer estateId, String roomNumber, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date leaseDateStart, Date leaseDateEnd, Integer status, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent) {
+    public VoFBILease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer buildingId, String buildingNo, Integer unitId, String unitNo, Integer estateId, String roomNumber, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontFiles, List<VoResourcesImg> idCardBackFiles, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -362,11 +573,27 @@ public class VoFBILease {
         this.indoorArea = indoorArea;
         this.rentStandard = rentStandard;
         this.margin = margin;
+        this.marginPayDate = marginPayDate;
         this.leaseDateStart = leaseDateStart;
         this.leaseDateEnd = leaseDateEnd;
+        this.imgUrls = imgUrls;
         this.status = status;
+        this.reviewerName = reviewerName;
+        this.auditDate = auditDate;
+        this.createName = createName;
+        this.createDate = createDate;
+        this.emergencyContact = emergencyContact;
+        this.emergencyContactNumber = emergencyContactNumber;
+        this.correspondenceAddress = correspondenceAddress;
+        this.workUnits = workUnits;
+        this.payBank = payBank;
+        this.bankAccountName = bankAccountName;
+        this.bankAccount = bankAccount;
+        this.idCardFrontFiles = idCardFrontFiles;
+        this.idCardBackFiles = idCardBackFiles;
         this.takeDate = takeDate;
         this.notMeterRentDate = notMeterRentDate;
         this.requiredRent = requiredRent;
+        this.depositRefundReviewRemake = depositRefundReviewRemake;
     }
 }

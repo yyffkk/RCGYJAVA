@@ -60,6 +60,14 @@ public class LeaseServiceImpl implements LeaseService {
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysLease", voLease.getId(), "leaseContractValidPdf");
                 voLease.setImgUrls(imgByDate);
 
+                //保存身份证照正面照
+                List<VoResourcesImg> imgByDate1 = uploadUtil.findImgByDate("sysLease", voLease.getId(), "idCardFront");
+                voLease.setIdCardFrontFiles(imgByDate1);
+
+                //保存身份证照背面照
+                List<VoResourcesImg> imgByDate2 = uploadUtil.findImgByDate("sysLease", voLease.getId(), "idCardBack");
+                voLease.setIdCardBackFiles(imgByDate2);
+
                 //查询租赁剩余需结清房租（元）
                 BigDecimal requiredRent = leaseDao.findLeaseRemainingRental(voLease.getId());
                 if (voLease.getTakeDate() != null){
@@ -123,6 +131,51 @@ public class LeaseServiceImpl implements LeaseService {
         map = new HashMap<>();
 
         VoFBILease voFBILease = leaseDao.findById(id);
+
+        UploadUtil uploadUtil = new UploadUtil();
+
+        List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysLease", voFBILease.getId(), "leaseContractValidPdf");
+        voFBILease.setImgUrls(imgByDate);
+
+        //保存身份证照正面照
+        List<VoResourcesImg> imgByDate1 = uploadUtil.findImgByDate("sysLease", voFBILease.getId(), "idCardFront");
+        voFBILease.setIdCardFrontFiles(imgByDate1);
+
+        //保存身份证照背面照
+        List<VoResourcesImg> imgByDate2 = uploadUtil.findImgByDate("sysLease", voFBILease.getId(), "idCardBack");
+        voFBILease.setIdCardBackFiles(imgByDate2);
+
+        //查询租赁剩余需结清房租（元）
+        BigDecimal requiredRent = leaseDao.findLeaseRemainingRental(voFBILease.getId());
+        if (voFBILease.getTakeDate() != null){
+            //获取收房日期是几号
+            int day= Integer.parseInt(String.format("%td",voFBILease.getTakeDate()));
+
+            Date date = voFBILease.getTakeDate();
+            if (day > 15){
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                cal.add(Calendar.MONTH, 1);
+                cal.add(Calendar.DATE, -1);
+                Date time = cal.getTime();
+                log.info("主键id为"+voFBILease.getId()+"的不再计租时间为："+new SimpleDateFormat("yyyy-MM-dd").format(time));
+                voFBILease.setNotMeterRentDate(time);
+                //当大于15号时，租金算整月，剩余需结清房租不减任何租金
+                requiredRent = requiredRent.subtract(BigDecimal.ZERO);
+            }else {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                Date time = cal.getTime();
+                voFBILease.setNotMeterRentDate(time);
+                //当小于15号及15号时，租金算半月，剩余需结清房租需要减去半个月租金
+                requiredRent = requiredRent.subtract(voFBILease.getRentStandard().multiply(new BigDecimal(0.5)));
+            }
+        }
+
+        //填入剩余需结清房租
+        voFBILease.setRequiredRent(requiredRent);
 
         map.put("message","请求成功");
         map.put("status",true);
