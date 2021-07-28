@@ -15,6 +15,10 @@ public class SysLease {
      */
     private Integer id;
     /**
+     * 父类租赁主键id，正整数代表是续签租赁（数字代表上一份租赁的主键id），0代表是第一次租赁
+     */
+    private Integer leaseParentId;
+    /**
      * 合同编号
      */
     private String code;
@@ -163,6 +167,7 @@ public class SysLease {
     public String toString() {
         return "SysLease{" +
                 "id=" + id +
+                ", leaseParentId=" + leaseParentId +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
@@ -208,6 +213,14 @@ public class SysLease {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getLeaseParentId() {
+        return leaseParentId;
+    }
+
+    public void setLeaseParentId(Integer leaseParentId) {
+        this.leaseParentId = leaseParentId;
     }
 
     public String getCode() {
@@ -501,8 +514,9 @@ public class SysLease {
     public SysLease() {
     }
 
-    public SysLease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
+    public SysLease(Integer id, Integer leaseParentId, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
         this.id = id;
+        this.leaseParentId = leaseParentId;
         this.code = code;
         this.name = name;
         this.sex = sex;

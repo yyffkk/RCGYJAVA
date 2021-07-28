@@ -41,6 +41,7 @@
 
     <insert id="insert" parameterType="com.api.model.butlerService.SysLease">
         insert into sys_lease(
+            lease_parent_id,
             code,
             name,
             sex,
@@ -60,6 +61,7 @@
             create_id,
             create_date
         )values (
+            #{leaseParentId},
             #{code},
             #{name},
             #{sex},
