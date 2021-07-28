@@ -5,7 +5,7 @@
 <mapper namespace="com.api.butlerApp.dao.butler.ButlerAttendanceDao">
 
     <select id="todayClockRecord" parameterType="com.api.model.butlerApp.ButlerUserIdAndToDay" resultType="com.api.vo.operationManagement.VoAttendanceRecord">
-        select sar.id,sar.start_clock_date,sar.end_clock_date,su1.actual_name as clock_name,
+        select sar.*,su1.actual_name as clock_name,
         su1.tel as clock_tel,sar.card_replacement_date,su2.actual_name as operator_name,sar.create_date
         from sys_user as su1,sys_attendance_record as sar
         LEFT JOIN sys_user as su2 on sar.operator = su2.id

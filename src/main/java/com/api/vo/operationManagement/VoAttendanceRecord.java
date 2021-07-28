@@ -1,5 +1,6 @@
 package com.api.vo.operationManagement;
 
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -42,6 +43,22 @@ public class VoAttendanceRecord {
      * 状态：1.放假日（节假），2.工作日，3.休息日（双休）
      */
     private Integer status;
+    /**
+     * 第一时段开始（第一时段全填或都不填）
+     */
+    private Time firstTimeStart;
+    /**
+     * 第一时段结束
+     */
+    private Time firstTimeEnd;
+    /**
+     * 第二时段开始（第二时段全填或都不填）
+     */
+    private Time secondTimeStart;
+    /**
+     * 第二时段结束
+     */
+    private Time secondTimeEnd;
 
     @Override
     public String toString() {
@@ -55,6 +72,10 @@ public class VoAttendanceRecord {
                 ", clockTel='" + clockTel + '\'' +
                 ", createDate=" + createDate +
                 ", status=" + status +
+                ", firstTimeStart=" + firstTimeStart +
+                ", firstTimeEnd=" + firstTimeEnd +
+                ", secondTimeStart=" + secondTimeStart +
+                ", secondTimeEnd=" + secondTimeEnd +
                 '}';
     }
 
@@ -130,10 +151,42 @@ public class VoAttendanceRecord {
         this.status = status;
     }
 
+    public Time getFirstTimeStart() {
+        return firstTimeStart;
+    }
+
+    public void setFirstTimeStart(Time firstTimeStart) {
+        this.firstTimeStart = firstTimeStart;
+    }
+
+    public Time getFirstTimeEnd() {
+        return firstTimeEnd;
+    }
+
+    public void setFirstTimeEnd(Time firstTimeEnd) {
+        this.firstTimeEnd = firstTimeEnd;
+    }
+
+    public Time getSecondTimeStart() {
+        return secondTimeStart;
+    }
+
+    public void setSecondTimeStart(Time secondTimeStart) {
+        this.secondTimeStart = secondTimeStart;
+    }
+
+    public Time getSecondTimeEnd() {
+        return secondTimeEnd;
+    }
+
+    public void setSecondTimeEnd(Time secondTimeEnd) {
+        this.secondTimeEnd = secondTimeEnd;
+    }
+
     public VoAttendanceRecord() {
     }
 
-    public VoAttendanceRecord(Integer id, Date startClockDate, Date endClockDate, Date cardReplacementDate, String operatorName, String clockName, String clockTel, Date createDate, Integer status) {
+    public VoAttendanceRecord(Integer id, Date startClockDate, Date endClockDate, Date cardReplacementDate, String operatorName, String clockName, String clockTel, Date createDate, Integer status, Time firstTimeStart, Time firstTimeEnd, Time secondTimeStart, Time secondTimeEnd) {
         this.id = id;
         this.startClockDate = startClockDate;
         this.endClockDate = endClockDate;
@@ -143,5 +196,9 @@ public class VoAttendanceRecord {
         this.clockTel = clockTel;
         this.createDate = createDate;
         this.status = status;
+        this.firstTimeStart = firstTimeStart;
+        this.firstTimeEnd = firstTimeEnd;
+        this.secondTimeStart = secondTimeStart;
+        this.secondTimeEnd = secondTimeEnd;
     }
 }
