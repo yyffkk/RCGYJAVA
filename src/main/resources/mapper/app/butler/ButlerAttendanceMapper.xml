@@ -71,10 +71,34 @@
         insert into sys_attendance_record(
             clock_id,
             create_date,
+            <if test="firstTimeStart != null">
+                first_time_start,
+            </if>
+            <if test="firstTimeEnd != null">
+                first_time_end,
+            </if>
+            <if test="secondTimeStart != null">
+                second_time_start,
+            </if>
+            <if test="secondTimeEnd != null">
+                second_time_end,
+            </if>
             status
         )values (
             #{clockId},
             #{createDate},
+            <if test="firstTimeStart != null">
+                #{firstTimeStart},
+            </if>
+            <if test="firstTimeEnd != null">
+                #{firstTimeEnd},
+            </if>
+            <if test="secondTimeStart != null">
+                #{secondTimeStart},
+            </if>
+            <if test="secondTimeEnd != null">
+                #{secondTimeEnd},
+            </if>
             #{status}
         )
     </insert>

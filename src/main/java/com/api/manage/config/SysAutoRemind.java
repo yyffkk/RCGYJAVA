@@ -55,6 +55,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -441,27 +442,15 @@ public class SysAutoRemind {
 
 
     /**
-     * 0 0/1 * * * ?
+     * 1 0 0 1/1 * ?
      * （每天0点1秒）每晚定时任务，自动为每一个物业账号生成当日考勤任务
      */
-    @Scheduled(cron = "1 0 0 1/1 * ? ")
+    @Scheduled(cron = "1 0 0 1/1 * ?")
     public void autoAttendanceRecord(){
 
 
         int status = 2;//状态：1.放假日（节假），2.工作日，3.休息日（双休）
-        log.info("进入默认排班流程");
-        //查询今日是周几，周日是1，依次类推（默认无排班计划情况下的状态）
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        int i = cal.get(Calendar.DAY_OF_WEEK);
-        if (i == 7 || i ==1){//7.周六，1.周日
-            log.info("今日是双休日");
-            status = 3;
-        }else {
-            log.info("今日是工作日");
-            status = 2;
-        }
-        log.info("结束默认排班流程");
+
 
         //查询所有的需要执行考勤任务的物业人员信息(用户未删除，状态正常)
         List<SysUser> sysUserList = butlerAttendanceDao.findAllSysUer();
@@ -470,27 +459,78 @@ public class SysAutoRemind {
             AttendanceRecord attendanceRecord = new AttendanceRecord();
             attendanceRecord.setCreateDate(new Date());
             for (SysUser sysUser : sysUserList) {
+                log.info("进入默认排班流程");
+                //查询今日是周几，周日是1，依次类推（默认无排班计划情况下的状态）
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date());
+                int i = cal.get(Calendar.DAY_OF_WEEK);
+                if (i == 7 || i ==1){//7.周六，1.周日
+                    //设置默认上班时间
+                    attendanceRecord.setFirstTimeStart(null);//填入第一时段开始（第一时段全填或都不填）
+                    attendanceRecord.setFirstTimeEnd(null);//填入第一时段结束
+                    attendanceRecord.setSecondTimeStart(null);//填入第二时段开始（第二时段全填或都不填）
+                    attendanceRecord.setSecondTimeEnd(null);//填入第二时段结束
+
+                    status = 3;
+                }else {
+                    //设置默认上班时间
+                    attendanceRecord.setFirstTimeStart(new Time(0));//new Time(0) 初始为08:00:00
+                    attendanceRecord.setFirstTimeEnd(new Time(3*60*60*1000));//11:00:00
+                    attendanceRecord.setSecondTimeStart(new Time(5*60*60*1000));//13:00:00
+                    attendanceRecord.setSecondTimeEnd(new Time(10*60*60*1000));//18:00:00
+
+                    status = 2;
+                }
+
+
+                log.info("结束默认排班流程");
 
                 log.info("进入排班计划流程");
                 //查询该用户今日（按周几来算）是否有开启的排班计划
-                List<SysAttendanceSchedulingPlanDetail> planDetails = sysAttendanceSchedulingPlanDao.findExceptionByWeek(i);
-                if (planDetails != null && planDetails.size() > 0){
-                    status = 2;//2.工作日
+                SysAttendanceSchedulingPlanDetail planDetail = sysAttendanceSchedulingPlanDao.findExceptionByWeek(sysUser.getId());
+                if (planDetail != null){
+                    attendanceRecord.setFirstTimeStart(planDetail.getFirstTimeStart());//填入第一时段开始（第一时段全填或都不填）
+                    attendanceRecord.setFirstTimeEnd(planDetail.getFirstTimeEnd());//填入第一时段结束
+                    attendanceRecord.setSecondTimeStart(planDetail.getSecondTimeStart());//填入第二时段开始（第二时段全填或都不填）
+                    attendanceRecord.setSecondTimeEnd(planDetail.getSecondTimeEnd());//填入第二时段结束
+                    status = 2;//填入状态：2.工作日
                 }
                 log.info("结束排班计划流程");
 
 
-                log.info("进入排班计划例外情况流程");
+
                 //查询该用户今日（按年月日算）是否有开启的排班计划例外情况（排班优先级：例外情况》排班计划》默认）
-                SysAttendanceSchedulingPlanException planException = sysAttendanceSchedulingPlanDao.findExceptionByToday(new Date());
+                SysAttendanceSchedulingPlanException planException = sysAttendanceSchedulingPlanDao.findExceptionByToday(sysUser.getId());
                 if (planException != null){
+                    log.info("进入排班计划例外情况流程");
+
                     if (planException.getType() == 1){//1.休假
+                        attendanceRecord.setFirstTimeStart(null);//填入第一时段开始（第一时段全填或都不填）
+                        attendanceRecord.setFirstTimeEnd(null);//填入第一时段结束
+                        attendanceRecord.setSecondTimeStart(null);//填入第二时段开始（第二时段全填或都不填）
+                        attendanceRecord.setSecondTimeEnd(null);//填入第二时段结束
+
                         status = 1;//1.放假日（节假）
                     }else if (planException.getType() == 2){//2.上班
+                        attendanceRecord.setFirstTimeStart(planException.getFirstTimeStart());//填入第一时段开始（第一时段全填或都不填）
+                        attendanceRecord.setFirstTimeEnd(planException.getFirstTimeEnd());//填入第一时段结束
+                        attendanceRecord.setSecondTimeStart(planException.getSecondTimeStart());//填入第二时段开始（第二时段全填或都不填）
+                        attendanceRecord.setSecondTimeEnd(planException.getSecondTimeEnd());//填入第二时段结束
+
                         status = 2;//2.工作日
                     }
+                    log.info("结束排班计划例外情况流程");
                 }
-                log.info("结束排班计划例外情况流程");
+                if (status == 1){
+                    log.info(sysUser.getActualName()+",今天是放假日");
+                }else if (status == 2){
+                    log.info(sysUser.getActualName()+",今天是工作日");
+                }else if (status == 3){
+                    log.info(sysUser.getActualName()+",今天是休息日(双休)");
+                }else {
+                    log.info("数据有误");
+                }
+
 
                 attendanceRecord.setClockId(sysUser.getId());
                 attendanceRecord.setStatus(status);
@@ -500,6 +540,7 @@ public class SysAutoRemind {
                     log.info("添加用户考勤任务失败,用户主键id:"+sysUser.getId());
                 }
             }
+            log.info("本次执行成功");
         }else {
             log.info("本次执行没有处理对象");
         }

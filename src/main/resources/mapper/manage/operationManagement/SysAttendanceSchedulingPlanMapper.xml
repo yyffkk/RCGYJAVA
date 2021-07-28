@@ -116,17 +116,19 @@
         where id = #{id}
     </update>
 
-    <select id="findExceptionByToday" parameterType="java.util.Date"
+    <select id="findExceptionByToday" parameterType="java.lang.Integer"
             resultType="com.api.model.operationManagement.SysAttendanceSchedulingPlanException">
         select saspe.*
-        from sys_attendance_scheduling_plan_exception as saspe,sys_attendance_scheduling_plan as sasp
-        where saspe.attendance_scheduling_plan_id = sasp.id and sasp.status = 1 and TO_DAYS(#{date}) = TO_DAYS(saspe.date_range)
+        from sys_attendance_scheduling_plan_exception as saspe,sys_attendance_scheduling_plan as sasp,sys_attendance_team as sat
+        where saspe.attendance_scheduling_plan_id = sasp.id and sasp.team_id = sat.id
+		and sasp.status = 1 and TO_DAYS(now()) = TO_DAYS(saspe.date_range) and FIND_IN_SET(#{id},sat.team_members)
     </select>
     <select id="findExceptionByWeek" parameterType="java.lang.Integer"
             resultType="com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail">
         select sacpd.*
-        from sys_attendance_scheduling_plan_detail as sacpd,sys_attendance_scheduling_plan as sasp
-        where sacpd.attendance_scheduling_plan_id = sasp.id  and sasp.status = 1 and sacpd.working_days = #{i}
+        from sys_attendance_scheduling_plan_detail as sacpd,sys_attendance_scheduling_plan as sasp,sys_attendance_team as sat
+        where sacpd.attendance_scheduling_plan_id = sasp.id  and sasp.team_id = sat.id
+		and sasp.status = 1 and sacpd.working_days = WEEKDAY(now()) and FIND_IN_SET(#{id},sat.team_members)
     </select>
 
     <update id="updateStatusById" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
