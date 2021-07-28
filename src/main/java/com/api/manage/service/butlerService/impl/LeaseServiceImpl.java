@@ -10,6 +10,7 @@ import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
+import com.api.model.butlerService.SysLeaseRenew;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFBILease;
@@ -357,6 +358,14 @@ public class LeaseServiceImpl implements LeaseService {
         }
         map.put("message","审核成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> renew(SysLeaseRenew sysLeaseRenew) {
+        map = new HashMap<>();
+
+
         return map;
     }
 }

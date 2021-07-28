@@ -3,6 +3,7 @@ package com.api.manage.controller.butlerService;
 import com.api.manage.service.butlerService.LeaseService;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
+import com.api.model.butlerService.SysLeaseRenew;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.butlerService.VoLeaseContract;
@@ -109,5 +110,16 @@ public class LeaseController {
     @PostMapping("/reviewDepositRefundApplication")
     public Map<String,Object> reviewDepositRefundApplication(@RequestBody SysLease sysLease){
         return leaseService.reviewDepositRefundApplication(sysLease);
+    }
+
+
+    /**
+     * 续签//TODO 未完成
+     * @param sysLeaseRenew 租赁续签model
+     * @return map
+     */
+    @PostMapping("/renew")
+    public Map<String,Object> renew(@RequestBody SysLeaseRenew sysLeaseRenew){
+        return leaseService.renew(sysLeaseRenew);
     }
 }

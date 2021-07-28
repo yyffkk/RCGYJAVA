@@ -2,6 +2,7 @@ package com.api.manage.service.butlerService;
 
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
+import com.api.model.butlerService.SysLeaseRenew;
 import com.api.vo.butlerService.VoLease;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface LeaseService {
     Map<String, Object> reviewTerminationApplication(SysLease sysLease);
 
     Map<String, Object> reviewDepositRefundApplication(SysLease sysLease);
+
+    Map<String, Object> renew(SysLeaseRenew sysLeaseRenew);
 }
