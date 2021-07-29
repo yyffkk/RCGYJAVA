@@ -121,13 +121,21 @@ public class SysLeaseRenew {
      */
     private String bankAccount;
     /**
-     * 身份证照正面照片路径
+     * 身份证照正面照片原路径
      */
-    private String[] idCardFrontImgUrl;
+    private String[] idCardFrontImgOldUrl;
     /**
-     * 身份证照背面照片路径
+     * 身份证照背面照片原路径
      */
-    private String[] idCardBackImgUrl;
+    private String[] idCardBackImgOldUrl;
+    /**
+     * 身份证照正面照片新路径（重新上传用的）
+     */
+    private String[] idCardFrontImgNewUrl;
+    /**
+     * 身份证照背面照片新路径（重新上传用的）
+     */
+    private String[] idCardBackImgNewUrl;
 
     @Override
     public String toString() {
@@ -160,8 +168,10 @@ public class SysLeaseRenew {
                 ", payBank='" + payBank + '\'' +
                 ", bankAccountName='" + bankAccountName + '\'' +
                 ", bankAccount='" + bankAccount + '\'' +
-                ", idCardFrontImgUrl=" + Arrays.toString(idCardFrontImgUrl) +
-                ", idCardBackImgUrl=" + Arrays.toString(idCardBackImgUrl) +
+                ", idCardFrontImgOldUrl=" + Arrays.toString(idCardFrontImgOldUrl) +
+                ", idCardBackImgOldUrl=" + Arrays.toString(idCardBackImgOldUrl) +
+                ", idCardFrontImgNewUrl=" + Arrays.toString(idCardFrontImgNewUrl) +
+                ", idCardBackImgNewUrl=" + Arrays.toString(idCardBackImgNewUrl) +
                 '}';
     }
 
@@ -389,26 +399,42 @@ public class SysLeaseRenew {
         this.bankAccount = bankAccount;
     }
 
-    public String[] getIdCardFrontImgUrl() {
-        return idCardFrontImgUrl;
+    public String[] getIdCardFrontImgOldUrl() {
+        return idCardFrontImgOldUrl;
     }
 
-    public void setIdCardFrontImgUrl(String[] idCardFrontImgUrl) {
-        this.idCardFrontImgUrl = idCardFrontImgUrl;
+    public void setIdCardFrontImgOldUrl(String[] idCardFrontImgOldUrl) {
+        this.idCardFrontImgOldUrl = idCardFrontImgOldUrl;
     }
 
-    public String[] getIdCardBackImgUrl() {
-        return idCardBackImgUrl;
+    public String[] getIdCardBackImgOldUrl() {
+        return idCardBackImgOldUrl;
     }
 
-    public void setIdCardBackImgUrl(String[] idCardBackImgUrl) {
-        this.idCardBackImgUrl = idCardBackImgUrl;
+    public void setIdCardBackImgOldUrl(String[] idCardBackImgOldUrl) {
+        this.idCardBackImgOldUrl = idCardBackImgOldUrl;
+    }
+
+    public String[] getIdCardFrontImgNewUrl() {
+        return idCardFrontImgNewUrl;
+    }
+
+    public void setIdCardFrontImgNewUrl(String[] idCardFrontImgNewUrl) {
+        this.idCardFrontImgNewUrl = idCardFrontImgNewUrl;
+    }
+
+    public String[] getIdCardBackImgNewUrl() {
+        return idCardBackImgNewUrl;
+    }
+
+    public void setIdCardBackImgNewUrl(String[] idCardBackImgNewUrl) {
+        this.idCardBackImgNewUrl = idCardBackImgNewUrl;
     }
 
     public SysLeaseRenew() {
     }
 
-    public SysLeaseRenew(Integer id, Integer leaseParentId, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl) {
+    public SysLeaseRenew(Integer id, Integer leaseParentId, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgOldUrl, String[] idCardBackImgOldUrl, String[] idCardFrontImgNewUrl, String[] idCardBackImgNewUrl) {
         this.id = id;
         this.leaseParentId = leaseParentId;
         this.code = code;
@@ -437,7 +463,9 @@ public class SysLeaseRenew {
         this.payBank = payBank;
         this.bankAccountName = bankAccountName;
         this.bankAccount = bankAccount;
-        this.idCardFrontImgUrl = idCardFrontImgUrl;
-        this.idCardBackImgUrl = idCardBackImgUrl;
+        this.idCardFrontImgOldUrl = idCardFrontImgOldUrl;
+        this.idCardBackImgOldUrl = idCardBackImgOldUrl;
+        this.idCardFrontImgNewUrl = idCardFrontImgNewUrl;
+        this.idCardBackImgNewUrl = idCardBackImgNewUrl;
     }
 }

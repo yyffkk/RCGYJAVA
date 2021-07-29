@@ -6,6 +6,7 @@ import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.AppLeaseRent;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
+import com.api.model.butlerService.SysLeaseRenew;
 import com.api.vo.butlerService.VoFBILease;
 import com.api.vo.butlerService.VoLease;
 
@@ -232,4 +233,11 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int updateSLRBOStatusByCode(SysLeaseRentBillOrder sysLeaseRentBillOrder1);
+
+    /**
+     * 续签
+     * @param sysLeaseRenew 租赁续签model
+     * @return 影响行数
+     */
+    int renew(SysLeaseRenew sysLeaseRenew);
 }

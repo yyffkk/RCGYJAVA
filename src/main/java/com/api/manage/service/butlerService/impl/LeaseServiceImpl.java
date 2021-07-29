@@ -5,12 +5,14 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.api.manage.dao.butlerService.LeaseDao;
+import com.api.manage.dao.resources.ResourcesImgDao;
 import com.api.manage.service.butlerService.LeaseService;
 import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
 import com.api.model.butlerService.SysLeaseRenew;
+import com.api.model.resources.ResourcesImg;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFBILease;
@@ -36,6 +38,8 @@ public class LeaseServiceImpl implements LeaseService {
     private static Map<String,Object> map = null;
     @Resource
     LeaseDao leaseDao;
+    @Resource
+    ResourcesImgDao resourcesImgDao;
 
     @Value("${alipay.aliPayAppId}")
     private String ALIPAY_APP_ID;
@@ -362,10 +366,120 @@ public class LeaseServiceImpl implements LeaseService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> renew(SysLeaseRenew sysLeaseRenew) {
         map = new HashMap<>();
 
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
 
+            sysLeaseRenew.setCreateId(sysUser.getId());
+            sysLeaseRenew.setCreateDate(new Date());
+            sysLeaseRenew.setStatus(1);//1.待签署
+
+
+            int insert = leaseDao.renew(sysLeaseRenew);
+            if (insert <= 0){
+                throw new RuntimeException("添加失败");
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            //保持身份证正面照片
+            if (sysLeaseRenew.getIdCardFrontImgNewUrl() != null && sysLeaseRenew.getIdCardFrontImgNewUrl().length >0){
+                //保持新上传的身份证正面照片进数据库
+                uploadUtil.saveUrlToDB(sysLeaseRenew.getIdCardFrontImgNewUrl(),"sysLease",sysLeaseRenew.getId(),"idCardFront","600",30,20);
+            }else {
+                //保持原身份证正面照片进数据库
+                String[] imgOldUrls = sysLeaseRenew.getIdCardFrontImgOldUrl();
+                for (String imgOldUrl : imgOldUrls) {
+                    //保存后，将文件路径存入数据库
+                    ResourcesImg resourcesImg = new ResourcesImg();
+                    //填入表名称
+                    resourcesImg.setTableName("sysLease");
+                    //填入数据所属id
+                    resourcesImg.setDateId(sysLeaseRenew.getId());
+                    //填入类型名称
+                    resourcesImg.setTypeName("idCardFront");
+                    //填入图片路径
+                    resourcesImg.setUrl(imgOldUrl);
+                    //填入图片大小
+                    resourcesImg.setSize("600");
+                    //填入长（像素）
+                    resourcesImg.setLongs(30);
+                    //填入宽（像素）
+                    resourcesImg.setParagraph(20);
+                    //查询该表，该类型名称的照片数量
+                    int count = resourcesImgDao.countByData(resourcesImg);
+                    if (count > 0){
+                        resourcesImg.setSort(count+1);
+                    }else {
+                        resourcesImg.setSort(1);
+                    }
+                    //添加该照片数据到数据库中
+                    int insert2 = resourcesImgDao.insert(resourcesImg);
+                    if (insert2 <= 0){
+                        throw new RuntimeException("添加身份证照正面照片路径失败");
+                    }
+                }
+
+            }
+
+
+            //保持身份证背面照片
+            if (sysLeaseRenew.getIdCardBackImgNewUrl() != null && sysLeaseRenew.getIdCardFrontImgNewUrl().length >0){
+                //保持新上传的身份证背面照片进数据库
+                uploadUtil.saveUrlToDB(sysLeaseRenew.getIdCardBackImgNewUrl(),"sysLease",sysLeaseRenew.getId(),"idCardBack","600",30,20);
+            }else {
+                String[] imgOldUrls = sysLeaseRenew.getIdCardBackImgOldUrl();
+                for (String imgOldUrl : imgOldUrls) {
+                    //保持原身份证背面照片进数据库
+                    //保存后，将文件路径存入数据库
+                    ResourcesImg resourcesImg2 = new ResourcesImg();
+                    //填入表名称
+                    resourcesImg2.setTableName("sysLease");
+                    //填入数据所属id
+                    resourcesImg2.setDateId(sysLeaseRenew.getId());
+                    //填入类型名称
+                    resourcesImg2.setTypeName("idCardBack");
+                    //填入图片路径
+                    resourcesImg2.setUrl(imgOldUrl);
+                    //填入图片大小
+                    resourcesImg2.setSize("600");
+                    //填入长（像素）
+                    resourcesImg2.setLongs(30);
+                    //填入宽（像素）
+                    resourcesImg2.setParagraph(20);
+                    //查询该表，该类型名称的照片数量
+                    int count2 = resourcesImgDao.countByData(resourcesImg2);
+                    if (count2 > 0){
+                        resourcesImg2.setSort(count2+1);
+                    }else {
+                        resourcesImg2.setSort(1);
+                    }
+                    //添加该照片数据到数据库中
+                    int insert3 = resourcesImgDao.insert(resourcesImg2);
+                    if (insert3 <= 0){
+                        throw new RuntimeException("添加身份证照背面照片路径失败");
+                    }
+                }
+            }
+
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","添加成功");
+        map.put("status",true);
         return map;
     }
 }

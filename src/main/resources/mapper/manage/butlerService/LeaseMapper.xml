@@ -300,6 +300,66 @@
             #{status}
         )
     </insert>
+    <insert id="renew" parameterType="com.api.model.butlerService.SysLeaseRenew">
+        insert into sys_lease(
+            lease_parent_id,
+            code,
+            name,
+            sex,
+            id_card,
+            tel,
+            estate_id,
+            type,
+            estate_type,
+            estate_structure,
+            construction_area,
+            indoor_area,
+            rent_standard,
+            margin,
+            lease_date_start,
+            lease_date_end,
+            status,
+            create_id,
+            create_date,
+            emergency_contact,
+            emergency_contact_number,
+            correspondence_address,
+            work_units,
+            pay_bank,
+            bank_account_name,
+            bank_account
+        )values (
+            #{leaseParentId},
+            #{code},
+            #{name},
+            #{sex},
+            #{idCard},
+            #{tel},
+            #{estateId},
+            #{type},
+            #{estateType},
+            #{estateStructure},
+            #{constructionArea},
+            #{indoorArea},
+            #{rentStandard},
+            #{margin},
+            #{leaseDateStart},
+            #{leaseDateEnd},
+            #{status},
+            #{createId},
+            #{createDate},
+            #{emergencyContact},
+            #{emergencyContactNumber},
+            #{correspondenceAddress},
+            #{workUnits},
+            #{payBank},
+            #{bankAccountName},
+            #{bankAccount}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 
     <select id="findSysLeaseRentBillOrderByCode" parameterType="java.lang.String" resultType="com.api.model.alipay.SysLeaseRentBillOrder">
         select * from sys_lease_rent_bill_order where code = #{outTradeNo}
