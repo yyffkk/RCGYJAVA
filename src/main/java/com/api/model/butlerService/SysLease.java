@@ -1,6 +1,5 @@
 package com.api.model.butlerService;
 
-import com.api.vo.resources.VoResourcesImg;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -135,13 +134,21 @@ public class SysLease {
      */
     private String bankAccount;
     /**
-     * 身份证照正面照片路径
+     * 身份证照正面照片上传路径（续签重新上传路径）
      */
     private String[] idCardFrontImgUrl;
     /**
-     * 身份证照背面照片路径
+     * 身份证照背面照片上传路径（续签重新上传路径）
      */
     private String[] idCardBackImgUrl;
+    /**
+     * 身份证照正面照片续签回显原路径
+     */
+    private String[] idCardFrontImgOldUrl;
+    /**
+     * 身份证照背面照片续签回显原路径
+     */
+    private String[] idCardBackImgOldUrl;
     /**
      * 腾空单路径
      */
@@ -199,6 +206,8 @@ public class SysLease {
                 ", bankAccount='" + bankAccount + '\'' +
                 ", idCardFrontImgUrl=" + Arrays.toString(idCardFrontImgUrl) +
                 ", idCardBackImgUrl=" + Arrays.toString(idCardBackImgUrl) +
+                ", idCardFrontImgOldUrl=" + Arrays.toString(idCardFrontImgOldUrl) +
+                ", idCardBackImgOldUrl=" + Arrays.toString(idCardBackImgOldUrl) +
                 ", clearingSingleImgUrl=" + Arrays.toString(clearingSingleImgUrl) +
                 ", takeDate=" + takeDate +
                 ", notMeterRentDate=" + notMeterRentDate +
@@ -471,6 +480,22 @@ public class SysLease {
         this.idCardBackImgUrl = idCardBackImgUrl;
     }
 
+    public String[] getIdCardFrontImgOldUrl() {
+        return idCardFrontImgOldUrl;
+    }
+
+    public void setIdCardFrontImgOldUrl(String[] idCardFrontImgOldUrl) {
+        this.idCardFrontImgOldUrl = idCardFrontImgOldUrl;
+    }
+
+    public String[] getIdCardBackImgOldUrl() {
+        return idCardBackImgOldUrl;
+    }
+
+    public void setIdCardBackImgOldUrl(String[] idCardBackImgOldUrl) {
+        this.idCardBackImgOldUrl = idCardBackImgOldUrl;
+    }
+
     public String[] getClearingSingleImgUrl() {
         return clearingSingleImgUrl;
     }
@@ -514,7 +539,7 @@ public class SysLease {
     public SysLease() {
     }
 
-    public SysLease(Integer id, Integer leaseParentId, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
+    public SysLease(Integer id, Integer leaseParentId, String code, String name, Integer sex, String idCard, String tel, Integer estateId, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, Integer status, Integer reviewer, Date auditDate, String auditRemake, Integer createId, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, String[] idCardFrontImgUrl, String[] idCardBackImgUrl, String[] idCardFrontImgOldUrl, String[] idCardBackImgOldUrl, String[] clearingSingleImgUrl, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
         this.id = id;
         this.leaseParentId = leaseParentId;
         this.code = code;
@@ -548,6 +573,8 @@ public class SysLease {
         this.bankAccount = bankAccount;
         this.idCardFrontImgUrl = idCardFrontImgUrl;
         this.idCardBackImgUrl = idCardBackImgUrl;
+        this.idCardFrontImgOldUrl = idCardFrontImgOldUrl;
+        this.idCardBackImgOldUrl = idCardBackImgOldUrl;
         this.clearingSingleImgUrl = clearingSingleImgUrl;
         this.takeDate = takeDate;
         this.notMeterRentDate = notMeterRentDate;

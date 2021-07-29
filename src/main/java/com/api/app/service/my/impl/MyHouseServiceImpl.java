@@ -347,10 +347,81 @@ public class MyHouseServiceImpl implements MyHouseService {
             }
             UploadUtil uploadUtil = new UploadUtil();
 
-            //保存身份证照正面照
-            uploadUtil.saveUrlToDB(sysLease.getIdCardFrontImgUrl(),"sysLease", sysLease.getId(), "idCardFront","600",30,20);
-            //保存身份证照背面照
-            uploadUtil.saveUrlToDB(sysLease.getIdCardBackImgUrl(),"sysLease", sysLease.getId(), "idCardBack","600",30,20);
+            if (sysLease.getIdCardFrontImgUrl() != null && sysLease.getIdCardFrontImgUrl().length >0){
+                //保存身份证照正面照
+                uploadUtil.saveUrlToDB(sysLease.getIdCardFrontImgUrl(),"sysLease", sysLease.getId(), "idCardFront","600",30,20);
+            }else {
+                //保持原身份证正面照片进数据库
+                String[] imgOldUrls = sysLease.getIdCardFrontImgOldUrl();
+                for (String imgOldUrl : imgOldUrls) {
+                    //保存后，将文件路径存入数据库
+                    ResourcesImg resourcesImg = new ResourcesImg();
+                    //填入表名称
+                    resourcesImg.setTableName("sysLease");
+                    //填入数据所属id
+                    resourcesImg.setDateId(sysLease.getId());
+                    //填入类型名称
+                    resourcesImg.setTypeName("idCardFront");
+                    //填入图片路径
+                    resourcesImg.setUrl(imgOldUrl);
+                    //填入图片大小
+                    resourcesImg.setSize("600");
+                    //填入长（像素）
+                    resourcesImg.setLongs(30);
+                    //填入宽（像素）
+                    resourcesImg.setParagraph(20);
+                    //查询该表，该类型名称的照片数量
+                    int count = resourcesImgDao.countByData(resourcesImg);
+                    if (count > 0){
+                        resourcesImg.setSort(count+1);
+                    }else {
+                        resourcesImg.setSort(1);
+                    }
+                    //添加该照片数据到数据库中
+                    int insert2 = resourcesImgDao.insert(resourcesImg);
+                    if (insert2 <= 0){
+                        throw new RuntimeException("添加身份证照正面照片路径失败");
+                    }
+                }
+            }
+
+            if (sysLease.getIdCardBackImgUrl() != null && sysLease.getIdCardBackImgUrl().length>0){
+                //保存身份证照背面照
+                uploadUtil.saveUrlToDB(sysLease.getIdCardBackImgUrl(),"sysLease", sysLease.getId(), "idCardBack","600",30,20);
+            }else {
+                String[] imgOldUrls = sysLease.getIdCardBackImgOldUrl();
+                for (String imgOldUrl : imgOldUrls) {
+                    //保持原身份证背面照片进数据库
+                    //保存后，将文件路径存入数据库
+                    ResourcesImg resourcesImg2 = new ResourcesImg();
+                    //填入表名称
+                    resourcesImg2.setTableName("sysLease");
+                    //填入数据所属id
+                    resourcesImg2.setDateId(sysLease.getId());
+                    //填入类型名称
+                    resourcesImg2.setTypeName("idCardBack");
+                    //填入图片路径
+                    resourcesImg2.setUrl(imgOldUrl);
+                    //填入图片大小
+                    resourcesImg2.setSize("600");
+                    //填入长（像素）
+                    resourcesImg2.setLongs(30);
+                    //填入宽（像素）
+                    resourcesImg2.setParagraph(20);
+                    //查询该表，该类型名称的照片数量
+                    int count2 = resourcesImgDao.countByData(resourcesImg2);
+                    if (count2 > 0){
+                        resourcesImg2.setSort(count2+1);
+                    }else {
+                        resourcesImg2.setSort(1);
+                    }
+                    //添加该照片数据到数据库中
+                    int insert3 = resourcesImgDao.insert(resourcesImg2);
+                    if (insert3 <= 0){
+                        throw new RuntimeException("添加身份证照背面照片路径失败");
+                    }
+                }
+            }
 
             try {
                 // 获取项目同级目录，传入static中
