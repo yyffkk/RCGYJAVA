@@ -159,7 +159,7 @@ public class MyHouseController {
     }
 
     /**
-     * 提交个人租赁信息生成预览合同
+     * 提交个人租赁信息生成预览合同（续签也用这个）
      * @param sysLease 租赁管理model
      * @return map
      */
