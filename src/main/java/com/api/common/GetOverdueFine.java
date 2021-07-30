@@ -121,7 +121,7 @@ public class GetOverdueFine {
                     Double rate = Double.valueOf(voDailyPayment.getRate());
                     totalPrice = totalPrice.multiply(new BigDecimal(1+rate/100));
                 }
-                //滞纳金 = 支付总金额 - 代缴金额
+                //滞纳金 = 支付总金额 - 待缴金额
                 BigDecimal overdueFine = totalPrice.setScale(2, RoundingMode.HALF_UP).subtract(voDailyPayment.getPaymentPrice());
                 voDailyPayment.setOverdueFine(overdueFine);
             }else {

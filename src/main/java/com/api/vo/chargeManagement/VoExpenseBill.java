@@ -8,84 +8,44 @@ import java.util.Date;
  */
 public class VoExpenseBill {
     /**
-     * 主键id
+     * 房屋主键id
      */
     private Integer id;
-    /**
-     * 费用项目
-     */
-    private String name;
-    /**
-     * 交易号（缴费订单表的支付单号）
-     */
-    private String orderCode;
     /**
      * 房屋信息
      */
     private String roomName;
     /**
-     * 缴费时间
+     * 费用总计
      */
-    private String payDate;
+    private BigDecimal costPriceSum;
     /**
-     * 计费开始时间
+     * 退款总计
      */
-    private Date beginDate;
+    private BigDecimal refundPriceSum;
     /**
-     * 计费结束时间
+     * 应收金额总计（费用总计+滞纳金总计）
      */
-    private Date endDate;
+    private BigDecimal totalPriceSum;
     /**
-     * 费用金额
+     * 实收费用总计（包含状态为完全缴纳状态的滞纳金）
      */
-    private BigDecimal costPrice;
+    private BigDecimal paidPriceSum;
     /**
-     * 应收总计
+     * 剩余未缴总计（包含状态为未缴纳或部分缴纳状态的滞纳金）
      */
-    private BigDecimal totalPrice;
-    /**
-     * 状态（1.未缴纳，2.部分缴纳，3.全部缴纳）
-     */
-    private Integer status;
-    /**
-     * 缴费人姓名
-     */
-    private String payName;
-    /**
-     * 缴费人联系方式
-     */
-    private String payTel;
-    /**
-     * 备注（订单中的备注信息）
-     */
-    private String remake;
-    /**
-     * 创建人
-     */
-    private String createName;
-    /**
-     * 更新时间
-     */
-    private Date updateDate;
+    private BigDecimal paymentPriceSum;
 
     @Override
     public String toString() {
         return "VoExpenseBill{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", orderCode='" + orderCode + '\'' +
                 ", roomName='" + roomName + '\'' +
-                ", payDate='" + payDate + '\'' +
-                ", beginDate=" + beginDate +
-                ", endDate=" + endDate +
-                ", costPrice=" + costPrice +
-                ", totalPrice=" + totalPrice +
-                ", status=" + status +
-                ", payName='" + payName + '\'' +
-                ", payTel='" + payTel + '\'' +
-                ", remake='" + remake + '\'' +
-                ", createName='" + createName + '\'' +
-                ", updateDate=" + updateDate +
+                ", costPriceSum=" + costPriceSum +
+                ", refundPriceSum=" + refundPriceSum +
+                ", totalPriceSum=" + totalPriceSum +
+                ", paidPriceSum=" + paidPriceSum +
+                ", paymentPriceSum=" + paymentPriceSum +
                 '}';
     }
 
@@ -97,22 +57,6 @@ public class VoExpenseBill {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getOrderCode() {
-        return orderCode;
-    }
-
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
-    }
-
     public String getRoomName() {
         return roomName;
     }
@@ -121,112 +65,56 @@ public class VoExpenseBill {
         this.roomName = roomName;
     }
 
-    public String getPayDate() {
-        return payDate;
+    public BigDecimal getCostPriceSum() {
+        return costPriceSum;
     }
 
-    public void setPayDate(String payDate) {
-        this.payDate = payDate;
+    public void setCostPriceSum(BigDecimal costPriceSum) {
+        this.costPriceSum = costPriceSum;
     }
 
-    public Date getBeginDate() {
-        return beginDate;
+    public BigDecimal getRefundPriceSum() {
+        return refundPriceSum;
     }
 
-    public void setBeginDate(Date beginDate) {
-        this.beginDate = beginDate;
+    public void setRefundPriceSum(BigDecimal refundPriceSum) {
+        this.refundPriceSum = refundPriceSum;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public BigDecimal getTotalPriceSum() {
+        return totalPriceSum;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setTotalPriceSum(BigDecimal totalPriceSum) {
+        this.totalPriceSum = totalPriceSum;
     }
 
-    public BigDecimal getCostPrice() {
-        return costPrice;
+    public BigDecimal getPaidPriceSum() {
+        return paidPriceSum;
     }
 
-    public void setCostPrice(BigDecimal costPrice) {
-        this.costPrice = costPrice;
+    public void setPaidPriceSum(BigDecimal paidPriceSum) {
+        this.paidPriceSum = paidPriceSum;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public BigDecimal getPaymentPriceSum() {
+        return paymentPriceSum;
     }
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getPayName() {
-        return payName;
-    }
-
-    public void setPayName(String payName) {
-        this.payName = payName;
-    }
-
-    public String getPayTel() {
-        return payTel;
-    }
-
-    public void setPayTel(String payTel) {
-        this.payTel = payTel;
-    }
-
-    public String getRemake() {
-        return remake;
-    }
-
-    public void setRemake(String remake) {
-        this.remake = remake;
-    }
-
-    public String getCreateName() {
-        return createName;
-    }
-
-    public void setCreateName(String createName) {
-        this.createName = createName;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setPaymentPriceSum(BigDecimal paymentPriceSum) {
+        this.paymentPriceSum = paymentPriceSum;
     }
 
     public VoExpenseBill() {
     }
 
-    public VoExpenseBill(Integer id, String name, String orderCode, String roomName, String payDate, Date beginDate, Date endDate, BigDecimal costPrice, BigDecimal totalPrice, Integer status, String payName, String payTel, String remake, String createName, Date updateDate) {
+    public VoExpenseBill(Integer id, String roomName, BigDecimal costPriceSum, BigDecimal refundPriceSum, BigDecimal totalPriceSum, BigDecimal paidPriceSum, BigDecimal paymentPriceSum) {
         this.id = id;
-        this.name = name;
-        this.orderCode = orderCode;
         this.roomName = roomName;
-        this.payDate = payDate;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
-        this.costPrice = costPrice;
-        this.totalPrice = totalPrice;
-        this.status = status;
-        this.payName = payName;
-        this.payTel = payTel;
-        this.remake = remake;
-        this.createName = createName;
-        this.updateDate = updateDate;
+        this.costPriceSum = costPriceSum;
+        this.refundPriceSum = refundPriceSum;
+        this.totalPriceSum = totalPriceSum;
+        this.paidPriceSum = paidPriceSum;
+        this.paymentPriceSum = paymentPriceSum;
     }
 }

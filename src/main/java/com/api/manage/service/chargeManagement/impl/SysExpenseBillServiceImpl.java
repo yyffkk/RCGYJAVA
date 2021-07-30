@@ -65,77 +65,77 @@ public class SysExpenseBillServiceImpl implements SysExpenseBillService {
         String sheetName = "费用账单";
 
 
-        //初始化内容容器1
-        String[][] content = new String[voExpenseBillList.size()][];
-        for (int i = 0; i < voExpenseBillList.size(); i++) {
-            //初始化内容容器2
-            content[i] = new String[title.length];
-            //获取 当前物业收费标准明细Vo
-            VoExpenseBill voExpenseBill = voExpenseBillList.get(i);
-            //传入序号
-            content[i][0] = String.valueOf(i+1);
-            //传入费用项目
-            content[i][1] = voExpenseBill.getName();
-            //传入交易号
-            if (voExpenseBill.getOrderCode() != null){
-                content[i][2] = voExpenseBill.getOrderCode();
-            }else {
-                content[i][2] = "-";
-            }
-            //传入房屋信息
-            content[i][3] = voExpenseBill.getRoomName();
-            //传入缴费时间
-            if (voExpenseBill.getPayDate() != null){
-                content[i][4] = voExpenseBill.getPayDate();
-            }else {
-                content[i][4] = "-";
-            }
-            //传入计费开始时间
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-            content[i][5] = formatter.format(voExpenseBill.getBeginDate());
-            //传入计费结束时间
-            content[i][6] = formatter.format(voExpenseBill.getEndDate());
-            //传入费用金额
-            content[i][7] = voExpenseBill.getCostPrice().toString();
-            //传入应收总计
-            content[i][8] = voExpenseBill.getTotalPrice().toString();
-            //传入状态
-            //查询状态显示名称
-            String statusShowName = sysExpenseBillDao.findStatusSNBySV(voExpenseBill.getStatus());
-            content[i][9] = statusShowName;
-            //传入缴费人
-            if (voExpenseBill.getPayName() != null){
-                content[i][10] = voExpenseBill.getPayName();
-            }else {
-                content[i][10] = "-";
-            }
-            //传入缴费人联系方式
-            if (voExpenseBill.getPayTel() != null){
-                content[i][11] = voExpenseBill.getPayTel();
-            }else {
-                content[i][11] = "-";
-            }
-            //备注
-            content[i][12] = voExpenseBill.getRemake();
-            //传入创建人
-            content[i][13] = voExpenseBill.getCreateName();
-            //传入更新时间
-            content[i][14] = formatter.format(voExpenseBill.getUpdateDate());
-        }
-
-        //创建HSSFWorkbook
-        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
-
-        //响应到客户端
-        try {
-            this.setResponseHeader(response, fileName);
-            OutputStream os = response.getOutputStream();
-            wb.write(os);
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        //初始化内容容器1
+//        String[][] content = new String[voExpenseBillList.size()][];
+//        for (int i = 0; i < voExpenseBillList.size(); i++) {
+//            //初始化内容容器2
+//            content[i] = new String[title.length];
+//            //获取 当前物业收费标准明细Vo
+//            VoExpenseBill voExpenseBill = voExpenseBillList.get(i);
+//            //传入序号
+//            content[i][0] = String.valueOf(i+1);
+//            //传入费用项目
+//            content[i][1] = voExpenseBill.getName();
+//            //传入交易号
+//            if (voExpenseBill.getOrderCode() != null){
+//                content[i][2] = voExpenseBill.getOrderCode();
+//            }else {
+//                content[i][2] = "-";
+//            }
+//            //传入房屋信息
+//            content[i][3] = voExpenseBill.getRoomName();
+//            //传入缴费时间
+//            if (voExpenseBill.getPayDate() != null){
+//                content[i][4] = voExpenseBill.getPayDate();
+//            }else {
+//                content[i][4] = "-";
+//            }
+//            //传入计费开始时间
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+//            content[i][5] = formatter.format(voExpenseBill.getBeginDate());
+//            //传入计费结束时间
+//            content[i][6] = formatter.format(voExpenseBill.getEndDate());
+//            //传入费用金额
+//            content[i][7] = voExpenseBill.getCostPrice().toString();
+//            //传入应收总计
+//            content[i][8] = voExpenseBill.getTotalPrice().toString();
+//            //传入状态
+//            //查询状态显示名称
+//            String statusShowName = sysExpenseBillDao.findStatusSNBySV(voExpenseBill.getStatus());
+//            content[i][9] = statusShowName;
+//            //传入缴费人
+//            if (voExpenseBill.getPayName() != null){
+//                content[i][10] = voExpenseBill.getPayName();
+//            }else {
+//                content[i][10] = "-";
+//            }
+//            //传入缴费人联系方式
+//            if (voExpenseBill.getPayTel() != null){
+//                content[i][11] = voExpenseBill.getPayTel();
+//            }else {
+//                content[i][11] = "-";
+//            }
+//            //备注
+//            content[i][12] = voExpenseBill.getRemake();
+//            //传入创建人
+//            content[i][13] = voExpenseBill.getCreateName();
+//            //传入更新时间
+//            content[i][14] = formatter.format(voExpenseBill.getUpdateDate());
+//        }
+//
+//        //创建HSSFWorkbook
+//        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+//
+//        //响应到客户端
+//        try {
+//            this.setResponseHeader(response, fileName);
+//            OutputStream os = response.getOutputStream();
+//            wb.write(os);
+//            os.flush();
+//            os.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 

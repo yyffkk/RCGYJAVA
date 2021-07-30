@@ -4,55 +4,49 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.chargeManagement.SysExpenseBillDao">
     <select id="list" parameterType="com.api.model.chargeManagement.SearchDailyPayment" resultType="com.api.vo.chargeManagement.VoExpenseBill">
-        select a.*,group_concat(sdpo.name SEPARATOR '\r\n') as pay_name,group_concat(sdpo.tel SEPARATOR '\r\n') as pay_tel,group_concat(sdpo.code SEPARATOR '\r\n') as order_code,group_concat(sdpo.create_date SEPARATOR '\r\n') as pay_date
-        ,group_concat(
-            case sdpo.remake is null
-            when true then '暂无备注' ELSE sdpo.remake end SEPARATOR '\r\n'
-        ) as remake
-        from (
-        select sdp.*,sctd.name,cbue.room_number,cbu.no as unit_no,cb.no as estate_no,concat_ws('-',cb.no,cbu.no,cbue.room_number) as room_name,su.actual_name as create_name,
-        (case sdp.modify_date is null
-        when true
+        SELECT T.building_unit_estate_id as id,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,
+        sum(T.cost_price) as cost_price_sum,(case sum(T.refund_price) is null when true then 0 else sum(T.refund_price) end) as refund_price_sum,
+        sum(T.total_price + T.overdue_fine_new) as total_price_sum,
+        sum((case T.status = 3 when true then (T.paid_price + T.overdue_fine_new) else T.paid_price end)) as paid_price_sum,
+        sum((case T.status = 3 when true then T.payment_price else (T.payment_price + T.overdue_fine_new) end)) as payment_price_sum
+        from
+        (
+        SELECT sdp.*,(
+        case
+            sdp.status = 3 when true
         then
-        sdp.create_date
+            (case sdp.overdue_fine is null when true then 0 else sdp.overdue_fine end)
         else
-        sdp.modify_date
-        end) as update_date
-        from sys_daily_payment as sdp,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_user as su,sys_charges_template_detail as sctd
-        where sdp.building_unit_estate_id = cbue.id and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id and su.id =sdp.create_id and sctd.id = sdp.charges_template_detail_id  and sdp.is_delete = 1
-        ) as a
-        LEFT JOIN sys_daily_payment_order_list as sdpol on a.id = sdpol.daily_payment_id
-        LEFT JOIN sys_daily_payment_order as sdpo on sdpo.id = sdpol.daily_payment_order_id
+            (
+            case
+                now() > sdp.payment_term when true
+            then
+                round(sdp.payment_price*pow((1+sdp.rate/100),TIMESTAMPDIFF(MONTH,sdp.payment_term,DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%S'))) - sdp.payment_price,2)
+            else
+                0
+            end
+            )
+        end
+        ) as overdue_fine_new
+        from sys_daily_payment as sdp
+        ) as T
+        ,cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
         <where>
-            <if test="chargesTemplateDetailId != null">
-                and a.charges_template_detail_id = #{chargesTemplateDetailId}
-            </if>
-            <if test="beginDate != null">
-                and a.begin_date <![CDATA[ > ]]> #{beginDate}
-            </if>
-            <if test="endDate != null">
-                and a.end_date <![CDATA[ < ]]> #{endDate}
-            </if>
-            <if test="payName != null and payName != ''">
-                and sdpo.name like concat('%',#{payName},'%')
-            </if>
-            <if test="tel != null and tel != ''">
-                and sdpo.tel like concat('%',#{tel},'%')
-            </if>
+            T.building_unit_estate_id = cbue.id
+            and cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and T.is_delete = 1
             <if test="roomNumber != null and roomNumber != ''">
-                and a.room_number like concat('%',#{roomNumber},'%')
+                and cbue.room_number like concat('%',#{roomNumber},'%')
             </if>
             <if test="unitNo != null">
-                and a.unit_no like concat('%',#{unitNo},'%')
+                and cbu.no like concat('%',#{unitNo},'%')
             </if>
             <if test="estateNo != null">
-                and a.estate_no like concat('%',#{estateNo},'%')
-            </if>
-            <if test="status != null">
-                and a.status = #{status}
+                and cb.no like concat('%',#{estateNo},'%')
             </if>
         </where>
-        group by a.id
+        GROUP BY T.building_unit_estate_id
     </select>
 
     <select id="findStatusSNBySV" parameterType="java.lang.Integer" resultType="java.lang.String">

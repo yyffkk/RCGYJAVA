@@ -15,33 +15,9 @@ public class SearchDailyPayment {
      */
     private int size;
     /**
-     * 费用名称类型(取自 物业收费标准明细表)
-     */
-    private Integer chargesTemplateDetailId;
-    /**
-     * 计费开始时间
-     */
-    private Date beginDate;
-    /**
-     * 计费结束时间
-     */
-    private Date endDate;
-    /**
-     * 缴费人名称
-     */
-    private String payName;
-    /**
-     * 状态（1.未缴纳，2.部分缴纳，3.全部缴纳）
-     */
-    private Integer status;
-    /**
      * 房屋信息
      */
     private String roomName;
-    /**
-     * 联系方式
-     */
-    private String tel;
     /**
      * 房间号
      */
@@ -60,13 +36,7 @@ public class SearchDailyPayment {
         return "SearchDailyPayment{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
-                ", chargesTemplateDetailId=" + chargesTemplateDetailId +
-                ", beginDate=" + beginDate +
-                ", endDate=" + endDate +
-                ", payName='" + payName + '\'' +
-                ", status=" + status +
                 ", roomName='" + roomName + '\'' +
-                ", tel='" + tel + '\'' +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", unitNo=" + unitNo +
                 ", estateNo=" + estateNo +
@@ -89,60 +59,12 @@ public class SearchDailyPayment {
         this.size = size;
     }
 
-    public Integer getChargesTemplateDetailId() {
-        return chargesTemplateDetailId;
-    }
-
-    public void setChargesTemplateDetailId(Integer chargesTemplateDetailId) {
-        this.chargesTemplateDetailId = chargesTemplateDetailId;
-    }
-
-    public Date getBeginDate() {
-        return beginDate;
-    }
-
-    public void setBeginDate(Date beginDate) {
-        this.beginDate = beginDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getPayName() {
-        return payName;
-    }
-
-    public void setPayName(String payName) {
-        this.payName = payName;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public String getRoomName() {
         return roomName;
     }
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
     }
 
     public String getRoomNumber() {
@@ -172,16 +94,10 @@ public class SearchDailyPayment {
     public SearchDailyPayment() {
     }
 
-    public SearchDailyPayment(int pageNum, int size, Integer chargesTemplateDetailId, Date beginDate, Date endDate, String payName, Integer status, String roomName, String tel, String roomNumber, Integer unitNo, Integer estateNo) {
+    public SearchDailyPayment(int pageNum, int size, String roomName, String roomNumber, Integer unitNo, Integer estateNo) {
         this.pageNum = pageNum;
         this.size = size;
-        this.chargesTemplateDetailId = chargesTemplateDetailId;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
-        this.payName = payName;
-        this.status = status;
         this.roomName = roomName;
-        this.tel = tel;
         this.roomNumber = roomNumber;
         this.unitNo = unitNo;
         this.estateNo = estateNo;
