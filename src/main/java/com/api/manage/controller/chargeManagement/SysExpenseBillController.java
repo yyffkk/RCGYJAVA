@@ -7,6 +7,7 @@ import com.api.model.chargeManagement.SearchExpenseBill;
 import com.api.model.chargeManagement.SearchExpenseBillDetail;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoExpenseBill;
+import com.api.vo.chargeManagement.VoExpenseBillDetail;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
@@ -57,8 +58,8 @@ public class SysExpenseBillController   {
     @GetMapping("/detailList")
     public Map<String,Object> detailList(SearchExpenseBillDetail searchExpenseBillDetail){
         PageHelper.startPage(searchExpenseBillDetail.getPageNum(),searchExpenseBillDetail.getSize());
-        List<VoDailyPayment> voDailyPaymentList = sysExpenseBillService.detailList(searchExpenseBillDetail);
-        PageInfo<VoDailyPayment> pageInfo = new PageInfo<>(voDailyPaymentList);
+        List<VoExpenseBillDetail> voDailyPaymentList = sysExpenseBillService.detailList(searchExpenseBillDetail);
+        PageInfo<VoExpenseBillDetail> pageInfo = new PageInfo<>(voDailyPaymentList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());

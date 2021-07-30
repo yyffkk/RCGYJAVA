@@ -1,7 +1,9 @@
 package com.api.manage.dao.chargeManagement;
 
 import com.api.model.chargeManagement.SearchExpenseBill;
+import com.api.model.chargeManagement.SearchExpenseBillDetail;
 import com.api.vo.chargeManagement.VoExpenseBill;
+import com.api.vo.chargeManagement.VoExpenseBillDetail;
 
 import java.util.List;
 
@@ -19,4 +21,12 @@ public interface SysExpenseBillDao {
      * @return 状态显示name名称
      */
     String findStatusSNBySV(Integer status);
+
+    /**
+     * 查询费用账单的所有详情信息
+     * @param searchExpenseBillDetail 费用账单详情搜索条件
+     * @return 费用账单的所有详情信息
+     */
+    List<VoExpenseBillDetail> detailList(SearchExpenseBillDetail searchExpenseBillDetail);
+
 }

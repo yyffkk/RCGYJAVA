@@ -6,6 +6,7 @@ import com.api.model.chargeManagement.SearchExpenseBill;
 import com.api.model.chargeManagement.SearchExpenseBillDetail;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoExpenseBill;
+import com.api.vo.chargeManagement.VoExpenseBillDetail;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -137,8 +138,11 @@ public class SysExpenseBillServiceImpl implements SysExpenseBillService {
     }
 
     @Override
-    public List<VoDailyPayment> detailList(SearchExpenseBillDetail searchExpenseBillDetail) {
-        return null;
+    public List<VoExpenseBillDetail> detailList(SearchExpenseBillDetail searchExpenseBillDetail) {
+        List<VoExpenseBillDetail> voExpenseBillDetails = sysExpenseBillDao.detailList(searchExpenseBillDetail);
+
+        //TODO 缴纳人名称未写
+        return voExpenseBillDetails;
     }
 
 

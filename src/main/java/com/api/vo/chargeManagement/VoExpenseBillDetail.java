@@ -36,13 +36,13 @@ public class VoExpenseBillDetail {
      */
     private BigDecimal paymentPrice;
     /**
+     * 退款金额
+     */
+    private BigDecimal refundPrice;
+    /**
      * 状态（1.未缴纳，2.部分缴纳，3.全部缴纳）
      */
     private Integer status;
-    /**
-     * 备注（订单中的备注信息）
-     */
-    private String remake;
     /**
      * 费率
      */
@@ -60,9 +60,9 @@ public class VoExpenseBillDetail {
      */
     private String createName;
     /**
-     * 更新时间
+     * 创建时间
      */
-    private Date updateDate;
+    private Date createDate;
 
     @Override
     public String toString() {
@@ -74,13 +74,13 @@ public class VoExpenseBillDetail {
                 ", paidPrice=" + paidPrice +
                 ", totalPrice=" + totalPrice +
                 ", paymentPrice=" + paymentPrice +
+                ", refundPrice=" + refundPrice +
                 ", status=" + status +
-                ", remake='" + remake + '\'' +
                 ", rate=" + rate +
                 ", paymentTerm=" + paymentTerm +
                 ", overdueFine=" + overdueFine +
                 ", createName='" + createName + '\'' +
-                ", updateDate=" + updateDate +
+                ", createDate=" + createDate +
                 '}';
     }
 
@@ -140,20 +140,20 @@ public class VoExpenseBillDetail {
         this.paymentPrice = paymentPrice;
     }
 
+    public BigDecimal getRefundPrice() {
+        return refundPrice;
+    }
+
+    public void setRefundPrice(BigDecimal refundPrice) {
+        this.refundPrice = refundPrice;
+    }
+
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getRemake() {
-        return remake;
-    }
-
-    public void setRemake(String remake) {
-        this.remake = remake;
     }
 
     public Integer getRate() {
@@ -188,18 +188,18 @@ public class VoExpenseBillDetail {
         this.createName = createName;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public VoExpenseBillDetail() {
     }
 
-    public VoExpenseBillDetail(Integer id, String name, String payPeopleName, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, String remake, Integer rate, Date paymentTerm, BigDecimal overdueFine, String createName, Date updateDate) {
+    public VoExpenseBillDetail(Integer id, String name, String payPeopleName, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, BigDecimal refundPrice, Integer status, Integer rate, Date paymentTerm, BigDecimal overdueFine, String createName, Date createDate) {
         this.id = id;
         this.name = name;
         this.payPeopleName = payPeopleName;
@@ -207,12 +207,12 @@ public class VoExpenseBillDetail {
         this.paidPrice = paidPrice;
         this.totalPrice = totalPrice;
         this.paymentPrice = paymentPrice;
+        this.refundPrice = refundPrice;
         this.status = status;
-        this.remake = remake;
         this.rate = rate;
         this.paymentTerm = paymentTerm;
         this.overdueFine = overdueFine;
         this.createName = createName;
-        this.updateDate = updateDate;
+        this.createDate = createDate;
     }
 }

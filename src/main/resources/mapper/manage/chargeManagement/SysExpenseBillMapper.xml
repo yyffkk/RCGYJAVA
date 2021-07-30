@@ -53,4 +53,34 @@
         select show_name from sys_data_dictionary
         where type_name = 'sys_daily_payment_status' and show_value = #{status}
     </select>
+    <select id="detailList" parameterType="com.api.model.chargeManagement.SearchExpenseBillDetail" resultType="com.api.vo.chargeManagement.VoExpenseBillDetail">
+        SELECT T.id,sctd.name,T.cost_price,(case T.refund_price is null when true then 0 else T.refund_price end) as refund_price,
+        (T.total_price + T.overdue_fine_new) as total_price,
+        (case T.status = 3 when true then (T.paid_price + T.overdue_fine_new) else T.paid_price end) as paid_price,
+        (case T.status = 3 when true then T.payment_price else (T.payment_price + T.overdue_fine_new) end) as payment_price,
+        T.status,T.rate,T.payment_term,T.overdue_fine_new as overdue_fine,(case T.create_id = -1 when true then '系统自动' else su.actual_name end) as create_name,T.create_date
+        from
+        (SELECT sdp.*,(
+        case
+            sdp.status = 3 when true
+        then
+            (case sdp.overdue_fine is null when true then 0 else sdp.overdue_fine end)
+        else
+            (
+            case
+                now() > sdp.payment_term when true
+            then
+                round(sdp.payment_price*pow((1+sdp.rate/100),TIMESTAMPDIFF(MONTH,sdp.payment_term,DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%S'))) - sdp.payment_price,2)
+            else
+                0
+            end
+            )
+        end
+        ) as overdue_fine_new
+        from sys_daily_payment as sdp
+        ) as T
+        left join sys_user as su on T.create_id = su.id
+        left join sys_charges_template_detail as sctd on T.charges_template_detail_id = sctd.id
+        where T.is_delete = 1
+    </select>
 </mapper>
