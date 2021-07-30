@@ -1,20 +1,18 @@
 package com.api.manage.service.chargeManagement.impl;
 
 import com.api.manage.dao.chargeManagement.SysExpenseBillDao;
-import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.manage.service.chargeManagement.SysExpenseBillService;
-import com.api.util.ExcelUtil;
+import com.api.model.chargeManagement.SearchExpenseBill;
+import com.api.model.chargeManagement.SearchExpenseBillDetail;
+import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoExpenseBill;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -23,12 +21,12 @@ public class SysExpenseBillServiceImpl implements SysExpenseBillService {
     SysExpenseBillDao sysExpenseBillDao;
 
     @Override
-    public List<VoExpenseBill> list(SearchDailyPayment searchDailyPayment) {
+    public List<VoExpenseBill> list(SearchExpenseBill searchExpenseBill) {
         //初始化数组参数，长度为3，值都为null
         String[] split = {null,null,null};
-        if (searchDailyPayment.getRoomName()!=null){
+        if (searchExpenseBill.getRoomName()!=null){
             //用'-'截取字符串 获取数组
-            String[] split2 = searchDailyPayment.getRoomName().replace(" ", "").split("-");
+            String[] split2 = searchExpenseBill.getRoomName().replace(" ", "").split("-");
             //如果数组长度超过3，超出部分不要
             for (int i =0;i<split2.length;i++) {
                 //防止下标越界异常
@@ -38,18 +36,18 @@ public class SysExpenseBillServiceImpl implements SysExpenseBillService {
             }
             //添加楼栋模糊查询信息,StringUtils.isNotBlank()【null，''】为true【' ','a',' a '】为false
             if (StringUtils.isNotBlank(split[0])){
-                searchDailyPayment.setEstateNo(Integer.valueOf(split[0]));
+                searchExpenseBill.setEstateNo(Integer.valueOf(split[0]));
             }
             //添加单元模糊查询信息
             if (StringUtils.isNotBlank(split[1])) {
-                searchDailyPayment.setUnitNo(Integer.valueOf(split[1]));
+                searchExpenseBill.setUnitNo(Integer.valueOf(split[1]));
             }
             //添加房产模糊查询信息
             if (StringUtils.isNotBlank(split[2])) {
-                searchDailyPayment.setRoomNumber(split[2]);
+                searchExpenseBill.setRoomNumber(split[2]);
             }
         }
-        List<VoExpenseBill> list = sysExpenseBillDao.list(searchDailyPayment);
+        List<VoExpenseBill> list = sysExpenseBillDao.list(searchExpenseBill);
         return list;
     }
 
@@ -136,6 +134,11 @@ public class SysExpenseBillServiceImpl implements SysExpenseBillService {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    @Override
+    public List<VoDailyPayment> detailList(SearchExpenseBillDetail searchExpenseBillDetail) {
+        return null;
     }
 
 

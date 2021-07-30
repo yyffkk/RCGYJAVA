@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.chargeManagement.SysExpenseBillDao">
-    <select id="list" parameterType="com.api.model.chargeManagement.SearchDailyPayment" resultType="com.api.vo.chargeManagement.VoExpenseBill">
+    <select id="list" parameterType="com.api.model.chargeManagement.SearchExpenseBill" resultType="com.api.vo.chargeManagement.VoExpenseBill">
         SELECT T.building_unit_estate_id as id,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,
         sum(T.cost_price) as cost_price_sum,(case sum(T.refund_price) is null when true then 0 else sum(T.refund_price) end) as refund_price_sum,
         sum(T.total_price + T.overdue_fine_new) as total_price_sum,

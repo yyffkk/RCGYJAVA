@@ -1,6 +1,6 @@
 package com.api.manage.dao.chargeManagement;
 
-import com.api.model.chargeManagement.SearchDailyPayment;
+import com.api.model.chargeManagement.SearchExpenseBill;
 import com.api.vo.chargeManagement.VoExpenseBill;
 
 import java.util.List;
@@ -8,10 +8,10 @@ import java.util.List;
 public interface SysExpenseBillDao {
     /**
      * 查询所有的费用账单信息 （包含条件搜索）
-     * @param searchDailyPayment 搜索条件
+     * @param searchExpenseBill 搜索条件
      * @return map
      */
-    List<VoExpenseBill> list(SearchDailyPayment searchDailyPayment);
+    List<VoExpenseBill> list(SearchExpenseBill searchExpenseBill);
 
     /**
      * 根据状态显示value值 查询状态显示name名称
