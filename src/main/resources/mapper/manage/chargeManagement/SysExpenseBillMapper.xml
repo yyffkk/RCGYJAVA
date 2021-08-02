@@ -102,4 +102,11 @@
         where sdpol.daily_payment_order_id = sdpo.id and sdpol.daily_payment_id = #{id}
         group by sdpol.daily_payment_id
     </select>
+
+    <select id="findAssociationResidentsByEstateId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select GROUP_CONCAT(ur.name)
+        from cpm_resident_estate as cre,user_resident as ur
+        where cre.resident_id = ur.id and cre.building_unit_estate_id = #{id}
+        GROUP BY cre.building_unit_estate_id
+    </select>
 </mapper>

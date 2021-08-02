@@ -49,6 +49,13 @@ public class SysExpenseBillServiceImpl implements SysExpenseBillService {
             }
         }
         List<VoExpenseBill> list = sysExpenseBillDao.list(searchExpenseBill);
+        if (list != null && list.size() >0){
+            for (VoExpenseBill voExpenseBill : list) {
+                //根据房产主键id查询当前关联住户
+                String associationResidentsName = sysExpenseBillDao.findAssociationResidentsByEstateId(voExpenseBill.getId());
+                voExpenseBill.setAssociationResidentsName(associationResidentsName);
+            }
+        }
         return list;
     }
 

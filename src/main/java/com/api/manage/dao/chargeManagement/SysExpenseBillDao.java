@@ -36,4 +36,10 @@ public interface SysExpenseBillDao {
      */
     String findPayPeopleNameByBillId(Integer id);
 
+    /**
+     * 根据房产主键id查询当前关联住户
+     * @param id 房产主键id
+     * @return 当前关联住户
+     */
+    String findAssociationResidentsByEstateId(Integer id);
 }

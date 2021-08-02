@@ -16,6 +16,10 @@ public class VoExpenseBill {
      */
     private String roomName;
     /**
+     * 当前关联住户名称
+     */
+    private String associationResidentsName;
+    /**
      * 费用总计
      */
     private BigDecimal costPriceSum;
@@ -41,6 +45,7 @@ public class VoExpenseBill {
         return "VoExpenseBill{" +
                 "id=" + id +
                 ", roomName='" + roomName + '\'' +
+                ", associationResidentsName='" + associationResidentsName + '\'' +
                 ", costPriceSum=" + costPriceSum +
                 ", refundPriceSum=" + refundPriceSum +
                 ", totalPriceSum=" + totalPriceSum +
@@ -63,6 +68,14 @@ public class VoExpenseBill {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getAssociationResidentsName() {
+        return associationResidentsName;
+    }
+
+    public void setAssociationResidentsName(String associationResidentsName) {
+        this.associationResidentsName = associationResidentsName;
     }
 
     public BigDecimal getCostPriceSum() {
@@ -108,9 +121,10 @@ public class VoExpenseBill {
     public VoExpenseBill() {
     }
 
-    public VoExpenseBill(Integer id, String roomName, BigDecimal costPriceSum, BigDecimal refundPriceSum, BigDecimal totalPriceSum, BigDecimal paidPriceSum, BigDecimal paymentPriceSum) {
+    public VoExpenseBill(Integer id, String roomName, String associationResidentsName, BigDecimal costPriceSum, BigDecimal refundPriceSum, BigDecimal totalPriceSum, BigDecimal paidPriceSum, BigDecimal paymentPriceSum) {
         this.id = id;
         this.roomName = roomName;
+        this.associationResidentsName = associationResidentsName;
         this.costPriceSum = costPriceSum;
         this.refundPriceSum = refundPriceSum;
         this.totalPriceSum = totalPriceSum;
