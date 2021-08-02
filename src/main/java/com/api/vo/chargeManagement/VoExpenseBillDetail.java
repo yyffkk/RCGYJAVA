@@ -36,7 +36,7 @@ public class VoExpenseBillDetail {
      */
     private BigDecimal paymentPrice;
     /**
-     * 退款金额
+     * 退款金额(备注功能，不参与运算)
      */
     private BigDecimal refundPrice;
     /**
