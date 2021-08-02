@@ -141,7 +141,12 @@ public class SysExpenseBillServiceImpl implements SysExpenseBillService {
     public List<VoExpenseBillDetail> detailList(SearchExpenseBillDetail searchExpenseBillDetail) {
         List<VoExpenseBillDetail> voExpenseBillDetails = sysExpenseBillDao.detailList(searchExpenseBillDetail);
 
-        //TODO 缴纳人名称未写
+        for (VoExpenseBillDetail voExpenseBillDetail : voExpenseBillDetails) {
+            //查询缴费人名称
+            String name = sysExpenseBillDao.findPayPeopleNameByBillId(voExpenseBillDetail.getId());
+            voExpenseBillDetail.setPayPeopleName(name);
+        }
+
         return voExpenseBillDetails;
     }
 

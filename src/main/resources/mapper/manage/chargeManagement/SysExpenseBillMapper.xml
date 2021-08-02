@@ -78,9 +78,28 @@
         end
         ) as overdue_fine_new
         from sys_daily_payment as sdp
+        where sdp.building_unit_estate_id = #{estateId}
         ) as T
         left join sys_user as su on T.create_id = su.id
         left join sys_charges_template_detail as sctd on T.charges_template_detail_id = sctd.id
-        where T.is_delete = 1
+        <where>
+            T.is_delete = 1
+            <if test="years != null">
+                and year(T.begin_date) = #{years}
+            </if>
+            <if test="months != null">
+                and month(T.begin_date) = #{months}
+            </if>
+            <if test="chargesTemplateDetailId != null">
+                and T.charges_template_detail_id = #{chargesTemplateDetailId}
+            </if>
+        </where>
+        order by T.create_date
+    </select>
+    <select id="findPayPeopleNameByBillId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select GROUP_CONCAT(DISTINCT sdpo.name)
+        from sys_daily_payment_order as sdpo,sys_daily_payment_order_list as sdpol
+        where sdpol.daily_payment_order_id = sdpo.id and sdpol.daily_payment_id = #{id}
+        group by sdpol.daily_payment_id
     </select>
 </mapper>

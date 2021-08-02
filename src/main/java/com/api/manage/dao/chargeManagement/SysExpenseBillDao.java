@@ -29,4 +29,11 @@ public interface SysExpenseBillDao {
      */
     List<VoExpenseBillDetail> detailList(SearchExpenseBillDetail searchExpenseBillDetail);
 
+    /**
+     * 根据缴费主键id查询缴费人名称
+     * @param id 缴费主键id
+     * @return 缴费人名称
+     */
+    String findPayPeopleNameByBillId(Integer id);
+
 }

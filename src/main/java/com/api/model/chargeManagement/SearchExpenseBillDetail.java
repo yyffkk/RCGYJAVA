@@ -13,6 +13,10 @@ public class SearchExpenseBillDetail {
      */
     private int size;
     /**
+     * 房产主键id
+     */
+    private Integer estateId;
+    /**
      * 年份
      */
     private Integer years;
@@ -34,6 +38,7 @@ public class SearchExpenseBillDetail {
         return "SearchExpenseBillDetail{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
+                ", estateId=" + estateId +
                 ", years=" + years +
                 ", months=" + months +
                 ", payPeopleName='" + payPeopleName + '\'' +
@@ -55,6 +60,14 @@ public class SearchExpenseBillDetail {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
     }
 
     public Integer getYears() {
@@ -92,9 +105,10 @@ public class SearchExpenseBillDetail {
     public SearchExpenseBillDetail() {
     }
 
-    public SearchExpenseBillDetail(int pageNum, int size, Integer years, Integer months, String payPeopleName, Integer chargesTemplateDetailId) {
+    public SearchExpenseBillDetail(int pageNum, int size, Integer estateId, Integer years, Integer months, String payPeopleName, Integer chargesTemplateDetailId) {
         this.pageNum = pageNum;
         this.size = size;
+        this.estateId = estateId;
         this.years = years;
         this.months = months;
         this.payPeopleName = payPeopleName;
