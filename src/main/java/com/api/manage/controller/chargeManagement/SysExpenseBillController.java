@@ -1,6 +1,7 @@
 package com.api.manage.controller.chargeManagement;
 
 
+import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.SearchDailyPayment;
 import com.api.manage.service.chargeManagement.SysExpenseBillService;
 import com.api.model.chargeManagement.SearchExpenseBill;
@@ -12,9 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -56,6 +55,7 @@ public class SysExpenseBillController   {
      * @return map
      */
     @GetMapping("/detailList")
+    @RequiresPermissions(value = {"0401","04"},logical = Logical.AND)
     public Map<String,Object> detailList(SearchExpenseBillDetail searchExpenseBillDetail){
         PageHelper.startPage(searchExpenseBillDetail.getPageNum(),searchExpenseBillDetail.getSize());
         List<VoExpenseBillDetail> voDailyPaymentList = sysExpenseBillService.detailList(searchExpenseBillDetail);
@@ -67,6 +67,15 @@ public class SysExpenseBillController   {
         return map;
     }
 
+    /**
+     * 费用账单退款接口(只是退款备注，退款金额不参与运算)
+     * @return map
+     */
+    @RequiresPermissions(value = {"0408","04"},logical = Logical.AND)
+    @PostMapping("/refund")
+    public Map<String,Object> refund(@RequestBody DailyPayment dailyPayment){
+        return sysExpenseBillService.refund(dailyPayment);
+    }
 
     /**
      * 导出费用账单报表（导出EXCEL）
@@ -86,14 +95,7 @@ public class SysExpenseBillController   {
     }
 
 
-    /**
-     * 费用账单退款接口
-     * @return map
-     */
-    @RequiresPermissions(value = {"0408","04"},logical = Logical.AND)
-    public Map<String,Object> refund(){
-        return null;
-    }
+
 
 
 }

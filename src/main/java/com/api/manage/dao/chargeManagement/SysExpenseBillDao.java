@@ -1,5 +1,6 @@
 package com.api.manage.dao.chargeManagement;
 
+import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.SearchExpenseBill;
 import com.api.model.chargeManagement.SearchExpenseBillDetail;
 import com.api.vo.chargeManagement.VoExpenseBill;
@@ -42,4 +43,11 @@ public interface SysExpenseBillDao {
      * @return 当前关联住户
      */
     String findAssociationResidentsByEstateId(Integer id);
+
+    /**
+     * 费用账单退款接口
+     * @param dailyPayment 日常缴费 信息model
+     * @return 影响行数
+     */
+    int refund(DailyPayment dailyPayment);
 }

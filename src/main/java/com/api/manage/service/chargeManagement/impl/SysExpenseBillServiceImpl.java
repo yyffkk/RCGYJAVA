@@ -2,6 +2,7 @@ package com.api.manage.service.chargeManagement.impl;
 
 import com.api.manage.dao.chargeManagement.SysExpenseBillDao;
 import com.api.manage.service.chargeManagement.SysExpenseBillService;
+import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.SearchExpenseBill;
 import com.api.model.chargeManagement.SearchExpenseBillDetail;
 import com.api.vo.chargeManagement.VoDailyPayment;
@@ -14,10 +15,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysExpenseBillServiceImpl implements SysExpenseBillService {
+    private static Map<String,Object> map = null;
     @Resource
     SysExpenseBillDao sysExpenseBillDao;
 
@@ -155,6 +159,20 @@ public class SysExpenseBillServiceImpl implements SysExpenseBillService {
         }
 
         return voExpenseBillDetails;
+    }
+
+    @Override
+    public Map<String, Object> refund(DailyPayment dailyPayment) {
+        map = new HashMap<>();
+        int update = sysExpenseBillDao.refund(dailyPayment);
+        if (update > 0){
+            map.put("message","修改成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改失败");
+            map.put("status",false);
+        }
+        return map;
     }
 
 

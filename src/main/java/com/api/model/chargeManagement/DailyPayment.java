@@ -88,6 +88,10 @@ public class DailyPayment {
      */
     private Integer isDelete;
     /**
+     * 退款金额
+     */
+    private BigDecimal refundPrice;
+    /**
      * 日常缴费订单信息
      */
     private DailyPaymentOrder dailyPaymentOrder;
@@ -115,6 +119,7 @@ public class DailyPayment {
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
                 ", isDelete=" + isDelete +
+                ", refundPrice=" + refundPrice +
                 ", dailyPaymentOrder=" + dailyPaymentOrder +
                 '}';
     }
@@ -279,6 +284,14 @@ public class DailyPayment {
         this.isDelete = isDelete;
     }
 
+    public BigDecimal getRefundPrice() {
+        return refundPrice;
+    }
+
+    public void setRefundPrice(BigDecimal refundPrice) {
+        this.refundPrice = refundPrice;
+    }
+
     public DailyPaymentOrder getDailyPaymentOrder() {
         return dailyPaymentOrder;
     }
@@ -290,7 +303,7 @@ public class DailyPayment {
     public DailyPayment() {
     }
 
-    public DailyPayment(Integer id, Integer buildingUnitEstateId, Integer chargesTemplateDetailId, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, Integer rate, Date paymentTerm, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, DailyPaymentOrder dailyPaymentOrder) {
+    public DailyPayment(Integer id, Integer buildingUnitEstateId, Integer chargesTemplateDetailId, Date beginDate, Date endDate, BigDecimal unitPrice, Integer type, Integer num, BigDecimal costPrice, BigDecimal paidPrice, BigDecimal totalPrice, BigDecimal paymentPrice, Integer status, Integer rate, Date paymentTerm, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete, BigDecimal refundPrice, DailyPaymentOrder dailyPaymentOrder) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.chargesTemplateDetailId = chargesTemplateDetailId;
@@ -311,6 +324,7 @@ public class DailyPayment {
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
         this.isDelete = isDelete;
+        this.refundPrice = refundPrice;
         this.dailyPaymentOrder = dailyPaymentOrder;
     }
 }

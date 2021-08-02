@@ -109,4 +109,11 @@
         where cre.resident_id = ur.id and cre.building_unit_estate_id = #{id}
         GROUP BY cre.building_unit_estate_id
     </select>
+
+    <update id="refund" parameterType="com.api.model.chargeManagement.DailyPayment">
+        update sys_daily_payment
+        set refund_price = #{refundPrice}
+        where id = #{id}
+    </update>
+
 </mapper>
