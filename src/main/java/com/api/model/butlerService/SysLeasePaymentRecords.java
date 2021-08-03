@@ -24,7 +24,7 @@ public class SysLeasePaymentRecords {
      */
     private BigDecimal payPrice;
     /**
-     * 状态（1.已缴纳，2.未缴纳）
+     * 状态（0.未缴纳,1.已缴纳,2.已结算）
      */
     private Integer status;
     /**
