@@ -13,16 +13,16 @@ public class ButlerRepairEngineeringSearch {
      */
     private int size;
     /**
-     * 状态
+     * 报事报修工程维修状态
      */
-    private Integer status;
+    private Integer repairEngineeringStatus;
 
     @Override
     public String toString() {
         return "ButlerRepairEngineeringSearch{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
-                ", status=" + status +
+                ", repairEngineeringStatus=" + repairEngineeringStatus +
                 '}';
     }
 
@@ -42,20 +42,20 @@ public class ButlerRepairEngineeringSearch {
         this.size = size;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getRepairEngineeringStatus() {
+        return repairEngineeringStatus;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setRepairEngineeringStatus(Integer repairEngineeringStatus) {
+        this.repairEngineeringStatus = repairEngineeringStatus;
     }
 
     public ButlerRepairEngineeringSearch() {
     }
 
-    public ButlerRepairEngineeringSearch(int pageNum, int size, Integer status) {
+    public ButlerRepairEngineeringSearch(int pageNum, int size, Integer repairEngineeringStatus) {
         this.pageNum = pageNum;
         this.size = size;
-        this.status = status;
+        this.repairEngineeringStatus = repairEngineeringStatus;
     }
 }

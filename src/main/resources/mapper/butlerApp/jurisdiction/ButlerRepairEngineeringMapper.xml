@@ -6,6 +6,11 @@
 
     <select id="list" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
         select * from sys_report_repair_engineering
+        <where>
+            <if test="repairEngineeringStatus != null">
+                status = #{repairEngineeringStatus}
+            </if>
+        </where>
     </select>
 
     <insert id="insert" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
