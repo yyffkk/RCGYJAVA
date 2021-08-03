@@ -122,4 +122,15 @@ public class LeaseController {
     public Map<String,Object> renew(@RequestBody SysLeaseRenew sysLeaseRenew){
         return leaseService.renew(sysLeaseRenew);
     }
+
+
+    /**
+     * 根据租赁主键id查询租赁费用缴纳记录
+     * @param id 租赁主键id
+     * @return map
+     */
+    @GetMapping("/findPaymentRecordsById")
+    public Map<String,Object> findPaymentRecordsById(Integer id){
+        return leaseService.findPaymentRecordsById(id);
+    }
 }

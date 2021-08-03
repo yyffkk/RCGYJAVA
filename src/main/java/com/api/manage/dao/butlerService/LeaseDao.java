@@ -6,6 +6,7 @@ import com.api.model.alipay.SysLeaseRentOrder;
 import com.api.model.app.AppLeaseRent;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
+import com.api.model.butlerService.SysLeasePaymentRecords;
 import com.api.model.butlerService.SysLeaseRenew;
 import com.api.vo.butlerService.VoFBILease;
 import com.api.vo.butlerService.VoLease;
@@ -240,4 +241,11 @@ public interface LeaseDao {
      * @return 影响行数
      */
     int renew(SysLeaseRenew sysLeaseRenew);
+
+    /**
+     * 根据租赁主键id查询租赁费用缴纳记录
+     * @param id 租赁主键id
+     * @return 租赁费用缴纳记录
+     */
+    List<SysLeasePaymentRecords> findPaymentRecordsById(Integer id);
 }

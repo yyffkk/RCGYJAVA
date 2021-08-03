@@ -26,4 +26,6 @@ public interface LeaseService {
     Map<String, Object> reviewDepositRefundApplication(SysLease sysLease);
 
     Map<String, Object> renew(SysLeaseRenew sysLeaseRenew);
+
+    Map<String, Object> findPaymentRecordsById(Integer id);
 }

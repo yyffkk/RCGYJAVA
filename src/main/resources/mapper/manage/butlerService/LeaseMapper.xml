@@ -397,4 +397,11 @@
         where code = #{code}
     </update>
 
+    <select id="findPaymentRecordsById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.SysLeasePaymentRecords">
+        select id,code,1 as type,pay_price,status,create_date from sys_lease_order where sys_lease_id = #{id}
+        union all
+        select slrbo.id,slrbo.code,2 as type,slrbo.pay_price,(case slrbo.status = 2 when true then 1 else 2 end) as status,slrbo.create_date from sys_lease_rent as slr,sys_lease_rent_bill_order as slrbo
+        where slrbo.sys_lease_rent_id = slr.id and slr.sys_lease_id = #{id}
+    </select>
+
 </mapper>

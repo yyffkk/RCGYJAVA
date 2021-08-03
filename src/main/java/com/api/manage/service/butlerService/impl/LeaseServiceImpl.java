@@ -11,6 +11,7 @@ import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SearchLease;
 import com.api.model.butlerService.SysLease;
+import com.api.model.butlerService.SysLeasePaymentRecords;
 import com.api.model.butlerService.SysLeaseRenew;
 import com.api.model.resources.ResourcesImg;
 import com.api.util.IdWorker;
@@ -480,6 +481,18 @@ public class LeaseServiceImpl implements LeaseService {
         }
         map.put("message","添加成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findPaymentRecordsById(Integer id) {
+        map = new HashMap<>();
+
+        List<SysLeasePaymentRecords> paymentRecordsList = leaseDao.findPaymentRecordsById(id);
+        map.put("message","请求成功");
+        map.put("data",paymentRecordsList);
+        map.put("status",true);
+
         return map;
     }
 }
