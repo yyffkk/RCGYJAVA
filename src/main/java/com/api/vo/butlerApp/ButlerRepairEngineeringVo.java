@@ -1,6 +1,9 @@
 package com.api.vo.butlerApp;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 管家app 报事报修工程维修 Vo list  回显
@@ -27,6 +30,10 @@ public class ButlerRepairEngineeringVo {
      */
     private Integer status;
     /**
+     * 照片资源信息集合
+     */
+    private List<VoResourcesImg> imgUrls;
+    /**
      * 创建时间
      */
     private Date createDate;
@@ -39,6 +46,7 @@ public class ButlerRepairEngineeringVo {
                 ", type=" + type +
                 ", reportDetail='" + reportDetail + '\'' +
                 ", status=" + status +
+                ", imgUrls=" + imgUrls +
                 ", createDate=" + createDate +
                 '}';
     }
@@ -83,6 +91,14 @@ public class ButlerRepairEngineeringVo {
         this.status = status;
     }
 
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -94,12 +110,13 @@ public class ButlerRepairEngineeringVo {
     public ButlerRepairEngineeringVo() {
     }
 
-    public ButlerRepairEngineeringVo(Integer id, String code, Integer type, String reportDetail, Integer status, Date createDate) {
+    public ButlerRepairEngineeringVo(Integer id, String code, Integer type, String reportDetail, Integer status, List<VoResourcesImg> imgUrls, Date createDate) {
         this.id = id;
         this.code = code;
         this.type = type;
         this.reportDetail = reportDetail;
         this.status = status;
+        this.imgUrls = imgUrls;
         this.createDate = createDate;
     }
 }
