@@ -3,6 +3,7 @@ package com.api.butlerApp.controller.jurisdiction;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairEngineeringService;
 import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
+import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
 import com.api.vo.butlerApp.ButlerRepairVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,8 +33,8 @@ public class ButlerRepairEngineeringController {
     @GetMapping("/list")
     public Map<String,Object> list(ButlerRepairEngineeringSearch butlerRepairEngineeringSearch){
         PageHelper.startPage(butlerRepairEngineeringSearch.getPageNum(),butlerRepairEngineeringSearch.getSize());
-        List<ButlerRepairVo> butlerRepairVos =butlerRepairEngineeringService.list(butlerRepairEngineeringSearch);
-        PageInfo<ButlerRepairVo> pageInfo = new PageInfo<>(butlerRepairVos);
+        List<ButlerRepairEngineeringVo> butlerRepairEngineeringVoList =butlerRepairEngineeringService.list(butlerRepairEngineeringSearch);
+        PageInfo<ButlerRepairEngineeringVo> pageInfo = new PageInfo<>(butlerRepairEngineeringVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());

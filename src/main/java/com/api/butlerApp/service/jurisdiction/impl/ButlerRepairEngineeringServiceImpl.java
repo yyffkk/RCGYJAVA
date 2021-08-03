@@ -6,6 +6,7 @@ import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
+import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
 import com.api.vo.butlerApp.ButlerRepairVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
@@ -23,13 +24,13 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
     private static Map<String,Object> map = null;
 
     @Override
-    public List<ButlerRepairVo> list(ButlerRepairEngineeringSearch butlerRepairEngineeringSearch) {
-        List<ButlerRepairVo> list = butlerRepairEngineeringDao.list(butlerRepairEngineeringSearch);
+    public List<ButlerRepairEngineeringVo> list(ButlerRepairEngineeringSearch butlerRepairEngineeringSearch) {
+        List<ButlerRepairEngineeringVo> list = butlerRepairEngineeringDao.list(butlerRepairEngineeringSearch);
         if (list != null && list.size() > 0){
             UploadUtil uploadUtil = new UploadUtil();
-            for (ButlerRepairVo butlerRepairVo : list) {
-                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportRepairEngineering", butlerRepairVo.getId(), "engineeringMaintenanceImg");
-                butlerRepairVo.setImgUrls(imgByDate);
+            for (ButlerRepairEngineeringVo butlerRepairEngineeringVo : list) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportRepairEngineering", butlerRepairEngineeringVo.getId(), "engineeringMaintenanceImg");
+                butlerRepairEngineeringVo.setImgUrls(imgByDate);
             }
         }
         return list;
