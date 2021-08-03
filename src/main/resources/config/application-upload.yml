@@ -116,6 +116,8 @@ prop:
   upload-butler-app-inspection-face: /img/inspectionFace/
   #ButlerApp-巡检管理：巡更人员拍摄现场
   upload-butler-app-inspection-space: /img/inspectionSpace/
+  #ButlerApp-报事报修管理：工程维修图片信息
+  upload-butler-app-engineering-repair: /img/engineeringRepair/
 
 
 

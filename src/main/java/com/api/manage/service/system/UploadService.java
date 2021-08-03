@@ -101,4 +101,6 @@ public interface UploadService {
     Map<String, Object> uploadAppHousekeepingServiceEvaluationPhone(MultipartFile file);
 
     Map<String, Object> uploadHousekeepingServiceHandlerPhone(MultipartFile file);
+
+    Map<String, Object> uploadButlerAppEngineeringRepair(MultipartFile file);
 }

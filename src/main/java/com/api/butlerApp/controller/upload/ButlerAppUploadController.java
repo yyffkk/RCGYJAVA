@@ -100,4 +100,14 @@ public class ButlerAppUploadController {
     public Map<String,Object> uploadHousekeepingServiceHandlerPhone(MultipartFile file){
         return uploadService.uploadHousekeepingServiceHandlerPhone(file);
     }
+
+    /**
+     * 上传报事报修工程维修照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadButlerAppEngineeringRepair")
+    public Map<String,Object> uploadButlerAppEngineeringRepair(MultipartFile file){
+        return uploadService.uploadButlerAppEngineeringRepair(file);
+    }
 }
