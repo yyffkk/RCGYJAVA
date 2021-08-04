@@ -60,5 +60,15 @@ public class ButlerRepairEngineeringController {
         return butlerRepairEngineeringService.insert(butlerRepairEngineering);
     }
 
+    /**
+     * 根据工程维修主键id查询工程维修信息
+     * @param repairEngineeringId 工程维修主键id
+     * @return map
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer repairEngineeringId){
+        return butlerRepairEngineeringService.findById(repairEngineeringId);
+    }
+
 
 }

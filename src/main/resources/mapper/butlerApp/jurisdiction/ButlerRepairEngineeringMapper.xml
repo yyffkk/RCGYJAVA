@@ -71,4 +71,9 @@
         )
     </insert>
 
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo">
+        select * from sys_report_repair_engineering where id = #{repairEngineeringId}
+    </select>
+
+
 </mapper>

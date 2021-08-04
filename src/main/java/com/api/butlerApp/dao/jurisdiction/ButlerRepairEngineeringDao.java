@@ -3,6 +3,7 @@ package com.api.butlerApp.dao.jurisdiction;
 import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
+import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
 import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
 import com.api.vo.butlerApp.ButlerRepairVo;
 
@@ -43,4 +44,11 @@ public interface ButlerRepairEngineeringDao {
      * @return 影响行数
      */
     int insertProcessRecord(ButlerReportRepairEngineeringProcessRecord engineeringProcessRecord);
+
+    /**
+     * 根据工程维修主键id查询工程维修信息
+     * @param repairEngineeringId 工程维修主键id
+     * @return 工程维修信息
+     */
+    ButlerRepairEngineeringFBIVo findById(Integer repairEngineeringId);
 }

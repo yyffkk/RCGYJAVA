@@ -13,4 +13,6 @@ public interface ButlerRepairEngineeringService {
     Map<String, Object> insert(ButlerRepairEngineering butlerRepairEngineering);
 
     int findJurisdictionByUserId(String roleId);
+
+    Map<String, Object> findById(Integer repairEngineeringId);
 }

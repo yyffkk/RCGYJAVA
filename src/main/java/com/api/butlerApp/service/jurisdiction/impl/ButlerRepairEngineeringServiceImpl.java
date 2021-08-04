@@ -10,6 +10,7 @@ import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
 import com.api.model.butlerService.ProcessRecord;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
+import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
 import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
@@ -131,5 +132,17 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
             }
         }
         return 4;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer repairEngineeringId) {
+        map = new HashMap<>();
+
+        ButlerRepairEngineeringFBIVo engineeringFBIVo = butlerRepairEngineeringDao.findById(repairEngineeringId);
+        map.put("message","请求成功");
+        map.put("data",engineeringFBIVo);
+        map.put("status",true);
+
+        return map;
     }
 }
