@@ -93,6 +93,9 @@
         where repair_engineering_id = #{repairEngineeringId}
         order by operation_date desc
     </select>
+    <select id="findRepairOrganization" resultType="com.api.model.businessManagement.SysOrganization">
+        select * from sys_organization where category_id = 5
+    </select>
 
 
 </mapper>

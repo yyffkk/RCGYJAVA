@@ -1,5 +1,6 @@
 package com.api.butlerApp.dao.jurisdiction;
 
+import com.api.model.businessManagement.SysOrganization;
 import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
@@ -58,4 +59,10 @@ public interface ButlerRepairEngineeringDao {
      * @return 工程报修进程
      */
     List<ButlerReportRepairEngineeringProcessRecord> findProcessRecordById(Integer repairEngineeringId);
+
+    /**
+     * 查询所有的维修公司
+     * @return 维修公司
+     */
+    List<SysOrganization> findRepairOrganization();
 }

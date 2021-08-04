@@ -3,6 +3,7 @@ package com.api.butlerApp.service.jurisdiction.impl;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairEngineeringDao;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairEngineeringService;
+import com.api.model.businessManagement.SysOrganization;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
@@ -154,6 +155,19 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
 
         map.put("message","请求成功");
         map.put("data",repairEngineeringProcessRecordList);
+        map.put("status",true);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findRepairOrganization() {
+        map = new HashMap<>();
+
+        List<SysOrganization> sysOrganizationList = butlerRepairEngineeringDao.findRepairOrganization();
+
+        map.put("message","请求成功");
+        map.put("data",sysOrganizationList);
         map.put("status",true);
 
         return map;

@@ -80,4 +80,17 @@ public class ButlerRepairEngineeringController {
         return butlerRepairEngineeringService.findProcessRecordById(repairEngineeringId);
     }
 
+    /**
+     * 查询所有的维修公司
+     * @return map
+     */
+    @GetMapping("/findRepairOrganization")
+    public Map<String,Object> findRepairOrganization(){
+        return butlerRepairEngineeringService.findRepairOrganization();
+    }
+
+
+
+
+
 }

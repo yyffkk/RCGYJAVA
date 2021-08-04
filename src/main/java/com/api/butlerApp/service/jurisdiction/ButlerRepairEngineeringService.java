@@ -17,4 +17,7 @@ public interface ButlerRepairEngineeringService {
     Map<String, Object> findById(Integer repairEngineeringId);
 
     Map<String, Object> findProcessRecordById(Integer repairEngineeringId);
+
+    Map<String, Object> findRepairOrganization();
+
 }
