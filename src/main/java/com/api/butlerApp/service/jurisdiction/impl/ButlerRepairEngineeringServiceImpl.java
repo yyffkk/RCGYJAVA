@@ -145,4 +145,17 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
 
         return map;
     }
+
+    @Override
+    public Map<String, Object> findProcessRecordById(Integer repairEngineeringId) {
+        map = new HashMap<>();
+
+        List<ButlerReportRepairEngineeringProcessRecord> repairEngineeringProcessRecordList = butlerRepairEngineeringDao.findProcessRecordById(repairEngineeringId);
+
+        map.put("message","请求成功");
+        map.put("data",repairEngineeringProcessRecordList);
+        map.put("status",true);
+
+        return map;
+    }
 }

@@ -51,4 +51,11 @@ public interface ButlerRepairEngineeringDao {
      * @return 工程维修信息
      */
     ButlerRepairEngineeringFBIVo findById(Integer repairEngineeringId);
+
+    /**
+     * 根据工程维修主键id查询工程报修进程
+     * @param repairEngineeringId 工程维修主键id
+     * @return 工程报修进程
+     */
+    List<ButlerReportRepairEngineeringProcessRecord> findProcessRecordById(Integer repairEngineeringId);
 }

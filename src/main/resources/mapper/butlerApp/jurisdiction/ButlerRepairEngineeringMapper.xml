@@ -11,6 +11,7 @@
                 status = #{repairEngineeringStatus}
             </if>
         </where>
+        order by create_date desc
     </select>
     <select id="list2" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
         select * from sys_report_repair_engineering
@@ -20,6 +21,7 @@
             </if>
             #{organizationIdPath} like concat('%',organization_id,'%')
         </where>
+        order by create_date desc
     </select>
     <select id="list3" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
         select * from sys_report_repair_engineering
@@ -29,6 +31,7 @@
             </if>
             maintenance_staff = #{id}
         </where>
+        order by create_date desc
     </select>
 
     <insert id="insert" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
@@ -82,6 +85,13 @@
         LEFT JOIN sys_user as su3 on srre.maintenance_staff = su3.id
         LEFT JOIN sys_organization as so2 on su3.organization_id = so2.id
         where srre.create_id = su1.id and srre.id = #{repairEngineeringId}
+    </select>
+
+    <select id="findProcessRecordById" parameterType="java.lang.Integer"
+            resultType="com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord">
+        select * from sys_report_repair_engineering_process_record
+        where repair_engineering_id = #{repairEngineeringId}
+        order by operation_date desc
     </select>
 
 

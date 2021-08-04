@@ -15,4 +15,6 @@ public interface ButlerRepairEngineeringService {
     int findJurisdictionByUserId(String roleId);
 
     Map<String, Object> findById(Integer repairEngineeringId);
+
+    Map<String, Object> findProcessRecordById(Integer repairEngineeringId);
 }

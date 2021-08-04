@@ -70,5 +70,14 @@ public class ButlerRepairEngineeringController {
         return butlerRepairEngineeringService.findById(repairEngineeringId);
     }
 
+    /**
+     * 根据工程维修主键id查询工程报修进程
+     * @param repairEngineeringId 工程维修主键id
+     * @return map
+     */
+    @GetMapping("/findProcessRecordById")
+    public Map<String,Object> findProcessRecordById(Integer repairEngineeringId){
+        return butlerRepairEngineeringService.findProcessRecordById(repairEngineeringId);
+    }
 
 }
