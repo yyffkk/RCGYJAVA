@@ -1,6 +1,7 @@
 package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.businessManagement.SysOrganization;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
@@ -72,4 +73,11 @@ public interface ButlerRepairEngineeringDao {
      * @return 影响行数
      */
     int maintenanceCompanySendSingle(ButlerRepairEngineering butlerRepairEngineering);
+
+    /**
+     * 根据维修公司主键id查询维修人员信息
+     * @param repairOrganizationId 维修公司主键id
+     * @return 维修人员信息
+     */
+    List<SysUser> findSysUserByOrganizationId(Integer repairOrganizationId);
 }

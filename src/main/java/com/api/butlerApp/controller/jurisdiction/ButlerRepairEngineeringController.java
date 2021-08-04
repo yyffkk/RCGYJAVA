@@ -112,6 +112,15 @@ public class ButlerRepairEngineeringController {
         return butlerRepairEngineeringService.maintenanceCompanySendSingle(butlerRepairEngineering,type);
     }
 
+    /**
+     * 根据维修公司主键id查询维修人员信息
+     * @param repairOrganizationId 维修公司主键id
+     * @return 维修人员信息
+     */
+    @GetMapping("/findSysUserByOrganizationId")
+    public Map<String,Object> findSysUserByOrganizationId(Integer repairOrganizationId){
+        return butlerRepairEngineeringService.findSysUserByOrganizationId(repairOrganizationId);
+    }
 
 
 

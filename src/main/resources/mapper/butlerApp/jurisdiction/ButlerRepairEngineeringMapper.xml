@@ -96,6 +96,11 @@
     <select id="findRepairOrganization" resultType="com.api.model.businessManagement.SysOrganization">
         select * from sys_organization where category_id = 5
     </select>
+    <select id="findSysUserByOrganizationId" parameterType="java.lang.Integer" resultType="com.api.model.businessManagement.SysUser">
+        select id,actual_name from sys_user
+        where organization_id_path like concat('%:',#{repairOrganizationId},':%')
+        and is_delete = 1
+    </select>
 
     <update id="maintenanceCompanySendSingle" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
         update sys_report_repair_engineering

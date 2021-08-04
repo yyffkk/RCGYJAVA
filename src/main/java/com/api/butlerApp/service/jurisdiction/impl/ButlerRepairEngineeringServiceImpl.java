@@ -4,6 +4,7 @@ import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairEngineeringDao;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairEngineeringService;
 import com.api.model.businessManagement.SysOrganization;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
@@ -191,6 +192,19 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
             map.put("message","派单失败");
             map.put("status",false);
         }
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findSysUserByOrganizationId(Integer repairOrganizationId) {
+        map = new HashMap<>();
+
+        List<SysUser> sysUserList = butlerRepairEngineeringDao.findSysUserByOrganizationId(repairOrganizationId);
+
+        map.put("message","请求成功");
+        map.put("data",sysUserList);
+        map.put("status",true);
 
         return map;
     }
