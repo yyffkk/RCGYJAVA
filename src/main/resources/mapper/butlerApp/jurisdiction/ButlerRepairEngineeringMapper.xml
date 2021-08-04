@@ -4,12 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.butlerApp.dao.jurisdiction.ButlerRepairEngineeringDao">
 
-    <select id="list" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
+    <select id="list1" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
         select * from sys_report_repair_engineering
         <where>
             <if test="repairEngineeringStatus != null">
                 status = #{repairEngineeringStatus}
             </if>
+        </where>
+    </select>
+    <select id="list2" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
+        select * from sys_report_repair_engineering
+        <where>
+            <if test="repairEngineeringStatus != null">
+                status = #{repairEngineeringStatus}
+            </if>
+            #{organizationIdPath} like concat('%',organization_id,'%')
+        </where>
+    </select>
+    <select id="list3" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
+        select * from sys_report_repair_engineering
+        <where>
+            <if test="repairEngineeringStatus != null">
+                status = #{repairEngineeringStatus}
+            </if>
+            maintenance_staff = #{id}
         </where>
     </select>
 
@@ -34,6 +52,23 @@
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id
         </selectKey>
+    </insert>
+    <insert id="insertProcessRecord" parameterType="com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord">
+        insert into sys_report_repair_engineering_process_record(
+            repair_engineering_id,
+            operation_date,
+            operation_type,
+            operator,
+            operator_type,
+            operator_content
+        )values (
+            #{repairEngineeringId},
+            #{operationDate},
+            #{operationType},
+            #{operator},
+            #{operatorType},
+            #{operatorContent}
+        )
     </insert>
 
 </mapper>

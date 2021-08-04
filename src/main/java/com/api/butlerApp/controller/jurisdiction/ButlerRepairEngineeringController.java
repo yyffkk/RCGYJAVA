@@ -32,8 +32,11 @@ public class ButlerRepairEngineeringController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(ButlerRepairEngineeringSearch butlerRepairEngineeringSearch){
+        //查询用户所属权限,type:1.工程派单-维修公司 2.工程派单-维修人员 3.工程接单-维修人员，4.不具备任何权限
+        int type = butlerRepairEngineeringService.findJurisdictionByUserId(butlerRepairEngineeringSearch.getRoleId());
+        //分页查询信息
         PageHelper.startPage(butlerRepairEngineeringSearch.getPageNum(),butlerRepairEngineeringSearch.getSize());
-        List<ButlerRepairEngineeringVo> butlerRepairEngineeringVoList =butlerRepairEngineeringService.list(butlerRepairEngineeringSearch);
+        List<ButlerRepairEngineeringVo> butlerRepairEngineeringVoList =butlerRepairEngineeringService.list(butlerRepairEngineeringSearch,type);
         PageInfo<ButlerRepairEngineeringVo> pageInfo = new PageInfo<>(butlerRepairEngineeringVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());

@@ -6,7 +6,7 @@ package com.api.exception;
 public enum CommonEnum implements BaseErrorInfoInterface {
     // 数据操作错误定义
     SUCCESS("200", "成功!"),
-    BODY_NOT_MATCH("400","请求的数据格式不符!"),
+    BODY_NOT_MATCH("400","请求的数据格式不符!(空指针异常)"),
     SIGNATURE_NOT_MATCH("401","请求的数字签名不匹配!"),
     NOT_FOUND("404", "未找到该资源!"),
     REQUEST_METHOD_ERROR("405","请求方法有误，请检查当前请求方法"),
