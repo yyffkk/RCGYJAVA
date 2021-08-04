@@ -97,5 +97,14 @@
         select * from sys_organization where category_id = 5
     </select>
 
+    <update id="maintenanceCompanySendSingle" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
+        update sys_report_repair_engineering
+        set status = #{status},
+        maintenance_company_send_single = #{maintenanceCompanySendSingle},
+        maintenance_company_send_single_date = #{maintenanceCompanySendSingleDate},
+        organization_id = #{organizationId}
+        where id = #{id}
+    </update>
+
 
 </mapper>

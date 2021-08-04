@@ -40,6 +40,26 @@ public class ButlerRepairEngineering {
      */
     private Integer maintenanceStaff;
     /**
+     * 维修人员接单时间
+     */
+    private Date maintenanceStaffPickSingleDate;
+    /**
+     * 维修公司派单人id
+     */
+    private Integer maintenanceCompanySendSingle;
+    /**
+     * 维修公司派单时间
+     */
+    private Date maintenanceCompanySendSingleDate;
+    /**
+     * 维修人员派单人id
+     */
+    private Integer maintenancePersonnelSendSingle;
+    /**
+     * 维修人员派单时间
+     */
+    private Date maintenancePersonnelSendSingleDate;
+    /**
      * 创建人
      */
     private Integer createId;
@@ -63,6 +83,11 @@ public class ButlerRepairEngineering {
                 ", status=" + status +
                 ", organizationId=" + organizationId +
                 ", maintenanceStaff=" + maintenanceStaff +
+                ", maintenanceStaffPickSingleDate=" + maintenanceStaffPickSingleDate +
+                ", maintenanceCompanySendSingle=" + maintenanceCompanySendSingle +
+                ", maintenanceCompanySendSingleDate=" + maintenanceCompanySendSingleDate +
+                ", maintenancePersonnelSendSingle=" + maintenancePersonnelSendSingle +
+                ", maintenancePersonnelSendSingleDate=" + maintenancePersonnelSendSingleDate +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", fileUrls=" + Arrays.toString(fileUrls) +
@@ -133,6 +158,46 @@ public class ButlerRepairEngineering {
         this.maintenanceStaff = maintenanceStaff;
     }
 
+    public Date getMaintenanceStaffPickSingleDate() {
+        return maintenanceStaffPickSingleDate;
+    }
+
+    public void setMaintenanceStaffPickSingleDate(Date maintenanceStaffPickSingleDate) {
+        this.maintenanceStaffPickSingleDate = maintenanceStaffPickSingleDate;
+    }
+
+    public Integer getMaintenanceCompanySendSingle() {
+        return maintenanceCompanySendSingle;
+    }
+
+    public void setMaintenanceCompanySendSingle(Integer maintenanceCompanySendSingle) {
+        this.maintenanceCompanySendSingle = maintenanceCompanySendSingle;
+    }
+
+    public Date getMaintenanceCompanySendSingleDate() {
+        return maintenanceCompanySendSingleDate;
+    }
+
+    public void setMaintenanceCompanySendSingleDate(Date maintenanceCompanySendSingleDate) {
+        this.maintenanceCompanySendSingleDate = maintenanceCompanySendSingleDate;
+    }
+
+    public Integer getMaintenancePersonnelSendSingle() {
+        return maintenancePersonnelSendSingle;
+    }
+
+    public void setMaintenancePersonnelSendSingle(Integer maintenancePersonnelSendSingle) {
+        this.maintenancePersonnelSendSingle = maintenancePersonnelSendSingle;
+    }
+
+    public Date getMaintenancePersonnelSendSingleDate() {
+        return maintenancePersonnelSendSingleDate;
+    }
+
+    public void setMaintenancePersonnelSendSingleDate(Date maintenancePersonnelSendSingleDate) {
+        this.maintenancePersonnelSendSingleDate = maintenancePersonnelSendSingleDate;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -160,7 +225,7 @@ public class ButlerRepairEngineering {
     public ButlerRepairEngineering() {
     }
 
-    public ButlerRepairEngineering(Integer id, String repairArea, String code, Integer type, String reportDetail, Integer status, Integer organizationId, Integer maintenanceStaff, Integer createId, Date createDate, String[] fileUrls) {
+    public ButlerRepairEngineering(Integer id, String repairArea, String code, Integer type, String reportDetail, Integer status, Integer organizationId, Integer maintenanceStaff, Date maintenanceStaffPickSingleDate, Integer maintenanceCompanySendSingle, Date maintenanceCompanySendSingleDate, Integer maintenancePersonnelSendSingle, Date maintenancePersonnelSendSingleDate, Integer createId, Date createDate, String[] fileUrls) {
         this.id = id;
         this.repairArea = repairArea;
         this.code = code;
@@ -169,6 +234,11 @@ public class ButlerRepairEngineering {
         this.status = status;
         this.organizationId = organizationId;
         this.maintenanceStaff = maintenanceStaff;
+        this.maintenanceStaffPickSingleDate = maintenanceStaffPickSingleDate;
+        this.maintenanceCompanySendSingle = maintenanceCompanySendSingle;
+        this.maintenanceCompanySendSingleDate = maintenanceCompanySendSingleDate;
+        this.maintenancePersonnelSendSingle = maintenancePersonnelSendSingle;
+        this.maintenancePersonnelSendSingleDate = maintenancePersonnelSendSingleDate;
         this.createId = createId;
         this.createDate = createDate;
         this.fileUrls = fileUrls;

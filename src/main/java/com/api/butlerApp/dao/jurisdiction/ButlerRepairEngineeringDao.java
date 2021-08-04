@@ -65,4 +65,11 @@ public interface ButlerRepairEngineeringDao {
      * @return 维修公司
      */
     List<SysOrganization> findRepairOrganization();
+
+    /**
+     * 工程维修公司派单
+     * @param butlerRepairEngineering 管家app 报事报修工程维修model
+     * @return 影响行数
+     */
+    int maintenanceCompanySendSingle(ButlerRepairEngineering butlerRepairEngineering);
 }

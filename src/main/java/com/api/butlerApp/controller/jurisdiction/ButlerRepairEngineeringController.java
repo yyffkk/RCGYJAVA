@@ -90,6 +90,32 @@ public class ButlerRepairEngineeringController {
     }
 
 
+    /**
+     * 工程维修公司派单
+     * @param butlerRepairEngineering 管家app 报事报修工程维修model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/maintenanceCompanySendSingle")
+    public Map<String,Object> maintenanceCompanySendSingle(@RequestBody ButlerRepairEngineering butlerRepairEngineering, HttpServletRequest request){
+
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        //从request获取用户联系方式
+        String roleId = request.getParameter("roleId");
+        butlerRepairEngineering.setMaintenanceCompanySendSingle(id);//填入维修公司派单人id
+        butlerRepairEngineering.setMaintenanceCompanySendSingleDate(new Date());//填入维修公司派单时间
+
+        //查询用户所属权限,type:1.工程派单-维修公司 2.工程派单-维修人员 3.工程接单-维修人员，4.不具备任何权限
+        int type = butlerRepairEngineeringService.findJurisdictionByUserId(roleId);
+
+        return butlerRepairEngineeringService.maintenanceCompanySendSingle(butlerRepairEngineering,type);
+    }
+
+
+
+
+
 
 
 

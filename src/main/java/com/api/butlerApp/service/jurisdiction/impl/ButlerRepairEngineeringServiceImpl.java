@@ -4,11 +4,9 @@ import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.dao.jurisdiction.ButlerRepairEngineeringDao;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairEngineeringService;
 import com.api.model.businessManagement.SysOrganization;
-import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
-import com.api.model.butlerService.ProcessRecord;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
@@ -169,6 +167,30 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
         map.put("message","请求成功");
         map.put("data",sysOrganizationList);
         map.put("status",true);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> maintenanceCompanySendSingle(ButlerRepairEngineering butlerRepairEngineering, int type) {
+        map = new HashMap<>();
+
+        if (type != 1){
+            map.put("message","派单(维修公司)权限不足");
+            map.put("status",false);
+            return map;
+        }
+
+        butlerRepairEngineering.setStatus(2);//填入状态，2.待派单（维修人员）
+
+        int update = butlerRepairEngineeringDao.maintenanceCompanySendSingle(butlerRepairEngineering);
+        if (update >0){
+            map.put("message","派单成功");
+            map.put("status",true);
+        }else {
+            map.put("message","派单失败");
+            map.put("status",false);
+        }
 
         return map;
     }
