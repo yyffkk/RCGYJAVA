@@ -72,7 +72,16 @@
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo">
-        select * from sys_report_repair_engineering where id = #{repairEngineeringId}
+        select srre.*,su1.actual_name as create_name,su1.tel as create_tel,so.name as organization_name,
+        su2.actual_name as organization_leading_name,su2.tel as organization_leading_tel,
+        su3.actual_name as maintenance_staff_name,su3.tel as maintenance_staff_tel,
+        so2.name as maintenance_staff_organization_name
+        from sys_user as su1,sys_report_repair_engineering as srre
+        LEFT JOIN sys_organization as so on srre.organization_id = so.name
+        LEFT JOIN sys_user as su2 on so.leading_id = su2.id
+        LEFT JOIN sys_user as su3 on srre.maintenance_staff = su3.id
+        LEFT JOIN sys_organization as so2 on su3.organization_id = so2.id
+        where srre.create_id = su1.id and srre.id = #{repairEngineeringId}
     </select>
 
 

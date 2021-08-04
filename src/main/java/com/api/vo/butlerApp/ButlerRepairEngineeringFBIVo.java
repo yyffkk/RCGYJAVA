@@ -11,6 +11,14 @@ public class ButlerRepairEngineeringFBIVo {
      */
     private Integer id;
     /**
+     * 报修人名称
+     */
+    private String createName;
+    /**
+     * 报修人联系电话
+     */
+    private String createTel;
+    /**
      * 工程报修小区（报修区域）
      */
     private String repairArea;
@@ -35,9 +43,33 @@ public class ButlerRepairEngineeringFBIVo {
      */
     private Integer organizationId;
     /**
+     * 维修单位名称
+     */
+    private String organizationName;
+    /**
+     * 维修单位主要负责人名称
+     */
+    private String organizationLeadingName;
+    /**
+     * 维修单位主要负责人联系电话
+     */
+    private String organizationLeadingTel;
+    /**
      * 维修员工
      */
     private Integer maintenanceStaff;
+    /**
+     * 维修员工部门名称
+     */
+    private String maintenanceStaffOrganizationName;
+    /**
+     * 维修员工名称
+     */
+    private String maintenanceStaffName;
+    /**
+     * 维修员工联系方式
+     */
+    private String maintenanceStaffTel;
     /**
      * 维修人员接单时间
      */
@@ -71,13 +103,21 @@ public class ButlerRepairEngineeringFBIVo {
     public String toString() {
         return "ButlerRepairEngineeringFBIVo{" +
                 "id=" + id +
+                ", createName='" + createName + '\'' +
+                ", createTel='" + createTel + '\'' +
                 ", repairArea='" + repairArea + '\'' +
                 ", code='" + code + '\'' +
                 ", type=" + type +
                 ", reportDetail='" + reportDetail + '\'' +
                 ", status=" + status +
                 ", organizationId=" + organizationId +
+                ", organizationName='" + organizationName + '\'' +
+                ", organizationLeadingName='" + organizationLeadingName + '\'' +
+                ", organizationLeadingTel='" + organizationLeadingTel + '\'' +
                 ", maintenanceStaff=" + maintenanceStaff +
+                ", maintenanceStaffOrganizationName='" + maintenanceStaffOrganizationName + '\'' +
+                ", maintenanceStaffName='" + maintenanceStaffName + '\'' +
+                ", maintenanceStaffTel='" + maintenanceStaffTel + '\'' +
                 ", maintenanceStaffPickSingleDate=" + maintenanceStaffPickSingleDate +
                 ", maintenanceCompanySendSingle=" + maintenanceCompanySendSingle +
                 ", maintenanceCompanySendSingleDate=" + maintenanceCompanySendSingleDate +
@@ -94,6 +134,22 @@ public class ButlerRepairEngineeringFBIVo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
+    }
+
+    public String getCreateTel() {
+        return createTel;
+    }
+
+    public void setCreateTel(String createTel) {
+        this.createTel = createTel;
     }
 
     public String getRepairArea() {
@@ -144,12 +200,60 @@ public class ButlerRepairEngineeringFBIVo {
         this.organizationId = organizationId;
     }
 
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getOrganizationLeadingName() {
+        return organizationLeadingName;
+    }
+
+    public void setOrganizationLeadingName(String organizationLeadingName) {
+        this.organizationLeadingName = organizationLeadingName;
+    }
+
+    public String getOrganizationLeadingTel() {
+        return organizationLeadingTel;
+    }
+
+    public void setOrganizationLeadingTel(String organizationLeadingTel) {
+        this.organizationLeadingTel = organizationLeadingTel;
+    }
+
     public Integer getMaintenanceStaff() {
         return maintenanceStaff;
     }
 
     public void setMaintenanceStaff(Integer maintenanceStaff) {
         this.maintenanceStaff = maintenanceStaff;
+    }
+
+    public String getMaintenanceStaffOrganizationName() {
+        return maintenanceStaffOrganizationName;
+    }
+
+    public void setMaintenanceStaffOrganizationName(String maintenanceStaffOrganizationName) {
+        this.maintenanceStaffOrganizationName = maintenanceStaffOrganizationName;
+    }
+
+    public String getMaintenanceStaffName() {
+        return maintenanceStaffName;
+    }
+
+    public void setMaintenanceStaffName(String maintenanceStaffName) {
+        this.maintenanceStaffName = maintenanceStaffName;
+    }
+
+    public String getMaintenanceStaffTel() {
+        return maintenanceStaffTel;
+    }
+
+    public void setMaintenanceStaffTel(String maintenanceStaffTel) {
+        this.maintenanceStaffTel = maintenanceStaffTel;
     }
 
     public Date getMaintenanceStaffPickSingleDate() {
@@ -211,15 +315,23 @@ public class ButlerRepairEngineeringFBIVo {
     public ButlerRepairEngineeringFBIVo() {
     }
 
-    public ButlerRepairEngineeringFBIVo(Integer id, String repairArea, String code, Integer type, String reportDetail, Integer status, Integer organizationId, Integer maintenanceStaff, Date maintenanceStaffPickSingleDate, Integer maintenanceCompanySendSingle, Date maintenanceCompanySendSingleDate, Integer maintenancePersonnelSendSingle, Date maintenancePersonnelSendSingleDate, Integer createId, Date createDate) {
+    public ButlerRepairEngineeringFBIVo(Integer id, String createName, String createTel, String repairArea, String code, Integer type, String reportDetail, Integer status, Integer organizationId, String organizationName, String organizationLeadingName, String organizationLeadingTel, Integer maintenanceStaff, String maintenanceStaffOrganizationName, String maintenanceStaffName, String maintenanceStaffTel, Date maintenanceStaffPickSingleDate, Integer maintenanceCompanySendSingle, Date maintenanceCompanySendSingleDate, Integer maintenancePersonnelSendSingle, Date maintenancePersonnelSendSingleDate, Integer createId, Date createDate) {
         this.id = id;
+        this.createName = createName;
+        this.createTel = createTel;
         this.repairArea = repairArea;
         this.code = code;
         this.type = type;
         this.reportDetail = reportDetail;
         this.status = status;
         this.organizationId = organizationId;
+        this.organizationName = organizationName;
+        this.organizationLeadingName = organizationLeadingName;
+        this.organizationLeadingTel = organizationLeadingTel;
         this.maintenanceStaff = maintenanceStaff;
+        this.maintenanceStaffOrganizationName = maintenanceStaffOrganizationName;
+        this.maintenanceStaffName = maintenanceStaffName;
+        this.maintenanceStaffTel = maintenanceStaffTel;
         this.maintenanceStaffPickSingleDate = maintenanceStaffPickSingleDate;
         this.maintenanceCompanySendSingle = maintenanceCompanySendSingle;
         this.maintenanceCompanySendSingleDate = maintenanceCompanySendSingleDate;
