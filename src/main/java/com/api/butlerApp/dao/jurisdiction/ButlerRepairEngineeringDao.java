@@ -68,7 +68,7 @@ public interface ButlerRepairEngineeringDao {
     List<SysOrganization> findRepairOrganization();
 
     /**
-     * 工程维修公司派单
+     * 工程维修维修公司派单
      * @param butlerRepairEngineering 管家app 报事报修工程维修model
      * @return 影响行数
      */
@@ -80,4 +80,18 @@ public interface ButlerRepairEngineeringDao {
      * @return 维修人员信息
      */
     List<SysUser> findSysUserByOrganizationId(Integer repairOrganizationId);
+
+    /**
+     * 工程维修维修人员派单
+     * @param butlerRepairEngineering 管家app 报事报修工程维修model
+     * @return 影响行数
+     */
+    int maintenancePersonnelSendSingle(ButlerRepairEngineering butlerRepairEngineering);
+
+    /**
+     * 工程维修维修人员接单
+     * @param butlerRepairEngineering 管家app 报事报修工程维修model
+     * @return 影响行数
+     */
+    int maintenanceStaffPickSingle(ButlerRepairEngineering butlerRepairEngineering);
 }

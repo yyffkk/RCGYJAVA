@@ -208,4 +208,52 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
 
         return map;
     }
+
+    @Override
+    public Map<String, Object> maintenancePersonnelSendSingle(ButlerRepairEngineering butlerRepairEngineering, int type) {
+        map = new HashMap<>();
+
+        if (type != 2){
+            map.put("message","派单(维修人员)权限不足");
+            map.put("status",false);
+            return map;
+        }
+
+        butlerRepairEngineering.setStatus(3);//填入状态，3.待接单（维修人员）
+
+        int update = butlerRepairEngineeringDao.maintenancePersonnelSendSingle(butlerRepairEngineering);
+        if (update >0){
+            map.put("message","派单成功");
+            map.put("status",true);
+        }else {
+            map.put("message","派单失败");
+            map.put("status",false);
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> maintenanceStaffPickSingle(ButlerRepairEngineering butlerRepairEngineering, int type) {
+        map = new HashMap<>();
+
+        if (type != 3){
+            map.put("message","接单(维修人员)权限不足");
+            map.put("status",false);
+            return map;
+        }
+
+        butlerRepairEngineering.setStatus(4);//填入状态，4.处理中
+
+        int update = butlerRepairEngineeringDao.maintenanceStaffPickSingle(butlerRepairEngineering);
+        if (update >0){
+            map.put("message","接单成功");
+            map.put("status",true);
+        }else {
+            map.put("message","接单失败");
+            map.put("status",false);
+        }
+
+        return map;
+    }
 }

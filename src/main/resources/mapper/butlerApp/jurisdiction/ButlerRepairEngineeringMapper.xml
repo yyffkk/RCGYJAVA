@@ -110,6 +110,20 @@
         organization_id = #{organizationId}
         where id = #{id}
     </update>
+    <update id="maintenancePersonnelSendSingle" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
+        update sys_report_repair_engineering
+        set status = #{status},
+        maintenance_personnel_send_single = #{maintenancePersonnelSendSingle},
+        maintenance_personnel_send_single_date = #{maintenancePersonnelSendSingleDate},
+        maintenance_staff = #{maintenanceStaff}
+        where id = #{id}
+    </update>
+    <update id="maintenanceStaffPickSingle" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
+        update sys_report_repair_engineering
+        set status = #{status},
+        maintenance_staff_pick_single_date = #{maintenanceStaffPickSingleDate}
+        where id = #{id} and maintenance_staff = #{maintenanceStaff}
+    </update>
 
 
 </mapper>

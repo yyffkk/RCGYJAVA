@@ -23,4 +23,8 @@ public interface ButlerRepairEngineeringService {
     Map<String, Object> maintenanceCompanySendSingle(ButlerRepairEngineering butlerRepairEngineering, int type);
 
     Map<String, Object> findSysUserByOrganizationId(Integer repairOrganizationId);
+
+    Map<String, Object> maintenancePersonnelSendSingle(ButlerRepairEngineering butlerRepairEngineering, int type);
+
+    Map<String, Object> maintenanceStaffPickSingle(ButlerRepairEngineering butlerRepairEngineering, int type);
 }
