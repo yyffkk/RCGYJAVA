@@ -1,6 +1,9 @@
 package com.api.vo.butlerApp;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 管家app 工程维修 Vo回显 findById
@@ -91,6 +94,10 @@ public class ButlerRepairEngineeringFBIVo {
      */
     private Date maintenancePersonnelSendSingleDate;
     /**
+     * 照片资源信息集合
+     */
+    private List<VoResourcesImg> imgUrls;
+    /**
      * 创建人
      */
     private Integer createId;
@@ -123,6 +130,7 @@ public class ButlerRepairEngineeringFBIVo {
                 ", maintenanceCompanySendSingleDate=" + maintenanceCompanySendSingleDate +
                 ", maintenancePersonnelSendSingle=" + maintenancePersonnelSendSingle +
                 ", maintenancePersonnelSendSingleDate=" + maintenancePersonnelSendSingleDate +
+                ", imgUrls=" + imgUrls +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 '}';
@@ -296,6 +304,14 @@ public class ButlerRepairEngineeringFBIVo {
         this.maintenancePersonnelSendSingleDate = maintenancePersonnelSendSingleDate;
     }
 
+    public List<VoResourcesImg> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<VoResourcesImg> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -315,7 +331,7 @@ public class ButlerRepairEngineeringFBIVo {
     public ButlerRepairEngineeringFBIVo() {
     }
 
-    public ButlerRepairEngineeringFBIVo(Integer id, String createName, String createTel, String repairArea, String code, Integer type, String reportDetail, Integer status, Integer organizationId, String organizationName, String organizationLeadingName, String organizationLeadingTel, Integer maintenanceStaff, String maintenanceStaffOrganizationName, String maintenanceStaffName, String maintenanceStaffTel, Date maintenanceStaffPickSingleDate, Integer maintenanceCompanySendSingle, Date maintenanceCompanySendSingleDate, Integer maintenancePersonnelSendSingle, Date maintenancePersonnelSendSingleDate, Integer createId, Date createDate) {
+    public ButlerRepairEngineeringFBIVo(Integer id, String createName, String createTel, String repairArea, String code, Integer type, String reportDetail, Integer status, Integer organizationId, String organizationName, String organizationLeadingName, String organizationLeadingTel, Integer maintenanceStaff, String maintenanceStaffOrganizationName, String maintenanceStaffName, String maintenanceStaffTel, Date maintenanceStaffPickSingleDate, Integer maintenanceCompanySendSingle, Date maintenanceCompanySendSingleDate, Integer maintenancePersonnelSendSingle, Date maintenancePersonnelSendSingleDate, List<VoResourcesImg> imgUrls, Integer createId, Date createDate) {
         this.id = id;
         this.createName = createName;
         this.createTel = createTel;
@@ -337,6 +353,7 @@ public class ButlerRepairEngineeringFBIVo {
         this.maintenanceCompanySendSingleDate = maintenanceCompanySendSingleDate;
         this.maintenancePersonnelSendSingle = maintenancePersonnelSendSingle;
         this.maintenancePersonnelSendSingleDate = maintenancePersonnelSendSingleDate;
+        this.imgUrls = imgUrls;
         this.createId = createId;
         this.createDate = createDate;
     }

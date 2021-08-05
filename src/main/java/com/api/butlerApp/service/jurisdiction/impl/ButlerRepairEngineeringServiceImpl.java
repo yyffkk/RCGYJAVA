@@ -141,6 +141,12 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
         map = new HashMap<>();
 
         ButlerRepairEngineeringFBIVo engineeringFBIVo = butlerRepairEngineeringDao.findById(repairEngineeringId);
+        if (engineeringFBIVo != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportRepairEngineering", repairEngineeringId, "engineeringMaintenanceImg");
+            engineeringFBIVo.setImgUrls(imgByDate);
+        }
+
         map.put("message","请求成功");
         map.put("data",engineeringFBIVo);
         map.put("status",true);
