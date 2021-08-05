@@ -8,6 +8,10 @@ import java.util.Date;
  */
 public class VoOperations {
     /**
+     * 运维主键id
+     */
+    private Integer id;
+    /**
      * 记录编号
      */
     private String code;
@@ -67,7 +71,8 @@ public class VoOperations {
     @Override
     public String toString() {
         return "VoOperations{" +
-                "code='" + code + '\'' +
+                "id=" + id +
+                ", code='" + code + '\'' +
                 ", equipment='" + equipment + '\'' +
                 ", type=" + type +
                 ", people='" + people + '\'' +
@@ -82,6 +87,14 @@ public class VoOperations {
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -199,7 +212,8 @@ public class VoOperations {
     public VoOperations() {
     }
 
-    public VoOperations(String code, String equipment, Integer type, String people, String materials, BigDecimal costs, String department, Integer results, Integer times, String remakes, Date maintenanceDate, Integer createId, String createName, Date createDate) {
+    public VoOperations(Integer id, String code, String equipment, Integer type, String people, String materials, BigDecimal costs, String department, Integer results, Integer times, String remakes, Date maintenanceDate, Integer createId, String createName, Date createDate) {
+        this.id = id;
         this.code = code;
         this.equipment = equipment;
         this.type = type;
