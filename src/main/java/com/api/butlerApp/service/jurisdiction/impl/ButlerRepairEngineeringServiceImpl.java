@@ -329,7 +329,7 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
             engineeringProcessRecord.setOperatorType(3);//填入操作人类型，3.操作人（物业）
             //查询维修人信息
             SysUser byId = butlerRepairDao.findSysUserById(butlerRepairEngineering.getMaintenanceStaff());
-            engineeringProcessRecord.setOperatorContent(byId.getActualName()+" 师傅已接单");//填入操作内容
+            engineeringProcessRecord.setOperatorContent(byId.getActualName()+" 师傅正在处理");//填入操作内容
 
             //添加工程维修报修进程处理进程记录
             int insert2 = butlerRepairEngineeringDao.insertProcessRecord(engineeringProcessRecord);
