@@ -180,6 +180,11 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
         map = new HashMap<>();
 
         try {
+            ButlerRepairEngineeringFBIVo byId = butlerRepairEngineeringDao.findById(butlerRepairEngineering.getId());
+            if (byId.getStatus() != 1){
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
             if (type != 1){
                 map.put("message","派单(维修公司)权限不足");
                 map.put("status",false);
@@ -243,6 +248,12 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
         map = new HashMap<>();
 
         try {
+
+            ButlerRepairEngineeringFBIVo byId2 = butlerRepairEngineeringDao.findById(butlerRepairEngineering.getId());
+            if (byId2.getStatus() != 2){
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
             if (type != 2){
                 throw new RuntimeException("派单(维修人员)权限不足");
             }
@@ -293,6 +304,11 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
         map = new HashMap<>();
 
         try {
+            ButlerRepairEngineeringFBIVo byId2 = butlerRepairEngineeringDao.findById(butlerRepairEngineering.getId());
+            if (byId2.getStatus() != 3){
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
             if (type != 3){
                 throw new RuntimeException("接单(维修人员)权限不足");
             }
