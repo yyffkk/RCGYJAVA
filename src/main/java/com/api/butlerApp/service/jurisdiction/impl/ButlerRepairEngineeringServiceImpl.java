@@ -14,6 +14,7 @@ import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
 import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -62,6 +63,7 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(ButlerRepairEngineering butlerRepairEngineering) {
         map = new HashMap<>();
 
@@ -173,26 +175,52 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
     }
 
     @Override
+    @Transactional
     public Map<String, Object> maintenanceCompanySendSingle(ButlerRepairEngineering butlerRepairEngineering, int type) {
         map = new HashMap<>();
 
-        if (type != 1){
-            map.put("message","派单(维修公司)权限不足");
+        try {
+            if (type != 1){
+                map.put("message","派单(维修公司)权限不足");
+                map.put("status",false);
+                return map;
+            }
+
+            butlerRepairEngineering.setStatus(2);//填入状态，2.待派单（维修人员）
+
+            int update = butlerRepairEngineeringDao.maintenanceCompanySendSingle(butlerRepairEngineering);
+            if (update <= 0){
+                throw new RuntimeException("派单失败");
+            }
+
+            //添加处理进程记录
+            ButlerReportRepairEngineeringProcessRecord engineeringProcessRecord = new ButlerReportRepairEngineeringProcessRecord();
+            engineeringProcessRecord.setRepairEngineeringId(butlerRepairEngineering.getId());//填入工程维修主键id
+            engineeringProcessRecord.setOperationDate(new Date());//填入操作时间(数据创建时间)
+            engineeringProcessRecord.setOperationType(2);//填入操作类型，2.派单（维修公司）
+            engineeringProcessRecord.setOperator(butlerRepairEngineering.getMaintenanceCompanySendSingle());//操作人（维修公司派单人id）
+            engineeringProcessRecord.setOperatorType(3);//填入操作人类型，3.操作人（物业）
+            engineeringProcessRecord.setOperatorContent("维修公司正在派单");//填入操作内容
+
+
+            //添加工程维修报修进程处理进程记录
+            int insert2 = butlerRepairEngineeringDao.insertProcessRecord(engineeringProcessRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
             return map;
         }
-
-        butlerRepairEngineering.setStatus(2);//填入状态，2.待派单（维修人员）
-
-        int update = butlerRepairEngineeringDao.maintenanceCompanySendSingle(butlerRepairEngineering);
-        if (update >0){
-            map.put("message","派单成功");
-            map.put("status",true);
-        }else {
-            map.put("message","派单失败");
-            map.put("status",false);
-        }
-
+        map.put("message","派单成功");
+        map.put("status",true);
         return map;
     }
 
@@ -210,50 +238,101 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
     }
 
     @Override
+    @Transactional
     public Map<String, Object> maintenancePersonnelSendSingle(ButlerRepairEngineering butlerRepairEngineering, int type) {
         map = new HashMap<>();
 
-        if (type != 2){
-            map.put("message","派单(维修人员)权限不足");
+        try {
+            if (type != 2){
+                throw new RuntimeException("派单(维修人员)权限不足");
+            }
+
+            butlerRepairEngineering.setStatus(3);//填入状态，3.待接单（维修人员）
+
+            int update = butlerRepairEngineeringDao.maintenancePersonnelSendSingle(butlerRepairEngineering);
+            if (update <= 0){
+                throw new RuntimeException("派单失败");
+            }
+
+            //添加处理进程记录
+            ButlerReportRepairEngineeringProcessRecord engineeringProcessRecord = new ButlerReportRepairEngineeringProcessRecord();
+            engineeringProcessRecord.setRepairEngineeringId(butlerRepairEngineering.getId());//填入工程维修主键id
+            engineeringProcessRecord.setOperationDate(new Date());//填入操作时间(数据创建时间)
+            engineeringProcessRecord.setOperationType(3);//填入操作类型，3.派单（维修人员）
+            engineeringProcessRecord.setOperator(butlerRepairEngineering.getMaintenancePersonnelSendSingle());//操作人（维修人员派单人id）
+            engineeringProcessRecord.setOperatorType(3);//填入操作人类型，3.操作人（物业）
+            //查询维修人信息
+            SysUser byId = butlerRepairDao.findSysUserById(butlerRepairEngineering.getMaintenanceStaff());
+            engineeringProcessRecord.setOperatorContent("分派给 "+byId.getActualName()+" 师傅");//填入操作内容
+
+
+            //添加工程维修报修进程处理进程记录
+            int insert2 = butlerRepairEngineeringDao.insertProcessRecord(engineeringProcessRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
             return map;
         }
-
-        butlerRepairEngineering.setStatus(3);//填入状态，3.待接单（维修人员）
-
-        int update = butlerRepairEngineeringDao.maintenancePersonnelSendSingle(butlerRepairEngineering);
-        if (update >0){
-            map.put("message","派单成功");
-            map.put("status",true);
-        }else {
-            map.put("message","派单失败");
-            map.put("status",false);
-        }
-
+        map.put("message","派单成功");
+        map.put("status",true);
         return map;
     }
 
     @Override
+    @Transactional
     public Map<String, Object> maintenanceStaffPickSingle(ButlerRepairEngineering butlerRepairEngineering, int type) {
         map = new HashMap<>();
 
-        if (type != 3){
-            map.put("message","接单(维修人员)权限不足");
+        try {
+            if (type != 3){
+                throw new RuntimeException("接单(维修人员)权限不足");
+            }
+
+            butlerRepairEngineering.setStatus(4);//填入状态，4.处理中
+
+            int update = butlerRepairEngineeringDao.maintenanceStaffPickSingle(butlerRepairEngineering);
+            if (update <= 0){
+                throw new RuntimeException("接单失败");
+            }
+
+            //添加处理进程记录
+            ButlerReportRepairEngineeringProcessRecord engineeringProcessRecord = new ButlerReportRepairEngineeringProcessRecord();
+            engineeringProcessRecord.setRepairEngineeringId(butlerRepairEngineering.getId());//填入工程维修主键id
+            engineeringProcessRecord.setOperationDate(new Date());//填入操作时间(数据创建时间)
+            engineeringProcessRecord.setOperationType(4);//填入操作类型，4.接单（维修人员）
+            engineeringProcessRecord.setOperator(butlerRepairEngineering.getMaintenanceStaff());//操作人（维修人员派单人id）
+            engineeringProcessRecord.setOperatorType(3);//填入操作人类型，3.操作人（物业）
+            //查询维修人信息
+            SysUser byId = butlerRepairDao.findSysUserById(butlerRepairEngineering.getMaintenanceStaff());
+            engineeringProcessRecord.setOperatorContent(byId.getActualName()+" 师傅已接单");//填入操作内容
+
+            //添加工程维修报修进程处理进程记录
+            int insert2 = butlerRepairEngineeringDao.insertProcessRecord(engineeringProcessRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
             return map;
         }
-
-        butlerRepairEngineering.setStatus(4);//填入状态，4.处理中
-
-        int update = butlerRepairEngineeringDao.maintenanceStaffPickSingle(butlerRepairEngineering);
-        if (update >0){
-            map.put("message","接单成功");
-            map.put("status",true);
-        }else {
-            map.put("message","接单失败");
-            map.put("status",false);
-        }
-
+        map.put("message","接单成功");
+        map.put("status",true);
         return map;
     }
 }

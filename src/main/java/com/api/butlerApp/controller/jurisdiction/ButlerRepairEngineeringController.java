@@ -159,7 +159,6 @@ public class ButlerRepairEngineeringController {
         butlerRepairEngineering.setMaintenanceStaff(id);//填入维修人员接单人id
         butlerRepairEngineering.setMaintenanceStaffPickSingleDate(new Date());//填入维修人员接单时间
 
-
         //查询用户所属权限,type:1.工程派单-维修公司 2.工程派单-维修人员 3.工程接单-维修人员，4.不具备任何权限
         int type = butlerRepairEngineeringService.findJurisdictionByUserId(roleId);
 
