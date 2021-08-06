@@ -20,6 +20,10 @@ public class ButlerHygieneSearch {
      * 用户主键id
      */
     private Integer id;
+    /**
+     * 当前用户 角色ID，用'，'隔开，格式为(1,2)
+     */
+    private String roleId;
 
     @Override
     public String toString() {
@@ -28,6 +32,7 @@ public class ButlerHygieneSearch {
                 ", size=" + size +
                 ", hygieneStatus=" + hygieneStatus +
                 ", id=" + id +
+                ", roleId='" + roleId + '\'' +
                 '}';
     }
 
@@ -63,13 +68,22 @@ public class ButlerHygieneSearch {
         this.id = id;
     }
 
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
     public ButlerHygieneSearch() {
     }
 
-    public ButlerHygieneSearch(int pageNum, int size, Integer hygieneStatus, Integer id) {
+    public ButlerHygieneSearch(int pageNum, int size, Integer hygieneStatus, Integer id, String roleId) {
         this.pageNum = pageNum;
         this.size = size;
         this.hygieneStatus = hygieneStatus;
         this.id = id;
+        this.roleId = roleId;
     }
 }

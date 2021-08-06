@@ -144,7 +144,7 @@ public class ButlerGreenServiceImpl implements ButlerGreenService {
 
         try {
             if (type != 2){
-                throw new RuntimeException("当前用户无接单权限，不可完成任务");
+                throw new RuntimeException("当前用户检查权限，不可操作");
             }
 
             SysGreenTask taskById = butlerGreenDao.findTaskById(greenTaskCheckSituation.getGreenTaskId());

@@ -20,6 +20,22 @@
         order by T.create_date desc
     </select>
 
+    <select id="list2" parameterType="com.api.model.butlerApp.ButlerHygieneSearch" resultType="com.api.vo.butlerApp.ButlerHygieneVo">
+        select T.* from (
+        select sht.id,sha.name as hygiene_area_name,sht.content,su.actual_name as director_name,
+        (case sht.status = 1 and sht.end_date <![CDATA[ < ]]> now()  when true then 3 else sht.status end) as status,
+        sht.end_date,sht.complete_date,sht.create_date
+        from sys_hygiene_task as sht,sys_hygiene_area as sha,sys_user as su
+        where sht.hygiene_area_id = sha.id and sht.director = su.id
+        ) as T
+        <where>
+            <if test="hygieneStatus != null">
+                and T.status = #{hygieneStatus}
+            </if>
+        </where>
+        order by T.create_date desc
+    </select>
+
     <update id="complete" parameterType="com.api.model.operationManagement.SysHygieneTask">
         update sys_hygiene_task
         set status = #{status},
@@ -30,6 +46,31 @@
     <select id="findTaskById" parameterType="java.lang.Integer" resultType="com.api.model.operationManagement.SysHygieneTask">
         select * from sys_hygiene_task where id = #{id}
     </select>
+
+    <update id="updateStatusById" parameterType="com.api.model.butlerApp.ButlerHygieneTaskIdAndStatus">
+        update sys_hygiene_task
+        set status = #{status}
+        where id = #{hygieneTaskId}
+    </update>
+
+    <insert id="insertHygieneTaskCheckSituation" parameterType="com.api.model.butlerApp.ButlerHygieneTaskCheckSituation">
+        insert into sys_hygiene_task_check_situation(
+            hygiene_task_id,
+            completion,
+            inspection_report,
+            create_date,
+            create_id
+        )values (
+            #{hygieneTaskId},
+            #{completion},
+            #{inspectionReport},
+            #{createDate},
+            #{createId}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 
 
 </mapper>

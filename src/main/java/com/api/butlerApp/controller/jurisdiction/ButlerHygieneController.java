@@ -2,7 +2,9 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerHygieneService;
 import com.api.model.butlerApp.ButlerGreenSearch;
+import com.api.model.butlerApp.ButlerGreenTaskCheckSituation;
 import com.api.model.butlerApp.ButlerHygieneSearch;
+import com.api.model.butlerApp.ButlerHygieneTaskCheckSituation;
 import com.api.model.operationManagement.SysGreenTask;
 import com.api.model.operationManagement.SysHygieneTask;
 import com.api.vo.butlerApp.ButlerGreenVo;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +36,11 @@ public class ButlerHygieneController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(ButlerHygieneSearch butlerHygieneSearch){
+        //查询用户所属权限,type:1.接单人 2.检查人 3.其他角色
+        int type = butlerHygieneService.findJurisdictionByUserId(butlerHygieneSearch.getRoleId());
+
         PageHelper.startPage(butlerHygieneSearch.getPageNum(),butlerHygieneSearch.getSize());
-        List<ButlerHygieneVo> butlerHygieneVoList =butlerHygieneService.list(butlerHygieneSearch);
+        List<ButlerHygieneVo> butlerHygieneVoList =butlerHygieneService.list(butlerHygieneSearch,type);
         PageInfo<ButlerHygieneVo> pageInfo = new PageInfo<>(butlerHygieneVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
@@ -58,6 +64,31 @@ public class ButlerHygieneController {
         //从request获取组织ID organizationId
         Integer organizationId = Integer.valueOf(request.getParameter("organizationId"));
         sysHygieneTask.setDirector(id);//填入负责人员id
-        return butlerHygieneService.complete(sysHygieneTask,name,organizationId);
+
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        //查询用户所属权限,type:1.接单人 2.检查人 3.其他角色
+        int type = butlerHygieneService.findJurisdictionByUserId(roleId);
+        return butlerHygieneService.complete(sysHygieneTask,name,organizationId,type);
+    }
+
+    /**
+     * 提交检查情况
+     * @param hygieneTaskCheckSituation 管家app 卫生任务检查情况
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/submitCheckInfo")
+    public Map<String,Object> submitCheckInfo(@RequestBody ButlerHygieneTaskCheckSituation hygieneTaskCheckSituation, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        hygieneTaskCheckSituation.setCreateId(id);//填入检查人id
+        hygieneTaskCheckSituation.setCreateDate(new Date());//填入检查时间
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        //查询用户所属权限,type:1.接单人 2.检查人 3.其他角色
+        int type = butlerHygieneService.findJurisdictionByUserId(roleId);
+
+        return butlerHygieneService.submitCheckInfo(hygieneTaskCheckSituation,type);
     }
 }
