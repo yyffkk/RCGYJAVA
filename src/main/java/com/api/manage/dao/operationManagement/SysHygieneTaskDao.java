@@ -2,6 +2,7 @@ package com.api.manage.dao.operationManagement;
 
 import com.api.model.operationManagement.SysHygieneTask;
 import com.api.model.operationManagement.SearchHygieneTask;
+import com.api.vo.butlerApp.ButlerHygieneTaskCheckSituationVo;
 import com.api.vo.operationManagement.VoFBIHygieneTask;
 import com.api.vo.operationManagement.VoHygieneTask;
 
@@ -35,5 +36,12 @@ public interface SysHygieneTaskDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据卫生任务主键id查询卫生任务检查报告信息
+     * @param hygieneTaskId 卫生任务主键id
+     * @return 卫生任务检查报告信息
+     */
+    List<ButlerHygieneTaskCheckSituationVo> findCheckSituationByHygieneTaskId(Integer hygieneTaskId);
 
 }

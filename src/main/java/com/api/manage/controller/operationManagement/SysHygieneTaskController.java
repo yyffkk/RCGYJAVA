@@ -70,4 +70,14 @@ public class SysHygieneTaskController   {
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysHygieneTaskService.delete(ids.getIds());
     }
+
+    /**
+     * 根据卫生任务主键id查询卫生任务检查报告信息
+     * @param hygieneTaskId 卫生任务主键id
+     * @return map
+     */
+    @GetMapping("/findCheckSituationByHygieneTaskId")
+    public Map<String,Object> findCheckSituationByHygieneTaskId(Integer hygieneTaskId){
+        return sysHygieneTaskService.findCheckSituationByHygieneTaskId(hygieneTaskId);
+    }
 }

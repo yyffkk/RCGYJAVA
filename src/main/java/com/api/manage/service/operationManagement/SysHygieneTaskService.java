@@ -15,4 +15,6 @@ public interface SysHygieneTaskService {
     Map<String, Object> findById(Integer id);
 
     Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> findCheckSituationByHygieneTaskId(Integer hygieneTaskId);
 }

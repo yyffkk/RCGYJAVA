@@ -8,9 +8,13 @@ import com.api.model.butlerApp.ButlerAppSysMessage;
 import com.api.model.operationManagement.SysHygieneTask;
 import com.api.model.operationManagement.SearchHygieneTask;
 import com.api.util.JiguangUtil;
+import com.api.util.UploadUtil;
+import com.api.vo.butlerApp.ButlerGreenTaskCheckSituationVo;
+import com.api.vo.butlerApp.ButlerHygieneTaskCheckSituationVo;
 import com.api.vo.operationManagement.VoFBIHygieneTask;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.operationManagement.VoHygieneTask;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -124,6 +128,28 @@ public class SysHygieneTaskServiceImpl implements SysHygieneTaskService {
         }
         map.put("message","删除成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findCheckSituationByHygieneTaskId(Integer hygieneTaskId) {
+        map = new HashMap<>();
+
+        List<ButlerHygieneTaskCheckSituationVo> hygieneTaskCheckSituationVos = sysHygieneTaskDao.findCheckSituationByHygieneTaskId(hygieneTaskId);
+
+        if (hygieneTaskCheckSituationVos != null && hygieneTaskCheckSituationVos.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (ButlerHygieneTaskCheckSituationVo hygieneTaskCheckSituationVo : hygieneTaskCheckSituationVos) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysHygieneTaskCheckSituation", hygieneTaskCheckSituationVo.getId(), "checkImg");
+                hygieneTaskCheckSituationVo.setImgList(imgByDate);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("data",hygieneTaskCheckSituationVos);
+        map.put("status",true);
+
+
         return map;
     }
 

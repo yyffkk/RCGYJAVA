@@ -70,5 +70,12 @@
         delete from sys_hygiene_task where id = #{id}
     </delete>
 
+    <select id="findCheckSituationByHygieneTaskId" parameterType="java.lang.Integer"
+            resultType="com.api.vo.butlerApp.ButlerHygieneTaskCheckSituationVo">
+        select shtcs.*,su.actual_name as create_name
+        from sys_hygiene_task_check_situation as shtcs,sys_user as su
+        where shtcs.create_id = su.id and shtcs.hygiene_task_id = #{hygieneTaskId}
+    </select>
+
 
 </mapper>
