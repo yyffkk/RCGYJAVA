@@ -5,10 +5,14 @@ import com.api.manage.dao.operationManagement.SysGreenTaskDao;
 import com.api.manage.service.operationManagement.SysGreenTaskService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerAppSysMessage;
+import com.api.model.butlerApp.ButlerGreenTaskCheckSituation;
 import com.api.model.operationManagement.SearchGreenTask;
 import com.api.model.operationManagement.SysGreenTask;
 import com.api.util.JiguangUtil;
+import com.api.util.UploadUtil;
+import com.api.vo.butlerApp.ButlerGreenTaskCheckSituationVo;
 import com.api.vo.operationManagement.VoGreenTask;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -113,6 +117,28 @@ public class SysGreenTaskServiceImpl implements SysGreenTaskService {
         }
         map.put("message","删除成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findCheckSituationByGreenTaskId(Integer greenTaskId) {
+        map = new HashMap<>();
+
+        List<ButlerGreenTaskCheckSituationVo> greenTaskCheckSituationVos = sysGreenTaskDao.findCheckSituationByGreenTaskId(greenTaskId);
+
+        if (greenTaskCheckSituationVos != null && greenTaskCheckSituationVos.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (ButlerGreenTaskCheckSituationVo greenTaskCheckSituationVo : greenTaskCheckSituationVos) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGreenTaskCheckSituation", greenTaskCheckSituationVo.getId(), "checkImg");
+                greenTaskCheckSituationVo.setImgList(imgByDate);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("data",greenTaskCheckSituationVos);
+        map.put("status",true);
+
+
         return map;
     }
 }

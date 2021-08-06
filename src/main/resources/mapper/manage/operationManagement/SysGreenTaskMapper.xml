@@ -65,4 +65,11 @@
         delete from sys_green_task where id = #{id}
     </delete>
 
+    <select id="findCheckSituationByGreenTaskId" parameterType="java.lang.Integer"
+            resultType="com.api.vo.butlerApp.ButlerGreenTaskCheckSituationVo">
+        select sgtcs.*,su.actual_name as create_name
+        from sys_green_task_check_situation as sgtcs,sys_user as su
+        where sgtcs.create_id = su.id and sgtcs.green_task_id = #{greenTaskId}
+    </select>
+
 </mapper>

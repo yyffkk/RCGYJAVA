@@ -2,6 +2,7 @@ package com.api.manage.dao.operationManagement;
 
 import com.api.model.operationManagement.SearchGreenTask;
 import com.api.model.operationManagement.SysGreenTask;
+import com.api.vo.butlerApp.ButlerGreenTaskCheckSituationVo;
 import com.api.vo.operationManagement.VoGreenTask;
 
 import java.util.List;
@@ -27,4 +28,11 @@ public interface SysGreenTaskDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据绿化任务主键id查询绿化任务检查报告信息
+     * @param greenTaskId 绿化任务主键id
+     * @return 绿化任务检查报告信息
+     */
+    List<ButlerGreenTaskCheckSituationVo> findCheckSituationByGreenTaskId(Integer greenTaskId);
 }

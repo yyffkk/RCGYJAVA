@@ -62,4 +62,16 @@ public class SysGreenTaskController   {
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysGreenTaskService.delete(ids.getIds());
     }
+
+    /**
+     * 根据绿化任务主键id查询绿化任务检查报告信息
+     * @param greenTaskId 绿化任务主键id
+     * @return map
+     */
+    @GetMapping("/findCheckSituationByGreenTaskId")
+    public Map<String,Object> findCheckSituationByGreenTaskId(Integer greenTaskId){
+        return sysGreenTaskService.findCheckSituationByGreenTaskId(greenTaskId);
+    }
+
+
 }

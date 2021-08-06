@@ -13,4 +13,6 @@ public interface SysGreenTaskService {
     Map<String, Object> insert(SysGreenTask sysGreenTask);
 
     Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> findCheckSituationByGreenTaskId(Integer greenTaskId);
 }
