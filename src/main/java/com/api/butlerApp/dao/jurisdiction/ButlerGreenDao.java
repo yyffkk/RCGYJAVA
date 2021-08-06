@@ -1,6 +1,8 @@
 package com.api.butlerApp.dao.jurisdiction;
 
 import com.api.model.butlerApp.ButlerGreenSearch;
+import com.api.model.butlerApp.ButlerGreenTaskCheckSituation;
+import com.api.model.butlerApp.ButlerGreenTaskIdAndStatus;
 import com.api.model.operationManagement.SysGreenTask;
 import com.api.vo.butlerApp.ButlerGreenVo;
 
@@ -35,4 +37,17 @@ public interface ButlerGreenDao {
      */
     SysGreenTask findTaskById(Integer id);
 
+    /**
+     * 修改绿化任务的状态
+     * @param greenTaskIdAndStatus 管家app 绿化任务主键id 和 状态
+     * @return 影响行数
+     */
+    int updateStatusById(ButlerGreenTaskIdAndStatus greenTaskIdAndStatus);
+
+    /**
+     * 添加绿化任务检查情况
+     * @param greenTaskCheckSituation 管家app 绿化任务检查情况
+     * @return 影响行数
+     */
+    int insertGreenTaskCheckSituation(ButlerGreenTaskCheckSituation greenTaskCheckSituation);
 }

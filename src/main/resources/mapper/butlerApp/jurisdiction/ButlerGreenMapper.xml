@@ -48,4 +48,29 @@
         select * from sys_green_task where id = #{id}
     </select>
 
+    <update id="updateStatusById" parameterType="com.api.model.butlerApp.ButlerGreenTaskIdAndStatus">
+        update sys_green_task
+        set status = #{status}
+        where id = #{greenTaskId}
+    </update>
+
+    <insert id="insertGreenTaskCheckSituation" parameterType="com.api.model.butlerApp.ButlerGreenTaskCheckSituation">
+        insert into sys_green_task_check_situation(
+            green_task_id,
+            completion,
+            inspection_report,
+            create_date,
+            create_id
+        )values (
+            #{greenTaskId},
+            #{completion},
+            #{inspectionReport},
+            #{createDate},
+            #{createId}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
 </mapper>

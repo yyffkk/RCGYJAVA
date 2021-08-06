@@ -23,7 +23,7 @@ public class SysGreenTask {
      */
     private Integer director;
     /**
-     * 状态 1.待处理，2.已完成
+     * 状态 1.待处理，2.已完成（待检查），3.未完成（不为数据库数据）,4.检查不通过，5.检查通过
      */
     private Integer status;
     /**

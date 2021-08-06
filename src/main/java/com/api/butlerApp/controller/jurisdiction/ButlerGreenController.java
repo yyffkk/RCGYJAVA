@@ -2,6 +2,7 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerGreenService;
 import com.api.model.butlerApp.ButlerGreenSearch;
+import com.api.model.butlerApp.ButlerGreenTaskCheckSituation;
 import com.api.model.operationManagement.SysGreenTask;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerDecorationVo;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,5 +70,27 @@ public class ButlerGreenController {
 
         return butlerGreenService.complete(sysGreenTask,name,organizationId,type);
     }
+
+
+    /**
+     * 提交检查情况
+     * @param greenTaskCheckSituation 管家app 绿化任务检查情况
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/submitCheckInfo")
+    public Map<String,Object> submitCheckInfo(@RequestBody ButlerGreenTaskCheckSituation greenTaskCheckSituation, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        greenTaskCheckSituation.setCreateId(id);//填入检查人id
+        greenTaskCheckSituation.setCreateDate(new Date());//填入检查时间
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        //查询用户所属权限,type:1.接单人 2.检查人 3.其他角色
+        int type = butlerGreenService.findJurisdictionByUserId(roleId);
+
+        return butlerGreenService.submitCheckInfo(greenTaskCheckSituation,type);
+    }
+
 
 }

@@ -6,8 +6,11 @@ import com.api.butlerApp.service.jurisdiction.ButlerGreenService;
 import com.api.manage.dao.message.ManageSysMessageDao;
 import com.api.model.businessManagement.SysOrganization;
 import com.api.model.butlerApp.ButlerGreenSearch;
+import com.api.model.butlerApp.ButlerGreenTaskCheckSituation;
+import com.api.model.butlerApp.ButlerGreenTaskIdAndStatus;
 import com.api.model.message.ManageSysMessage;
 import com.api.model.operationManagement.SysGreenTask;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.ButlerGreenVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +61,12 @@ public class ButlerGreenServiceImpl implements ButlerGreenService {
             if (type != 1){
                 throw new RuntimeException("当前用户无接单权限，不可完成任务");
             }
+
+            SysGreenTask taskById = butlerGreenDao.findTaskById(sysGreenTask.getId());
+            if (taskById.getStatus() != 1 && taskById.getStatus() != 4){
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
 
             sysGreenTask.setStatus(2);//2.已完成
             sysGreenTask.setComplete(new Date());//填入完成时间
@@ -125,5 +134,63 @@ public class ButlerGreenServiceImpl implements ButlerGreenService {
             }
         }
         return 3;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> submitCheckInfo(ButlerGreenTaskCheckSituation greenTaskCheckSituation, int type) {
+        map = new HashMap<>();
+
+
+        try {
+            if (type != 2){
+                throw new RuntimeException("当前用户无接单权限，不可完成任务");
+            }
+
+            SysGreenTask taskById = butlerGreenDao.findTaskById(greenTaskCheckSituation.getGreenTaskId());
+            if (taskById.getStatus() != 2){
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
+            ButlerGreenTaskIdAndStatus greenTaskIdAndStatus = new ButlerGreenTaskIdAndStatus();
+            greenTaskIdAndStatus.setGreenTaskId(greenTaskCheckSituation.getGreenTaskId());//填入绿化任务主键id
+            if (greenTaskCheckSituation.getCompletion() == 1){//1.已完成
+                greenTaskIdAndStatus.setStatus(5);//填入状态 5.检查通过
+            }else if (greenTaskCheckSituation.getCompletion() == 2) {//2.未完成
+                greenTaskIdAndStatus.setStatus(4);//填入状态 4.检查不通过
+            }else {
+                throw new RuntimeException("状态输入有误");
+            }
+
+            //修改绿化任务的状态
+            int update = butlerGreenDao.updateStatusById(greenTaskIdAndStatus);
+            if (update <= 0){
+                throw new RuntimeException("修改失败");
+            }
+
+            //添加绿化任务检查情况
+            int insert = butlerGreenDao.insertGreenTaskCheckSituation(greenTaskCheckSituation);
+            if (insert <= 0){
+                throw new RuntimeException("添加失败");
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(greenTaskCheckSituation.getFileUrls(),"sysGreenTaskCheckSituation",greenTaskCheckSituation.getId(),"checkImg","600",30,20);
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+
+        map.put("message","提交成功");
+        map.put("status",true);
+        return map;
     }
 }
