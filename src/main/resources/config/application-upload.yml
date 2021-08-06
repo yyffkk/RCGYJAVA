@@ -74,6 +74,11 @@ prop:
   upload-regulation-management-doc: /img/regulationManagement/
   #运营管理：物资出入库记录发票照片上传路径
   upload-material-record-invoice: /img/meterialRecordInvoice/
+  #运营管理：绿化任务检查照片上传路径
+  upload-green-task-check-situation: /img/greenTaskCheckSituation/
+  #运营管理：卫生任务检查照片上传路径
+  upload-hygiene-task-check-situation: /img/hygieneTaskCheckSituation/
+
 
   #系统管理-合同管理：合同doc,docx文件上传路径
   upload-contract-doc: /doc/contract/

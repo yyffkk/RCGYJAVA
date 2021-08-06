@@ -110,4 +110,24 @@ public class ButlerAppUploadController {
     public Map<String,Object> uploadButlerAppEngineeringRepair(MultipartFile file){
         return uploadService.uploadButlerAppEngineeringRepair(file);
     }
+
+    /**
+     * 上传绿化任务检查照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadGreenTaskCheckSituation")
+    public Map<String,Object> uploadGreenTaskCheckSituation(MultipartFile file){
+        return uploadService.uploadGreenTaskCheckSituation(file);
+    }
+
+    /**
+     * 上传卫生任务检查照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadHygieneTaskCheckSituation")
+    public Map<String,Object> uploadHygieneTaskCheckSituation(MultipartFile file){
+        return uploadService.uploadHygieneTaskCheckSituation(file);
+    }
 }
