@@ -33,8 +33,11 @@ public class ButlerGreenController {
      */
     @GetMapping("/list")
     public Map<String,Object> list(ButlerGreenSearch butlerGreenSearch){
+        //查询用户所属权限,type:1.接单人 2.检查人 3.其他角色
+        int type = butlerGreenService.findJurisdictionByUserId(butlerGreenSearch.getRoleId());
+
         PageHelper.startPage(butlerGreenSearch.getPageNum(),butlerGreenSearch.getSize());
-        List<ButlerGreenVo> butlerGreenVoList =butlerGreenService.list(butlerGreenSearch);
+        List<ButlerGreenVo> butlerGreenVoList =butlerGreenService.list(butlerGreenSearch,type);
         PageInfo<ButlerGreenVo> pageInfo = new PageInfo<>(butlerGreenVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
@@ -58,7 +61,12 @@ public class ButlerGreenController {
         //从request获取组织ID organizationId
         Integer organizationId = Integer.valueOf(request.getParameter("organizationId"));
         sysGreenTask.setDirector(id);//填入负责人员id
-        return butlerGreenService.complete(sysGreenTask,name,organizationId);
+        //从request获取用户拥有的角色id
+        String roleId = request.getParameter("roleId");
+        //查询用户所属权限,type:1.接单人 2.检查人 3.其他角色
+        int type = butlerGreenService.findJurisdictionByUserId(roleId);
+
+        return butlerGreenService.complete(sysGreenTask,name,organizationId,type);
     }
 
 }

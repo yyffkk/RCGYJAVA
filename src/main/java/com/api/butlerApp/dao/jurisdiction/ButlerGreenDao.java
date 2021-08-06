@@ -8,11 +8,18 @@ import java.util.List;
 
 public interface ButlerGreenDao {
     /**
-     * 查询所有的绿化管理
+     * 查询所有的绿化管理（接单人界面）
      * @param butlerGreenSearch 管家app 绿化任务搜索条件
      * @return 绿化管理
      */
     List<ButlerGreenVo> list(ButlerGreenSearch butlerGreenSearch);
+
+    /**
+     * 查询所有的绿化管理（检查人界面）
+     * @param butlerGreenSearch 管家app 绿化任务搜索条件
+     * @return 绿化管理
+     */
+    List<ButlerGreenVo> list2(ButlerGreenSearch butlerGreenSearch);
 
     /**
      * 确认完成
@@ -27,4 +34,5 @@ public interface ButlerGreenDao {
      * @return 绿化任务信息
      */
     SysGreenTask findTaskById(Integer id);
+
 }

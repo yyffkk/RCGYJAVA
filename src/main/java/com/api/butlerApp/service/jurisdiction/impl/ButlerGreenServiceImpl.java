@@ -1,6 +1,7 @@
 package com.api.butlerApp.service.jurisdiction.impl;
 
 import com.api.butlerApp.dao.jurisdiction.ButlerGreenDao;
+import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
 import com.api.butlerApp.service.jurisdiction.ButlerGreenService;
 import com.api.manage.dao.message.ManageSysMessageDao;
 import com.api.model.businessManagement.SysOrganization;
@@ -13,10 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ButlerGreenServiceImpl implements ButlerGreenService {
@@ -25,19 +23,42 @@ public class ButlerGreenServiceImpl implements ButlerGreenService {
     ButlerGreenDao butlerGreenDao;
     @Resource
     ManageSysMessageDao manageSysMessageDao;
+    @Resource
+    ButlerRepairDao butlerRepairDao;
 
     @Override
-    public List<ButlerGreenVo> list(ButlerGreenSearch butlerGreenSearch) {
-        return butlerGreenDao.list(butlerGreenSearch);
+    public List<ButlerGreenVo> list(ButlerGreenSearch butlerGreenSearch, int type) {
+        List<ButlerGreenVo> list = new ArrayList<>();
+        switch (type){
+            case 1:
+                //接单人界面
+                list = butlerGreenDao.list(butlerGreenSearch);
+                break;
+            case 2:
+                //检查人界面
+                list = butlerGreenDao.list2(butlerGreenSearch);
+                break;
+            case 3:
+                //其他人界面
+                break;
+            default:
+                //系统错误
+                break;
+        }
+        return list;
     }
 
     @Override
     @Transactional
-    public Map<String, Object> complete(SysGreenTask sysGreenTask, String name, Integer organizationId) {
+    public Map<String, Object> complete(SysGreenTask sysGreenTask, String name, Integer organizationId, int type) {
         map = new HashMap<>();
 
 
         try {
+            if (type != 1){
+                throw new RuntimeException("当前用户无接单权限，不可完成任务");
+            }
+
             sysGreenTask.setStatus(2);//2.已完成
             sysGreenTask.setComplete(new Date());//填入完成时间
 
@@ -81,5 +102,28 @@ public class ButlerGreenServiceImpl implements ButlerGreenService {
         map.put("message","完成成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public int findJurisdictionByUserId(String roleIds) {
+        String[] split = roleIds.split(",");
+        if (split.length >0){
+            for (String s : split) {
+                int roleId = Integer.parseInt(s);
+                //根据角色id查询权限id集合
+                List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
+                if (jurisdictionIds != null && jurisdictionIds.size()>0){
+                    //73.接单
+                    if (jurisdictionIds.contains(73)){
+                        return 1;
+                    }
+                    //74.检查
+                    if (jurisdictionIds.contains(74)){
+                        return 2;
+                    }
+                }
+            }
+        }
+        return 3;
     }
 }

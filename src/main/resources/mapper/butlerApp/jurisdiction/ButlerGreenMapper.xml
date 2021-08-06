@@ -20,6 +20,23 @@
         order by T.create_date desc
     </select>
 
+    <select id="list2" parameterType="com.api.model.butlerApp.ButlerGreenSearch" resultType="com.api.vo.butlerApp.ButlerGreenVo">
+        select T.* from (
+        select sgt.id,sga.name as green_area_name,sgt.content,su.actual_name as director_name,
+        (case sgt.status = 1 and sgt.end_date <![CDATA[ < ]]> now()  when true then 3 else sgt.status end) as status,
+        sgt.end_date,sgt.complete_date,sgt.create_date
+        from sys_green_task as sgt,sys_green_area as sga,sys_user as su
+        where sgt.green_area_id = sga.id and sgt.director = su.id
+        ) as T
+        <where>
+            <if test="greenStatus != null">
+                and T.status = #{greenStatus}
+            </if>
+        </where>
+        order by T.create_date desc
+    </select>
+
+
     <update id="complete" parameterType="com.api.model.operationManagement.SysGreenTask">
         update sys_green_task
         set status = #{status},

@@ -20,6 +20,10 @@ public class ButlerGreenSearch {
      * 用户主键id
      */
     private Integer id;
+    /**
+     * 当前用户 角色ID，用'，'隔开，格式为(1,2)
+     */
+    private String roleId;
 
     @Override
     public String toString() {
@@ -28,6 +32,7 @@ public class ButlerGreenSearch {
                 ", size=" + size +
                 ", greenStatus=" + greenStatus +
                 ", id=" + id +
+                ", roleId='" + roleId + '\'' +
                 '}';
     }
 
@@ -63,13 +68,22 @@ public class ButlerGreenSearch {
         this.id = id;
     }
 
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
     public ButlerGreenSearch() {
     }
 
-    public ButlerGreenSearch(int pageNum, int size, Integer greenStatus, Integer id) {
+    public ButlerGreenSearch(int pageNum, int size, Integer greenStatus, Integer id, String roleId) {
         this.pageNum = pageNum;
         this.size = size;
         this.greenStatus = greenStatus;
         this.id = id;
+        this.roleId = roleId;
     }
 }

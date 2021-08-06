@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ButlerGreenService {
-    List<ButlerGreenVo> list(ButlerGreenSearch butlerGreenSearch);
+    List<ButlerGreenVo> list(ButlerGreenSearch butlerGreenSearch, int type);
 
-    Map<String, Object> complete(SysGreenTask sysGreenTask, String name, Integer organizationId);
+    Map<String, Object> complete(SysGreenTask sysGreenTask, String name, Integer organizationId, int type);
 
+    int findJurisdictionByUserId(String roleId);
 }
