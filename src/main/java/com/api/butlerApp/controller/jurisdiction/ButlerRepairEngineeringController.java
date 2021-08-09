@@ -2,6 +2,7 @@ package com.api.butlerApp.controller.jurisdiction;
 
 import com.api.butlerApp.service.jurisdiction.ButlerRepairEngineeringService;
 import com.api.model.butlerApp.ButlerRepairEngineering;
+import com.api.model.butlerApp.ButlerRepairEngineeringMaintenanceResults;
 import com.api.model.butlerApp.ButlerRepairEngineeringReport;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
@@ -189,6 +190,27 @@ public class ButlerRepairEngineeringController {
         return butlerRepairEngineeringService.submitReport(butlerRepairEngineeringReport,type);
     }
 
+    /**
+     * 完成维修
+     * @param butlerRepairEngineeringMaintenanceResults 管家app 报事报修工程维修 维修结果model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/completeMaintenance")
+    public Map<String,Object> completeMaintenance(@RequestBody ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        butlerRepairEngineeringMaintenanceResults.setCreateId(id);//填入创建人
+        butlerRepairEngineeringMaintenanceResults.setCreateDate(new Date());//填入创建时间
+
+        //从request获取用户联系方式
+        String roleId = request.getParameter("roleId");
+        //查询用户所属权限,type:1.工程派单-维修公司 2.工程派单-维修人员 3.工程接单-维修人员，4.不具备任何权限
+        int type = butlerRepairEngineeringService.findJurisdictionByUserId(roleId);
+
+
+        return butlerRepairEngineeringService.completeMaintenance(butlerRepairEngineeringMaintenanceResults,type);
+    }
 
 
 

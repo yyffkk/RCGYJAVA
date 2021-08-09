@@ -1,6 +1,7 @@
 package com.api.butlerApp.service.jurisdiction;
 
 import com.api.model.butlerApp.ButlerRepairEngineering;
+import com.api.model.butlerApp.ButlerRepairEngineeringMaintenanceResults;
 import com.api.model.butlerApp.ButlerRepairEngineeringReport;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
@@ -30,4 +31,6 @@ public interface ButlerRepairEngineeringService {
     Map<String, Object> maintenanceStaffPickSingle(ButlerRepairEngineering butlerRepairEngineering, int type);
 
     Map<String, Object> submitReport(ButlerRepairEngineeringReport butlerRepairEngineeringReport, int type);
+
+    Map<String, Object> completeMaintenance(ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults, int type);
 }

@@ -145,5 +145,34 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+    <insert id="completeMaintenance" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringMaintenanceResults">
+        insert into sys_report_repair_engineering_maintenance_results(
+            repair_engineering_id,
+            <if test="content != null and content != ''">
+                content,
+            </if>
+            <if test="billMaterials != null and billMaterials != ''">
+                bill_materials,
+            </if>
+            create_id,
+            create_date
+        )values (
+            #{repairEngineeringId},
+            <if test="content != null and content != ''">
+                #{content},
+            </if>
+            <if test="billMaterials != null and billMaterials != ''">
+                #{billMaterials},
+            </if>
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="updateStatusById" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
+        update sys_report_repair_engineering
+        set status = #{status}
+        where id = #{id}
+    </update>
 
 </mapper>

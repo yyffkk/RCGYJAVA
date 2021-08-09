@@ -5,10 +5,7 @@ import com.api.butlerApp.dao.jurisdiction.ButlerRepairEngineeringDao;
 import com.api.butlerApp.service.jurisdiction.ButlerRepairEngineeringService;
 import com.api.model.businessManagement.SysOrganization;
 import com.api.model.businessManagement.SysUser;
-import com.api.model.butlerApp.ButlerRepairEngineering;
-import com.api.model.butlerApp.ButlerRepairEngineeringReport;
-import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
-import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
+import com.api.model.butlerApp.*;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
@@ -384,6 +381,68 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(butlerRepairEngineeringReport.getWorkReportImgUrls(),"sysReportRepairEngineeringReport",butlerRepairEngineeringReport.getId(),"workReportImg","600",30,20);
 
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> completeMaintenance(ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults, int type) {
+        map = new HashMap<>();
+
+
+        try {
+            ButlerRepairEngineeringFBIVo byId2 = butlerRepairEngineeringDao.findById(butlerRepairEngineeringMaintenanceResults.getRepairEngineeringId());
+            if (byId2.getStatus() != 4 && byId2.getStatus() != 6){//4.处理中，6.验收失败
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
+            if (type != 3){
+                throw new RuntimeException("接单(维修人员)权限不足");
+            }
+
+            //完成维修
+            int insert = butlerRepairEngineeringDao.completeMaintenance(butlerRepairEngineeringMaintenanceResults);
+            if (insert <= 0){
+                throw new RuntimeException("提交失败");
+            }
+
+            //添加处理进程记录
+            ButlerReportRepairEngineeringProcessRecord engineeringProcessRecord = new ButlerReportRepairEngineeringProcessRecord();
+            engineeringProcessRecord.setRepairEngineeringId(butlerRepairEngineeringMaintenanceResults.getRepairEngineeringId());//填入工程维修主键id
+            engineeringProcessRecord.setOperationDate(new Date());//填入操作时间(数据创建时间)
+            engineeringProcessRecord.setOperationType(5);//填入操作类型，5.处理完成
+            engineeringProcessRecord.setOperator(butlerRepairEngineeringMaintenanceResults.getCreateId());//操作人（维修人员接单人id）
+            engineeringProcessRecord.setOperatorType(3);//填入操作人类型，3.操作人（物业）
+            engineeringProcessRecord.setOperatorContent("等待物业验收");//填入操作内容
+
+            //添加工程维修报修进程处理进程记录
+            int insert2 = butlerRepairEngineeringDao.insertProcessRecord(engineeringProcessRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+
+            ButlerRepairEngineering butlerRepairEngineering = new ButlerRepairEngineering();
+            butlerRepairEngineering.setId(butlerRepairEngineeringMaintenanceResults.getRepairEngineeringId());//填入工程维修主键id
+            butlerRepairEngineering.setStatus(5);//填入5.已处理（待验收）
+
+            //修改工程维修状态
+            int update = butlerRepairEngineeringDao.updateStatusById(butlerRepairEngineering);
+            if (update <= 0){
+                throw new RuntimeException("修改工程维修状态失败");
+            }
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
