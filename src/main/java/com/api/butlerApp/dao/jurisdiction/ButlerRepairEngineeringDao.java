@@ -125,4 +125,25 @@ public interface ButlerRepairEngineeringDao {
      * @return 最新的维修结果
      */
     ButlerRepairEngineeringResultsVo findNewResultByRepairEngineeringId(Integer repairEngineeringId);
+
+    /**
+     * 提交验收报告
+     * @param butlerRepairEngineeringMaintenanceResults 管家app 报事报修工程维修 维修结果model
+     * @return 影响行数
+     */
+    int submitAcceptance(ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults);
+
+    /**
+     * 根据工程维修主键id查询验收记录
+     * @param repairEngineeringId 工程维修主键id
+     * @return 验收记录
+     */
+    List<ButlerRepairEngineeringAcceptanceRecordVo> findAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId);
+
+    /**
+     * 开始整改
+     * @param butlerRepairEngineering 管家app 报事报修工程维修model
+     * @return 影响行数
+     */
+    int startRectification(ButlerRepairEngineering butlerRepairEngineering);
 }

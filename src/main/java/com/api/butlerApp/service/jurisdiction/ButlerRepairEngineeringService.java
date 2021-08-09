@@ -37,4 +37,10 @@ public interface ButlerRepairEngineeringService {
     Map<String, Object> completeMaintenance(ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults, int type);
 
     Map<String, Object> findNewResultByRepairEngineeringId(Integer repairEngineeringId);
+
+    Map<String, Object> submitAcceptance(ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults, int type);
+
+    Map<String, Object> findAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId);
+
+    Map<String, Object> startRectification(ButlerRepairEngineering butlerRepairEngineering, int type);
 }

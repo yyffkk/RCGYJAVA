@@ -178,7 +178,6 @@
         where id = #{id}
     </update>
 
-
     <select id="findReportByRepairEngineeringId" parameterType="java.lang.Integer"
             resultType="com.api.vo.butlerApp.ButlerRepairEngineeringReportVo">
         select srrer.*,su.actual_name as create_name
@@ -192,6 +191,34 @@
         where srremr.repair_engineering_id = su.id and repair_engineering_id = #{repairEngineeringId}
         order by srremr.create_date desc limit 1
     </select>
+
+    <update id="submitAcceptance" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringMaintenanceResults">
+        update sys_report_repair_engineering_maintenance_results
+        <set>
+            results = #{results},
+            <if test="advice != null and advice != ''">
+                advice = #{advice},
+            </if>
+            acceptance_people = #{acceptancePeople},
+            acceptance_date = #{acceptanceDate}
+        </set>
+        where id = #{id} and repair_engineering_id = #{repairEngineeringId}
+    </update>
+
+    <select id="findAcceptanceRecordByRepairEngineeringId" parameterType="java.lang.Integer"
+            resultType="com.api.vo.butlerApp.ButlerRepairEngineeringAcceptanceRecordVo">
+        select srremr.*,su.actual_name as create_name,su1.actual_name as acceptance_people_name
+        from sys_report_repair_engineering_maintenance_results as srremr,sys_user as su,sys_user as su1
+        where srremr.repair_engineering_id = su.id and srremr.acceptance_people = su1.id and srremr.acceptance_people is not null
+        and srremr.repair_engineering_id = #{repairEngineeringId}
+    </select>
+
+    <update id="startRectification" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
+        update sys_report_repair_engineering
+        set status = #{status}
+        where id = #{id} and maintenance_staff = #{maintenanceStaff}
+    </update>
+
 
 
 </mapper>

@@ -235,6 +235,59 @@ public class ButlerRepairEngineeringController {
         return butlerRepairEngineeringService.findNewResultByRepairEngineeringId(repairEngineeringId);
     }
 
+    /**
+     * 提交验收报告
+     * @param butlerRepairEngineeringMaintenanceResults 管家app 报事报修工程维修 维修结果model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/submitAcceptance")
+    public Map<String,Object> submitAcceptance(@RequestBody ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        butlerRepairEngineeringMaintenanceResults.setAcceptancePeople(id);//填入验收人
+        butlerRepairEngineeringMaintenanceResults.setAcceptanceDate(new Date());//填入验收时间
+
+        //从request获取用户联系方式
+        String roleId = request.getParameter("roleId");
+        //查询用户所属权限,type:1.工程派单-维修公司 2.工程派单-维修人员 3.工程接单-维修人员，4.不具备任何权限
+        int type = butlerRepairEngineeringService.findJurisdictionByUserId(roleId);
+
+        return butlerRepairEngineeringService.submitAcceptance(butlerRepairEngineeringMaintenanceResults,type);
+    }
+
+
+    /**
+     * 根据工程维修主键id查询验收记录
+     * @param repairEngineeringId 工程维修主键id
+     * @return map
+     */
+    @GetMapping("/findAcceptanceRecordByRepairEngineeringId")
+    public Map<String,Object> findAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId){
+        return butlerRepairEngineeringService.findAcceptanceRecordByRepairEngineeringId(repairEngineeringId);
+    }
+
+    /**
+     * 开始整改
+     * @param butlerRepairEngineering 管家app 报事报修工程维修model
+     * @param request butlerApp-admin-token获取的request管家用户信息
+     * @return map
+     */
+    @PostMapping("/startRectification")
+    public Map<String,Object> startRectification(@RequestBody ButlerRepairEngineering butlerRepairEngineering, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        butlerRepairEngineering.setMaintenanceStaff(id);//填入维修员工Id;
+
+        //从request获取用户联系方式
+        String roleId = request.getParameter("roleId");
+        //查询用户所属权限,type:1.工程派单-维修公司 2.工程派单-维修人员 3.工程接单-维修人员，4.不具备任何权限
+        int type = butlerRepairEngineeringService.findJurisdictionByUserId(roleId);
+
+        return butlerRepairEngineeringService.startRectification(butlerRepairEngineering,type);
+    }
+
+
 
 
 

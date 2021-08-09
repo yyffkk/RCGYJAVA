@@ -8,10 +8,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.*;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
-import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
-import com.api.vo.butlerApp.ButlerRepairEngineeringReportVo;
-import com.api.vo.butlerApp.ButlerRepairEngineeringResultsVo;
-import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
+import com.api.vo.butlerApp.*;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -494,6 +491,170 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
         map.put("status",true);
         map.put("data",repairEngineeringResultsVo);
 
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> submitAcceptance(ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults, int type) {
+        map = new HashMap<>();
+
+        try {
+            ButlerRepairEngineeringFBIVo byId2 = butlerRepairEngineeringDao.findById(butlerRepairEngineeringMaintenanceResults.getRepairEngineeringId());
+            if (byId2.getStatus() != 5){//5.处理完成
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
+            if (type != 1){
+                throw new RuntimeException("验收权限不足");
+            }
+
+            //提交验收报告
+            int update = butlerRepairEngineeringDao.submitAcceptance(butlerRepairEngineeringMaintenanceResults);
+            if (update <= 0){
+                throw new RuntimeException("提交失败");
+            }
+
+            //添加处理进程记录
+            ButlerReportRepairEngineeringProcessRecord engineeringProcessRecord = new ButlerReportRepairEngineeringProcessRecord();
+            engineeringProcessRecord.setRepairEngineeringId(butlerRepairEngineeringMaintenanceResults.getRepairEngineeringId());//填入工程维修主键id
+            engineeringProcessRecord.setOperationDate(new Date());//填入操作时间(数据创建时间)
+            if (butlerRepairEngineeringMaintenanceResults.getResults() == 1){//1.通过
+                engineeringProcessRecord.setOperationType(7);//填入操作类型，7.验收通过
+                engineeringProcessRecord.setOperatorContent("验收通过");//填入操作内容
+            }else if (butlerRepairEngineeringMaintenanceResults.getResults() == 2){//2.驳回
+                engineeringProcessRecord.setOperationType(6);//填入操作类型，6.验收驳回
+                engineeringProcessRecord.setOperatorContent("验收驳回，等待整改");//填入操作内容
+            }else {
+                throw new RuntimeException("状态有误");
+            }
+            engineeringProcessRecord.setOperator(butlerRepairEngineeringMaintenanceResults.getAcceptancePeople());//操作人（验收人id）
+            engineeringProcessRecord.setOperatorType(3);//填入操作人类型，3.操作人（物业）
+
+            //添加工程维修报修进程处理进程记录
+            int insert2 = butlerRepairEngineeringDao.insertProcessRecord(engineeringProcessRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+
+
+            ButlerRepairEngineering butlerRepairEngineering = new ButlerRepairEngineering();
+            butlerRepairEngineering.setId(butlerRepairEngineeringMaintenanceResults.getRepairEngineeringId());//填入工程维修主键id
+
+            if (butlerRepairEngineeringMaintenanceResults.getResults() == 1){//1.通过
+                butlerRepairEngineering.setStatus(7);//填入7.验收成功
+            }else if (butlerRepairEngineeringMaintenanceResults.getResults() == 2){//2.驳回
+                butlerRepairEngineering.setStatus(6);//填入6.验收失败
+            }else {
+                throw new RuntimeException("状态有误");
+            }
+
+            //修改工程维修状态
+            int update2 = butlerRepairEngineeringDao.updateStatusById(butlerRepairEngineering);
+            if (update2 <= 0){
+                throw new RuntimeException("修改工程维修状态失败");
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(butlerRepairEngineeringMaintenanceResults.getAcceptanceImgUrls(),"sysReportEngineeringMaintenanceResults",butlerRepairEngineeringMaintenanceResults.getId(),"acceptanceImg","600",30,20);
+
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId) {
+        map = new HashMap<>();
+
+        List<ButlerRepairEngineeringAcceptanceRecordVo> repairEngineeringAcceptanceRecordVoList = butlerRepairEngineeringDao.findAcceptanceRecordByRepairEngineeringId(repairEngineeringId);
+
+        if (repairEngineeringAcceptanceRecordVoList != null && repairEngineeringAcceptanceRecordVoList.size() >0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (ButlerRepairEngineeringAcceptanceRecordVo repairEngineeringAcceptanceRecordVo : repairEngineeringAcceptanceRecordVoList) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportEngineeringMaintenanceResults", repairEngineeringAcceptanceRecordVo.getId(), "completeMaintenanceImg");
+                repairEngineeringAcceptanceRecordVo.setMaintenanceImgLists(imgByDate);
+
+                List<VoResourcesImg> imgByDate1 = uploadUtil.findImgByDate("sysReportEngineeringMaintenanceResults", repairEngineeringAcceptanceRecordVo.getId(), "acceptanceImg");
+                repairEngineeringAcceptanceRecordVo.setAcceptanceImgLists(imgByDate1);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("data",repairEngineeringAcceptanceRecordVoList);
+        map.put("status",true);
+
+
+
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> startRectification(ButlerRepairEngineering butlerRepairEngineering, int type) {
+        map = new HashMap<>();
+
+        try {
+            ButlerRepairEngineeringFBIVo byId2 = butlerRepairEngineeringDao.findById(butlerRepairEngineering.getId());
+            if (byId2.getStatus() != 6){//6.验收失败
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
+            if (type != 3){
+                throw new RuntimeException("整改权限不足");
+            }
+
+            butlerRepairEngineering.setStatus(4);//4.处理中（或开始整改中）
+
+            //开始整改
+            int update = butlerRepairEngineeringDao.startRectification(butlerRepairEngineering);
+            if (update <= 0){
+                throw new RuntimeException("操作失败");
+            }
+
+            //添加处理进程记录
+            ButlerReportRepairEngineeringProcessRecord engineeringProcessRecord = new ButlerReportRepairEngineeringProcessRecord();
+            engineeringProcessRecord.setRepairEngineeringId(butlerRepairEngineering.getId());//填入工程维修主键id
+            engineeringProcessRecord.setOperationDate(new Date());//填入操作时间(数据创建时间)
+            engineeringProcessRecord.setOperationType(8);//填入操作类型，8.开始整改
+            engineeringProcessRecord.setOperator(butlerRepairEngineering.getMaintenanceStaff());//操作人（维修员工id）
+            engineeringProcessRecord.setOperatorType(3);//填入操作人类型，3.操作人（物业）
+            //查询维修人信息
+            SysUser byId = butlerRepairDao.findSysUserById(butlerRepairEngineering.getMaintenanceStaff());
+            engineeringProcessRecord.setOperatorContent(byId.getActualName()+" 师傅正在整改");//填入操作内容
+
+            //添加工程维修报修进程处理进程记录
+            int insert2 = butlerRepairEngineeringDao.insertProcessRecord(engineeringProcessRecord);
+            if (insert2 <= 0){
+                throw new RuntimeException("添加处理进程记录失败");
+            }
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","操作成功");
+        map.put("status",true);
         return map;
     }
 }
