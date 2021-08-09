@@ -10,6 +10,7 @@ import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
 import com.api.vo.butlerApp.ButlerRepairEngineeringReportVo;
+import com.api.vo.butlerApp.ButlerRepairEngineeringResultsVo;
 import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
@@ -457,6 +458,9 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
             if (update <= 0){
                 throw new RuntimeException("修改工程维修状态失败");
             }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(butlerRepairEngineeringMaintenanceResults.getMaintenanceImgUrls(),"sysReportEngineeringMaintenanceResults",butlerRepairEngineeringMaintenanceResults.getId(),"completeMaintenanceImg","600",30,20);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -470,6 +474,26 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
         }
         map.put("message","提交成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findNewResultByRepairEngineeringId(Integer repairEngineeringId) {
+        map = new HashMap<>();
+
+        //根据工程维修主键id查询最新的维修结果
+        ButlerRepairEngineeringResultsVo repairEngineeringResultsVo = butlerRepairEngineeringDao.findNewResultByRepairEngineeringId(repairEngineeringId);
+
+        if (repairEngineeringResultsVo != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysReportEngineeringMaintenanceResults", repairEngineeringResultsVo.getId(), "completeMaintenanceImg");
+            repairEngineeringResultsVo.setMaintenanceImgLists(imgByDate);
+        }
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",repairEngineeringResultsVo);
+
         return map;
     }
 }

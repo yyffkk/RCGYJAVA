@@ -198,7 +198,7 @@ public class ButlerRepairEngineeringController {
      */
     @GetMapping("/findReportByRepairEngineeringId")
     public Map<String,Object> findReportByRepairEngineeringId(Integer repairEngineeringId){
-        
+
         return butlerRepairEngineeringService.findReportByRepairEngineeringId(repairEngineeringId);
     }
 
@@ -223,6 +223,16 @@ public class ButlerRepairEngineeringController {
 
 
         return butlerRepairEngineeringService.completeMaintenance(butlerRepairEngineeringMaintenanceResults,type);
+    }
+
+    /**
+     * 根据工程维修主键id查询最新的维修结果
+     * @param repairEngineeringId 工程维修主键id
+     * @return map
+     */
+    @GetMapping("/findNewResultByRepairEngineeringId")
+    public Map<String,Object> findNewResultByRepairEngineeringId(Integer repairEngineeringId){
+        return butlerRepairEngineeringService.findNewResultByRepairEngineeringId(repairEngineeringId);
     }
 
 

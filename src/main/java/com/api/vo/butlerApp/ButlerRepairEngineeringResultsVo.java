@@ -6,11 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 管家app 报事报修工程维修 Vo  回显
+ * 管家app 维修结果Vo 回显
  */
-public class ButlerRepairEngineeringReportVo {
+public class ButlerRepairEngineeringResultsVo {
     /**
-     * 主键id
+     * 维修结果主键id
      */
     private Integer id;
     /**
@@ -18,36 +18,36 @@ public class ButlerRepairEngineeringReportVo {
      */
     private Integer repairEngineeringId;
     /**
-     * 工作描述
+     * 处理描述
      */
     private String content;
     /**
-     * 创建人id
+     * 材料清单
      */
-    private Integer createId;
+    private String billMaterials;
     /**
-     * 创建人名称
+     * 维修完成照片集合
+     */
+    private List<VoResourcesImg> maintenanceImgLists;
+    /**
+     * 维修人名称
      */
     private String createName;
     /**
-     * 创建时间
+     * 维修完成时间
      */
     private Date createDate;
-    /**
-     * 工作汇报照片
-     */
-    private List<VoResourcesImg> workReportImgLists;
 
     @Override
     public String toString() {
-        return "ButlerRepairEngineeringReportVo{" +
+        return "ButlerRepairEngineeringResultsVo{" +
                 "id=" + id +
                 ", repairEngineeringId=" + repairEngineeringId +
                 ", content='" + content + '\'' +
-                ", createId=" + createId +
+                ", billMaterials='" + billMaterials + '\'' +
+                ", maintenanceImgLists=" + maintenanceImgLists +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
-                ", workReportImgLists=" + workReportImgLists +
                 '}';
     }
 
@@ -75,12 +75,20 @@ public class ButlerRepairEngineeringReportVo {
         this.content = content;
     }
 
-    public Integer getCreateId() {
-        return createId;
+    public String getBillMaterials() {
+        return billMaterials;
     }
 
-    public void setCreateId(Integer createId) {
-        this.createId = createId;
+    public void setBillMaterials(String billMaterials) {
+        this.billMaterials = billMaterials;
+    }
+
+    public List<VoResourcesImg> getMaintenanceImgLists() {
+        return maintenanceImgLists;
+    }
+
+    public void setMaintenanceImgLists(List<VoResourcesImg> maintenanceImgLists) {
+        this.maintenanceImgLists = maintenanceImgLists;
     }
 
     public String getCreateName() {
@@ -99,24 +107,16 @@ public class ButlerRepairEngineeringReportVo {
         this.createDate = createDate;
     }
 
-    public List<VoResourcesImg> getWorkReportImgLists() {
-        return workReportImgLists;
+    public ButlerRepairEngineeringResultsVo() {
     }
 
-    public void setWorkReportImgLists(List<VoResourcesImg> workReportImgLists) {
-        this.workReportImgLists = workReportImgLists;
-    }
-
-    public ButlerRepairEngineeringReportVo() {
-    }
-
-    public ButlerRepairEngineeringReportVo(Integer id, Integer repairEngineeringId, String content, Integer createId, String createName, Date createDate, List<VoResourcesImg> workReportImgLists) {
+    public ButlerRepairEngineeringResultsVo(Integer id, Integer repairEngineeringId, String content, String billMaterials, List<VoResourcesImg> maintenanceImgLists, String createName, Date createDate) {
         this.id = id;
         this.repairEngineeringId = repairEngineeringId;
         this.content = content;
-        this.createId = createId;
+        this.billMaterials = billMaterials;
+        this.maintenanceImgLists = maintenanceImgLists;
         this.createName = createName;
         this.createDate = createDate;
-        this.workReportImgLists = workReportImgLists;
     }
 }

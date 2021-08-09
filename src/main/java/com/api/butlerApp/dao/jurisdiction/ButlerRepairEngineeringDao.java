@@ -3,10 +3,7 @@ package com.api.butlerApp.dao.jurisdiction;
 import com.api.model.businessManagement.SysOrganization;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.*;
-import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
-import com.api.vo.butlerApp.ButlerRepairEngineeringReportVo;
-import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
-import com.api.vo.butlerApp.ButlerRepairVo;
+import com.api.vo.butlerApp.*;
 
 import java.util.List;
 
@@ -121,4 +118,11 @@ public interface ButlerRepairEngineeringDao {
      * @return 工作日志
      */
     List<ButlerRepairEngineeringReportVo> findReportByRepairEngineeringId(Integer repairEngineeringId);
+
+    /**
+     * 根据工程维修主键id查询最新的维修结果
+     * @param repairEngineeringId 工程维修主键id
+     * @return 最新的维修结果
+     */
+    ButlerRepairEngineeringResultsVo findNewResultByRepairEngineeringId(Integer repairEngineeringId);
 }

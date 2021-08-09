@@ -167,6 +167,9 @@
             #{createId},
             #{createDate}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <update id="updateStatusById" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
@@ -181,6 +184,13 @@
         select srrer.*,su.actual_name as create_name
         from sys_report_repair_engineering_report as srrer,sys_user as su
         where srrer.repair_engineering_id = su.id and repair_engineering_id = #{repairEngineeringId}
+    </select>
+    <select id="findNewResultByRepairEngineeringId" parameterType="java.lang.Integer"
+            resultType="com.api.vo.butlerApp.ButlerRepairEngineeringResultsVo">
+        select srremr.*,su.actual_name as create_name
+        from sys_report_repair_engineering_maintenance_results as srremr,sys_user as su
+        where srremr.repair_engineering_id = su.id and repair_engineering_id = #{repairEngineeringId}
+        order by srremr.create_date desc limit 1
     </select>
 
 
