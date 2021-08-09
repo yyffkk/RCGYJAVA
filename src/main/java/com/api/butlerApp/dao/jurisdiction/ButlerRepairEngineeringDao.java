@@ -3,6 +3,7 @@ package com.api.butlerApp.dao.jurisdiction;
 import com.api.model.businessManagement.SysOrganization;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairEngineering;
+import com.api.model.butlerApp.ButlerRepairEngineeringReport;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
 import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
@@ -94,4 +95,11 @@ public interface ButlerRepairEngineeringDao {
      * @return 影响行数
      */
     int maintenanceStaffPickSingle(ButlerRepairEngineering butlerRepairEngineering);
+
+    /**
+     * 提交工作汇报
+     * @param butlerRepairEngineeringReport 管家app 报事报修工程维修工作汇报model
+     * @return 影响行数
+     */
+    int submitReport(ButlerRepairEngineeringReport butlerRepairEngineeringReport);
 }

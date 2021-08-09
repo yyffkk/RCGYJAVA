@@ -6,6 +6,7 @@ import com.api.butlerApp.service.jurisdiction.ButlerRepairEngineeringService;
 import com.api.model.businessManagement.SysOrganization;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairEngineering;
+import com.api.model.butlerApp.ButlerRepairEngineeringReport;
 import com.api.model.butlerApp.ButlerRepairEngineeringSearch;
 import com.api.model.butlerApp.ButlerReportRepairEngineeringProcessRecord;
 import com.api.util.IdWorker;
@@ -354,6 +355,48 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
             return map;
         }
         map.put("message","接单成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> submitReport(ButlerRepairEngineeringReport butlerRepairEngineeringReport, int type) {
+        map = new HashMap<>();
+
+
+        try {
+            ButlerRepairEngineeringFBIVo byId2 = butlerRepairEngineeringDao.findById(butlerRepairEngineeringReport.getRepairEngineeringId());
+            if (byId2.getStatus() != 4){
+                throw new RuntimeException("当前状态不可进行该操作");
+            }
+
+            if (type != 3){
+                throw new RuntimeException("接单(维修人员)权限不足");
+            }
+
+            //提交工作汇报
+            int insert = butlerRepairEngineeringDao.submitReport(butlerRepairEngineeringReport);
+            if (insert <= 0){
+                throw new RuntimeException("提交失败");
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(butlerRepairEngineeringReport.getWorkReportImgUrls(),"sysReportRepairEngineeringReport",butlerRepairEngineeringReport.getId(),"workReportImg","600",30,20);
+
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","提交成功");
         map.put("status",true);
         return map;
     }

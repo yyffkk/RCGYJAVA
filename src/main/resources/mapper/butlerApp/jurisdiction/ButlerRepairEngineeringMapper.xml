@@ -125,5 +125,25 @@
         where id = #{id} and maintenance_staff = #{maintenanceStaff}
     </update>
 
+    <insert id="submitReport" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringReport">
+        insert into sys_report_repair_engineering_report(
+        repair_engineering_id,
+        <if test="content != null and content != ''">
+            content,
+        </if>
+        create_id,
+        create_date
+        )values (
+        #{repairEngineeringId},
+        <if test="content != null and content != ''">
+            #{content},
+        </if>
+        #{createId},
+        #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 
 </mapper>
