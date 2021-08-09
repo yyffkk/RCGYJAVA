@@ -32,5 +32,8 @@ public interface ButlerRepairEngineeringService {
 
     Map<String, Object> submitReport(ButlerRepairEngineeringReport butlerRepairEngineeringReport, int type);
 
+    Map<String, Object> findReportByRepairEngineeringId(Integer repairEngineeringId);
+
     Map<String, Object> completeMaintenance(ButlerRepairEngineeringMaintenanceResults butlerRepairEngineeringMaintenanceResults, int type);
+
 }

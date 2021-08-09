@@ -4,6 +4,7 @@ import com.api.model.businessManagement.SysOrganization;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.*;
 import com.api.vo.butlerApp.ButlerRepairEngineeringFBIVo;
+import com.api.vo.butlerApp.ButlerRepairEngineeringReportVo;
 import com.api.vo.butlerApp.ButlerRepairEngineeringVo;
 import com.api.vo.butlerApp.ButlerRepairVo;
 
@@ -113,4 +114,11 @@ public interface ButlerRepairEngineeringDao {
      * @return 影响行数
      */
     int updateStatusById(ButlerRepairEngineering butlerRepairEngineering);
+
+    /**
+     * 根据工程维修主键id查询工作日志
+     * @param repairEngineeringId 工程维修主键id
+     * @return 工作日志
+     */
+    List<ButlerRepairEngineeringReportVo> findReportByRepairEngineeringId(Integer repairEngineeringId);
 }

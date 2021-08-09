@@ -190,6 +190,19 @@ public class ButlerRepairEngineeringController {
         return butlerRepairEngineeringService.submitReport(butlerRepairEngineeringReport,type);
     }
 
+
+    /**
+     * 根据工程维修主键id查询工作日志
+     * @param repairEngineeringId 工程维修主键id
+     * @return map
+     */
+    @GetMapping("/findReportByRepairEngineeringId")
+    public Map<String,Object> findReportByRepairEngineeringId(Integer repairEngineeringId){
+        
+        return butlerRepairEngineeringService.findReportByRepairEngineeringId(repairEngineeringId);
+    }
+
+
     /**
      * 完成维修
      * @param butlerRepairEngineeringMaintenanceResults 管家app 报事报修工程维修 维修结果model
@@ -211,6 +224,7 @@ public class ButlerRepairEngineeringController {
 
         return butlerRepairEngineeringService.completeMaintenance(butlerRepairEngineeringMaintenanceResults,type);
     }
+
 
 
 
