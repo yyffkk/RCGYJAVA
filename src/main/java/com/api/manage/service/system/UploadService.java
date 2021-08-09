@@ -107,4 +107,10 @@ public interface UploadService {
     Map<String, Object> uploadGreenTaskCheckSituation(MultipartFile file);
 
     Map<String, Object> uploadHygieneTaskCheckSituation(MultipartFile file);
+
+    Map<String, Object> uploadButlerAppWorkReport(MultipartFile file);
+
+    Map<String, Object> uploadButlerAppCompleteMaintenance(MultipartFile file);
+
+    Map<String, Object> uploadButlerAppAcceptance(MultipartFile file);
 }

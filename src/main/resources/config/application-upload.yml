@@ -80,6 +80,7 @@ prop:
   upload-hygiene-task-check-situation: /img/hygieneTaskCheckSituation/
 
 
+
   #系统管理-合同管理：合同doc,docx文件上传路径
   upload-contract-doc: /doc/contract/
 
@@ -123,6 +124,14 @@ prop:
   upload-butler-app-inspection-space: /img/inspectionSpace/
   #ButlerApp-报事报修管理：工程维修图片信息
   upload-butler-app-engineering-repair: /img/engineeringRepair/
+  #ButlerApp-报事报修工程维修管理：工作汇报图片信息
+  upload-butler-app-work—report: /img/workReport/
+  #ButlerApp-报事报修工程维修管理：完成维修图片信息
+  upload-butler-app-complete-maintenance: /img/completeMaintenance/
+  #ButlerApp-报事报修工程维修管理：验收照片图片信息
+  upload-butler-app-acceptance: /img/acceptance/
+
+
 
 
 

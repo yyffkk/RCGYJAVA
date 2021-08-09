@@ -130,4 +130,34 @@ public class ButlerAppUploadController {
     public Map<String,Object> uploadHygieneTaskCheckSituation(MultipartFile file){
         return uploadService.uploadHygieneTaskCheckSituation(file);
     }
+
+    /**
+     * 上传报事报修工程维修工作汇报图片照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadButlerAppWorkReport")
+    public Map<String,Object> uploadButlerAppWorkReport(MultipartFile file){
+        return uploadService.uploadButlerAppWorkReport(file);
+    }
+
+    /**
+     * 上传报事报修工程维修完成维修图片照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadButlerAppCompleteMaintenance")
+    public Map<String,Object> uploadButlerAppCompleteMaintenance(MultipartFile file){
+        return uploadService.uploadButlerAppCompleteMaintenance(file);
+    }
+
+    /**
+     * 上传报事报修工程维修验收照片图片照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadButlerAppAcceptance")
+    public Map<String,Object> uploadButlerAppAcceptance(MultipartFile file){
+        return uploadService.uploadButlerAppAcceptance(file);
+    }
 }

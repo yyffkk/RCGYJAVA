@@ -125,6 +125,12 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_GREEN_TASK_CHECK_SITUATION;
     @Value("${prop.upload-hygiene-task-check-situation}")
     private String UPLOAD_HYGIENE_TASK_CHECK_SITUATION;
+    @Value("${prop.upload-butler-app-work—report}")
+    private String UPLOAD_BUTLER_APP_WORK_REPORT;
+    @Value("${prop.upload-butler-app-complete-maintenance}")
+    private String UPLOAD_BUTLER_APP_COMPLETE_MAINTENANCE;
+    @Value("${prop.upload-butler-app-acceptance}")
+    private String UPLOAD_BUTLER_APP_ACCEPTANCE;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -509,6 +515,24 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadHygieneTaskCheckSituation(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_HYGIENE_TASK_CHECK_SITUATION);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadButlerAppWorkReport(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_BUTLER_APP_WORK_REPORT);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadButlerAppCompleteMaintenance(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_BUTLER_APP_COMPLETE_MAINTENANCE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadButlerAppAcceptance(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_BUTLER_APP_ACCEPTANCE);
         return map;
     }
 
