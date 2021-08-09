@@ -367,7 +367,7 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
 
         try {
             ButlerRepairEngineeringFBIVo byId2 = butlerRepairEngineeringDao.findById(butlerRepairEngineeringReport.getRepairEngineeringId());
-            if (byId2.getStatus() != 4){
+            if (byId2.getStatus() != 4 && byId2.getStatus() != 6){//4.处理中，6.验收失败
                 throw new RuntimeException("当前状态不可进行该操作");
             }
 
@@ -383,7 +383,6 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
 
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(butlerRepairEngineeringReport.getWorkReportImgUrls(),"sysReportRepairEngineeringReport",butlerRepairEngineeringReport.getId(),"workReportImg","600",30,20);
-
 
         } catch (Exception e) {
             //获取抛出的信息
