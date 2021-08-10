@@ -16,6 +16,6 @@ public class SysRepairEngineeringServiceImpl implements SysRepairEngineeringServ
 
     @Override
     public List<VoRepairEngineering> list(SearchRepairEngineering searchRepairEngineering) {
-        return null;
+        return sysRepairEngineeringDao.list(searchRepairEngineering);
     }
 }

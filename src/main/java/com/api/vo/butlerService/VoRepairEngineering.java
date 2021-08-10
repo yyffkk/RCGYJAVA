@@ -35,6 +35,10 @@ public class VoRepairEngineering {
      */
     private String maintenanceStaffName;
     /**
+     * 所属部门
+     */
+    private String subordinateDepartments;
+    /**
      * 维修单位主键id
      */
     private Integer organizationId;
@@ -69,6 +73,7 @@ public class VoRepairEngineering {
                 ", status=" + status +
                 ", maintenanceStaff=" + maintenanceStaff +
                 ", maintenanceStaffName='" + maintenanceStaffName + '\'' +
+                ", subordinateDepartments='" + subordinateDepartments + '\'' +
                 ", organizationId=" + organizationId +
                 ", organizationName='" + organizationName + '\'' +
                 ", createId=" + createId +
@@ -134,6 +139,14 @@ public class VoRepairEngineering {
         this.maintenanceStaffName = maintenanceStaffName;
     }
 
+    public String getSubordinateDepartments() {
+        return subordinateDepartments;
+    }
+
+    public void setSubordinateDepartments(String subordinateDepartments) {
+        this.subordinateDepartments = subordinateDepartments;
+    }
+
     public Integer getOrganizationId() {
         return organizationId;
     }
@@ -185,7 +198,7 @@ public class VoRepairEngineering {
     public VoRepairEngineering() {
     }
 
-    public VoRepairEngineering(Integer id, String code, String repairArea, String reportDetail, Integer status, Integer maintenanceStaff, String maintenanceStaffName, Integer organizationId, String organizationName, Integer createId, String createName, String createTel, Date createDate) {
+    public VoRepairEngineering(Integer id, String code, String repairArea, String reportDetail, Integer status, Integer maintenanceStaff, String maintenanceStaffName, String subordinateDepartments, Integer organizationId, String organizationName, Integer createId, String createName, String createTel, Date createDate) {
         this.id = id;
         this.code = code;
         this.repairArea = repairArea;
@@ -193,6 +206,7 @@ public class VoRepairEngineering {
         this.status = status;
         this.maintenanceStaff = maintenanceStaff;
         this.maintenanceStaffName = maintenanceStaffName;
+        this.subordinateDepartments = subordinateDepartments;
         this.organizationId = organizationId;
         this.organizationName = organizationName;
         this.createId = createId;

@@ -4,4 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.butlerService.SysRepairEngineeringDao">
 
+    <select id="list" parameterType="com.api.model.butlerService.SearchRepairEngineering" resultType="com.api.vo.butlerService.VoRepairEngineering">
+        select srre.*,su1.actual_name as create_name,su1.tel as create_tel,so.name as organization_name,
+        su2.actual_name as maintenance_staff_name,so2.name as subordinate_departments
+        from sys_user as su1,sys_report_repair_engineering as srre
+        LEFT JOIN sys_organization as so on srre.organization_id = so.id
+        LEFT JOIN sys_user as su2 on srre.maintenance_staff = su2.id
+        LEFT JOIN sys_organization as so2 on su2.organization_id = so2.id
+        <where>
+            srre.create_id = su1.id
+            <if test="code != null and code != ''">
+                and srre.code like concat('%',#{code},'%')
+            </if>
+            <if test="status != null">
+                and srre.status = #{status}
+            </if>
+            <if test="repairArea != null and repairArea != ''">
+                and srre.repair_area like concat('%',#{repairArea},'%')
+            </if>
+        </where>
+    </select>
 </mapper>
