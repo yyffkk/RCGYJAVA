@@ -24,4 +24,7 @@
             </if>
         </where>
     </select>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoRepairEngineeringFBI">
+        
+    </select>
 </mapper>

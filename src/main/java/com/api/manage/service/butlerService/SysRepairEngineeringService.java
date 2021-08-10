@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface SysRepairEngineeringService {
     List<VoRepairEngineering> list(SearchRepairEngineering searchRepairEngineering);
+
+    Map<String, Object> findById(Integer repairEngineeringId);
 }
