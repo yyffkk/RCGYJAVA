@@ -7,6 +7,7 @@ import com.api.model.app.SearchAppLeaseRent;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
+import com.api.model.my.SearchSysLease;
 import com.api.vo.app.AppLeaseRentVo;
 import com.api.vo.app.AppLeaseVo;
 
@@ -30,7 +31,7 @@ public interface MyHouseService {
 
     Map<String, Object> leaseEcho(String tel);
 
-    List<AppLeaseVo> leaseList(String tel);
+    List<AppLeaseVo> leaseList(SearchSysLease searchSysLease);
 
     Map<String, Object> leaseFindById(Integer leaseId);
 

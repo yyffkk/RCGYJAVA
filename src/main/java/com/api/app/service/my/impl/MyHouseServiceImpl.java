@@ -15,6 +15,7 @@ import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.butlerService.SysLeaseContract;
 import com.api.model.my.MyHouse;
+import com.api.model.my.SearchSysLease;
 import com.api.model.resources.ResourcesImg;
 import com.api.util.ConvertUpMoney;
 import com.api.util.IdWorker;
@@ -302,8 +303,8 @@ public class MyHouseServiceImpl implements MyHouseService {
     }
 
     @Override
-    public List<AppLeaseVo> leaseList(String tel) {
-        return myHouseDao.leaseList(tel);
+    public List<AppLeaseVo> leaseList(SearchSysLease searchSysLease) {
+        return myHouseDao.leaseList(searchSysLease);
     }
 
     @Override

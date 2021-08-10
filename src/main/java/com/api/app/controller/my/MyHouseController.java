@@ -8,6 +8,7 @@ import com.api.model.app.SearchAppLeaseRent;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.my.MyHouse;
+import com.api.model.my.SearchSysLease;
 import com.api.vo.app.AppLeaseRentVo;
 import com.api.vo.app.AppLeaseVo;
 import com.api.vo.basicArchives.VoAuditManagement;
@@ -131,15 +132,13 @@ public class MyHouseController {
 
     /**
      * 查询所有的租赁信息
-     * @param pageNum 当前页数
-     * @param size 每页记录数
-     * @param tel 用户手机号
+     * @param searchSysLease 租赁管理 搜索条件
      * @return map
      */
     @GetMapping("/leaseList")
-    public Map<String,Object> leaseList(int pageNum,int size,String tel){
-        PageHelper.startPage(pageNum,size);
-        List<AppLeaseVo> appLeaseVoList =myHouseService.leaseList(tel);
+    public Map<String,Object> leaseList(SearchSysLease searchSysLease){
+        PageHelper.startPage(searchSysLease.getPageNum(),searchSysLease.getSize());
+        List<AppLeaseVo> appLeaseVoList =myHouseService.leaseList(searchSysLease);
         PageInfo<AppLeaseVo> pageInfo = new PageInfo<>(appLeaseVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());

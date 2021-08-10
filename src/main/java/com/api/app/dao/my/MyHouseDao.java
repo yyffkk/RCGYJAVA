@@ -6,13 +6,13 @@ import com.api.model.basicArchives.ResidentIdAndEstateId;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.butlerService.SysLease;
 import com.api.model.butlerService.SysLeaseContract;
+import com.api.model.my.SearchSysLease;
 import com.api.vo.app.AppLeaseInfoVo;
 import com.api.vo.app.AppLeaseRentVo;
 import com.api.vo.app.AppLeaseVo;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.my.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface MyHouseDao {
@@ -139,10 +139,10 @@ public interface MyHouseDao {
 
     /**
      * 查询所有的租赁信息
+     * @param searchSysLease 租赁管理 搜索条件
      * @return 租赁信息
-     * @param tel
      */
-    List<AppLeaseVo> leaseList(String tel);
+    List<AppLeaseVo> leaseList(SearchSysLease searchSysLease);
 
     /**
      * 根据租赁主键id查询租赁信息
