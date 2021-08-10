@@ -114,7 +114,7 @@ public class LeaseController {
 
 
     /**
-     * 续签
+     * 续签，变更接口（父类租赁主键id，正整数代表是续签租赁（数字绝对值代表上一份租赁的主键id），0代表是第一次租赁，负整数代表是变更租赁（数字绝对值代表上一份租赁的主键id））
      * @param sysLeaseRenew 租赁续签model
      * @return map
      */

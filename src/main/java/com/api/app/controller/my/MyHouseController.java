@@ -159,7 +159,7 @@ public class MyHouseController {
     }
 
     /**
-     * 提交个人租赁信息生成预览合同（续签通用接口）
+     * 提交个人租赁信息生成预览合同（签署，续签，变更通用接口）
      * @param sysLease 租赁管理model
      * @return map
      */
@@ -169,7 +169,7 @@ public class MyHouseController {
     }
 
     /**
-     * 生成合同（续签通用接口）
+     * 生成合同（签署，续签，变更通用接口）
      * @param appLeaseValidContract app租赁有效合同model
      * @return map
      */
@@ -180,7 +180,7 @@ public class MyHouseController {
 
 
     /**
-     * 提交租赁审核信息（续签通用接口）
+     * 提交租赁审核信息（签署，续签，变更通用接口）
      * @param appLeaseSubmitAudit app 提交审核model
      * @return map
      */

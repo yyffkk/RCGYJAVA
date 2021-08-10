@@ -1399,6 +1399,30 @@ public class AlipayServiceImpl implements AlipayService {
                             //根据租赁管理主键id查询租赁信息
                             VoFBILease byId = leaseDao.findById(sysLeaseOrder.getSysLeaseId());
 
+                            //更新上一份租赁信息的状态
+                            if (byId.getLeaseParentId() > 0){//正整数：续签
+                                SysLease sysLease2 = new SysLease();
+                                sysLease2.setId(byId.getLeaseParentId());
+                                sysLease2.setStatus(21);//21.已续签
+                                //修改状态
+                                int update2 = leaseDao.updateStatusById(sysLease2);
+                                if (update2 <= 0){
+                                    log.info("===========更新上一份租赁信息的状态失败");
+                                    return "fail";
+                                }
+                            }else if (byId.getLeaseParentId() < 0){//负正数：变更
+                                SysLease sysLease3 = new SysLease();
+                                sysLease3.setId(Math.abs(byId.getLeaseParentId()));
+                                sysLease3.setStatus(31);//31.已变更
+                                //修改状态
+                                int update3 = leaseDao.updateStatusById(sysLease3);
+                                if (update3 <= 0){
+                                    log.info("===========更新上一份租赁信息的状态失败");
+                                    return "fail";
+                                }
+                            }//0：新合同
+
+
                             //关联房屋信息
                             //添加住户房产关联表 TODO 住户房产关联表增加一个字段，【type用户类型】
                             CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();

@@ -15,6 +15,10 @@ public class VoFBILease {
      */
     private Integer id;
     /**
+     * 父类租赁主键id，正整数代表是续签租赁（数字绝对值代表上一份租赁的主键id），0代表是第一次租赁，负整数代表是变更租赁（数字绝对值代表上一份租赁的主键id）
+     */
+    private Integer leaseParentId;
+    /**
      * 合同编号
      */
     private String code;
@@ -179,6 +183,7 @@ public class VoFBILease {
     public String toString() {
         return "VoFBILease{" +
                 "id=" + id +
+                ", leaseParentId=" + leaseParentId +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
@@ -228,6 +233,14 @@ public class VoFBILease {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getLeaseParentId() {
+        return leaseParentId;
+    }
+
+    public void setLeaseParentId(Integer leaseParentId) {
+        this.leaseParentId = leaseParentId;
     }
 
     public String getCode() {
@@ -553,8 +566,9 @@ public class VoFBILease {
     public VoFBILease() {
     }
 
-    public VoFBILease(Integer id, String code, String name, Integer sex, String idCard, String tel, Integer buildingId, String buildingNo, Integer unitId, String unitNo, Integer estateId, String roomNumber, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontFiles, List<VoResourcesImg> idCardBackFiles, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
+    public VoFBILease(Integer id, Integer leaseParentId, String code, String name, Integer sex, String idCard, String tel, Integer buildingId, String buildingNo, Integer unitId, String unitNo, Integer estateId, String roomNumber, Integer type, String estateType, String estateStructure, BigDecimal constructionArea, BigDecimal indoorArea, BigDecimal rentStandard, BigDecimal margin, Date marginPayDate, Date leaseDateStart, Date leaseDateEnd, List<VoResourcesImg> imgUrls, Integer status, String reviewerName, Date auditDate, String createName, Date createDate, String emergencyContact, String emergencyContactNumber, String correspondenceAddress, String workUnits, String payBank, String bankAccountName, String bankAccount, List<VoResourcesImg> idCardFrontFiles, List<VoResourcesImg> idCardBackFiles, Date takeDate, Date notMeterRentDate, BigDecimal requiredRent, String depositRefundReviewRemake) {
         this.id = id;
+        this.leaseParentId = leaseParentId;
         this.code = code;
         this.name = name;
         this.sex = sex;
