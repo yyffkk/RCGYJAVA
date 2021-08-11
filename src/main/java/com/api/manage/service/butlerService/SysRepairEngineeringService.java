@@ -1,5 +1,6 @@
 package com.api.manage.service.butlerService;
 
+import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerService.SearchRepairEngineering;
 import com.api.vo.butlerService.VoRepairEngineering;
 
@@ -10,4 +11,6 @@ public interface SysRepairEngineeringService {
     List<VoRepairEngineering> list(SearchRepairEngineering searchRepairEngineering);
 
     Map<String, Object> findById(Integer repairEngineeringId);
+
+    Map<String, Object> insert(ButlerRepairEngineering butlerRepairEngineering);
 }

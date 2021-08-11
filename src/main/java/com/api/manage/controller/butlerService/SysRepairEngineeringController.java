@@ -1,16 +1,20 @@
 package com.api.manage.controller.butlerService;
 
 import com.api.manage.service.butlerService.SysRepairEngineeringService;
+import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerService.SearchRepairEngineering;
 import com.api.vo.butlerService.VoRepairEngineering;
 import com.api.vo.butlerService.VoReportRepair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +55,15 @@ public class SysRepairEngineeringController {
         return sysRepairEngineeringService.findById(repairEngineeringId);
     }
 
+    /**
+     * 添加报事报修工程维修
+     * @param butlerRepairEngineering 管家app 报事报修工程维修model
+     * @return map
+     */
+    @PostMapping("/insert")
+    public Map<String,Object> insert(ButlerRepairEngineering butlerRepairEngineering){
+        return sysRepairEngineeringService.insert(butlerRepairEngineering);
+    }
 
 
 
