@@ -69,6 +69,36 @@ public class AppLoginController {
     }
 
     /**
+     * 根据楼栋id查询对应的单元id和单元号
+     * @param buildingId 楼栋id
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findUnitByBuildingId")
+    public Map<String,Object> findUnitByBuildingId(Integer buildingId){
+        Map<String,Object> map = new HashMap<>();
+        List<VoFindAll> byBuildingId = cpmBuildingUnitEstateService.findUnitByBuildingId(buildingId);
+        map.put("message","请求成功");
+        map.put("data",byBuildingId);
+        map.put("status",true);
+        return map;
+    }
+
+    /**
+     * 根据单元id查询对应的房产id和单元号
+     * @param unitId 单元id
+     * @return List<VoFindAll>
+     */
+    @GetMapping("/findEstateIdByUnitId")
+    public Map<String,Object> findEstateIdByUnitId(Integer unitId){
+        Map<String,Object> map = new HashMap<>();
+        List<VoFindAll> byBuildingId = cpmBuildingUnitEstateService.findEstateIdByUnitId(unitId);
+        map.put("message","请求成功");
+        map.put("data",byBuildingId);
+        map.put("status",true);
+        return map;
+    }
+
+    /**
      * 根据楼栋id查询对应的楼栋单元房产id和name
      * @param buildingId 楼栋id
      * @return List<VoFindAll>

@@ -173,4 +173,10 @@
     <select id="countByBuildingUnitId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from cpm_building_unit_estate where building_unit_id = #{id}
     </select>
+    <select id="findUnitByBuildingId" resultType="com.api.vo.basicArchives.VoFindAll">
+        select id as value,no as label from cpm_building_unit where building_id = #{buildingId}
+    </select>
+    <select id="findEstateIdByUnitId" resultType="com.api.vo.basicArchives.VoFindAll">
+        select id as value,room_number as label from cpm_building_unit_estate where building_unit_id = #{unitId}
+    </select>
 </mapper>

@@ -116,4 +116,18 @@ public interface CpmBuildingUnitEstateDao {
      * @return 绑定的房屋数量
      */
     int countByBuildingUnitId(int id);
+
+    /**
+     * 根据楼栋id查询对应的单元id和单元号
+     * @param buildingId 楼栋id
+     * @return 单元id和单元号
+     */
+    List<VoFindAll> findUnitByBuildingId(Integer buildingId);
+
+    /**
+     * 根据单元id查询对应的房产id和单元号
+     * @param unitId 单元id
+     * @return 房产id和单元号
+     */
+    List<VoFindAll> findEstateIdByUnitId(Integer unitId);
 }
