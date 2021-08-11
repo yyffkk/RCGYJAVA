@@ -99,6 +99,7 @@ public class SysRepairEngineeringServiceImpl implements SysRepairEngineeringServ
             butlerRepairEngineering.setCreateId(sysUser.getId());
             butlerRepairEngineering.setCreateDate(new Date());
             butlerRepairEngineering.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
+            butlerRepairEngineering.setStatus(1);//填入状态1.待派单（维修公司）
 
             int insert = butlerRepairEngineeringDao.insert(butlerRepairEngineering);
             if (insert <= 0){

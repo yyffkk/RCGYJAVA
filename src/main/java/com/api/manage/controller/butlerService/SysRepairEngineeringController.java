@@ -61,7 +61,7 @@ public class SysRepairEngineeringController {
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(ButlerRepairEngineering butlerRepairEngineering){
+    public Map<String,Object> insert(@RequestBody ButlerRepairEngineering butlerRepairEngineering){
         return sysRepairEngineeringService.insert(butlerRepairEngineering);
     }
 

@@ -66,6 +66,7 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
 
         try {
             butlerRepairEngineering.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
+            butlerRepairEngineering.setStatus(1);//填入状态1.待派单（维修公司）
 
             int insert = butlerRepairEngineeringDao.insert(butlerRepairEngineering);
             if (insert <= 0){
