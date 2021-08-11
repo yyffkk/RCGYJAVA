@@ -90,6 +90,10 @@ public class SysMaterialInventoryServiceImpl implements SysMaterialInventoryServ
         if (voMaterialInventory != null){
             List<VoMaterialInventoryDetail> materialInventoryDetailList = sysMaterialInventoryDao.findDetailBySMIDId(voMaterialInventory.getId());
             voMaterialInventory.setVoMaterialInventoryDetailList(materialInventoryDetailList);
+
+            //填入盘点种类数量
+            int count = sysMaterialInventoryDao.countSMIDBySMIId(voMaterialInventory.getId());
+            voMaterialInventory.setSpeciesNum(count);
         }
         map.put("message","请求成功");
         map.put("status",true);
