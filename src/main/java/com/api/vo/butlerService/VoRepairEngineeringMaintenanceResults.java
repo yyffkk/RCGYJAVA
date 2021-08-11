@@ -1,6 +1,9 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 报事报修工程维修 Vo 完成结果及验收结果
@@ -22,6 +25,10 @@ public class VoRepairEngineeringMaintenanceResults {
      * 材料清单
      */
     private String billMaterials;
+    /**
+     * 维修完成照片集合
+     */
+    private List<VoResourcesImg> maintenanceImgLists;
     /**
      * 创建人
      */
@@ -46,6 +53,10 @@ public class VoRepairEngineeringMaintenanceResults {
      * 验收时间
      */
     private Date acceptanceDate;
+    /**
+     * 验收照片集合
+     */
+    private List<VoResourcesImg> acceptanceImgLists;
 
     @Override
     public String toString() {
@@ -54,12 +65,14 @@ public class VoRepairEngineeringMaintenanceResults {
                 ", repairEngineeringId=" + repairEngineeringId +
                 ", content='" + content + '\'' +
                 ", billMaterials='" + billMaterials + '\'' +
+                ", maintenanceImgLists=" + maintenanceImgLists +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", results=" + results +
                 ", advice='" + advice + '\'' +
                 ", acceptancePeople=" + acceptancePeople +
                 ", acceptanceDate=" + acceptanceDate +
+                ", acceptanceImgLists=" + acceptanceImgLists +
                 '}';
     }
 
@@ -93,6 +106,14 @@ public class VoRepairEngineeringMaintenanceResults {
 
     public void setBillMaterials(String billMaterials) {
         this.billMaterials = billMaterials;
+    }
+
+    public List<VoResourcesImg> getMaintenanceImgLists() {
+        return maintenanceImgLists;
+    }
+
+    public void setMaintenanceImgLists(List<VoResourcesImg> maintenanceImgLists) {
+        this.maintenanceImgLists = maintenanceImgLists;
     }
 
     public Integer getCreateId() {
@@ -143,19 +164,29 @@ public class VoRepairEngineeringMaintenanceResults {
         this.acceptanceDate = acceptanceDate;
     }
 
+    public List<VoResourcesImg> getAcceptanceImgLists() {
+        return acceptanceImgLists;
+    }
+
+    public void setAcceptanceImgLists(List<VoResourcesImg> acceptanceImgLists) {
+        this.acceptanceImgLists = acceptanceImgLists;
+    }
+
     public VoRepairEngineeringMaintenanceResults() {
     }
 
-    public VoRepairEngineeringMaintenanceResults(Integer id, Integer repairEngineeringId, String content, String billMaterials, Integer createId, Date createDate, Integer results, String advice, Integer acceptancePeople, Date acceptanceDate) {
+    public VoRepairEngineeringMaintenanceResults(Integer id, Integer repairEngineeringId, String content, String billMaterials, List<VoResourcesImg> maintenanceImgLists, Integer createId, Date createDate, Integer results, String advice, Integer acceptancePeople, Date acceptanceDate, List<VoResourcesImg> acceptanceImgLists) {
         this.id = id;
         this.repairEngineeringId = repairEngineeringId;
         this.content = content;
         this.billMaterials = billMaterials;
+        this.maintenanceImgLists = maintenanceImgLists;
         this.createId = createId;
         this.createDate = createDate;
         this.results = results;
         this.advice = advice;
         this.acceptancePeople = acceptancePeople;
         this.acceptanceDate = acceptanceDate;
+        this.acceptanceImgLists = acceptanceImgLists;
     }
 }

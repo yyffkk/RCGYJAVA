@@ -1,6 +1,9 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 工程维修 维修日志【工作汇报】 Vo 回显
@@ -30,6 +33,10 @@ public class VoRepairEngineeringReport {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 工作汇报照片集合
+     */
+    private List<VoResourcesImg> workReportImgList;
 
     @Override
     public String toString() {
@@ -40,6 +47,7 @@ public class VoRepairEngineeringReport {
                 ", createId=" + createId +
                 ", createName='" + createName + '\'' +
                 ", createDate=" + createDate +
+                ", workReportImgList=" + workReportImgList +
                 '}';
     }
 
@@ -91,15 +99,24 @@ public class VoRepairEngineeringReport {
         this.createDate = createDate;
     }
 
+    public List<VoResourcesImg> getWorkReportImgList() {
+        return workReportImgList;
+    }
+
+    public void setWorkReportImgList(List<VoResourcesImg> workReportImgList) {
+        this.workReportImgList = workReportImgList;
+    }
+
     public VoRepairEngineeringReport() {
     }
 
-    public VoRepairEngineeringReport(Integer id, Integer repairEngineeringId, String content, Integer createId, String createName, Date createDate) {
+    public VoRepairEngineeringReport(Integer id, Integer repairEngineeringId, String content, Integer createId, String createName, Date createDate, List<VoResourcesImg> workReportImgList) {
         this.id = id;
         this.repairEngineeringId = repairEngineeringId;
         this.content = content;
         this.createId = createId;
         this.createName = createName;
         this.createDate = createDate;
+        this.workReportImgList = workReportImgList;
     }
 }
