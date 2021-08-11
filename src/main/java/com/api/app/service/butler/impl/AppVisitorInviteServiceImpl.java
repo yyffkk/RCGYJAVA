@@ -222,7 +222,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             } catch (Exception e) {
                 //获取抛出的信息
                 String message = e.getMessage();
-                throw new RuntimeException("立林设备连接失败，原因："+message);
+                throw new RuntimeException("设备连接失败，原因："+message);
             }
 
             //根据分享连接编号将该连接修改为1.已使用
@@ -281,7 +281,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             } catch (Exception e) {
                 //获取抛出的信息
                 String message = e.getMessage();
-                throw new RuntimeException("立林设备连接失败，原因："+message);
+                throw new RuntimeException("设备连接失败，原因："+message);
             }
 
 
