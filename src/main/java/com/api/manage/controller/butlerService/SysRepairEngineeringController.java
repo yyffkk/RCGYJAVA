@@ -5,16 +5,11 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerRepairEngineering;
 import com.api.model.butlerService.SearchRepairEngineering;
 import com.api.vo.butlerService.VoRepairEngineering;
-import com.api.vo.butlerService.VoReportRepair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
