@@ -210,14 +210,20 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             }
 
 
-            //根据拜访房产id查询设备号
-            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
+            try {
+                //根据拜访房产id查询设备号
+                String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
 
-            //连接立林对讲机系统（人脸识别）
-            connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+                //连接立林对讲机系统（人脸识别）
+                connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
 
-            //连接立林对讲机系统-添加设备二维码
-            connectLiLinAddQrCode(deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+                //连接立林对讲机系统-添加设备二维码
+                connectLiLinAddQrCode(deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+            } catch (Exception e) {
+                //获取抛出的信息
+                String message = e.getMessage();
+                throw new RuntimeException("立林设备连接失败，原因："+message);
+            }
 
             //根据分享连接编号将该连接修改为1.已使用
             appVisitorInviteDao.updateIsUseByCode(visitorsInviteSubmit.getCode());
@@ -263,14 +269,20 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             //数据库存入访客邀请身份证背面照片
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getIdCardBackImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"idCardBackImg","600",30,20);
 
-//            根据拜访房产id查询设备号
-            String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
+            try {
+                //根据拜访房产id查询设备号
+                String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
 
-//            连接立林对讲机系统（人脸识别）
-            connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+                //连接立林对讲机系统（人脸识别）
+                connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
-            //连接立林对讲机系统-添加设备二维码
-            connectLiLinAddQrCode(deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+                //连接立林对讲机系统-添加设备二维码
+                connectLiLinAddQrCode(deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+            } catch (Exception e) {
+                //获取抛出的信息
+                String message = e.getMessage();
+                throw new RuntimeException("立林设备连接失败，原因："+message);
+            }
 
 
         } catch (Exception e) {
