@@ -1,6 +1,7 @@
 package com.api.manage.controller.chargeManagement;
 
 import com.api.manage.service.chargeManagement.SysAdvancePaymentService;
+import com.api.model.alipay.SysAdvancePaymentOrder;
 import com.api.model.chargeManagement.SearchAdvancePayment;
 import com.api.model.chargeManagement.SearchAdvancePaymentDetail;
 import com.api.model.chargeManagement.SysAdvancePaymentRefundRecord;
@@ -70,4 +71,16 @@ public class SysAdvancePaymentController {
     public Map<String,Object> refund(@RequestBody SysAdvancePaymentRefundRecord sysAdvancePaymentRefundRecord){
         return sysAdvancePaymentService.refund(sysAdvancePaymentRefundRecord);
     }
+
+
+    /**
+     * 线下充值
+     * @param sysAdvancePaymentOrder app 生活缴费-预充值支付订单model
+     * @return map
+     */
+    @PostMapping("/recharge")
+    public Map<String,Object> recharge(@RequestBody SysAdvancePaymentOrder sysAdvancePaymentOrder){
+        return sysAdvancePaymentService.recharge(sysAdvancePaymentOrder);
+    }
+
 }

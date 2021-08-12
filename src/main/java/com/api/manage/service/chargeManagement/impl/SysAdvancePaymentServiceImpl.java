@@ -1,5 +1,6 @@
 package com.api.manage.service.chargeManagement.impl;
 
+import com.api.alipay.dao.AlipayDao;
 import com.api.app.dao.butler.AppDailyPaymentDao;
 import com.api.manage.dao.chargeManagement.SysAdvancePaymentDao;
 import com.api.manage.service.chargeManagement.SysAdvancePaymentService;
@@ -9,6 +10,7 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.chargeManagement.SearchAdvancePayment;
 import com.api.model.chargeManagement.SearchAdvancePaymentDetail;
 import com.api.model.chargeManagement.SysAdvancePaymentRefundRecord;
+import com.api.util.IdWorker;
 import com.api.vo.chargeManagement.VoAdvancePayment;
 import com.api.vo.chargeManagement.VoAdvancePaymentDetail;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +34,8 @@ public class SysAdvancePaymentServiceImpl implements SysAdvancePaymentService {
     SysAdvancePaymentDao sysAdvancePaymentDao;
     @Resource
     AppDailyPaymentDao appDailyPaymentDao;
+    @Resource
+    AlipayDao alipayDao;
 
     @Override
     public List<VoAdvancePayment> list(SearchAdvancePayment searchAdvancePayment) {
@@ -134,6 +138,68 @@ public class SysAdvancePaymentServiceImpl implements SysAdvancePaymentService {
             return map;
         }
         map.put("message","退款成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> recharge(SysAdvancePaymentOrder sysAdvancePaymentOrder) {
+        map = new HashMap<>();
+
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+
+            //填写支付单号(自动生成订单号)
+            sysAdvancePaymentOrder.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));
+            //填写创建人
+            sysAdvancePaymentOrder.setCreateId(-sysUser.getId());
+            //填入创建时间
+            sysAdvancePaymentOrder.setCreateDate(new Date());
+            //付款方式（1.支付宝，2.微信，3.线下）
+            sysAdvancePaymentOrder.setPayType(3);//3.线下
+            //填入付款状态，2.交易支付成功
+            sysAdvancePaymentOrder.setStatus(2);
+
+            //添加生活缴费-预充值支付订单信息
+            int i = alipayDao.insertAdvancePaymentOrder(sysAdvancePaymentOrder);
+            if (i<=0){
+                throw new RuntimeException("添加生活缴费-预充值支付订单信息失败");
+            }
+
+
+            //根据房产id查询对应的预付款充值金额
+            BigDecimal advancePaymentPrice = appDailyPaymentDao.findAdvancePaymentPriceByEstateId(sysAdvancePaymentOrder.getEstateId());
+
+            //根据房产主键id修改预付款充值金额
+            if (advancePaymentPrice != null){
+                advancePaymentPrice = advancePaymentPrice.add(sysAdvancePaymentOrder.getPayPrice());
+            }else {
+                advancePaymentPrice = sysAdvancePaymentOrder.getPayPrice();
+            }
+
+            EstateIdAndAdvancePaymentPrice estateIdAndAPPrice = new EstateIdAndAdvancePaymentPrice();
+            estateIdAndAPPrice.setAdvancePaymentPrice(advancePaymentPrice);
+            estateIdAndAPPrice.setEstateId(sysAdvancePaymentOrder.getEstateId());
+
+            //根据充值房产主键id修改预付款充值金额
+            int update = alipayDao.updateAdvancePaymentPriceByEstateId(estateIdAndAPPrice);
+            if (update <= 0){
+                throw new RuntimeException("充值失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","充值成功");
         map.put("status",true);
         return map;
     }
