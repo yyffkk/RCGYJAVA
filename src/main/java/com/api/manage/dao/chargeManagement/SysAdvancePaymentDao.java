@@ -2,7 +2,9 @@ package com.api.manage.dao.chargeManagement;
 
 import com.api.model.alipay.SysAdvancePaymentOrder;
 import com.api.model.chargeManagement.SearchAdvancePayment;
+import com.api.model.chargeManagement.SysAdvancePaymentRefundRecord;
 import com.api.vo.chargeManagement.VoAdvancePayment;
+import com.api.vo.chargeManagement.VoAdvancePaymentDetail;
 
 import java.util.List;
 
@@ -20,4 +22,18 @@ public interface SysAdvancePaymentDao {
      * @return 预充值支付订单
      */
     SysAdvancePaymentOrder findNearDateByEstateId(Integer id);
+
+    /**
+     * 根据房产主键id查询预缴详情
+     * @param estateId 房产主键id
+     * @return 预缴详情
+     */
+    List<VoAdvancePaymentDetail> findDetailById(Integer estateId);
+
+    /**
+     * 预缴退款
+     * @param sysAdvancePaymentRefundRecord 预缴退款记录
+     * @return 影响行数
+     */
+    int refund(SysAdvancePaymentRefundRecord sysAdvancePaymentRefundRecord);
 }

@@ -33,4 +33,24 @@
         where estate_id = #{id}
         order by create_date desc limit 1
     </select>
+    <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoAdvancePaymentDetail">
+
+    </select>
+
+    <insert id="refund" parameterType="com.api.model.chargeManagement.SysAdvancePaymentRefundRecord">
+        insert into sys_advance_payment_refund_record(
+            estate_id,
+            refund_price,
+            refund_type,
+            create_id,
+            create_date
+        )values (
+            #{estateId},
+            #{refundPrice},
+            #{refundType},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
 </mapper>

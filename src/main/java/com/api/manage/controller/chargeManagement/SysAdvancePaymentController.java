@@ -2,13 +2,12 @@ package com.api.manage.controller.chargeManagement;
 
 import com.api.manage.service.chargeManagement.SysAdvancePaymentService;
 import com.api.model.chargeManagement.SearchAdvancePayment;
+import com.api.model.chargeManagement.SysAdvancePaymentRefundRecord;
 import com.api.vo.chargeManagement.VoAdvancePayment;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -40,5 +39,26 @@ public class SysAdvancePaymentController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+
+    /**
+     * 根据房产主键id查询预缴详情
+     * @param estateId 房产主键id
+     * @return map
+     */
+    @GetMapping("/findDetailById")
+    public Map<String,Object> findDetailById(Integer estateId){
+        return sysAdvancePaymentService.findDetailById(estateId);
+    }
+
+    /**
+     * 预缴退款
+     * @param sysAdvancePaymentRefundRecord 预缴退款记录
+     * @return map
+     */
+    @PostMapping("/refund")
+    public Map<String,Object> refund(@RequestBody SysAdvancePaymentRefundRecord sysAdvancePaymentRefundRecord){
+        return sysAdvancePaymentService.refund(sysAdvancePaymentRefundRecord);
     }
 }
