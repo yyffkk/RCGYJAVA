@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.chargeManagement.SysAdvancePaymentDao">
+
+    <select id="list" parameterType="com.api.model.chargeManagement.SearchAdvancePayment" resultType="com.api.vo.chargeManagement.VoAdvancePayment">
+        select cbue.id,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,GROUP_CONCAT(ur.name) as resident_name,
+        (case cbue.advance_payment_price is null when true then 0 else cbue.advance_payment_price end) as advance_payment_price
+        from cpm_building_unit as cbu,cpm_building as cb,cpm_resident_estate as cre,user_resident as ur,cpm_building_unit_estate as cbue
+        <where>
+            cbue.building_unit_id = cbu.id
+            and cbu.building_id = cb.id
+            and cre.building_unit_estate_id = cbue.id
+            and cre.resident_id = ur.id
+            <if test="roomNumber != null and roomNumber != ''">
+                and cbue.room_number like concat('%',#{roomNumber},'%')
+            </if>
+            <if test="unitNo != null">
+                and cbu.no = #{unitNo}
+            </if>
+            <if test="buildingNo != null">
+                and cb.no = #{buildingNo}
+            </if>
+            <if test="residentName != null and residentName != ''">
+                and ur.name like concat('%',#{residentName},'%')
+            </if>
+        </where>
+        GROUP BY cbue.id
+    </select>
+    <select id="findNearDateByEstateId" parameterType="java.lang.Integer" resultType="com.api.model.alipay.SysAdvancePaymentOrder">
+        select * from sys_advance_payment_order
+        where estate_id = #{id}
+        order by create_date desc limit 1
+    </select>
+</mapper>
