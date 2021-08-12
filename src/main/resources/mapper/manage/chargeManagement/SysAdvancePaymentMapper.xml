@@ -33,8 +33,30 @@
         where estate_id = #{id}
         order by create_date desc limit 1
     </select>
-    <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoAdvancePaymentDetail">
-
+    <select id="findDetailById" parameterType="com.api.model.chargeManagement.SearchAdvancePaymentDetail" resultType="com.api.vo.chargeManagement.VoAdvancePaymentDetail">
+        select T.* from (
+            select sapo.id,sapo.create_date,sapo.pay_price,'充值-预缴' as remake,sapo.pay_type
+            from sys_advance_payment_order as sapo
+            where estate_id = #{estateId} and status = 2
+            union all
+            select sdpo.id,sdpo.create_date,sdpo.pay_price,CONCAT('支付-',sctd.name) as remake,4 as pay_type
+            from sys_daily_payment_order as sdpo,sys_daily_payment_order_list as sdpol,sys_daily_payment as sdp,sys_charges_template_detail as sctd
+            where sdpol.daily_payment_id = sdp.id and sdpol.daily_payment_order_id = sdpo.id and sdp.charges_template_detail_id = sctd.id and sdp.building_unit_estate_id = #{estateId}
+            and sdpo.status = 2 and sdpo.pay_type = 5
+            union all
+            select saprr.id,saprr.create_date,saprr.refund_price,'退款' as remake,3 as pay_type
+            from sys_advance_payment_refund_record as saprr
+            where saprr.estate_id = #{estateId}
+        ) as T
+        <where>
+            <if test="years != null">
+                YEAR(T.create_date) = #{years}
+            </if>
+            <if test="months != null">
+                and MONTH(T.create_date) = #{months}
+            </if>
+        </where>
+        order by T.create_date desc
     </select>
 
     <insert id="refund" parameterType="com.api.model.chargeManagement.SysAdvancePaymentRefundRecord">

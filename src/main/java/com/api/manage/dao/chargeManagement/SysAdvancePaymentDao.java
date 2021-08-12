@@ -2,6 +2,7 @@ package com.api.manage.dao.chargeManagement;
 
 import com.api.model.alipay.SysAdvancePaymentOrder;
 import com.api.model.chargeManagement.SearchAdvancePayment;
+import com.api.model.chargeManagement.SearchAdvancePaymentDetail;
 import com.api.model.chargeManagement.SysAdvancePaymentRefundRecord;
 import com.api.vo.chargeManagement.VoAdvancePayment;
 import com.api.vo.chargeManagement.VoAdvancePaymentDetail;
@@ -25,10 +26,10 @@ public interface SysAdvancePaymentDao {
 
     /**
      * 根据房产主键id查询预缴详情
-     * @param estateId 房产主键id
+     * @param searchAdvancePaymentDetail 预缴详情 搜索条件
      * @return 预缴详情
      */
-    List<VoAdvancePaymentDetail> findDetailById(Integer estateId);
+    List<VoAdvancePaymentDetail> findDetailById(SearchAdvancePaymentDetail searchAdvancePaymentDetail);
 
     /**
      * 预缴退款

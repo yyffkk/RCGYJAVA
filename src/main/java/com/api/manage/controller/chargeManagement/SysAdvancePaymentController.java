@@ -2,8 +2,10 @@ package com.api.manage.controller.chargeManagement;
 
 import com.api.manage.service.chargeManagement.SysAdvancePaymentService;
 import com.api.model.chargeManagement.SearchAdvancePayment;
+import com.api.model.chargeManagement.SearchAdvancePaymentDetail;
 import com.api.model.chargeManagement.SysAdvancePaymentRefundRecord;
 import com.api.vo.chargeManagement.VoAdvancePayment;
+import com.api.vo.chargeManagement.VoAdvancePaymentDetail;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,12 +46,19 @@ public class SysAdvancePaymentController {
 
     /**
      * 根据房产主键id查询预缴详情
-     * @param estateId 房产主键id
+     * @param searchAdvancePaymentDetail 预缴详情 搜索条件
      * @return map
      */
     @GetMapping("/findDetailById")
-    public Map<String,Object> findDetailById(Integer estateId){
-        return sysAdvancePaymentService.findDetailById(estateId);
+    public Map<String,Object> findDetailById(SearchAdvancePaymentDetail searchAdvancePaymentDetail){
+        PageHelper.startPage(searchAdvancePaymentDetail.getPageNum(),searchAdvancePaymentDetail.getSize());
+        List<VoAdvancePaymentDetail> detailById = sysAdvancePaymentService.findDetailById(searchAdvancePaymentDetail);
+        PageInfo<VoAdvancePaymentDetail> pageInfo = new PageInfo<>(detailById);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
     /**

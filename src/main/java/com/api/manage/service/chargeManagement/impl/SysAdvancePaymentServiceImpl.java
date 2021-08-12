@@ -7,6 +7,7 @@ import com.api.model.alipay.EstateIdAndAdvancePaymentPrice;
 import com.api.model.alipay.SysAdvancePaymentOrder;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.chargeManagement.SearchAdvancePayment;
+import com.api.model.chargeManagement.SearchAdvancePaymentDetail;
 import com.api.model.chargeManagement.SysAdvancePaymentRefundRecord;
 import com.api.vo.chargeManagement.VoAdvancePayment;
 import com.api.vo.chargeManagement.VoAdvancePaymentDetail;
@@ -76,16 +77,8 @@ public class SysAdvancePaymentServiceImpl implements SysAdvancePaymentService {
     }
 
     @Override
-    public Map<String, Object> findDetailById(Integer estateId) {
-        map = new HashMap<>();
-
-        List<VoAdvancePaymentDetail> voAdvancePaymentDetailList = sysAdvancePaymentDao.findDetailById(estateId);
-
-        map.put("message","请求成功");
-        map.put("status",true);
-        map.put("data",voAdvancePaymentDetailList);
-
-        return map;
+    public List<VoAdvancePaymentDetail> findDetailById(SearchAdvancePaymentDetail searchAdvancePaymentDetail) {
+        return sysAdvancePaymentDao.findDetailById(searchAdvancePaymentDetail);
     }
 
     @Override

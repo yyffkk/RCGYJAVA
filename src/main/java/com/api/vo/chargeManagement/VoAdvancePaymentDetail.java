@@ -14,7 +14,7 @@ public class VoAdvancePaymentDetail {
     /**
      * 创建时间
      */
-    private Date createId;
+    private Date createDate;
     /**
      * 金额
      */
@@ -32,7 +32,7 @@ public class VoAdvancePaymentDetail {
     public String toString() {
         return "VoAdvancePaymentDetail{" +
                 "id=" + id +
-                ", createId=" + createId +
+                ", createDate=" + createDate +
                 ", payPrice=" + payPrice +
                 ", remake='" + remake + '\'' +
                 ", payType=" + payType +
@@ -47,12 +47,12 @@ public class VoAdvancePaymentDetail {
         this.id = id;
     }
 
-    public Date getCreateId() {
-        return createId;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCreateId(Date createId) {
-        this.createId = createId;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public BigDecimal getPayPrice() {
@@ -82,9 +82,9 @@ public class VoAdvancePaymentDetail {
     public VoAdvancePaymentDetail() {
     }
 
-    public VoAdvancePaymentDetail(Integer id, Date createId, BigDecimal payPrice, String remake, Integer payType) {
+    public VoAdvancePaymentDetail(Integer id, Date createDate, BigDecimal payPrice, String remake, Integer payType) {
         this.id = id;
-        this.createId = createId;
+        this.createDate = createDate;
         this.payPrice = payPrice;
         this.remake = remake;
         this.payType = payType;
