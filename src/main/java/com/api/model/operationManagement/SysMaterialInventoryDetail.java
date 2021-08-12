@@ -17,6 +17,10 @@ public class SysMaterialInventoryDetail {
      */
     private String name;
     /**
+     * 单位
+     */
+    private String unit;
+    /**
      * 应有库存
      */
     private Integer shouldInventory;
@@ -35,6 +39,7 @@ public class SysMaterialInventoryDetail {
                 "id=" + id +
                 ", materialInventoryId=" + materialInventoryId +
                 ", name='" + name + '\'' +
+                ", unit='" + unit + '\'' +
                 ", shouldInventory=" + shouldInventory +
                 ", actualInventory=" + actualInventory +
                 ", inventorySurplusLosses=" + inventorySurplusLosses +
@@ -65,6 +70,14 @@ public class SysMaterialInventoryDetail {
         this.name = name;
     }
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     public Integer getShouldInventory() {
         return shouldInventory;
     }
@@ -92,10 +105,11 @@ public class SysMaterialInventoryDetail {
     public SysMaterialInventoryDetail() {
     }
 
-    public SysMaterialInventoryDetail(Integer id, Integer materialInventoryId, String name, Integer shouldInventory, Integer actualInventory, Integer inventorySurplusLosses) {
+    public SysMaterialInventoryDetail(Integer id, Integer materialInventoryId, String name, String unit, Integer shouldInventory, Integer actualInventory, Integer inventorySurplusLosses) {
         this.id = id;
         this.materialInventoryId = materialInventoryId;
         this.name = name;
+        this.unit = unit;
         this.shouldInventory = shouldInventory;
         this.actualInventory = actualInventory;
         this.inventorySurplusLosses = inventorySurplusLosses;
