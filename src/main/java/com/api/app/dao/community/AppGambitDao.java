@@ -1,6 +1,7 @@
 package com.api.app.dao.community;
 
 import com.api.model.app.*;
+import com.api.model.system.SysFunctionSwitch;
 import com.api.vo.app.IdAndName;
 import com.api.vo.app.AppGambitThemeCommentVo;
 import com.api.vo.app.AppGambitThemeVo;
@@ -158,4 +159,11 @@ public interface AppGambitDao {
      * @return 评论人id(被回复人id)
      */
     int findCreateIdById(Integer parentId);
+
+    /**
+     * 根据主键id查询模块功能开关状态
+     * @param id 主键id
+     * @return 模块功能开关状态
+     */
+    SysFunctionSwitch findSwitchByComment(Integer id);
 }

@@ -4,6 +4,7 @@ import com.api.app.dao.community.AppGambitDao;
 import com.api.app.dao.message.AppMessageDao;
 import com.api.app.service.community.AppGambitService;
 import com.api.model.app.*;
+import com.api.model.system.SysFunctionSwitch;
 import com.api.util.*;
 import com.api.vo.app.IdAndName;
 import com.api.vo.app.AppGambitThemeCommentVo;
@@ -268,6 +269,13 @@ public class AppGambitServiceImpl implements AppGambitService {
     public Map<String, Object> comment(AppGambitThemeComment appGambitThemeComment) {
         map = new HashMap<>();
         try {
+            //查询社区评论功能是否开启
+            Integer id = 1;//1.社区评论功能
+            SysFunctionSwitch sysFunctionSwitch = appGambitDao.findSwitchByComment(id);
+            if (sysFunctionSwitch.getStatus() == 2){
+                throw new RuntimeException("社区评论功能已关闭，请联系管理员");
+            }
+
             //替换违禁关键字
             ReplaceKeywordsUtil replaceKeywordsUtil = new ReplaceKeywordsUtil();
             appGambitThemeComment.setContent(replaceKeywordsUtil.replaceProhibitedKeywords(appGambitThemeComment.getContent()));
@@ -363,6 +371,13 @@ public class AppGambitServiceImpl implements AppGambitService {
     public Map<String, Object> writePost(AppGambitTheme appGambitTheme) {
         map = new HashMap<>();
         try {
+            //查询社区动态功能是否开启
+            Integer id = 2;//2.社区动态功能
+            SysFunctionSwitch sysFunctionSwitch = appGambitDao.findSwitchByComment(id);
+            if (sysFunctionSwitch.getStatus() == 2){
+                throw new RuntimeException("社区动态功能已关闭，请联系管理员");
+            }
+
             //替换违禁关键字
             ReplaceKeywordsUtil replaceKeywordsUtil = new ReplaceKeywordsUtil();
             appGambitTheme.setContent(replaceKeywordsUtil.replaceProhibitedKeywords(appGambitTheme.getContent()));
