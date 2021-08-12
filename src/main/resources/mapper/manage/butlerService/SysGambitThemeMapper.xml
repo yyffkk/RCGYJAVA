@@ -72,4 +72,14 @@
     <update id="recovery" parameterType="java.lang.Integer">
         update sys_gambit_theme set is_delete = 1 where id = #{id}
     </update>
+
+    <select id="findSwitchById" parameterType="java.lang.Integer" resultType="com.api.model.system.SysFunctionSwitch">
+        select * from sys_function_switch where id = #{id}
+    </select>
+
+    <update id="updateSwitchById" parameterType="com.api.model.system.SysFunctionSwitch">
+        update sys_function_switch
+        set status = #{status}
+        where id = #{id}
+    </update>
 </mapper>

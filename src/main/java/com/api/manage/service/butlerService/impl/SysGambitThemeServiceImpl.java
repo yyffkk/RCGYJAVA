@@ -3,6 +3,7 @@ package com.api.manage.service.butlerService.impl;
 import com.api.manage.dao.butlerService.SysGambitThemeDao;
 import com.api.model.butlerService.SearchGambitTheme;
 import com.api.manage.service.butlerService.SysGambitThemeService;
+import com.api.model.system.SysFunctionSwitch;
 import com.api.vo.butlerService.VoGambitTheme;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,6 +94,66 @@ public class SysGambitThemeServiceImpl implements SysGambitThemeService {
         }
         map.put("message","批量恢复主题明细成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> enableTheme() {
+        map = new HashMap<>();
+        //查询社区动态功能是否开启
+        Integer id = 2;//2.社区动态功能
+        String msg = "";//消息
+        SysFunctionSwitch sysFunctionSwitch = sysGambitThemeDao.findSwitchById(id);
+        if (sysFunctionSwitch.getStatus() == 2){//2.已关闭
+            sysFunctionSwitch.setStatus(1);//1.已开启
+            msg = "开启社区动态功能";
+        }else if (sysFunctionSwitch.getStatus() == 1){
+            sysFunctionSwitch.setStatus(2);//2.已关闭
+            msg = "关闭社区动态功能";
+        }else {
+            map.put("message","状态有误");
+            map.put("status",false);
+            return map;
+        }
+
+        int update = sysGambitThemeDao.updateSwitchById(sysFunctionSwitch);
+        if (update > 0){
+            map.put("message",msg+"成功");
+            map.put("status",true);
+        }else {
+            map.put("message",msg+"失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> enableComment() {
+        map = new HashMap<>();
+        //查询社区评论功能是否开启
+        Integer id = 1;//1.社区评论功能
+        String msg = "";//消息
+        SysFunctionSwitch sysFunctionSwitch = sysGambitThemeDao.findSwitchById(id);
+        if (sysFunctionSwitch.getStatus() == 2){//2.已关闭
+            sysFunctionSwitch.setStatus(1);//1.已开启
+            msg = "开启社区评论功能";
+        }else if (sysFunctionSwitch.getStatus() == 1){
+            sysFunctionSwitch.setStatus(2);//2.已关闭
+            msg = "关闭社区评论功能";
+        }else {
+            map.put("message","状态有误");
+            map.put("status",false);
+            return map;
+        }
+
+        int update = sysGambitThemeDao.updateSwitchById(sysFunctionSwitch);
+        if (update > 0){
+            map.put("message",msg+"成功");
+            map.put("status",true);
+        }else {
+            map.put("message",msg+"失败");
+            map.put("status",false);
+        }
         return map;
     }
 }

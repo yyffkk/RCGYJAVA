@@ -271,7 +271,7 @@ public class AppGambitServiceImpl implements AppGambitService {
         try {
             //查询社区评论功能是否开启
             Integer id = 1;//1.社区评论功能
-            SysFunctionSwitch sysFunctionSwitch = appGambitDao.findSwitchByComment(id);
+            SysFunctionSwitch sysFunctionSwitch = appGambitDao.findSwitchById(id);
             if (sysFunctionSwitch.getStatus() == 2){
                 throw new RuntimeException("社区评论功能已关闭，请联系管理员");
             }
@@ -373,7 +373,7 @@ public class AppGambitServiceImpl implements AppGambitService {
         try {
             //查询社区动态功能是否开启
             Integer id = 2;//2.社区动态功能
-            SysFunctionSwitch sysFunctionSwitch = appGambitDao.findSwitchByComment(id);
+            SysFunctionSwitch sysFunctionSwitch = appGambitDao.findSwitchById(id);
             if (sysFunctionSwitch.getStatus() == 2){
                 throw new RuntimeException("社区动态功能已关闭，请联系管理员");
             }

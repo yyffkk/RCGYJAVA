@@ -12,4 +12,8 @@ public interface SysGambitThemeService {
     Map<String, Object> falseDelete(int[] ids);
 
     Map<String, Object> recovery(int[] ids);
+
+    Map<String, Object> enableTheme();
+
+    Map<String, Object> enableComment();
 }

@@ -1,6 +1,7 @@
 package com.api.manage.dao.butlerService;
 
 import com.api.model.butlerService.SearchGambitTheme;
+import com.api.model.system.SysFunctionSwitch;
 import com.api.vo.butlerService.VoGambitTheme;
 
 import java.util.List;
@@ -40,4 +41,18 @@ public interface SysGambitThemeDao {
      * @return 影响行数
      */
     int recovery(int id);
+
+    /**
+     * 根据主键id查询模块功能开关状态
+     * @param id 主键id
+     * @return 模块功能开关状态
+     */
+    SysFunctionSwitch findSwitchById(Integer id);
+
+    /**
+     * 根据主键id修改模块功能开关状态
+     * @param sysFunctionSwitch 模块功能开关model
+     * @return 影响行数
+     */
+    int updateSwitchById(SysFunctionSwitch sysFunctionSwitch);
 }

@@ -166,8 +166,9 @@
     <select id="findCreateIdById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select create_id from sys_gambit_theme_comment where id = #{gambitThemeId}
     </select>
-    <select id="findSwitchByComment" parameterType="java.lang.Integer" resultType="com.api.model.system.SysFunctionSwitch">
+    <select id="findSwitchById" parameterType="java.lang.Integer" resultType="com.api.model.system.SysFunctionSwitch">
         select * from sys_function_switch where id = #{id}
     </select>
+
 
 </mapper>

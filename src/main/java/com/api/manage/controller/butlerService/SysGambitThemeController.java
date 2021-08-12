@@ -65,4 +65,22 @@ public class SysGambitThemeController   {
         return sysGambitThemeService.recovery(ids.getIds());
     }
 
+
+    /**
+     * 开启/停止用户动态发布功能
+     * @return map
+     */
+    @GetMapping("/enableTheme")
+    public Map<String,Object> enableTheme(){
+        return sysGambitThemeService.enableTheme();
+    }
+
+    /**
+     * 开启/停止用户评论功能
+     * @return map
+     */
+    @GetMapping("/enableComment")
+    public Map<String,Object> enableComment(){
+        return sysGambitThemeService.enableComment();
+    }
 }

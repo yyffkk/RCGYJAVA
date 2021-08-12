@@ -165,5 +165,5 @@ public interface AppGambitDao {
      * @param id 主键id
      * @return 模块功能开关状态
      */
-    SysFunctionSwitch findSwitchByComment(Integer id);
+    SysFunctionSwitch findSwitchById(Integer id);
 }
