@@ -2,6 +2,7 @@ package com.api.manage.dao.operationManagement;
 
 import com.api.model.operationManagement.SearchAttendanceTeam;
 import com.api.model.operationManagement.SysAttendanceTeam;
+import com.api.vo.operationManagement.SysAttendancePeople;
 import com.api.vo.operationManagement.VoAttendanceTeam;
 
 import java.util.List;
@@ -55,4 +56,11 @@ public interface SysAttendanceTeamDao {
      * @return 存在数量
      */
     int countPlanByUserId(String s);
+
+    /**
+     * 根据小组主键id查询小组成员
+     * @param teamMembers 小组成员
+     * @return 小组成员信息集合
+     */
+    List<SysAttendancePeople> findPeopleById(String teamMembers);
 }

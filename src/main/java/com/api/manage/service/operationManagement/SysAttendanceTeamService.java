@@ -15,4 +15,6 @@ public interface SysAttendanceTeamService {
     Map<String, Object> update(SysAttendanceTeam sysAttendanceTeam);
 
     Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> findPeopleById(Integer teamId);
 }

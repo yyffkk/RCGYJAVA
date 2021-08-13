@@ -74,5 +74,14 @@ public class SysAttendanceTeamController {
     }
 
 
+    /**
+     * 根据小组主键id查询小组成员
+     * @param teamId 小组主键id
+     * @return map
+     */
+    @GetMapping("/findPeopleById")
+    public Map<String,Object> findPeopleById(Integer teamId){
+        return sysAttendanceTeamService.findPeopleById(teamId);
+    }
 
 }

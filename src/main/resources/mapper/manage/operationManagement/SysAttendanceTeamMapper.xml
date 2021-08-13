@@ -74,5 +74,11 @@
         from sys_attendance_team as sat,sys_attendance_scheduling_plan as sasp
         where sasp.team_id = sat.id and sasp.status = 1 and FIND_IN_SET(#{s},sat.team_members)
     </select>
+    <select id="findPeopleById" parameterType="java.lang.String" resultType="com.api.vo.operationManagement.SysAttendancePeople">
+        select su.id,su.actual_name as name,su.tel,si.name as identity_name
+        from sys_user as su
+        LEFT JOIN sys_identity as si on su.position_id = si.id
+        where FIND_IN_SET(su.id,#{teamMembers})
+    </select>
 
 </mapper>

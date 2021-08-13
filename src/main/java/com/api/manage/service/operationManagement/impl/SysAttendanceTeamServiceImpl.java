@@ -5,6 +5,7 @@ import com.api.manage.service.operationManagement.SysAttendanceTeamService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SearchAttendanceTeam;
 import com.api.model.operationManagement.SysAttendanceTeam;
+import com.api.vo.operationManagement.SysAttendancePeople;
 import com.api.vo.operationManagement.VoAttendanceTeam;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -122,6 +123,21 @@ public class SysAttendanceTeamServiceImpl implements SysAttendanceTeamService {
         }
         map.put("message","删除成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findPeopleById(Integer teamId) {
+        map = new HashMap<>();
+
+        SysAttendanceTeam byId = sysAttendanceTeamDao.findById(teamId);
+
+        List<SysAttendancePeople> sysAttendancePeopleList =  sysAttendanceTeamDao.findPeopleById(byId.getTeamMembers());
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sysAttendancePeopleList);
+
         return map;
     }
 }
