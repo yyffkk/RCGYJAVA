@@ -449,5 +449,10 @@
         )
     </insert>
 
+    <select id="userVisitorsNew" resultType="com.api.vo.systemDataBigScreen.SDUserVisitorsNewVo">
+        select * from user_visitors_new
+    </select>
+
+
 
 </mapper>

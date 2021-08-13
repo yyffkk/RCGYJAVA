@@ -720,4 +720,15 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> userVisitorsNew() {
+        map = new HashMap<>();
+        List<SDUserVisitorsNewVo> sdUserVisitorsNewVos = systemDataDao.userVisitorsNew();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdUserVisitorsNewVos);
+        return map;
+    }
+
 }

@@ -466,4 +466,10 @@ public interface SystemDataDao {
      * @return 巡检路线集合
      */
     List<SDSysInspectionRouteVo> sysInspectionRoute();
+
+    /**
+     * 新版访客管理
+     * @return 新版访客管理集合
+     */
+    List<SDUserVisitorsNewVo> userVisitorsNew();
 }

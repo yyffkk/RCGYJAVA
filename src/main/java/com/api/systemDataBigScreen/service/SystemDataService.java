@@ -100,4 +100,7 @@ public interface SystemDataService {
     Map<String, Object> sysInspectionPointRoute();
 
     Map<String, Object> sysInspectionRoute();
+
+    Map<String, Object> userVisitorsNew();
+
 }

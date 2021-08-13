@@ -64,7 +64,7 @@ public class SystemDataController {
     }
 
     /**
-     * 查询访客记录信息集合（预计到访时间、实际到访时间、访客姓名、手机号、邀请人姓名、房间号【楼栋号-单元号-房产号】）
+     * 查询访客记录信息集合（预计到访时间、实际到访时间、访客姓名、手机号、邀请人姓名、房间号【楼栋号-单元号-房产号】）【已废除该接口】
      * @param pageNum 当前页数
      * @param size 每页记录数
      * @return map
@@ -546,6 +546,15 @@ public class SystemDataController {
     @GetMapping("/sysInspectionRoute")
     public Map<String,Object> sysInspectionRoute(){
         return systemDataService.sysInspectionRoute();
+    }
+
+    /**
+     * 新版访客管理
+     * @return map
+     */
+    @GetMapping("/userVisitorsNew")
+    public Map<String,Object> userVisitorsNew(){
+        return systemDataService.userVisitorsNew();
     }
 
 }
