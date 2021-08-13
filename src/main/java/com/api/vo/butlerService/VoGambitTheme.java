@@ -1,6 +1,9 @@
 package com.api.vo.butlerService;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 主题明细管理 Vo list 回显
@@ -59,6 +62,10 @@ public class VoGambitTheme {
      */
     private String themeContent;
     /**
+     * 评论照片集合
+     */
+    private List<VoResourcesImg> imgList;
+    /**
      * 点赞人数
      */
     private Integer likeNum;
@@ -87,6 +94,7 @@ public class VoGambitTheme {
                 ", themeName='" + themeName + '\'' +
                 ", themeCreateDate=" + themeCreateDate +
                 ", themeContent='" + themeContent + '\'' +
+                ", imgList=" + imgList +
                 ", likeNum=" + likeNum +
                 ", commentNum=" + commentNum +
                 ", isDelete=" + isDelete +
@@ -197,6 +205,14 @@ public class VoGambitTheme {
         this.themeContent = themeContent;
     }
 
+    public List<VoResourcesImg> getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(List<VoResourcesImg> imgList) {
+        this.imgList = imgList;
+    }
+
     public Integer getLikeNum() {
         return likeNum;
     }
@@ -224,7 +240,7 @@ public class VoGambitTheme {
     public VoGambitTheme() {
     }
 
-    public VoGambitTheme(Integer id, String title, String summary, String gambitNickName, String gambitName, String gambitContent, Integer isPublic, Integer isRating, Date gambitCreateDate, String themeNickName, String themeName, Date themeCreateDate, String themeContent, Integer likeNum, Integer commentNum, Integer isDelete) {
+    public VoGambitTheme(Integer id, String title, String summary, String gambitNickName, String gambitName, String gambitContent, Integer isPublic, Integer isRating, Date gambitCreateDate, String themeNickName, String themeName, Date themeCreateDate, String themeContent, List<VoResourcesImg> imgList, Integer likeNum, Integer commentNum, Integer isDelete) {
         this.id = id;
         this.title = title;
         this.summary = summary;
@@ -238,6 +254,7 @@ public class VoGambitTheme {
         this.themeName = themeName;
         this.themeCreateDate = themeCreateDate;
         this.themeContent = themeContent;
+        this.imgList = imgList;
         this.likeNum = likeNum;
         this.commentNum = commentNum;
         this.isDelete = isDelete;

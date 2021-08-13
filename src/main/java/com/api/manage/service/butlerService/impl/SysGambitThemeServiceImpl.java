@@ -4,7 +4,9 @@ import com.api.manage.dao.butlerService.SysGambitThemeDao;
 import com.api.model.butlerService.SearchGambitTheme;
 import com.api.manage.service.butlerService.SysGambitThemeService;
 import com.api.model.system.SysFunctionSwitch;
+import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoGambitTheme;
+import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -25,6 +27,7 @@ public class SysGambitThemeServiceImpl implements SysGambitThemeService {
         //查询所有的主题明细信息（包含条件搜索）
         List<VoGambitTheme> voGambitThemeList = sysGambitThemeDao.list(searchGambitTheme);
         if (voGambitThemeList != null && voGambitThemeList.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
             //遍历主题明细信息
             for (VoGambitTheme voGambitTheme : voGambitThemeList) {
 //                //查询点赞人数
@@ -35,6 +38,9 @@ public class SysGambitThemeServiceImpl implements SysGambitThemeService {
                 int count2 = sysGambitThemeDao.countCommentNum(voGambitTheme.getId());
                 //传入评论人数
                 voGambitTheme.setCommentNum(count2);
+
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambitTheme", voGambitTheme.getId(), "gambitThemeImg");
+                voGambitTheme.setImgList(imgByDate);
             }
         }
         return voGambitThemeList;
