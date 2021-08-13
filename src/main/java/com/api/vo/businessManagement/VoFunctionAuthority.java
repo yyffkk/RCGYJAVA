@@ -17,6 +17,10 @@ public class VoFunctionAuthority {
      */
     private String actualName;
     /**
+     * 联系方式
+     */
+    private String tel;
+    /**
      * 主属部门名称
      */
     private String organizationName;
@@ -39,6 +43,7 @@ public class VoFunctionAuthority {
                 "id=" + id +
                 ", nickName='" + nickName + '\'' +
                 ", actualName='" + actualName + '\'' +
+                ", tel='" + tel + '\'' +
                 ", organizationName='" + organizationName + '\'' +
                 ", positionName='" + positionName + '\'' +
                 ", roleId='" + roleId + '\'' +
@@ -68,6 +73,14 @@ public class VoFunctionAuthority {
 
     public void setActualName(String actualName) {
         this.actualName = actualName;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     public String getOrganizationName() {
@@ -105,10 +118,11 @@ public class VoFunctionAuthority {
     public VoFunctionAuthority() {
     }
 
-    public VoFunctionAuthority(Integer id, String nickName, String actualName, String organizationName, String positionName, String roleId, String roleName) {
+    public VoFunctionAuthority(Integer id, String nickName, String actualName, String tel, String organizationName, String positionName, String roleId, String roleName) {
         this.id = id;
         this.nickName = nickName;
         this.actualName = actualName;
+        this.tel = tel;
         this.organizationName = organizationName;
         this.positionName = positionName;
         this.roleId = roleId;
