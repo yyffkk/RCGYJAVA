@@ -80,7 +80,7 @@
         su3.actual_name as maintenance_staff_name,su3.tel as maintenance_staff_tel,
         so2.name as maintenance_staff_organization_name
         from sys_user as su1,sys_report_repair_engineering as srre
-        LEFT JOIN sys_organization as so on srre.organization_id = so.name
+        LEFT JOIN sys_organization as so on srre.organization_id = so.id
         LEFT JOIN sys_user as su2 on so.leading_id = su2.id
         LEFT JOIN sys_user as su3 on srre.maintenance_staff = su3.id
         LEFT JOIN sys_organization as so2 on su3.organization_id = so2.id
