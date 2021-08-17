@@ -141,9 +141,18 @@ public interface ButlerRepairEngineeringDao {
     List<ButlerRepairEngineeringAcceptanceRecordVo> findAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId);
 
     /**
+     * 根据工程维修主键id查询最新的验收记录
+     * @param repairEngineeringId 工程维修主键id
+     * @return 最新的验收记录
+     */
+    ButlerRepairEngineeringAcceptanceRecordVo findNewAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId);
+
+    /**
      * 开始整改
      * @param butlerRepairEngineering 管家app 报事报修工程维修model
      * @return 影响行数
      */
     int startRectification(ButlerRepairEngineering butlerRepairEngineering);
+
+
 }

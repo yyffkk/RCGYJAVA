@@ -267,6 +267,17 @@ public class ButlerRepairEngineeringController {
         return butlerRepairEngineeringService.findAcceptanceRecordByRepairEngineeringId(repairEngineeringId);
     }
 
+
+    /**
+     * 根据工程维修主键id查询最新的验收记录
+     * @param repairEngineeringId 工程维修主键id
+     * @return map
+     */
+    @GetMapping("/findNewAcceptanceRecordByRepairEngineeringId")
+    public Map<String,Object> findNewAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId){
+        return butlerRepairEngineeringService.findNewAcceptanceRecordByRepairEngineeringId(repairEngineeringId);
+    }
+
     /**
      * 开始整改
      * @param butlerRepairEngineering 管家app 报事报修工程维修model

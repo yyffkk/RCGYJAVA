@@ -604,6 +604,19 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
     }
 
     @Override
+    public Map<String, Object> findNewAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId) {
+        map = new HashMap<>();
+
+        ButlerRepairEngineeringAcceptanceRecordVo repairEngineeringAcceptanceRecordVo = butlerRepairEngineeringDao.findNewAcceptanceRecordByRepairEngineeringId(repairEngineeringId);
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",repairEngineeringAcceptanceRecordVo);
+
+        return map;
+    }
+
+    @Override
     @Transactional
     public Map<String, Object> startRectification(ButlerRepairEngineering butlerRepairEngineering, int type) {
         map = new HashMap<>();

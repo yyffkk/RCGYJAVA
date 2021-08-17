@@ -42,5 +42,9 @@ public interface ButlerRepairEngineeringService {
 
     Map<String, Object> findAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId);
 
+    Map<String, Object> findNewAcceptanceRecordByRepairEngineeringId(Integer repairEngineeringId);
+
     Map<String, Object> startRectification(ButlerRepairEngineering butlerRepairEngineering, int type);
+
+
 }
