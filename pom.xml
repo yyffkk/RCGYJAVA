@@ -211,6 +211,11 @@
           <artifactId>itext-asian</artifactId>
           <version>5.2.0</version>
         </dependency>
+        <!--  Cacheable换成  -->
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
 
     <!-- webSocket 开始-->
     <!--websocket依赖-->
