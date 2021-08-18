@@ -97,7 +97,7 @@
         select * from sys_organization where category_id = 5
     </select>
     <select id="findSysUserByOrganizationId" parameterType="java.lang.Integer" resultType="com.api.model.businessManagement.SysUser">
-        select id,actual_name from sys_user
+        select id,actual_name,tel from sys_user
         where organization_id_path like concat('%:',#{repairOrganizationId},':%')
         and is_delete = 1
     </select>
