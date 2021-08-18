@@ -182,13 +182,13 @@
             resultType="com.api.vo.butlerApp.ButlerRepairEngineeringReportVo">
         select srrer.*,su.actual_name as create_name
         from sys_report_repair_engineering_report as srrer,sys_user as su
-        where srrer.repair_engineering_id = su.id and repair_engineering_id = #{repairEngineeringId}
+        where srrer.create_id = su.id and srrer.repair_engineering_id = #{repairEngineeringId}
     </select>
     <select id="findNewResultByRepairEngineeringId" parameterType="java.lang.Integer"
             resultType="com.api.vo.butlerApp.ButlerRepairEngineeringResultsVo">
         select srremr.*,su.actual_name as create_name
         from sys_report_repair_engineering_maintenance_results as srremr,sys_user as su
-        where srremr.repair_engineering_id = su.id and repair_engineering_id = #{repairEngineeringId}
+        where srremr.create_id = su.id and srremr.repair_engineering_id = #{repairEngineeringId}
         order by srremr.create_date desc limit 1
     </select>
 
@@ -208,18 +208,20 @@
     <select id="findAcceptanceRecordByRepairEngineeringId" parameterType="java.lang.Integer"
             resultType="com.api.vo.butlerApp.ButlerRepairEngineeringAcceptanceRecordVo">
         select srremr.*,su.actual_name as create_name,su1.actual_name as acceptance_people_name
-        from sys_report_repair_engineering_maintenance_results as srremr,sys_user as su,sys_user as su1
-        where srremr.repair_engineering_id = su.id and srremr.acceptance_people = su1.id and srremr.acceptance_people is not null
+        from sys_user as su,sys_report_repair_engineering_maintenance_results as srremr
+		LEFT JOIN sys_user as su1 on srremr.acceptance_people = su1.id
+        where srremr.create_id = su.id and srremr.acceptance_people is not null
         and srremr.repair_engineering_id = #{repairEngineeringId}
-        order by srremr.create_id desc
+        order by srremr.create_date DESC
     </select>
     <select id="findNewAcceptanceRecordByRepairEngineeringId" parameterType="java.lang.Integer"
             resultType="com.api.vo.butlerApp.ButlerRepairEngineeringAcceptanceRecordVo">
         select srremr.*,su.actual_name as create_name,su1.actual_name as acceptance_people_name
-        from sys_report_repair_engineering_maintenance_results as srremr,sys_user as su,sys_user as su1
-        where srremr.repair_engineering_id = su.id and srremr.acceptance_people = su1.id and srremr.acceptance_people is not null
+        from sys_user as su,sys_report_repair_engineering_maintenance_results as srremr
+		LEFT JOIN sys_user as su1 on srremr.acceptance_people = su1.id
+        where srremr.create_id = su.id and srremr.acceptance_people is not null
         and srremr.repair_engineering_id = #{repairEngineeringId}
-        order by srremr.create_id desc limit 1
+        order by srremr.create_date DESC limit 1
     </select>
 
     <update id="startRectification" parameterType="com.api.model.butlerApp.ButlerRepairEngineering">
