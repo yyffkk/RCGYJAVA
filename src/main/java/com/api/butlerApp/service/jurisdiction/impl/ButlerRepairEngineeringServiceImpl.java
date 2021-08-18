@@ -116,15 +116,15 @@ public class ButlerRepairEngineeringServiceImpl implements ButlerRepairEngineeri
                 //根据角色id查询权限id集合
                 List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
                 if (jurisdictionIds != null && jurisdictionIds.size()>0){
-                    //69.工程派单-维修公司
+                    //69.工程派单-派单给维修公司
                     if (jurisdictionIds.contains(69)){
                         return 1;
                     }
-                    //70.工程派单-维修人员
+                    //70.工程派单-派单给维修人员
                     if (jurisdictionIds.contains(70)){
                         return 2;
                     }
-                    //71.工程接单-维修人员
+                    //71.工程接单-维修人员接单
                     if (jurisdictionIds.contains(71)){
                         return 3;
                     }
