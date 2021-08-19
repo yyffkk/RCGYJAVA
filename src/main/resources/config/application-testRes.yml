@@ -37,3 +37,17 @@ lilin:
     getQrCodeMethod: getQrCode
     #删除设备二维码
     removeQrCodeMethod: removeQrCode
+
+#redis缓存
+spring:
+  redis:
+    host: 127.0.0.1 #绑定的主机地址
+    database: 1
+    port: 6379 #指定Redis监听端口，默认端口为6379
+    password:
+    timeout: 5000 #当客户端闲置多长时间后关闭连接，如果指定为0，表示关闭该功能
+    jedis:
+      pool:
+        max-active: 20 #最大连接数：能够同时建立的“最大链接个数”
+        max-idle: 20 #最大空闲数：空闲链接数大于maxIdle时，将进行回收
+        max-wait: 1000 #最大等待时间：单位ms
