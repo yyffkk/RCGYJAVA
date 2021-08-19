@@ -2,13 +2,14 @@ package com.api.vo.butlerApp;
 
 import com.api.vo.resources.VoResourcesImg;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 管家app 工程维修验收记录Vo list 回显
  */
-public class ButlerRepairEngineeringAcceptanceRecordVo {
+public class ButlerRepairEngineeringAcceptanceRecordVo implements Serializable {
     /**
      * 维修结果主键id
      */
