@@ -11,7 +11,7 @@ spring:
     username: smart_community2
     password: rbEP3mfdDRLAFede
     driver-class-name: com.mysql.jdbc.Driver
-    #本地数据库
+    #南宁本地数据库版本
 #    url: jdbc:mysql://localhost:3306/smart_community?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
 #    username: root
 #    password: 123456
