@@ -18,6 +18,7 @@ import com.api.util.webSocket.WebSocketServiceButlerApp;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@Slf4j
 public class SystemDataServiceImpl implements SystemDataService {
     @Resource
     SystemDataDao systemDataDao;
@@ -435,9 +437,11 @@ public class SystemDataServiceImpl implements SystemDataService {
                 throw new RuntimeException("添加记录失败");
             }
 
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String format = sdf.format(firePushAlert.getTime());
             String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
+            log.info(content);
 //            System.out.printf(content);
 //             key:type value:1 火警
                 //不使用第三方极光推送，该用websocket来实现推送

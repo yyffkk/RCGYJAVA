@@ -2,6 +2,7 @@ package com.api.manage.controller.system;
 
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.system.SysLoginService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("manage/sysLogin")
+@Slf4j
 public class SysLoginController {
     @Resource
     SysLoginService sysLoginService;
@@ -31,8 +33,7 @@ public class SysLoginController {
      */
     @PostMapping("/loginSysUser")
     public Map<String,Object> loginSysUser(@RequestBody SysUser sysUser){
-        System.out.println(sysUser.getPwd());
-        System.out.println(sysUser.getUserName());
+        log.info(sysUser.getUserName()+"已登录");
         return sysLoginService.loginSysUser(sysUser);
     }
 
