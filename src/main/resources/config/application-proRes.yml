@@ -1,0 +1,53 @@
+#测试服资源配置文件
+res:
+  #后台shiro session过期时间设置（-1000表示永不超时）
+  shiroSessionTimeOut: 1800000
+  #访客邀请分享有效时长
+  visitShareTime: 3
+  #新版访客邀请门禁访客照片转发http 地址
+  visitorsUrl: http://39.103.177.88:8804/IntelligentCommunity/manage/test2/test2
+  #信息服务系统照片存放地址
+  communityLocation: http://39.103.177.88:8804/static
+  #保存工单号下一次订单的编号的dat文件
+  dispatchCodeDatUrl: /www/wwwroot/community.kadalai.com/apache-tomcat-8.5.61/webapps/static/res-code-url-dat/EveryDaySerialDispatchNumber.dat
+#  #第三方对外接口token值（无法引入代码）
+#  systemDataToken: 9627a35847e640cb92a7067557f09bda
+
+#立林对讲机系统（人才公寓对接）
+lilin:
+  #API版本号。当前为1.0。
+  version: 1.0
+  #签名算法版本。当前为1.0。
+  signatureVersion: 1.0
+  #小区号
+  neighNo: 450108500003
+  #第三方唯一标示
+  clientId: 83b4ee0b0c0abb7969f51ec614744c96
+  #第三方密钥
+  clientSecret: 72126e68b501d89ca0b490fe95628efe
+  #立林对讲机系统测试服务器地址
+  serviceLocation: http://rd.iot.leelen.com/
+  #API接口
+  api:
+    #添加设备人脸识别api方法
+    faceMethod: addFaceRecognize
+    #添加设备二维码
+    addQrCodeMethod: addQrCode
+    #获取二维码信息
+    getQrCodeMethod: getQrCode
+    #删除设备二维码
+    removeQrCodeMethod: removeQrCode
+
+#redis缓存
+spring:
+  redis:
+    host: 127.0.0.1 #绑定的主机地址
+    database: 1
+    port: 6379 #指定Redis监听端口，默认端口为6379
+    password:
+    timeout: 5000 #当客户端闲置多长时间后关闭连接，如果指定为0，表示关闭该功能
+    jedis:
+      pool:
+        max-active: 20 #最大连接数：能够同时建立的“最大链接个数”
+        max-idle: 20 #最大空闲数：空闲链接数大于maxIdle时，将进行回收
+        max-wait: 1000 #最大等待时间：单位ms
