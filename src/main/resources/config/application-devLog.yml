@@ -11,7 +11,7 @@ logging:
     # 输出的log文件名
     name: intelligent-community
     # 输出的文件的路径
-    path: /Users/AKU001/log/logs
+    path: /Users/AKU007/log/logs
     # 限制日志文件的大小
     max-size: 10MB
     # 日志的保存天数
