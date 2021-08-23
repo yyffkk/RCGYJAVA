@@ -76,8 +76,10 @@
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnitEstate">
-        select * from cpm_building_unit_estate
-        where is_delete = 1 and id =#{id}
+        select cbue.*,cbu.no as building_unit_no,cb.name as building_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where cbue.is_delete = 1 and cbue.id = #{id} and cbue.building_unit_id = cbu.id
+        and cbu.building_id = cb.id
     </select>
 
     <update id="update" parameterType="com.api.model.basicArchives.CpmBuildingUnitEstate">
