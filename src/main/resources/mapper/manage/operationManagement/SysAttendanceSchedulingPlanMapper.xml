@@ -38,7 +38,7 @@
         sasp.create_id = su.id
         and sasp.team_id = sat.id
         and sat.organization_id = so.id
-        and sasp.id = 2
+        and sasp.id = #{id}
     </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
