@@ -47,6 +47,22 @@ public class VoUserCar {
      */
     private String idNumber;
     /**
+     * 车辆类型（1.私家车，2.货车，3.大巴，4.牵引汽车，5.其他）
+     */
+    private Integer type;
+    /**
+     * 车辆品牌
+     */
+    private String brand;
+    /**
+     * 车辆型号
+     */
+    private String model;
+    /**
+     * 车辆颜色(1.红，2.橙，3.黄，4.绿，5.青，6.蓝，7紫，8.黑，9.白，10.灰，11.金，12.磨砂，13.其他)
+     */
+    private Integer color;
+    /**
      * 有效时间开始（仅限包年，包月）
      */
     private Date effectiveTimeStart;
@@ -68,6 +84,10 @@ public class VoUserCar {
                 ", roomName='" + roomName + '\'' +
                 ", idType=" + idType +
                 ", idNumber='" + idNumber + '\'' +
+                ", type=" + type +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", color=" + color +
                 ", effectiveTimeStart=" + effectiveTimeStart +
                 ", effectiveTimeEnd=" + effectiveTimeEnd +
                 '}';
@@ -153,6 +173,38 @@ public class VoUserCar {
         this.idNumber = idNumber;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public Integer getColor() {
+        return color;
+    }
+
+    public void setColor(Integer color) {
+        this.color = color;
+    }
+
     public Date getEffectiveTimeStart() {
         return effectiveTimeStart;
     }
@@ -172,7 +224,7 @@ public class VoUserCar {
     public VoUserCar() {
     }
 
-    public VoUserCar(Integer id, String code, String owner, String tel, Integer status, Long remainingTime, String parkingSpaceCode, String roomName, Integer idType, String idNumber, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public VoUserCar(Integer id, String code, String owner, String tel, Integer status, Long remainingTime, String parkingSpaceCode, String roomName, Integer idType, String idNumber, Integer type, String brand, String model, Integer color, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.code = code;
         this.owner = owner;
@@ -183,6 +235,10 @@ public class VoUserCar {
         this.roomName = roomName;
         this.idType = idType;
         this.idNumber = idNumber;
+        this.type = type;
+        this.brand = brand;
+        this.model = model;
+        this.color = color;
         this.effectiveTimeStart = effectiveTimeStart;
         this.effectiveTimeEnd = effectiveTimeEnd;
     }
