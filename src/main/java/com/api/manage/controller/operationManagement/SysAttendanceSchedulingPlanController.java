@@ -81,6 +81,14 @@ public class SysAttendanceSchedulingPlanController {
         return sysAttendanceSchedulingPlanService.enable(id);
     }
 
-
+    /**
+     * 根据考勤排班计划主键id查询考勤排班计划详情
+     * @param id 考勤排班计划主键id
+     * @return 考勤排班计划详情
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer id){
+        return sysAttendanceSchedulingPlanService.findById(id);
+    }
 
 }

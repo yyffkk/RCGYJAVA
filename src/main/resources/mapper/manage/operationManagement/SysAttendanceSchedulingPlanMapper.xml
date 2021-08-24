@@ -30,8 +30,15 @@
         </where>
         order by sasp.create_date desc
     </select>
-    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
-        select * from sys_attendance_scheduling_plan where id = #{id}
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.operationManagement.VoFBIAttendanceSchedulingPlan">
+        select sasp.*,su.actual_name as create_name,so.name as organization_name,sat.name as team_name
+        from sys_attendance_scheduling_plan as sasp,sys_user as su,
+        sys_attendance_team as sat,sys_organization as so
+        where
+        sasp.create_id = su.id
+        and sasp.team_id = sat.id
+        and sat.organization_id = so.id
+        and sasp.id = 2
     </select>
 
     <insert id="insert" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">
@@ -133,6 +140,14 @@
         from sys_attendance_scheduling_plan_detail as sacpd,sys_attendance_scheduling_plan as sasp,sys_attendance_team as sat
         where sacpd.attendance_scheduling_plan_id = sasp.id  and sasp.team_id = sat.id
 		and sasp.status = 1 and sacpd.working_days = WEEKDAY(now()) and FIND_IN_SET(#{id},sat.team_members)
+    </select>
+    <select id="findDetailByPlanId" parameterType="java.lang.Integer"
+            resultType="com.api.vo.operationManagement.SysAttendanceSchedulingPlanDetailVo">
+        select * from sys_attendance_scheduling_plan_detail where attendance_scheduling_plan_id = #{planId}
+    </select>
+    <select id="findExceptionByPlanId" parameterType="java.lang.Integer"
+            resultType="com.api.vo.operationManagement.SysAttendanceSchedulingPlanExceptionVo">
+        select * from sys_attendance_scheduling_plan_exception where attendance_scheduling_plan_id = #{planId}
     </select>
 
     <update id="updateStatusById" parameterType="com.api.model.operationManagement.SysAttendanceSchedulingPlan">

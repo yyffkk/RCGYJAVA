@@ -4,7 +4,10 @@ import com.api.model.operationManagement.SearchAttendanceSchedulingPlan;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlan;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanException;
+import com.api.vo.operationManagement.SysAttendanceSchedulingPlanDetailVo;
+import com.api.vo.operationManagement.SysAttendanceSchedulingPlanExceptionVo;
 import com.api.vo.operationManagement.VoAttendanceSchedulingPlan;
+import com.api.vo.operationManagement.VoFBIAttendanceSchedulingPlan;
 
 import java.util.List;
 
@@ -42,7 +45,7 @@ public interface SysAttendanceSchedulingPlanDao {
      * @param id 考勤排班计划主键id
      * @return 考勤排班计划
      */
-    SysAttendanceSchedulingPlan findById(int id);
+    VoFBIAttendanceSchedulingPlan findById(int id);
 
     /**
      * 根据考勤排班计划主键id删除考勤排班计划例外情况
@@ -92,4 +95,18 @@ public interface SysAttendanceSchedulingPlanDao {
      * @return 影响行数
      */
     int updateStatusById(SysAttendanceSchedulingPlan byId);
+
+    /**
+     * 根据考勤排班计划主键id查询考勤排班计划详情
+     * @param planId 考勤排班计划主键id
+     * @return 考勤排班计划详情
+     */
+    List<SysAttendanceSchedulingPlanDetailVo> findDetailByPlanId(Integer planId);
+
+    /**
+     * 根据考勤排班计划主键id查询考勤排班计划例外情况
+     * @param planId 考勤排班计划主键id
+     * @return 考勤排班计划例外情况
+     */
+    List<SysAttendanceSchedulingPlanExceptionVo> findExceptionByPlanId(Integer planId);
 }

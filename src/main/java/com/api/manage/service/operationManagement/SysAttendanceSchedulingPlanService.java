@@ -17,4 +17,6 @@ public interface SysAttendanceSchedulingPlanService {
     Map<String, Object> update(SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan);
 
     Map<String, Object> enable(Integer id);
+
+    Map<String, Object> findById(Integer id);
 }
