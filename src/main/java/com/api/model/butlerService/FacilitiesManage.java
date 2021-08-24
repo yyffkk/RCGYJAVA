@@ -58,11 +58,11 @@ public class FacilitiesManage {
     /**
      * 设施有效期开始
      */
-    private Date validity_start;
+    private Date validityStart;
     /**
      * 设施有效期结束
      */
-    private Date validity_end;
+    private Date validityEnd;
     /**
      * 上传doc文件路径
      */
@@ -111,8 +111,8 @@ public class FacilitiesManage {
                 ", manufacturerPhone='" + manufacturerPhone + '\'' +
                 ", warrantyPeriodYears=" + warrantyPeriodYears +
                 ", warrantyPeriodMonths=" + warrantyPeriodMonths +
-                ", validity_start=" + validity_start +
-                ", validity_end=" + validity_end +
+                ", validityStart=" + validityStart +
+                ", validityEnd=" + validityEnd +
                 ", fileDocUrl='" + fileDocUrl + '\'' +
                 ", fileDocName='" + fileDocName + '\'' +
                 ", remakes='" + remakes + '\'' +
@@ -220,20 +220,20 @@ public class FacilitiesManage {
         this.warrantyPeriodMonths = warrantyPeriodMonths;
     }
 
-    public Date getValidity_start() {
-        return validity_start;
+    public Date getValidityStart() {
+        return validityStart;
     }
 
-    public void setValidity_start(Date validity_start) {
-        this.validity_start = validity_start;
+    public void setValidityStart(Date validityStart) {
+        this.validityStart = validityStart;
     }
 
-    public Date getValidity_end() {
-        return validity_end;
+    public Date getValidityEnd() {
+        return validityEnd;
     }
 
-    public void setValidity_end(Date validity_end) {
-        this.validity_end = validity_end;
+    public void setValidityEnd(Date validityEnd) {
+        this.validityEnd = validityEnd;
     }
 
     public String getFileDocUrl() {
@@ -303,7 +303,7 @@ public class FacilitiesManage {
     public FacilitiesManage() {
     }
 
-    public FacilitiesManage(Integer id, String code, String name, String address, Integer facilitiesCategoryId, Integer status, String brand, BigDecimal procurementCosts, String purchasingManufacturer, String manufacturerPhone, Integer warrantyPeriodYears, Integer warrantyPeriodMonths, Date validity_start, Date validity_end, String fileDocUrl, String fileDocName, String remakes, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
+    public FacilitiesManage(Integer id, String code, String name, String address, Integer facilitiesCategoryId, Integer status, String brand, BigDecimal procurementCosts, String purchasingManufacturer, String manufacturerPhone, Integer warrantyPeriodYears, Integer warrantyPeriodMonths, Date validityStart, Date validityEnd, String fileDocUrl, String fileDocName, String remakes, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer isDelete) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -316,8 +316,8 @@ public class FacilitiesManage {
         this.manufacturerPhone = manufacturerPhone;
         this.warrantyPeriodYears = warrantyPeriodYears;
         this.warrantyPeriodMonths = warrantyPeriodMonths;
-        this.validity_start = validity_start;
-        this.validity_end = validity_end;
+        this.validityStart = validityStart;
+        this.validityEnd = validityEnd;
         this.fileDocUrl = fileDocUrl;
         this.fileDocName = fileDocName;
         this.remakes = remakes;

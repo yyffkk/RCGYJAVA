@@ -42,6 +42,30 @@
             address,
             facilities_category_id,
             status,
+            <if test="brand != null and brand != ''">
+                brand,
+            </if>
+            <if test="procurementCosts != null">
+                procurement_costs,
+            </if>
+            <if test="purchasingManufacturer != null and purchasingManufacturer != ''">
+                purchasing_manufacturer,
+            </if>
+            <if test="manufacturerPhone != null and manufacturerPhone != ''">
+                manufacturer_phone,
+            </if>
+            <if test="warrantyPeriodYears != null">
+                warranty_period_years,
+            </if>
+            <if test="warrantyPeriodMonths != null">
+                warranty_period_months,
+            </if>
+            <if test="validityStart != null">
+                validity_start,
+            </if>
+            <if test="validityEnd != null">
+                validity_end,
+            </if>
             <if test="fileDocUrl != null and fileDocUrl != ''">
                 file_doc_url,
             </if>
@@ -60,6 +84,30 @@
             #{address},
             #{facilitiesCategoryId},
             #{status},
+            <if test="brand != null and brand != ''">
+                #{brand},
+            </if>
+            <if test="procurementCosts != null">
+                #{procurementCosts},
+            </if>
+            <if test="purchasingManufacturer != null and purchasingManufacturer != ''">
+                #{purchasingManufacturer},
+            </if>
+            <if test="manufacturerPhone != null and manufacturerPhone != ''">
+                #{manufacturerPhone},
+            </if>
+            <if test="warrantyPeriodYears != null">
+                #{warrantyPeriodYears},
+            </if>
+            <if test="warrantyPeriodMonths != null">
+                #{warrantyPeriodMonths},
+            </if>
+            <if test="validityStart != null">
+                #{validityStart},
+            </if>
+            <if test="validityEnd != null">
+                #{validityEnd},
+            </if>
             <if test="fileDocUrl != null and fileDocUrl != ''">
                 #{fileDocUrl},
             </if>
