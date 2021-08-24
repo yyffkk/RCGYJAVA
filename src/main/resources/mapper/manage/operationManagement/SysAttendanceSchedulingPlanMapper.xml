@@ -84,10 +84,10 @@
             first_time_end,
             second_time_start,
             second_time_end,
-            type,
             <if test="remakes != null and remakes != ''">
-                remakes
+                remakes,
             </if>
+            type
         )values (
             #{attendanceSchedulingPlanId},
             #{dateRange},
@@ -95,10 +95,10 @@
             #{firstTimeEnd},
             #{secondTimeStart},
             #{secondTimeEnd},
-            #{type},
             <if test="remakes != null and remakes != ''">
-                #{remakes}
+                #{remakes},
             </if>
+            #{type}
         )
     </insert>
 
