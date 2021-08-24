@@ -144,8 +144,7 @@
     </update>
 
     <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFacilitiesManageDetail">
-        select sfm.id,sfm.code,sfm.facilities_category_id,sfc.name as facilities_category_name,sfm.name,su.actual_name as create_name,sfm.status,
-        sfm.file_doc_url,sfm.file_doc_name,sfm.remakes,sfm.create_date,sfm.address,su.tel
+        select sfm.*,sfc.name as facilities_category_name,su.actual_name as create_name,su.tel
         from sys_facilities_manage as sfm,sys_facilities_category as sfc,sys_user as su
         where sfm.facilities_category_id = sfc.id and sfm.create_id = su.id and sfm.id = #{id} and sfm.is_delete = 1
     </select>
