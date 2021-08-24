@@ -4,8 +4,7 @@
 <mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesManageDao">
 
     <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesManage" resultType="com.api.vo.butlerService.VoFacilitiesManage">
-        select sfm.id,sfm.code,sfc.name as facilities_category_name,sfm.name,su.actual_name as create_name,sfm.status,
-        sfm.create_date,sfm.file_doc_url,sfm.file_doc_name,sfm.remakes
+        select sfm.*,sfc.name as facilities_category_name,su.actual_name as create_name
         from sys_facilities_manage as sfm,sys_facilities_category as sfc,sys_user as su
         <where>
             sfm.facilities_category_id = sfc.id
