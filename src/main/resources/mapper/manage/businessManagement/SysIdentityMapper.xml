@@ -7,4 +7,52 @@
     <select id="listAll" resultType="com.api.model.system.SysIdentity">
         select * from sys_identity
     </select>
+
+    <insert id="insert" parameterType="com.api.model.system.SysIdentity">
+        insert into sys_identity(
+            name,
+            code,
+            <if test="remakes != null and remakes != ''">
+                remakes,
+            </if>
+            parent_id
+        ) value (
+            #{name},
+            #{code},
+            <if test="remakes != null and remakes != ''">
+                #{remakes},
+            </if>
+            #{parentId}
+        )
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.system.SysIdentity">
+        select * from sys_identity where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.api.model.system.SysIdentity">
+        update sys_identity
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="remakes != null and remakes != ''">
+                remakes = #{remakes},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findUserByPositionId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_user where position_id = #{positionId}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_identity where id = #{id}
+    </delete>
+
+
 </mapper>
