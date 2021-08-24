@@ -129,6 +129,30 @@
         name = #{name},
         address = #{address},
         facilities_category_id = #{facilitiesCategoryId},
+        <if test="brand != null and brand != ''">
+            brand = #{brand},
+        </if>
+        <if test="procurementCosts != null">
+            procurement_costs = #{procurementCosts},
+        </if>
+        <if test="purchasingManufacturer != null and purchasingManufacturer != ''">
+            purchasing_manufacturer = #{purchasingManufacturer},
+        </if>
+        <if test="manufacturerPhone != null and manufacturerPhone != ''">
+            manufacturer_phone = #{manufacturerPhone},
+        </if>
+        <if test="warrantyPeriodYears != null">
+            warranty_period_years = #{warrantyPeriodYears},
+        </if>
+        <if test="warrantyPeriodMonths != null">
+            warranty_period_months = #{warrantyPeriodMonths},
+        </if>
+        <if test="validityStart != null">
+            validity_start = #{validityStart},
+        </if>
+        <if test="validityEnd != null">
+            validity_end = #{validityEnd},
+        </if>
         <if test="fileDocUrl != null and fileDocUrl != ''">
             file_doc_url = #{fileDocUrl},
         </if>
