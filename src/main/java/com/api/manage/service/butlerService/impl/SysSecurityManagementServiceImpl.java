@@ -2,6 +2,7 @@ package com.api.manage.service.butlerService.impl;
 
 import com.api.manage.dao.butlerService.SysSecurityManagementDao;
 import com.api.manage.service.butlerService.SysSecurityManagementService;
+import com.api.model.basicArchives.CpmParkingSpace;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.SearchSecurityManagement;
 import com.api.model.butlerService.SecurityManagement;
@@ -149,6 +150,37 @@ public class SysSecurityManagementServiceImpl implements SysSecurityManagementSe
             return map;
         }
         map.put("message","修改成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+
+                int delete = sysSecurityManagementDao.delete(id);
+                if (delete <= 0){
+                    throw new RuntimeException("删除失败");
+                }
+
+                UploadUtil uploadUtil = new UploadUtil();
+                uploadUtil.delete("sysSecurityManagement",id,"fileImg");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","删除成功");
         map.put("status",true);
         return map;
     }

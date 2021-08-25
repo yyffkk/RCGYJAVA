@@ -17,4 +17,6 @@ public interface SysSecurityManagementService {
     Map<String, Object> findById(Integer id);
 
     Map<String, Object> update(SecurityManagement securityManagement);
+
+    Map<String, Object> delete(int[] ids);
 }

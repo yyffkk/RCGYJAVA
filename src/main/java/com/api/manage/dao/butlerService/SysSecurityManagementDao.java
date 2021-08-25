@@ -45,4 +45,11 @@ public interface SysSecurityManagementDao {
      * @return 影响行数
      */
     int update(SecurityManagement securityManagement);
+
+    /**
+     * 删除安全管理信息
+     * @param id 安全管理信息主键id数组
+     * @return 影响行数
+     */
+    int delete(int id);
 }

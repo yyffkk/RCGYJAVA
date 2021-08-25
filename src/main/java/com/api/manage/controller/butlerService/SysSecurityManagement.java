@@ -3,10 +3,13 @@ package com.api.manage.controller.butlerService;
 import com.api.manage.service.butlerService.SysSecurityManagementService;
 import com.api.model.butlerService.SearchSecurityManagement;
 import com.api.model.butlerService.SecurityManagement;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoReportRepair;
 import com.api.vo.butlerService.VoSecurityManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -80,5 +83,13 @@ public class SysSecurityManagement {
         return sysSecurityManagementService.update(securityManagement);
     }
 
-
+    /**
+     * 批量删除安全管理信息
+     * @param ids 安全管理信息主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysSecurityManagementService.delete(ids.getIds());
+    }
 }
