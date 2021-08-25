@@ -8,6 +8,7 @@ import com.api.model.butlerService.SecurityManagement;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoSecurityManagement;
+import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,8 @@ public class SysSecurityManagementServiceImpl implements SysSecurityManagementSe
         if (list != null && list.size()>0){
             UploadUtil uploadUtil = new UploadUtil();
             for (VoSecurityManagement voSecurityManagement : list) {
-                //缺少照片
-
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysSecurityManagement", voSecurityManagement.getId(), "fileImg");
+                voSecurityManagement.setImgList(imgByDate);
             }
         }
 
