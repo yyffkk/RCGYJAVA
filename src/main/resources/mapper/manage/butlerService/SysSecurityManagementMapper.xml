@@ -27,4 +27,28 @@
         </where>
         order by sem.create_date desc
     </select>
+
+    <insert id="insert" parameterType="com.api.model.butlerService.SecurityManagement">
+        insert into sys_security_management(
+            code,
+            name,
+            type,
+            details,
+            happen_date,
+            create_id,
+            create_date
+        )value (
+            #{code},
+            #{name},
+            #{type},
+            #{details},
+            #{happenDate},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
 </mapper>

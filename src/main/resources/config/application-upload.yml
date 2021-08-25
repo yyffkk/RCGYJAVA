@@ -54,6 +54,8 @@ prop:
   upload-lease-contract-valid-pdf: /pdf/leaseContractValid/
   #管家服务-新版家政服务管理：处理完成照片上传路径
   upload-housekeeping-service-handler-phone: /img/housekeepingService/handlerPhone/
+  #管家服务-安全管理：安全管理文件上传路径
+  upload-security-management-file-img: /img/securityManagement/
 
 
   #运营管理-公告管理：新增公告信息照片上传路径

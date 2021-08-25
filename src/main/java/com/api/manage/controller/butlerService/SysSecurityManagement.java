@@ -2,13 +2,12 @@ package com.api.manage.controller.butlerService;
 
 import com.api.manage.service.butlerService.SysSecurityManagementService;
 import com.api.model.butlerService.SearchSecurityManagement;
+import com.api.model.butlerService.SecurityManagement;
 import com.api.vo.butlerService.VoReportRepair;
 import com.api.vo.butlerService.VoSecurityManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -41,4 +40,16 @@ public class SysSecurityManagement {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 添加安全管理信息
+     * @param securityManagement 安全管理信息
+     * @return map
+     */
+    @PostMapping("/insert")
+    public Map<String,Object> insert(@RequestBody SecurityManagement securityManagement){
+        return sysSecurityManagementService.insert(securityManagement);
+    }
+
+
 }

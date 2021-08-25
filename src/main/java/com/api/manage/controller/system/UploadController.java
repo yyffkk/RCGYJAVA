@@ -341,4 +341,14 @@ public class UploadController {
     public Map<String,Object> uploadAppIdCardBack(MultipartFile file){
         return uploadService.uploadAppIdCardBack(file);
     }
+
+    /**
+     * 上传安全管理照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadSecurityManagementImg")
+    public Map<String,Object> uploadSecurityManagementImg(MultipartFile file){
+        return uploadService.uploadSecurityManagementImg(file);
+    }
 }
