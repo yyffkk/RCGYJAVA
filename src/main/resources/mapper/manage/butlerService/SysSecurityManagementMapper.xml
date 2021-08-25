@@ -51,4 +51,14 @@
         </selectKey>
     </insert>
 
+    <select id="findAllCreateName" resultType="com.api.vo.basicArchives.VoFindAll">
+        select sem.create_id as value,su.actual_name as label
+        from sys_security_management as sem,sys_user as su
+        where sem.create_id = su.id
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFBISecurityManagement">
+        select * from sys_security_management where id = #{id}
+    </select>
+
 </mapper>

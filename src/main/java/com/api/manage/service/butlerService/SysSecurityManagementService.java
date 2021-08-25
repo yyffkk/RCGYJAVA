@@ -11,4 +11,8 @@ public interface SysSecurityManagementService {
     List<VoSecurityManagement> list(SearchSecurityManagement searchSecurityManagement);
 
     Map<String, Object> insert(SecurityManagement securityManagement);
+
+    Map<String, Object> findAllCreateName();
+
+    Map<String, Object> findById(Integer id);
 }

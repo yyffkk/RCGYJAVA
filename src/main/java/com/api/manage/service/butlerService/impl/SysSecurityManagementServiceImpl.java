@@ -7,6 +7,8 @@ import com.api.model.butlerService.SearchSecurityManagement;
 import com.api.model.butlerService.SecurityManagement;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
+import com.api.vo.basicArchives.VoFindAll;
+import com.api.vo.butlerService.VoFBISecurityManagement;
 import com.api.vo.butlerService.VoSecurityManagement;
 import com.api.vo.resources.VoResourcesImg;
 import org.apache.shiro.SecurityUtils;
@@ -76,6 +78,38 @@ public class SysSecurityManagementServiceImpl implements SysSecurityManagementSe
         }
         map.put("message","添加成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findAllCreateName() {
+        map = new HashMap<>();
+
+        List<VoFindAll> voFindAllList = sysSecurityManagementDao.findAllCreateName();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",voFindAllList);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
+
+        VoFBISecurityManagement voFBISecurityManagement = sysSecurityManagementDao.findById(id);
+        if (voFBISecurityManagement != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysSecurityManagement", voFBISecurityManagement.getId(), "fileImg");
+            voFBISecurityManagement.setImgList(imgByDate);
+        }
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",voFBISecurityManagement);
+
+
         return map;
     }
 }

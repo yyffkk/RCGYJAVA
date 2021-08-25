@@ -51,5 +51,25 @@ public class SysSecurityManagement {
         return sysSecurityManagementService.insert(securityManagement);
     }
 
+    /**
+     * 查询所有的登记人姓名和id
+     * @return map
+     */
+    @GetMapping("/findAllCreateName")
+    public Map<String,Object> findAllCreateName(){
+        return sysSecurityManagementService.findAllCreateName();
+    }
+
+    /**
+     * 根据安全管理主键id查询安全管理信息
+     * @param id 安全管理主键id
+     * @return 安全管理信息
+     */
+    @GetMapping("/findById")
+    public Map<String,Object> findById(Integer id){
+        return sysSecurityManagementService.findById(id);
+    }
+
+
 
 }
