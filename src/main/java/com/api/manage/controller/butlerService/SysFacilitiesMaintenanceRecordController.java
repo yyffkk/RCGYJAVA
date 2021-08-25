@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 设施设备保养记录管理
+ * 设施设备保养记录管理 设施预约-设施管理-设施设备保养记录管理：
  */
 @RestController
 @RequestMapping("manage/facilitiesMaintenanceRecord")

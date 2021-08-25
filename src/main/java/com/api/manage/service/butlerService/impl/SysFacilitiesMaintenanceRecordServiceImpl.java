@@ -2,13 +2,17 @@ package com.api.manage.service.butlerService.impl;
 
 import com.api.manage.dao.butlerService.SysFacilitiesMaintenanceRecordDao;
 import com.api.manage.service.butlerService.SysFacilitiesMaintenanceRecordService;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.FacilitiesMaintenanceRecord;
 import com.api.vo.butlerService.VoFacilitiesMaintenanceRecord;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +40,12 @@ public class SysFacilitiesMaintenanceRecordServiceImpl implements SysFacilitiesM
     @Override
     public Map<String, Object> insert(FacilitiesMaintenanceRecord maintenanceRecord) {
         map = new HashMap<>();
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        maintenanceRecord.setCreateId(sysUser.getId());//填入创建人
+        maintenanceRecord.setCreateDate(new Date());//填入创建时间
 
         int insert = maintenanceRecordDao.insert(maintenanceRecord);
         if (insert >0){
@@ -52,6 +62,7 @@ public class SysFacilitiesMaintenanceRecordServiceImpl implements SysFacilitiesM
     @Override
     @Transactional
     public Map<String, Object> delete(int[] ids) {
+        map = new HashMap<>();
         try {
             for (int id : ids) {
                 int delete = maintenanceRecordDao.delete(id);
