@@ -10,7 +10,7 @@
         <where>
             sem.create_id = su.id
             <if test="name != null and name != ''">
-                and sem.name = #{name}
+                and sem.name like concat('%',#{name},'%')
             </if>
             <if test="type != null">
                 and sem.type = #{type}

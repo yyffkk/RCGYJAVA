@@ -60,7 +60,7 @@ public class SysSecurityManagementServiceImpl implements SysSecurityManagementSe
             }
 
             UploadUtil uploadUtil = new UploadUtil();
-            uploadUtil.saveUrlToDB(securityManagement.getImgUrls(),"");
+            uploadUtil.saveUrlToDB(securityManagement.getImgUrls(),"sysSecurityManagement",securityManagement.getId(),"fileImg","600",30,20);
 
         } catch (RuntimeException e) {
             //获取抛出的信息
