@@ -61,4 +61,25 @@
         select * from sys_security_management where id = #{id}
     </select>
 
+    <update id="update" parameterType="com.api.model.butlerService.SecurityManagement">
+        update sys_security_management
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="details != null and details != ''">
+                details = #{details},
+            </if>
+            <if test="happenDate != null">
+                happen_date = #{happenDate},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

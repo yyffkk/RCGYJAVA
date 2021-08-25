@@ -112,4 +112,44 @@ public class SysSecurityManagementServiceImpl implements SysSecurityManagementSe
 
         return map;
     }
+
+    @Override
+    @Transactional
+    public Map<String, Object> update(SecurityManagement securityManagement) {
+        map = new HashMap<>();
+
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+
+            securityManagement.setModifyId(sysUser.getId());//填入修改人id
+            securityManagement.setModifyDate(new Date());//填入修改时间
+
+            int update = sysSecurityManagementDao.update(securityManagement);
+            if (update <= 0){
+                throw new RuntimeException("修改失败");
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            //先删除照片信息
+            uploadUtil.delete("sysSecurityManagement",securityManagement.getId(),"fileImg");
+            //再添加照片信息
+            uploadUtil.saveUrlToDB(securityManagement.getImgUrls(),"sysSecurityManagement",securityManagement.getId(),"fileImg","600",30,20);
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","修改成功");
+        map.put("status",true);
+        return map;
+    }
 }

@@ -70,6 +70,15 @@ public class SysSecurityManagement {
         return sysSecurityManagementService.findById(id);
     }
 
+    /**
+     * 修改安全管理信息
+     * @param securityManagement 安全管理信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SecurityManagement securityManagement){
+        return sysSecurityManagementService.update(securityManagement);
+    }
 
 
 }

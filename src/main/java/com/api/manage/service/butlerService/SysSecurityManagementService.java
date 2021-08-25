@@ -15,4 +15,6 @@ public interface SysSecurityManagementService {
     Map<String, Object> findAllCreateName();
 
     Map<String, Object> findById(Integer id);
+
+    Map<String, Object> update(SecurityManagement securityManagement);
 }

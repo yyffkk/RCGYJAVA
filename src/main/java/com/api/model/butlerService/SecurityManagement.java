@@ -40,6 +40,14 @@ public class SecurityManagement {
      */
     private Date createDate;
     /**
+     * 修改人id
+     */
+    private Integer modifyId;
+    /**
+     * 修改时间
+     */
+    private Date modifyDate;
+    /**
      * 上传文件路径数组
      */
     private String[] imgUrls;
@@ -55,6 +63,8 @@ public class SecurityManagement {
                 ", happenDate=" + happenDate +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
+                ", modifyId=" + modifyId +
+                ", modifyDate=" + modifyDate +
                 ", imgUrls=" + Arrays.toString(imgUrls) +
                 '}';
     }
@@ -123,6 +133,22 @@ public class SecurityManagement {
         this.createDate = createDate;
     }
 
+    public Integer getModifyId() {
+        return modifyId;
+    }
+
+    public void setModifyId(Integer modifyId) {
+        this.modifyId = modifyId;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
     public String[] getImgUrls() {
         return imgUrls;
     }
@@ -134,7 +160,7 @@ public class SecurityManagement {
     public SecurityManagement() {
     }
 
-    public SecurityManagement(Integer id, String code, String name, Integer type, String details, Date happenDate, Integer createId, Date createDate, String[] imgUrls) {
+    public SecurityManagement(Integer id, String code, String name, Integer type, String details, Date happenDate, Integer createId, Date createDate, Integer modifyId, Date modifyDate, String[] imgUrls) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -143,6 +169,8 @@ public class SecurityManagement {
         this.happenDate = happenDate;
         this.createId = createId;
         this.createDate = createDate;
+        this.modifyId = modifyId;
+        this.modifyDate = modifyDate;
         this.imgUrls = imgUrls;
     }
 }

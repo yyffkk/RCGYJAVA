@@ -38,4 +38,11 @@ public interface SysSecurityManagementDao {
      * @return 安全管理信息
      */
     VoFBISecurityManagement findById(Integer id);
+
+    /**
+     * 修改安全管理信息
+     * @param securityManagement 安全管理信息
+     * @return 影响行数
+     */
+    int update(SecurityManagement securityManagement);
 }
