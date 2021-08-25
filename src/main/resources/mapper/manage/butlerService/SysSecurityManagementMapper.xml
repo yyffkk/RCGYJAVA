@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.butlerService.SysSecurityManagementDao">
+
+    <select id="list" parameterType="com.api.model.butlerService.SearchSecurityManagement" resultType="com.api.vo.butlerService.VoSecurityManagement">
+        select sem.*,su.actual_name as create_name
+        from sys_security_management as sem,sys_user as su
+        <where>
+            sem.create_id = su.id
+            <if test="name != null and name != ''">
+                and sem.name = #{name}
+            </if>
+            <if test="type != null">
+                and sem.type = #{type}
+            </if>
+            <if test="createId != null">
+                and sem.create_id = #{createId}
+            </if>
+            <if test="happenDateStart != null">
+                and sem.happen_date <![CDATA[ >= ]]> #{happenDateStart}
+            </if>
+            <if test="happenDateEnd != null">
+                and sem.happen_date <![CDATA[ <= ]]> #{happenDateEnd}
+            </if>
+        </where>
+        order by sem.create_date desc
+    </select>
+</mapper>
