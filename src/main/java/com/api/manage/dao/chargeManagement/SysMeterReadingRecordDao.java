@@ -5,6 +5,7 @@ import com.api.model.chargeManagement.SysMeterReadingRecord;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysMeterReadingRecordDao {
     /**
@@ -27,4 +28,11 @@ public interface SysMeterReadingRecordDao {
      * @return 抄表记录信息
      */
     List<VoMeterReadingRecord> list(SearchMeterReadingRecord searchMeterReadingRecord);
+
+    /**
+     * 添加备注
+     * @param sysMeterReadingRecord 抄表记录管理
+     * @return map
+     */
+    Integer updateRemakes(SysMeterReadingRecord sysMeterReadingRecord);
 }

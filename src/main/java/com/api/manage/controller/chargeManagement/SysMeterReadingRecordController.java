@@ -2,13 +2,12 @@ package com.api.manage.controller.chargeManagement;
 
 import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
 import com.api.model.chargeManagement.SearchMeterReadingRecord;
+import com.api.model.chargeManagement.SysMeterReadingRecord;
 import com.api.vo.chargeManagement.VoExpenseBill;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -41,5 +40,14 @@ public class SysMeterReadingRecordController {
         return map;
     }
 
+    /**
+     * 添加备注
+     * @param sysMeterReadingRecord 抄表记录管理
+     * @return map
+     */
+    @PostMapping("/updateRemakes")
+    public Map<String,Object> updateRemakes(@RequestBody SysMeterReadingRecord sysMeterReadingRecord){
+        return meterReadingRecordService.updateRemakes(sysMeterReadingRecord);
+    }
 
 }

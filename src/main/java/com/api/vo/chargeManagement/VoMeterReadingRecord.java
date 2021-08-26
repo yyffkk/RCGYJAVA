@@ -47,6 +47,10 @@ public class VoMeterReadingRecord {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 备注
+     */
+    private String remakes;
 
     @Override
     public String toString() {
@@ -61,6 +65,7 @@ public class VoMeterReadingRecord {
                 ", dataStatus=" + dataStatus +
                 ", billStatus=" + billStatus +
                 ", createDate=" + createDate +
+                ", remakes='" + remakes + '\'' +
                 '}';
     }
 
@@ -144,10 +149,18 @@ public class VoMeterReadingRecord {
         this.createDate = createDate;
     }
 
+    public String getRemakes() {
+        return remakes;
+    }
+
+    public void setRemakes(String remakes) {
+        this.remakes = remakes;
+    }
+
     public VoMeterReadingRecord() {
     }
 
-    public VoMeterReadingRecord(Integer id, String months, BigDecimal consumption, Integer type, String unit, Date startDate, Date endDate, Integer dataStatus, Integer billStatus, Date createDate) {
+    public VoMeterReadingRecord(Integer id, String months, BigDecimal consumption, Integer type, String unit, Date startDate, Date endDate, Integer dataStatus, Integer billStatus, Date createDate, String remakes) {
         this.id = id;
         this.months = months;
         this.consumption = consumption;
@@ -158,5 +171,6 @@ public class VoMeterReadingRecord {
         this.dataStatus = dataStatus;
         this.billStatus = billStatus;
         this.createDate = createDate;
+        this.remakes = remakes;
     }
 }

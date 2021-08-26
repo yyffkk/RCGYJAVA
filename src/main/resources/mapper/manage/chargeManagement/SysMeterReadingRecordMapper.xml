@@ -37,4 +37,10 @@
         )
     </insert>
 
+    <update id="updateRemakes" parameterType="com.api.model.chargeManagement.SysMeterReadingRecord">
+        update sys_meter_reading_record
+        set remakes = #{remakes}
+        where id = #{id}
+    </update>
+
 </mapper>

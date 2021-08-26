@@ -343,4 +343,18 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
     public List<VoMeterReadingRecord> list(SearchMeterReadingRecord searchMeterReadingRecord) {
         return meterReadingRecordDao.list(searchMeterReadingRecord);
     }
+
+    @Override
+    public Map<String, Object> updateRemakes(SysMeterReadingRecord sysMeterReadingRecord) {
+        map = new HashMap<>();
+        int update = meterReadingRecordDao.updateRemakes(sysMeterReadingRecord);
+        if (update >0){
+            map.put("message","请求成功");
+            map.put("status",true);
+        }else {
+            map.put("message","请求失败");
+            map.put("status",false);
+        }
+        return map;
+    }
 }

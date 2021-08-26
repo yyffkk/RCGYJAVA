@@ -47,6 +47,10 @@ public class SysMeterReadingRecord {
      * 创建时间
      */
     private Date createDate;
+    /**
+     * 备注
+     */
+    private String remakes;
 
     @Override
     public String toString() {
@@ -61,6 +65,7 @@ public class SysMeterReadingRecord {
                 ", dataStatus=" + dataStatus +
                 ", billStatus=" + billStatus +
                 ", createDate=" + createDate +
+                ", remakes='" + remakes + '\'' +
                 '}';
     }
 
@@ -144,10 +149,18 @@ public class SysMeterReadingRecord {
         this.createDate = createDate;
     }
 
+    public String getRemakes() {
+        return remakes;
+    }
+
+    public void setRemakes(String remakes) {
+        this.remakes = remakes;
+    }
+
     public SysMeterReadingRecord() {
     }
 
-    public SysMeterReadingRecord(Integer id, BigDecimal consumption, Integer type, String unit, BigDecimal recordingQuantity, Date startDate, Date endDate, Integer dataStatus, Integer billStatus, Date createDate) {
+    public SysMeterReadingRecord(Integer id, BigDecimal consumption, Integer type, String unit, BigDecimal recordingQuantity, Date startDate, Date endDate, Integer dataStatus, Integer billStatus, Date createDate, String remakes) {
         this.id = id;
         this.consumption = consumption;
         this.type = type;
@@ -158,5 +171,6 @@ public class SysMeterReadingRecord {
         this.dataStatus = dataStatus;
         this.billStatus = billStatus;
         this.createDate = createDate;
+        this.remakes = remakes;
     }
 }
