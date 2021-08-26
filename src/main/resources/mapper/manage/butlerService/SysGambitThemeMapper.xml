@@ -82,4 +82,12 @@
         set status = #{status}
         where id = #{id}
     </update>
+
+    <select id="findCommentByThemeId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoGambitThemeComment">
+        select sgtc.*,ur.name as create_name
+        from sys_gambit_theme_comment as sgtc,user_resident as ur
+        where sgtc.create_id = ur.id and sgtc.gambit_theme_id = #{themeId}
+        order by sgtc.create_date desc
+    </select>
+
 </mapper>

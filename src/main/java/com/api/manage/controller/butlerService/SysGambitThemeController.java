@@ -83,4 +83,14 @@ public class SysGambitThemeController   {
     public Map<String,Object> enableComment(){
         return sysGambitThemeService.enableComment();
     }
+
+    /**
+     * 根据主题明细主键id查询评论列表
+     * @param themeId 主题明细主键id
+     * @return map
+     */
+    @GetMapping("/findCommentByThemeId")
+    public Map<String,Object> findCommentByThemeId(Integer themeId){
+        return sysGambitThemeService.findCommentByThemeId(themeId);
+    }
 }
