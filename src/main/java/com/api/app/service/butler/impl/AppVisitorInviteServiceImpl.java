@@ -516,8 +516,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
 //            OkHttpClient client = new OkHttpClient();
             OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                    .readTimeout(10000, TimeUnit.MILLISECONDS)
+                    .connectTimeout(30000, TimeUnit.MILLISECONDS)
+                    .readTimeout(30000, TimeUnit.MILLISECONDS)
                     .build();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = FormBody.create(mediaType, json);
@@ -588,8 +588,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
 //            OkHttpClient client = new OkHttpClient();
             OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                    .readTimeout(10000, TimeUnit.MILLISECONDS)
+                    .connectTimeout(30000, TimeUnit.MILLISECONDS)
+                    .readTimeout(30000, TimeUnit.MILLISECONDS)
                     .build();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = FormBody.create(mediaType, json);
