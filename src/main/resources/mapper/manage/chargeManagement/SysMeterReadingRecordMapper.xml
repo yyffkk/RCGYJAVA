@@ -6,7 +6,7 @@
 
     <select id="findNewData" parameterType="java.lang.Integer" resultType="com.api.model.chargeManagement.SysMeterReadingRecord">
         select * from sys_meter_reading_record
-        where type = #{type}
+        where type = #{type} and data_status = 1
         order by create_date desc limit 1
     </select>
 
