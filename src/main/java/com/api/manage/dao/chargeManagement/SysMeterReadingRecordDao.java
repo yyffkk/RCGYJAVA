@@ -1,6 +1,10 @@
 package com.api.manage.dao.chargeManagement;
 
+import com.api.model.chargeManagement.SearchMeterReadingRecord;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingRecord;
+
+import java.util.List;
 
 public interface SysMeterReadingRecordDao {
     /**
@@ -16,4 +20,11 @@ public interface SysMeterReadingRecordDao {
      * @return 影响行数
      */
     int insertMeterReadingRecord(SysMeterReadingRecord sysMeterReadingRecord);
+
+    /**
+     * 查询所有的抄表记录信息
+     * @param searchMeterReadingRecord 抄表记录搜索条件
+     * @return 抄表记录信息
+     */
+    List<VoMeterReadingRecord> list(SearchMeterReadingRecord searchMeterReadingRecord);
 }

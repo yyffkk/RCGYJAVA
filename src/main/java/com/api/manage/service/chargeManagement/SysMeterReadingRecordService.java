@@ -1,5 +1,9 @@
 package com.api.manage.service.chargeManagement;
 
+import com.api.model.chargeManagement.SearchMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingRecord;
+
+import java.util.List;
 import java.util.Map;
 
 public interface SysMeterReadingRecordService {
@@ -12,4 +16,6 @@ public interface SysMeterReadingRecordService {
     Boolean insertElectricQuantity(String electricQuantity);
 
     Boolean insertWaterQuantity(String waterQuantity);
+
+    List<VoMeterReadingRecord> list(SearchMeterReadingRecord searchMeterReadingRecord);
 }

@@ -2,7 +2,9 @@ package com.api.manage.service.chargeManagement.impl;
 
 import com.api.manage.dao.chargeManagement.SysMeterReadingRecordDao;
 import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
+import com.api.model.chargeManagement.SearchMeterReadingRecord;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingRecord;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.json.JSONObject;
@@ -13,6 +15,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -334,5 +337,10 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
         }else {
             return false;
         }
+    }
+
+    @Override
+    public List<VoMeterReadingRecord> list(SearchMeterReadingRecord searchMeterReadingRecord) {
+        return meterReadingRecordDao.list(searchMeterReadingRecord);
     }
 }

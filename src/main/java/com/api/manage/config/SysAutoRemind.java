@@ -1188,7 +1188,7 @@ public class SysAutoRemind {
      * 0 0 0 1 * ?
      * （每月1号 获取抄表电量）获取抄表记录（主要记录电量）
      */
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "0 0 0 1 * ?")
     public void autoGetElectricQuantity(){
         log.info("开始获取抄表电量记录");
         //获取密钥
@@ -1241,7 +1241,7 @@ public class SysAutoRemind {
      * 0 0 0 10 * ?
      * （每月10号 获取抄表水量）获取抄表记录（主要记录水量）
      */
-    @Scheduled(cron = "0 0/2 * * * ? ")
+    @Scheduled(cron = "0 0 0 10 * ?")
     public void autoGetWaterQuantity(){
         log.info("开始获取抄表水量记录");
         //获取密钥
