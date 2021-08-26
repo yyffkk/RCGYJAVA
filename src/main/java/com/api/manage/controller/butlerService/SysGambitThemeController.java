@@ -93,4 +93,14 @@ public class SysGambitThemeController   {
     public Map<String,Object> findCommentByThemeId(Integer themeId){
         return sysGambitThemeService.findCommentByThemeId(themeId);
     }
+
+    /**
+     * 根据主题评论主键id删除主题评论
+     * @param commentId 主题评论主键id
+     * @return map
+     */
+    @GetMapping("/deleteCommentByCommentId")
+    public Map<String,Object> deleteCommentByCommentId(Integer commentId){
+        return sysGambitThemeService.deleteCommentByCommentId(commentId);
+    }
 }

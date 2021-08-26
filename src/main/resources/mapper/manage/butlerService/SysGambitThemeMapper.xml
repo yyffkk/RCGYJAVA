@@ -86,8 +86,14 @@
     <select id="findCommentByThemeId" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoGambitThemeComment">
         select sgtc.*,ur.name as create_name
         from sys_gambit_theme_comment as sgtc,user_resident as ur
-        where sgtc.create_id = ur.id and sgtc.gambit_theme_id = #{themeId}
+        where sgtc.create_id = ur.id and sgtc.gambit_theme_id = #{themeId} and sgtc.is_delete = 1
         order by sgtc.create_date desc
     </select>
+
+    <delete id="deleteCommentByCommentId" parameterType="java.lang.Integer">
+        update sys_gambit_theme_comment
+        set is_delete = 0
+        where id = #{commentId}
+    </delete>
 
 </mapper>

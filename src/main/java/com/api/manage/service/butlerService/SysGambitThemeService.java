@@ -18,4 +18,6 @@ public interface SysGambitThemeService {
     Map<String, Object> enableComment();
 
     Map<String, Object> findCommentByThemeId(Integer themeId);
+
+    Map<String, Object> deleteCommentByCommentId(Integer commentId);
 }

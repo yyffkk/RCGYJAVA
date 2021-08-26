@@ -176,4 +176,20 @@ public class SysGambitThemeServiceImpl implements SysGambitThemeService {
 
         return map;
     }
+
+    @Override
+    public Map<String, Object> deleteCommentByCommentId(Integer commentId) {
+        map = new HashMap<>();
+
+        int update = sysGambitThemeDao.deleteCommentByCommentId(commentId);
+        if (update >0){
+            map.put("message","删除成功");
+            map.put("status",true);
+        }else {
+            map.put("message","删除失败");
+            map.put("status",false);
+        }
+
+        return map;
+    }
 }

@@ -63,4 +63,11 @@ public interface SysGambitThemeDao {
      * @return 评论列表
      */
     List<VoGambitThemeComment> findCommentByThemeId(Integer themeId);
+
+    /**
+     * 根据主题评论主键id删除主题评论
+     * @param commentId 主题评论主键id
+     * @return 影响行数
+     */
+    int deleteCommentByCommentId(Integer commentId);
 }
