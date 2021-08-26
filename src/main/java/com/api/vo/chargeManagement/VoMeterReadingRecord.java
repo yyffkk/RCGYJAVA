@@ -12,7 +12,7 @@ public class VoMeterReadingRecord {
      */
     private Integer id;
     /**
-     * 秒表月份
+     * 抄表月份
      */
     private String months;
     /**

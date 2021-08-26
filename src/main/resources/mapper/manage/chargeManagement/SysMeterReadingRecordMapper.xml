@@ -10,7 +10,7 @@
         order by create_date desc limit 1
     </select>
     <select id="list" parameterType="com.api.model.chargeManagement.SearchMeterReadingRecord" resultType="com.api.vo.chargeManagement.VoMeterReadingRecord">
-        select *,DATE_FORMAT(start_date,'%Y%m') from sys_meter_reading_record
+        select *,DATE_FORMAT(start_date,'%Y%m') as months from sys_meter_reading_record
     </select>
 
     <insert id="insertMeterReadingRecord" parameterType="com.api.model.chargeManagement.SysMeterReadingRecord">
