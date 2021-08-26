@@ -1185,12 +1185,12 @@ public class SysAutoRemind {
     }
 
     /**
-     * 0/10 * * * * ?
-     * （每1分 获取抄表记录）获取抄表记录（主要记录水量和电量）
+     * 0 0 0 1 * ?
+     * （每月1号 获取抄表电量）获取抄表记录（主要记录电量）
      */
-    @Scheduled(cron = "0/10 * * * * ?")
-    public void autoGetMeterReadingRecord(){
-        log.info("开始获取抄表记录");
+    @Scheduled(cron = "0 0/1 * * * ? ")
+    public void autoGetElectricQuantity(){
+        log.info("开始获取抄表电量记录");
         //获取密钥
         Map<String,Object> keyMap = meterReadingRecordService.getKey();
         if ((boolean)keyMap.get("status")){
@@ -1202,7 +1202,6 @@ public class SysAutoRemind {
                 log.info("请求异常，任务中止，message:"+e.getMessage());
                 //获取密钥失败，直接报数据异常，然后结束该定时任务
                 meterReadingRecordService.insertElectricQuantity("0");
-                meterReadingRecordService.insertWaterQuantity("0");
                 return;
             }
 
@@ -1230,6 +1229,34 @@ public class SysAutoRemind {
                 meterReadingRecordService.insertElectricQuantity("0");
             }
 
+        }else {
+            log.info("获取抄表密钥失败");
+            //获取密钥失败，直接报数据异常，然后结束该定时任务
+            meterReadingRecordService.insertElectricQuantity("0");
+        }
+        log.info("结束获取抄表电量记录");
+    }
+
+    /**
+     * 0 0 0 10 * ?
+     * （每月10号 获取抄表水量）获取抄表记录（主要记录水量）
+     */
+    @Scheduled(cron = "0 0/2 * * * ? ")
+    public void autoGetWaterQuantity(){
+        log.info("开始获取抄表水量记录");
+        //获取密钥
+        Map<String,Object> keyMap = meterReadingRecordService.getKey();
+        if ((boolean)keyMap.get("status")){
+            String authorization = null;
+            try {
+                //取得密钥
+                authorization = String.valueOf(keyMap.get("data"));
+            } catch (Exception e) {
+                log.info("请求异常，任务中止，message:"+e.getMessage());
+                //获取密钥失败，直接报数据异常，然后结束该定时任务
+                meterReadingRecordService.insertWaterQuantity("0");
+                return;
+            }
 
             try {
                 //获取水量记录
@@ -1258,11 +1285,11 @@ public class SysAutoRemind {
         }else {
             log.info("获取抄表密钥失败");
             //获取密钥失败，直接报数据异常，然后结束该定时任务
-            meterReadingRecordService.insertElectricQuantity("0");
             meterReadingRecordService.insertWaterQuantity("0");
         }
-        log.info("结束获取抄表记录");
+        log.info("结束获取抄表水量记录");
     }
+
 
     /**
      * 比较第一个值date和第二个值time
