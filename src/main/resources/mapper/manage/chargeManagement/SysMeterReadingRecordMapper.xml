@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.chargeManagement.SysMeterReadingRecordDao">
+
+    <select id="findNewData" parameterType="java.lang.Integer" resultType="com.api.model.chargeManagement.SysMeterReadingRecord">
+        select * from sys_meter_reading_record
+        where type = #{type}
+        order by create_date desc limit 1
+    </select>
+
+    <insert id="insertMeterReadingRecord" parameterType="com.api.model.chargeManagement.SysMeterReadingRecord">
+        insert into sys_meter_reading_record(
+            consumption,
+            type,
+            unit,
+            recording_quantity,
+            start_date,
+            end_date,
+            data_status,
+            bill_status,
+            create_date
+        )value (
+            #{consumption},
+            #{type},
+            #{unit},
+            #{recordingQuantity},
+            #{startDate},
+            #{endDate},
+            #{dataStatus},
+            #{billStatus},
+            #{createDate}
+        )
+    </insert>
+
+</mapper>

@@ -62,14 +62,14 @@ public class TestController   {
                         JSONObject jsonObject = new JSONObject(result);
                         JSONObject httpData = (JSONObject) jsonObject.get("HttpData");
                         String code = String.valueOf(httpData.get("code"));
-                        JSONObject data = (JSONObject) httpData.get("data");
-                        String appKey = String.valueOf(data.get("appkey"));
-                        String infoKey = String.valueOf(data.get("infokey"));
-                        String authorization = appKey + "-" + infoKey; //拼接密钥 【authorization = appKey-infoKey】
-                        log.info(authorization);
+
                         //=====判断返回是否成功
                         if ("200".equals(code)){
-                            log.info("返回成功");
+                            JSONObject data = (JSONObject) httpData.get("data");
+                            String appKey = String.valueOf(data.get("appkey"));
+                            String infoKey = String.valueOf(data.get("infokey"));
+                            String authorization = appKey + "-" + infoKey; //拼接密钥 【authorization = appKey-infoKey】
+                            log.info("获取key成功密钥，密钥为："+authorization);
                             return "true";
                         }else {
                             log.info("返回失败");
@@ -79,8 +79,10 @@ public class TestController   {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                log.info(e.getMessage());
+                throw new RuntimeException(e.getMessage());
             }
-        return null;
+        return "false";
 //        return s;
     }
 }

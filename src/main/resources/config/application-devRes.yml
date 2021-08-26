@@ -38,6 +38,17 @@ lilin:
     #删除设备二维码
     removeQrCodeMethod: removeQrCode
 
+#抄表系统（第三方对接）
+meterReading:
+  #抄表系统服务器地址
+  serviceLocation: http://42p4v31138.zicp.vip
+  #设备号（水电量）
+  equipNo: 23
+  #电量测点号（equip_ycp_state获取当前设备模拟量测点的状态）
+  ycpNoE: 24
+  #水量测点号（equip_ycp_state获取当前设备模拟量测点的状态）
+  ycpNoW: 25
+
 #redis缓存
 spring:
   redis:
