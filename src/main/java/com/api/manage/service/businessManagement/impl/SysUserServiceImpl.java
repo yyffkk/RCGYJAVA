@@ -108,14 +108,14 @@ public class SysUserServiceImpl implements SysUserService {
             }
 
             //添加考勤任务记录
-            AttendanceRecord attendanceRecord = new AttendanceRecord();
-            attendanceRecord.setCreateDate(new Date());
-            attendanceRecord.setClockId(sysUser.getId());
-            int insert2 = butlerAttendanceDao.autoAttendanceRecord(attendanceRecord);
-            if (insert2 <=0){
-                log.info("新建用户：添加用户考勤任务失败,用户手机号:"+sysUser.getTel());
-                throw new RuntimeException("生成考勤失败");
-            }
+//            AttendanceRecord attendanceRecord = new AttendanceRecord();
+//            attendanceRecord.setCreateDate(new Date());
+//            attendanceRecord.setClockId(sysUser.getId());
+//            int insert2 = butlerAttendanceDao.autoAttendanceRecord(attendanceRecord);
+//            if (insert2 <=0){
+//                log.info("新建用户：添加用户考勤任务失败,用户手机号:"+sysUser.getTel());
+//                throw new RuntimeException("生成考勤失败");
+//            }
 
             UploadUtil uploadUtil = new UploadUtil();
             uploadUtil.saveUrlToDB(sysUser.getImgUrls(),"sysUser",sysUser.getId(),"resumeImg","600",30,20);
