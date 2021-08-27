@@ -290,7 +290,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
 
         Integer type = 1;//抄表类型，1.水量
         sysMeterReadingRecord.setType(type);//填入抄表类型，1.水量
-        sysMeterReadingRecord.setUnit("毫升");//填入单位，'毫升'
+        sysMeterReadingRecord.setUnit("升");//填入单位，'升'
         sysMeterReadingRecord.setEndDate(new Date());//填入抄表结束时间【当前时间】
         sysMeterReadingRecord.setBillStatus(1);//填入账单状态：1.未创建
         sysMeterReadingRecord.setCreateDate(new Date());//填入创建时间
