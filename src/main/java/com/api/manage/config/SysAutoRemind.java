@@ -31,6 +31,7 @@ import com.api.model.butlerService.*;
 import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.model.chargeManagement.DailyPaymentPlan;
+import com.api.model.chargeManagement.SysMeterReadingData;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanException;
@@ -1185,12 +1186,13 @@ public class SysAutoRemind {
     }
 
     /**
-     * 0 0 0 1 * ?
-     * （每月1号 获取抄表电量）获取抄表记录（主要记录电量）
+     * 0 0 0/1 * * ?
+     * （每小时 获取一次抄表数据）获取抄表数据（主要更新水量和电量）
      */
-    @Scheduled(cron = "0 0 0 1 * ?")
-    public void autoGetElectricQuantity(){
-        log.info("开始获取抄表电量记录");
+    @Scheduled(cron = "0 0 0/1 * * ? ")
+    public void autoGetMeterReadingData(){
+        log.info("开始获取抄表数据记录");
+
         //获取密钥
         Map<String,Object> keyMap = meterReadingRecordService.getKey();
         if ((boolean)keyMap.get("status")){
@@ -1200,40 +1202,81 @@ public class SysAutoRemind {
                 authorization = String.valueOf(keyMap.get("data"));
             } catch (Exception e) {
                 log.info("请求异常，任务中止，message:"+e.getMessage());
-                //获取密钥失败，直接报数据异常，然后结束该定时任务
-                meterReadingRecordService.insertElectricQuantity("0");
                 return;
             }
 
             try {
                 //获取电量记录
-                log.info("开始获取电量记录");
+                log.info("开始获取电量数据");
                 Map<String,Object> electricMap = meterReadingRecordService.getElectricQuantity(authorization);
                 if ((boolean)electricMap.get("status")){
-                    log.info("获取电量成功");
+                    log.info("获取电量数据成功");
                     //取得电量值
                     String electricQuantity = String.valueOf(electricMap.get("data"));
-                    //向数据库添加电量记录
-                    Boolean insert = meterReadingRecordService.insertElectricQuantity(electricQuantity);
-                    if (insert){
-                        log.info("添加电量记录成功");
+                    //向数据库更新电量数据
+                    Map<String,Object> map = meterReadingRecordService.updateElectricData(electricQuantity);
+                    if ((boolean)map.get("status")){
+                        log.info("更新电量数据成功");
                     }else {
-                        log.info("添加电量记录失败");
+                        log.info("更新电量数据失败");
                     }
                 }else {
-                    throw new RuntimeException("获取电量失败");
+                    throw new RuntimeException("获取电量数据失败");
                 }
-                log.info("结束获取电量记录");
+                log.info("结束获取电量数据");
             } catch (Exception e) {
-                log.info("获取电量记录异常，message:"+e.getMessage());
-                meterReadingRecordService.insertElectricQuantity("0");
+                log.info("获取电量数据异常，message:"+e.getMessage());
+            }
+
+            try {
+                //获取水量记录
+                log.info("开始获取水量数据");
+                Map<String,Object> waterMap = meterReadingRecordService.getWaterQuantity(authorization);
+                if ((boolean)waterMap.get("status")){
+                    log.info("获取水量成数据功");
+                    //取得水量值
+                    String waterQuantity = String.valueOf(waterMap.get("data"));
+                    //向数据库添加电量记录
+                    Map<String,Object> map = meterReadingRecordService.updateWaterData(waterQuantity);
+                    if ((boolean)map.get("status")){
+                        log.info("更新水量数据成功");
+                    }else {
+                        log.info("更新水量数据失败");
+                    }
+                }else {
+                    throw new RuntimeException("获取水量数据失败");
+                }
+                log.info("结束获取水量数据");
+            } catch (Exception e) {
+                log.info("获取电量数据异常，message:"+e.getMessage());
             }
 
         }else {
             log.info("获取抄表密钥失败");
-            //获取密钥失败，直接报数据异常，然后结束该定时任务
-            meterReadingRecordService.insertElectricQuantity("0");
         }
+        log.info("结束获取抄表电量记录");
+    }
+
+    /**
+     * 0 0 0 1 * ?
+     * （每月1号 获取抄表电量）获取抄表记录（主要记录电量）
+     */
+    @Scheduled(cron = "0 0 0 1 * ?")
+    public void autoGetElectricQuantity(){
+        log.info("开始获取抄表电量记录");
+
+
+        //根据抄表类型获取抄表数据
+        SysMeterReadingData sysMeterReadingData = meterReadingRecordService.findMeterReadingDataByType(2);//type 2.电量
+
+        //向数据库添加电量记录
+        Boolean insert = meterReadingRecordService.insertElectricQuantity(sysMeterReadingData.getQuantity());
+        if (insert){
+            log.info("添加电量记录成功");
+        }else {
+            log.info("添加电量记录失败");
+        }
+
         log.info("结束获取抄表电量记录");
     }
 
@@ -1244,49 +1287,17 @@ public class SysAutoRemind {
     @Scheduled(cron = "0 0 0 10 * ?")
     public void autoGetWaterQuantity(){
         log.info("开始获取抄表水量记录");
-        //获取密钥
-        Map<String,Object> keyMap = meterReadingRecordService.getKey();
-        if ((boolean)keyMap.get("status")){
-            String authorization = null;
-            try {
-                //取得密钥
-                authorization = String.valueOf(keyMap.get("data"));
-            } catch (Exception e) {
-                log.info("请求异常，任务中止，message:"+e.getMessage());
-                //获取密钥失败，直接报数据异常，然后结束该定时任务
-                meterReadingRecordService.insertWaterQuantity("0");
-                return;
-            }
+        //根据抄表类型获取抄表数据
+        SysMeterReadingData sysMeterReadingData = meterReadingRecordService.findMeterReadingDataByType(1);//type 1.水量
 
-            try {
-                //获取水量记录
-                log.info("开始获取水量记录");
-                Map<String,Object> waterMap = meterReadingRecordService.getWaterQuantity(authorization);
-                if ((boolean)waterMap.get("status")){
-                    log.info("获取水量成功");
-                    //取得水量值
-                    String waterQuantity = String.valueOf(waterMap.get("data"));
-                    //向数据库添加电量记录
-                    Boolean insert = meterReadingRecordService.insertWaterQuantity(waterQuantity);
-                    if (insert){
-                        log.info("添加水量记录成功");
-                    }else {
-                        log.info("添加水量记录失败");
-                    }
-                }else {
-                    throw new RuntimeException("获取水量失败");
-                }
-                log.info("结束获取水量记录");
-            } catch (Exception e) {
-                log.info("获取电量记录异常，message:"+e.getMessage());
-                meterReadingRecordService.insertWaterQuantity("0");
-            }
-
+        //向数据库添加水量记录
+        Boolean insert = meterReadingRecordService.insertWaterQuantity(sysMeterReadingData.getQuantity());
+        if (insert){
+            log.info("添加水量记录成功");
         }else {
-            log.info("获取抄表密钥失败");
-            //获取密钥失败，直接报数据异常，然后结束该定时任务
-            meterReadingRecordService.insertWaterQuantity("0");
+            log.info("添加水量记录失败");
         }
+
         log.info("结束获取抄表水量记录");
     }
 

@@ -42,5 +42,15 @@
         set remakes = #{remakes}
         where id = #{id}
     </update>
+    <update id="updateMeterReadingData" parameterType="com.api.model.chargeManagement.SysMeterReadingData">
+        update sys_meter_reading_data
+        set quantity = #{quantity},
+        update_date = #{updateDate}
+        where type = #{type} and #{quantity} <![CDATA[ > ]]> quantity
+    </update>
+
+    <select id="findMeterReadingDataByType" parameterType="java.lang.Integer" resultType="com.api.model.chargeManagement.SysMeterReadingData">
+        select * from sys_meter_reading_data where type = #{type}
+    </select>
 
 </mapper>

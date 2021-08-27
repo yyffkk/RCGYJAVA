@@ -1,6 +1,7 @@
 package com.api.manage.dao.chargeManagement;
 
 import com.api.model.chargeManagement.SearchMeterReadingRecord;
+import com.api.model.chargeManagement.SysMeterReadingData;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 
@@ -35,4 +36,18 @@ public interface SysMeterReadingRecordDao {
      * @return map
      */
     Integer updateRemakes(SysMeterReadingRecord sysMeterReadingRecord);
+
+    /**
+     * 更新抄表数据（电量，水量）
+     * @param sysMeterReadingData 抄表数据
+     * @return 影响行数
+     */
+    int updateMeterReadingData(SysMeterReadingData sysMeterReadingData);
+
+    /**
+     * 根据抄表类型获取抄表数据
+     * @param type 抄表类型
+     * @return 抄表数据
+     */
+    SysMeterReadingData findMeterReadingDataByType(int type);
 }

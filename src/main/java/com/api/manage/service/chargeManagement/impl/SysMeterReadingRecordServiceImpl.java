@@ -3,6 +3,7 @@ package com.api.manage.service.chargeManagement.impl;
 import com.api.manage.dao.chargeManagement.SysMeterReadingRecordDao;
 import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
 import com.api.model.chargeManagement.SearchMeterReadingRecord;
+import com.api.model.chargeManagement.SysMeterReadingData;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 import lombok.extern.slf4j.Slf4j;
@@ -224,7 +225,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
     }
 
     @Override
-    public Boolean insertElectricQuantity(String electricQuantity) {
+    public Boolean insertElectricQuantity(BigDecimal electricQuantity) {
         SysMeterReadingRecord sysMeterReadingRecord = new SysMeterReadingRecord();
 
         Integer type = 2;//抄表类型，2.电量
@@ -234,7 +235,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
         sysMeterReadingRecord.setBillStatus(1);//填入账单状态：1.未创建
         sysMeterReadingRecord.setCreateDate(new Date());//填入创建时间
 
-        BigDecimal newData = new BigDecimal(electricQuantity);//抄表记录量（当前量）【新数据】
+        BigDecimal newData = electricQuantity;//抄表记录量（当前量）【新数据】
 
 
         //填入抄表记录量（当前量）
@@ -283,7 +284,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
     }
 
     @Override
-    public Boolean insertWaterQuantity(String waterQuantity) {
+    public Boolean insertWaterQuantity(BigDecimal waterQuantity) {
         SysMeterReadingRecord sysMeterReadingRecord = new SysMeterReadingRecord();
 
         Integer type = 1;//抄表类型，1.水量
@@ -293,7 +294,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
         sysMeterReadingRecord.setBillStatus(1);//填入账单状态：1.未创建
         sysMeterReadingRecord.setCreateDate(new Date());//填入创建时间
 
-        BigDecimal newData = new BigDecimal(waterQuantity);//抄表记录量（当前量）【新数据】
+        BigDecimal newData = waterQuantity;//抄表记录量（当前量）【新数据】
 
 
         //填入抄表记录量（当前量）
@@ -349,12 +350,60 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
         map = new HashMap<>();
         int update = meterReadingRecordDao.updateRemakes(sysMeterReadingRecord);
         if (update >0){
-            map.put("message","请求成功");
+            map.put("message","更新成功");
             map.put("status",true);
         }else {
-            map.put("message","请求失败");
+            map.put("message","更新失败");
             map.put("status",false);
         }
         return map;
+    }
+
+    @Override
+    public Map<String,Object> updateElectricData(String electricQuantity) {
+        map = new HashMap<>();
+
+        SysMeterReadingData sysMeterReadingData = new SysMeterReadingData();
+        sysMeterReadingData.setType(2);//填入抄表类型,2.电量
+        sysMeterReadingData.setQuantity(new BigDecimal(electricQuantity));//填入当前总量
+        sysMeterReadingData.setUpdateDate(new Date());//填入更新时间
+
+        //更新抄表数据（更新电量）
+        int update = meterReadingRecordDao.updateMeterReadingData(sysMeterReadingData);
+        if (update >0){
+            map.put("message","更新成功");
+            map.put("status",true);
+        }else {
+            map.put("message","更新失败");
+            map.put("status",false);
+        }
+        return map;
+
+    }
+
+    @Override
+    public Map<String, Object> updateWaterData(String waterQuantity) {
+        map = new HashMap<>();
+
+        SysMeterReadingData sysMeterReadingData = new SysMeterReadingData();
+        sysMeterReadingData.setType(1);//填入抄表类型,1.水量
+        sysMeterReadingData.setQuantity(new BigDecimal(waterQuantity));//填入当前总量
+        sysMeterReadingData.setUpdateDate(new Date());//填入更新时间
+
+        //更新抄表数据（更新水量）
+        int update = meterReadingRecordDao.updateMeterReadingData(sysMeterReadingData);
+        if (update >0){
+            map.put("message","更新成功");
+            map.put("status",true);
+        }else {
+            map.put("message","更新失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public SysMeterReadingData findMeterReadingDataByType(int type) {
+        return meterReadingRecordDao.findMeterReadingDataByType(type);
     }
 }
