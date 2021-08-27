@@ -1,5 +1,6 @@
 package com.api.model.businessManagement;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -118,6 +119,10 @@ public class SysUser {
      * 入职日期
      */
     private Date entryDate;
+    /**
+     * 员工简历路径数组
+     */
+    private String[] imgUrls;
 
     @Override
     public String toString() {
@@ -150,6 +155,7 @@ public class SysUser {
                 ", remake='" + remake + '\'' +
                 ", reportTo=" + reportTo +
                 ", entryDate=" + entryDate +
+                ", imgUrls=" + Arrays.toString(imgUrls) +
                 '}';
     }
 
@@ -377,10 +383,18 @@ public class SysUser {
         this.entryDate = entryDate;
     }
 
+    public String[] getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String[] imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
     public SysUser() {
     }
 
-    public SysUser(Integer id, String userName, String pwd, String actualName, String tel, Integer sex, String userCode, Date birthday, String email, String idCard, Integer organizationId, String organizationIdPath, Integer positionId, String roleId, Integer status, Integer isDelete, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer lastLoginIp, Date lastLoginDate, String nickName, String code, Date codeSendDate, String remake, Integer reportTo, Date entryDate) {
+    public SysUser(Integer id, String userName, String pwd, String actualName, String tel, Integer sex, String userCode, Date birthday, String email, String idCard, Integer organizationId, String organizationIdPath, Integer positionId, String roleId, Integer status, Integer isDelete, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Integer lastLoginIp, Date lastLoginDate, String nickName, String code, Date codeSendDate, String remake, Integer reportTo, Date entryDate, String[] imgUrls) {
         this.id = id;
         this.userName = userName;
         this.pwd = pwd;
@@ -409,5 +423,6 @@ public class SysUser {
         this.remake = remake;
         this.reportTo = reportTo;
         this.entryDate = entryDate;
+        this.imgUrls = imgUrls;
     }
 }

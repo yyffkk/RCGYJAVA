@@ -57,6 +57,9 @@
             is_delete,
             create_id,
             create_date,
+            <if test="remake != null and remake != ''">
+                remake,
+            </if>
             <if test="reportTo != null">
                 report_to,
             </if>
@@ -89,6 +92,9 @@
             #{isDelete},
             #{createId},
             #{createDate},
+            <if test="remake != null and remake != ''">
+                #{remake},
+            </if>
             <if test="reportTo != null">
                 #{reportTo},
             </if>

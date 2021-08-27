@@ -1,6 +1,9 @@
 package com.api.vo.businessManagement;
 
+import com.api.vo.resources.VoResourcesImg;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 人员管理 Vo findById 回显
@@ -58,6 +61,10 @@ public class VoFindByIdUser {
      * 身份证（护照）
      */
     private String idCard;
+    /**
+     * 员工简历资源集合
+     */
+    private List<VoResourcesImg> imgList;
 
     @Override
     public String toString() {
@@ -75,6 +82,7 @@ public class VoFindByIdUser {
                 ", birthday=" + birthday +
                 ", email='" + email + '\'' +
                 ", idCard='" + idCard + '\'' +
+                ", imgList=" + imgList +
                 '}';
     }
 
@@ -182,10 +190,18 @@ public class VoFindByIdUser {
         this.idCard = idCard;
     }
 
+    public List<VoResourcesImg> getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(List<VoResourcesImg> imgList) {
+        this.imgList = imgList;
+    }
+
     public VoFindByIdUser() {
     }
 
-    public VoFindByIdUser(Integer id, String nickName, String actualName, String tel, Integer sex, Integer organizationId, Integer positionId, Integer reportTo, Date entryDate, String userCode, Date birthday, String email, String idCard) {
+    public VoFindByIdUser(Integer id, String nickName, String actualName, String tel, Integer sex, Integer organizationId, Integer positionId, Integer reportTo, Date entryDate, String userCode, Date birthday, String email, String idCard, List<VoResourcesImg> imgList) {
         this.id = id;
         this.nickName = nickName;
         this.actualName = actualName;
@@ -199,5 +215,6 @@ public class VoFindByIdUser {
         this.birthday = birthday;
         this.email = email;
         this.idCard = idCard;
+        this.imgList = imgList;
     }
 }
