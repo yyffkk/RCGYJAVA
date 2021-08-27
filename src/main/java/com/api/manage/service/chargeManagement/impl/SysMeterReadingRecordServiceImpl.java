@@ -240,7 +240,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
 
         //填入抄表记录量（当前量）
         if (newData.compareTo(BigDecimal.ZERO) == 0){
-            //如果查出为0，怎么为异常数据，填入null
+            //如果查出为0，那么为异常数据，填入null
             sysMeterReadingRecord.setRecordingQuantity(null);
             sysMeterReadingRecord.setDataStatus(2);//填入数据状态：2.异常
         }else {
@@ -258,6 +258,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
             if (oldData == null || oldData.compareTo(BigDecimal.ZERO) == 0){
                 //如果旧数据为0则旧数据为异常数据，抄表用量为null
                 sysMeterReadingRecord.setConsumption(null);
+                sysMeterReadingRecord.setDataStatus(2);//填入数据状态：2.异常
             }else {
                 //抄表用量（该区间用量）[数据正常时，新数据减旧数据]
                 sysMeterReadingRecord.setConsumption(newData.subtract(oldData));//**填入抄表用量（该区间用量）
@@ -299,7 +300,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
 
         //填入抄表记录量（当前量）
         if (newData.compareTo(BigDecimal.ZERO) == 0){
-            //如果查出为0，怎么为异常数据，填入null
+            //如果查出为0，那么为异常数据，填入null
             sysMeterReadingRecord.setRecordingQuantity(null);
             sysMeterReadingRecord.setDataStatus(2);//填入数据状态：2.异常
         }else {
@@ -317,6 +318,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
             if (oldData == null || oldData.compareTo(BigDecimal.ZERO) == 0){
                 //如果旧数据为0则旧数据为异常数据，抄表用量为null
                 sysMeterReadingRecord.setConsumption(null);
+                sysMeterReadingRecord.setDataStatus(2);//填入数据状态：2.异常
             }else {
                 //抄表用量（该区间用量）[数据正常时，新数据减旧数据]
                 sysMeterReadingRecord.setConsumption(newData.subtract(oldData));//**填入抄表用量（该区间用量）
