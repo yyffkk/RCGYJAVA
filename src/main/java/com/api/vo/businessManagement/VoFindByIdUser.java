@@ -38,6 +38,10 @@ public class VoFindByIdUser {
      */
     private Integer positionId;
     /**
+     * 备注
+     */
+    private String remake;
+    /**
      * 汇报对象
      */
     private Integer reportTo;
@@ -76,6 +80,7 @@ public class VoFindByIdUser {
                 ", sex=" + sex +
                 ", organizationId=" + organizationId +
                 ", positionId=" + positionId +
+                ", remake='" + remake + '\'' +
                 ", reportTo=" + reportTo +
                 ", entryDate=" + entryDate +
                 ", userCode='" + userCode + '\'' +
@@ -142,6 +147,14 @@ public class VoFindByIdUser {
         this.positionId = positionId;
     }
 
+    public String getRemake() {
+        return remake;
+    }
+
+    public void setRemake(String remake) {
+        this.remake = remake;
+    }
+
     public Integer getReportTo() {
         return reportTo;
     }
@@ -201,7 +214,7 @@ public class VoFindByIdUser {
     public VoFindByIdUser() {
     }
 
-    public VoFindByIdUser(Integer id, String nickName, String actualName, String tel, Integer sex, Integer organizationId, Integer positionId, Integer reportTo, Date entryDate, String userCode, Date birthday, String email, String idCard, List<VoResourcesImg> imgList) {
+    public VoFindByIdUser(Integer id, String nickName, String actualName, String tel, Integer sex, Integer organizationId, Integer positionId, String remake, Integer reportTo, Date entryDate, String userCode, Date birthday, String email, String idCard, List<VoResourcesImg> imgList) {
         this.id = id;
         this.nickName = nickName;
         this.actualName = actualName;
@@ -209,6 +222,7 @@ public class VoFindByIdUser {
         this.sex = sex;
         this.organizationId = organizationId;
         this.positionId = positionId;
+        this.remake = remake;
         this.reportTo = reportTo;
         this.entryDate = entryDate;
         this.userCode = userCode;

@@ -1,17 +1,20 @@
 package com.api.manage.service.businessManagement.impl;
 
 import com.api.manage.service.businessManagement.SysDBManageService;
+import com.api.model.businessManagement.SysBackupAndRecoveryConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 
 @Service
 public class SysDBManageServiceImpl implements SysDBManageService {
-    @Value("${jdbc_url}")
+    @Value("${spring.datasource.url}")
     private String sqlUrl;
-    @Value("${jdbc_username}")
+    @Value("${spring.datasource.username}")
     private String userName;
-    @Value("${jdbc_password}")
+    @Value("${spring.datasource.password}")
     private String passWord;
 
     @Override
@@ -30,6 +33,7 @@ public class SysDBManageServiceImpl implements SysDBManageService {
      */
     public void setBackupInfo()
     {
+        SysBackupAndRecoveryConfig sysBackupAndRecoveryConfig = new SysBackupAndRecoveryConfig();
         String sqlPath=sqlUrl;
         String[] split = sqlPath.split(":");
         sysBackupAndRecoveryConfig.setHost(split[2].substring(2));
