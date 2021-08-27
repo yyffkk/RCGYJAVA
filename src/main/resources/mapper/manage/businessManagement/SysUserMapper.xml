@@ -147,6 +147,9 @@
             <if test="positionId != null">
                 position_id = #{positionId},
             </if>
+            <if test="remake != null and remake != ''">
+                remake = #{remake},
+            </if>
             <if test="reportTo != null">
                 report_to = #{reportTo},
             </if>
