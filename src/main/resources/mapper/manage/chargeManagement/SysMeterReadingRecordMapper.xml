@@ -66,5 +66,61 @@
                 #{item}
               </foreach>
     </select>
+    <select id="findMeterReadingRecordById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoMeterReadingRecord">
+        select *,DATE_FORMAT(start_date,'%Y%m') as months from sys_meter_reading_record
+        where id = #{meterReadingRecordId}
+    </select>
+
+    <insert id="insertMeterReadingShareBill" parameterType="com.api.model.chargeManagement.SysMeterReadingShareBill">
+        insert into sys_meter_reading_share(
+            meter_reading_record_id,
+            months,
+            totals,
+            unit,
+            unit_price,
+            type,
+            cost,
+            household_consumption,
+            household_area,
+            household_cost,
+            share_unit_price,
+            charge_unit,
+            household_share_cost,
+            paid_amount,
+            unpaid_expenses,
+            status,
+            additional_costs,
+            rate,
+            effective_time_start,
+            effective_time_end,
+            remakes,
+            create_id,
+            create_date
+        )value (
+            #{meterReadingRecordId},
+            #{months},
+            #{totals},
+            #{unit},
+            #{unitPrice},
+            #{type},
+            #{cost},
+            #{householdConsumption},
+            #{householdArea},
+            #{householdCost},
+            #{shareUnitPrice},
+            #{chargeUnit},
+            #{householdShareCost},
+            #{paidAmount},
+            #{unpaidExpenses},
+            #{status},
+            #{additionalCosts},
+            #{rate},
+            #{effectiveTimeStart},
+            #{effectiveTimeEnd},
+            #{remakes},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
 
 </mapper>

@@ -8,6 +8,14 @@ import java.util.Date;
  */
 public class SysMeterReadingShareBill {
     /**
+     * 主键id
+     */
+    private Integer id;
+    /**
+     * 抄表记录表主键Id
+     */
+    private Integer meterReadingRecordId;
+    /**
      * 月份
      */
     private String months;
@@ -99,7 +107,9 @@ public class SysMeterReadingShareBill {
     @Override
     public String toString() {
         return "SysMeterReadingShareBill{" +
-                "months='" + months + '\'' +
+                "id=" + id +
+                ", meterReadingRecordId=" + meterReadingRecordId +
+                ", months='" + months + '\'' +
                 ", totals=" + totals +
                 ", type=" + type +
                 ", cost=" + cost +
@@ -122,6 +132,22 @@ public class SysMeterReadingShareBill {
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getMeterReadingRecordId() {
+        return meterReadingRecordId;
+    }
+
+    public void setMeterReadingRecordId(Integer meterReadingRecordId) {
+        this.meterReadingRecordId = meterReadingRecordId;
     }
 
     public String getMonths() {
@@ -303,7 +329,9 @@ public class SysMeterReadingShareBill {
     public SysMeterReadingShareBill() {
     }
 
-    public SysMeterReadingShareBill(String months, BigDecimal totals, Integer type, BigDecimal cost, BigDecimal householdConsumption, BigDecimal householdArea, BigDecimal unitPrice, String unit, BigDecimal householdCost, BigDecimal shareUnitPrice, String chargeUnit, BigDecimal householdShareCost, BigDecimal paidAmount, BigDecimal unpaidExpenses, Integer status, BigDecimal additionalCosts, BigDecimal rate, Date effectiveTimeStart, Date effectiveTimeEnd, String remakes, Integer createId, Date createDate) {
+    public SysMeterReadingShareBill(Integer id, Integer meterReadingRecordId, String months, BigDecimal totals, Integer type, BigDecimal cost, BigDecimal householdConsumption, BigDecimal householdArea, BigDecimal unitPrice, String unit, BigDecimal householdCost, BigDecimal shareUnitPrice, String chargeUnit, BigDecimal householdShareCost, BigDecimal paidAmount, BigDecimal unpaidExpenses, Integer status, BigDecimal additionalCosts, BigDecimal rate, Date effectiveTimeStart, Date effectiveTimeEnd, String remakes, Integer createId, Date createDate) {
+        this.id = id;
+        this.meterReadingRecordId = meterReadingRecordId;
         this.months = months;
         this.totals = totals;
         this.type = type;

@@ -3,6 +3,7 @@ package com.api.manage.dao.chargeManagement;
 import com.api.model.chargeManagement.SearchMeterReadingRecord;
 import com.api.model.chargeManagement.SysMeterReadingData;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
+import com.api.model.chargeManagement.SysMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 
 import java.math.BigDecimal;
@@ -66,4 +67,18 @@ public interface SysMeterReadingRecordDao {
      * @return 所有入住房产面积的总和
      */
     BigDecimal countCheckInEstateAllArea(List<Integer> ids);
+
+    /**
+     * 添加抄表公摊账单
+     * @param sysMeterReadingShareBill 抄表公摊账单
+     * @return 影响行数
+     */
+    int insertMeterReadingShareBill(SysMeterReadingShareBill sysMeterReadingShareBill);
+
+    /**
+     * 根据抄表记录主键Id查询抄表记录
+     * @param meterReadingRecordId 抄表记录主键Id
+     * @return 抄表记录
+     */
+    VoMeterReadingRecord findMeterReadingRecordById(Integer meterReadingRecordId);
 }

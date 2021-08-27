@@ -2,6 +2,7 @@ package com.api.manage.service.chargeManagement.impl;
 
 import com.api.manage.dao.chargeManagement.SysMeterReadingRecordDao;
 import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
+import com.api.model.businessManagement.SysUser;
 import com.api.model.chargeManagement.SearchMeterReadingRecord;
 import com.api.model.chargeManagement.SysMeterReadingData;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
@@ -9,9 +10,13 @@ import com.api.model.chargeManagement.SysMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -411,21 +416,85 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
     }
 
     @Override
+    @Transactional
     public Map<String, Object> createShareBill(SysMeterReadingShareBill sysMeterReadingShareBill) {
         map = new HashMap<>();
-
-        //查询所有的入住的房产ids
-        List<Integer> ids = meterReadingRecordDao.findAllCheckInEstateId(new Date());
-
         BigDecimal areaTotals = null;
-        if (ids != null && ids.size()>0){
-            //计算出所有入住房产面积的总和
-            areaTotals = meterReadingRecordDao.countCheckInEstateAllArea(ids);
+
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
+
+            //根据抄表记录主键Id查询抄表记录
+            VoMeterReadingRecord voMeterReadingRecord = meterReadingRecordDao.findMeterReadingRecordById(sysMeterReadingShareBill.getMeterReadingRecordId());
+
+            //查询所有的入住的房产ids
+            List<Integer> ids = meterReadingRecordDao.findAllCheckInEstateId(new Date());
+
+            areaTotals = BigDecimal.ZERO;
+            if (ids != null && ids.size()>0){
+                //计算出所有入住房产面积的总和
+                areaTotals = meterReadingRecordDao.countCheckInEstateAllArea(ids);
+            }
+
+            sysMeterReadingShareBill.setMeterReadingRecordId(voMeterReadingRecord.getId());//填入抄表记录表主键id
+            sysMeterReadingShareBill.setMonths(voMeterReadingRecord.getMonths());//填入月份
+            sysMeterReadingShareBill.setTotals(voMeterReadingRecord.getConsumption());//填入总用量
+            sysMeterReadingShareBill.setType(voMeterReadingRecord.getType());//填入抄表类型：1.水费，2.电费
+            sysMeterReadingShareBill.setUnit(voMeterReadingRecord.getUnit());//填入单位
+
+
+            //添加抄表分摊表信息
+            //计算费用金额
+            BigDecimal cost = sysMeterReadingShareBill.getTotals().multiply(sysMeterReadingShareBill.getUnitPrice());
+            sysMeterReadingShareBill.setCost(cost);//填入费用金额（总用量*单价）
+            sysMeterReadingShareBill.setHouseholdArea(areaTotals);//填入住户面积
+            //计算住户总费用
+            BigDecimal householdCost = sysMeterReadingShareBill.getHouseholdConsumption().multiply(sysMeterReadingShareBill.getUnitPrice());
+            sysMeterReadingShareBill.setHouseholdCost(householdCost);//填入住户总费用
+            //计算公摊单价
+            BigDecimal shareUnitPrice = sysMeterReadingShareBill.getTotals().subtract(householdCost).divide(areaTotals,2, BigDecimal.ROUND_HALF_UP);
+            sysMeterReadingShareBill.setShareUnitPrice(shareUnitPrice);
+            if (sysMeterReadingShareBill.getType() == 1){
+                sysMeterReadingShareBill.setChargeUnit("元/立方米");
+            }else if (sysMeterReadingShareBill.getType() == 2){
+                sysMeterReadingShareBill.setChargeUnit("元/度");
+            }else {
+                sysMeterReadingShareBill.setChargeUnit("其他");
+            }
+            //计算住户公摊总费用
+            BigDecimal householdShareCost = shareUnitPrice.multiply(areaTotals);
+            sysMeterReadingShareBill.setHouseholdShareCost(householdShareCost);//填入住户公摊总费用
+
+            sysMeterReadingShareBill.setPaidAmount(BigDecimal.ZERO);//填入实收金额
+            sysMeterReadingShareBill.setUnpaidExpenses(householdShareCost);//填入剩余未缴费用
+            sysMeterReadingShareBill.setStatus(2);//填入缴纳状态，2.未完成
+            //计算额外费用（费用金额-住户公摊总费用-住户总费用）【富航所承担的公摊费用】
+            BigDecimal subtract = cost.subtract(householdShareCost).subtract(householdCost);
+            sysMeterReadingShareBill.setAdditionalCosts(subtract);//填入额外费用（费用金额-住户公摊总费用-住户总费用）【富航所承担的公摊费用】
+
+            sysMeterReadingShareBill.setCreateId(sysUser.getId());//填入创建人
+            sysMeterReadingShareBill.setCreateDate(new Date());//填入创建时间
+
+            //添加抄表公摊账单
+            int insert = meterReadingRecordDao.insertMeterReadingShareBill(sysMeterReadingShareBill);
+            if (insert <= 0){
+                throw new RuntimeException("生成分摊账单失败");
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
         }
-
-
-        map.put("message",areaTotals);
-
+        map.put("message","生成分摊账单成功");
+        map.put("status",true);
         return map;
     }
 }
