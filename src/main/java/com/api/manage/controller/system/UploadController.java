@@ -351,4 +351,14 @@ public class UploadController {
     public Map<String,Object> uploadSecurityManagementImg(MultipartFile file){
         return uploadService.uploadSecurityManagementImg(file);
     }
+
+    /**
+     * 上传员工简历pdf
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadBusinessSysUserResume")
+    public Map<String,Object> uploadBusinessSysUserResume(MultipartFile file){
+        return uploadService.uploadBusinessSysUserResume(file);
+    }
 }

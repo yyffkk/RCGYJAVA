@@ -115,4 +115,6 @@ public interface UploadService {
     Map<String, Object> uploadButlerAppAcceptance(MultipartFile file);
 
     Map<String, Object> uploadSecurityManagementImg(MultipartFile file);
+
+    Map<String, Object> uploadBusinessSysUserResume(MultipartFile file);
 }

@@ -133,6 +133,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_BUTLER_APP_ACCEPTANCE;
     @Value("${prop.upload-security-management-file-img}")
     private String UPLOAD_SECURITY_MANAGEMENT_FILE_IMG;
+    @Value("${prop.upload-business-sys-user-resume}")
+    private String UPLOAD_BUSINESS_SYS_USER_RESUME;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -541,6 +543,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadSecurityManagementImg(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_SECURITY_MANAGEMENT_FILE_IMG);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadBusinessSysUserResume(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_BUSINESS_SYS_USER_RESUME);
         return map;
     }
 

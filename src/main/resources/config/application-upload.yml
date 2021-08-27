@@ -2,6 +2,8 @@
 prop:
   #文件上传前置路径 src/main/resources/static 有文件服务器用这个，没有则注释
   #    upload: classpath:/static
+  #综合平台-员工管理：上传员工个人简历
+  upload-business-sys-user-resume: /pdf/business/sysUser/resume/
 
   #基础档案-房屋审核管理：审核信息相关照片
   upload-estate-examine: /img/estateExamine/
