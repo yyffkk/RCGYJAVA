@@ -5,6 +5,7 @@ import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
 import com.api.model.chargeManagement.SearchMeterReadingRecord;
 import com.api.model.chargeManagement.SysMeterReadingData;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
+import com.api.model.chargeManagement.SysMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -407,5 +408,24 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
     @Override
     public SysMeterReadingData findMeterReadingDataByType(int type) {
         return meterReadingRecordDao.findMeterReadingDataByType(type);
+    }
+
+    @Override
+    public Map<String, Object> createShareBill(SysMeterReadingShareBill sysMeterReadingShareBill) {
+        map = new HashMap<>();
+
+        //查询所有的入住的房产ids
+        List<Integer> ids = meterReadingRecordDao.findAllCheckInEstateId(new Date());
+
+        BigDecimal areaTotals = null;
+        if (ids != null && ids.size()>0){
+            //计算出所有入住房产面积的总和
+            areaTotals = meterReadingRecordDao.countCheckInEstateAllArea(ids);
+        }
+
+
+        map.put("message",areaTotals);
+
+        return map;
     }
 }

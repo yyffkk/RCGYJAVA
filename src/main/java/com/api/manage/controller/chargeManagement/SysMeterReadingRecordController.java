@@ -3,6 +3,7 @@ package com.api.manage.controller.chargeManagement;
 import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
 import com.api.model.chargeManagement.SearchMeterReadingRecord;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
+import com.api.model.chargeManagement.SysMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoExpenseBill;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 import com.github.pagehelper.PageHelper;
@@ -49,6 +50,16 @@ public class SysMeterReadingRecordController {
     public Map<String,Object> updateRemakes(@RequestBody SysMeterReadingRecord sysMeterReadingRecord){
         return meterReadingRecordService.updateRemakes(sysMeterReadingRecord);
     }
+
+    /**
+     * 生成公摊账单
+     * @return map
+     */
+    @PostMapping("/createShareBill")
+    public Map<String,Object> createShareBill(@RequestBody SysMeterReadingShareBill sysMeterReadingShareBill){
+        return meterReadingRecordService.createShareBill(sysMeterReadingShareBill);
+    }
+
 
 
 

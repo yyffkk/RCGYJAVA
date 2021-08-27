@@ -5,6 +5,8 @@ import com.api.model.chargeManagement.SysMeterReadingData;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,4 +52,18 @@ public interface SysMeterReadingRecordDao {
      * @return 抄表数据
      */
     SysMeterReadingData findMeterReadingDataByType(int type);
+
+    /**
+     * 查询所有的入住的房产ids
+     * @param date 当前时间
+     * @return 入住的房产ids
+     */
+    List<Integer> findAllCheckInEstateId(Date date);
+
+    /**
+     * 计算出所有入住房产面积的总和
+     * @param ids 入住的房产ids
+     * @return 所有入住房产面积的总和
+     */
+    BigDecimal countCheckInEstateAllArea(List<Integer> ids);
 }

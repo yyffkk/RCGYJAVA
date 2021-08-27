@@ -3,6 +3,7 @@ package com.api.manage.service.chargeManagement;
 import com.api.model.chargeManagement.SearchMeterReadingRecord;
 import com.api.model.chargeManagement.SysMeterReadingData;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
+import com.api.model.chargeManagement.SysMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 
 import java.math.BigDecimal;
@@ -29,4 +30,6 @@ public interface SysMeterReadingRecordService {
     Map<String, Object> updateWaterData(String waterQuantity);
 
     SysMeterReadingData findMeterReadingDataByType(int type);
+
+    Map<String, Object> createShareBill(SysMeterReadingShareBill sysMeterReadingShareBill);
 }

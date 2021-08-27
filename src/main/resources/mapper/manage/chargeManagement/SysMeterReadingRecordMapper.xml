@@ -52,5 +52,19 @@
     <select id="findMeterReadingDataByType" parameterType="java.lang.Integer" resultType="com.api.model.chargeManagement.SysMeterReadingData">
         select * from sys_meter_reading_data where type = #{type}
     </select>
+    <select id="findAllCheckInEstateId" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select DISTINCT building_unit_estate_id as id from cpm_resident_estate
+        where effective_time_start <![CDATA[ <= ]]> #{date}
+        and effective_time_end <![CDATA[ >= ]]> #{date}
+    </select>
+    <select id="countCheckInEstateAllArea" parameterType="java.util.List" resultType="java.math.BigDecimal">
+        select sum(indoor_area) as area_totals
+        from cpm_building_unit_estate
+        where
+        id in <foreach item="item" index="index" collection="list"
+                             open="(" separator="," close=")">
+                #{item}
+              </foreach>
+    </select>
 
 </mapper>
