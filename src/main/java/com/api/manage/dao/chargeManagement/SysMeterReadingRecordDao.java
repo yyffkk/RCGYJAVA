@@ -81,4 +81,11 @@ public interface SysMeterReadingRecordDao {
      * @return 抄表记录
      */
     VoMeterReadingRecord findMeterReadingRecordById(Integer meterReadingRecordId);
+
+    /**
+     * 修改抄表记录账单状态
+     * @param sysMeterReadingRecord 抄表记录管理
+     * @return 影响行数
+     */
+    int updateMeterReadingRecordBillStatus(SysMeterReadingRecord sysMeterReadingRecord);
 }

@@ -482,6 +482,19 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
             if (insert <= 0){
                 throw new RuntimeException("生成分摊账单失败");
             }
+
+            SysMeterReadingRecord sysMeterReadingRecord = new SysMeterReadingRecord();
+            sysMeterReadingRecord.setBillStatus(2);//填入账单状态，2.已创建
+            sysMeterReadingRecord.setId(sysMeterReadingShareBill.getMeterReadingRecordId());//填入抄表记录主键id
+
+            //修改抄表记录账单状态
+            int update = meterReadingRecordDao.updateMeterReadingRecordBillStatus(sysMeterReadingRecord);
+            if (update <= 0){
+                throw new RuntimeException("修改抄表记录账单状态失败");
+            }
+
+            //TODO 添加抄表公摊明细
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();

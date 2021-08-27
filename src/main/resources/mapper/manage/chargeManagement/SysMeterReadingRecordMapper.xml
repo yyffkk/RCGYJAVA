@@ -123,4 +123,10 @@
         )
     </insert>
 
+    <update id="updateMeterReadingRecordBillStatus" parameterType="com.api.model.chargeManagement.SysMeterReadingRecord">
+        update sys_meter_reading_record
+        set bill_status = #{billStatus}
+        where id = #{id}
+    </update>
+
 </mapper>
