@@ -119,14 +119,46 @@
             #{status}
         )
     </insert>
+    <insert id="insertShareDetailsOrder" parameterType="com.api.model.alipay.SysMeterReadingShareDetailsOrder">
+        insert into sys_meter_reading_share_details_order(
+            share_details_id,
+            code,
+            name,
+            tel,
+            pay_type,
+            pay_price,
+            create_id,
+            create_date,
+            status
+        )values (
+            #{shareDetailsId},
+            #{code},
+            #{name},
+            #{tel},
+            #{payType},
+            #{payPrice},
+            #{createId},
+            #{createDate},
+            #{status}
+        )
+    </insert>
 
     <select id="findSysHousekeepingServiceOrderByCode" parameterType="java.lang.String"
             resultType="com.api.model.alipay.SysHousekeepingServiceOrder">
         select * from sys_housekeeping_service_order where code = #{outTradeNo}
     </select>
+    <select id="findShareDetailsOrderOrderByCode" parameterType="java.lang.String"
+            resultType="com.api.model.alipay.SysMeterReadingShareDetailsOrder">
+        select * from sys_meter_reading_share_details_order where code = #{outTradeNo}
+    </select>
 
     <update id="updateHousekeepingServiceOrderStatusByCode" parameterType="com.api.model.alipay.SysHousekeepingServiceOrder">
         update sys_housekeeping_service_order
+        set status = #{status}
+        where code = #{code}
+    </update>
+    <update id="updateShareDetailsOrderStatusByCode" parameterType="com.api.model.alipay.SysMeterReadingShareDetailsOrder">
+        update sys_meter_reading_share_details_order
         set status = #{status}
         where code = #{code}
     </update>

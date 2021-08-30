@@ -66,4 +66,11 @@ public interface AlipayService {
     String housekeepingServiceOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId);
 
     Map<String, Object> housekeepingServiceOrderCheckAlipay(String code);
+
+    Map<String, Object> meterReadingShareDetailsOrderAlipay(SysMeterReadingShareDetailsOrder shareDetailsOrder, Integer id);
+
+    String meterReadingShareDetailsOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId);
+
+    Map<String, Object> meterReadingShareDetailsOrderCheckAlipay(String code);
+
 }

@@ -5,8 +5,6 @@ import com.api.model.chargeManagement.SearchMeterReadingRecord;
 import com.api.model.chargeManagement.SearchShareBillDetails;
 import com.api.model.chargeManagement.SysMeterReadingRecord;
 import com.api.model.chargeManagement.SysMeterReadingShareBill;
-import com.api.vo.chargeManagement.VoDailyPaymentPlan;
-import com.api.vo.chargeManagement.VoExpenseBill;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 import com.api.vo.chargeManagement.VoMeterReadingShareBillDetails;
 import com.github.pagehelper.PageHelper;

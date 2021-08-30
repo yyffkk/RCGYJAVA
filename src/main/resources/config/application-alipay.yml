@@ -36,7 +36,8 @@ alipay:
   advancePaymentOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/advancePaymentOrderNotifyInfo"
   ##家政服务-服务费用支付
   housekeepingServiceOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/housekeepingServiceOrderNotifyInfo"
-
+  ##抄表记录管理-抄表分摊详情费用支付
+  meterReadingShareDetailsOrderNotifyUrl: "http://test.kaidalai.cn/api/app/user/alipay/meterReadingShareDetailsOrderNotifyInfo"
 
   #页面跳转同步通知页面路径
   returnUrl: "https://test.kaidalai.cn/api/app/user/alipay/return_url.do"
