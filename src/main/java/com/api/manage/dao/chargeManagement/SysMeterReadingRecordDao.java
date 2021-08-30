@@ -2,6 +2,7 @@ package com.api.manage.dao.chargeManagement;
 
 import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingShareBillDetails;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -92,4 +93,11 @@ public interface SysMeterReadingRecordDao {
      * @return 影响行数
      */
     int insertMeterReadingShareBillDetails(SysMeterReadingShareBillDetails shareBillDetails);
+
+    /**
+     * 根据公摊账单主键id查询公摊账单明细信息
+     * @param searchShareBillDetails 公摊账单明细搜索条件
+     * @return 公摊账单明细信息集合
+     */
+    List<VoMeterReadingShareBillDetails> findShareBillDetailsListByShareId(SearchShareBillDetails searchShareBillDetails);
 }

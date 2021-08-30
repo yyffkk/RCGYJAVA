@@ -1,10 +1,8 @@
 package com.api.manage.service.chargeManagement;
 
-import com.api.model.chargeManagement.SearchMeterReadingRecord;
-import com.api.model.chargeManagement.SysMeterReadingData;
-import com.api.model.chargeManagement.SysMeterReadingRecord;
-import com.api.model.chargeManagement.SysMeterReadingShareBill;
+import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingShareBillDetails;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,4 +30,6 @@ public interface SysMeterReadingRecordService {
     SysMeterReadingData findMeterReadingDataByType(int type);
 
     Map<String, Object> createShareBill(SysMeterReadingShareBill sysMeterReadingShareBill);
+
+    List<VoMeterReadingShareBillDetails> findShareBillDetailsListByShareId(SearchShareBillDetails searchShareBillDetails);
 }

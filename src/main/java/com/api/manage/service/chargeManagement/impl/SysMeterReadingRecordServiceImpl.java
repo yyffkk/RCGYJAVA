@@ -7,6 +7,7 @@ import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingShareBillDetails;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.shiro.SecurityUtils;
@@ -537,5 +538,10 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
         map.put("message","生成分摊账单成功");
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public List<VoMeterReadingShareBillDetails> findShareBillDetailsListByShareId(SearchShareBillDetails searchShareBillDetails) {
+        return meterReadingRecordDao.findShareBillDetailsListByShareId(searchShareBillDetails);
     }
 }

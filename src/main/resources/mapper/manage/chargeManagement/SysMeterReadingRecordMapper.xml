@@ -160,4 +160,17 @@
         )
     </insert>
 
+
+    <select id="findShareBillDetailsListByShareId" parameterType="com.api.model.chargeManagement.SearchShareBillDetails"
+            resultType="com.api.vo.chargeManagement.VoMeterReadingShareBillDetails">
+        select smrsd.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,GROUP_CONCAT(ur.name) as residents
+        from sys_meter_reading_share_details as smrsd,cpm_building_unit as cbu,
+             cpm_building as cb,cpm_building_unit_estate as cbue
+                                    LEFT JOIN cpm_resident_estate as cre on cbue.id = cre.building_unit_estate_id
+                                    LEFT JOIN user_resident as ur on cre.resident_id = ur.id
+        where smrsd.estate_id = cbue.id and cbue.building_unit_id = cbu.id
+          and cbu.building_id = cb.id and smrsd.share_bill_id = #{shareBillId}
+        GROUP BY smrsd.id
+    </select>
+
 </mapper>
