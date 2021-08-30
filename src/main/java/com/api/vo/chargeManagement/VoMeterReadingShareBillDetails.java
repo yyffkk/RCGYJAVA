@@ -48,6 +48,10 @@ public class VoMeterReadingShareBillDetails {
      */
     private BigDecimal rate;
     /**
+     * 滞纳金
+     */
+    private BigDecimal lateFee;
+    /**
      * 缴费期限
      */
     private Date paymentPeriod;
@@ -55,6 +59,10 @@ public class VoMeterReadingShareBillDetails {
      * 缴费时间
      */
     private Date paymentTime;
+    /**
+     * 预期天数
+     */
+    private Integer expectedDays;
     /**
      * 支付方式（1.微信，2.支付宝，3.现金，4.预缴支付）
      */
@@ -73,8 +81,10 @@ public class VoMeterReadingShareBillDetails {
                 ", remainingUnpaidAmount=" + remainingUnpaidAmount +
                 ", status=" + status +
                 ", rate=" + rate +
+                ", lateFee=" + lateFee +
                 ", paymentPeriod=" + paymentPeriod +
                 ", paymentTime=" + paymentTime +
+                ", expectedDays=" + expectedDays +
                 ", type=" + type +
                 '}';
     }
@@ -159,6 +169,14 @@ public class VoMeterReadingShareBillDetails {
         this.rate = rate;
     }
 
+    public BigDecimal getLateFee() {
+        return lateFee;
+    }
+
+    public void setLateFee(BigDecimal lateFee) {
+        this.lateFee = lateFee;
+    }
+
     public Date getPaymentPeriod() {
         return paymentPeriod;
     }
@@ -175,6 +193,14 @@ public class VoMeterReadingShareBillDetails {
         this.paymentTime = paymentTime;
     }
 
+    public Integer getExpectedDays() {
+        return expectedDays;
+    }
+
+    public void setExpectedDays(Integer expectedDays) {
+        this.expectedDays = expectedDays;
+    }
+
     public Integer getType() {
         return type;
     }
@@ -186,7 +212,7 @@ public class VoMeterReadingShareBillDetails {
     public VoMeterReadingShareBillDetails() {
     }
 
-    public VoMeterReadingShareBillDetails(Integer id, Date createDate, String roomName, String residents, BigDecimal houseArea, BigDecimal amountPayable, BigDecimal paidAmount, BigDecimal remainingUnpaidAmount, Integer status, BigDecimal rate, Date paymentPeriod, Date paymentTime, Integer type) {
+    public VoMeterReadingShareBillDetails(Integer id, Date createDate, String roomName, String residents, BigDecimal houseArea, BigDecimal amountPayable, BigDecimal paidAmount, BigDecimal remainingUnpaidAmount, Integer status, BigDecimal rate, BigDecimal lateFee, Date paymentPeriod, Date paymentTime, Integer expectedDays, Integer type) {
         this.id = id;
         this.createDate = createDate;
         this.roomName = roomName;
@@ -197,8 +223,10 @@ public class VoMeterReadingShareBillDetails {
         this.remainingUnpaidAmount = remainingUnpaidAmount;
         this.status = status;
         this.rate = rate;
+        this.lateFee = lateFee;
         this.paymentPeriod = paymentPeriod;
         this.paymentTime = paymentTime;
+        this.expectedDays = expectedDays;
         this.type = type;
     }
 }

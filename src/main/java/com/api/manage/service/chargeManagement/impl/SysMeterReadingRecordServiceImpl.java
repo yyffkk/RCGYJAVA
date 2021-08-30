@@ -542,6 +542,59 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
 
     @Override
     public List<VoMeterReadingShareBillDetails> findShareBillDetailsListByShareId(SearchShareBillDetails searchShareBillDetails) {
-        return meterReadingRecordDao.findShareBillDetailsListByShareId(searchShareBillDetails);
+        List<VoMeterReadingShareBillDetails> detailsListByShareId = meterReadingRecordDao.findShareBillDetailsListByShareId(searchShareBillDetails);
+        if (detailsListByShareId != null){
+            for (VoMeterReadingShareBillDetails shareBillDetails : detailsListByShareId) {
+                //逾期天数初始值0
+                int expectedDays = 0;
+                //滞纳金初始值0
+                BigDecimal lateFee = BigDecimal.ZERO;
+
+                if (shareBillDetails.getPaymentTime() != null){
+                    //已缴费，判断缴费时间是否大于缴费期限
+                    if (shareBillDetails.getPaymentTime().getTime() > shareBillDetails.getPaymentPeriod().getTime()){
+                        double d = (shareBillDetails.getPaymentTime().getTime() - shareBillDetails.getPaymentPeriod().getTime()) / 1000.0 / 60.0 / 60.0 / 24.0;
+                        //如果缴费时间大于缴费期限，有滞纳金，有逾期天数
+                        expectedDays = (int) Math.round(d);
+                        //计算滞纳金
+                        //(计算公式【应缴金额*（1+费率/100），每日累乘】)
+                        BigDecimal totalPrice = shareBillDetails.getAmountPayable();
+                        for (int i = 0; i < expectedDays; i++) {
+                            //需要先转化成double，不然int类型之间的计算结果会被默认转换成int
+                            double rate = shareBillDetails.getRate().doubleValue();
+                            //计算出总缴费金额
+                            totalPrice = totalPrice.multiply(new BigDecimal(1 + rate / 100));
+                        }
+                        //滞纳金 = 总缴费金额 - 应缴金额
+                        lateFee = totalPrice.subtract(shareBillDetails.getAmountPayable());
+                    }else {
+                        //缴费时间小于缴费期限，滞纳金为0，逾期天数为0
+                    }
+                }else {
+                    //未缴费，产生滞纳金
+                    if (new Date().getTime() > shareBillDetails.getPaymentPeriod().getTime()){
+                        double d = (new Date().getTime() - shareBillDetails.getPaymentPeriod().getTime()) / 1000.0 / 60.0 / 60.0 / 24.0;
+                        //当前时间大于缴费期限，有滞纳金，有逾期天数
+                        expectedDays = (int) Math.round(d);
+                        //计算滞纳金
+                        //(计算公式【应缴金额*（1+费率/100），每日累乘】)
+                        BigDecimal totalPrice = shareBillDetails.getAmountPayable();
+                        for (int i = 0; i < expectedDays; i++) {
+                            //需要先转化成double，不然int类型之间的计算结果会被默认转换成int
+                            double rate = shareBillDetails.getRate().doubleValue();
+                            //计算出总缴费金额
+                            totalPrice = totalPrice.multiply(new BigDecimal(1 + rate / 100));
+                        }
+                        //滞纳金 = 总缴费金额 - 应缴金额
+                        lateFee = totalPrice.subtract(shareBillDetails.getAmountPayable());
+                    }else {
+                        //当前时间小于缴费期限，滞纳金为0，逾期天数为0
+                    }
+                }
+                shareBillDetails.setExpectedDays(expectedDays);//填入逾期天数
+                shareBillDetails.setLateFee(lateFee);//填入滞纳金
+            }
+        }
+        return detailsListByShareId;
     }
 }
