@@ -129,4 +129,30 @@
         where id = #{id}
     </update>
 
+    <insert id="insertMeterReadingShareBillDetails" parameterType="com.api.model.chargeManagement.SysMeterReadingShareBillDetails">
+        insert into sys_meter_reading_share_details(
+            estate_id,
+            house_area,
+            amount_payable,
+            paid_amount,
+            remaining_unpaid_amount,
+            status,
+            rate,
+            payment_period,
+            create_id,
+            create_date
+        )value (
+            #{estateId},
+            #{houseArea},
+            #{amountPayable},
+            #{paidAmount},
+            #{remainingUnpaidAmount},
+            #{status},
+            #{rate},
+            #{paymentPeriod},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
 </mapper>

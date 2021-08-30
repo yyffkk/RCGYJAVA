@@ -1,12 +1,11 @@
 package com.api.manage.service.chargeManagement.impl;
 
+import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.chargeManagement.SysMeterReadingRecordDao;
 import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
+import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.businessManagement.SysUser;
-import com.api.model.chargeManagement.SearchMeterReadingRecord;
-import com.api.model.chargeManagement.SysMeterReadingData;
-import com.api.model.chargeManagement.SysMeterReadingRecord;
-import com.api.model.chargeManagement.SysMeterReadingShareBill;
+import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -41,6 +40,8 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
 
     @Resource
     SysMeterReadingRecordDao meterReadingRecordDao;
+    @Resource
+    CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
 
     @Override
     public Map<String,Object> getElectricQuantity(String authorization) {
@@ -493,7 +494,33 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
                 throw new RuntimeException("修改抄表记录账单状态失败");
             }
 
-            //TODO 添加抄表公摊明细
+            //添加抄表公摊明细
+            if (ids != null && ids.size() >0){
+                for (Integer id : ids) {
+                    SysMeterReadingShareBillDetails shareBillDetails = new SysMeterReadingShareBillDetails();
+                    shareBillDetails.setEstateId(id);//填入房产主键id
+                    //根据房产主键id查询房产信息
+                    CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(id);
+                    shareBillDetails.setHouseArea(cpmBuildingUnitEstate.getIndoorArea());//填入房产面积
+                    //计算应缴金额
+                    BigDecimal amountPayable = shareUnitPrice.multiply(cpmBuildingUnitEstate.getIndoorArea());
+                    shareBillDetails.setAmountPayable(amountPayable);//填入应缴金额
+                    shareBillDetails.setPaidAmount(BigDecimal.ZERO);//填入实缴纳金额
+                    shareBillDetails.setRemainingUnpaidAmount(amountPayable);//填入剩余未缴金额
+                    shareBillDetails.setStatus(1);//填入缴纳状态，1.未缴纳
+                    shareBillDetails.setRate(sysMeterReadingShareBill.getRate());//填入费率
+                    shareBillDetails.setPaymentPeriod(sysMeterReadingShareBill.getEffectiveTimeEnd());//填入缴费期限
+                    shareBillDetails.setCreateId(sysUser.getId());//填入创建人
+                    shareBillDetails.setCreateDate(new Date());//填入创建时间
+
+                    //添加抄表公摊明细
+                    int insert2 = meterReadingRecordDao.insertMeterReadingShareBillDetails(shareBillDetails);
+                    if (insert2 <=0){
+                        throw new RuntimeException("添加抄表公摊明细失败");
+                    }
+                }
+            }
+
 
         } catch (RuntimeException e) {
             //获取抛出的信息

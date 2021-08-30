@@ -1,9 +1,6 @@
 package com.api.manage.dao.chargeManagement;
 
-import com.api.model.chargeManagement.SearchMeterReadingRecord;
-import com.api.model.chargeManagement.SysMeterReadingData;
-import com.api.model.chargeManagement.SysMeterReadingRecord;
-import com.api.model.chargeManagement.SysMeterReadingShareBill;
+import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
 
 import java.math.BigDecimal;
@@ -88,4 +85,11 @@ public interface SysMeterReadingRecordDao {
      * @return 影响行数
      */
     int updateMeterReadingRecordBillStatus(SysMeterReadingRecord sysMeterReadingRecord);
+
+    /**
+     * 添加抄表公摊明细
+     * @param shareBillDetails 抄表公摊明细
+     * @return 影响行数
+     */
+    int insertMeterReadingShareBillDetails(SysMeterReadingShareBillDetails shareBillDetails);
 }
