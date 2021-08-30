@@ -12,6 +12,10 @@ public class SysMeterReadingShareBillDetails {
      */
     private Integer id;
     /**
+     * 公摊账单主键id
+     */
+    private Integer shareBillId;
+    /**
      * 房产主键id
      */
     private Integer estateId;
@@ -64,6 +68,7 @@ public class SysMeterReadingShareBillDetails {
     public String toString() {
         return "SysMeterReadingShareBillDetails{" +
                 "id=" + id +
+                ", shareBillId=" + shareBillId +
                 ", estateId=" + estateId +
                 ", houseArea=" + houseArea +
                 ", amountPayable=" + amountPayable +
@@ -85,6 +90,14 @@ public class SysMeterReadingShareBillDetails {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getShareBillId() {
+        return shareBillId;
+    }
+
+    public void setShareBillId(Integer shareBillId) {
+        this.shareBillId = shareBillId;
     }
 
     public Integer getEstateId() {
@@ -186,8 +199,9 @@ public class SysMeterReadingShareBillDetails {
     public SysMeterReadingShareBillDetails() {
     }
 
-    public SysMeterReadingShareBillDetails(Integer id, Integer estateId, BigDecimal houseArea, BigDecimal amountPayable, BigDecimal paidAmount, BigDecimal remainingUnpaidAmount, Integer status, BigDecimal rate, Date paymentPeriod, Date paymentTime, Integer type, Integer createId, Date createDate) {
+    public SysMeterReadingShareBillDetails(Integer id, Integer shareBillId, Integer estateId, BigDecimal houseArea, BigDecimal amountPayable, BigDecimal paidAmount, BigDecimal remainingUnpaidAmount, Integer status, BigDecimal rate, Date paymentPeriod, Date paymentTime, Integer type, Integer createId, Date createDate) {
         this.id = id;
+        this.shareBillId = shareBillId;
         this.estateId = estateId;
         this.houseArea = houseArea;
         this.amountPayable = amountPayable;

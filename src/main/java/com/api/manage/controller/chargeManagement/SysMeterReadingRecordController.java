@@ -61,6 +61,14 @@ public class SysMeterReadingRecordController {
     }
 
 
+    /**
+     *
+     * @return
+     */
+    @GetMapping("/findShareBillDetailsListByShareId")
+    public Map<String,Object> findShareBillDetailsList(){
+        return null;
+    }
 
 
 

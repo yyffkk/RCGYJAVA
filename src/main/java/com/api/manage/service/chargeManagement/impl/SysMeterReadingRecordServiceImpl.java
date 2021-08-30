@@ -498,6 +498,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
             if (ids != null && ids.size() >0){
                 for (Integer id : ids) {
                     SysMeterReadingShareBillDetails shareBillDetails = new SysMeterReadingShareBillDetails();
+                    shareBillDetails.setShareBillId(sysMeterReadingShareBill.getId());//填入公摊账单主键id
                     shareBillDetails.setEstateId(id);//填入房产主键id
                     //根据房产主键id查询房产信息
                     CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(id);
