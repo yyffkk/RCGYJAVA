@@ -1,5 +1,6 @@
 package com.api.aop;
 
+import com.api.util.GetIpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -9,6 +10,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * manage日志切面
+ */
 @Aspect
 @Component
 @Slf4j
@@ -29,8 +33,8 @@ public class LogAspect {
         String classMethod = joinPoint.getSignature().getDeclaringTypeName()+","+joinPoint.getSignature().getName();
         // 1. 获取URL
         String url = request.getRequestURL().toString();
-        //2. 获取ip地址
-        String addr = request.getRemoteAddr();
+        //2. 获取发送请求的ip地址（已处理反向代理问题）
+        String addr = GetIpUtil.getIp2(request);
 
         /*创建一个类RequestData，来保存相关信息*/
         RequestData requestData = new RequestData(

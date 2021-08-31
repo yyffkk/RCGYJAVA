@@ -3,9 +3,21 @@ package com.api.aop;
 import java.util.Arrays;
 
 public class RequestData {
+    /**
+     * 请求链接
+     */
     private String url;
+    /**
+     * 发送请求的地址ip
+     */
     private String addr;
+    /**
+     * 请求方法
+     */
     private String classMethod;
+    /**
+     * 请求参数
+     */
     private Object[] args;
 
     @Override
