@@ -41,7 +41,7 @@ public class LogAspect {
                 url, addr, classMethod, joinPoint.getArgs()
         );
         //在控制台打印出来
-        log.info("RequestData------{}",requestData);
+//        log.info("RequestData------{}",requestData);
     }
     @After("log()")
     public void doAfter(){
@@ -50,6 +50,7 @@ public class LogAspect {
     //在切入点return内容之后切入内容（可以用来对处理返回值做一些加工处理）
     @AfterReturning(returning = "result",pointcut="log()")
     public void doAfterReturning(Object result){
-        log.info("Return ------ {}",result );
+        System.out.println("在切入点return内容之后处理流-------------");
+//        log.info("Return ------ {}",result );
     }
 }
