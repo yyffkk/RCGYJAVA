@@ -8,6 +8,7 @@ import com.api.manage.service.businessManagement.SysUserService;
 import com.api.model.businessManagement.SearchUser;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.AttendanceRecord;
+import com.api.util.PBKDF2Util;
 import com.api.util.UploadUtil;
 import com.api.vo.businessManagement.VoFindByIdUser;
 import com.api.vo.businessManagement.VoFunctionAuthority;
@@ -99,6 +100,15 @@ public class SysUserServiceImpl implements SysUserService {
             sysUser.setOrganizationIdPath(idPath);
             //填入用户名（与手机号一致）
             sysUser.setUserName(sysUser.getTel());
+
+            if (sysUser.getPwd() != null){
+                try {
+                    //对密码进行PBKDF2Util加密处理
+                    sysUser.setPwd(PBKDF2Util.getEncryptedPassword(sysUser.getPwd(),sysUser.getPwd()));
+                } catch (Exception e) {
+                    throw new RuntimeException("加密处理失败");
+                }
+            }
 
             //添加员工信息
             int insert = sysUserDao.insert(sysUser);
@@ -333,6 +343,16 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setModifyId(sysUser2.getId());
         //填入修改时间
         sysUser.setModifyDate(new Date());
+
+        try {
+            //对密码进行PBKDF2Util加密处理
+            sysUser.setPwd(PBKDF2Util.getEncryptedPassword(sysUser.getPwd(),sysUser.getPwd()));
+        } catch (Exception e) {
+            map.put("message","加密处理失败");
+            map.put("status",false);
+            return map;
+        }
+
         int update = sysUserDao.resetPWD(sysUser);
         if (update > 0){
             map.put("message","重置密码成功");

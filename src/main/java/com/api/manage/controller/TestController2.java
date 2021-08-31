@@ -1,5 +1,6 @@
 package com.api.manage.controller;
 
+import com.api.util.PBKDF2Util;
 import com.api.util.webSocket.WebSocketService;
 //import net.sf.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -63,31 +64,38 @@ public class TestController2 {
 //        log.warn("日志输出 warn");
 //        log.error("日志输出 error");
 
-        Date date=new Date();
-        //SimpleDateFormat format =new SimpleDateFormat("yyyy-MM-dd");
-        String year=String.format("%tY",date);
-        String month=String.format("%tB",date);
-        int day= Integer.parseInt(String.format("%td",date));
-        System.out.println("今年是"+year+"年");
-        System.out.println("现在是"+month+"月");
-        System.out.println("今天是"+day+"号");
+//        Date date=new Date();
+//        //SimpleDateFormat format =new SimpleDateFormat("yyyy-MM-dd");
+//        String year=String.format("%tY",date);
+//        String month=String.format("%tB",date);
+//        int day= Integer.parseInt(String.format("%td",date));
+//        System.out.println("今年是"+year+"年");
+//        System.out.println("现在是"+month+"月");
+//        System.out.println("今天是"+day+"号");
+//        try {
+//            date = new SimpleDateFormat("yyyy-MM-dd").parse("2008-02-14");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Calendar cal = Calendar.getInstance();
+//
+//        cal.setTime(date);
+//
+//        cal.set(Calendar.DAY_OF_MONTH, 1);
+//
+//        cal.add(Calendar.MONTH, 1);
+//
+//        cal.add(Calendar.DATE, -1);
+//        Date time = cal.getTime();
+//        String format = new SimpleDateFormat("yyyy-MM-dd").format(time);
+        String password ="123456";
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse("2008-02-14");
-        } catch (ParseException e) {
-            e.printStackTrace();
+            //对密码进行PBKDF2Util加密处理
+            String encryptedPassword = PBKDF2Util.getEncryptedPassword(password, password);
+            log.info(encryptedPassword);
+        } catch (Exception e) {
+            return false;
         }
-        Calendar cal = Calendar.getInstance();
-
-        cal.setTime(date);
-
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-
-        cal.add(Calendar.MONTH, 1);
-
-        cal.add(Calendar.DATE, -1);
-        Date time = cal.getTime();
-        String format = new SimpleDateFormat("yyyy-MM-dd").format(time);
-
-        return false;
+        return true;
     }
 }
