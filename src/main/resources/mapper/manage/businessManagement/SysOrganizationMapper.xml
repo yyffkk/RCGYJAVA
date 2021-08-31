@@ -15,7 +15,7 @@
     </select>
 
     <select id="countNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from sys_user where organization_id_path like concat('%',#{id},':','%')
+        select count(*) from sys_user where organization_id_path like concat('%:',#{id},':%')
     </select>
 
     <insert id="insert" parameterType="com.api.model.businessManagement.SysOrganization">
