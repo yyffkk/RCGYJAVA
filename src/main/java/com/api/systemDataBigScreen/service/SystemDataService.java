@@ -103,4 +103,9 @@ public interface SystemDataService {
 
     Map<String, Object> userVisitorsNew();
 
+    Map<String, Object> sysMeterReadingRecord();
+
+    Map<String, Object> sysMeterReadingShare();
+
+    Map<String, Object> sysMeterReadingShareDetails();
 }

@@ -735,4 +735,19 @@ public class SystemDataServiceImpl implements SystemDataService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> sysMeterReadingRecord() {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> sysMeterReadingShare() {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> sysMeterReadingShareDetails() {
+        return null;
+    }
+
 }

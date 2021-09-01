@@ -7,6 +7,7 @@ import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoMeterReadingShareBillDetails;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -469,9 +470,7 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
             BigDecimal householdShareCost = shareUnitPrice.multiply(areaTotals);
             sysMeterReadingShareBill.setHouseholdShareCost(householdShareCost);//填入住户公摊总费用
 
-            sysMeterReadingShareBill.setPaidAmount(BigDecimal.ZERO);//填入实收金额
-            sysMeterReadingShareBill.setUnpaidExpenses(householdShareCost);//填入剩余未缴费用
-            sysMeterReadingShareBill.setStatus(2);//填入缴纳状态，2.未完成
+
             //计算额外费用（费用金额-住户公摊总费用-住户总费用）【富航所承担的公摊费用】
             BigDecimal subtract = cost.subtract(householdShareCost).subtract(householdCost);
             sysMeterReadingShareBill.setAdditionalCosts(subtract);//填入额外费用（费用金额-住户公摊总费用-住户总费用）【富航所承担的公摊费用】
@@ -596,5 +595,38 @@ public class SysMeterReadingRecordServiceImpl implements SysMeterReadingRecordSe
             }
         }
         return detailsListByShareId;
+    }
+
+    @Override
+    public List<VoMeterReadingShareBill> shareBillList(SearchShareBill searchShareBill) {
+        List<VoMeterReadingShareBill> shareBillList = meterReadingRecordDao.shareBillList(searchShareBill);
+        if (shareBillList != null && shareBillList.size()>0){
+            for (VoMeterReadingShareBill shareBill : shareBillList) {
+                //根据公摊账单主键id查询总实收金额
+                BigDecimal paidAmount = meterReadingRecordDao.sumShareDetailsPaidAmount(shareBill.getId());
+                if (paidAmount == null){
+                    shareBill.setPaidAmount(BigDecimal.ZERO);//填入实收金额
+                }else {
+                    shareBill.setPaidAmount(paidAmount);//填入实收金额
+                }
+                //根据公摊账单主键id查询总剩余未缴费用
+                BigDecimal unpaidExpenses = meterReadingRecordDao.sumShareDetailsRemainingUnpaidAmount(shareBill.getId());
+                if (unpaidExpenses == null){
+                    shareBill.setUnpaidExpenses(BigDecimal.ZERO);//填入剩余未缴费用
+                }else {
+                    shareBill.setUnpaidExpenses(unpaidExpenses);//填入剩余未缴费用
+                }
+                //根据公摊账单主键id统计是否所有缴纳完成的缴纳状态（1.已完成，2.未完成）
+                int count = meterReadingRecordDao.countShareDetailsStatus(shareBill.getId());
+                if (count >0){
+                    shareBill.setStatus(2);//2.未完成
+                }else if (count == 0){
+                    shareBill.setStatus(1);//1.已完成
+                }else {
+                    shareBill.setStatus(-1);//-1.数据有误
+                }
+            }
+        }
+        return shareBillList;
     }
 }

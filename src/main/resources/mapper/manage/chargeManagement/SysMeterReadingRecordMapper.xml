@@ -86,9 +86,6 @@
             share_unit_price,
             charge_unit,
             household_share_cost,
-            paid_amount,
-            unpaid_expenses,
-            status,
             additional_costs,
             rate,
             effective_time_start,
@@ -110,9 +107,6 @@
             #{shareUnitPrice},
             #{chargeUnit},
             #{householdShareCost},
-            #{paidAmount},
-            #{unpaidExpenses},
-            #{status},
             #{additionalCosts},
             #{rate},
             #{effectiveTimeStart},
@@ -171,6 +165,18 @@
         where smrsd.estate_id = cbue.id and cbue.building_unit_id = cbu.id
           and cbu.building_id = cb.id and smrsd.share_bill_id = #{shareBillId}
         GROUP BY smrsd.id
+    </select>
+    <select id="shareBillList" parameterType="com.api.model.chargeManagement.SearchShareBill" resultType="com.api.vo.chargeManagement.VoMeterReadingShareBill">
+        select * from sys_meter_reading_share
+    </select>
+    <select id="sumShareDetailsPaidAmount" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select sum(paid_amount) from sys_meter_reading_share_details where share_bill_id = #{id}
+    </select>
+    <select id="sumShareDetailsRemainingUnpaidAmount" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select sum(remaining_unpaid_amount) from sys_meter_reading_share_details where share_bill_id = #{id}
+    </select>
+    <select id="countShareDetailsStatus" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count((case status = 3 when true then 0 else 1 end)) from sys_meter_reading_share_details where share_bill_id = #{id}
     </select>
 
 </mapper>

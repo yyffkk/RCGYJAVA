@@ -557,4 +557,33 @@ public class SystemDataController {
         return systemDataService.userVisitorsNew();
     }
 
+    /**
+     * 抄表记录表
+     * @return map
+     */
+    @GetMapping("/sysMeterReadingRecord")
+    public Map<String,Object> sysMeterReadingRecord(){
+        return systemDataService.sysMeterReadingRecord();
+    }
+
+    /**
+     * 抄表公摊表
+     * @return map
+     */
+    @GetMapping("/sysMeterReadingShare")
+    public Map<String,Object> sysMeterReadingShare(){
+        return systemDataService.sysMeterReadingShare();
+    }
+
+    /**
+     * 抄表公摊详情表
+     * @return map
+     */
+    @GetMapping("/sysMeterReadingShareDetails")
+    public Map<String,Object> sysMeterReadingShareDetails(){
+        return systemDataService.sysMeterReadingShareDetails();
+    }
+
+
+
 }

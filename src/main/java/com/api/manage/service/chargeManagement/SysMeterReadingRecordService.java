@@ -2,6 +2,7 @@ package com.api.manage.service.chargeManagement;
 
 import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoMeterReadingShareBillDetails;
 
 import java.math.BigDecimal;
@@ -32,4 +33,6 @@ public interface SysMeterReadingRecordService {
     Map<String, Object> createShareBill(SysMeterReadingShareBill sysMeterReadingShareBill);
 
     List<VoMeterReadingShareBillDetails> findShareBillDetailsListByShareId(SearchShareBillDetails searchShareBillDetails);
+
+    List<VoMeterReadingShareBill> shareBillList(SearchShareBill searchShareBill);
 }

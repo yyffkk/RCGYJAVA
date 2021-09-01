@@ -1,11 +1,9 @@
 package com.api.manage.controller.chargeManagement;
 
 import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
-import com.api.model.chargeManagement.SearchMeterReadingRecord;
-import com.api.model.chargeManagement.SearchShareBillDetails;
-import com.api.model.chargeManagement.SysMeterReadingRecord;
-import com.api.model.chargeManagement.SysMeterReadingShareBill;
+import com.api.model.chargeManagement.*;
 import com.api.vo.chargeManagement.VoMeterReadingRecord;
+import com.api.vo.chargeManagement.VoMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoMeterReadingShareBillDetails;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -59,6 +57,23 @@ public class SysMeterReadingRecordController {
     @PostMapping("/createShareBill")
     public Map<String,Object> createShareBill(@RequestBody SysMeterReadingShareBill sysMeterReadingShareBill){
         return meterReadingRecordService.createShareBill(sysMeterReadingShareBill);
+    }
+
+    /**
+     * 查询所有的公摊账单信息
+     * @param SearchShareBill 公摊账单搜索条件
+     * @return map
+     */
+    @GetMapping("/shareBillList")
+    public Map<String,Object> shareBillList(SearchShareBill SearchShareBill){
+        PageHelper.startPage(SearchShareBill.getPageNum(),SearchShareBill.getSize());
+        List<VoMeterReadingShareBill> voMeterReadingShareBillList = meterReadingRecordService.shareBillList(SearchShareBill);
+        PageInfo<VoMeterReadingShareBill> pageInfo = new PageInfo<>(voMeterReadingShareBillList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 
