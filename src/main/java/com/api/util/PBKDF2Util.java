@@ -51,7 +51,7 @@ public class PBKDF2Util {
     public static String getEncryptedPassword(String password, String salt) throws NoSuchAlgorithmException,
             InvalidKeySpecException {
 
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), fromHex(salt), PBKDF2_ITERATIONS, HASH_BIT_SIZE);
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), fromHex(toHex(salt.getBytes())), PBKDF2_ITERATIONS, HASH_BIT_SIZE);
         SecretKeyFactory f = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
         return toHex(f.generateSecret(spec).getEncoded());
     }

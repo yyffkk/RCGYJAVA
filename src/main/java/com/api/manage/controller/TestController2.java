@@ -88,12 +88,13 @@ public class TestController2 {
 //        cal.add(Calendar.DATE, -1);
 //        Date time = cal.getTime();
 //        String format = new SimpleDateFormat("yyyy-MM-dd").format(time);
-        String password ="123456";
+        String password ="1";
         try {
             //对密码进行PBKDF2Util加密处理
             String encryptedPassword = PBKDF2Util.getEncryptedPassword(password, password);
             log.info(encryptedPassword);
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
