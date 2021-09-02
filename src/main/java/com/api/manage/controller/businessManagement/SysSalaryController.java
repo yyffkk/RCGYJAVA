@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 培训管理
+ * 薪资管理
  */
 @RestController
 @RequestMapping("manage/salary")
