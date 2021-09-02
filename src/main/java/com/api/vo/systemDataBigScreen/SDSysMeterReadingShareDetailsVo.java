@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * 抄表公摊详情表 Vo list 回显
  */
-public class SysMeterReadingShareDetailsVo {
+public class SDSysMeterReadingShareDetailsVo {
     /**
      * 主键id
      */
@@ -196,10 +196,10 @@ public class SysMeterReadingShareDetailsVo {
         this.createDate = createDate;
     }
 
-    public SysMeterReadingShareDetailsVo() {
+    public SDSysMeterReadingShareDetailsVo() {
     }
 
-    public SysMeterReadingShareDetailsVo(Integer id, Integer shareBillId, Integer estateId, BigDecimal houseArea, BigDecimal amountPayable, BigDecimal paidAmount, BigDecimal remainingUnpaidAmount, Integer status, BigDecimal rate, Date paymentPeriod, Date paymentTime, Integer type, Integer createId, Date createDate) {
+    public SDSysMeterReadingShareDetailsVo(Integer id, Integer shareBillId, Integer estateId, BigDecimal houseArea, BigDecimal amountPayable, BigDecimal paidAmount, BigDecimal remainingUnpaidAmount, Integer status, BigDecimal rate, Date paymentPeriod, Date paymentTime, Integer type, Integer createId, Date createDate) {
         this.id = id;
         this.shareBillId = shareBillId;
         this.estateId = estateId;

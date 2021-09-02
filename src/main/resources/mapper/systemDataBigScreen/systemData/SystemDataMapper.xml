@@ -453,6 +453,18 @@
         select * from user_visitors_new
     </select>
 
+    <select id="sysMeterReadingRecord" resultType="com.api.vo.systemDataBigScreen.SDSysMeterReadingRecordVo">
+        select * from sys_meter_reading_record
+    </select>
+
+    <select id="sysMeterReadingShare" resultType="com.api.vo.systemDataBigScreen.SDSysMeterReadingShareVo">
+        select * from sys_meter_reading_share
+    </select>
+
+    <select id="sysMeterReadingShareDetails"
+            resultType="com.api.vo.systemDataBigScreen.SDSysMeterReadingShareDetailsVo">
+        select * from sys_meter_reading_share_details
+    </select>
 
 
 </mapper>

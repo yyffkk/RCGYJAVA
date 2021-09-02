@@ -737,17 +737,35 @@ public class SystemDataServiceImpl implements SystemDataService {
 
     @Override
     public Map<String, Object> sysMeterReadingRecord() {
-        return null;
+        map = new HashMap<>();
+        List<SDSysMeterReadingRecordVo> sdSysMeterReadingRecordVoList = systemDataDao.sysMeterReadingRecord();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysMeterReadingRecordVoList);
+        return map;
     }
 
     @Override
     public Map<String, Object> sysMeterReadingShare() {
-        return null;
+        map = new HashMap<>();
+        List<SDSysMeterReadingShareVo> sdSysMeterReadingShareVoList = systemDataDao.sysMeterReadingShare();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysMeterReadingShareVoList);
+        return map;
     }
 
     @Override
     public Map<String, Object> sysMeterReadingShareDetails() {
-        return null;
+        map = new HashMap<>();
+        List<SDSysMeterReadingShareDetailsVo> sdSysMeterReadingShareDetailsVoList = systemDataDao.sysMeterReadingShareDetails();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysMeterReadingShareDetailsVoList);
+        return map;
     }
 
 }

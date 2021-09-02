@@ -472,4 +472,22 @@ public interface SystemDataDao {
      * @return 新版访客管理集合
      */
     List<SDUserVisitorsNewVo> userVisitorsNew();
+
+    /**
+     * 抄表记录表
+     * @return 抄表记录表集合
+     */
+    List<SDSysMeterReadingRecordVo> sysMeterReadingRecord();
+
+    /**
+     * 抄表公摊表
+     * @return 抄表公摊表集合
+     */
+    List<SDSysMeterReadingShareVo> sysMeterReadingShare();
+
+    /**
+     * 抄表公摊详情表
+     * @return 抄表公摊详情表集合
+     */
+    List<SDSysMeterReadingShareDetailsVo> sysMeterReadingShareDetails();
 }

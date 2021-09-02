@@ -27,4 +27,11 @@ public interface SysDataBaseDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 修改数据库信息
+     * @param sysDataBase 数据库model信息
+     * @return 影响行数
+     */
+    int update(SysDataBase sysDataBase);
 }

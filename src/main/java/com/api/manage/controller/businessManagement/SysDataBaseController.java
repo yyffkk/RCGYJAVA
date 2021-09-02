@@ -52,6 +52,16 @@ public class SysDataBaseController {
     }
 
     /**
+     * 修改数据库信息
+     * @param sysDataBase 数据库model信息
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody SysDataBase sysDataBase){
+        return sysDataBaseService.update(sysDataBase);
+    }
+
+    /**
      * 批量删除数据库信息
      * @param ids 数据库信息主键id
      * @return map
@@ -60,4 +70,6 @@ public class SysDataBaseController {
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysDataBaseService.delete(ids.getIds());
     }
+
+
 }

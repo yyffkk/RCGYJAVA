@@ -64,18 +64,6 @@ public class SDSysMeterReadingShareVo {
      */
     private BigDecimal householdShareCost;
     /**
-     * 实收金额
-     */
-    private BigDecimal paidAmount;
-    /**
-     * 剩余未缴费用
-     */
-    private BigDecimal unpaidExpenses;
-    /**
-     * 缴纳状态（1.已完成，2.未完成）
-     */
-    private Integer status;
-    /**
      * 额外费用（费用金额-住户公摊总费用-住户总费用）【富航所承担的公摊费用】
      */
     private BigDecimal additionalCosts;
@@ -121,9 +109,6 @@ public class SDSysMeterReadingShareVo {
                 ", shareUnitPrice=" + shareUnitPrice +
                 ", chargeUnit='" + chargeUnit + '\'' +
                 ", householdShareCost=" + householdShareCost +
-                ", paidAmount=" + paidAmount +
-                ", unpaidExpenses=" + unpaidExpenses +
-                ", status=" + status +
                 ", additionalCosts=" + additionalCosts +
                 ", rate=" + rate +
                 ", effectiveTimeStart=" + effectiveTimeStart +
@@ -246,30 +231,6 @@ public class SDSysMeterReadingShareVo {
         this.householdShareCost = householdShareCost;
     }
 
-    public BigDecimal getPaidAmount() {
-        return paidAmount;
-    }
-
-    public void setPaidAmount(BigDecimal paidAmount) {
-        this.paidAmount = paidAmount;
-    }
-
-    public BigDecimal getUnpaidExpenses() {
-        return unpaidExpenses;
-    }
-
-    public void setUnpaidExpenses(BigDecimal unpaidExpenses) {
-        this.unpaidExpenses = unpaidExpenses;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public BigDecimal getAdditionalCosts() {
         return additionalCosts;
     }
@@ -329,7 +290,7 @@ public class SDSysMeterReadingShareVo {
     public SDSysMeterReadingShareVo() {
     }
 
-    public SDSysMeterReadingShareVo(Integer id, Integer meterReadingRecordId, String months, BigDecimal totals, String unit, BigDecimal unitPrice, Integer type, BigDecimal cost, BigDecimal householdConsumption, BigDecimal householdArea, BigDecimal householdCost, BigDecimal shareUnitPrice, String chargeUnit, BigDecimal householdShareCost, BigDecimal paidAmount, BigDecimal unpaidExpenses, Integer status, BigDecimal additionalCosts, BigDecimal rate, Date effectiveTimeStart, Date effectiveTimeEnd, String remakes, Integer createId, Date createDate) {
+    public SDSysMeterReadingShareVo(Integer id, Integer meterReadingRecordId, String months, BigDecimal totals, String unit, BigDecimal unitPrice, Integer type, BigDecimal cost, BigDecimal householdConsumption, BigDecimal householdArea, BigDecimal householdCost, BigDecimal shareUnitPrice, String chargeUnit, BigDecimal householdShareCost, BigDecimal additionalCosts, BigDecimal rate, Date effectiveTimeStart, Date effectiveTimeEnd, String remakes, Integer createId, Date createDate) {
         this.id = id;
         this.meterReadingRecordId = meterReadingRecordId;
         this.months = months;
@@ -344,9 +305,6 @@ public class SDSysMeterReadingShareVo {
         this.shareUnitPrice = shareUnitPrice;
         this.chargeUnit = chargeUnit;
         this.householdShareCost = householdShareCost;
-        this.paidAmount = paidAmount;
-        this.unpaidExpenses = unpaidExpenses;
-        this.status = status;
         this.additionalCosts = additionalCosts;
         this.rate = rate;
         this.effectiveTimeStart = effectiveTimeStart;
