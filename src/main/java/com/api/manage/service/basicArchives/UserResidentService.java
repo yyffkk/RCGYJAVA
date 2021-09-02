@@ -9,6 +9,8 @@ import java.util.Map;
 public interface UserResidentService {
     List<VoUserResident> list(UserResident userResident);
 
+    List<VoUserResident> listAll(UserResident userResident);
+
     List<UserResident> findByBuildingUnitEstateId(Integer buildingUnitEstateId);
 
     Map<String, Object> findById(Integer id);
@@ -40,4 +42,5 @@ public interface UserResidentService {
     List<VoFindResidentByName> findResidentNameBySearch(SearchFindName searchFindName);
 
     List<VoFindResidentInfo> findResidentInfoBySearch(SearchFindName searchFindName);
+
 }

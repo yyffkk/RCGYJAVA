@@ -43,6 +43,27 @@ public class UserResidentController   {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 查询住户信息（包含搜索条件）
+     * @param userResident 搜索条件
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/listAll")
+    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
+    public Map<String,Object> listAll(UserResident userResident,Integer pageNum,Integer size){
+        PageHelper.startPage(pageNum,size);
+        List<VoUserResident> voUserResidentList = userResidentService.listAll(userResident);
+        PageInfo<VoUserResident> pageInfo = new PageInfo<>(voUserResidentList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
     /**
      * 添加业主信息
      * @param residentInsert 业主的添加信息

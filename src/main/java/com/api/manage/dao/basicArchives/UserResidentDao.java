@@ -16,6 +16,14 @@ public interface UserResidentDao {
     List<VoUserResident> list(UserResident userResident);
 
     /**
+     * 查询住户信息list，包含条件搜索 【住户表】
+     * @param userResident 搜索条件
+     * @return 业主信息显示 listVo
+     */
+    List<VoUserResident> listAll(UserResident userResident);
+
+
+    /**
      * 添加住户信息 【住户表】
      * @param userResident 住户信息
      * @return 影响行数
@@ -169,4 +177,5 @@ public interface UserResidentDao {
      * @return 住户信息及房产相关信息
      */
     List<VoFindResidentInfo> findResidentInfoBySearch(SearchFindName searchFindName);
+
 }

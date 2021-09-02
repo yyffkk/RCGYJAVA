@@ -27,6 +27,24 @@
         </where>
     </select>
 
+
+    <select id="listAll" parameterType="com.api.model.basicArchives.UserResident" resultType="com.api.vo.basicArchives.VoUserResident">
+        select id,name,tel,id_type,id_number
+        from user_resident
+        <where>
+            and type in (1,3)
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel like concat('%',#{tel},'%')
+            </if>
+            <if test="idNumber != null and idNumber != ''">
+                and id_number like concat('%',#{idNumber},'%')
+            </if>
+        </where>
+    </select>
+
     <!-- 添加住户信息-->
     <insert id="insert" parameterType="com.api.model.basicArchives.UserResident">
         insert into
@@ -228,7 +246,7 @@
 
     <!--  查询所有的住户信息  -->
     <select id="findAll" resultType="com.api.vo.basicArchives.VoFindAll">
-        select id as value,name as label from user_resident where type = 1 or type = 3
+        select id as value,name as label from user_resident where type in (1,3)
     </select>
 
     <select id="findNameBySearch" parameterType="com.api.model.basicArchives.SearchFindName" resultType="com.api.vo.basicArchives.VoFindAll">
