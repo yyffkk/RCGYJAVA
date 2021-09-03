@@ -35,4 +35,8 @@ public interface SysMeterReadingRecordService {
     List<VoMeterReadingShareBillDetails> findShareBillDetailsListByShareId(SearchShareBillDetails searchShareBillDetails);
 
     List<VoMeterReadingShareBill> shareBillList(SearchShareBill searchShareBill);
+
+    Map<String, Object> ShareBillPush(MeterReadingShareBillPush shareBillPush);
+
+    Map<String, Object> ShareBillPushDetails(MeterReadingShareBillDetailsPush shareBillDetailsPush);
 }

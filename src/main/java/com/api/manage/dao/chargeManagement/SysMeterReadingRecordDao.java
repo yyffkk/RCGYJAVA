@@ -129,4 +129,18 @@ public interface SysMeterReadingRecordDao {
      * @return 统计是否所有缴纳完成的缴纳状态
      */
     int countShareDetailsStatus(Integer id);
+
+    /**
+     * 人工手动推送公摊账单提醒
+     * @param shareBillId 公摊账单主键id
+     * @return 住户主键id数组
+     */
+    List<Integer> findResidentByShareBillId(Integer shareBillId);
+
+    /**
+     * 人工手动推送公摊账单明细提醒
+     * @param shareBillDetailsId 公摊账单明细主键id
+     * @return 住户主键id数组
+     */
+    List<Integer> findResidentByShareBillDetailsId(Integer shareBillDetailsId);
 }

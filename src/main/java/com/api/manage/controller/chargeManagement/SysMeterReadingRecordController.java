@@ -7,6 +7,8 @@ import com.api.vo.chargeManagement.VoMeterReadingShareBill;
 import com.api.vo.chargeManagement.VoMeterReadingShareBillDetails;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -93,6 +95,23 @@ public class SysMeterReadingRecordController {
         return map;
     }
 
+    /**
+     * 人工手动推送公摊账单提醒（群发）
+     * @param shareBillPush 抄表公摊账单推送信息
+     * @return map
+     */
+    @PostMapping("/ShareBillPush")
+    public Map<String,Object> ShareBillPush(@RequestBody MeterReadingShareBillPush shareBillPush){
+        return meterReadingRecordService.ShareBillPush(shareBillPush);
+    }
 
-
+    /**
+     * 人工手动推送公摊账单明细提醒（单体）
+     * @param shareBillDetailsPush 抄表公摊账单明细推送信息
+     * @return map
+     */
+    @PostMapping("/ShareBillPushDetails")
+    public Map<String,Object> ShareBillPushDetails(@RequestBody MeterReadingShareBillDetailsPush shareBillDetailsPush){
+        return meterReadingRecordService.ShareBillPushDetails(shareBillDetailsPush);
+    }
 }

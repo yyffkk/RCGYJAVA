@@ -178,5 +178,15 @@
     <select id="countShareDetailsStatus" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count((case status = 3 when true then 0 else 1 end)) from sys_meter_reading_share_details where share_bill_id = #{id}
     </select>
+    <select id="findResidentByShareBillId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select cre.resident_id
+        from sys_meter_reading_share_details as smrsd,cpm_resident_estate as cre
+        where smrsd.estate_id = cre.building_unit_estate_id and smrsd.share_bill_id = #{shareBillId}
+    </select>
+    <select id="findResidentByShareBillDetailsId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select cre.resident_id
+        from sys_meter_reading_share_details as smrsd,cpm_resident_estate as cre
+        where smrsd.estate_id = cre.building_unit_estate_id and smrsd.id = #{shareBillDetailsId}
+    </select>
 
 </mapper>
