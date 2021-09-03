@@ -19,6 +19,12 @@
             <if test="tel != null and tel != ''">
                 and uvn.tel like concat('%',#{tel},'%')
             </if>
+            <if test="years != null">
+                and YEAR(uvn.create_date) = #{years}
+            </if>
+            <if test="months != null">
+                and MONTH(uvn.create_date) = #{months}
+            </if>
             and uvn.status = 2
         </where>
         order by uvn.create_date desc

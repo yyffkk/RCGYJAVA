@@ -20,6 +20,14 @@ public class SearchVisitorsNew {
      * 访客手机号
      */
     private String tel;
+    /**
+     * 年份
+     */
+    private Integer years;
+    /**
+     * 月份
+     */
+    private Integer months;
 
     @Override
     public String toString() {
@@ -28,6 +36,8 @@ public class SearchVisitorsNew {
                 ", size=" + size +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
+                ", years=" + years +
+                ", months=" + months +
                 '}';
     }
 
@@ -63,13 +73,31 @@ public class SearchVisitorsNew {
         this.tel = tel;
     }
 
+    public Integer getYears() {
+        return years;
+    }
+
+    public void setYears(Integer years) {
+        this.years = years;
+    }
+
+    public Integer getMonths() {
+        return months;
+    }
+
+    public void setMonths(Integer months) {
+        this.months = months;
+    }
+
     public SearchVisitorsNew() {
     }
 
-    public SearchVisitorsNew(int pageNum, int size, String name, String tel) {
+    public SearchVisitorsNew(int pageNum, int size, String name, String tel, Integer years, Integer months) {
         this.pageNum = pageNum;
         this.size = size;
         this.name = name;
         this.tel = tel;
+        this.years = years;
+        this.months = months;
     }
 }
