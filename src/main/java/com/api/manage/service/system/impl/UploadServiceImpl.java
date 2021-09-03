@@ -7,6 +7,7 @@ import com.api.model.butlerService.UserDecorationDoc;
 import com.api.util.BASE64DecodedMultipartFile;
 import com.api.util.Base64StrToImage;
 import com.api.util.UploadUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class UploadServiceImpl implements UploadService {
     private static Map<String,Object> map = null;
     @Value("${prop.upload-advice}")
@@ -561,6 +563,8 @@ public class UploadServiceImpl implements UploadService {
         try {
             UploadUtil uploadUtil = new UploadUtil();
             String name = file.getName();
+            log.info(file.getOriginalFilename());
+            log.info(file.getName());
             url = uploadUtil.uploadExcelFile(file, UPLOAD_MODEL_EXCEL,name);
         } catch (Exception e) {
             //获取抛出的信息
