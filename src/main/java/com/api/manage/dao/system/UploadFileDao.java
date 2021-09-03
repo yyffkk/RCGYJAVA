@@ -3,6 +3,7 @@ package com.api.manage.dao.system;
 import com.api.model.basicArchives.CpmBuilding;
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
+import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.operationManagement.SysGreenArea;
 import com.api.model.operationManagement.SysKeyManagement;
 import com.api.model.operationManagement.SysServiceBrowsing;
@@ -64,5 +65,10 @@ public interface UploadFileDao {
      */
     int insertGreenArea(SysGreenArea sysGreenArea);
 
-
+    /**
+     * 添加日常缴费信息
+     * @param dailyPayment 日常缴费 信息model
+     * @return 影响行数
+     */
+    int insertDailyPayment(DailyPayment dailyPayment);
 }

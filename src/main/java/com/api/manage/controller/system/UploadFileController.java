@@ -81,5 +81,15 @@ public class UploadFileController {
         return uploadFileService.UploadGreenAreaFile(file);
     }
 
+    /**
+     * 导入欠费记录（导入日常缴费信息）
+     * @param file 上传Excel文件
+     * @return map
+     */
+    @PostMapping("/UploadDailyPaymentFile")
+    public Map<String,Object> UploadDailyPaymentFile(MultipartFile file){
+        return uploadFileService.UploadDailyPaymentFile(file);
+    }
+
 
 }

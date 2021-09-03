@@ -133,4 +133,46 @@
             #{createDate}
         )
     </insert>
+    <insert id="insertDailyPayment" parameterType="com.api.model.chargeManagement.DailyPayment">
+        insert into sys_daily_payment(
+            building_unit_estate_id,
+            charges_template_detail_id,
+            begin_date,
+            end_date,
+            unit_price,
+            type,
+            num,
+            cost_price,
+            paid_price,
+            total_price,
+            payment_price,
+            status,
+            rate,
+            payment_term,
+            create_id,
+            create_date,
+            is_delete
+        ) values (
+            #{buildingUnitEstateId},
+            #{chargesTemplateDetailId},
+            #{beginDate},
+            #{endDate},
+            #{unitPrice},
+            #{type},
+            #{num},
+            #{costPrice},
+            #{paidPrice},
+            #{totalPrice},
+            #{paymentPrice},
+            #{status},
+            #{rate},
+            #{paymentTerm},
+            #{createId},
+            #{createDate},
+            #{isDelete}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 </mapper>
