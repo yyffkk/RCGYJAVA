@@ -135,6 +135,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_SECURITY_MANAGEMENT_FILE_IMG;
     @Value("${prop.upload-business-sys-user-resume}")
     private String UPLOAD_BUSINESS_SYS_USER_RESUME;
+    @Value("${prop.upload-model-excel}")
+    private String UPLOAD_MODEL_EXCEL;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -549,6 +551,29 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadBusinessSysUserResume(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_BUSINESS_SYS_USER_RESUME);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadModelExcel(MultipartFile file) {
+        map = new HashMap<>();
+        String url = null;
+        try {
+            UploadUtil uploadUtil = new UploadUtil();
+            String name = file.getName();
+            url = uploadUtil.uploadExcelFile(file, UPLOAD_MODEL_EXCEL,name);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            map.put("message",message);
+            map.put("url","");
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","上传成功");
+        map.put("url",url);
+        map.put("status",true);
         return map;
     }
 

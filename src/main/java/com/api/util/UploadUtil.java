@@ -269,6 +269,45 @@ public class UploadUtil {
         }
     }
 
+    public String uploadExcelFile(MultipartFile file,String path,String fileName){
+        //传入真实路径
+        setRealPath();
+
+        //如果文件为空，则返回文件为空
+        if (file == null){
+            throw new RuntimeException("文件为空");
+        }
+        if (file.getSize() > 1024 * 1024 * 10) {
+            throw new RuntimeException("文件大小不能大于10M");
+        }
+        //获取文件后缀
+        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
+        if (!"xls,xlsx".toUpperCase().contains(suffix.toUpperCase())) {
+            throw new RuntimeException("请选择xls,xlsx格式的excel");
+        }
+
+        //加上前置路径
+        String savePath = uploadUtil.UPLOAD + path;
+        //获取保存路径
+        File savePathFile = new File(savePath);
+        if (!savePathFile.exists()) {
+            //若不存在该目录，则创建目录
+            savePathFile.mkdirs();
+        }
+
+        String filename = fileName + "." + suffix;
+
+        try {
+            //将文件保存指定目录
+            file.transferTo(new File(savePath + filename));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("保存文件异常");
+        }
+        return path + filename;
+    }
+
+
     //传入真实路径（没有文件服务器的情况，用项目目录下的static）
     public void setRealPath(){
         try {

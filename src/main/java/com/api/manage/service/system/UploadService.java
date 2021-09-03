@@ -117,4 +117,6 @@ public interface UploadService {
     Map<String, Object> uploadSecurityManagementImg(MultipartFile file);
 
     Map<String, Object> uploadBusinessSysUserResume(MultipartFile file);
+
+    Map<String, Object> uploadModelExcel(MultipartFile file);
 }

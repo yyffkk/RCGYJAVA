@@ -135,6 +135,9 @@ prop:
   #ButlerApp-报事报修工程维修管理：验收照片图片信息
   upload-butler-app-acceptance: /img/acceptance/
 
+  #Excel报表模版：上传Excel模版路径
+  upload-model-excel: /excel-model/
+
 
 
 

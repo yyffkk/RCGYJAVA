@@ -361,4 +361,16 @@ public class UploadController {
     public Map<String,Object> uploadBusinessSysUserResume(MultipartFile file){
         return uploadService.uploadBusinessSysUserResume(file);
     }
+
+    /**
+     * 上传模版excel
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadModelExcel")
+    public Map<String,Object> uploadModelExcel(MultipartFile file){
+        return uploadService.uploadModelExcel(file);
+    }
+
+
 }
