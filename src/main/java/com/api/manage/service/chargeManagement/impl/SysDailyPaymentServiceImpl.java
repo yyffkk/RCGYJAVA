@@ -70,7 +70,7 @@ public class SysDailyPaymentServiceImpl implements SysDailyPaymentService {
 
 
                 //计算出滞纳金
-                voDailyPayment = GetOverdueFine.getManagelistOverdueFine(voDailyPayment);
+                voDailyPayment = GetOverdueFine.getManageListOverdueFine(voDailyPayment);
 
 
             }
