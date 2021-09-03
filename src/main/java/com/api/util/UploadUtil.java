@@ -295,16 +295,15 @@ public class UploadUtil {
             savePathFile.mkdirs();
         }
 
-        String filename = fileName + "." + suffix;
 
         try {
             //将文件保存指定目录
-            file.transferTo(new File(savePath + filename));
+            file.transferTo(new File(savePath + fileName));
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("保存文件异常");
         }
-        return path + filename;
+        return path + fileName;
     }
 
 

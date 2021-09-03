@@ -562,9 +562,7 @@ public class UploadServiceImpl implements UploadService {
         String url = null;
         try {
             UploadUtil uploadUtil = new UploadUtil();
-            String name = file.getName();
-            log.info(file.getOriginalFilename());
-            log.info(file.getName());
+            String name = file.getOriginalFilename();
             url = uploadUtil.uploadExcelFile(file, UPLOAD_MODEL_EXCEL,name);
         } catch (Exception e) {
             //获取抛出的信息
