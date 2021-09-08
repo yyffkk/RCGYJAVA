@@ -1,0 +1,263 @@
+sys_user				系统用户
+
+sys_user_organization	用户组织关联表
+sys_organization		组织信息
+sys_organization_role	组织角色表
+
+sys_user_identity		用户身份关联表
+sys_identity			身份
+sys_identity_role		身份角色关联表
+
+
+sys_user_group		用户与用户组关联表
+sys_group				用户组
+sys_group_role			用户组角色关联表
+
+sys_role				角色表
+
+sys_jurisdiction		系统权限表
+sys_role_jurisdiction		角色权限关联表
+sys_jurisdiction_repel	权限互斥
+
+sys_action			系统编码功能对照表
+sys_data_dictionary		系统数据字典表
+
+sys_log_optration		操作日志表
+sys_log_setting		系统日志设置表
+sys_settiong_detail		日志设置明细表
+
+user_resident			住户信息表
+cpm_building			楼宇管理
+cpm_building_unit		楼宇单元管理
+cpm_building_unit_estate 楼宇单元房产信息
+cpm_parking_space		车位信息
+cpm_resident_estate	住户房产关联表 *
+user_resident_relatives	业主亲属关联表 *
+
+user_car				车辆表
+
+user_article_out		物品出门表
+resources_img			图片资源表
+sys_convenience_phone	便民电话
+user_access_card		用户门禁卡管理
+
+user_decoration					业主装修信息表【目前app没做，使用新版装修】
+user_decoration_access_card			装修门禁卡
+user_decoration_personnel			装修人员表
+user_decoration_track_inspection_cycle	装修跟踪检查周期表
+user_decoration_track_record			装修跟踪记录
+user_decoration_track_record_detail	装修跟踪记录明细表
+user_decoration_checks_content		装修检查内容表(标准表)
+user_decoration_track_checks_content	装修跟踪检查内容表（关联表）
+user_decoration_doc				装修须知doc文件
+
+sys_deposit_management				押金管理
+sys_deposit_management_refund_order		押金退款单
+sys_deposit_management_additional_cost 	押金附加费用表
+
+user_decoration_new				新版装修
+user_decoration_check_new			新版装修检查记录
+
+sys_prohibited_keywords				违禁关键字
+sys_advice						咨询建议/投诉表扬
+sys_advice_detail					建议反馈表
+sys_automatic_answer				默认回答 （暂时不做）
+sys_automatic_answer_detail			问题汇总（暂时不做）
+
+user_visitors						访客管理【目前使用新版访客管理】
+user_visitors_detail					访客出入明细
+user_visitors_new					新版访客管理
+user_visitors_new_url				新版访客管理分享编号管理
+
+sys_questionnaire					问卷调查表
+sys_questionnaire_topic				题目
+sys_questionnaire_multiple_choice		选择题选项
+sys_questionnaire_judgment_answer	判断题答案
+sys_questionnaire_short_answer		简答题答案
+sys_questionnaire_single_multiple_choice_answer	选择题答案
+sys_questionnaire_personnel			答卷人
+
+sys_vote							投票管理
+sys_vote_candidate					投票候选人
+sys_vote_personnel					投票人
+sys_vote_expected_time				即将开始预期间隔时间
+
+sys_gambit						话题管理
+sys_gambit_theme					主题管理
+sys_gambit_theme_like				点赞记录表
+sys_gambit_theme_comment			主题评论信息
+
+sys_article						物品管理
+sys_article_detail					物品明细
+sys_article_borrow					物品借还表
+
+
+sys_owners_committee				业委会管理
+
+sys_charges_template				物业收费标准模版
+sys_charges_template_detail			物业收费标准明细
+sys_charges_template_additional_cost	物业收费标准附加费用
+
+sys_work_order_type				工单类型管理
+sys_work_order_type_detail			工单类型明细管理
+sys_work_order_time_limit			工单时限管理
+
+
+sys_report_repair					报事报修表
+sys_report_repair_order				报事报修订单表
+sys_dispatch_list					工单表
+sys_dispatch_list_detail				派工单详情表（最开始生成订单编号）
+sys_process_record					处理进程记录（工单处理进行时实时记录）
+sys_handle_complete_detail			处理完成情况 (维修人记录)
+sys_dispatch_list_delayed			派工单延时信息表
+sys_report_repair_engineering			报事报修工程维修表
+sys_report_repair_engineering	_process_record 报事报修工程维修进程表
+sys_report_repair_engineering_report	报事报修工程维修工作汇报表
+sys_report_repair_engineering_maintenance_results 报事报修工程维修维修结果
+
+
+sys_voice_housekeeper				语音管家
+
+sys_daily_payment					缴费（日常缴费，报事报修缴费）
+sys_daily_payment_order				缴费订单（日常缴费订单，报事报修订单）
+sys_daily_payment_order_list			缴费订单详情列表清单（缴费与缴费订单关联表）
+sys_daily_payment_push				缴费推送（日常缴费推送，报事报修推送）
+sys_daily_payment_plan				缴费计划（周期生成缴费记录）
+
+sys_advence_payment_order			预缴订单（预缴充值订单）
+sys_advance_payment_refund_record	预缴退款记录
+
+sys_announcement_management		公告管理
+sys_notification_management			通知管理
+sys_activity_management			活动管理
+sys_activity_registration_management	活动报名管理
+sys_sponsor_management			主办方管理
+
+sys_fixed_amount_allocation			固定金额分摊
+sys_fixed_amount_allocation_result		固定金额分摊结果
+
+sys_inspection_point				巡检点管理（有经纬度）
+sys_inspection_check_items			巡检点检查项
+sys_inspection_route				巡检路线
+sys_inspection_point_route			巡检路线-点关联表
+sys_inspection_plan					巡检计划
+sys_inspection_execute				巡检执行情况（巡检计划周期的记录）
+sys_inspection_execute_point			巡检执行点（有经纬度）
+sys_inspection_execute_check_items	巡检执行点检查项
+sys_inspection_execute_map			巡检执行路线地图经纬度
+
+sys_facilities_category				设施/设备分类管理
+sys_facilities_manage				设施/设备管理
+sys_facilities_manage_situation		设施/设备情况记录信息
+sys_facilities_appointment			设施预约管理
+sys_facilities_plan					设施/设备管理计划
+sys_facilities_execute				设施/设备管理执行情况
+
+sys_news							资讯管理
+sys_news_category					资讯分类管理
+
+sys_key							钥匙管理
+sys_key_borrow					钥匙借取管理
+
+sys_package_collection				包裹代收管理
+
+sys_green_area					绿化区域管理
+sys_green_task						绿化任务管理
+
+sys_service_browsing				服务浏览
+sys_regulation_management			规程管理
+sys_community_introduction			社区介绍
+
+sys_hygiene_area					卫生区域管理
+sys_hygiene_task					卫生任务管理
+
+sys_electronic_commerce			电子商务管理
+sys_electronic_commerce_category		电子商务分类管理
+
+sys_one_button_alarm				一键报警
+sys_fire_alarm						火灾报警
+
+sys_train							培训管理
+sys_salary						薪资管理
+sys_data_base						数据库管理
+sys_contract						合同管理
+sys_material						物料管理
+sys_material_record					物料出入库记录管理
+sys_material_inventory 				物资盘点管理
+sys_material_inventory_detail			物资盘点详情管理
+
+sys_attendance_record				考勤记录管理
+sys_attendance_leave_record			考勤请假/加班记录管理
+sys_attendance_team				考勤小组
+sys_attendance_scheduling_plan		考勤排班计划
+sys_attendance_scheduling_plan_detail  考勤排班计划详情
+sys_attendance_scheduling_plan_exception 考勤排班计划例外情况
+
+
+sys_interview						客户访谈
+sys_housekeeping					家政服务管理
+sys_housekeeping_service			新版家政服务管理
+sys_housekeeping_service_process_record	新版家政服务处理进程记录（工单处理进行时实时记录）
+sys_housekeeping_service_order		新版家政服务费用订单
+
+sys_operations						运维管理
+
+sys_door_qrcode					门禁二维码
+sys_paper							开票票据
+
+sys_lease_contract					租赁合同表
+sys_lease							租赁表
+sys_lease_order					租赁保证金支付订单表（每条租赁记录只会有一条已支付								的支付信息）
+sys_lease_rent 						租赁租金账单表
+sys_lease_rent_bill_order				租赁租金账单支付订单表
+sys_lease_rent_order				租赁剩余需结清租金支付订单表
+
+manage_sys_message				后台消息列表
+sys_function_switch					模块功能开关
+
+sys_facilities_maintenance_record		设施设备保养记录管理
+sys_security_management			安全管理
+sys_meter_reading_data				抄表数据表
+sys_meter_reading_record			抄表记录表
+sys_meter_reading_share				抄表公摊表
+sys_meter_reading_share_details		抄表公摊详情表
+sys_meter_reading_share_details_order	抄表公摊详情订单表
+
+sys_rp_records						奖惩记录管理
+sys_station_change					岗位变动管理
+
+App:
+user_code						app用户验证码
+user_login_token					app用户登录login_token
+cpm_resident_estate_examine			住户房产关联审核表(用于注册和自己添加的房产审核)
+user_tel_update_code				app用户手机号修改验证码
+
+sys_message						消息列表
+sys_sending						消息接收列表
+sys_comment_message				评论通知消息列表
+
+sys_resident_request_log				用户请求日志
+
+
+BulterApp:
+butler_login_token					管家App用户登录login_token
+butler_user_code					管家App用户验证码
+butler_tel_update_code				管家App用户手机号修改验证码
+
+butler_sys_message					管家App系统通知
+butler_comment_message			管家App评论消息
+
+Pay:
+alipay_order						支付宝订单信息
+
+
+Shopping:
+shop_category						商品分类（3级分类【2级】）
+shop_supplier						供应商
+shop_goods						商品管理
+shop_goods_appointment			商品预约管理
+
+LilimPush:
+lilin_access_control_record			立林门禁记录
+lilin_attestation						立林验签表
+
