@@ -68,8 +68,8 @@ public class AppMeterReadingShareDetailsServiceImpl implements AppMeterReadingSh
                 //如果缴费时间大于缴费期限，有滞纳金，有逾期天数
                 expectedDays = (int) Math.round(d);
                 //计算滞纳金
-                //(计算公式【应缴金额*（1+费率/100），每日累乘】)
-                BigDecimal totalPrice = shareBillDetails.getAmountPayable();
+                //(计算公式【未缴金额*（1+费率/100），每日累乘】)
+                BigDecimal totalPrice = shareBillDetails.getRemainingUnpaidAmount();
                 for (int i = 0; i < expectedDays; i++) {
                     //需要先转化成double，不然int类型之间的计算结果会被默认转换成int
                     double rate = shareBillDetails.getRate().doubleValue();
@@ -77,7 +77,7 @@ public class AppMeterReadingShareDetailsServiceImpl implements AppMeterReadingSh
                     totalPrice = totalPrice.multiply(new BigDecimal(1 + rate / 100));
                 }
                 //滞纳金 = 总缴费金额 - 应缴金额
-                lateFee = totalPrice.subtract(shareBillDetails.getAmountPayable());
+                lateFee = totalPrice.subtract(shareBillDetails.getRemainingUnpaidAmount());
             }else {
                 //缴费时间小于缴费期限，滞纳金为0，逾期天数为0
             }
@@ -88,8 +88,8 @@ public class AppMeterReadingShareDetailsServiceImpl implements AppMeterReadingSh
                 //当前时间大于缴费期限，有滞纳金，有逾期天数
                 expectedDays = (int) Math.round(d);
                 //计算滞纳金
-                //(计算公式【应缴金额*（1+费率/100），每日累乘】)
-                BigDecimal totalPrice = shareBillDetails.getAmountPayable();
+                //(计算公式【未缴金额*（1+费率/100），每日累乘】)
+                BigDecimal totalPrice = shareBillDetails.getRemainingUnpaidAmount();
                 for (int i = 0; i < expectedDays; i++) {
                     //需要先转化成double，不然int类型之间的计算结果会被默认转换成int
                     double rate = shareBillDetails.getRate().doubleValue();
@@ -97,7 +97,7 @@ public class AppMeterReadingShareDetailsServiceImpl implements AppMeterReadingSh
                     totalPrice = totalPrice.multiply(new BigDecimal(1 + rate / 100));
                 }
                 //滞纳金 = 总缴费金额 - 应缴金额
-                lateFee = totalPrice.subtract(shareBillDetails.getAmountPayable());
+                lateFee = totalPrice.subtract(shareBillDetails.getRemainingUnpaidAmount());
             }else {
                 //当前时间小于缴费期限，滞纳金为0，逾期天数为0
             }

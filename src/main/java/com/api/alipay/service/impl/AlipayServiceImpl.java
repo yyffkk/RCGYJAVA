@@ -2564,12 +2564,25 @@ public class AlipayServiceImpl implements AlipayService {
                 throw new RuntimeException("支付金额小于或等于0");
             }
 
-            SysMeterReadingShareBillDetails shareBillDetails = appMeterReadingShareDetailsDao.findShareDetailsById(shareDetailsOrder.getShareDetailsId());
-            //获取滞纳金金额
-            BigDecimal lateFee = getLateFee(shareBillDetails);
-            BigDecimal totalPrice = lateFee.add(shareBillDetails.getAmountPayable());//滞纳金 + 应缴金额
-            if (totalPrice.compareTo(shareDetailsOrder.getPayPrice()) != 0){
-                throw new RuntimeException("输入金额与需支付金额不一致");
+            //计算出所需支付总金额(总待缴金额+总滞纳金)
+            BigDecimal paymentPriceTotal = BigDecimal.ZERO;//初始支付总金额
+
+
+            List<SysMeterReadingShareBillDetails> shareBillDetailsList = appMeterReadingShareDetailsDao.findShareDetailsByIds(shareDetailsOrder);
+            if (shareBillDetailsList != null && shareBillDetailsList.size()>0){
+                for (SysMeterReadingShareBillDetails shareBillDetails : shareBillDetailsList) {
+                    //获取滞纳金金额
+                    BigDecimal lateFee = getLateFee(shareBillDetails);
+
+                    paymentPriceTotal = paymentPriceTotal.add(shareBillDetails.getRemainingUnpaidAmount());//增加待缴金额
+                    paymentPriceTotal = paymentPriceTotal.add(lateFee);//增加滞纳金
+
+                }
+            }
+            log.info("需支付金额为："+paymentPriceTotal+"，实际支付金额为:"+paymentPrice);
+
+            if (paymentPriceTotal.compareTo(paymentPrice) != 0){
+                throw new RuntimeException("支付金额有误，请重新支付");
             }
 
 
@@ -2583,11 +2596,29 @@ public class AlipayServiceImpl implements AlipayService {
             shareDetailsOrder.setCreateDate(new Date());
             //填入付款状态，0.交易创建并等待买家付款
             shareDetailsOrder.setStatus(0);
-            //添加家政服务-服务费用支付订单信息
+            //添加抄表记录管理-抄表分摊详情费用支付订单信息
             int i = alipayDao.insertShareDetailsOrder(shareDetailsOrder);
             if (i<=0){
                 throw new RuntimeException("添加抄表记录管理-抄表分摊详情费用支付订单信息失败");
             }
+            //获取所有抄表公摊详情主键id
+            int[] shareDetailsIds = shareDetailsOrder.getShareDetailsIds();
+            for (int shareDetailsId : shareDetailsIds) {
+                //添加抄表公摊订单清单信息（抄表公摊详情信息 与 抄表公摊订单信息 关联表）
+                SysMeterReadingShareDetailsOrderList orderList = new SysMeterReadingShareDetailsOrderList();
+                orderList.setMeterShareOrderId(shareDetailsOrder.getId());
+                orderList.setMeterShareDetailsId(shareDetailsId);
+                //根据抄表公摊详情主键id查询当抄表公摊详情信息的缴费金额
+                SysMeterReadingShareBillDetails shareDetailsById = appMeterReadingShareDetailsDao.findShareDetailsById(shareDetailsId);
+                BigDecimal lateFee2 = getLateFee(shareDetailsById);
+                orderList.setPayPrice(shareDetailsById.getRemainingUnpaidAmount().add(lateFee2));
+                int insert = appMeterReadingShareDetailsDao.insertOrderList(orderList);
+                if (insert <= 0){
+                    throw new RuntimeException("添加抄表分摊订单清单信息失败");
+                }
+            }
+
+
             log.info("开始调用支付宝接口");
             // 开始使用支付宝SDK中提供的API
             AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
@@ -2707,15 +2738,23 @@ public class AlipayServiceImpl implements AlipayService {
                 if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
                     if(returnResult>0){
                         log.info("===========异步调用成功");
-                        SysMeterReadingShareBillDetails shareBillDetails = new SysMeterReadingShareBillDetails();
-                        shareBillDetails.setId(shareDetailsOrder.getShareDetailsId());
-                        shareBillDetails.setStatus(3);//填入3.已缴纳
-                        //根据主键id修改状态
-                        int update = appMeterReadingShareDetailsDao.updateStatusById(shareBillDetails);
-                        if (update <= 0){
-                            log.info("===========更新抄表记录管理-抄表分摊详情的状态失败");
-                            return "fail";
+                        //根据抄表分摊订单支付单号查询抄表分摊详情信息
+                        List<SysMeterReadingShareBillDetails> meterReadingShareBillDetails = appMeterReadingShareDetailsDao.findShareBillDetailsByOrderCode(outTradeNo);
+                        if (meterReadingShareBillDetails != null && meterReadingShareBillDetails.size()>0){
+                            for (SysMeterReadingShareBillDetails meterReadingShareBillDetail : meterReadingShareBillDetails) {
+                                SysMeterReadingShareBillDetails shareBillDetails = new SysMeterReadingShareBillDetails();
+                                shareBillDetails.setId(meterReadingShareBillDetail.getId());
+                                shareBillDetails.setStatus(3);//填入3.已缴纳
+                                //根据主键id修改状态
+                                int update = appMeterReadingShareDetailsDao.updateStatusById(shareBillDetails);
+                                if (update <= 0){
+                                    log.info("===========更新抄表记录管理-抄表分摊详情的状态失败");
+                                    return "fail";
+                                }
+                            }
                         }
+
+
 
                         // 成功要返回success，不然支付宝会不断发送通知。
                         return "success";
@@ -2812,7 +2851,7 @@ public class AlipayServiceImpl implements AlipayService {
                 expectedDays = (int) Math.round(d);
                 //计算滞纳金
                 //(计算公式【应缴金额*（1+费率/100），每日累乘】)
-                BigDecimal totalPrice = shareBillDetails.getAmountPayable();
+                BigDecimal totalPrice = shareBillDetails.getRemainingUnpaidAmount();
                 for (int i = 0; i < expectedDays; i++) {
                     //需要先转化成double，不然int类型之间的计算结果会被默认转换成int
                     double rate = shareBillDetails.getRate().doubleValue();
@@ -2820,7 +2859,7 @@ public class AlipayServiceImpl implements AlipayService {
                     totalPrice = totalPrice.multiply(new BigDecimal(1 + rate / 100));
                 }
                 //滞纳金 = 总缴费金额 - 应缴金额
-                lateFee = totalPrice.subtract(shareBillDetails.getAmountPayable());
+                lateFee = totalPrice.subtract(shareBillDetails.getRemainingUnpaidAmount());
             }else {
                 //缴费时间小于缴费期限，滞纳金为0，逾期天数为0
             }
@@ -2832,7 +2871,7 @@ public class AlipayServiceImpl implements AlipayService {
                 expectedDays = (int) Math.round(d);
                 //计算滞纳金
                 //(计算公式【应缴金额*（1+费率/100），每日累乘】)
-                BigDecimal totalPrice = shareBillDetails.getAmountPayable();
+                BigDecimal totalPrice = shareBillDetails.getRemainingUnpaidAmount();
                 for (int i = 0; i < expectedDays; i++) {
                     //需要先转化成double，不然int类型之间的计算结果会被默认转换成int
                     double rate = shareBillDetails.getRate().doubleValue();
@@ -2840,7 +2879,7 @@ public class AlipayServiceImpl implements AlipayService {
                     totalPrice = totalPrice.multiply(new BigDecimal(1 + rate / 100));
                 }
                 //滞纳金 = 总缴费金额 - 应缴金额
-                lateFee = totalPrice.subtract(shareBillDetails.getAmountPayable());
+                lateFee = totalPrice.subtract(shareBillDetails.getRemainingUnpaidAmount());
             }else {
                 //当前时间小于缴费期限，滞纳金为0，逾期天数为0
             }

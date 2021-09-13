@@ -121,7 +121,6 @@
     </insert>
     <insert id="insertShareDetailsOrder" parameterType="com.api.model.alipay.SysMeterReadingShareDetailsOrder">
         insert into sys_meter_reading_share_details_order(
-            share_details_id,
             code,
             name,
             tel,
@@ -131,7 +130,6 @@
             create_date,
             status
         )values (
-            #{shareDetailsId},
             #{code},
             #{name},
             #{tel},
@@ -141,6 +139,9 @@
             #{createDate},
             #{status}
         )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <select id="findSysHousekeepingServiceOrderByCode" parameterType="java.lang.String"

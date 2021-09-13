@@ -39,6 +39,8 @@ public class AppMeterReadingShareDetailsController {
 
     /**
      * 根据手机号查询所有的抄表公摊缴费订单记录
+     * @param pageNum 当前页数
+     * @param size 每页记录数
      * @param tel 手机号
      * @return map
      */

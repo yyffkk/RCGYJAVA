@@ -1,5 +1,7 @@
 package com.api.app.dao.butler;
 
+import com.api.model.alipay.SysMeterReadingShareDetailsOrder;
+import com.api.model.alipay.SysMeterReadingShareDetailsOrderList;
 import com.api.model.app.EstateIdAndShareBillId;
 import com.api.model.chargeManagement.SysMeterReadingShareBillDetails;
 import com.api.vo.app.AppMeterShareDetailsVo;
@@ -43,4 +45,25 @@ public interface AppMeterReadingShareDetailsDao {
      * @return 所有的抄表公摊缴费订单
      */
     List<AppMeterShareOrderVo> findAllMeterShareOrderByTel(String tel);
+
+    /**
+     * 添加抄表分摊订单清单
+     * @param orderList 抄表分摊详情订单清单信息
+     * @return 影响行数
+     */
+    int insertOrderList(SysMeterReadingShareDetailsOrderList orderList);
+
+    /**
+     * 根据抄表分摊订单支付单号查询抄表分摊详情信息
+     * @param outTradeNo 订单支付单号
+     * @return 抄表分摊详情信息
+     */
+    List<SysMeterReadingShareBillDetails> findShareBillDetailsByOrderCode(String outTradeNo);
+
+    /**
+     * 根据抄表分摊详情主键id查询抄表分摊详情
+     * @param shareDetailsOrder 抄表分摊详情订单
+     * @return 询抄表分摊详情
+     */
+    List<SysMeterReadingShareBillDetails> findShareDetailsByIds(SysMeterReadingShareDetailsOrder shareDetailsOrder);
 }

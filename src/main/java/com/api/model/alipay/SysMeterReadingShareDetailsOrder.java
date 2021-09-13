@@ -1,6 +1,7 @@
 package com.api.model.alipay;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -12,9 +13,9 @@ public class SysMeterReadingShareDetailsOrder {
      */
     private Integer id;
     /**
-     * 公摊账单详情主键id
+     * 公摊账单详情主键id数组
      */
-    private Integer shareDetailsId;
+    private int[] shareDetailsIds;
     /**
      * 公摊账单详情支付单号
      */
@@ -52,7 +53,7 @@ public class SysMeterReadingShareDetailsOrder {
     public String toString() {
         return "SysMeterReadingShareDetailsOrder{" +
                 "id=" + id +
-                ", shareDetailsId=" + shareDetailsId +
+                ", shareDetailsIds=" + Arrays.toString(shareDetailsIds) +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
@@ -72,12 +73,12 @@ public class SysMeterReadingShareDetailsOrder {
         this.id = id;
     }
 
-    public Integer getShareDetailsId() {
-        return shareDetailsId;
+    public int[] getShareDetailsIds() {
+        return shareDetailsIds;
     }
 
-    public void setShareDetailsId(Integer shareDetailsId) {
-        this.shareDetailsId = shareDetailsId;
+    public void setShareDetailsIds(int[] shareDetailsIds) {
+        this.shareDetailsIds = shareDetailsIds;
     }
 
     public String getCode() {
@@ -147,9 +148,9 @@ public class SysMeterReadingShareDetailsOrder {
     public SysMeterReadingShareDetailsOrder() {
     }
 
-    public SysMeterReadingShareDetailsOrder(Integer id, Integer shareDetailsId, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer status) {
+    public SysMeterReadingShareDetailsOrder(Integer id, int[] shareDetailsIds, String code, String name, String tel, Integer payType, BigDecimal payPrice, Integer createId, Date createDate, Integer status) {
         this.id = id;
-        this.shareDetailsId = shareDetailsId;
+        this.shareDetailsIds = shareDetailsIds;
         this.code = code;
         this.name = name;
         this.tel = tel;
