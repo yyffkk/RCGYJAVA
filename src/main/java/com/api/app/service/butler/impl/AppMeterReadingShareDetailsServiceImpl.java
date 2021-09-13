@@ -5,6 +5,7 @@ import com.api.app.service.butler.AppMeterReadingShareDetailsService;
 import com.api.model.app.EstateIdAndShareBillId;
 import com.api.model.chargeManagement.SysMeterReadingShareBillDetails;
 import com.api.vo.app.AppMeterShareDetailsVo;
+import com.api.vo.app.AppMeterShareOrderVo;
 import com.api.vo.app.AppMeterShareVo;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,11 @@ public class AppMeterReadingShareDetailsServiceImpl implements AppMeterReadingSh
         map.put("status",true);
         map.put("data",appMeterShareVos);
         return map;
+    }
+
+    @Override
+    public List<AppMeterShareOrderVo> findAllMeterShareOrderByTel(String tel) {
+        return appMeterReadingShareDetailsDao.findAllMeterShareOrderByTel(tel);
     }
 
     private BigDecimal getLateFee(AppMeterShareDetailsVo shareBillDetails) {

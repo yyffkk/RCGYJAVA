@@ -3,6 +3,7 @@ package com.api.app.dao.butler;
 import com.api.model.app.EstateIdAndShareBillId;
 import com.api.model.chargeManagement.SysMeterReadingShareBillDetails;
 import com.api.vo.app.AppMeterShareDetailsVo;
+import com.api.vo.app.AppMeterShareOrderVo;
 import com.api.vo.app.AppMeterShareVo;
 
 import java.util.List;
@@ -35,4 +36,11 @@ public interface AppMeterReadingShareDetailsDao {
      * @return 未缴纳的公摊账单详情
      */
     List<AppMeterShareDetailsVo> findUnPayShareDetailsById(EstateIdAndShareBillId estateIdAndShareBillId);
+
+    /**
+     * 根据手机号查询所有的抄表公摊缴费订单
+     * @param tel 手机号
+     * @return 所有的抄表公摊缴费订单
+     */
+    List<AppMeterShareOrderVo> findAllMeterShareOrderByTel(String tel);
 }

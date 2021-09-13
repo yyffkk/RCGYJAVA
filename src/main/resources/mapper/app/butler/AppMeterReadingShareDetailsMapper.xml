@@ -20,8 +20,13 @@
         where smrsd.share_bill_id = smrs.id and smrsd.estate_id = #{estateId} and smrsd.status in (1,2)
         GROUP BY smrsd.share_bill_id
     </select>
+
     <select id="findUnPayShareDetailsById" parameterType="com.api.model.app.EstateIdAndShareBillId" resultType="com.api.vo.app.AppMeterShareDetailsVo">
         select * from sys_meter_reading_share_details where share_bill_id = #{shareBillId} and estate_id = #{estateId} and status in (1,2)
+    </select>
+
+    <select id="findAllMeterShareOrderByTel" parameterType="java.lang.String" resultType="com.api.vo.app.AppMeterShareOrderVo">
+
     </select>
 
 </mapper>
