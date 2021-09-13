@@ -13,4 +13,15 @@
             resultType="com.api.model.chargeManagement.SysMeterReadingShareBillDetails">
         select * from sys_meter_reading_share_details where share_bill_id = #{shareDetailsId}
     </select>
+
+    <select id="findAllUnPayList" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppMeterShareVo">
+        select smrs.id,smrs.months,smrs.type,count(smrs.id) as num,sum(remaining_unpaid_amount) as total
+        from sys_meter_reading_share_details as smrsd,sys_meter_reading_share as smrs
+        where smrsd.share_bill_id = smrs.id and smrsd.estate_id = #{estateId} and smrsd.status in (1,2)
+        GROUP BY smrsd.share_bill_id
+    </select>
+    <select id="findUnPayShareDetailsById" parameterType="com.api.model.app.EstateIdAndShareBillId" resultType="com.api.vo.app.AppMeterShareDetailsVo">
+        select * from sys_meter_reading_share_details where share_bill_id = #{shareBillId} and estate_id = #{estateId} and status in (1,2)
+    </select>
+
 </mapper>

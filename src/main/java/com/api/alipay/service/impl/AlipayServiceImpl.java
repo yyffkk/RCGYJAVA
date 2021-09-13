@@ -2565,6 +2565,7 @@ public class AlipayServiceImpl implements AlipayService {
             }
 
             SysMeterReadingShareBillDetails shareBillDetails = appMeterReadingShareDetailsDao.findShareDetailsById(shareDetailsOrder.getShareDetailsId());
+            //获取滞纳金金额
             BigDecimal lateFee = getLateFee(shareBillDetails);
             BigDecimal totalPrice = lateFee.add(shareBillDetails.getAmountPayable());//滞纳金 + 应缴金额
             if (totalPrice.compareTo(shareDetailsOrder.getPayPrice()) != 0){
