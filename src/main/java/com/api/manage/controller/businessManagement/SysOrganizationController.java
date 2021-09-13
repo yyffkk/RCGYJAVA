@@ -100,7 +100,7 @@ public class SysOrganizationController   {
     }
 
     /**
-     * 查询所有的部门id 和 name（类别为部门的）
+     * 查询所有的部门id 和 name（类别为部门、工作组、单位、维修公司的）
      * @return map
      */
     @GetMapping("/findAllDepartment")
