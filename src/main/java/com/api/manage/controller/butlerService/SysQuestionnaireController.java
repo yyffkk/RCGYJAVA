@@ -34,7 +34,7 @@ public class SysQuestionnaireController   {
      * @return 搜索条件
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchQuestionnaire searchQuestionnaire){
         PageHelper.startPage(searchQuestionnaire.getPageNum(),searchQuestionnaire.getSize());
         List<VoQuestionnaire> voQuestionnaireList = sysQuestionnaireService.list(searchQuestionnaire);
@@ -52,7 +52,7 @@ public class SysQuestionnaireController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysQuestionnaire sysQuestionnaire){
         return sysQuestionnaireService.insert(sysQuestionnaire);
     }
@@ -63,7 +63,7 @@ public class SysQuestionnaireController   {
      * @return map
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return sysQuestionnaireService.findById(id);
     }
@@ -74,7 +74,7 @@ public class SysQuestionnaireController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysQuestionnaire sysQuestionnaire){
         return sysQuestionnaireService.update(sysQuestionnaire);
     }
@@ -86,7 +86,7 @@ public class SysQuestionnaireController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysQuestionnaireService.delete(ids.getIds());
     }
@@ -97,7 +97,7 @@ public class SysQuestionnaireController   {
      * @return map
      */
     @PostMapping("/falseDelete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysQuestionnaireService.falseDelete(ids.getIds());
     }
@@ -119,7 +119,7 @@ public class SysQuestionnaireController   {
      * @return map
      */
     @GetMapping("/reportAnalysis")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> reportAnalysis(Integer id){
         return sysQuestionnaireService.reportAnalysis(id);
     }
@@ -131,7 +131,7 @@ public class SysQuestionnaireController   {
      * @return map
      */
     @GetMapping("/listShortAnswer")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> listShortAnswer(SearchShortAnswer searchShortAnswer){
         PageHelper.startPage(searchShortAnswer.getPageNum(),searchShortAnswer.getSize());
         List<VoReportQuestionnaireShort> voReportQuestionnaireShortList = sysQuestionnaireService.listShortAnswer(searchShortAnswer);

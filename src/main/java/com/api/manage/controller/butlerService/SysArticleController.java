@@ -36,7 +36,7 @@ public class SysArticleController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchArticle searchArticle){
         PageHelper.startPage(searchArticle.getPageNum(),searchArticle.getSize());
         List<VoArticle> voArticleList = sysArticleService.list(searchArticle);
@@ -54,7 +54,7 @@ public class SysArticleController   {
      * @return map
      */
     @GetMapping("/listDetail")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> listDetail(SearchArticleDetail searchArticleDetail){
         PageHelper.startPage(searchArticleDetail.getPageNum(),searchArticleDetail.getSize());
         List<VoArticleDetail> voArticleDetailList = sysArticleService.listDetail(searchArticleDetail);
@@ -72,7 +72,7 @@ public class SysArticleController   {
      * @return 物品照片信息集合
      */
     @GetMapping("/findImgById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public List<VoResourcesImg> findImgById(Integer id){
         return sysArticleService.findImgById(id);
     }
@@ -84,7 +84,7 @@ public class SysArticleController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody Article article){
         return sysArticleService.insert(article);
     }
@@ -95,7 +95,7 @@ public class SysArticleController   {
      * @return 物品信息
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoFindByIdArticle findById(Integer id){
         return sysArticleService.findById(id);
     }
@@ -106,7 +106,7 @@ public class SysArticleController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody Article article){
         return sysArticleService.update(article);
     }
@@ -117,7 +117,7 @@ public class SysArticleController   {
      * @return map
      */
     @PostMapping("/delete")
-//    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysArticleService.delete(ids.getIds());
     }

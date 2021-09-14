@@ -33,7 +33,7 @@ public class SysReportRepairController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchReportRepair searchReportRepair){
         PageHelper.startPage(searchReportRepair.getPageNum(),searchReportRepair.getSize());
         List<VoReportRepair> voReportRepairList = sysReportRepairService.list(searchReportRepair);
@@ -52,7 +52,7 @@ public class SysReportRepairController   {
      * @return 报修详情
      */
     @GetMapping("/findRepairDetail")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoRepair findRepairDetail(Integer id){
         return sysReportRepairService.findRepairDetail(id);
     }
@@ -63,7 +63,7 @@ public class SysReportRepairController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody ReportRepair reportRepair){
         return sysReportRepairService.insert(reportRepair);
     }
@@ -74,7 +74,7 @@ public class SysReportRepairController   {
      * @return 报事报修 Vo findById 回显
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoFindByIdRepair findById(Integer id){
         return sysReportRepairService.findById(id);
     }
@@ -86,7 +86,7 @@ public class SysReportRepairController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody ReportRepair reportRepair){
         return sysReportRepairService.update(reportRepair);
     }

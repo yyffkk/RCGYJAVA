@@ -33,7 +33,7 @@ public class SysInspectionRouteController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchInspectionPoint searchInspectionPoint){
         PageHelper.startPage(searchInspectionPoint.getPageNum(),searchInspectionPoint.getSize());
         List<VoInspectionRoute> voInspectionRouteList = sysInspectionRouteService.list(searchInspectionPoint);
@@ -51,7 +51,7 @@ public class SysInspectionRouteController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysInspectionRoute sysInspectionRoute){
         return sysInspectionRouteService.insert(sysInspectionRoute);
     }
@@ -62,7 +62,7 @@ public class SysInspectionRouteController   {
      * @return map
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return sysInspectionRouteService.findById(id);
     }
@@ -73,7 +73,7 @@ public class SysInspectionRouteController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysInspectionRoute sysInspectionRoute){
         return sysInspectionRouteService.update(sysInspectionRoute);
     }
@@ -84,7 +84,7 @@ public class SysInspectionRouteController   {
      * @return map
      */
     @PostMapping("/falseDelete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds voIds){
         return sysInspectionRouteService.falseDelete(voIds.getIds());
     }
@@ -95,7 +95,7 @@ public class SysInspectionRouteController   {
      * @return map
      */
     @GetMapping("/isEnable")
-    @RequiresPermissions(value = {"0315","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0315"},logical = Logical.AND)
     public Map<String,Object> isEnable(Integer id){
         return sysInspectionRouteService.isEnable(id);
     }

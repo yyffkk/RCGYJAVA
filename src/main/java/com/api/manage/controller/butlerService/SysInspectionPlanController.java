@@ -36,7 +36,7 @@ public class SysInspectionPlanController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchInspectionPlan searchInspectionPlan){
         PageHelper.startPage(searchInspectionPlan.getPageNum(),searchInspectionPlan.getSize());
         List<VoInspectionPlan> voInspectionPlans = sysInspectionPlanService.list(searchInspectionPlan);
@@ -54,7 +54,7 @@ public class SysInspectionPlanController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysInspectionPlan sysInspectionPlan){
         return sysInspectionPlanService.insert(sysInspectionPlan);
     }
@@ -66,7 +66,7 @@ public class SysInspectionPlanController   {
      * @return map
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return sysInspectionPlanService.findById(id);
     }
@@ -77,7 +77,7 @@ public class SysInspectionPlanController   {
      * @return map
      */
     @PostMapping("/falseDelete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysInspectionPlanService.falseDelete(ids.getIds());
     }
@@ -88,7 +88,7 @@ public class SysInspectionPlanController   {
      * @return map
      */
     @GetMapping("/isEnable")
-    @RequiresPermissions(value = {"0315","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0315"},logical = Logical.AND)
     public Map<String,Object> isEnable(Integer id){
         return sysInspectionPlanService.isEnable(id);
     }

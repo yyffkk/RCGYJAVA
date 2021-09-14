@@ -8,6 +8,8 @@ import com.api.vo.butlerService.VoFacilitiesAppointment;
 import com.api.vo.butlerService.VoFacilitiesCategory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class SysFacilitiesAppointmentController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchFacilitiesAppointment searchFacilitiesAppointment){
         PageHelper.startPage(searchFacilitiesAppointment.getPageNum(),searchFacilitiesAppointment.getSize());
         List<VoFacilitiesAppointment> voFacilitiesAppointmentList = facilitiesAppointmentService.list(searchFacilitiesAppointment);

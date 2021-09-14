@@ -8,6 +8,8 @@ import com.api.vo.butlerService.VoOperations;
 import com.api.vo.butlerService.VoUserAdvice;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +33,7 @@ public class SysOperationsController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchOperations searchOperations){
         PageHelper.startPage(searchOperations.getPageNum(),searchOperations.getSize());
         List<VoOperations> voOperationsList = sysOperationsService.list(searchOperations);

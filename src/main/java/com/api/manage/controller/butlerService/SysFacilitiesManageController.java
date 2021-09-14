@@ -9,6 +9,8 @@ import com.api.vo.butlerService.VoFacilitiesCategory;
 import com.api.vo.butlerService.VoFacilitiesManage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +33,7 @@ public class SysFacilitiesManageController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchFacilitiesManage searchFacilitiesManage){
         PageHelper.startPage(searchFacilitiesManage.getPageNum(),searchFacilitiesManage.getSize());
         List<VoFacilitiesManage> voFacilitiesManageList = sysFacilitiesManageService.list(searchFacilitiesManage);
@@ -49,6 +52,7 @@ public class SysFacilitiesManageController   {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody FacilitiesManage facilitiesManage){
         return sysFacilitiesManageService.insert(facilitiesManage);
     }
@@ -59,6 +63,7 @@ public class SysFacilitiesManageController   {
      * @return map
      */
     @PostMapping("/update")
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody FacilitiesManage facilitiesManage){
         return sysFacilitiesManageService.update(facilitiesManage);
     }
@@ -69,6 +74,7 @@ public class SysFacilitiesManageController   {
      * @return map
      */
     @GetMapping("/findDetailById")
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> findDetailById(Integer id){
         return sysFacilitiesManageService.findDetailById(id);
     }
@@ -79,6 +85,7 @@ public class SysFacilitiesManageController   {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysFacilitiesManageService.delete(ids.getIds());
     }

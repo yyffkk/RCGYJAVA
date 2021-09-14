@@ -33,7 +33,7 @@ public class SysOwnersCommitteeController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchOwnersCommittee searchOwnersCommittee){
         PageHelper.startPage(searchOwnersCommittee.getPageNum(),searchOwnersCommittee.getSize());
         List<VoOwnersCommittee> voOwnersCommitteeList = sysOwnersCommitteeService.list(searchOwnersCommittee);
@@ -52,7 +52,7 @@ public class SysOwnersCommitteeController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysOwnersCommittee sysOwnersCommittee){
         return sysOwnersCommitteeService.insert(sysOwnersCommittee);
     }
@@ -63,7 +63,7 @@ public class SysOwnersCommitteeController   {
      * @return 业委会信息
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoFindByIdOwnersCommittee findById(Integer id){
         return sysOwnersCommitteeService.findById(id);
     }
@@ -74,7 +74,7 @@ public class SysOwnersCommitteeController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysOwnersCommittee sysOwnersCommittee){
         return sysOwnersCommitteeService.update(sysOwnersCommittee);
     }
@@ -85,7 +85,7 @@ public class SysOwnersCommitteeController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysOwnersCommitteeService.delete(ids.getIds());
     }

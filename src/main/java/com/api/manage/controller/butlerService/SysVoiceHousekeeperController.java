@@ -31,7 +31,7 @@ public class SysVoiceHousekeeperController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchVoiceHousekeeper searchVoiceHousekeeper){
         PageHelper.startPage(searchVoiceHousekeeper.getPageNum(),searchVoiceHousekeeper.getSize());
         List<VoVoiceHousekeeper> voVoiceHousekeeperList = sysVoiceHousekeeperService.list(searchVoiceHousekeeper);
@@ -50,7 +50,7 @@ public class SysVoiceHousekeeperController   {
      * @return map
      */
     @PostMapping("/insertRemake")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insertRemake(@RequestBody VoiceHousekeeperRemake voiceHousekeeperRemake){
         return sysVoiceHousekeeperService.insertRemake(voiceHousekeeperRemake);
     }

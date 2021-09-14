@@ -31,7 +31,7 @@ public class SysGambitThemeController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchGambitTheme searchGambitTheme){
         PageHelper.startPage(searchGambitTheme.getPageNum(),searchGambitTheme.getSize());
         List<VoGambitTheme> voGambitThemeList = sysGambitThemeService.list(searchGambitTheme);
@@ -49,7 +49,7 @@ public class SysGambitThemeController   {
      * @return map
      */
     @PostMapping("/falseDelete")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysGambitThemeService.falseDelete(ids.getIds());
     }
@@ -60,7 +60,7 @@ public class SysGambitThemeController   {
      * @return map
      */
     @PostMapping("/recovery")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> recovery(@RequestBody VoIds ids){
         return sysGambitThemeService.recovery(ids.getIds());
     }

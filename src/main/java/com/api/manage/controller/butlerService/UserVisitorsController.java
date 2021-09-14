@@ -33,7 +33,7 @@ public class UserVisitorsController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserVisitors searchUserVisitors){
         PageHelper.startPage(searchUserVisitors.getPageNum(),searchUserVisitors.getSize());
         List<VoUserVisitors> voUserVisitorsList =userVisitorsService.list(searchUserVisitors);
@@ -51,7 +51,7 @@ public class UserVisitorsController   {
      * @return 访客管理信息
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoFindByIdVisitors findById(Integer id){
         return userVisitorsService.findById(id);
     }
@@ -61,7 +61,7 @@ public class UserVisitorsController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody UserVisitors visitors){
         //如果访客状态为3.已过期，则自动转换成1.未到，因为过期状态是靠判断出来的，数据库不录入
         if (visitors.getVisitorStatus() == 3){
@@ -76,7 +76,7 @@ public class UserVisitorsController   {
      * @return map
      */
     @PostMapping("/cancel")
-    @RequiresPermissions(value = {"0308","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0308"},logical = Logical.AND)
     public Map<String,Object> cancel(@RequestBody VoIds ids){
         return userVisitorsService.cancel(ids.getIds());
     }
@@ -87,7 +87,7 @@ public class UserVisitorsController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return userVisitorsService.delete(ids.getIds());
     }
@@ -98,7 +98,7 @@ public class UserVisitorsController   {
      * @return 访客出入记录
      */
     @GetMapping("listDetail")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> listDetail(Integer id){
         return userVisitorsService.listDetail(id);
     }
@@ -108,7 +108,7 @@ public class UserVisitorsController   {
      * @return map
      */
     @GetMapping("/countVisitorsNew")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> countVisitorsNew(){
         return userVisitorsService.countVisitorsNew();
     }

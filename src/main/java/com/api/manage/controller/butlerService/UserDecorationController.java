@@ -41,7 +41,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserDecoration searchUserDecoration){
         PageHelper.startPage(searchUserDecoration.getPageNum(),searchUserDecoration.getSize());
         List<VoUserDecoration> voUserDecorationList =userDecorationService.list(searchUserDecoration);
@@ -59,7 +59,7 @@ public class UserDecorationController   {
 //     * @return map （二维码路径）
 //     */
 //    @PostMapping("/createQRCode")
-//    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+//    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
 //    public Map<String,Object> insert(@RequestBody QRCodeContent qrCodeContent){
 //        Map<String,Object> map = new HashMap<>();
 //        try {
@@ -96,7 +96,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/decorationPersonnelList")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> decorationPersonnelList(Integer id,Integer pageNum,Integer size){
         PageHelper.startPage(pageNum,size);
         List<VoUserDecorationPersonnel> voUserDecorationPersonnelList = userDecorationService.decorationPersonnelList(id);
@@ -115,7 +115,7 @@ public class UserDecorationController   {
      * @return 装修公司资料
      */
     @GetMapping("/decorationData")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> decorationData(Integer id){
         return userDecorationService.decorationData(id);
     }
@@ -128,7 +128,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/userAccessCardList")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> userAccessCardList(Integer id,Integer pageNum,Integer size){
         PageHelper.startPage(pageNum,size);
         List<VoUserAccessCard> voUserAccessCardList = userDecorationService.userAccessCardList(id);
@@ -148,7 +148,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/decorationTrackRecordList")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> decorationTrackRecordList(Integer id,Integer pageNum,Integer size){
         PageHelper.startPage(pageNum,size);
         List<VoUserDecorationTrackRecord> voUserDecorationTrackRecordList = userDecorationService.decorationTrackRecordList(id);
@@ -168,7 +168,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/decorationFinishRecordList")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> decorationFinishRecordList(Integer id,Integer pageNum,Integer size){
         PageHelper.startPage(pageNum,size);
         List<VoUserDecorationTrackRecord> voUserDecorationTrackRecordList = userDecorationService.decorationFinishRecordList(id);
@@ -186,7 +186,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/insertDecorationPersonnel")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insertDecorationPersonnel(@RequestBody UserDecorationPersonnel userDecorationPersonnel){
         return userDecorationService.insertDecorationPersonnel(userDecorationPersonnel);
     }
@@ -198,7 +198,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/deleteDecorationPersonnel")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> deleteDecorationPersonnel(@RequestBody VoIds ids){
         return userDecorationService.deleteDecorationPersonnel(ids.getIds());
     }
@@ -209,7 +209,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/findByIdDecorationPersonnel")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> findByIdDecorationPersonnel(Integer id){
         return userDecorationService.findByIdDecorationPersonnel(id);
     }
@@ -220,7 +220,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/updateDecorationPersonnel")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> updateDecorationPersonnel(@RequestBody UserDecorationPersonnel userDecorationPersonnel){
         return userDecorationService.updateDecorationPersonnel(userDecorationPersonnel);
     }
@@ -231,7 +231,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return userDecorationService.delete(ids.getIds());
     }
@@ -242,7 +242,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/invalid")
-    @RequiresPermissions(value = {"0308","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0308"},logical = Logical.AND)
     public Map<String,Object> invalid(@RequestBody VoIds ids){
         return userDecorationService.invalid(ids.getIds());
     }
@@ -252,7 +252,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/countDecorationNow")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> countDecorationNow(){
         return userDecorationService.countDecorationNow();
     }
@@ -262,7 +262,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/countPerformed")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> countPerformed(){
         return userDecorationService.countPerformed();
     }
@@ -273,7 +273,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/findAllChecksContent")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> findAllChecksContent(){
         return userDecorationService.findAllChecksContent();
     }
@@ -284,7 +284,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/insertCheckContent")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insertCheckContent(@RequestBody UserDecorationChecksContent trackChecksContent){
         return userDecorationService.insertCheckContent(trackChecksContent);
     }
@@ -295,7 +295,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/updateCheckContent")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> updateCheckContent(@RequestBody UserDecorationChecksContent trackChecksContent){
         return userDecorationService.updateCheckContent(trackChecksContent);
     }
@@ -306,7 +306,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/deleteCheckContent")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> deleteCheckContent(Integer checkContentId){
         return userDecorationService.deleteCheckContent(checkContentId);
     }
@@ -318,7 +318,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/updateDecoration")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> updateDecoration(@RequestBody UserDecoration userDecoration){
         return userDecorationService.updateDecoration(userDecoration);
     }
@@ -330,7 +330,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/insertDecoration")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insertDecoration(@RequestBody UserDecoration userDecoration){
         return userDecorationService.insertDecoration(userDecoration);
     }
@@ -341,7 +341,7 @@ public class UserDecorationController   {
      * @return map
      */
     @GetMapping("/decorationCostDetail")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> decorationCostDetail(Integer decorationId){
         //调用app的装修费用详情回显
         return decorationApplicationService.decorationCostDetail(decorationId);
@@ -352,7 +352,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/applicationPay")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> applicationPay(@RequestBody AppDepositManagement appDepositManagement){
         //获取登录用户信息
         Subject subject = SecurityUtils.getSubject();
@@ -368,7 +368,7 @@ public class UserDecorationController   {
      * @return map
      */
     @PostMapping("/insertDecorationPerson")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insertDecorationPerson(@RequestBody AppUserDecorationSubmit decorationSubmit){
         return decorationApplicationService.insertDecorationPerson(decorationSubmit);
     }

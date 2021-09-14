@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-//@WebFilter(urlPatterns = "/systemData/*")
+@WebFilter(urlPatterns = "/systemData/*")
 public class SystemDataBigScreenFilter implements Filter {
     ObjectMapper objectMapper = new ObjectMapper();
 //    /**

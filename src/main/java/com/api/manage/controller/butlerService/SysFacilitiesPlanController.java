@@ -10,6 +10,8 @@ import com.api.vo.butlerService.VoFacilitiesPlan;
 import com.api.vo.butlerService.VoGambit;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +34,7 @@ public class SysFacilitiesPlanController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchFacilitiesPlan searchFacilitiesPlan){
         PageHelper.startPage(searchFacilitiesPlan.getPageNum(),searchFacilitiesPlan.getSize());
         List<VoFacilitiesPlan> voFacilitiesPlanList = sysFacilitiesPlanService.list(searchFacilitiesPlan);

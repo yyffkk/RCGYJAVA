@@ -6,6 +6,8 @@ import com.api.vo.butlerService.VoGambitTheme;
 import com.api.vo.butlerService.VoHousekeeping;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +32,7 @@ public class SysHousekeepingController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchHousekeeping searchHousekeeping){
         PageHelper.startPage(searchHousekeeping.getPageNum(),searchHousekeeping.getSize());
         List<VoHousekeeping> voHousekeepingList = sysHousekeepingService.list(searchHousekeeping);

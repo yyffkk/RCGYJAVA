@@ -3,6 +3,8 @@ package com.api.manage.controller.butlerService;
 import com.api.manage.service.butlerService.SysFacilitiesMaintenanceRecordService;
 import com.api.model.butlerService.FacilitiesMaintenanceRecord;
 import com.api.vo.basicArchives.VoIds;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,6 +25,7 @@ public class SysFacilitiesMaintenanceRecordController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(Integer facilitiesManageId){
         return maintenanceRecordService.list(facilitiesManageId);
     }

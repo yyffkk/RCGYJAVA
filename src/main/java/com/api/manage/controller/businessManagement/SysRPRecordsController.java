@@ -6,6 +6,8 @@ import com.api.model.businessManagement.SysRPRecords;
 import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,6 +29,7 @@ public class SysRPRecordsController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> list(SearchRPRecords searchRPRecords){
         PageHelper.startPage(searchRPRecords.getPageNum(),searchRPRecords.getSize());
         List<SysRPRecords> sysRPRecordsList = sysRPRecordsService.list(searchRPRecords);
@@ -44,6 +47,7 @@ public class SysRPRecordsController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0104"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysRPRecords sysRPRecords){
         return sysRPRecordsService.insert(sysRPRecords);
     }

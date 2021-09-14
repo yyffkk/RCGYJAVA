@@ -37,7 +37,7 @@ public class ComplaintPraiseController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchUserAdvice searchUserAdvice){
         PageHelper.startPage(searchUserAdvice.getPageNum(),searchUserAdvice.getSize());
         List<VoUserAdvice> voUserAdviceList = complaintPraiseService.list(searchUserAdvice);
@@ -55,7 +55,7 @@ public class ComplaintPraiseController   {
      * @return map
      */
     @PostMapping("/insertDetail")
-    @RequiresPermissions(value = {"0307","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0307"},logical = Logical.AND)
     public Map<String,Object> insertDetail(@RequestBody SysAdviceDetail sysAdviceDetail){
         return userAdviceService.insertDetail(sysAdviceDetail);
     }
@@ -66,7 +66,7 @@ public class ComplaintPraiseController   {
      * @return map
      */
     @PostMapping("/insertAdvice")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insertAdvice(@RequestBody SysAdvice sysAdvice, HttpServletRequest request){
         return complaintPraiseService.insertAdvice(sysAdvice,request);
     }
@@ -77,7 +77,7 @@ public class ComplaintPraiseController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return complaintPraiseService.delete(ids.getIds());
     }
@@ -88,7 +88,7 @@ public class ComplaintPraiseController   {
      * @return map
      */
     @PostMapping("/falseDelete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return complaintPraiseService.falseDelete(ids.getIds());
     }
@@ -99,7 +99,7 @@ public class ComplaintPraiseController   {
      * @return map
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return complaintPraiseService.findById(id);
     }
@@ -109,7 +109,7 @@ public class ComplaintPraiseController   {
      * @return map
      */
     @GetMapping("/countComplaintNew")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> countComplaintNew(){
         return complaintPraiseService.countComplaintNew();
     }
@@ -119,7 +119,7 @@ public class ComplaintPraiseController   {
      * @return map
      */
     @GetMapping("/countPraiseNew")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> countPraiseNew(){
         return complaintPraiseService.countPraiseNew();
     }

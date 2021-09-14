@@ -32,7 +32,7 @@ public class SysProhibitedKeywordsController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchProhibitedKeywords searchProhibitedKeywords){
         PageHelper.startPage(searchProhibitedKeywords.getPageNum(),searchProhibitedKeywords.getSize());
         List<VoProhibitedKeywords> voProhibitedKeywordsList = sysProhibitedKeywordsService.list(searchProhibitedKeywords);

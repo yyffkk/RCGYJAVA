@@ -28,7 +28,7 @@ public class SysWorkOrderTypeDetailController   {
      * @return 工单类型明细信息集合
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public List<VoWorkOrderTypeDetail> list(Integer id){
         return  sysWorkOrderTypeDetailService.list(id);
     }
@@ -39,7 +39,7 @@ public class SysWorkOrderTypeDetailController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysWorkOrderTypeDetail sysWorkOrderTypeDetail){
         return sysWorkOrderTypeDetailService.insert(sysWorkOrderTypeDetail);
     }
@@ -50,7 +50,7 @@ public class SysWorkOrderTypeDetailController   {
      * @return 工单类型明细信息集合
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoWorkOrderTypeDetail findById(Integer id){
         return sysWorkOrderTypeDetailService.findById(id);
     }
@@ -61,7 +61,7 @@ public class SysWorkOrderTypeDetailController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysWorkOrderTypeDetail sysWorkOrderTypeDetail){
         return sysWorkOrderTypeDetailService.update(sysWorkOrderTypeDetail);
     }
@@ -72,7 +72,7 @@ public class SysWorkOrderTypeDetailController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysWorkOrderTypeDetailService.delete(ids.getIds());
     }

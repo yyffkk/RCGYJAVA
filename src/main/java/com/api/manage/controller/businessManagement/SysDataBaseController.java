@@ -8,6 +8,8 @@ import com.api.vo.businessManagement.VoDataBase;
 import com.api.vo.businessManagement.VoSalary;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class SysDataBaseController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> list(SearchDataBase searchDataBase){
         PageHelper.startPage(searchDataBase.getPageNum(),searchDataBase.getSize());
         List<VoDataBase> voDataBaseList = sysDataBaseService.list(searchDataBase);
@@ -47,6 +50,7 @@ public class SysDataBaseController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0104"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysDataBase sysDataBase){
         return sysDataBaseService.insert(sysDataBase);
     }

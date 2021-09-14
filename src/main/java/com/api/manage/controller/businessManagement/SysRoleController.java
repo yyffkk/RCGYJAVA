@@ -26,7 +26,7 @@ public class SysRoleController {
      * @return 用户角色信息
      */
     @GetMapping("/roleList")
-    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public List<VoRole> roleList(){
         return sysRoleService.roleList();
     }
@@ -37,6 +37,7 @@ public class SysRoleController {
      * @return map
      */
     @PostMapping("/insertRole")
+    @RequiresPermissions(value = {"0104"},logical = Logical.AND)
     public Map<String,Object> insertRole(@RequestBody SysRole sysRole){
         return sysRoleService.insertRole(sysRole);
     }
