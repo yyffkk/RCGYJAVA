@@ -49,6 +49,11 @@ public class ButlerLoginServiceImpl implements ButlerLoginService {
 
         //根据手机号查询物业用户信息
         SysUser sysUserByTel = butlerLoginDao.findSysUserByTel(MOBILE);
+        if (sysUserByTel == null){
+            map.put("message","该用户不存在");
+            map.put("status",false);
+            return map;
+        }
         if (sysUserByTel.getIsDelete() == 0){
             map.put("message","该用户已被删除");
             map.put("status",false);
