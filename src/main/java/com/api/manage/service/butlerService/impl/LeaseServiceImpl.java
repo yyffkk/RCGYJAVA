@@ -117,7 +117,7 @@ public class LeaseServiceImpl implements LeaseService {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
 
-        sysLease.setCreateId(sysUser.getId());;
+        sysLease.setCreateId(sysUser.getId());
         sysLease.setCreateDate(new Date());
         sysLease.setStatus(1);//1.待签署
 
