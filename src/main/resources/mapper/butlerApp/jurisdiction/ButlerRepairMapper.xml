@@ -7,6 +7,14 @@
         select jurisdiction_id from sys_role_jurisdiction where role_id = #{roleId}
     </select>
 
+    <select id="findJIdsByRoleIds" parameterType="java.util.List" resultType="java.lang.Integer">
+        select jurisdiction_id from sys_role_jurisdiction where role_id in
+        <foreach collection="split" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+
     <select id="list1" parameterType="com.api.model.butlerApp.ButlerRepairSearch" resultType="com.api.vo.butlerApp.ButlerRepairVo">
         select * from (
             select sdl.id as dispatch_id,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id,sdl.create_date

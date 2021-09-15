@@ -16,20 +16,20 @@
     <select id="list2" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
         select * from sys_report_repair_engineering
         <where>
-            <if test="repairEngineeringStatus != null">
-                status = #{repairEngineeringStatus}
-            </if>
             #{organizationIdPath} like concat('%',organization_id,'%')
+            <if test="repairEngineeringStatus != null">
+                and status = #{repairEngineeringStatus}
+            </if>
         </where>
         order by create_date desc
     </select>
     <select id="list3" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
         select * from sys_report_repair_engineering
         <where>
-            <if test="repairEngineeringStatus != null">
-                status = #{repairEngineeringStatus}
-            </if>
             maintenance_staff = #{id}
+            <if test="repairEngineeringStatus != null">
+                and status = #{repairEngineeringStatus}
+            </if>
         </where>
         order by create_date desc
     </select>

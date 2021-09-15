@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,11 +50,12 @@ public class ButlerPersonalDataController {
         String[] split = sysUser.getRoleId().split(",");
         if (split.length >0){
             for (String s : split) {
-                int roleId = Integer.parseInt(s);
-                //根据角色id查询权限id集合
-                List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
+                Integer id = Integer.valueOf(s);
+                //根据角色id数组查询权限id集合//TODO 明天处理 9.15
+                List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(id);
                 butlerUserDetailVo.setJurisdiction(jurisdictionIds);
             }
+
         }
 
         map.put("status", true);
