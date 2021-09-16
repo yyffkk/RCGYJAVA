@@ -52,7 +52,7 @@ public class ButlerFacilitiesCheckController {
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
         //从request获取用户联系方式
-        String name = request.getParameter("name");
+        String name = request.getParameter("actualName");
         //从request获取组织ID organizationId
         Integer organizationId = Integer.valueOf(request.getParameter("organizationId"));
         return butlerFacilitiesCheckService.submitCheck(facilitiesExecute,id,name,organizationId);

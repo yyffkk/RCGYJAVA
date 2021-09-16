@@ -73,8 +73,8 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
             }
 
 
-            //根据设施设备检查记录主键id查询设施/设备管理计划信息
-            FacilitiesPlan facilitiesPlan = butlerFacilitiesCheckDao.findPlanById(facilitiesExecute.getId());
+            //根据设施设备巡检计划主键id查询设施/设备管理计划信息
+            FacilitiesPlan facilitiesPlan = butlerFacilitiesCheckDao.findPlanById(facilitiesExecute2.getFacilitiesPlanId());
 
             //根据组织id查询组织信息
             SysOrganization sysOrganization = manageSysMessageDao.findOrganizationByOrganizationId(organizationId);

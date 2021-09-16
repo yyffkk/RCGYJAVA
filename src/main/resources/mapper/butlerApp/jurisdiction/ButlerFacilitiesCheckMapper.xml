@@ -39,7 +39,7 @@
         select * from sys_facilities_execute where id = #{id}
     </select>
     <select id="findPlanById" parameterType="java.lang.Integer" resultType="com.api.model.butlerService.FacilitiesPlan">
-        select * from sys_facilities_plan where facilities_manage_id = #{id}
+        select * from sys_facilities_plan where id = #{id}
     </select>
 
 

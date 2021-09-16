@@ -30,8 +30,8 @@ public interface ButlerFacilitiesCheckDao {
     FacilitiesExecute findById(Integer id);
 
     /**
-     * 根据设施设备检查记录主键id查询设施/设备管理计划信息
-     * @param id 设施设备检查记录主键id
+     * 根据设施设备巡检计划主键id查询设施/设备管理计划信息
+     * @param id 设施设备巡检计划主键id
      * @return 设施/设备管理计划信息
      */
     FacilitiesPlan findPlanById(Integer id);
