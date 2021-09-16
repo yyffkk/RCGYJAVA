@@ -5,10 +5,10 @@
 <mapper namespace="com.api.manage.dao.businessManagement.SysUserDao">
     <select id="list" parameterType="com.api.model.businessManagement.SearchUser" resultType="com.api.vo.businessManagement.VoUser">
         select su.*,so.name as organization_name,si.name as position_name
-        from sys_user as su,sys_organization as so,sys_identity as si
+        from sys_organization as so,sys_user as su
+        left join sys_identity as si on su.position_id = si.id
         <where>
             su.organization_id = so.id
-            and su.position_id = si.id
             and su.is_delete = 1
             <if test="organizationId != null">
                 and su.organization_id_path like concat('%',#{organizationId},':','%')
