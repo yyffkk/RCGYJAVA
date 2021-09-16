@@ -24,12 +24,13 @@ public class ButlerAlarmController {
 
     /**
      * 添加管家app报警记录
-     * @param butlerAppAlarm 管家app 报警model 信息
      * @param request app-admin-token获取的request用户信息
      * @return map
      */
     @PostMapping("/insertAlarmRecord")
-    public Map<String,Object> insertAlarmRecord(@RequestBody ButlerAppAlarm butlerAppAlarm, HttpServletRequest request){
+    public Map<String,Object> insertAlarmRecord(HttpServletRequest request){
+        //创建管家app 报警model 信息
+        ButlerAppAlarm butlerAppAlarm = new ButlerAppAlarm();
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
         butlerAppAlarm.setCreateId(id);

@@ -208,7 +208,7 @@
         LEFT JOIN sys_dispatch_list_detail as sdld on sdld.dispatch_list_id = sdl.id
         LEFT JOIN sys_user as su on su.id = sdld.operator
         LEFT JOIN sys_work_order_time_limit as swotl on swotl.id = sdld.work_order_time_limit
-        where sdl.id = srr.dispatch_list_id and srr.repairman = ur.id and srr.building_unit_estate_id = cbue.id
+        where sdl.id = srr.dispatch_list_id and srr.repairman = ur.id and srr.building_unit_estate_id = cbue.id and sdl.sys_delete = 1
         and cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
     </select>
     <select id="findHandledNum" resultType="java.lang.Integer">
