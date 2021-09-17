@@ -103,5 +103,8 @@
         </selectKey>
     </insert>
 
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_material_record where id = #{id}
+    </delete>
 
 </mapper>

@@ -42,4 +42,11 @@ public interface SysMaterialRecordDao {
      * @return 物资出入库记录详情
      */
     VoFBIMaterialRecord findById(Integer id);
+
+    /**
+     * 批量删除物料出入库记录信息
+     * @param id 物料出入库记录信息主键id
+     * @return 影响行数
+     */
+    int delete(int id);
 }

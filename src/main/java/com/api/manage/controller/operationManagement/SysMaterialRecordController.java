@@ -3,6 +3,7 @@ package com.api.manage.controller.operationManagement;
 import com.api.manage.service.operationManagement.SysMaterialRecordService;
 import com.api.model.operationManagement.SearchMaterialRecord;
 import com.api.model.operationManagement.SysMaterialRecord;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.operationManagement.VoMaterial;
 import com.api.vo.operationManagement.VoMaterialRecord;
 import com.github.pagehelper.PageHelper;
@@ -60,4 +61,13 @@ public class SysMaterialRecordController {
         return sysMaterialRecordService.findById(id);
     }
 
+    /**
+     * 批量删除物料出入库记录信息
+     * @param ids 物料出入库记录信息主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysMaterialRecordService.delete(ids.getIds());
+    }
 }
