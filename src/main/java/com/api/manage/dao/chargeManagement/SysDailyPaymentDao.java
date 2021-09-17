@@ -82,4 +82,10 @@ public interface SysDailyPaymentDao {
      */
     List<VoEnableTemplateDetail> findEnableTempleDetail();
 
+    /**
+     * 根据日常缴费主键id删除日常缴费信息
+     * @param id 日常缴费主键id
+     * @return 影响行数
+     */
+    int delete(int id);
 }

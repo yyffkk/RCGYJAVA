@@ -173,5 +173,11 @@
         select sctd.id,sctd.name,sctd.unit_price,sctd.type from sys_charges_template as sct,sys_charges_template_detail as sctd where sct.id = sctd.charges_template_id and sct.status = 1 and sctd.status = 1 and sctd.marker in (1,5)
     </select>
 
+    <update id="delete" parameterType="java.lang.Integer">
+        update sys_daily_payment
+        set is_delete = 0
+        where id = #{id}
+    </update>
+
 
 </mapper>
