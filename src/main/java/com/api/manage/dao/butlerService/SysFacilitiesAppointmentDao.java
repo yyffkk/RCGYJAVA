@@ -43,4 +43,10 @@ public interface SysFacilitiesAppointmentDao {
      */
     int findIsBeInAppointmentDate(FacilitiesAppointment facilitiesAppointment);
 
+    /**
+     * 修改设施预约信息
+     * @param facilitiesAppointment 设施预约管理model
+     * @return 影响行数
+     */
+    int update(FacilitiesAppointment facilitiesAppointment);
 }

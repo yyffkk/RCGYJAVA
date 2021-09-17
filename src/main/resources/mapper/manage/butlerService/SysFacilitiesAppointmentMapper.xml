@@ -78,6 +78,21 @@
         nullify_reason = #{nullifyReason}
         where id = #{id}
     </update>
+    <update id="update" parameterType="com.api.model.butlerService.FacilitiesAppointment">
+        update sys_facilities_appointment
+        <set>
+            <if test="facilitiesManageId != null">
+                facilities_manage_id = #{facilitiesManageId},
+            </if>
+            <if test="appointmentStartDate != null">
+                appointment_start_date = #{appointmentStartDate},
+            </if>
+            <if test="appointmentEndDate != null">
+                appointment_end_date = #{appointmentEndDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 
     <select id="countAppointmentNow" parameterType="java.util.Date" resultType="java.lang.Integer">
         select count(*) from sys_facilities_appointment where DATE(create_date) = DATE(#{date})

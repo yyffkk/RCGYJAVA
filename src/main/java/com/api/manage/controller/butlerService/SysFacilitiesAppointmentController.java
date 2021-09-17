@@ -73,4 +73,15 @@ public class SysFacilitiesAppointmentController   {
         return facilitiesAppointmentService.countAppointmentNow();
     }
 
+    /**
+     * 修改设施预约信息
+     * @param facilitiesAppointment 设施预约管理model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody FacilitiesAppointment facilitiesAppointment){
+        return facilitiesAppointmentService.update(facilitiesAppointment);
+    }
+
+
 }

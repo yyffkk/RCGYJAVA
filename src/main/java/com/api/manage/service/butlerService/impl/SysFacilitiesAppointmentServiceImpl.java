@@ -75,4 +75,19 @@ public class SysFacilitiesAppointmentServiceImpl implements SysFacilitiesAppoint
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> update(FacilitiesAppointment facilitiesAppointment) {
+        map = new HashMap<>();
+
+        int update = facilitiesAppointmentDao.update(facilitiesAppointment);
+        if (update <= 0){
+            map.put("message","修改失败");
+            map.put("status",false);
+        }else {
+            map.put("message","修改成功");
+            map.put("status",true);
+        }
+        return map;
+    }
 }
