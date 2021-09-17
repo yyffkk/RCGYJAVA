@@ -14,7 +14,7 @@
                 and sa.name like concat('%',#{name},'%')
             </if>
             <if test="status != null">
-                and sab.status = #{status}
+                and sab.borrow_status = #{status}
             </if>
             <if test="borrowName != null and borrowName != ''">
                 and ur.name like concat('%',#{borrowName},'%')
