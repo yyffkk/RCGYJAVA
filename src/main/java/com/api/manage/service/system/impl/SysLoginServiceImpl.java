@@ -212,7 +212,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         final String MOBILE = sysUser.getTel();
 
         //验证手机号格式
-        Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p=Pattern.compile("^1[3456789]\\d{9}$");
         Matcher m=p.matcher(MOBILE);
         boolean matches = m.matches();
         if (!matches){
