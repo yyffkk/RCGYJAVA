@@ -17,4 +17,6 @@ public interface SysFacilitiesAppointmentService {
     Map<String, Object> countAppointmentNow();
 
     Map<String, Object> update(FacilitiesAppointment facilitiesAppointment);
+
+    Map<String, Object> delete(int[] ids);
 }

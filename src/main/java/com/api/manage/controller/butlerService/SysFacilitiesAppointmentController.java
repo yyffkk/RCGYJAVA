@@ -4,6 +4,7 @@ import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
 
 import com.api.model.butlerService.FacilitiesAppointment;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
 import com.api.vo.butlerService.VoFacilitiesCategory;
 import com.github.pagehelper.PageHelper;
@@ -81,6 +82,16 @@ public class SysFacilitiesAppointmentController   {
     @PostMapping("/update")
     public Map<String,Object> update(@RequestBody FacilitiesAppointment facilitiesAppointment){
         return facilitiesAppointmentService.update(facilitiesAppointment);
+    }
+
+    /**
+     * 批量删除设施预约信息
+     * @param ids 设施预约信息主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return facilitiesAppointmentService.delete(ids.getIds());
     }
 
 

@@ -105,6 +105,9 @@
         where #{appointmentStartDate} between T.appointment_start_date and T.appointment_end_date
         or #{appointmentStartDate} between T.appointment_start_date and T.appointment_end_date
     </select>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_facilities_appointment where id = #{id}
+    </delete>
 
 
 </mapper>

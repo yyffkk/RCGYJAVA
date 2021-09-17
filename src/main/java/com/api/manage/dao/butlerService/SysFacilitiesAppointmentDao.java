@@ -49,4 +49,11 @@ public interface SysFacilitiesAppointmentDao {
      * @return 影响行数
      */
     int update(FacilitiesAppointment facilitiesAppointment);
+
+    /**
+     * 删除设施预约信息
+     * @param id 设施预约信息主键id
+     * @return 影响行数
+     */
+    int delete(int id);
 }
