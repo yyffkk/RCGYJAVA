@@ -107,14 +107,16 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
                 }
                 //根据考勤排班计划主键id删除考勤排班计划例外情况
                 int delete = sysAttendanceSchedulingPlanDao.deleteException(id);
-                if (delete <= 0){
-                    throw new RuntimeException("删除例外情况失败");
-                }
+                //因为有可能会出现没有例外情况，所以注释掉
+//                if (delete <= 0){
+//                    throw new RuntimeException("删除例外情况失败");
+//                }
                 //根据考勤排班计划主键id删除考勤排班计划详情
                 int delete2 = sysAttendanceSchedulingPlanDao.deleteDetail(id);
-                if (delete2 <= 0){
-                    throw new RuntimeException("删除详情失败");
-                }
+                //因为有可能会出现没有详情，所以注释掉
+//                if (delete2 <= 0){
+//                    throw new RuntimeException("删除详情失败");
+//                }
                 //根据考勤排班计划主键id删除考勤排班计划
                 int delete3 = sysAttendanceSchedulingPlanDao.delete(id);
                 if (delete3 <= 0){
