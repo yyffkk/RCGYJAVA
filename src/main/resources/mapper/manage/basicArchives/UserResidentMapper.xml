@@ -275,10 +275,11 @@
         from user_resident where id_number = #{idNumber}
     </select>
 
-    <!--   根据业主手机号和证件号码查询业主信息-->
+    <!--   根据业主手机号和证件号码查询住户信息-->
     <select id="findByTelAndIdNumber" parameterType="com.api.model.basicArchives.UserResident" resultType="com.api.model.basicArchives.UserResident">
         select id,name,tel,id_type,id_number
-        from user_resident where tel = #{tel} and id_number = #{idNumber} and type = 1
+        from user_resident
+        where tel = #{tel} and id_number = #{idNumber}
     </select>
 
     <!--  根据住户id和房产id查询住户房产关联表  -->

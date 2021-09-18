@@ -163,7 +163,7 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
                 throw new RuntimeException("手机号不能为空");
             }
 
-            userResident.setType(1);
+//            userResident.setType(1);
             //添加业主房产关联数据
             CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
             cpmResidentEstate.setBuildingUnitEstateId(estateAndResidentList.getEstate().getId());
