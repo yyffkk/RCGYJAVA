@@ -21,7 +21,7 @@ public class SearchBorrow {
     /**
      * 物品状态
      */
-    private Integer status;
+    private Integer borrowStatus;
     /**
      * 借用人
      */
@@ -39,13 +39,14 @@ public class SearchBorrow {
      */
     private Date endDate;
 
+
     @Override
     public String toString() {
         return "SearchBorrow{" +
                 "pageNum=" + pageNum +
                 ", size=" + size +
                 ", name='" + name + '\'' +
-                ", status=" + status +
+                ", borrowStatus=" + borrowStatus +
                 ", borrowName='" + borrowName + '\'' +
                 ", tel='" + tel + '\'' +
                 ", beginDate=" + beginDate +
@@ -77,12 +78,12 @@ public class SearchBorrow {
         this.name = name;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getBorrowStatus() {
+        return borrowStatus;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setBorrowStatus(Integer borrowStatus) {
+        this.borrowStatus = borrowStatus;
     }
 
     public String getBorrowName() {
@@ -120,11 +121,11 @@ public class SearchBorrow {
     public SearchBorrow() {
     }
 
-    public SearchBorrow(int pageNum, int size, String name, Integer status, String borrowName, String tel, Date beginDate, Date endDate) {
+    public SearchBorrow(int pageNum, int size, String name, Integer borrowStatus, String borrowName, String tel, Date beginDate, Date endDate) {
         this.pageNum = pageNum;
         this.size = size;
         this.name = name;
-        this.status = status;
+        this.borrowStatus = borrowStatus;
         this.borrowName = borrowName;
         this.tel = tel;
         this.beginDate = beginDate;

@@ -13,8 +13,8 @@
             <if test="name != null and name != ''">
                 and sa.name like concat('%',#{name},'%')
             </if>
-            <if test="status != null">
-                and sab.borrow_status = #{status}
+            <if test="borrowStatus != null">
+                and sab.borrow_status = #{borrowStatus}
             </if>
             <if test="borrowName != null and borrowName != ''">
                 and ur.name like concat('%',#{borrowName},'%')
