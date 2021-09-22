@@ -26,7 +26,7 @@ public class ButlerFacilitiesCheckVo {
      */
     private String facilitiesAddress;
     /**
-     * 任务状态
+     * 任务状态：1.待完成，3.未完成(当状态为1.待完成，并且当前时间大于检查计划结束时间)，2.已完成
      */
     private Integer status;
     /**

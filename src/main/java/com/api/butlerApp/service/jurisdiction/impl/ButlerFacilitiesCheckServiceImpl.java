@@ -35,6 +35,13 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
         if (list != null && list.size()>0){
             UploadUtil uploadUtil = new UploadUtil();
             for (ButlerFacilitiesCheckVo butlerFacilitiesCheckVo : list) {
+                //计算出3.未完成(当状态为1.待完成，并且当前时间大于检查计划结束时间)
+                if (butlerFacilitiesCheckVo.getStatus() == 1 && new Date().getTime() > butlerFacilitiesCheckVo.getEndDate().getTime()){
+                    butlerFacilitiesCheckVo.setStatus(3);
+                }
+
+
+                //传入照片
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysFacilitiesExecute", butlerFacilitiesCheckVo.getId(), "checkImg");
                 butlerFacilitiesCheckVo.setImgList(imgByDate);
             }
