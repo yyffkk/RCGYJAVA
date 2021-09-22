@@ -17,8 +17,16 @@
             <if test="facilitiesType != null">
                 and T.type = #{facilitiesType}
             </if>
-            <if test="executeStatus != null">
-                and T.status = #{executeStatus}
+            <if test="executeStatus == 1">
+                and T.status = 1
+                and now() <![CDATA[ <= ]]> T.end_date
+            </if>
+            <if test="executeStatus == 2">
+                and T.status = 2
+            </if>
+            <if test="executeStatus == 3">
+                and T.status in (1,3)
+                and now() <![CDATA[ > ]]> T.end_date
             </if>
         </where>
     </select>
