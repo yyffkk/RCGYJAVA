@@ -116,7 +116,7 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
             map.put("message","操作成功");
             map.put("status",true);
         }else {
-            map.put("message","操作失败");
+            map.put("message","暂无评论");
             map.put("status",false);
         }
         return map;
@@ -131,7 +131,7 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
             map.put("message","操作成功");
             map.put("status",true);
         }else {
-            map.put("message","操作失败");
+            map.put("message","暂无评论");
             map.put("status",false);
         }
         return map;
