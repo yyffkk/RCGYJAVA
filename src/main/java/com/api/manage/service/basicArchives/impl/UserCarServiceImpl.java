@@ -120,8 +120,11 @@ public class UserCarServiceImpl implements UserCarService {
         //根据楼栋主键id查询对应的楼栋号
         CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
         //设置 楼栋id，单元id，房产id
+        voUserCarFindById.setRoomName(cpmBuildingUnitEstate.getRoomNumber());
         voUserCarFindById.setBuildingUnitId(cpmBuildingUnit.getId());
+        voUserCarFindById.setBuildingUnitNo(cpmBuildingUnit.getNo());
         voUserCarFindById.setBuildingId(cpmBuilding.getId());
+        voUserCarFindById.setBuildingNo(cpmBuilding.getNo());
         return voUserCarFindById;
     }
 

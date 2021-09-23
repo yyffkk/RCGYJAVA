@@ -43,13 +43,25 @@ public class VoUserCarFindById {
      */
     private Integer buildingUnitEstateId;
     /**
+     * 房间号
+     */
+    private String roomName;
+    /**
      * 所属楼栋id
      */
     private Integer buildingId;
     /**
+     * 所属楼栋号
+     */
+    private Integer buildingNo;
+    /**
      * 所属楼栋单元id
      */
     private Integer buildingUnitId;
+    /**
+     * 所属楼栋单元号
+     */
+    private Integer buildingUnitNo;
     /**
      * 车辆状态
      */
@@ -91,8 +103,11 @@ public class VoUserCarFindById {
                 ", idType=" + idType +
                 ", idNumber='" + idNumber + '\'' +
                 ", buildingUnitEstateId=" + buildingUnitEstateId +
+                ", roomName='" + roomName + '\'' +
                 ", buildingId=" + buildingId +
+                ", buildingNo=" + buildingNo +
                 ", buildingUnitId=" + buildingUnitId +
+                ", buildingUnitNo=" + buildingUnitNo +
                 ", status=" + status +
                 ", type=" + type +
                 ", brand='" + brand + '\'' +
@@ -175,6 +190,14 @@ public class VoUserCarFindById {
         this.buildingUnitEstateId = buildingUnitEstateId;
     }
 
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
     public Integer getBuildingId() {
         return buildingId;
     }
@@ -183,12 +206,28 @@ public class VoUserCarFindById {
         this.buildingId = buildingId;
     }
 
+    public Integer getBuildingNo() {
+        return buildingNo;
+    }
+
+    public void setBuildingNo(Integer buildingNo) {
+        this.buildingNo = buildingNo;
+    }
+
     public Integer getBuildingUnitId() {
         return buildingUnitId;
     }
 
     public void setBuildingUnitId(Integer buildingUnitId) {
         this.buildingUnitId = buildingUnitId;
+    }
+
+    public Integer getBuildingUnitNo() {
+        return buildingUnitNo;
+    }
+
+    public void setBuildingUnitNo(Integer buildingUnitNo) {
+        this.buildingUnitNo = buildingUnitNo;
     }
 
     public Integer getStatus() {
@@ -250,7 +289,7 @@ public class VoUserCarFindById {
     public VoUserCarFindById() {
     }
 
-    public VoUserCarFindById(Integer id, String code, Integer parkingSpaceId, String parkingSpaceCode, String owner, String tel, Integer idType, String idNumber, Integer buildingUnitEstateId, Integer buildingId, Integer buildingUnitId, Integer status, Integer type, String brand, String model, Integer color, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public VoUserCarFindById(Integer id, String code, Integer parkingSpaceId, String parkingSpaceCode, String owner, String tel, Integer idType, String idNumber, Integer buildingUnitEstateId, String roomName, Integer buildingId, Integer buildingNo, Integer buildingUnitId, Integer buildingUnitNo, Integer status, Integer type, String brand, String model, Integer color, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.code = code;
         this.parkingSpaceId = parkingSpaceId;
@@ -260,8 +299,11 @@ public class VoUserCarFindById {
         this.idType = idType;
         this.idNumber = idNumber;
         this.buildingUnitEstateId = buildingUnitEstateId;
+        this.roomName = roomName;
         this.buildingId = buildingId;
+        this.buildingNo = buildingNo;
         this.buildingUnitId = buildingUnitId;
+        this.buildingUnitNo = buildingUnitNo;
         this.status = status;
         this.type = type;
         this.brand = brand;
