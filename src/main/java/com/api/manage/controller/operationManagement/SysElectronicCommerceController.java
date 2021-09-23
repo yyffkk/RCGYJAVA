@@ -9,6 +9,8 @@ import com.api.vo.basicArchives.VoIds;
 import com.api.vo.operationManagement.VoElectronicCommerce;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +33,7 @@ public class SysElectronicCommerceController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501"},logical = Logical.AND)
     public Map<String,Object> list(SearchElectronicCommerce searchElectronicCommerce){
         PageHelper.startPage(searchElectronicCommerce.getPageNum(),searchElectronicCommerce.getSize());
         List<VoElectronicCommerce> voElectronicCommerceList = sysElectronicCommerceService.list(searchElectronicCommerce);
