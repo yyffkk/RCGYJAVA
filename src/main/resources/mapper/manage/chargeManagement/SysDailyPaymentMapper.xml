@@ -24,10 +24,10 @@
                 and a.charges_template_detail_id = #{chargesTemplateDetailId}
             </if>
             <if test="beginDate != null">
-                and a.begin_date <![CDATA[ > ]]> #{beginDate}
+                and a.begin_date <![CDATA[ >= ]]> #{beginDate}
             </if>
             <if test="endDate != null">
-                and a.end_date <![CDATA[ < ]]> #{endDate}
+                and a.end_date <![CDATA[ <= ]]> #{endDate}
             </if>
             <if test="payName != null and payName != ''">
                 and sdpo.name like concat('%',#{payName},'%')
