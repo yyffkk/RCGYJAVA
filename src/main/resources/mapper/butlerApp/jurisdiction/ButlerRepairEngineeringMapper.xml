@@ -7,8 +7,11 @@
     <select id="list1" parameterType="com.api.model.butlerApp.ButlerRepairEngineeringSearch" resultType="com.api.vo.butlerApp.ButlerRepairEngineeringVo">
         select * from sys_report_repair_engineering
         <where>
-            <if test="repairEngineeringStatus != null">
-                status = #{repairEngineeringStatus}
+            <if test="repairEngineeringStatus == 1">
+                and status in (1,2)
+            </if>
+            <if test="repairEngineeringStatus != null and repairEngineeringStatus != 1">
+                and status = #{repairEngineeringStatus}
             </if>
         </where>
         order by create_date desc
