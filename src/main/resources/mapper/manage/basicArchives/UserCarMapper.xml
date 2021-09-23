@@ -109,8 +109,10 @@
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.basicArchives.VoUserCarFindById">
         select uc.*,cps.code as parking_space_code
-        from user_car as uc,cpm_parking_space as cps
-        where uc.parking_space_id = cps.id and uc.id = #{id}
+        from user_car as uc
+        left join cpm_parking_space as cps
+        on uc.parking_space_id = cps.id
+        where uc.id = #{id}
     </select>
 
     <update id="update" parameterType="com.api.model.basicArchives.UserCar">
