@@ -17,7 +17,10 @@
         select * from sys_report_repair_engineering
         <where>
             #{organizationIdPath} like concat('%',organization_id,'%')
-            <if test="repairEngineeringStatus != null">
+            <if test="repairEngineeringStatus == 1">
+                and status in (1,2)
+            </if>
+            <if test="repairEngineeringStatus != null and repairEngineeringStatus != 1">
                 and status = #{repairEngineeringStatus}
             </if>
         </where>
