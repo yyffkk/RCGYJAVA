@@ -7,6 +7,8 @@ import com.api.vo.shoppingCenter.OrderVo;
 import com.api.vo.shoppingCenter.RefundVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,6 +31,7 @@ public class RefundController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501"},logical = Logical.AND)
     public Map<String,Object> list(RefundSearch refundSearch){
         PageHelper.startPage(refundSearch.getPageNum(),refundSearch.getSize());
         List<RefundVo> refundVoList = refundService.list(refundSearch);

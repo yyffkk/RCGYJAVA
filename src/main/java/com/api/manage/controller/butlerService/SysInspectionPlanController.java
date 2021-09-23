@@ -100,6 +100,7 @@ public class SysInspectionPlanController   {
      * @return map
      */
     @GetMapping("/executeList")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> executeList(SearchInspectionExecute searchInspectionExecute){
         PageHelper.startPage(searchInspectionExecute.getPageNum(),searchInspectionExecute.getSize());
         List<VoInspectionExecute> voInspectionExecuteList = sysInspectionPlanService.executeList(searchInspectionExecute);

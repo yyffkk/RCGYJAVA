@@ -8,6 +8,8 @@ import com.api.vo.operationManagement.VoAttendanceSchedulingPlan;
 import com.api.vo.operationManagement.VoAttendanceTeam;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class SysAttendanceSchedulingPlanController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> list(SearchAttendanceSchedulingPlan searchAttendanceSchedulingPlan){
         PageHelper.startPage(searchAttendanceSchedulingPlan.getPageNum(),searchAttendanceSchedulingPlan.getSize());
         List<VoAttendanceSchedulingPlan> voAttendanceSchedulingPlanList = sysAttendanceSchedulingPlanService.list(searchAttendanceSchedulingPlan);

@@ -7,6 +7,8 @@ import com.api.vo.operationManagement.VoGreenArea;
 import com.api.vo.operationManagement.VoOneButtonAlarm;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +34,7 @@ public class SysAlarmController {
      * @return map
      */
     @GetMapping("/fireAlarmList")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> fireAlarmList(int pageNum,int size){
         PageHelper.startPage(pageNum,size);
         List<VoFireAlarm> voFireAlarmList = sysAlarmService.fireAlarmList();
@@ -51,6 +54,7 @@ public class SysAlarmController {
      * @return map
      */
     @GetMapping("/oneButtonAlarmList")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> oneButtonAlarmList(int pageNum,int size){
         PageHelper.startPage(pageNum,size);
         List<VoOneButtonAlarm> voOneButtonAlarmList = sysAlarmService.oneButtonAlarmList();
@@ -69,6 +73,7 @@ public class SysAlarmController {
      * @return map
      */
     @GetMapping("/butlerOneButtonAlarmList")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> butlerOneButtonAlarmList(int pageNum,int size){
         PageHelper.startPage(pageNum,size);
         List<VoButlerOneButtonAlarm> voButlerOneButtonAlarmList = sysAlarmService.butlerOneButtonAlarmList();

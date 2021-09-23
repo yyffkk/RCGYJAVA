@@ -33,6 +33,7 @@ public class SysSecurityManagement {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchSecurityManagement searchSecurityManagement){
         PageHelper.startPage(searchSecurityManagement.getPageNum(),searchSecurityManagement.getSize());
         List<VoSecurityManagement> voSecurityManagementList = sysSecurityManagementService.list(searchSecurityManagement);

@@ -9,6 +9,8 @@ import com.api.vo.operationManagement.VoActivityManagement;
 import com.api.vo.shoppingCenter.SupplierVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +34,7 @@ public class SupplierController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501"},logical = Logical.AND)
     public Map<String,Object> list(SupplierSearch supplierSearch){
         PageHelper.startPage(supplierSearch.getPageNum(),supplierSearch.getSize());
         List<SupplierVo> supplierVos = supplierService.list(supplierSearch);

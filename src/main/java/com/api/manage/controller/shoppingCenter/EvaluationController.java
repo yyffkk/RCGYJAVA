@@ -6,6 +6,8 @@ import com.api.model.shoppingCenter.GoodsReply;
 import com.api.vo.shoppingCenter.EvaluationVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,6 +30,7 @@ public class EvaluationController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501"},logical = Logical.AND)
     public Map<String,Object> list(EvaluationSearch evaluationSearch){
         PageHelper.startPage(evaluationSearch.getPageNum(),evaluationSearch.getSize());
         List<EvaluationVo> evaluationVoList = evaluationService.list(evaluationSearch);

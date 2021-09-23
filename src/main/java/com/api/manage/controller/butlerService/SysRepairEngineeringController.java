@@ -7,6 +7,8 @@ import com.api.model.butlerService.SearchRepairEngineering;
 import com.api.vo.butlerService.VoRepairEngineering;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,6 +31,7 @@ public class SysRepairEngineeringController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchRepairEngineering searchRepairEngineering){
         PageHelper.startPage(searchRepairEngineering.getPageNum(),searchRepairEngineering.getSize());
         List<VoRepairEngineering> voRepairEngineeringList = sysRepairEngineeringService.list(searchRepairEngineering);

@@ -31,6 +31,7 @@ public class SysMeterReadingRecordController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0401"},logical = Logical.AND)
     public Map<String,Object> list(SearchMeterReadingRecord searchMeterReadingRecord){
         PageHelper.startPage(searchMeterReadingRecord.getPageNum(),searchMeterReadingRecord.getSize());
         List<VoMeterReadingRecord> voMeterReadingRecordList = meterReadingRecordService.list(searchMeterReadingRecord);
@@ -67,6 +68,7 @@ public class SysMeterReadingRecordController {
      * @return map
      */
     @GetMapping("/shareBillList")
+    @RequiresPermissions(value = {"0401"},logical = Logical.AND)
     public Map<String,Object> shareBillList(SearchShareBill SearchShareBill){
         PageHelper.startPage(SearchShareBill.getPageNum(),SearchShareBill.getSize());
         List<VoMeterReadingShareBill> voMeterReadingShareBillList = meterReadingRecordService.shareBillList(SearchShareBill);

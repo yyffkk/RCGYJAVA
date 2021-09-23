@@ -93,6 +93,7 @@ public class SysFacilitiesPlanController {
      * @return map
      */
     @GetMapping("/executeList")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> executeList(SearchFacilitiesExecute searchFacilitiesExecute){
         PageHelper.startPage(searchFacilitiesExecute.getPageNum(),searchFacilitiesExecute.getSize());
         List<VoFacilitiesExecute> voFacilitiesExecuteList = sysFacilitiesPlanService.executeList(searchFacilitiesExecute);
