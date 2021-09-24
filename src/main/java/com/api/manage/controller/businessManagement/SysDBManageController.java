@@ -55,11 +55,11 @@ public class SysDBManageController {
     @PostMapping("/dbRecovery")
     public Map<String,Object> dbRecovery(@RequestBody SysDbRecovery sysDbRecovery){
         map = new HashMap<>();
-        String filepath = ""; //数据库备份的脚本路径
-        String ip = "127.0.0.1"; //IP地址
-        String database = ""; //数据库名称
-        String userName = "root"; //用户名
-        String password = "jlw15906763698"; //密码
+        String filepath = sysDbRecovery.getFilepath(); //数据库备份的脚本路径
+        String ip = sysDbRecovery.getIp(); //IP地址
+        String database = sysDbRecovery.getDatabase(); //数据库名称
+        String userName = sysDbRecovery.getUserName(); //用户名
+        String password = sysDbRecovery.getPassword(); //密码
 
 
         boolean b = sysDBManageService.dbRecovery(filepath, ip, database, userName, password);
