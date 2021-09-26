@@ -48,14 +48,22 @@ public class ButlerPersonalDataController {
         butlerUserDetailVo.setRoleId(sysUser.getRoleId());
 
         String[] split = sysUser.getRoleId().split(",");
+        List<Integer> jurisdictionIds = new ArrayList<>();
         if (split.length >0){
             for (String s : split) {
                 Integer id = Integer.valueOf(s);
-                //根据角色id数组查询权限id集合//TODO 明天处理 9.15
-                List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(id);
-                butlerUserDetailVo.setJurisdiction(jurisdictionIds);
+                //根据角色id数组查询权限id集合
+                List<Integer> jurisdictionIds2 = butlerRepairDao.findJIdsByRoleId(id);
+                if (jurisdictionIds2 != null){
+                    for (Integer integer : jurisdictionIds2) {
+                        if (!jurisdictionIds.contains(integer)){
+                            //如果不存在该权限，则存入，否则不存入
+                            jurisdictionIds.add(integer);
+                        }
+                    }
+                }
             }
-
+            butlerUserDetailVo.setJurisdiction(jurisdictionIds);
         }
 
         map.put("status", true);
