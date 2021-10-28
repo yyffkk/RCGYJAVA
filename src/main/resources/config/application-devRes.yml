@@ -49,6 +49,14 @@ meterReading:
   #水量测点号（equip_ycp_state获取当前设备模拟量测点的状态）
   ycpNoW: 25
 
+#京库克（第三方对接）
+jcook:
+  app_key: b7964889cedfdf429bfc7fae0001ff46
+  app_secret: 7b8ef75532ca0d664c7f9fe3c174eed9
+  channel_id: 1010256
+  mq_user: jcook40362136173633536
+  mq_password: d3tTyh
+
 #redis缓存
 spring:
   redis:
