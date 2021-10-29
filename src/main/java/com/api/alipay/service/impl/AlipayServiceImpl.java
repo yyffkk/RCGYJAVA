@@ -1213,7 +1213,20 @@ public class AlipayServiceImpl implements AlipayService {
                 }
                 //更新表的状态
                 shoppingDao.updateSGAStatusByCode(goodsOrderByCode);
-                map.put("status",goodsOrderByCode.getStatus());
+                switch (goodsOrderByCode.getStatus()){
+                    case 15:
+                        map.put("status",3);
+                        break;
+                    case 1:
+                        map.put("status",2);
+                        break;
+                    case -1:
+                        map.put("status",1);
+                        break;
+                    case -2:
+                        map.put("status",0);
+                        break;
+                }
                 map.put("message",alipayTradeQueryResponse.getBody());
                 return map; //交易状态
             } else {
