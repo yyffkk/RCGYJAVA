@@ -496,4 +496,23 @@ public interface SystemDataDao {
      * @return 社区活动信息
      */
     List<SDTSActivityVo> findActivityTouchScreen();
+
+    /**
+     * 查询公告信息集合（发布时间、标题、内容）（触摸屏）
+     * @return 公告信息集合
+     */
+    List<SDTSAnnouncementVo> sysAnnouncementTouchScreen();
+
+    /**
+     * 查询资讯分类（触摸屏）
+     * @return 资讯分类
+     */
+    List<SDTSNewsCategoryVo> sysNewCategoryTouchScreen();
+
+    /**
+     * 查询资讯信息（触摸屏）
+     * @param newCategoryId 资讯分类主键id
+     * @return 资讯信息
+     */
+    List<SDTSNewVo> sysNewTouchScreen(Integer newCategoryId);
 }

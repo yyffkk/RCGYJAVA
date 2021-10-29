@@ -772,19 +772,52 @@ public class SystemDataServiceImpl implements SystemDataService {
     }
 
     @Override
-    public Map<String, Object> findActivityTouchScreen(Integer pageNum, Integer size) {
+    public List<SDTSActivityVo> findActivityTouchScreen() {
+        List<SDTSActivityVo> activityTouchScreen = systemDataDao.findActivityTouchScreen();
+        if (activityTouchScreen != null && activityTouchScreen.size()>0){
+            for (SDTSActivityVo sdtsActivityVo : activityTouchScreen) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysActivityManagement", sdtsActivityVo.getId(), "activityImg");
+                sdtsActivityVo.setImgUrls(imgByDate);
+            }
+        }
+        return activityTouchScreen;
+    }
+
+    @Override
+    public List<SDTSAnnouncementVo> sysAnnouncementTouchScreen() {
+        List<SDTSAnnouncementVo> sdtsAnnouncementVos = systemDataDao.sysAnnouncementTouchScreen();
+        if (sdtsAnnouncementVos != null && sdtsAnnouncementVos.size()>0){
+            for (SDTSAnnouncementVo sdtsAnnouncementVo : sdtsAnnouncementVos) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysAnnouncementManagement", sdtsAnnouncementVo.getId(), "announcementImg");
+                sdtsAnnouncementVo.setImgUrls(imgByDate);
+            }
+        }
+        return sdtsAnnouncementVos;
+    }
+
+    @Override
+    public Map<String, Object> sysNewCategoryTouchScreen() {
         map = new HashMap<>();
-
-        PageHelper.startPage(pageNum,size);
-        List<SDTSActivityVo> SDTSActivityVoList = systemDataDao.findActivityTouchScreen();
-        PageInfo<SDTSActivityVo> pageInfo = new PageInfo<>(SDTSActivityVoList);
-
+        List<SDTSNewsCategoryVo> SDTSNewsCategoryVoList = systemDataDao.sysNewCategoryTouchScreen();
         map.put("message","请求成功");
         map.put("status",true);
-        map.put("tableList",pageInfo.getList());
-        map.put("data",pageInfo.getTotal());
-        map.put("pageCount",pageInfo.getPages());
+        map.put("data",SDTSNewsCategoryVoList);
         return map;
+    }
+
+    @Override
+    public List<SDTSNewVo> sysNewTouchScreen(Integer newCategoryId) {
+        List<SDTSNewVo> sdtsNewVoList = systemDataDao.sysNewTouchScreen(newCategoryId);
+        if (sdtsNewVoList != null && sdtsNewVoList.size()>0){
+            for (SDTSNewVo sdtsNewVo : sdtsNewVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysNews", sdtsNewVo.getId(), "newsImg");
+                sdtsNewVo.setImgUrls(imgByDate);
+            }
+        }
+        return sdtsNewVoList;
     }
 
 }

@@ -592,7 +592,61 @@ public class SystemDataController {
      */
     @GetMapping("/findActivityTouchScreen")
     public Map<String,Object> findActivityTouchScreen(Integer pageNum,Integer size){
-        return systemDataService.findActivityTouchScreen(pageNum,size);
+        PageHelper.startPage(pageNum,size);
+        List<SDTSActivityVo> activityTouchScreen = systemDataService.findActivityTouchScreen();
+        PageInfo<SDTSActivityVo> pageInfo = new PageInfo<>(activityTouchScreen);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 查询公告信息集合（发布时间、标题、内容）（触摸屏）
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/sysAnnouncementTouchScreen")
+    public Map<String,Object> sysAnnouncementTouchScreen(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<SDTSAnnouncementVo> SDTSAnnouncementVoList = systemDataService.sysAnnouncementTouchScreen();
+        PageInfo<SDTSAnnouncementVo> pageInfo = new PageInfo<>(SDTSAnnouncementVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
+    /**
+     * 查询资讯分类（触摸屏）
+     * @return 资讯分类
+     */
+    @GetMapping("/sysNewCategoryTouchScreen")
+    public Map<String,Object> sysNewCategoryTouchScreen(){
+        return systemDataService.sysNewCategoryTouchScreen();
+    }
+
+    /**
+     * 查询资讯信息（触摸屏）
+     * @param newCategoryId 资讯分类主键id
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return 资讯信息
+     */
+    @GetMapping("/sysNewTouchScreen")
+    public Map<String,Object> sysNewTouchScreen(Integer newCategoryId,Integer pageNum,Integer size){
+        PageHelper.startPage(pageNum,size);
+        List<SDTSNewVo> SDTSNewVoList = systemDataService.sysNewTouchScreen(newCategoryId);
+        PageInfo<SDTSNewVo> pageInfo = new PageInfo<>(SDTSNewVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
     }
 
 

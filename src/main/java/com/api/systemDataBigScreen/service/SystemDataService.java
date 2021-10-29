@@ -109,5 +109,12 @@ public interface SystemDataService {
 
     Map<String, Object> sysMeterReadingShareDetails();
 
-    Map<String, Object> findActivityTouchScreen(Integer pageNum, Integer size);
+    List<SDTSActivityVo> findActivityTouchScreen();
+
+    List<SDTSAnnouncementVo> sysAnnouncementTouchScreen();
+
+    Map<String, Object> sysNewCategoryTouchScreen();
+
+    List<SDTSNewVo> sysNewTouchScreen(Integer newCategoryId);
+
 }

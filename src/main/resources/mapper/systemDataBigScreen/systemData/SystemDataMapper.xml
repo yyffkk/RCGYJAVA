@@ -470,6 +470,20 @@
         from sys_activity_management as sam
         LEFT JOIN sys_sponsor_management as ssm on sam.sponsor_id = ssm.id
     </select>
+    <select id="sysAnnouncementTouchScreen" resultType="com.api.vo.systemDataBigScreen.SDTSAnnouncementVo">
+        select T.* from (
+            select id,title,content,status,(case status when 2 then release_date else scheduled_release_time end) as release_date
+            from sys_announcement_management
+            where status in (2,3)
+        ) as T order by T.release_date desc
+    </select>
+    <select id="sysNewCategoryTouchScreen" resultType="com.api.vo.systemDataBigScreen.SDTSNewsCategoryVo">
+        select id,name from sys_news_category
+    </select>
+
+    <select id="sysNewTouchScreen" resultType="com.api.vo.systemDataBigScreen.SDTSNewVo">
+        select id,title,content,create_date from sys_news where news_category_id = #{newCategoryId}
+    </select>
 
 
 </mapper>

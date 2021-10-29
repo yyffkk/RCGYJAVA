@@ -1,11 +1,13 @@
 package com.api.vo.systemDataBigScreen;
 
+import com.api.vo.resources.VoResourcesImg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -61,4 +63,8 @@ public class SDTSActivityVo implements Serializable {
      * 参与人数
      */
     private Integer participantsNumber;
+    /**
+     * 活动照片路径集合
+     */
+    private List<VoResourcesImg> imgUrls;
 }
