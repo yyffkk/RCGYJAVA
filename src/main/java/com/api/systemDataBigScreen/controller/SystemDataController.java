@@ -9,6 +9,7 @@ import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.app.AppActivityVo;
+import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.butlerApp.ButlerBorrowVo;
 import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
@@ -584,6 +585,15 @@ public class SystemDataController {
         return systemDataService.sysMeterReadingShareDetails();
     }
 
+
+    /**
+     * 查询社区活动信息（触摸屏）
+     * @return map
+     */
+    @GetMapping("/findActivityTouchScreen")
+    public Map<String,Object> findActivityTouchScreen(Integer pageNum,Integer size){
+        return systemDataService.findActivityTouchScreen(pageNum,size);
+    }
 
 
 }

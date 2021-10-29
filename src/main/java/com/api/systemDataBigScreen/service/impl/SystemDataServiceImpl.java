@@ -15,9 +15,12 @@ import com.api.util.UploadUtil;
 import com.api.util.webSocket.WebSocketService;
 import com.api.util.webSocket.WebSocketServiceApp;
 import com.api.util.webSocket.WebSocketServiceButlerApp;
+import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -765,6 +768,22 @@ public class SystemDataServiceImpl implements SystemDataService {
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",sdSysMeterReadingShareDetailsVoList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findActivityTouchScreen(Integer pageNum, Integer size) {
+        map = new HashMap<>();
+
+        PageHelper.startPage(pageNum,size);
+        List<SDTSActivityVo> SDTSActivityVoList = systemDataDao.findActivityTouchScreen();
+        PageInfo<SDTSActivityVo> pageInfo = new PageInfo<>(SDTSActivityVoList);
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("tableList",pageInfo.getList());
+        map.put("data",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
         return map;
     }
 

@@ -108,4 +108,6 @@ public interface SystemDataService {
     Map<String, Object> sysMeterReadingShare();
 
     Map<String, Object> sysMeterReadingShareDetails();
+
+    Map<String, Object> findActivityTouchScreen(Integer pageNum, Integer size);
 }

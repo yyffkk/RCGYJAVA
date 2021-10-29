@@ -490,4 +490,10 @@ public interface SystemDataDao {
      * @return 抄表公摊详情表集合
      */
     List<SDSysMeterReadingShareDetailsVo> sysMeterReadingShareDetails();
+
+    /**
+     * 查询社区活动信息（触摸屏）
+     * @return 社区活动信息
+     */
+    List<SDTSActivityVo> findActivityTouchScreen();
 }

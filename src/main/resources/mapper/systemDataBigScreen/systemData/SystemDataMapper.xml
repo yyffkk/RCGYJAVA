@@ -465,6 +465,11 @@
             resultType="com.api.vo.systemDataBigScreen.SDSysMeterReadingShareDetailsVo">
         select * from sys_meter_reading_share_details
     </select>
+    <select id="findActivityTouchScreen" resultType="com.api.vo.systemDataBigScreen.SDTSActivityVo">
+        select sam.*,ssm.sponsor_unit as sponsor_name
+        from sys_activity_management as sam
+        LEFT JOIN sys_sponsor_management as ssm on sam.sponsor_id = ssm.id
+    </select>
 
 
 </mapper>
