@@ -52,4 +52,12 @@ public interface ButlerKeyDao {
      * @return 申请记录
      */
     List<ButlerRecordVo> record(ButlerRecordSearch butlerRecordSearch);
+
+
+    /**
+     * 根据钥匙主键id查询钥匙数量
+     * @param keyId 钥匙主键id
+     * @return 钥匙数量
+     */
+    Integer findNumById(Integer keyId);
 }

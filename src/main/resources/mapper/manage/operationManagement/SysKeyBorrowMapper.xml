@@ -40,7 +40,7 @@
         order by skb.create_date desc
     </select>
     <select id="countLoanableKeyNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from sys_key_borrow where key_id = #{keyId} and status = 2
+        select count(*) from sys_key_borrow where key_id = #{keyId} and status in (2,4,5)
     </select>
     <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select status from sys_key_borrow where id = #{id}

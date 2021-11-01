@@ -31,7 +31,7 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
         List<ButlerKeyVo> list = butlerKeyDao.list(butlerKeySearch);
         if (list != null && list.size()>0){
             for (ButlerKeyVo butlerKeyVo : list) {
-                //查询当前已借出的钥匙数量(当状态为2时，视为已借出)
+                //查询当前已借出的钥匙数量(当状态为2，4，5时，视为已借出)
                 int loanableNum = sysKeyBorrowDao.countLoanableKeyNum(butlerKeyVo.getId());
                 //填入可申请钥匙数量
                 butlerKeyVo.setLoanableNum(butlerKeyVo.getTotalNum() - loanableNum);
@@ -66,7 +66,7 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
         List<ButlerKeyVo> list = butlerKeyDao.noReturnList(butlerKeySearch);
         if (list != null && list.size()>0){
             for (ButlerKeyVo butlerKeyVo : list) {
-                //查询当前已借出的钥匙数量(当状态为2时，视为已借出)
+                //查询当前已借出的钥匙数量(当状态为2,4,5时，视为已借出)
                 int loanableNum = sysKeyBorrowDao.countLoanableKeyNum(butlerKeyVo.getId());
                 //填入可申请钥匙数量
                 butlerKeyVo.setLoanableNum(butlerKeyVo.getTotalNum() - loanableNum);
@@ -94,6 +94,13 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
             return map;
         }
 
+        //根据钥匙主键id查询钥匙信息
+        Integer num = butlerKeyDao.findNumById(butlerKeyBorrow.getKeyId());
+        if (num <= 0){
+            map.put("message","钥匙数量不足，不可申请");
+            map.put("status",false);
+            return map;
+        }
 
         int insert = butlerKeyDao.apply(butlerKeyBorrow);
         if (insert >0){
