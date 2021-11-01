@@ -100,10 +100,14 @@
     <select id="findById" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerRepairFindByIdVo">
         select a.*,ur.name,ur.tel from (
             select sdl.id as dispatch_id,srr.type,srr.repairman,srr.id,srr.report_detail,srr.repair_date,sdl.status,(case sdld.create_id is null when true then -1 else sdld.create_id end) as create_id
-            from sys_report_repair as srr,sys_dispatch_list as sdl LEFT JOIN sys_dispatch_list_detail as sdld
+            from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_report_repair as srr,sys_dispatch_list as sdl
+            LEFT JOIN sys_dispatch_list_detail as sdld
             on sdld.dispatch_list_id = sdl.id
             <where>
-                srr.dispatch_list_id = sdl.id
+                srr.building_unit_estate_id = cbue.id
+                and cbue.building_unit_id = cbu.id
+                and cbu.building_id = cb.id
+                and srr.dispatch_list_id = sdl.id
                 and sdl.sys_delete = 1
                 and srr.id = #{repairId}
             </where>
@@ -138,10 +142,14 @@
     </select>
 
     <select id="findById2" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerRepairFindByIdVo">
-        select srr.id,sdl.id as dispatch_id,ur.name,ur.tel,srr.type,sdl.status from sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld,sys_report_repair as srr
+        select srr.id,sdl.id as dispatch_id,ur.name,ur.tel,srr.type,sdl.status,CONCAT(cb.no,'栋',cbu.no,'单元',cbue.room_number) as room_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_dispatch_list as sdl,sys_dispatch_list_detail as sdld,sys_report_repair as srr
         LEFT JOIN user_resident as ur
         on ur.id = srr.repairman
-        where srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and srr.id = #{repairId}
+        where srr.building_unit_estate_id = cbue.id
+		and cbue.building_unit_id = cbu.id
+		and cbu.building_id = cb.id
+        and srr.dispatch_list_id = sdl.id and sdld.dispatch_list_id = sdl.id and srr.id = #{repairId}
     </select>
 
     <select id="findDispatchTypeById2" parameterType="com.api.model.butlerApp.ButlerUserIdAndRepairId" resultType="com.api.vo.butlerApp.ButlerDispatchTypeVo">
@@ -152,10 +160,14 @@
 
     <select id="findById3" parameterType="java.lang.Integer" resultType="com.api.vo.butlerApp.ButlerRepairFindByIdVo">
         select T.*,ur.name,ur.tel from (
-            select srr.id,srr.repairman,sdl.id as dispatch_id,srr.type,sdl.status
-            from sys_report_repair as srr,sys_dispatch_list as sdl LEFT JOIN sys_dispatch_list_detail as sdld
+            select srr.id,srr.repairman,sdl.id as dispatch_id,srr.type,sdl.status,CONCAT(cb.no,'栋',cbu.no,'单元',cbue.room_number) as room_name
+            from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_report_repair as srr,sys_dispatch_list as sdl
+            LEFT JOIN sys_dispatch_list_detail as sdld
             on sdld.dispatch_list_id = sdl.id
-            where srr.dispatch_list_id = sdl.id  and srr.id = #{repairId}
+            where srr.building_unit_estate_id = cbue.id
+              and cbue.building_unit_id = cbu.id
+              and cbu.building_id = cb.id
+              and srr.dispatch_list_id = sdl.id  and srr.id = #{repairId}
         ) as T
         LEFT JOIN user_resident as ur
         on ur.id = T.repairman
