@@ -37,7 +37,7 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
                 butlerKeyVo.setLoanableNum(butlerKeyVo.getTotalNum() - loanableNum);
 
                 //填入状态
-                if (butlerKeyVo.getTotalNum() > butlerKeyVo.getLoanableNum()){
+                if (butlerKeyVo.getTotalNum() > loanableNum){
                     //当钥匙总数 大于 钥匙借取数量
                     butlerKeyVo.setStatus(1);//1.可申请
                 }else {
