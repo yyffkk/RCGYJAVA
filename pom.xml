@@ -324,6 +324,36 @@
 <!--                <target>8</target>-->
 <!--            </configuration>-->
 <!--        </plugin>-->
+
+<!--      <plugin>-->
+<!--        <artifactId>maven-compiler-plugin</artifactId>-->
+<!--        <configuration>-->
+<!--          <source>1.8</source>-->
+<!--          <target>1.8</target>-->
+<!--          <encoding>UTF-8</encoding>-->
+<!--          &lt;!&ndash;配置本地jar包在项目的存放路径&ndash;&gt;-->
+<!--          <compilerArguments>-->
+<!--            <extdirs>${project.basedir}/src/main/webapp/WEB-INF/lib</extdirs>-->
+<!--          </compilerArguments>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-war-plugin</artifactId>-->
+<!--        <configuration>-->
+<!--          <webResources>-->
+<!--            <resource>-->
+<!--              &lt;!&ndash;配置本地jar包在项目中的存放路径&ndash;&gt;-->
+<!--              <directory>src/main/webapp/WEB-INF/lib/</directory>-->
+<!--              &lt;!&ndash;配置打包时jar包的存放路径&ndash;&gt;-->
+<!--              <targetPath>WEB-INF/lib</targetPath>-->
+<!--              <includes>-->
+<!--                <include>**/*.jar</include>-->
+<!--              </includes>-->
+<!--            </resource>-->
+<!--          </webResources>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
     </plugins>
 
 
@@ -342,6 +372,5 @@
         </includes>
       </resource>
     </resources>
-
   </build>
 </project>
