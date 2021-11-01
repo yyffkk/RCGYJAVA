@@ -4,6 +4,7 @@ import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.model.systemDataBigScreen.SearchTouchScreenSearch;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 
@@ -117,4 +118,7 @@ public interface SystemDataService {
 
     List<SDTSNewVo> sysNewTouchScreen(Integer newCategoryId);
 
+    Map<String, Object> sysNewLatestReleaseTouchScreen(Integer num);
+
+    Map<String, Object> searchTouchScreen(SearchTouchScreenSearch searchTouchScreenSearch);
 }

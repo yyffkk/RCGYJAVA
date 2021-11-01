@@ -5,10 +5,6 @@ import com.api.util.webSocket.WebSocketService;
 //import net.sf.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.example.api.JcookSDK;
-import org.example.api.model.SkuDetailRequest;
-import org.example.api.model.SkuDetailResponse;
-import org.example.api.utils.result.Result;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,7 +22,7 @@ import java.util.*;
 @RequestMapping("manage/test2")
 public class TestController2 {
     @GetMapping("/test2")
-    public Result<List<SkuDetailResponse>> test2(HttpServletRequest request) throws IOException {
+    public Boolean test2(HttpServletRequest request) throws IOException {
 //        WebSocketService ws = new WebSocketService();
 //        JSONObject jo = new JSONObject();
 //        jo.put("message", "这是后台返回的消息！");
@@ -104,17 +100,18 @@ public class TestController2 {
 
 
         //获取商品详情举例
-        ArrayList<Integer> ids = new ArrayList<>();
-        ids.add(122024);
-        ids.add(159324);
-        ids.add(159472);
-        SkuDetailRequest skuDetailRequest = new SkuDetailRequest();
-        skuDetailRequest.setSkuIdSet(ids);
-        JcookSDK jcookSDK = new JcookSDK("b7964889cedfdf429bfc7fae0001ff46", "7b8ef75532ca0d664c7f9fe3c174eed9", 1010256);
-        Result<List<SkuDetailResponse>> skuDetailResponseList = jcookSDK.skuDetail(skuDetailRequest);
-        System.out.println(skuDetailResponseList);
-
-        return skuDetailResponseList;
+//        ArrayList<Integer> ids = new ArrayList<>();
+//        ids.add(122024);
+//        ids.add(159324);
+//        ids.add(159472);
+//        SkuDetailRequest skuDetailRequest = new SkuDetailRequest();
+//        skuDetailRequest.setSkuIdSet(ids);
+//        JcookSDK jcookSDK = new JcookSDK("b7964889cedfdf429bfc7fae0001ff46", "7b8ef75532ca0d664c7f9fe3c174eed9", 1010256);
+//        Result<List<SkuDetailResponse>> skuDetailResponseList = jcookSDK.skuDetail(skuDetailRequest);
+//        System.out.println(skuDetailResponseList);
+//
+//        return skuDetailResponseList;
+        return null;
 
     }
 }

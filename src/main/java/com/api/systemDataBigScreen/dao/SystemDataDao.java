@@ -3,6 +3,7 @@ package com.api.systemDataBigScreen.dao;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.model.systemDataBigScreen.SearchTouchScreenSearch;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 
@@ -515,4 +516,32 @@ public interface SystemDataDao {
      * @return 资讯信息
      */
     List<SDTSNewVo> sysNewTouchScreen(Integer newCategoryId);
+
+    /**
+     * 查询最近发布的资讯信息
+     * @param num 资讯数量
+     * @return 资讯信息
+     */
+    List<SDTSNewVo> sysNewLatestReleaseTouchScreen(Integer num);
+
+    /**
+     * 活动信息搜索（触摸屏）
+     * @param searchTouchScreenSearch 触摸屏信息搜索 搜索条件
+     * @return 返回内容
+     */
+    List<SDTSActivityVo> searchActivity(SearchTouchScreenSearch searchTouchScreenSearch);
+
+    /**
+     * 公告信息搜索
+     * @param searchTouchScreenSearch 触摸屏信息搜索 搜索条件
+     * @return 返回内容
+     */
+    List<SDTSAnnouncementVo> searchAnnouncement(SearchTouchScreenSearch searchTouchScreenSearch);
+
+    /**
+     * 资讯信息搜索
+     * @param searchTouchScreenSearch 触摸屏信息搜索 搜索条件
+     * @return 返回内容
+     */
+    List<SDTSNewVo> searchNews(SearchTouchScreenSearch searchTouchScreenSearch);
 }

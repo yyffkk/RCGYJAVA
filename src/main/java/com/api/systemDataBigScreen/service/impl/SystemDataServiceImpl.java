@@ -2,28 +2,22 @@ package com.api.systemDataBigScreen.service.impl;
 
 import com.api.manage.dao.operationManagement.SysNewsCategoryManagementDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
-import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.model.systemDataBigScreen.SearchTouchScreenSearch;
 import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.util.IdWorker;
-import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.util.webSocket.WebSocketService;
 import com.api.util.webSocket.WebSocketServiceApp;
 import com.api.util.webSocket.WebSocketServiceButlerApp;
-import com.api.vo.basicArchives.VoAuditManagement;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -818,6 +812,66 @@ public class SystemDataServiceImpl implements SystemDataService {
             }
         }
         return sdtsNewVoList;
+    }
+
+    @Override
+    public Map<String, Object> sysNewLatestReleaseTouchScreen(Integer num) {
+        map = new HashMap<>();
+        List<SDTSNewVo> sdtsNewVoList = systemDataDao.sysNewLatestReleaseTouchScreen(num);
+        if (sdtsNewVoList != null && sdtsNewVoList.size()>0){
+            for (SDTSNewVo sdtsNewVo : sdtsNewVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysNews", sdtsNewVo.getId(), "newsImg");
+                sdtsNewVo.setImgUrls(imgByDate);
+            }
+        }
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdtsNewVoList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> searchTouchScreen(SearchTouchScreenSearch searchTouchScreenSearch) {
+        map = new HashMap<>();
+        SDTSSearchVo sdtsSearchVo = new SDTSSearchVo();
+        //活动信息搜索
+        List<SDTSActivityVo> sdtsActivityVoList = systemDataDao.searchActivity(searchTouchScreenSearch);
+        if (sdtsActivityVoList != null && sdtsActivityVoList.size()>0){
+            for (SDTSActivityVo sdtsActivityVo : sdtsActivityVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysActivityManagement", sdtsActivityVo.getId(), "activityImg");
+                sdtsActivityVo.setImgUrls(imgByDate);
+            }
+        }
+        sdtsSearchVo.setSdtsActivityVoList(sdtsActivityVoList);
+
+        //公告信息搜索
+        List<SDTSAnnouncementVo> sdtsAnnouncementVoList = systemDataDao.searchAnnouncement(searchTouchScreenSearch);
+        if (sdtsAnnouncementVoList != null && sdtsAnnouncementVoList.size()>0){
+            for (SDTSAnnouncementVo sdtsAnnouncementVo : sdtsAnnouncementVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysAnnouncementManagement", sdtsAnnouncementVo.getId(), "announcementImg");
+                sdtsAnnouncementVo.setImgUrls(imgByDate);
+            }
+        }
+        sdtsSearchVo.setSdtsAnnouncementVoList(sdtsAnnouncementVoList);
+
+        //资讯信息搜索
+        List<SDTSNewVo> sdtsNewVoList = systemDataDao.searchNews(searchTouchScreenSearch);
+        if (sdtsNewVoList != null && sdtsNewVoList.size()>0){
+            for (SDTSNewVo sdtsNewVo : sdtsNewVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysNews", sdtsNewVo.getId(), "newsImg");
+                sdtsNewVo.setImgUrls(imgByDate);
+            }
+        }
+        sdtsSearchVo.setSdtsNewVoList(sdtsNewVoList);
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdtsSearchVo);
+        return map;
     }
 
 }

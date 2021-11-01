@@ -1,17 +1,13 @@
 package com.api.systemDataBigScreen.controller;
 
-import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
 import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.model.systemDataBigScreen.DailyActivitySearch;
 import com.api.model.systemDataBigScreen.DispatchListSearch;
 import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.model.systemDataBigScreen.SearchTouchScreenSearch;
 import com.api.systemDataBigScreen.service.SystemDataService;
-import com.api.vo.app.AppActivityVo;
-import com.api.vo.basicArchives.VoAuditManagement;
-import com.api.vo.butlerApp.ButlerBorrowVo;
-import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
@@ -649,5 +645,23 @@ public class SystemDataController {
         return map;
     }
 
+    /**
+     * 最近发布的资讯信息(触摸屏)
+     * @param num 资讯数量
+     * @return map
+     */
+    @GetMapping("/sysNewLatestReleaseTouchScreen")
+    public Map<String,Object> sysNewLatestReleaseTouchScreen(Integer num){
+        return systemDataService.sysNewLatestReleaseTouchScreen(num);
+    }
 
+    /**
+     * 信息搜索（触摸屏）
+     * @param searchTouchScreenSearch 触摸屏信息搜索 搜索条件
+     * @return 返回内容
+     */
+    @GetMapping("/searchTouchScreen")
+    public Map<String,Object> searchTouchScreen(SearchTouchScreenSearch searchTouchScreenSearch){
+        return systemDataService.searchTouchScreen(searchTouchScreenSearch);
+    }
 }
