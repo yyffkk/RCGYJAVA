@@ -64,7 +64,7 @@
             return_reviewer = #{reviewer},
             return_audit_date = #{auditDate},
             status = #{status},
-            <if test="reason != null and reason != ''">
+            <if test="returnReason != null and returnReason != ''">
                 return_reason = #{reason},
             </if>
         </set>
