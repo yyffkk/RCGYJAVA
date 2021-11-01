@@ -29,6 +29,13 @@ public interface SysKeyBorrowDao {
     int examine(KeyBorrow keyBorrow);
 
     /**
+     * 归还审核
+     * @param keyBorrow 钥匙借还/钥匙审核model管理
+     * @return 影响行数
+     */
+    int returnExamine(KeyBorrow keyBorrow);
+
+    /**
      * 根据审核主键id 查询审核状态
      * @param id 审核主键id
      * @return 审核状态

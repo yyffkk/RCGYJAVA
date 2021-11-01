@@ -11,4 +11,6 @@ public interface SysKeyBorrowService {
     List<VoKeyBorrow> list(SearchKeyBorrow searchKeyBorrow);
 
     Map<String, Object> examine(KeyBorrow keyBorrow);
+
+    Map<String, Object> returnExamine(KeyBorrow keyBorrow);
 }

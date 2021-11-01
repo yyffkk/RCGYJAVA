@@ -41,7 +41,7 @@
         update sys_key_borrow
         set return_date = #{returnDate},
         status = #{status}
-        where key_id = #{keyId} and borrower = #{borrower} and status = 2
+        where key_id = #{keyId} and borrower = #{borrower} and status in (2,5)
     </update>
 
     <select id="record" parameterType="com.api.model.butlerApp.ButlerRecordSearch" resultType="com.api.vo.butlerApp.ButlerRecordVo">

@@ -53,4 +53,14 @@ public class SysKeyBorrowController {
     public Map<String,Object> examine(@RequestBody KeyBorrow keyBorrow){
         return sysKeyBorrowService.examine(keyBorrow);
     }
+
+    /**
+     * 归还审核
+     * @param keyBorrow 钥匙借还/钥匙审核model管理
+     * @return map
+     */
+    @PostMapping("/returnExamine")
+    public Map<String,Object> returnExamine(@RequestBody KeyBorrow keyBorrow){
+        return sysKeyBorrowService.returnExamine(keyBorrow);
+    }
 }
