@@ -40,7 +40,7 @@ public interface ButlerKeyDao {
     int apply(ButlerKeyBorrow butlerKeyBorrow);
 
     /**
-     * 归还钥匙
+     * 申请归还钥匙
      * @param butlerKeyBorrow 管家app 钥匙借取model信息
      * @return 影响行数
      */

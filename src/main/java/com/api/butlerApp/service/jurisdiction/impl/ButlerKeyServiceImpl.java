@@ -131,7 +131,7 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
         butlerKeyBorrow.setKeyId(keyId); //填入钥匙主键id
         butlerKeyBorrow.setBorrower(id); //填入借取人主键id
         butlerKeyBorrow.setReturnDate(new Date()); //填入归还时间
-        butlerKeyBorrow.setStatus(4);//4.已归还
+        butlerKeyBorrow.setStatus(4);//4.归还待审核
 
         int update = butlerKeyDao.returnKey(butlerKeyBorrow);
         if (update >0){
