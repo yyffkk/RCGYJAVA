@@ -135,10 +135,10 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
 
         int update = butlerKeyDao.returnKey(butlerKeyBorrow);
         if (update >0){
-            map.put("message","归还成功");
+            map.put("message","申请成功");
             map.put("status",true);
         }else {
-            map.put("message","归还失败");
+            map.put("message","申请失败");
             map.put("status",false);
         }
         return map;

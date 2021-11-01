@@ -6,7 +6,7 @@
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchKeyBorrow" resultType="com.api.vo.operationManagement.VoKeyBorrow">
         select skb.id,sk.id as key_id,skb.code,su.actual_name as reviewer_name,si.name as identity,
-        su.tel,sk.facility_name,skb.status,skb.audit_date,skb.create_date,sk.num as loanable_num
+        su.tel,sk.facility_name,skb.status,skb.audit_date,skb.reason,skb.return_audit_date,skb.return_reason,skb.create_date,sk.num as loanable_num
         from sys_key_borrow as skb,sys_key as sk,sys_user as su
         LEFT JOIN sys_identity as si on su.position_id = si.id
         <where>

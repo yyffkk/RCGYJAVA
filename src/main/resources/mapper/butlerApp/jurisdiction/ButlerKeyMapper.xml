@@ -45,7 +45,7 @@
     </update>
 
     <select id="record" parameterType="com.api.model.butlerApp.ButlerRecordSearch" resultType="com.api.vo.butlerApp.ButlerRecordVo">
-        select skb.id,skb.code,skb.status,sk.facility_name,sk.corresponding_position,sk.storage_location,skb.audit_date,skb.reason
+        select skb.id,skb.code,skb.status,sk.facility_name,sk.corresponding_position,sk.storage_location,skb.audit_date,skb.reason,skb.return_audit_date,skb.return_reason
         from sys_key_borrow as skb,sys_key as sk
         <where>
             skb.key_id = sk.id

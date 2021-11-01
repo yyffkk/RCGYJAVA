@@ -47,6 +47,18 @@ public class VoKeyBorrow {
      */
     private Date auditDate;
     /**
+     * 驳回原因
+     */
+    private String reason;
+    /**
+     * 归还审核时间
+     */
+    private Date returnAuditDate;
+    /**
+     * 归还驳回原因
+     */
+    private String returnReason;
+    /**
      * 创建时间/申请时间
      */
     private Date createDate;
@@ -64,6 +76,9 @@ public class VoKeyBorrow {
                 ", loanableNum=" + loanableNum +
                 ", status=" + status +
                 ", auditDate=" + auditDate +
+                ", reason='" + reason + '\'' +
+                ", returnAuditDate=" + returnAuditDate +
+                ", returnReason='" + returnReason + '\'' +
                 ", createDate=" + createDate +
                 '}';
     }
@@ -148,6 +163,30 @@ public class VoKeyBorrow {
         this.auditDate = auditDate;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Date getReturnAuditDate() {
+        return returnAuditDate;
+    }
+
+    public void setReturnAuditDate(Date returnAuditDate) {
+        this.returnAuditDate = returnAuditDate;
+    }
+
+    public String getReturnReason() {
+        return returnReason;
+    }
+
+    public void setReturnReason(String returnReason) {
+        this.returnReason = returnReason;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -159,7 +198,7 @@ public class VoKeyBorrow {
     public VoKeyBorrow() {
     }
 
-    public VoKeyBorrow(Integer id, Integer keyId, String code, String reviewerName, String identity, String tel, String facilityName, Integer loanableNum, Integer status, Date auditDate, Date createDate) {
+    public VoKeyBorrow(Integer id, Integer keyId, String code, String reviewerName, String identity, String tel, String facilityName, Integer loanableNum, Integer status, Date auditDate, String reason, Date returnAuditDate, String returnReason, Date createDate) {
         this.id = id;
         this.keyId = keyId;
         this.code = code;
@@ -170,6 +209,9 @@ public class VoKeyBorrow {
         this.loanableNum = loanableNum;
         this.status = status;
         this.auditDate = auditDate;
+        this.reason = reason;
+        this.returnAuditDate = returnAuditDate;
+        this.returnReason = returnReason;
         this.createDate = createDate;
     }
 }
