@@ -243,7 +243,10 @@
         select count(*) from sys_article_detail where status = 3
     </select>
     <select id="findActivity" resultType="com.api.vo.systemDataBigScreen.SDSysActivityVo">
-        select title,content,registration_start_time,registration_end_time from sys_activity_management order by create_date DESC
+        select title,content,registration_start_time,registration_end_time
+        from sys_activity_management
+        where is_delete = 1
+        order by create_date DESC
     </select>
     <select id="findVisitorInfo" resultType="com.api.vo.systemDataBigScreen.SDVisitorInfoVo">
         select count(u.id) as visitor_num,s.date as date_time from
@@ -469,13 +472,16 @@
         select sam.*,ssm.sponsor_unit as sponsor_name
         from sys_activity_management as sam
         LEFT JOIN sys_sponsor_management as ssm on sam.sponsor_id = ssm.id
+        where sam.is_delete = 1
     </select>
     <select id="sysAnnouncementTouchScreen" resultType="com.api.vo.systemDataBigScreen.SDTSAnnouncementVo">
         select T.* from (
             select id,title,content,status,(case status when 2 then release_date else scheduled_release_time end) as release_date
             from sys_announcement_management
             where status in (2,3)
-        ) as T order by T.release_date desc
+        ) as T
+        where now() <![CDATA[ >= ]]> T.release_date
+        order by T.release_date desc
     </select>
     <select id="sysNewCategoryTouchScreen" resultType="com.api.vo.systemDataBigScreen.SDTSNewsCategoryVo">
         select id,name from sys_news_category
@@ -492,9 +498,10 @@
         from sys_activity_management as sam
         LEFT JOIN sys_sponsor_management as ssm on sam.sponsor_id = ssm.id
         <where>
+            sam.is_delete = 1
             <if test="content != null and content != ''">
-                sam.title like concat('%',#{content},'%')
-                or sam.content like concat('%',#{content},'%')
+                and (sam.title like concat('%',#{content},'%')
+                or sam.content like concat('%',#{content},'%'))
             </if>
         </where>
         limit #{num}
@@ -506,9 +513,10 @@
             where status in (2,3)
         ) as T
         <where>
+            now() <![CDATA[ >= ]]> T.release_date
             <if test="content != null and content != ''">
-                T.title like concat('%',#{content},'%')
-                or T.content like concat('%',#{content},'%')
+                and (T.title like concat('%',#{content},'%')
+                or T.content like concat('%',#{content},'%'))
             </if>
         </where>
         order by T.release_date desc limit #{num}
