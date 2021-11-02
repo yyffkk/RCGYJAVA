@@ -47,6 +47,10 @@ public class BorrowServiceImpl implements BorrowService {
                     //计算出出借时长(归还时间-借出时间)
                     long hour = (voBorrow.getEndDate().getTime() - voBorrow.getBeginDate().getTime())/(60*60*1000);
                     voBorrow.setBorrowDate(hour);
+                }else {
+                    //-1.出借审核中，0.出借审核失败 出借时长默认为0
+                    long hour = 0;
+                    voBorrow.setBorrowDate(hour);
                 }
             }
         }

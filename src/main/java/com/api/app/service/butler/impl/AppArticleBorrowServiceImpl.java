@@ -57,10 +57,14 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
                     //计算出出借时长(现在时间-借出时间)
                     long hour = (new Date().getTime() - myArticleBorrowVo.getBeginDate().getTime())/(60*60*1000);
                     myArticleBorrowVo.setBorrowDate(hour);
-                }else if (myArticleBorrowVo.getBorrowStatus() == 2){
-                    //2.已还
+                }else if (myArticleBorrowVo.getBorrowStatus() == 2 || myArticleBorrowVo.getBorrowStatus() == 3){
+                    //2.已还 3.待检查
                     //计算出出借时长(归还时间-借出时间)
                     long hour = (myArticleBorrowVo.getEndDate().getTime() - myArticleBorrowVo.getBeginDate().getTime())/(60*60*1000);
+                    myArticleBorrowVo.setBorrowDate(hour);
+                }else {
+                    //-1.出借审核中，0.出借审核失败 出借时长默认为0
+                    long hour = 0;
                     myArticleBorrowVo.setBorrowDate(hour);
                 }
             }
