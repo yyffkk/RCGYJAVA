@@ -170,6 +170,16 @@
     <update id="decQuantityById" parameterType="java.lang.Integer">
         update sys_article set quantity = quantity - 1 where id = #{articleId}
     </update>
+    <update id="updateSARById" parameterType="com.api.model.butlerApp.ButlerBorrowLendingApproval">
+        update sys_article_borrow
+        <set>
+            borrow_status = #{status},
+            <if test="rejectReasons != null and rejectReasons != ''">
+                reject_reasons = #{rejectReasons}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 
     <select id="countRecordNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from sys_article_borrow where article_detail_id =#{id}

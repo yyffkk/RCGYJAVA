@@ -436,6 +436,27 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> lendingApproval(ButlerBorrowLendingApproval butlerBorrowLendingApproval) {
+        map = new HashMap<>();
+        if (butlerBorrowLendingApproval.getStatus() != 0 && butlerBorrowLendingApproval.getStatus() != 1){
+            map.put("message","状态传输有误");
+            map.put("status",false);
+            return map;
+        }
+
+        //根据主键id修改状态和驳回原因
+        int update = butlerBorrowDao.updateSARById(butlerBorrowLendingApproval);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
 
     private int findJurisdictionByUserId(String roleIds) {
         String[] split = roleIds.split(",");

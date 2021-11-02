@@ -47,6 +47,16 @@ public class ButlerBorrowController {
     }
 
     /**
+     * 出借审核
+     * @param butlerBorrowLendingApproval 管家端出借审核model
+     * @return
+     */
+    @PostMapping("/lendingApproval")
+    public Map<String,Object> lendingApproval(@RequestBody ButlerBorrowLendingApproval butlerBorrowLendingApproval){
+        return butlerBorrowService.lendingApproval(butlerBorrowLendingApproval);
+    }
+
+    /**
      * 检查信息
      * @param articleBorrowId 物品借还管理主键id
      * @param roleId 当前用户所拥有的角色id

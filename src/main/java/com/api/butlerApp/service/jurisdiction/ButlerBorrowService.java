@@ -31,4 +31,6 @@ public interface ButlerBorrowService {
     Map<String, Object> insertArticleDetail(ButlerArticleDetail butlerArticleDetail, String roleId);
 
     Map<String, Object> delete(int[] ids, String roleId);
+
+    Map<String, Object> lendingApproval(ButlerBorrowLendingApproval butlerBorrowLendingApproval);
 }

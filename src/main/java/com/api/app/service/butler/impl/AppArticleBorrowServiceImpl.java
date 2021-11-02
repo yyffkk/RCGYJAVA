@@ -113,7 +113,7 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
                 }
                 AppArticleBorrow appArticleBorrow = new AppArticleBorrow();
                 appArticleBorrow.setArticleDetailId(id); //填入物品明细id
-                appArticleBorrow.setBorrowStatus(1); //填入借取状态,默认1.出借中
+                appArticleBorrow.setBorrowStatus(0); //填入借取状态,默认0.出借审核中
                 appArticleBorrow.setStatus(1); //填入物品状态,默认1.正常
                 appArticleBorrow.setBeginDate(new Date()); //填入借出时间
                 appArticleBorrow.setCreateId(userId); //填入创建人
