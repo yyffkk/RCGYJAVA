@@ -25,9 +25,14 @@
 
     <update id="updateSAEByBorrowId" parameterType="com.api.model.butlerApp.ButlerSubmitCheck">
         update sys_article_borrow
-        set status = #{articleStatus},
-        end_date = #{endDate},
-        borrow_status = #{borrowStatus}
+        <set>
+            status = #{articleStatus},
+            end_date = #{endDate},
+            borrow_status = #{borrowStatus},
+            <if test="returnRejectReasons != null and returnRejectReasons != ''">
+                return_reject_reasons = #{returnRejectReasons}
+            </if>
+        </set>
         where id = #{articleBorrowId}
     </update>
 

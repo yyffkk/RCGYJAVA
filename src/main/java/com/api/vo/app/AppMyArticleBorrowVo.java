@@ -31,7 +31,7 @@ public class AppMyArticleBorrowVo {
      */
     private long borrowDate;
     /**
-     * 借取状态（-1.出借审核中，0.出借审核失败，1.出借中，2.已还，3.待检查）
+     * 借取状态（-1.出借审核中，0.出借审核失败，1.出借中，2.已还，3.待检查,4.归还审核驳回）
      */
     private Integer borrowStatus;
 

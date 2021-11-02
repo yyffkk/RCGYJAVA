@@ -51,9 +51,9 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
         List<AppMyArticleBorrowVo> appMyArticleBorrowVos = appArticleBorrowDao.myList(id);
         if (appMyArticleBorrowVos != null && appMyArticleBorrowVos.size()>0){
             for (AppMyArticleBorrowVo myArticleBorrowVo : appMyArticleBorrowVos) {
-                //判断借取状态（1.出借中，2.已还）
-                if (myArticleBorrowVo.getBorrowStatus() == 1){
-                    //1.出借中
+                //判断借取状态（-1.出借审核中，0.出借审核失败，1.出借中，2.已还，3.待检查,4.归还审核驳回）
+                if (myArticleBorrowVo.getBorrowStatus() == 1 || myArticleBorrowVo.getBorrowStatus() == 4){
+                    //1.出借中，4.归还审核驳回
                     //计算出出借时长(现在时间-借出时间)
                     long hour = (new Date().getTime() - myArticleBorrowVo.getBeginDate().getTime())/(60*60*1000);
                     myArticleBorrowVo.setBorrowDate(hour);
@@ -183,7 +183,7 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
                     //根据借还主键id修改物品借还归还状态信息
                     int update = appArticleBorrowDao.articleReturn(appArticleBorrow);
                     if (update <=0){
-                        throw new RuntimeException("归还失败");
+                        throw new RuntimeException("申请归还失败");
                     }
                 }else {
                     throw new RuntimeException("物品信息选择出错");
@@ -200,7 +200,7 @@ public class AppArticleBorrowServiceImpl implements AppArticleBorrowService {
             map.put("status",false);
             return map;
         }
-        map.put("message","归还成功");
+        map.put("message","申请归还成功");
         map.put("status",true);
         return map;
     }

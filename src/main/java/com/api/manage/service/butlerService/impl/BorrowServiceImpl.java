@@ -36,14 +36,14 @@ public class BorrowServiceImpl implements BorrowService {
         List<VoBorrow> list = borrowDao.list(searchBorrow);
         if (list != null && list.size()>0){
             for (VoBorrow voBorrow : list) {
-                //判断借取状态（1.出借中，2.已还）
-                if (voBorrow.getBorrowStatus() == 1){
-                    //1.出借中
+                //判断借取状态（-1.出借审核中，0.出借审核失败，1.出借中，2.已还，3.待检查,4.归还审核驳回）
+                if (voBorrow.getBorrowStatus() == 1 || voBorrow.getBorrowStatus() == 4){
+                    //1.出借中,4.归还审核驳回
                     //计算出出借时长(现在时间-借出时间)
                     long hour = (new Date().getTime() - voBorrow.getBeginDate().getTime())/(60*60*1000);
                     voBorrow.setBorrowDate(hour);
                 }else if (voBorrow.getBorrowStatus() == 2 || voBorrow.getBorrowStatus() == 3){
-                    //2.已还
+                    //2.已还,3.待检查
                     //计算出出借时长(归还时间-借出时间)
                     long hour = (voBorrow.getEndDate().getTime() - voBorrow.getBeginDate().getTime())/(60*60*1000);
                     voBorrow.setBorrowDate(hour);
