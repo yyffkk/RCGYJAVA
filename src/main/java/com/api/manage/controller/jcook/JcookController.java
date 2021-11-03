@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 京库克
+ * 京库克（第三方对接）
  */
 @RestController
 @RequestMapping("manage/jcook")
