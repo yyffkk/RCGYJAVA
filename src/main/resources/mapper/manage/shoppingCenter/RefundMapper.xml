@@ -6,7 +6,7 @@
 
     <select id="list" parameterType="com.api.model.shoppingCenter.RefundSearch" resultType="com.api.vo.shoppingCenter.RefundVo">
         select sga.id,sga.code,sg.id as goods_id,sg.title as goods_name,sga.back_type,sga.status,sga.num,ur.name as user_name,
-        ur.tel as user_tel,sga.back_date
+        ur.tel as user_tel,sga.back_date,sga.back_reason
         from shop_goods_appointment as sga,shop_goods as sg,user_resident as ur
         <where>
             sga.goods_id = sg.id

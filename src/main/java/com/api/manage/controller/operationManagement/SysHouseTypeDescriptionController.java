@@ -34,7 +34,7 @@ public class SysHouseTypeDescriptionController {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0501"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0201"},logical = Logical.AND)
     public Map<String,Object> list(SearchHouseTypeDescription searchHouseTypeDescription){
         PageHelper.startPage(searchHouseTypeDescription.getPageNum(),searchHouseTypeDescription.getSize());
         List<SysHouseTypeDescriptionListVo> sysHouseTypeDescriptionListVoList = sysHouseTypeDescriptionService.list(searchHouseTypeDescription);
@@ -52,7 +52,7 @@ public class SysHouseTypeDescriptionController {
      * @return 户型说明信息
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0502"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return sysHouseTypeDescriptionService.findById(id);
     }
@@ -63,7 +63,7 @@ public class SysHouseTypeDescriptionController {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0503"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0203"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysHouseTypeDescription sysHouseTypeDescription){
         return sysHouseTypeDescriptionService.insert(sysHouseTypeDescription);
     }
@@ -74,7 +74,7 @@ public class SysHouseTypeDescriptionController {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0505"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0205"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysHouseTypeDescription sysHouseTypeDescription){
         return sysHouseTypeDescriptionService.update(sysHouseTypeDescription);
     }
@@ -85,7 +85,7 @@ public class SysHouseTypeDescriptionController {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0504"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0204"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysHouseTypeDescriptionService.delete(ids.getIds());
     }
