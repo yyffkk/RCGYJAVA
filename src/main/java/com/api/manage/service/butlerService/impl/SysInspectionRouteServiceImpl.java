@@ -45,7 +45,6 @@ public class SysInspectionRouteServiceImpl implements SysInspectionRouteService 
             }
             sysInspectionRoute.setCreateId(sysUser.getId()); //添加创建人
             sysInspectionRoute.setCreateDate(new Date()); //添加创建时间
-            sysInspectionRoute.setStatus(1); //默认状态为1.启用
             sysInspectionRoute.setIsDelete(1);//默认为非删
             //添加巡检路线
             int insert = sysInspectionRouteDao.insert(sysInspectionRoute);
