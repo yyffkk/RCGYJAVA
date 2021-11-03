@@ -139,6 +139,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_BUSINESS_SYS_USER_RESUME;
     @Value("${prop.upload-model-excel}")
     private String UPLOAD_MODEL_EXCEL;
+    @Value("${prop.upload-house-type-description}")
+    private String UPLOAD_HOUSE_TYPE_DESCRIPTION;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -576,6 +578,12 @@ public class UploadServiceImpl implements UploadService {
         map.put("message","上传成功");
         map.put("url",url);
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadHouseTypeDescriptionImg(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_HOUSE_TYPE_DESCRIPTION);
         return map;
     }
 

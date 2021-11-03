@@ -372,5 +372,14 @@ public class UploadController {
         return uploadService.uploadModelExcel(file);
     }
 
+    /**
+     * 上传户型说明照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadHouseTypeDescriptionImg")
+    public Map<String,Object> uploadHouseTypeDescriptionImg(MultipartFile file){
+        return uploadService.uploadHouseTypeDescriptionImg(file);
+    }
 
 }

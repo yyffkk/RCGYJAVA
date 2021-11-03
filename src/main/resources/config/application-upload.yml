@@ -82,6 +82,8 @@ prop:
   upload-green-task-check-situation: /img/greenTaskCheckSituation/
   #运营管理：卫生任务检查照片上传路径
   upload-hygiene-task-check-situation: /img/hygieneTaskCheckSituation/
+  #运营管理：户型说明照片上传路径
+  upload-house-type-description: /img/houseTypeDesctiption/
 
 
 
