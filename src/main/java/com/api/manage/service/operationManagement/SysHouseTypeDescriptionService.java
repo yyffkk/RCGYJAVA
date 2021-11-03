@@ -24,4 +24,6 @@ public interface SysHouseTypeDescriptionService {
     Map<String, Object> delete(int[] ids);
 
     Map<String, Object> release(Integer id);
+
+    Map<String, Object> cancelRelease(Integer id);
 }

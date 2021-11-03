@@ -174,4 +174,22 @@ public class SysHouseTypeDescriptionServiceImpl implements SysHouseTypeDescripti
         }
         return map;
     }
+
+    @Override
+    public Map<String, Object> cancelRelease(Integer id) {
+        map = new HashMap<>();
+        SysHouseTypeDescription sysHouseTypeDescription = new SysHouseTypeDescription();
+        sysHouseTypeDescription.setId(id);
+        sysHouseTypeDescription.setStatus(1);//1.未发布
+
+        int release = sysHouseTypeDescriptionDao.cancelRelease(sysHouseTypeDescription);
+        if (release > 0){
+            map.put("message","取消发布成功");
+            map.put("status",true);
+        }else {
+            map.put("message","取消发布失败");
+            map.put("status",false);
+        }
+        return map;
+    }
 }

@@ -49,4 +49,11 @@ public interface SysHouseTypeDescriptionDao {
      * @return 影响行数
      */
     int release(SysHouseTypeDescription sysHouseTypeDescription);
+
+    /**
+     * 取消发布
+     * @param sysHouseTypeDescription 户型说明model
+     * @return 影响行数
+     */
+    int cancelRelease(SysHouseTypeDescription sysHouseTypeDescription);
 }

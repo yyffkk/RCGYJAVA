@@ -75,15 +75,22 @@
         </set>
         where id = #{id}
     </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_house_type_description where id = #{id}
+    </delete>
+
     <update id="release" parameterType="com.api.model.operationManagement.SysHouseTypeDescription">
         update sys_house_type_description
         set status  = #{status},release_date = #{releaseDate}
         where id = #{id}
     </update>
 
-    <delete id="delete" parameterType="java.lang.Integer">
-        delete from sys_house_type_description where id = #{id}
-    </delete>
+    <update id="cancelRelease">
+        update sys_house_type_description
+        set status  = #{status}
+        where id = #{id}
+    </update>
 
 
 </mapper>

@@ -100,4 +100,14 @@ public class SysHouseTypeDescriptionController {
         return sysHouseTypeDescriptionService.release(id);
     }
 
+    /**
+     * 取消发布
+     * @param id 户型说明主键id
+     * @return map
+     */
+    @GetMapping("/cancelRelease")
+    public Map<String,Object> cancelRelease(Integer id){
+        return sysHouseTypeDescriptionService.cancelRelease(id);
+    }
+
 }
