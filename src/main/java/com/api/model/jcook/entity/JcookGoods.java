@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ public class JcookGoods {
     /**
      * sku编码
      */
-    private Integer skuId;
+    private BigInteger skuId;
     /**
      * 商品名称
      */
