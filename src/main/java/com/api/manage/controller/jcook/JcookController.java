@@ -18,7 +18,7 @@ public class JcookController {
     JcookService jcookService;
 
     /**
-     * 手动更新商品数据（用户服务器重启后同步jcook商品数据）
+     * 初始化商品数据（用户服务器重启后同步jcook商品数据，回滚到初始状态）
      * @return map
      */
     @GetMapping("/updateJcookShop")

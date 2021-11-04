@@ -26,5 +26,5 @@ public class JcookSpecificationAttribute {
     /**
      * 值
      */
-    private String values;
+    private String value;
 }
