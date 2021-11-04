@@ -195,71 +195,78 @@
     </dependency>
 
 
-        <!-- 支付宝SDK -->
-        <dependency>
-          <groupId>com.alipay.sdk</groupId>
-          <artifactId>alipay-sdk-java</artifactId>
-          <version>3.1.0</version>
-        </dependency>
+    <!--  jcookSDK  -->
+    <dependency>
+      <groupId>com.jcook.sdk</groupId>
+      <artifactId>jcook-sdk-java</artifactId>
+      <version>1.0.1</version>
+    </dependency>
 
-        <!--短信sdk-->
-        <dependency>
-          <groupId>com.aliyun</groupId>
-          <artifactId>aliyun-java-sdk-core</artifactId>
-          <version>3.3.1</version>
-<!--          <version>4.5.3</version>-->
-        </dependency>
-        <dependency>
-          <groupId>com.aliyun</groupId>
-          <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-          <version>1.1.0</version>
-        </dependency>
-        <!--  OkHttp3  -->
-        <dependency>
-          <groupId>com.squareup.okhttp3</groupId>
-          <artifactId>okhttp</artifactId>
-          <version>3.9.1</version>
-        </dependency>
-        <!-- 解析html -->
-        <dependency>
-          <groupId>org.jsoup</groupId>
-          <artifactId>jsoup</artifactId>
-          <version>1.8.3</version>
-        </dependency>
-        <!--  fastjson  -->
-        <dependency>
-          <groupId>com.alibaba</groupId>
-          <artifactId>fastjson</artifactId>
-          <version>1.2.41</version>
-        </dependency>
-        <!--  pdf中添加文字和图片  -->
-        <dependency>
-          <groupId>com.itextpdf</groupId>
-          <artifactId>itextpdf</artifactId>
-          <version>5.4.3</version>
-        </dependency>
-        <!-- itextpdf的亚洲字体支持 -->
-        <dependency>
-          <groupId>com.itextpdf</groupId>
-          <artifactId>itext-asian</artifactId>
-          <version>5.2.0</version>
-        </dependency>
-        <!--  Cacheable换成  -->
-        <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
-        <!--  AOP  -->
-        <dependency>
-          <groupId>org.aspectj</groupId>
-          <artifactId>aspectjweaver</artifactId>
-          <version>1.9.4</version>
-        </dependency>
+    <!-- 支付宝SDK -->
+    <dependency>
+      <groupId>com.alipay.sdk</groupId>
+      <artifactId>alipay-sdk-java</artifactId>
+      <version>3.1.0</version>
+    </dependency>
 
-        <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
+    <!--短信sdk-->
+    <dependency>
+      <groupId>com.aliyun</groupId>
+      <artifactId>aliyun-java-sdk-core</artifactId>
+      <version>3.3.1</version>
+    <!--    <version>4.5.3</version>-->
+    </dependency>
+    <dependency>
+      <groupId>com.aliyun</groupId>
+      <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+    <!--  OkHttp3  -->
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>3.9.1</version>
+    </dependency>
+    <!-- 解析html -->
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.8.3</version>
+    </dependency>
+    <!--  fastjson  -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.41</version>
+    </dependency>
+    <!--  pdf中添加文字和图片  -->
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>itextpdf</artifactId>
+      <version>5.4.3</version>
+    </dependency>
+    <!-- itextpdf的亚洲字体支持 -->
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>itext-asian</artifactId>
+      <version>5.2.0</version>
+    </dependency>
+    <!--  Cacheable换成  -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
+    <!--  AOP  -->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.9.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
 
     <!-- webSocket 开始-->
     <!--websocket依赖-->
@@ -315,53 +322,18 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.2.2.RELEASE</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
         <configuration>
           <source>8</source>
           <target>8</target>
         </configuration>
       </plugin>
-      <!--        <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-compiler-plugin</artifactId>-->
-<!--            <configuration>-->
-<!--                <source>8</source>-->
-<!--                <target>8</target>-->
-<!--            </configuration>-->
-<!--        </plugin>-->
 
-<!--      <plugin>-->
-<!--        <artifactId>maven-compiler-plugin</artifactId>-->
-<!--        <configuration>-->
-<!--          <source>1.8</source>-->
-<!--          <target>1.8</target>-->
-<!--          <encoding>UTF-8</encoding>-->
-<!--          &lt;!&ndash;配置本地jar包在项目的存放路径&ndash;&gt;-->
-<!--          <compilerArguments>-->
-<!--            <extdirs>${project.basedir}/src/main/webapp/WEB-INF/lib</extdirs>-->
-<!--          </compilerArguments>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-war-plugin</artifactId>-->
-<!--        <configuration>-->
-<!--          <webResources>-->
-<!--            <resource>-->
-<!--              &lt;!&ndash;配置本地jar包在项目中的存放路径&ndash;&gt;-->
-<!--              <directory>src/main/webapp/WEB-INF/lib/</directory>-->
-<!--              &lt;!&ndash;配置打包时jar包的存放路径&ndash;&gt;-->
-<!--              <targetPath>WEB-INF/lib</targetPath>-->
-<!--              <includes>-->
-<!--                <include>**/*.jar</include>-->
-<!--              </includes>-->
-<!--            </resource>-->
-<!--          </webResources>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
     </plugins>
 
 

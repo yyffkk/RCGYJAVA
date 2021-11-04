@@ -18,7 +18,7 @@ public class JcookController {
     JcookService jcookService;
 
     /**
-     * 初始化商品数据（用户服务器重启后同步jcook商品数据，回滚到初始状态）
+     * 初始化商品数据（用户服务器部署时同步jcook商品数据，回滚到初始状态）
      * @param page 当前页数
      * @return map
      */
