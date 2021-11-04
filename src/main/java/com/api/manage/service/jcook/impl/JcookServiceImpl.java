@@ -3,7 +3,6 @@ package com.api.manage.service.jcook.impl;
 import com.api.manage.dao.jcook.*;
 import com.api.manage.service.jcook.JcookService;
 import com.api.model.jcook.entity.*;
-import com.api.util.PropertyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.example.api.JcookSDK;
 import org.example.api.model.*;
@@ -45,11 +44,10 @@ public class JcookServiceImpl implements JcookService {
 
 
     @Override
-    public Map<String, Object> updateJcookShop() {
+    public Map<String, Object> updateJcookShop(Integer page) {
         map = new HashMap<>();
 
         boolean flag = true;
-        int page = 1;
         while (flag){
             System.out.println("当前页面是:-------  "+page+" -------");
             //获取商品列表
@@ -76,6 +74,7 @@ public class JcookServiceImpl implements JcookService {
                 for (SkuDetailResponse datum : data) {
                     //获取skuBase 基础信息
                     SkuDetailBaseResponse skuDetailBase = datum.getSkuDetailBase();
+                    System.out.println("当前sku_id为：-------  "+ skuDetailBase.getSkuId()+" -------");
                     //先判断数据库内是否有一级分类，如果没有就添加，有就略过
                     QueryWrapper<JcookCategory> queryWrapper1 = new QueryWrapper<>();
                     queryWrapper1.eq("name",skuDetailBase.getCategoryFirstName());
@@ -157,7 +156,13 @@ public class JcookServiceImpl implements JcookService {
                     jcookGoods.setWidth(skuDetailBase.getWidth());//填入宽（毫米）
                     jcookGoods.setHeight(skuDetailBase.getHeight());//填入高（毫米）
                     jcookGoods.setWeight(skuDetailBase.getWeight());//填入重量（千克）
-                    jcookGoodsMapper.insert(jcookGoods);
+                    try {
+                        jcookGoodsMapper.insert(jcookGoods);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("发生异常，跳过该商品");
+                        continue;
+                    }
 
                     //添加image列表
                     List<SkuDetailsImagesResponse> images = datum.getImages();

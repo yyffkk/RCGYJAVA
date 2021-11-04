@@ -19,11 +19,12 @@ public class JcookController {
 
     /**
      * 初始化商品数据（用户服务器重启后同步jcook商品数据，回滚到初始状态）
+     * @param page 当前页数
      * @return map
      */
     @GetMapping("/updateJcookShop")
-    public Map<String,Object> updateJcookShop(){
-        return jcookService.updateJcookShop();
+    public Map<String,Object> updateJcookShop(Integer page){
+        return jcookService.updateJcookShop(page);
     }
 
 
