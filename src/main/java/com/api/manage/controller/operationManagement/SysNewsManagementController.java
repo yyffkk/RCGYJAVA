@@ -112,7 +112,7 @@ public class SysNewsManagementController   {
     /**
      * 设置轮播信息
      * @param settingNewsRotation 设置轮播信息model
-     * @return
+     * @return map
      */
     @PostMapping("/settingRotation")
     public Map<String,Object> settingRotation(@RequestBody SettingNewsRotation settingNewsRotation){
