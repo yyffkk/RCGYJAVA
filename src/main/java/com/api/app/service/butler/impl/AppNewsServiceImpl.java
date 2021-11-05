@@ -4,6 +4,7 @@ import com.api.app.dao.butler.AppNewsDao;
 import com.api.app.service.butler.AppNewsService;
 import com.api.model.app.SearchAppNews;
 import com.api.util.UploadUtil;
+import com.api.vo.app.AppNewsRotationVo;
 import com.api.vo.app.AppNewsVo;
 import com.api.vo.app.AppNewsVoFBI;
 import com.api.vo.app.IdAndName;
@@ -52,6 +53,25 @@ public class AppNewsServiceImpl implements AppNewsService {
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",appNewsVoFBI);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findNewsRotation() {
+        map = new HashMap<>();
+
+        List<AppNewsRotationVo> appNewsRotationVoList = appNewsDao.findNewsRotation();
+        if (appNewsRotationVoList != null && appNewsRotationVoList.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (AppNewsRotationVo appNewsRotationVo : appNewsRotationVoList) {
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysNews", appNewsRotationVo.getNewsId(), "newsImg");
+                appNewsRotationVo.setVoResourcesImgList(imgByDate);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",appNewsRotationVoList);
         return map;
     }
 }

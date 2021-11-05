@@ -24,5 +24,8 @@
 		LEFT JOIN sys_user as su on sn.create_id = su.id
         where sn.news_category_id = snc.id and sn.id = #{newsId}
     </select>
+    <select id="findNewsRotation" resultType="com.api.vo.app.AppNewsRotationVo">
+        select id as news_id,title as title from sys_news where is_rotation = 1 order by rotation_weight desc
+    </select>
 
 </mapper>

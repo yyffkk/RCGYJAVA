@@ -12,4 +12,7 @@ public interface AppNewsService {
     List<AppNewsVo> newsList(SearchAppNews searchAppNews);
 
     Map<String, Object> findNewsByNewsId(Integer newsId);
+
+    Map<String, Object> findNewsRotation();
+
 }

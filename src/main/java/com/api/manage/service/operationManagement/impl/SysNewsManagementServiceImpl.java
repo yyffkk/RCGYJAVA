@@ -313,12 +313,14 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
     public Map<String, Object> settingRotation(SettingNewsRotation settingNewsRotation) {
         map = new HashMap<>();
 
-        //查询已经设置的轮播的数量
-        int num = sysNewsManagementDao.findSettingRotation();
-        if (num >= 4){
-            map.put("message","设置数量已达到最大值");
-            map.put("status",false);
-            return map;
+        if (settingNewsRotation.getIsRotation() == 1){
+            //查询已经设置的轮播的数量
+            int num = sysNewsManagementDao.findSettingRotation();
+            if (num >= 4){
+                map.put("message","设置数量已达到最大值");
+                map.put("status",false);
+                return map;
+            }
         }
 
         int update = sysNewsManagementDao.settingRotation(settingNewsRotation);

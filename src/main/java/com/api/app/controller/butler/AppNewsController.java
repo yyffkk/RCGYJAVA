@@ -60,4 +60,13 @@ public class AppNewsController {
     public Map<String,Object> findNewsByNewsId(Integer newsId){
         return appNewsService.findNewsByNewsId(newsId);
     }
+
+    /**
+     * 查询资讯轮播图
+     * @return
+     */
+    @GetMapping("/findNewsRotation")
+    public Map<String,Object> findNewsRotation(){
+        return appNewsService.findNewsRotation();
+    }
 }
