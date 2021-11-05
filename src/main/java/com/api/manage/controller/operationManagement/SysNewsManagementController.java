@@ -3,6 +3,7 @@ package com.api.manage.controller.operationManagement;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
 
 import com.api.model.operationManagement.SearchNewsManagement;
+import com.api.model.operationManagement.SettingNewsRotation;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.operationManagement.VoNewsCategoryManagement;
@@ -106,5 +107,15 @@ public class SysNewsManagementController   {
         map.put("status",true);
         map.put("num",num);//更新条数
         return map;
+    }
+
+    /**
+     * 设置轮播信息
+     * @param settingNewsRotation 设置轮播信息model
+     * @return
+     */
+    @PostMapping("/settingRotation")
+    public Map<String,Object> settingRotation(@RequestBody SettingNewsRotation settingNewsRotation){
+        return sysNewsManagementService.settingRotation(settingNewsRotation);
     }
 }

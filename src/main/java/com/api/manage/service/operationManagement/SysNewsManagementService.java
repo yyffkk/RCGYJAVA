@@ -1,6 +1,7 @@
 package com.api.manage.service.operationManagement;
 
 import com.api.model.operationManagement.SearchNewsManagement;
+import com.api.model.operationManagement.SettingNewsRotation;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.vo.operationManagement.VoNewsManagement;
 
@@ -21,4 +22,6 @@ public interface SysNewsManagementService {
     int updateMedical();
 
     int updateEducation();
+
+    Map<String, Object> settingRotation(SettingNewsRotation settingNewsRotation);
 }

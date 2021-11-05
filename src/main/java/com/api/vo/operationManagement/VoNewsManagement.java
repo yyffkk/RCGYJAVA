@@ -1,11 +1,20 @@
 package com.api.vo.operationManagement;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 资讯信息 Vo list 回显
  */
-public class VoNewsManagement {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class VoNewsManagement implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 主键id
      */
@@ -23,6 +32,14 @@ public class VoNewsManagement {
      */
     private String newsCategoryName;
     /**
+     * 是否轮播，1.轮播，0.不轮播
+     */
+    private Integer isRotation;
+    /**
+     * 轮播权重
+     */
+    private Integer rotationWeight;
+    /**
      * 发布人
      */
     private String createName;
@@ -31,75 +48,5 @@ public class VoNewsManagement {
      */
     private Date createDate;
 
-    @Override
-    public String toString() {
-        return "VoNewsManagement{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", title='" + title + '\'' +
-                ", newsCategoryName='" + newsCategoryName + '\'' +
-                ", createName='" + createName + '\'' +
-                ", createDate=" + createDate +
-                '}';
-    }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getNewsCategoryName() {
-        return newsCategoryName;
-    }
-
-    public void setNewsCategoryName(String newsCategoryName) {
-        this.newsCategoryName = newsCategoryName;
-    }
-
-    public String getCreateName() {
-        return createName;
-    }
-
-    public void setCreateName(String createName) {
-        this.createName = createName;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public VoNewsManagement() {
-    }
-
-    public VoNewsManagement(Integer id, String code, String title, String newsCategoryName, String createName, Date createDate) {
-        this.id = id;
-        this.code = code;
-        this.title = title;
-        this.newsCategoryName = newsCategoryName;
-        this.createName = createName;
-        this.createDate = createDate;
-    }
 }

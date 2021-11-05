@@ -5,7 +5,7 @@
 <mapper namespace="com.api.manage.dao.operationManagement.SysNewsManagementDao">
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchNewsManagement" resultType="com.api.vo.operationManagement.VoNewsManagement">
-        select sn.id,sn.code,sn.title,snc.name as news_category_name,(case su.actual_name is null when true then '外部发布' else su.actual_name end ) as create_name,sn.create_date
+        select sn.id,sn.code,sn.title,snc.name as news_category_name,sn.is_rotation,sn.rotation_weight,(case su.actual_name is null when true then '外部发布' else su.actual_name end ) as create_name,sn.create_date
         from sys_news_category as snc,sys_news as sn
         LEFT JOIN sys_user as su on sn.create_id = su.id
         <where>
@@ -28,6 +28,9 @@
             <if test="createDateEnd != null">
                 and sn.create_date <![CDATA[ <= ]]> #{createDateEnd}
             </if>
+            <if test="isRotation != null">
+                and sn.is_rotation = #{isRotation}
+            </if>
         </where>
         order by sn.create_date desc
     </select>
@@ -39,14 +42,16 @@
             content,
             news_category_id,
             create_id,
-            create_date
+            create_date,
+            is_rotation
         )values (
             #{code},
             #{title},
             #{content},
             #{newsCategoryId},
             #{createId},
-            #{createDate}
+            #{createDate},
+            #{isRotation}
         )
         <selectKey keyProperty="id" resultType="java.lang.Integer">
             select LAST_INSERT_ID() AS id
@@ -76,6 +81,18 @@
         </set>
         where id = #{id}
     </update>
+    <update id="settingRotation" parameterType="com.api.model.operationManagement.SettingNewsRotation">
+        update sys_news
+        <set>
+            <if test="isRotation != null">
+                is_rotation = #{isRotation},
+            </if>
+            <if test="rotationWeight != null">
+                rotation_weight = #{rotationWeight},
+            </if>
+        </set>
+        where id = #{newsId}
+    </update>
 
     <delete id="delete" parameterType="java.lang.Integer">
         delete from sys_news where id = #{id}
@@ -83,6 +100,9 @@
 
     <select id="countByTitle" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from sys_news where title like concat('%',#{title},'%')
+    </select>
+    <select id="findSettingRotation" resultType="java.lang.Integer">
+        select count(*) from sys_news where is_rotation = 1
     </select>
 
 </mapper>

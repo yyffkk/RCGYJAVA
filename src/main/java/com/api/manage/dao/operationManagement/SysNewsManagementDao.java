@@ -1,6 +1,7 @@
 package com.api.manage.dao.operationManagement;
 
 import com.api.model.operationManagement.SearchNewsManagement;
+import com.api.model.operationManagement.SettingNewsRotation;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.vo.operationManagement.VoFBINewsManagement;
 import com.api.vo.operationManagement.VoNewsManagement;
@@ -49,5 +50,18 @@ public interface SysNewsManagementDao {
      * @return 存在数量
      */
     int countByTitle(String title);
+
+    /**
+     * 设置轮播信息
+     * @param settingNewsRotation 设置轮播信息model
+     * @return 轮播信息
+     */
+    int settingRotation(SettingNewsRotation settingNewsRotation);
+
+    /**
+     * 查询已经设置的轮播的数量
+     * @return 设置的轮播的数量
+     */
+    int findSettingRotation();
 
 }
