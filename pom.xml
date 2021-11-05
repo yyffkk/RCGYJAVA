@@ -26,6 +26,11 @@
 
 
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
     <!--  部署到tomcat上，需要移除springboot自带的tomcat容器 以下都是  -->
 <!--    <dependency>-->
 <!--      <groupId>org.springframework.boot</groupId>-->
