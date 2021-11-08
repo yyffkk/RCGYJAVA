@@ -29,7 +29,23 @@ spring:
 #        include: test
         #生产环境(南宁本地)
 #        include: pro
-
+    #mq基本配置
+    rabbitmq:
+        addresses: 120.55.167.78
+        port: 5672
+        username: jcook40362136173633536
+        password: d3tTyh
+        virtual-host: /
+        connection-timeout: 15000
+    #整合rabbitmq消费者
+        listener:
+            simple:
+                concurrency:
+                max-concurrency: 10
+                #签收模式
+                acknowledge-mode: manual
+                #限流 - 每次只消费一条
+                prefetch: 1
 #mybatis
 mybatis-plus:
     mapper-locations: classpath:mapper/*/*/*.xml
@@ -47,6 +63,4 @@ mybatis-plus:
         map-underscore-to-camel-case: true
         # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
         call-setters-on-nulls: true
-
-
 
