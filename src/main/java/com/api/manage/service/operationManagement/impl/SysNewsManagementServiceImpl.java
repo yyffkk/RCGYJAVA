@@ -232,8 +232,16 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
                 sysNewsManagement.setCreateId(-1);//-1:外部发布
                 sysNewsManagement.setCreateDate(new Date());
 
+                //对资讯分类的资讯数量进行累加
+                int update = sysNewsCategoryManagementDao.incNum(sysNewsManagement.getNewsCategoryId());
+                if (update <= 0){
+                    log.info("累加失败");
+                    continue;
+                }
                 //保存数据到数据库
                 sysNewsManagementDao.insert(sysNewsManagement);
+
+                log.info("资讯分类的资讯数量累加成功");
                 log.info("数据已保存到数据库，标题为："+mapKey);
                 num = num + 1;//累加更新条数
             }
@@ -296,8 +304,16 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
                 sysNewsManagement.setCreateId(-1);//-1:外部发布
                 sysNewsManagement.setCreateDate(new Date());
 
+                //对资讯分类的资讯数量进行累加
+                int update = sysNewsCategoryManagementDao.incNum(sysNewsManagement.getNewsCategoryId());
+                if (update <= 0){
+                    log.info("累加失败");
+                    continue;
+                }
                 //保存数据到数据库
                 sysNewsManagementDao.insert(sysNewsManagement);
+
+                log.info("资讯分类的资讯数量累加成功");
                 log.info("数据已保存到数据库，标题为："+mapKey);
                 num = num + 1;//累加更新条数
             }
