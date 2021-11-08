@@ -9,14 +9,13 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 /**
- * 商品信息修改
+ * 商品价格修改
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SkuChange implements Serializable {
+public class SkuPrice implements Serializable {
     private static final long serialVersionUID = 1L;
-
     /**
      * 商品编码
      */

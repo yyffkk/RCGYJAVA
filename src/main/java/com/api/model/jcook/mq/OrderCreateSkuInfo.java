@@ -9,32 +9,37 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 /**
- * 商品信息修改
+ * 商品订单创建-sku列表
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SkuChange implements Serializable {
+public class OrderCreateSkuInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 商品编码
+     * sku编码
      */
     @JSONField(name = "sku_id")
     private BigInteger skuId;
     /**
-     * 时间戳
+     * 数量
      */
-    @JSONField(name = "timestamp")
-    private Long timestamp;
+    @JSONField(name = "quantity")
+    private Integer quantity;
     /**
-     * 渠道id
+     * 价格
      */
-    @JSONField(name = "channel_id")
-    private Long channelId;
+    @JSONField(name = "price")
+    private String price;
     /**
-     * appKey
+     * sku 名称
      */
-    @JSONField(name = "app_key")
-    private String appKey;
+    @JSONField(name = "sku_name")
+    private String skuName;
+    /**
+     * 主体
+     */
+    @JSONField(name = "url")
+    private String url;
 }

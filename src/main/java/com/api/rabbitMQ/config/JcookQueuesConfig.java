@@ -13,21 +13,21 @@ public class JcookQueuesConfig {
     //商品信息修改
     public static final String skuChange = "sku.change.queue."+appKey;
     //商品价格修改
-    public static String skuPrice = "sku.price.queue."+appKey;
+    public static final String skuPrice = "sku.price.queue."+appKey;
     //订单创建
-    public static String orderCreate = "order.create.queue."+appKey;
+    public static final String orderCreate = "order.create.queue."+appKey;
     //订单支付成功
-    public static String orderPay = "order.pay.queue."+appKey;
+    public static final String orderPay = "order.pay.queue."+appKey;
     //订单出库
-    public static String orderStockOut = "order.stock.out.queue."+appKey;
+    public static final String orderStockOut = "order.stock.out.queue."+appKey;
     //订单完成
-    public static String orderFinished = "order.finished.queue."+appKey;
+    public static final String orderFinished = "order.finished.queue."+appKey;
     //订单取消
-    public static String orderCancel = "order.cancel.queue."+appKey;
+    public static final String orderCancel = "order.cancel.queue."+appKey;
     //所有退款
-    public static String anyRefund = "any.refund.queue."+appKey;
+    public static final String anyRefund = "any.refund.queue."+appKey;
     //售后服务单创建
-    public static String afsCreate = "afs.create.queue."+appKey;
+    public static final String afsCreate = "afs.create.queue."+appKey;
     //售后服务全流程
-    public static String afsStep = "afs.step.queue."+appKey;
+    public static final String afsStep = "afs.step.queue."+appKey;
 }

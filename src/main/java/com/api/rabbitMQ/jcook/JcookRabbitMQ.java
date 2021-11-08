@@ -3,7 +3,9 @@ package com.api.rabbitMQ.jcook;
 import com.alibaba.fastjson.JSON;
 import com.api.manage.dao.jcook.*;
 import com.api.model.jcook.entity.*;
+import com.api.model.jcook.mq.OrderCreate;
 import com.api.model.jcook.mq.SkuChange;
+import com.api.model.jcook.mq.SkuPrice;
 import com.api.rabbitMQ.config.JcookQueuesConfig;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rabbitmq.client.Channel;
@@ -59,8 +61,22 @@ public class JcookRabbitMQ {
     public void updateSkuInfo(Channel channel, String json, Message message, @Headers Map<String,Object> map){
         log.info("接收到的消息体："+json);
 
-        SkuChange skuChange = JSON.parseObject(json, SkuChange.class);
-        log.info(skuChange.toString());
+        SkuChange skuChange = null;
+        try {
+            skuChange = JSON.parseObject(json, SkuChange.class);
+            log.info(skuChange.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("json解析错误");
+            log.info("msg:"+e.getMessage());
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
         //根据商品编码反查商品详情
         JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
         ArrayList<BigInteger> ids = new ArrayList<>();
@@ -75,6 +91,22 @@ public class JcookRabbitMQ {
                     //获取skuBase 基础信息
                     SkuDetailBaseResponse skuDetailBase = datum.getSkuDetailBase();
                     System.out.println("当前修改的sku_id为：-------  " + skuDetailBase.getSkuId() + " -------");
+
+                    //根据sku_id查询商品主键id
+                    QueryWrapper<JcookGoods> queryWrapper4 = new QueryWrapper<>();
+                    queryWrapper4.eq("sku_id", skuDetailBase.getSkuId());
+                    JcookGoods jcookGoodsFBI = jcookGoodsMapper.selectOne(queryWrapper4);
+                    if (jcookGoodsFBI == null){
+                        try {
+                            //否认消息,拒接该消息重回队列
+                            channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
+                        log.info("未找到对应需要修改的商品，跳过该记录");
+                        continue;
+                    }
+
                     //先判断数据库内是否有一级分类，如果没有就添加，有就略过
                     QueryWrapper<JcookCategory> queryWrapper1 = new QueryWrapper<>();
                     queryWrapper1.eq("name", skuDetailBase.getCategoryFirstName());
@@ -117,10 +149,6 @@ public class JcookRabbitMQ {
                         jcookCategoryMapper.insert(jcookCategory3);
                     }
 
-                    //根据sku_id查询商品主键id
-                    QueryWrapper<JcookGoods> queryWrapper4 = new QueryWrapper<>();
-                    queryWrapper4.eq("sku_id", skuDetailBase.getSkuId());
-                    JcookGoods jcookGoodsFBI = jcookGoodsMapper.selectOne(queryWrapper4);
                     //最后修改商品
                     JcookGoods jcookGoods = new JcookGoods();
                     //修改商品信息
@@ -254,7 +282,13 @@ public class JcookRabbitMQ {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.out.println("发生异常，跳过修改该商品");
+                    try {
+                        //否认消息,拒接该消息重回队列
+                        channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    log.info("发生异常，跳过修改该商品");
                     continue;
                 }
             }
@@ -304,5 +338,181 @@ public class JcookRabbitMQ {
             log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
         }
 
+    }
+
+    //监听商品价格修改
+    @RabbitHandler
+    @RabbitListener(queues = JcookQueuesConfig.skuPrice)
+    public void updateSkuPrice(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
+        log.info("接收到的消息体：" + json);
+
+        SkuPrice skuPrice = null;
+        try {
+            skuPrice = JSON.parseObject(json, SkuPrice.class);
+            log.info(skuPrice.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("json解析错误");
+            log.info("msg:" + e.getMessage());
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+
+        //根据商品编码反查商品详情
+        JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+        ArrayList<BigInteger> ids = new ArrayList<>();
+        SkuDetailRequest skuDetailRequest = new SkuDetailRequest();
+        skuDetailRequest.setSkuIdSet(ids);
+        Result<List<SkuDetailResponse>> skuDetailResponseList = jcookSDK.skuDetail(skuDetailRequest);
+        List<SkuDetailResponse> data = skuDetailResponseList.getData();
+        if (data != null && data.size()>0) {
+            //取数据进数据库
+            for (SkuDetailResponse datum : data) {
+                //获取skuBase 基础信息
+                SkuDetailBaseResponse skuDetailBase = datum.getSkuDetailBase();
+                System.out.println("当前修改的sku_id为：-------  " + skuDetailBase.getSkuId() + " -------");
+
+                //根据sku_id查询商品主键id
+                QueryWrapper<JcookGoods> queryWrapper4 = new QueryWrapper<>();
+                queryWrapper4.eq("sku_id", skuDetailBase.getSkuId());
+                JcookGoods jcookGoodsFBI = jcookGoodsMapper.selectOne(queryWrapper4);
+                if (jcookGoodsFBI == null){
+                    try {
+                        //否认消息,拒接该消息重回队列
+                        channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    log.info("未找到对应需要修改的商品，跳过该记录");
+                    continue;
+                }
+
+                //修改商品价格
+                JcookGoods jcookGoods = new JcookGoods();
+                jcookGoods.setId(jcookGoodsFBI.getId());//填入商品主键id
+                jcookGoods.setSupplyPrice(new BigDecimal(skuDetailBase.getSupplyPrice()));//填写供货价
+                jcookGoods.setGuidePrice(new BigDecimal(skuDetailBase.getGuidePrice()));//添加指导价
+                jcookGoodsMapper.updateById(jcookGoods);
+            }
+        }
+
+        //<P>代码为在消费者中开启消息接收确认的手动ack</p>
+        //<H>配置完成</H>
+        //<P>可以开启全局配置</p>
+        if (map.get("error")!= null){
+            log.info("错误的消息");
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //手动ACK
+        //默认情况下如果一个消息被消费者所正确接收则会被从队列中移除
+        //如果一个队列没被任何消费者订阅，那么这个队列中的消息会被 Cache（缓存），
+        //当有消费者订阅时则会立即发送，当消息被消费者正确接收时，就会被从队列中移除
+        try {
+            //手动ack应答
+            //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了
+            // 否则消息服务器以为这条消息没处理掉 后续还会在发，true确认所有消费者获得的消息
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+            log.info("消息消费成功：id：{}",message.getMessageProperties().getDeliveryTag());
+        } catch (IOException e) {
+            e.printStackTrace();
+            //丢弃这条消息
+            try {
+                //最后一个参数是：是否重回队列
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
+                //拒绝消息
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //消息被丢失
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+                //消息被重新发送
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //多条消息被重新发送
+                //channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
+        }
+    }
+
+    //监听商品订单创建
+    @RabbitHandler
+    @RabbitListener(queues = JcookQueuesConfig.orderCreate)
+    public void orderCreate(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
+        log.info("接收到的消息体：" + json);
+
+        OrderCreate orderCreate = null;
+        try {
+            orderCreate = JSON.parseObject(json, OrderCreate.class);
+            log.info(orderCreate.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("json解析错误");
+            log.info("msg:" + e.getMessage());
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+
+        //业务部分
+
+
+
+        //<P>代码为在消费者中开启消息接收确认的手动ack</p>
+        //<H>配置完成</H>
+        //<P>可以开启全局配置</p>
+        if (map.get("error")!= null){
+            log.info("错误的消息");
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //手动ACK
+        //默认情况下如果一个消息被消费者所正确接收则会被从队列中移除
+        //如果一个队列没被任何消费者订阅，那么这个队列中的消息会被 Cache（缓存），
+        //当有消费者订阅时则会立即发送，当消息被消费者正确接收时，就会被从队列中移除
+        try {
+            //手动ack应答
+            //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了
+            // 否则消息服务器以为这条消息没处理掉 后续还会在发，true确认所有消费者获得的消息
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+            log.info("消息消费成功：id：{}",message.getMessageProperties().getDeliveryTag());
+        } catch (IOException e) {
+            e.printStackTrace();
+            //丢弃这条消息
+            try {
+                //最后一个参数是：是否重回队列
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
+                //拒绝消息
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //消息被丢失
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+                //消息被重新发送
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //多条消息被重新发送
+                //channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
+        }
     }
 }
