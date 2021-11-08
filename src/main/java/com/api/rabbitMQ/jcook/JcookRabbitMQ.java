@@ -1,7 +1,7 @@
 package com.api.rabbitMQ.jcook;
 
 import com.alibaba.fastjson.JSON;
-import com.api.manage.dao.jcook.*;
+import com.api.mapper.jcook.*;
 import com.api.model.jcook.entity.*;
 import com.api.model.jcook.mq.OrderCreate;
 import com.api.model.jcook.mq.SkuChange;

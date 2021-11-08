@@ -1,7 +1,7 @@
 package com.api.manage.service.jcook.impl;
 
-import com.api.manage.dao.jcook.*;
 import com.api.manage.service.jcook.JcookService;
+import com.api.mapper.jcook.*;
 import com.api.model.jcook.entity.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.example.api.JcookSDK;
@@ -97,7 +97,7 @@ public class JcookServiceImpl implements JcookService {
                         queryWrapper2.eq("parent_id",jcookCategory.getId());
                         JcookCategory jcookCategory2 = jcookCategoryMapper.selectOne(queryWrapper2);
                         if (jcookCategory2 == null){
-                            //添加一级分类
+                            //添加二级分类
                             jcookCategory2 = new JcookCategory();
                             jcookCategory2.setName(skuDetailBase.getCategorySecondName());
                             jcookCategory2.setParentId(jcookCategory.getId());//默认为0顶层
@@ -111,13 +111,16 @@ public class JcookServiceImpl implements JcookService {
                         queryWrapper3.eq("parent_id",jcookCategory2.getId());
                         JcookCategory jcookCategory3 = jcookCategoryMapper.selectOne(queryWrapper3);
                         if (jcookCategory3 == null){
-                            //添加一级分类
+                            //添加三级分类
                             jcookCategory3 = new JcookCategory();
                             jcookCategory3.setName(skuDetailBase.getCategoryThirdName());
                             jcookCategory3.setParentId(jcookCategory2.getId());//默认为0顶层
                             jcookCategory3.setIsShow(1);//默认1.显示
                             jcookCategoryMapper.insert(jcookCategory3);
                         }
+
+                        //判断数据库内是否有店铺，如果没有就添加，有就略过
+
 
                         //最后添加商品
                         JcookGoods jcookGoods = new JcookGoods();
