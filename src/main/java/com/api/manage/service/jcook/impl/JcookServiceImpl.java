@@ -35,6 +35,10 @@ public class JcookServiceImpl implements JcookService {
     JcookSpecificationAttributeMapper jcookSpecificationAttributeMapper;
     @Resource
     JcookExtAttrMapper jcookExtAttrMapper;
+    @Resource
+    JcookShopMapper jcookShopMapper;
+    @Resource
+    JcookBrandMapper jcookBrandMapper;
 
     @Value("${jcook.app_key}")
     private String JCOOK_APP_KEY;    //jcook appKey
@@ -119,7 +123,28 @@ public class JcookServiceImpl implements JcookService {
                             jcookCategoryMapper.insert(jcookCategory3);
                         }
 
-                        //判断数据库内是否有店铺，如果没有就添加，有就略过
+                        //判断数据库内是否有该店铺，如果没有就添加，有就略过
+                        QueryWrapper<JcookShop> queryWrapper4 = new QueryWrapper<>();
+                        queryWrapper4.eq("shop_name",skuDetailBase.getShopName());
+                        JcookShop jcookShop = jcookShopMapper.selectOne(queryWrapper4);
+                        if (jcookShop == null){
+                            //添加店铺
+                            jcookShop = new JcookShop();
+                            jcookShop.setShopName(skuDetailBase.getShopName());//填入店铺名称
+                            jcookShopMapper.insert(jcookShop);
+                        }
+
+                        //判断数据库内是否有该品牌，如果没有就添加，有就略过
+                        QueryWrapper<JcookBrand> queryWrapper5 = new QueryWrapper<>();
+                        queryWrapper5.eq("brand_name",skuDetailBase.getBrandName());
+                        JcookBrand jcookBrand = jcookBrandMapper.selectOne(queryWrapper5);
+                        if (jcookBrand == null){
+                            //添加品牌
+                            jcookBrand = new JcookBrand();
+                            jcookBrand.setJcookShopId(jcookShop.getId());//填入店铺主键id
+                            jcookBrand.setBrandName(skuDetailBase.getBrandName());//填入品牌名称
+                            jcookBrandMapper.insert(jcookBrand);
+                        }
 
 
                         //最后添加商品
@@ -127,9 +152,9 @@ public class JcookServiceImpl implements JcookService {
                         //添加商品信息
                         jcookGoods.setSkuId(skuDetailBase.getSkuId());//填入sku编码
                         jcookGoods.setSkuName(skuDetailBase.getSkuName());//填入商品名称
-                        jcookGoods.setShopName(skuDetailBase.getShopName());//填入店铺名称
+                        jcookGoods.setShopId(jcookShop.getId());//填入店铺id
                         jcookGoods.setVendorName(skuDetailBase.getVendorName());//填入供应商名称
-                        jcookGoods.setBrandName(skuDetailBase.getBrandName());//填入品牌名称
+                        jcookGoods.setBrandId(jcookBrand.getId());//填入品牌id
                         jcookGoods.setCategoryFirstId(jcookCategory.getId());//填入一级分类主键id
                         jcookGoods.setCategorySecondId(jcookCategory2.getId());//填入二级分类主键id
                         jcookGoods.setCategoryThirdId(jcookCategory3.getId());//填入三级分类主键id

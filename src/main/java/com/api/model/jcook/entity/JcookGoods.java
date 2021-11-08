@@ -28,17 +28,17 @@ public class JcookGoods {
      */
     private String skuName;
     /**
-     * 商铺名称
+     * 商铺主键id
      */
-    private String shopName;
+    private Integer shopId;
     /**
      * 供应商名称
      */
     private String vendorName;
     /**
-     * 品牌名称
+     * 品牌主键id
      */
-    private String brandName;
+    private Integer brandId;
     /**
      * 一级分类主键id
      */

@@ -47,6 +47,10 @@ public class JcookRabbitMQ {
     JcookSpecificationAttributeMapper jcookSpecificationAttributeMapper;
     @Resource
     JcookExtAttrMapper jcookExtAttrMapper;
+    @Resource
+    JcookShopMapper jcookShopMapper;
+    @Resource
+    JcookBrandMapper jcookBrandMapper;
 
     @Value("${jcook.app_key}")
     private String JCOOK_APP_KEY;    //jcook appKey
@@ -149,14 +153,38 @@ public class JcookRabbitMQ {
                         jcookCategoryMapper.insert(jcookCategory3);
                     }
 
+                    //判断数据库内是否有该店铺，如果没有就添加，有就略过
+                    QueryWrapper<JcookShop> queryWrapper5 = new QueryWrapper<>();
+                    queryWrapper5.eq("shop_name",skuDetailBase.getShopName());
+                    JcookShop jcookShop = jcookShopMapper.selectOne(queryWrapper5);
+                    if (jcookShop == null){
+                        //添加店铺
+                        jcookShop = new JcookShop();
+                        jcookShop.setShopName(skuDetailBase.getShopName());//填入店铺名称
+                        jcookShopMapper.insert(jcookShop);
+                    }
+
+                    //判断数据库内是否有该品牌，如果没有就添加，有就略过
+                    QueryWrapper<JcookBrand> queryWrapper6 = new QueryWrapper<>();
+                    queryWrapper6.eq("brand_name",skuDetailBase.getBrandName());
+                    JcookBrand jcookBrand = jcookBrandMapper.selectOne(queryWrapper6);
+                    if (jcookBrand == null){
+                        //添加品牌
+                        jcookBrand = new JcookBrand();
+                        jcookBrand.setJcookShopId(jcookShop.getId());//填入店铺主键id
+                        jcookBrand.setBrandName(skuDetailBase.getBrandName());//填入品牌名称
+                        jcookBrandMapper.insert(jcookBrand);
+                    }
+
+
                     //最后修改商品
                     JcookGoods jcookGoods = new JcookGoods();
                     //修改商品信息
                     jcookGoods.setId(jcookGoodsFBI.getId());//填入sku编码
                     jcookGoods.setSkuName(skuDetailBase.getSkuName());//填入商品名称
-                    jcookGoods.setShopName(skuDetailBase.getShopName());//填入店铺名称
+                    jcookGoods.setShopId(jcookShop.getId());//填入店铺主键id
                     jcookGoods.setVendorName(skuDetailBase.getVendorName());//填入供应商名称
-                    jcookGoods.setBrandName(skuDetailBase.getBrandName());//填入品牌名称
+                    jcookGoods.setBrandId(jcookBrand.getId());//填入品牌主键id
                     jcookGoods.setCategoryFirstId(jcookCategory.getId());//填入一级分类主键id
                     jcookGoods.setCategorySecondId(jcookCategory2.getId());//填入二级分类主键id
                     jcookGoods.setCategoryThirdId(jcookCategory3.getId());//填入三级分类主键id
