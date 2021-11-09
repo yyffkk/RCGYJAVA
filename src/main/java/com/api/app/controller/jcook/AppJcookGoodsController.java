@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 京库克商城（第三方对接）App端
+ * 京库克商城（第三方对接）App端商品
  */
 @RestController
-@RequestMapping("app/user/jcook")
+@RequestMapping("app/user/jcookGoods")
 public class AppJcookGoodsController {
     @Resource
     AppJcookGoodsService appJcookGoodsService;
