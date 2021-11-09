@@ -57,9 +57,5 @@ public class GoodsDetailVo implements Serializable {
      * 参数（品牌、规格）
      */
     private List<GoodsDetailSpecificationVo> goodsDetailSpecificationVoList;
-    /**
-     * pc 端商品介绍[bigInfo 大图信息](使用该 字段)
-     */
-    private String pcWdis;
 
 }

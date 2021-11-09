@@ -190,9 +190,9 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
         PropertyUtils.copyProperties(jcookGoods,goodsDetailVo);//填入商品基础信息
 
         //查询商品image列表
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("jcook_goods_id",shopId);
-        List<JcookImage> jcookImages = jcookImageMapper.selectByMap(map);
+        HashMap<String, Object> map1 = new HashMap<>();
+        map1.put("jcook_goods_id",shopId);
+        List<JcookImage> jcookImages = jcookImageMapper.selectByMap(map1);
         ArrayList<GoodsDetailImageVo> goodsDetailImageVoList = new ArrayList<>();
         if (jcookImages != null && jcookImages.size()>0){
             for (JcookImage jcookImage : jcookImages) {
@@ -231,13 +231,6 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
             }
         }
         goodsDetailVo.setGoodsDetailSpecificationVoList(goodsDetailSpecificationVoList);//填入 参数（品牌、规格）集合
-
-
-        //查询pc 端商品介绍[bigInfo 大图信息](使用该 字段)
-        QueryWrapper<JcookBigInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("jcook_goods_id",shopId);
-        JcookBigInfo jcookBigInfo = jcookBigInfoMapper.selectOne(queryWrapper);
-        goodsDetailVo.setPcWdis(jcookBigInfo.getPcWdis());//填入查询pc 端商品介绍[bigInfo 大图信息]
 
         //查询默认地址
         if (id != null){
@@ -278,6 +271,20 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
 
         map.put("message","请求成功");
         map.put("data",goodsDetailVo);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findGoodsDetailBigInfo(Integer shopId) {
+        //查询pc 端商品介绍[bigInfo 大图信息](使用该 字段)
+        QueryWrapper<JcookBigInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_goods_id",shopId);
+        JcookBigInfo jcookBigInfo = jcookBigInfoMapper.selectOne(queryWrapper);
+
+
+        map.put("message","请求成功");
+        map.put("data",jcookBigInfo.getPcWdis());
         map.put("status",true);
         return map;
     }

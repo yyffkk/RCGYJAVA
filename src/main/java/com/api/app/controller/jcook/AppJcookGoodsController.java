@@ -109,4 +109,14 @@ public class AppJcookGoodsController {
         return appJcookGoodsService.findGoodsDetail(shopId,id);
     }
 
+    /**
+     * 查询商品详情 bigInfo大图信息【加载太慢了所以异步查询该接口】
+     * @param shopId 商品主键id
+     * @return map
+     */
+    @GetMapping("/findGoodsDetailBigInfo")
+    public Map<String,Object> findGoodsDetailBigInfo(Integer shopId){
+        return appJcookGoodsService.findGoodsDetailBigInfo(shopId);
+    }
+
 }

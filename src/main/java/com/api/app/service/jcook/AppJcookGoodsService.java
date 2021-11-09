@@ -48,10 +48,16 @@ public interface AppJcookGoodsService {
 
     /**
      * 查询商品详情
-     *
-     * @param shopId
-     * @param id 商品主键id
+     * @param shopId 商品主键id
+     * @param id 用户主键id
      * @return map
      */
     Map<String, Object> findGoodsDetail(Integer shopId, Integer id);
+
+    /**
+     * 查询商品详情-bigInfo
+     * @param shopId 商品主键id
+     * @return map
+     */
+    Map<String, Object> findGoodsDetailBigInfo(Integer shopId);
 }
