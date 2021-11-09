@@ -25,7 +25,7 @@ public class OneCategoryVo implements Serializable {
      */
     private String name;
     /**
-     * 分类照片
+     * 分类照片集合
      */
     private List<VoResourcesImg> imgUrls;
 }

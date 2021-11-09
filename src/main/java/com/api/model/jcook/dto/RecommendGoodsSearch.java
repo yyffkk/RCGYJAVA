@@ -25,6 +25,10 @@ public class RecommendGoodsSearch implements Serializable {
      */
     private Integer size;
     /**
+     * 用户主键id
+     */
+    private Integer id;
+    /**
      * 销量排序(1.desc[降序]，2.asc[升序])
      */
     private Integer orderBySalesVolume;

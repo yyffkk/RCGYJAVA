@@ -107,7 +107,8 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
     @Override
     public List<OneCategoryVo> findAllOneCategory() {
         map = new HashMap<>();
-        map.put("parent_id",0);
+        map.put("parent_id",0);//0.顶级分类
+        map.put("is_show",1);//1.显示
         List<JcookCategory> jcookCategories = jcookCategoryMapper.selectByMap(map);
         ArrayList<OneCategoryVo> oneCategoryVoList = new ArrayList<>();
         if (jcookCategories != null && jcookCategories.size()>0){
@@ -126,6 +127,8 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
         QueryWrapper<JcookGoods> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("views_num");
         queryWrapper.last("limit "+num);
+        queryWrapper.eq("status",1);//1.jcook商品上架
+        queryWrapper.eq("shop_status",1);//1.小蜜蜂商品上架
         List<JcookGoods> jcookGoods = jcookGoodsMapper.selectList(queryWrapper);
         ArrayList<MaxPopularityVo> maxPopularityVoList = new ArrayList<>();
         if (jcookGoods != null && jcookGoods.size()>0){
@@ -146,11 +149,15 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
     public List<RecommendGoodsListVo> findRecommendGoodsList(RecommendGoodsSearch recommendGoodsSearch) {
         QueryWrapper<JcookGoods> queryWrapper = new QueryWrapper<>();
         //搜索条件
+        queryWrapper.eq("status",1);//1.jcook商品上架
+        queryWrapper.eq("shop_status",1);//1.小蜜蜂商品上架
         //价格排序(1.desc[降序]，2.asc[升序])
-        if (recommendGoodsSearch.getOrderByPrice() == 1){//1.降序
-            queryWrapper.orderByDesc("sell_price");
-        }else if (recommendGoodsSearch.getOrderByPrice() == 2){//2.升序
-            queryWrapper.orderByAsc("sell_price");
+        if (recommendGoodsSearch.getOrderByPrice() != null){
+            if (recommendGoodsSearch.getOrderByPrice() == 1){//1.降序
+                queryWrapper.orderByDesc("sell_price");
+            }else if (recommendGoodsSearch.getOrderByPrice() == 2){//2.升序
+                queryWrapper.orderByAsc("sell_price");
+            }
         }
         //品牌主键id
         queryWrapper.eq(recommendGoodsSearch.getBrandId() != null,"brand_id",recommendGoodsSearch.getBrandId());
@@ -168,6 +175,8 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
                 recommendGoodsListVoList.add(recommendGoodsListVo);
             }
         }
+
+        //TODO 是否收藏
 
         return recommendGoodsListVoList;
     }
