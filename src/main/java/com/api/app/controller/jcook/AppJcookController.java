@@ -83,7 +83,7 @@ public class AppJcookController {
 
 
     /**
-     * 查询推荐商品列表
+     * 查询综合推荐商品列表
      * @return map
      */
     @GetMapping("/findRecommendGoodsList")
