@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,11 +81,21 @@ public class AppJcookAddressController {
      * @return map
      */
     @PostMapping("/settingDefaultAddress")
-    public Map<String,Object> settingDefaultAddress(SettingDefaultAddressDTO settingDefaultAddressDTO,HttpServletRequest request){
+    public Map<String,Object> settingDefaultAddress(@RequestBody SettingDefaultAddressDTO settingDefaultAddressDTO,HttpServletRequest request){
         //从request获取用户id
         Integer residentId = Integer.valueOf(request.getParameter("id"));
         settingDefaultAddressDTO.setResidentId(residentId);
         return appJcookAddressService.settingDefaultAddress(settingDefaultAddressDTO);
+    }
+
+    /**
+     * 根据父类主键id查询城市信息
+     * @param parentId 父类主键id
+     * @return 城市信息
+     */
+    @GetMapping("/findByParentId")
+    public Map<String,Object> findByParentId(Integer parentId){
+        return appJcookAddressService.findByParentId(parentId);
     }
 
 

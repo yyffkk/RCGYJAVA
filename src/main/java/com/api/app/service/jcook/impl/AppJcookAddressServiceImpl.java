@@ -9,6 +9,7 @@ import com.api.model.jcook.dto.SettingDefaultAddressDTO;
 import com.api.model.jcook.entity.JcookAddress;
 import com.api.model.jcook.entity.JcookCity;
 import com.api.util.PropertyUtils;
+import com.api.vo.jcook.appAddress.CityVo;
 import com.api.vo.jcook.appAddress.MyAddressVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
@@ -114,7 +115,6 @@ public class AppJcookAddressServiceImpl implements AppJcookAddressService {
         //先全部置于否
         jcookAddress.setIsDefault(0);//0.否
         QueryWrapper<JcookAddress> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",settingDefaultAddressDTO.getAddressId());//填入地址主键id
         queryWrapper.eq("resident_id",settingDefaultAddressDTO.getResidentId());//填入用户主键id
         jcookAddressMapper.update(jcookAddress, queryWrapper);
         //再将对应的设为默认地址
@@ -130,6 +130,30 @@ public class AppJcookAddressServiceImpl implements AppJcookAddressService {
             map.put("message","设置失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findByParentId(Integer parentId) {
+        map = new HashMap<>();
+        //搜索条件
+        HashMap<String, Object> map1 = new HashMap<>();
+        map1.put("parent_id",parentId);
+        //数据查询
+        List<JcookCity> jcookCityList = jcookCityMapper.selectByMap(map1);
+        //DO转VO
+        ArrayList<CityVo> cityVoList = new ArrayList<>();
+        if (jcookCityList != null && jcookCityList.size()>0){
+            for (JcookCity jcookCity : jcookCityList) {
+                CityVo cityVo = new CityVo();
+                PropertyUtils.copyProperties(jcookCity,cityVo);
+                cityVoList.add(cityVo);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("data",cityVoList);
+        map.put("status",true);
         return map;
     }
 

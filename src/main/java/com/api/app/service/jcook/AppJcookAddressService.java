@@ -41,4 +41,11 @@ public interface AppJcookAddressService {
      * @return map
      */
     Map<String, Object> settingDefaultAddress(SettingDefaultAddressDTO settingDefaultAddressDTO);
+
+    /**
+     * 根据父类主键id查询城市信息
+     * @param parentId 父类主键id
+     * @return 城市信息
+     */
+    Map<String, Object> findByParentId(Integer parentId);
 }
