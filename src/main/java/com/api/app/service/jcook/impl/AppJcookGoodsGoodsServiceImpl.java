@@ -106,10 +106,10 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
 
     @Override
     public List<OneCategoryVo> findAllOneCategory() {
-        map = new HashMap<>();
-        map.put("parent_id",0);//0.顶级分类
-        map.put("is_show",1);//1.显示
-        List<JcookCategory> jcookCategories = jcookCategoryMapper.selectByMap(map);
+        HashMap<String, Object> map1 = new HashMap<>();
+        map1.put("parent_id",0);//0.顶级分类
+        map1.put("is_show",1);//1.显示
+        List<JcookCategory> jcookCategories = jcookCategoryMapper.selectByMap(map1);
         ArrayList<OneCategoryVo> oneCategoryVoList = new ArrayList<>();
         if (jcookCategories != null && jcookCategories.size()>0){
             for (JcookCategory jcookCategory : jcookCategories) {
