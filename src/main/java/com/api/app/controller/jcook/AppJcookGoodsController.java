@@ -1,9 +1,9 @@
 package com.api.app.controller.jcook;
 
-import com.api.app.service.jcook.AppJcookService;
+import com.api.app.service.jcook.AppJcookGoodsService;
 import com.api.model.jcook.dto.RecommendGoodsSearch;
-import com.api.vo.jcook.OneCategoryVo;
-import com.api.vo.jcook.RecommendGoodsListVo;
+import com.api.vo.jcook.appGoods.OneCategoryVo;
+import com.api.vo.jcook.appGoods.RecommendGoodsListVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +20,9 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("app/user/jcook")
-public class AppJcookController {
+public class AppJcookGoodsController {
     @Resource
-    AppJcookService appJcookService;
+    AppJcookGoodsService appJcookGoodsService;
 
 
     /**
@@ -31,7 +31,7 @@ public class AppJcookController {
      */
     @GetMapping("/skuTotal")
     public Map<String,Object> skuTotal(){
-        return appJcookService.skuTotal();
+        return appJcookGoodsService.skuTotal();
     }
 
     /**
@@ -40,7 +40,7 @@ public class AppJcookController {
      */
     @GetMapping("/settledBrandsNum")
     public Map<String,Object> settledBrandsNum(){
-        return appJcookService.settledBrandsNum();
+        return appJcookGoodsService.settledBrandsNum();
     }
 
     /**
@@ -49,7 +49,7 @@ public class AppJcookController {
      */
     @GetMapping("/newProductsTodayNum")
     public Map<String,Object> newProductsTodayNum(){
-        return appJcookService.newProductsTodayNum();
+        return appJcookGoodsService.newProductsTodayNum();
     }
 
     /**
@@ -62,7 +62,7 @@ public class AppJcookController {
     public Map<String,Object> findAllOneCategory(int pageNum,int size){
 
         PageHelper.startPage(pageNum,size);
-        List<OneCategoryVo> oneCategoryVoList = appJcookService.findAllOneCategory();
+        List<OneCategoryVo> oneCategoryVoList = appJcookGoodsService.findAllOneCategory();
         PageInfo<OneCategoryVo> pageInfo = new PageInfo<>(oneCategoryVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
@@ -78,7 +78,7 @@ public class AppJcookController {
      */
     @GetMapping("/findMaxPopularity")
     public Map<String,Object> findMaxPopularity(int num){
-        return appJcookService.findMaxPopularity(num);
+        return appJcookGoodsService.findMaxPopularity(num);
     }
 
 
@@ -89,7 +89,7 @@ public class AppJcookController {
     @GetMapping("/findRecommendGoodsList")
     public Map<String,Object> findRecommendGoodsList(RecommendGoodsSearch recommendGoodsSearch){
         PageHelper.startPage(recommendGoodsSearch.getPageNum(),recommendGoodsSearch.getSize());
-        List<RecommendGoodsListVo> recommendGoodsLists = appJcookService.findRecommendGoodsList(recommendGoodsSearch);
+        List<RecommendGoodsListVo> recommendGoodsLists = appJcookGoodsService.findRecommendGoodsList(recommendGoodsSearch);
         PageInfo<RecommendGoodsListVo> pageInfo = new PageInfo<>(recommendGoodsLists);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
@@ -98,6 +98,15 @@ public class AppJcookController {
         return map;
     }
 
-
+    /**
+     * 查询商品详情
+     * @param shopId 商品主键id
+     * @param id 用户主键id
+     * @return map
+     */
+    @GetMapping("/findGoodsDetail")
+    public Map<String,Object> findGoodsDetail(Integer shopId,Integer id){
+        return appJcookGoodsService.findGoodsDetail(shopId,id);
+    }
 
 }

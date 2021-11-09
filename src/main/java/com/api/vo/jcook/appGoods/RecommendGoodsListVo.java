@@ -1,4 +1,4 @@
-package com.api.vo.jcook;
+package com.api.vo.jcook.appGoods;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

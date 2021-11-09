@@ -76,6 +76,10 @@ public class JcookGoods {
      */
     private BigDecimal sellPrice;
     /**
+     * 折扣量
+     */
+    private BigDecimal discountPrice;
+    /**
      * 型号
      */
     private String model;
@@ -135,4 +139,8 @@ public class JcookGoods {
      * 重量（千克）
      */
     private Integer weight;
+    /**
+     * 浏览量
+     */
+    private Integer viewsNum;
 }

@@ -1,31 +1,34 @@
-package com.api.vo.jcook;
+package com.api.model.jcook.entity;
 
-import com.api.vo.resources.VoResourcesImg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 一级分类数据回显
+ * 城市表
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class OneCategoryVo implements Serializable {
+@AllArgsConstructor
+public class JcookCity implements Serializable {
     private static final long serialVersionUID = 1L;
+
     /**
-     * 分类主键id
+     * 主键id
      */
     private Integer id;
     /**
-     * 分类名称
+     * 父类主键id
+     */
+    private Integer parentId;
+    /**
+     * 名称
      */
     private String name;
     /**
-     * 分类照片
+     * 类型：0.国家，1.省，2.市，3.县
      */
-    private List<VoResourcesImg> imgUrls;
+    private Integer type;
 }

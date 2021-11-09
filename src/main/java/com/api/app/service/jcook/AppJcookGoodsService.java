@@ -1,13 +1,13 @@
 package com.api.app.service.jcook;
 
 import com.api.model.jcook.dto.RecommendGoodsSearch;
-import com.api.vo.jcook.OneCategoryVo;
-import com.api.vo.jcook.RecommendGoodsListVo;
+import com.api.vo.jcook.appGoods.OneCategoryVo;
+import com.api.vo.jcook.appGoods.RecommendGoodsListVo;
 
 import java.util.List;
 import java.util.Map;
 
-public interface AppJcookService {
+public interface AppJcookGoodsService {
     /**
      * 查询SKU总数
      * @return map
@@ -46,4 +46,12 @@ public interface AppJcookService {
      */
     List<RecommendGoodsListVo> findRecommendGoodsList(RecommendGoodsSearch recommendGoodsSearch);
 
+    /**
+     * 查询商品详情
+     *
+     * @param shopId
+     * @param id 商品主键id
+     * @return map
+     */
+    Map<String, Object> findGoodsDetail(Integer shopId, Integer id);
 }

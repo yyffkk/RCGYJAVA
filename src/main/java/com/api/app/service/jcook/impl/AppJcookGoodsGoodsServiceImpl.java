@@ -1,0 +1,297 @@
+package com.api.app.service.jcook.impl;
+
+import com.api.app.service.jcook.AppJcookGoodsService;
+import com.api.mapper.jcook.*;
+import com.api.model.jcook.dto.RecommendGoodsSearch;
+import com.api.model.jcook.entity.*;
+import com.api.util.PropertyUtils;
+import com.api.vo.jcook.appGoods.*;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.commons.lang3.StringUtils;
+import org.example.api.JcookSDK;
+import org.example.api.model.StockDetailRequest;
+import org.example.api.model.StockDetailResponse;
+import org.example.api.model.StockDetailSkuQuantityRequest;
+import org.example.api.utils.result.Result;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.*;
+
+@Service
+public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
+    private static StringBuilder stringBuilder = null;
+    private static Map<String,Object> map = null;
+    @Resource
+    JcookGoodsMapper jcookGoodsMapper;
+    @Resource
+    JcookBrandMapper jcookBrandMapper;
+    @Resource
+    JcookCategoryMapper jcookCategoryMapper;
+    @Resource
+    JcookImageMapper jcookImageMapper;
+    @Resource
+    JcookSpecificationMapper jcookSpecificationMapper;
+    @Resource
+    JcookSpecificationAttributeMapper jcookSpecificationAttributeMapper;
+    @Resource
+    JcookBigInfoMapper jcookBigInfoMapper;
+    @Resource
+    JcookAddressMapper jcookAddressMapper;
+    @Resource
+    JcookCityMapper jcookCityMapper;
+
+
+    @Value("${jcook.app_key}")
+    private String JCOOK_APP_KEY;    //jcook appKey
+    @Value("${jcook.app_secret}")
+    private String JCOOK_APP_SECRET;    //jcook appSecret
+    @Value("${jcook.channel_id}")
+    private Integer JCOOK_CHANNEL_ID;    //jcook channelId
+
+    @Override
+    public Map<String, Object> skuTotal() {
+        map = new HashMap<>();
+
+        QueryWrapper<JcookGoods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("status",1);//1.jcook商品上架
+        queryWrapper.eq("shop_status",1);//1.小蜜蜂商品上架
+        Integer skuTotal = jcookGoodsMapper.selectCount(queryWrapper);
+
+        map.put("message","请求成功");
+        map.put("data",skuTotal);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> settledBrandsNum() {
+        map = new HashMap<>();
+
+        QueryWrapper<JcookBrand> queryWrapper = new QueryWrapper<>();
+        Integer settledBrandsNum = jcookBrandMapper.selectCount(queryWrapper);
+
+        map.put("message","请求成功");
+        map.put("data",settledBrandsNum);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> newProductsTodayNum() {
+        map = new HashMap<>();
+        Date date = new Date();
+        //获取当天起始时间和结束时间
+        LocalDateTime today_start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);//当天零点
+        LocalDateTime today_end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);//当天零点
+        Date dateStart = Date.from(today_start.atZone(ZoneId.systemDefault()).toInstant());//转Date
+        Date dateEnd = Date.from(today_end.atZone(ZoneId.systemDefault()).toInstant());//转Date
+
+
+        QueryWrapper<JcookGoods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.ge("updated_at",dateStart);
+        queryWrapper.le("updated_at",dateEnd);
+        Integer newProductsTodayNum = jcookGoodsMapper.selectCount(queryWrapper);
+
+        map.put("message","请求成功");
+        map.put("data",newProductsTodayNum);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public List<OneCategoryVo> findAllOneCategory() {
+        map = new HashMap<>();
+        map.put("parent_id",0);
+        List<JcookCategory> jcookCategories = jcookCategoryMapper.selectByMap(map);
+        ArrayList<OneCategoryVo> oneCategoryVoList = new ArrayList<>();
+        if (jcookCategories != null && jcookCategories.size()>0){
+            for (JcookCategory jcookCategory : jcookCategories) {
+                OneCategoryVo oneCategoryVo = new OneCategoryVo();
+                PropertyUtils.copyProperties(jcookCategory,oneCategoryVo);
+                oneCategoryVoList.add(oneCategoryVo);
+            }
+        }
+        return oneCategoryVoList;
+    }
+
+    @Override
+    public Map<String, Object> findMaxPopularity(int num) {
+        map = new HashMap<>();
+        QueryWrapper<JcookGoods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("views_num");
+        queryWrapper.last("limit "+num);
+        List<JcookGoods> jcookGoods = jcookGoodsMapper.selectList(queryWrapper);
+        ArrayList<MaxPopularityVo> maxPopularityVoList = new ArrayList<>();
+        if (jcookGoods != null && jcookGoods.size()>0){
+            for (JcookGoods jcookGood : jcookGoods) {
+                MaxPopularityVo maxPopularityVo = new MaxPopularityVo();
+                PropertyUtils.copyProperties(jcookGood,maxPopularityVo);
+                maxPopularityVoList.add(maxPopularityVo);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("data",maxPopularityVoList);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public List<RecommendGoodsListVo> findRecommendGoodsList(RecommendGoodsSearch recommendGoodsSearch) {
+        QueryWrapper<JcookGoods> queryWrapper = new QueryWrapper<>();
+        //搜索条件
+        //价格排序(1.desc[降序]，2.asc[升序])
+        if (recommendGoodsSearch.getOrderByPrice() == 1){//1.降序
+            queryWrapper.orderByDesc("sell_price");
+        }else if (recommendGoodsSearch.getOrderByPrice() == 2){//2.升序
+            queryWrapper.orderByAsc("sell_price");
+        }
+        //品牌主键id
+        queryWrapper.eq(recommendGoodsSearch.getBrandId() != null,"brand_id",recommendGoodsSearch.getBrandId());
+        //最小价格～最大价格，闭区间
+        queryWrapper.ge(recommendGoodsSearch.getMaxPrice() != null,"sell_price",recommendGoodsSearch.getMinPrice());
+        queryWrapper.le(recommendGoodsSearch.getMinPrice() != null,"sell_price",recommendGoodsSearch.getMaxPrice());
+        //关键字搜索
+        queryWrapper.like(StringUtils.isNotBlank(recommendGoodsSearch.getKeyword()),"sku_name",recommendGoodsSearch.getKeyword());
+        List<JcookGoods> jcookGoods = jcookGoodsMapper.selectList(queryWrapper);
+        ArrayList<RecommendGoodsListVo> recommendGoodsListVoList = new ArrayList<>();
+        if (jcookGoods != null && jcookGoods.size()>0){
+            for (JcookGoods jcookGood : jcookGoods) {
+                RecommendGoodsListVo recommendGoodsListVo = new RecommendGoodsListVo();
+                PropertyUtils.copyProperties(jcookGood,recommendGoodsListVo);
+                recommendGoodsListVoList.add(recommendGoodsListVo);
+            }
+        }
+
+        return recommendGoodsListVoList;
+    }
+
+    @Override
+    public Map<String, Object> findGoodsDetail(Integer shopId, Integer id) {
+        map = new HashMap<>();
+        //查询商品基础信息
+        JcookGoods jcookGoods = jcookGoodsMapper.selectById(shopId);
+        GoodsDetailVo goodsDetailVo = new GoodsDetailVo();
+        PropertyUtils.copyProperties(jcookGoods,goodsDetailVo);//填入商品基础信息
+
+        //查询商品image列表
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("jcook_goods_id",shopId);
+        List<JcookImage> jcookImages = jcookImageMapper.selectByMap(map);
+        ArrayList<GoodsDetailImageVo> goodsDetailImageVoList = new ArrayList<>();
+        if (jcookImages != null && jcookImages.size()>0){
+            for (JcookImage jcookImage : jcookImages) {
+                GoodsDetailImageVo goodsDetailImageVo = new GoodsDetailImageVo();
+                PropertyUtils.copyProperties(jcookImage,goodsDetailImageVo);
+                goodsDetailImageVoList.add(goodsDetailImageVo);
+            }
+        }
+        goodsDetailVo.setGoodsDetailImageVos(goodsDetailImageVoList);//填入商品image列表
+
+        //查询参数（品牌、规格）
+        HashMap<String, Object> map2 = new HashMap<>();
+        map2.put("jcook_goods_id",shopId);
+        List<JcookSpecification> jcookSpecificationList = jcookSpecificationMapper.selectByMap(map2);
+        ArrayList<GoodsDetailSpecificationVo> goodsDetailSpecificationVoList = new ArrayList<>();
+        if (jcookSpecificationList != null && jcookSpecificationList.size()>0){
+            for (JcookSpecification jcookSpecification : jcookSpecificationList) {
+                //商品详情-specification规格参数 DTO 转 VO
+                GoodsDetailSpecificationVo goodsDetailSpecificationVo = new GoodsDetailSpecificationVo();
+                PropertyUtils.copyProperties(jcookSpecification,goodsDetailSpecificationVo);
+                //查询商品详情-specification规格参数-attribute列表
+                HashMap<String, Object> map3 = new HashMap<>();
+                map3.put("jcook_specification_id",jcookSpecification.getId());
+                ArrayList<GoodsDetailSpecificationAttributeVo> goodsDetailSpecificationAttributeVoList = new ArrayList<>();
+                List<JcookSpecificationAttribute> jcookSpecificationAttributeList = jcookSpecificationAttributeMapper.selectByMap(map3);
+                if (jcookSpecificationAttributeList != null && jcookSpecificationAttributeList.size()>0){
+                    for (JcookSpecificationAttribute jcookSpecificationAttribute : jcookSpecificationAttributeList) {
+                        //商品详情-specification规格参数-attribute列表 DTO 转 VO
+                        GoodsDetailSpecificationAttributeVo goodsDetailSpecificationAttributeVo = new GoodsDetailSpecificationAttributeVo();
+                        PropertyUtils.copyProperties(jcookSpecificationAttribute,goodsDetailSpecificationAttributeVo);
+                        goodsDetailSpecificationAttributeVoList.add(goodsDetailSpecificationAttributeVo);//添加 商品详情-specification规格参数-attribute列表
+                    }
+                }
+                goodsDetailSpecificationVo.setAttribute(goodsDetailSpecificationAttributeVoList);//填入 商品详情-specification规格参数-attribute列表
+                goodsDetailSpecificationVoList.add(goodsDetailSpecificationVo);//添加 参数（品牌、规格）
+            }
+        }
+        goodsDetailVo.setGoodsDetailSpecificationVoList(goodsDetailSpecificationVoList);//填入 参数（品牌、规格）集合
+
+
+        //查询pc 端商品介绍[bigInfo 大图信息](使用该 字段)
+        QueryWrapper<JcookBigInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_goods_id",shopId);
+        JcookBigInfo jcookBigInfo = jcookBigInfoMapper.selectOne(queryWrapper);
+        goodsDetailVo.setPcWdis(jcookBigInfo.getPcWdis());//填入查询pc 端商品介绍[bigInfo 大图信息]
+
+        //查询默认地址
+        if (id != null){
+            QueryWrapper<JcookAddress> queryWrapper2 = new QueryWrapper<>();
+            queryWrapper2.eq("resident_id",id);
+            queryWrapper2.eq("is_default",1);//1.默认地址
+            JcookAddress jcookAddress = jcookAddressMapper.selectOne(queryWrapper2);
+            if (jcookAddress != null){//如果存在默认地址
+                StringBuilder location = findCityAddressDetails(true, jcookAddress.getLocation());
+                goodsDetailVo.setDefaultLocation(location.toString());//填入默认所在地区
+                goodsDetailVo.setDefaultAddressDetail(jcookAddress.getAddressDetail());//填入默认详细地址
+
+                //如果存在默认地址 查询库存状态(1.有货，0.无货)
+                JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+                StockDetailSkuQuantityRequest stockDetailSkuQuantityRequest = new StockDetailSkuQuantityRequest();
+                stockDetailSkuQuantityRequest.setSkuId(jcookGoods.getSkuId());//填入商品编码
+                stockDetailSkuQuantityRequest.setQuantity(1);//填入商品数量
+                ArrayList<StockDetailSkuQuantityRequest> stockDetailSkuQuantityRequestList = new ArrayList<>();
+                stockDetailSkuQuantityRequestList.add(stockDetailSkuQuantityRequest);
+
+                StockDetailRequest stockDetailRequest = new StockDetailRequest();
+                stockDetailRequest.setAddress(location.toString());//填入地址
+                stockDetailRequest.setSkuList(stockDetailSkuQuantityRequestList);//填入list内容
+                Result<List<StockDetailResponse>> stockDetail = jcookSDK.stockDetail(stockDetailRequest);
+                Integer stockState = stockDetail.getData().get(0).getStockState();
+                goodsDetailVo.setStockStatus(stockState);//填入库存状态,0.无货，1.有货
+            }else {
+                //如果默认地址为null,则为无货
+                goodsDetailVo.setStockStatus(0);//0.无货
+            }
+        }else {
+            //如果用户为null，则默认地址为null,则为无货
+            goodsDetailVo.setStockStatus(0);//0.无货
+        }
+
+        //TODO 售卖量需要计算出来
+
+
+        map.put("message","请求成功");
+        map.put("data",goodsDetailVo);
+        map.put("status",true);
+        return map;
+    }
+
+    /**
+     * 查询城市地址
+     * @param isCreate 是否需要创建了StringBuild对象
+     * @param cityAddress 城市地址主键Id
+     * @return 城市地址StringBuild对象
+     */
+    private StringBuilder findCityAddressDetails(boolean isCreate,Integer cityAddress) {
+        if (isCreate){
+            //创建StringBuild对象
+            stringBuilder = new StringBuilder();
+        }
+        JcookCity jcookCity = jcookCityMapper.selectById(cityAddress);
+        if (jcookCity.getParentId() != 0){
+            findCityAddressDetails(false,jcookCity.getParentId());//后续循环不需要创建StringBuild对象
+            stringBuilder.append(jcookCity.getName()).append(" ");//拼接公司省县市地址
+        }
+
+        return stringBuilder;
+    }
+
+
+}
