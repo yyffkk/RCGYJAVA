@@ -2,9 +2,11 @@ package com.api.app.service.jcook.impl;
 
 import com.api.app.service.jcook.AppJcookGoodsService;
 import com.api.mapper.jcook.*;
+import com.api.model.jcook.dto.BrandSearch;
 import com.api.model.jcook.dto.RecommendGoodsSearch;
 import com.api.model.jcook.entity.*;
 import com.api.util.PropertyUtils;
+import com.api.vo.jcook.appBrand.GoodsBrandVo;
 import com.api.vo.jcook.appGoods.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
@@ -287,6 +289,22 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
         map.put("data",jcookBigInfo.getPcWdis());
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public List<GoodsBrandVo> findAllBrand(BrandSearch brandSearch) {
+        QueryWrapper<JcookBrand> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("brand_name",brandSearch.getKeyword());
+        List<JcookBrand> jcookBrands = jcookBrandMapper.selectList(queryWrapper);
+        ArrayList<GoodsBrandVo> goodsBrandVoList = new ArrayList<>();
+        if (jcookBrands != null && jcookBrands.size()>0){
+            for (JcookBrand jcookBrand : jcookBrands) {
+                GoodsBrandVo goodsBrandVo = new GoodsBrandVo();
+                PropertyUtils.copyProperties(jcookBrand,goodsBrandVo);
+                goodsBrandVoList.add(goodsBrandVo);
+            }
+        }
+        return goodsBrandVoList;
     }
 
     /**

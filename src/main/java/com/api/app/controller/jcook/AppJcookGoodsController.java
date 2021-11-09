@@ -1,7 +1,9 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookGoodsService;
+import com.api.model.jcook.dto.BrandSearch;
 import com.api.model.jcook.dto.RecommendGoodsSearch;
+import com.api.vo.jcook.appBrand.GoodsBrandVo;
 import com.api.vo.jcook.appGoods.OneCategoryVo;
 import com.api.vo.jcook.appGoods.RecommendGoodsListVo;
 import com.github.pagehelper.PageHelper;
@@ -81,6 +83,22 @@ public class AppJcookGoodsController {
         return appJcookGoodsService.findMaxPopularity(num);
     }
 
+    /**
+     * 查询所有的品牌
+     * @param brandSearch 品牌搜索条件
+     * @return 所有的品牌
+     */
+    @GetMapping("/findAllBrand")
+    public Map<String,Object> findAllBrand(BrandSearch brandSearch){
+        PageHelper.startPage(brandSearch.getPageNum(),brandSearch.getSize());
+        List<GoodsBrandVo> goodsBrandVoList = appJcookGoodsService.findAllBrand(brandSearch);
+        PageInfo<GoodsBrandVo> pageInfo = new PageInfo<>(goodsBrandVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
 
     /**
      * 查询综合推荐商品列表

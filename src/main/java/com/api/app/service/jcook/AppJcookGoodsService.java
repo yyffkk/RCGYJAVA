@@ -1,6 +1,8 @@
 package com.api.app.service.jcook;
 
+import com.api.model.jcook.dto.BrandSearch;
 import com.api.model.jcook.dto.RecommendGoodsSearch;
+import com.api.vo.jcook.appBrand.GoodsBrandVo;
 import com.api.vo.jcook.appGoods.OneCategoryVo;
 import com.api.vo.jcook.appGoods.RecommendGoodsListVo;
 
@@ -60,4 +62,11 @@ public interface AppJcookGoodsService {
      * @return map
      */
     Map<String, Object> findGoodsDetailBigInfo(Integer shopId);
+
+    /**
+     * 查询所有的品牌
+     * @param brandSearch 品牌搜索条件
+     * @return 所有的品牌
+     */
+    List<GoodsBrandVo> findAllBrand(BrandSearch brandSearch);
 }
