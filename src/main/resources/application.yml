@@ -35,17 +35,21 @@ spring:
         port: 5672
         username: jcook40362136173633536
         password: d3tTyh
-        virtual-host: /
+#        virtual-host: /
         connection-timeout: 15000
     #整合rabbitmq消费者
         listener:
             simple:
-                concurrency:
-                max-concurrency: 10
+                concurrency: 1
+                max-concurrency: 1
                 #签收模式
                 acknowledge-mode: manual
                 #限流 - 每次只消费一条
                 prefetch: 1
+        cache:
+            channel:
+                #缓存中保持的Channel数量
+                size: 1
 #mybatis
 mybatis-plus:
     mapper-locations: classpath:mapper/*/*/*.xml

@@ -1,5 +1,6 @@
 package com.api.systemDataBigScreen.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.api.manage.dao.operationManagement.SysNewsCategoryManagementDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.model.operationManagement.SysNewsManagement;
@@ -437,8 +438,27 @@ public class SystemDataServiceImpl implements SystemDataService {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String format = sdf.format(firePushAlert.getTime());
-            String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
-            log.info(content);
+//            String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
+
+            WebSocketFirePushAlert webSocketFirePushAlert = new WebSocketFirePushAlert();
+            webSocketFirePushAlert.setDeviceNo(firePushAlert.getDeviceNo());//填入设备号
+            webSocketFirePushAlert.setAlarmNo(firePushAlert.getAlarmNo());//填入报警号
+            webSocketFirePushAlert.setAlarmType(firePushAlert.getAlarmType());//填入数值报警，还是状态报警(C:数值报警，X:状态报警)
+            webSocketFirePushAlert.setDeviceName(firePushAlert.getDeviceName());//填入设备名称
+            webSocketFirePushAlert.setTime(format);//填入报警时间
+            int deviceNo = Integer.parseInt(firePushAlert.getDeviceNo());
+            int type = 0;
+            if (deviceNo >= 3020 && deviceNo <= 3027){
+                type = 1;//1.火灾报警（消防）
+            }else {
+                type = 2;//2.2.设备报警
+            }
+            webSocketFirePushAlert.setType(type);//填入报警类型：1.火灾报警（消防），2.设备报警
+
+
+            String content = JSON.toJSONString(webSocketFirePushAlert);
+
+            log.info("火灾报警："+content);
 //            System.out.printf(content);
 //             key:type value:1 火警
                 //不使用第三方极光推送，该用websocket来实现推送

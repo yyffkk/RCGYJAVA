@@ -61,12 +61,14 @@ public class JcookRabbitMQ {
 
     //监听商品信息修改
     @RabbitHandler
-    @RabbitListener(queues = JcookQueuesConfig.skuChange)
+    @RabbitListener(queues = "sku.change.queue.b7964889cedfdf429bfc7fae0001ff46")
     public void updateSkuInfo(Channel channel, String json, Message message, @Headers Map<String,Object> map){
         log.info("接收到的消息体："+json);
 
         SkuChange skuChange = null;
         try {
+            //休眠0.1秒，降低cpu
+            Thread.sleep(1000);
             skuChange = JSON.parseObject(json, SkuChange.class);
             log.info(skuChange.toString());
         } catch (Exception e) {
@@ -84,6 +86,7 @@ public class JcookRabbitMQ {
         //根据商品编码反查商品详情
         JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
         ArrayList<BigInteger> ids = new ArrayList<>();
+        ids.add(skuChange.getSkuId());
         SkuDetailRequest skuDetailRequest = new SkuDetailRequest();
         skuDetailRequest.setSkuIdSet(ids);
         Result<List<SkuDetailResponse>> skuDetailResponseList = jcookSDK.skuDetail(skuDetailRequest);
@@ -111,70 +114,70 @@ public class JcookRabbitMQ {
                         continue;
                     }
 
-                    //先判断数据库内是否有一级分类，如果没有就添加，有就略过
-                    QueryWrapper<JcookCategory> queryWrapper1 = new QueryWrapper<>();
-                    queryWrapper1.eq("name", skuDetailBase.getCategoryFirstName());
-                    queryWrapper1.eq("parent_id", 0);
-                    JcookCategory jcookCategory = jcookCategoryMapper.selectOne(queryWrapper1);
-                    if (jcookCategory == null) {
-                        //添加一级分类
-                        jcookCategory = new JcookCategory();
-                        jcookCategory.setName(skuDetailBase.getCategoryFirstName());
-                        jcookCategory.setParentId(0);//默认为0顶层
-                        jcookCategory.setIsShow(1);//默认1.显示
-                        jcookCategoryMapper.insert(jcookCategory);
-                    }
+//                    //先判断数据库内是否有一级分类，如果没有就添加，有就略过
+//                    QueryWrapper<JcookCategory> queryWrapper1 = new QueryWrapper<>();
+//                    queryWrapper1.eq("name", skuDetailBase.getCategoryFirstName());
+//                    queryWrapper1.eq("parent_id", 0);
+//                    JcookCategory jcookCategory = jcookCategoryMapper.selectOne(queryWrapper1);
+//                    if (jcookCategory == null) {
+//                        //添加一级分类
+//                        jcookCategory = new JcookCategory();
+//                        jcookCategory.setName(skuDetailBase.getCategoryFirstName());
+//                        jcookCategory.setParentId(0);//默认为0顶层
+//                        jcookCategory.setIsShow(1);//默认1.显示
+//                        jcookCategoryMapper.insert(jcookCategory);
+//                    }
+//
+//                    //再判断数据库内是否有二级分类，如果没有就添加，有就略过
+//                    QueryWrapper<JcookCategory> queryWrapper2 = new QueryWrapper<>();
+//                    queryWrapper2.eq("name", skuDetailBase.getCategorySecondName());
+//                    queryWrapper2.eq("parent_id", jcookCategory.getId());
+//                    JcookCategory jcookCategory2 = jcookCategoryMapper.selectOne(queryWrapper2);
+//                    if (jcookCategory2 == null) {
+//                        //添加一级分类
+//                        jcookCategory2 = new JcookCategory();
+//                        jcookCategory2.setName(skuDetailBase.getCategorySecondName());
+//                        jcookCategory2.setParentId(jcookCategory.getId());//默认为0顶层
+//                        jcookCategory2.setIsShow(1);//默认1.显示
+//                        jcookCategoryMapper.insert(jcookCategory2);
+//                    }
+//
+//                    //然后判断数据库内是否有三级分类，如果没有就添加，有就略过
+//                    QueryWrapper<JcookCategory> queryWrapper3 = new QueryWrapper<>();
+//                    queryWrapper3.eq("name", skuDetailBase.getCategoryThirdName());
+//                    queryWrapper3.eq("parent_id", jcookCategory2.getId());
+//                    JcookCategory jcookCategory3 = jcookCategoryMapper.selectOne(queryWrapper3);
+//                    if (jcookCategory3 == null) {
+//                        //添加一级分类
+//                        jcookCategory3 = new JcookCategory();
+//                        jcookCategory3.setName(skuDetailBase.getCategoryThirdName());
+//                        jcookCategory3.setParentId(jcookCategory2.getId());//默认为0顶层
+//                        jcookCategory3.setIsShow(1);//默认1.显示
+//                        jcookCategoryMapper.insert(jcookCategory3);
+//                    }
 
-                    //再判断数据库内是否有二级分类，如果没有就添加，有就略过
-                    QueryWrapper<JcookCategory> queryWrapper2 = new QueryWrapper<>();
-                    queryWrapper2.eq("name", skuDetailBase.getCategorySecondName());
-                    queryWrapper2.eq("parent_id", jcookCategory.getId());
-                    JcookCategory jcookCategory2 = jcookCategoryMapper.selectOne(queryWrapper2);
-                    if (jcookCategory2 == null) {
-                        //添加一级分类
-                        jcookCategory2 = new JcookCategory();
-                        jcookCategory2.setName(skuDetailBase.getCategorySecondName());
-                        jcookCategory2.setParentId(jcookCategory.getId());//默认为0顶层
-                        jcookCategory2.setIsShow(1);//默认1.显示
-                        jcookCategoryMapper.insert(jcookCategory2);
-                    }
-
-                    //然后判断数据库内是否有三级分类，如果没有就添加，有就略过
-                    QueryWrapper<JcookCategory> queryWrapper3 = new QueryWrapper<>();
-                    queryWrapper3.eq("name", skuDetailBase.getCategoryThirdName());
-                    queryWrapper3.eq("parent_id", jcookCategory2.getId());
-                    JcookCategory jcookCategory3 = jcookCategoryMapper.selectOne(queryWrapper3);
-                    if (jcookCategory3 == null) {
-                        //添加一级分类
-                        jcookCategory3 = new JcookCategory();
-                        jcookCategory3.setName(skuDetailBase.getCategoryThirdName());
-                        jcookCategory3.setParentId(jcookCategory2.getId());//默认为0顶层
-                        jcookCategory3.setIsShow(1);//默认1.显示
-                        jcookCategoryMapper.insert(jcookCategory3);
-                    }
-
-                    //判断数据库内是否有该店铺，如果没有就添加，有就略过
-                    QueryWrapper<JcookShop> queryWrapper5 = new QueryWrapper<>();
-                    queryWrapper5.eq("shop_name",skuDetailBase.getShopName());
-                    JcookShop jcookShop = jcookShopMapper.selectOne(queryWrapper5);
-                    if (jcookShop == null){
-                        //添加店铺
-                        jcookShop = new JcookShop();
-                        jcookShop.setShopName(skuDetailBase.getShopName());//填入店铺名称
-                        jcookShopMapper.insert(jcookShop);
-                    }
-
-                    //判断数据库内是否有该品牌，如果没有就添加，有就略过
-                    QueryWrapper<JcookBrand> queryWrapper6 = new QueryWrapper<>();
-                    queryWrapper6.eq("brand_name",skuDetailBase.getBrandName());
-                    JcookBrand jcookBrand = jcookBrandMapper.selectOne(queryWrapper6);
-                    if (jcookBrand == null){
-                        //添加品牌
-                        jcookBrand = new JcookBrand();
-                        jcookBrand.setJcookShopId(jcookShop.getId());//填入店铺主键id
-                        jcookBrand.setBrandName(skuDetailBase.getBrandName());//填入品牌名称
-                        jcookBrandMapper.insert(jcookBrand);
-                    }
+//                    //判断数据库内是否有该店铺，如果没有就添加，有就略过
+//                    QueryWrapper<JcookShop> queryWrapper5 = new QueryWrapper<>();
+//                    queryWrapper5.eq("shop_name",skuDetailBase.getShopName());
+//                    JcookShop jcookShop = jcookShopMapper.selectOne(queryWrapper5);
+//                    if (jcookShop == null){
+//                        //添加店铺
+//                        jcookShop = new JcookShop();
+//                        jcookShop.setShopName(skuDetailBase.getShopName());//填入店铺名称
+//                        jcookShopMapper.insert(jcookShop);
+//                    }
+//
+//                    //判断数据库内是否有该品牌，如果没有就添加，有就略过
+//                    QueryWrapper<JcookBrand> queryWrapper6 = new QueryWrapper<>();
+//                    queryWrapper6.eq("brand_name",skuDetailBase.getBrandName());
+//                    JcookBrand jcookBrand = jcookBrandMapper.selectOne(queryWrapper6);
+//                    if (jcookBrand == null){
+//                        //添加品牌
+//                        jcookBrand = new JcookBrand();
+//                        jcookBrand.setJcookShopId(jcookShop.getId());//填入店铺主键id
+//                        jcookBrand.setBrandName(skuDetailBase.getBrandName());//填入品牌名称
+//                        jcookBrandMapper.insert(jcookBrand);
+//                    }
 
 
                     //最后修改商品
@@ -182,12 +185,12 @@ public class JcookRabbitMQ {
                     //修改商品信息
                     jcookGoods.setId(jcookGoodsFBI.getId());//填入sku编码
                     jcookGoods.setSkuName(skuDetailBase.getSkuName());//填入商品名称
-                    jcookGoods.setShopId(jcookShop.getId());//填入店铺主键id
+//                    jcookGoods.setShopId(jcookShop.getId());//填入店铺主键id
                     jcookGoods.setVendorName(skuDetailBase.getVendorName());//填入供应商名称
-                    jcookGoods.setBrandId(jcookBrand.getId());//填入品牌主键id
-                    jcookGoods.setCategoryFirstId(jcookCategory.getId());//填入一级分类主键id
-                    jcookGoods.setCategorySecondId(jcookCategory2.getId());//填入二级分类主键id
-                    jcookGoods.setCategoryThirdId(jcookCategory3.getId());//填入三级分类主键id
+//                    jcookGoods.setBrandId(jcookBrand.getId());//填入品牌主键id
+//                    jcookGoods.setCategoryFirstId(jcookCategory.getId());//填入一级分类主键id
+//                    jcookGoods.setCategorySecondId(jcookCategory2.getId());//填入二级分类主键id
+//                    jcookGoods.setCategoryThirdId(jcookCategory3.getId());//填入三级分类主键id
                     jcookGoods.setMainPhoto(skuDetailBase.getMainPhoto());//填入主图url
                     if (skuDetailBase.getStatus()) {
                         jcookGoods.setStatus(1);//1.上架-jcook商品状态
@@ -218,96 +221,96 @@ public class JcookRabbitMQ {
                     jcookGoods.setWeight(skuDetailBase.getWeight());//填入重量（千克）
                     jcookGoodsMapper.updateById(jcookGoods);
 
-                    //先删除image列表
-                    HashMap<String, Object> map2 = new HashMap<>();
-                    map2.put("jcook_goods_id", jcookGoodsFBI.getId());
-                    jcookImageMapper.deleteByMap(map2);
-                    //再添加image列表
-                    List<SkuDetailsImagesResponse> images = datum.getImages();
-                    if (images != null && images.size() > 0) {
-                        for (SkuDetailsImagesResponse image : images) {
-                            JcookImage jcookImage = new JcookImage();
-                            jcookImage.setJcookGoodsId(jcookGoodsFBI.getId());//填入jcook商品主键id
-                            jcookImage.setUrl(image.getUrl());//填入图片路由地址
-                            if (image.getIsPrimer()) {
-                                jcookImage.setIsPrimer(1);//1.是主图
-                            } else {
-                                jcookImage.setIsPrimer(0);//0.不是主图
-                            }
-                            jcookImage.setOrderSort(image.getOrderSort());//填入图片排序
-                            jcookImageMapper.insert(jcookImage);
-                        }
-                    }
+//                    //先删除image列表
+//                    HashMap<String, Object> map2 = new HashMap<>();
+//                    map2.put("jcook_goods_id", jcookGoodsFBI.getId());
+//                    jcookImageMapper.deleteByMap(map2);
+//                    //再添加image列表
+//                    List<SkuDetailsImagesResponse> images = datum.getImages();
+//                    if (images != null && images.size() > 0) {
+//                        for (SkuDetailsImagesResponse image : images) {
+//                            JcookImage jcookImage = new JcookImage();
+//                            jcookImage.setJcookGoodsId(jcookGoodsFBI.getId());//填入jcook商品主键id
+//                            jcookImage.setUrl(image.getUrl());//填入图片路由地址
+//                            if (image.getIsPrimer()) {
+//                                jcookImage.setIsPrimer(1);//1.是主图
+//                            } else {
+//                                jcookImage.setIsPrimer(0);//0.不是主图
+//                            }
+//                            jcookImage.setOrderSort(image.getOrderSort());//填入图片排序
+//                            jcookImageMapper.insert(jcookImage);
+//                        }
+//                    }
+//
+//                    //先删除bigInfo大图信息
+//                    HashMap<String, Object> map3 = new HashMap<>();
+//                    map3.put("jcook_goods_id", jcookGoodsFBI.getId());
+//                    jcookBigInfoMapper.deleteByMap(map3);
+//                    //再添加bigInfo大图信息
+//                    SkuDetailBigInfoResponse bigInfo = datum.getBigInfo();
+//                    if (bigInfo != null) {
+//                        JcookBigInfo jcookBigInfo = new JcookBigInfo();
+//                        jcookBigInfo.setJcookGoodsId(jcookGoodsFBI.getId());//填入jcook商品主键id
+//                        jcookBigInfo.setPcWdis(bigInfo.getPcWdis());//填入pc端商品介绍（使用该字段）
+//                        jcookBigInfo.setPcJsContent(bigInfo.getPcJsContent());//填入pc js 内容（可能为空）
+//                        jcookBigInfo.setPcCssContent(bigInfo.getPcCssContent());//填入pc css 样式（可能为空）
+//                        jcookBigInfo.setPcHtmlContent(bigInfo.getPcHtmlContent());//填入pc html 内容（可能为空）
+//                        jcookBigInfoMapper.insert(jcookBigInfo);
+//                    }
 
-                    //先删除bigInfo大图信息
-                    HashMap<String, Object> map3 = new HashMap<>();
-                    map3.put("jcook_goods_id", jcookGoodsFBI.getId());
-                    jcookBigInfoMapper.deleteByMap(map3);
-                    //再添加bigInfo大图信息
-                    SkuDetailBigInfoResponse bigInfo = datum.getBigInfo();
-                    if (bigInfo != null) {
-                        JcookBigInfo jcookBigInfo = new JcookBigInfo();
-                        jcookBigInfo.setJcookGoodsId(jcookGoodsFBI.getId());//填入jcook商品主键id
-                        jcookBigInfo.setPcWdis(bigInfo.getPcWdis());//填入pc端商品介绍（使用该字段）
-                        jcookBigInfo.setPcJsContent(bigInfo.getPcJsContent());//填入pc js 内容（可能为空）
-                        jcookBigInfo.setPcCssContent(bigInfo.getPcCssContent());//填入pc css 样式（可能为空）
-                        jcookBigInfo.setPcHtmlContent(bigInfo.getPcHtmlContent());//填入pc html 内容（可能为空）
-                        jcookBigInfoMapper.insert(jcookBigInfo);
-                    }
-
-                    //先查询specification
-                    HashMap<String, Object> map4 = new HashMap<>();
-                    map4.put("jcook_goods_id", jcookGoodsFBI.getId());
-                    List<JcookSpecification> jcookSpecifications = jcookSpecificationMapper.selectByMap(map4);
-                    if (jcookSpecifications != null && jcookSpecifications.size() > 0) {
-                        for (JcookSpecification jcookSpecification : jcookSpecifications) {
-                            //先删除specification 规格参数 和 jcook主体规格参数组
-                            jcookSpecificationMapper.deleteById(jcookSpecification.getId());
-                            HashMap<String, Object> map5 = new HashMap<>();
-                            map5.put("jcook_specification_id", jcookSpecification.getId());
-                            jcookSpecificationAttributeMapper.deleteByMap(map5);
-                            //再添加specification 规格参数
-                            List<SkuDetailSpecificationResponse> specification = datum.getSpecification();
-                            if (specification != null && specification.size() > 0) {
-                                for (SkuDetailSpecificationResponse skuDetailSpecificationResponse : specification) {
-                                    JcookSpecification jcookSpecification2 = new JcookSpecification();
-                                    jcookSpecification2.setJcookGoodsId(jcookGoods.getId());//填入jcook商品主键id
-                                    jcookSpecification2.setGroupName(skuDetailSpecificationResponse.getGroupName());//填入组名
-                                    //添加jcook主体规格参数组
-                                    jcookSpecificationMapper.insert(jcookSpecification2);
-
-                                    List<SkuDetailSpecificationAttributeResponse> attribute = skuDetailSpecificationResponse.getAttribute();
-                                    if (attribute != null && attribute.size() > 0) {
-                                        for (SkuDetailSpecificationAttributeResponse skuDetailSpecificationAttributeResponse : attribute) {
-                                            JcookSpecificationAttribute jcookSpecificationAttribute = new JcookSpecificationAttribute();
-                                            jcookSpecificationAttribute.setJcookSpecificationId(jcookSpecification2.getId());//填入规格参数主体主键id
-                                            jcookSpecificationAttribute.setName(skuDetailSpecificationAttributeResponse.getName());//填入键
-                                            jcookSpecificationAttribute.setValue(skuDetailSpecificationAttributeResponse.getValue());//填入值
-                                            //添加jcook主体规格参数详情
-                                            jcookSpecificationAttributeMapper.insert(jcookSpecificationAttribute);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+//                    //先查询specification
+//                    HashMap<String, Object> map4 = new HashMap<>();
+//                    map4.put("jcook_goods_id", jcookGoodsFBI.getId());
+//                    List<JcookSpecification> jcookSpecifications = jcookSpecificationMapper.selectByMap(map4);
+//                    if (jcookSpecifications != null && jcookSpecifications.size() > 0) {
+//                        for (JcookSpecification jcookSpecification : jcookSpecifications) {
+//                            //先删除specification 规格参数 和 jcook主体规格参数组
+//                            jcookSpecificationMapper.deleteById(jcookSpecification.getId());
+//                            HashMap<String, Object> map5 = new HashMap<>();
+//                            map5.put("jcook_specification_id", jcookSpecification.getId());
+//                            jcookSpecificationAttributeMapper.deleteByMap(map5);
+//                            //再添加specification 规格参数
+//                            List<SkuDetailSpecificationResponse> specification = datum.getSpecification();
+//                            if (specification != null && specification.size() > 0) {
+//                                for (SkuDetailSpecificationResponse skuDetailSpecificationResponse : specification) {
+//                                    JcookSpecification jcookSpecification2 = new JcookSpecification();
+//                                    jcookSpecification2.setJcookGoodsId(jcookGoods.getId());//填入jcook商品主键id
+//                                    jcookSpecification2.setGroupName(skuDetailSpecificationResponse.getGroupName());//填入组名
+//                                    //添加jcook主体规格参数组
+//                                    jcookSpecificationMapper.insert(jcookSpecification2);
+//
+//                                    List<SkuDetailSpecificationAttributeResponse> attribute = skuDetailSpecificationResponse.getAttribute();
+//                                    if (attribute != null && attribute.size() > 0) {
+//                                        for (SkuDetailSpecificationAttributeResponse skuDetailSpecificationAttributeResponse : attribute) {
+//                                            JcookSpecificationAttribute jcookSpecificationAttribute = new JcookSpecificationAttribute();
+//                                            jcookSpecificationAttribute.setJcookSpecificationId(jcookSpecification2.getId());//填入规格参数主体主键id
+//                                            jcookSpecificationAttribute.setName(skuDetailSpecificationAttributeResponse.getName());//填入键
+//                                            jcookSpecificationAttribute.setValue(skuDetailSpecificationAttributeResponse.getValue());//填入值
+//                                            //添加jcook主体规格参数详情
+//                                            jcookSpecificationAttributeMapper.insert(jcookSpecificationAttribute);
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
 
 
-                    //先删除attribute 列表
-                    HashMap<String, Object> map6 = new HashMap<>();
-                    map6.put("jcook_goods_id",jcookGoodsFBI.getId());
-                    jcookExtAttrMapper.deleteByMap(map6);
-                    //再添加attribute 列表
-                    List<SkuDetailExtAttrResponse> extAttr = datum.getExtAttr();
-                    if (extAttr != null && extAttr.size() > 0) {
-                        for (SkuDetailExtAttrResponse skuDetailExtAttrResponse : extAttr) {
-                            JcookExtAttr jcookExtAttr = new JcookExtAttr();
-                            jcookExtAttr.setJcookGoodsId(jcookGoods.getId());//填入jcook商品主键id
-                            jcookExtAttr.setName(skuDetailExtAttrResponse.getName());//填入键
-                            jcookExtAttr.setValue(skuDetailExtAttrResponse.getValue());//填入值
-                            jcookExtAttrMapper.insert(jcookExtAttr);
-                        }
-                    }
+//                    //先删除attribute 列表
+//                    HashMap<String, Object> map6 = new HashMap<>();
+//                    map6.put("jcook_goods_id",jcookGoodsFBI.getId());
+//                    jcookExtAttrMapper.deleteByMap(map6);
+//                    //再添加attribute 列表
+//                    List<SkuDetailExtAttrResponse> extAttr = datum.getExtAttr();
+//                    if (extAttr != null && extAttr.size() > 0) {
+//                        for (SkuDetailExtAttrResponse skuDetailExtAttrResponse : extAttr) {
+//                            JcookExtAttr jcookExtAttr = new JcookExtAttr();
+//                            jcookExtAttr.setJcookGoodsId(jcookGoods.getId());//填入jcook商品主键id
+//                            jcookExtAttr.setName(skuDetailExtAttrResponse.getName());//填入键
+//                            jcookExtAttr.setValue(skuDetailExtAttrResponse.getValue());//填入值
+//                            jcookExtAttrMapper.insert(jcookExtAttr);
+//                        }
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     try {
@@ -376,6 +379,8 @@ public class JcookRabbitMQ {
 
         SkuPrice skuPrice = null;
         try {
+            //休眠0.1秒，降低cpu
+            Thread.sleep(1000);
             skuPrice = JSON.parseObject(json, SkuPrice.class);
             log.info(skuPrice.toString());
         } catch (Exception e) {
@@ -481,6 +486,8 @@ public class JcookRabbitMQ {
 
         OrderCreate orderCreate = null;
         try {
+            //休眠0.1秒，降低cpu
+            Thread.sleep(1000);
             orderCreate = JSON.parseObject(json, OrderCreate.class);
             log.info(orderCreate.toString());
         } catch (Exception e) {
