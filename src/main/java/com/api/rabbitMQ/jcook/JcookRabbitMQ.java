@@ -61,7 +61,7 @@ public class JcookRabbitMQ {
 
     //监听商品信息修改
     @RabbitHandler
-    @RabbitListener(queues = "sku.change.queue.b7964889cedfdf429bfc7fae0001ff46")
+    @RabbitListener(queues = JcookQueuesConfig.skuChange)
     public void updateSkuInfo(Channel channel, String json, Message message, @Headers Map<String,Object> map){
         log.info("接收到的消息体："+json);
 
