@@ -243,11 +243,11 @@
 
 
     <!--  jcookSDK  -->
-    <dependency>
-      <groupId>com.jcook.sdk</groupId>
-      <artifactId>jcook-sdk-java</artifactId>
-      <version>1.0.1</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.jcook.sdk</groupId>-->
+<!--      <artifactId>jcook-sdk-java</artifactId>-->
+<!--      <version>1.0.1</version>-->
+<!--    </dependency>-->
 
     <!-- 支付宝SDK -->
     <dependency>

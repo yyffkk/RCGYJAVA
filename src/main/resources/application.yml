@@ -45,11 +45,11 @@ spring:
                 #签收模式
                 acknowledge-mode: manual
                 #限流 - 每次只消费一条
-                prefetch: 1
+                prefetch: 3
         cache:
             channel:
                 #缓存中保持的Channel数量
-                size: 1
+                size: 25
 #mybatis
 mybatis-plus:
     mapper-locations: classpath:mapper/*/*/*.xml

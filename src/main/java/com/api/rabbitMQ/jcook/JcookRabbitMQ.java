@@ -65,10 +65,11 @@ public class JcookRabbitMQ {
     public void updateSkuInfo(Channel channel, String json, Message message, @Headers Map<String,Object> map){
         log.info("接收到的消息体："+json);
 
+
         SkuChange skuChange = null;
         try {
             //休眠0.1秒，降低cpu
-            Thread.sleep(1000);
+//            Thread.sleep(1000);
             skuChange = JSON.parseObject(json, SkuChange.class);
             log.info(skuChange.toString());
         } catch (Exception e) {
@@ -92,8 +93,10 @@ public class JcookRabbitMQ {
         Result<List<SkuDetailResponse>> skuDetailResponseList = jcookSDK.skuDetail(skuDetailRequest);
         List<SkuDetailResponse> data = skuDetailResponseList.getData();
         if (data != null && data.size()>0) {
+            System.out.println(skuChange.getSkuId()+"--------------"+ data.size());
             //取数据进数据库
             for (SkuDetailResponse datum : data) {
+                System.out.println(skuChange.getSkuId()+"--------------i-start");
                 try {
                     //获取skuBase 基础信息
                     SkuDetailBaseResponse skuDetailBase = datum.getSkuDetailBase();
@@ -311,6 +314,8 @@ public class JcookRabbitMQ {
 //                            jcookExtAttrMapper.insert(jcookExtAttr);
 //                        }
 //                    }
+
+                    System.out.println(skuChange.getSkuId()+"--------------i-end");
                 } catch (Exception e) {
                     e.printStackTrace();
                     try {
