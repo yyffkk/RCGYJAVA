@@ -30,6 +30,8 @@ public class ButlerAlarmServiceImpl implements ButlerAlarmService {
         String organizationName = butlerAlarmDao.findOrganizationByUserId(butlerAppAlarm.getCreateId());
         //根据用户主键id查询用户名称
         String name = butlerAlarmDao.findNameByUserId(butlerAppAlarm.getCreateId());
+        //根据用户主键id查询用户手机号
+        String tel = butlerAlarmDao.findTelByUserId(butlerAppAlarm.getCreateId());
 
         if (organizationName == null){
             organizationName = "暂无部门";
@@ -44,7 +46,7 @@ public class ButlerAlarmServiceImpl implements ButlerAlarmService {
         String format = sdf.format(new Date().getTime());
         WebSocketFirePushAlert webSocketFirePushAlert = new WebSocketFirePushAlert();
         webSocketFirePushAlert.setDeviceNo(organizationName);//填入设备号
-        webSocketFirePushAlert.setAlarmNo(organizationName);//填入报警号
+        webSocketFirePushAlert.setAlarmNo(tel);//填入报警号
         webSocketFirePushAlert.setAlarmType("C");//填入数值报警，还是状态报警(C:数值报警，X:状态报警)
         webSocketFirePushAlert.setDeviceName(name);//填入设备名称
         webSocketFirePushAlert.setTime(format);//填入报警时间

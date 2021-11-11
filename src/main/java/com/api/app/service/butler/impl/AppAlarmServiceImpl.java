@@ -27,6 +27,7 @@ public class AppAlarmServiceImpl implements AppAlarmService {
 
         String roomName = appAlarmDao.findRoomNameByEstateId(appAlarm.getEstateId());
         String name = appAlarmDao.findNameByResidentId(appAlarm.getCreateId());
+        String tel = appAlarmDao.findTelByResidentId(appAlarm.getCreateId());
 
         if (roomName == null){
             roomName = "暂无房产";
@@ -41,7 +42,7 @@ public class AppAlarmServiceImpl implements AppAlarmService {
         String format = sdf.format(new Date().getTime());
         WebSocketFirePushAlert webSocketFirePushAlert = new WebSocketFirePushAlert();
         webSocketFirePushAlert.setDeviceNo(roomName);//填入设备号
-        webSocketFirePushAlert.setAlarmNo(roomName);//填入报警号
+        webSocketFirePushAlert.setAlarmNo(tel);//填入报警号
         webSocketFirePushAlert.setAlarmType("C");//填入数值报警，还是状态报警(C:数值报警，X:状态报警)
         webSocketFirePushAlert.setDeviceName(name);//填入设备名称
         webSocketFirePushAlert.setTime(format);//填入报警时间

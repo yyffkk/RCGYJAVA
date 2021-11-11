@@ -23,4 +23,11 @@ public interface AppAlarmDao {
      * @return 住户名称
      */
     String findNameByResidentId(Integer createId);
+
+    /**
+     * 根据住户主键id查询住户手机号
+     * @param createId 住户主键id
+     * @return 住户名称
+     */
+    String findTelByResidentId(Integer createId);
 }

@@ -23,4 +23,11 @@ public interface ButlerAlarmDao {
      * @return 用户名称
      */
     String findNameByUserId(Integer createId);
+
+    /**
+     * 根据用户主键id查询用户手机号
+     * @param createId 用户主键id
+     * @return 用户名称
+     */
+    String findTelByUserId(Integer createId);
 }
