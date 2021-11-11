@@ -467,9 +467,11 @@ public class SystemDataServiceImpl implements SystemDataService {
             //web页面的websocket
             WebSocketService ws = new WebSocketService();
             ws.broadcast(content);
-            //业主app的websocket
-            WebSocketServiceApp wsApp = new WebSocketServiceApp();
-            wsApp.broadcast(content);
+            if (type == 1){ //业主端只能看到火灾报警的消息，设备报警看不到
+                //业主app的websocket
+                WebSocketServiceApp wsApp = new WebSocketServiceApp();
+                wsApp.broadcast(content);
+            }
             //管家app的websocket
             WebSocketServiceButlerApp wsButlerApp = new WebSocketServiceButlerApp();
             wsButlerApp.broadcast(content);

@@ -5,6 +5,8 @@ import com.api.butlerApp.dao.butler.ButlerAlarmDao;
 import com.api.butlerApp.service.butler.ButlerAlarmService;
 import com.api.model.butlerApp.ButlerAppAlarm;
 import com.api.util.webSocket.WebSocketService;
+import com.api.util.webSocket.WebSocketServiceApp;
+import com.api.util.webSocket.WebSocketServiceButlerApp;
 import com.api.vo.systemDataBigScreen.WebSocketFirePushAlert;
 import org.springframework.stereotype.Service;
 
@@ -49,8 +51,12 @@ public class ButlerAlarmServiceImpl implements ButlerAlarmService {
         webSocketFirePushAlert.setType(3);//填入报警类型：1.火灾报警（消防），2.设备报警,3.一键报警
         String content = JSON.toJSONString(webSocketFirePushAlert);
 
+        //web页面的websocket
         WebSocketService ws = new WebSocketService();
         ws.broadcast(content);
+        //管家app的websocket
+        WebSocketServiceButlerApp wsButlerApp = new WebSocketServiceButlerApp();
+        wsButlerApp.broadcast(content);
 
         int insert = butlerAlarmDao.insertAlarmRecord(butlerAppAlarm);
         if (insert >0){
