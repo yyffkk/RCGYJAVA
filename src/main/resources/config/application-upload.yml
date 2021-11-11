@@ -84,6 +84,8 @@ prop:
   upload-hygiene-task-check-situation: /img/hygieneTaskCheckSituation/
   #运营管理：户型说明照片上传路径
   upload-house-type-description: /img/houseTypeDesctiption/
+  #运营管理：地理信息照片上传路径
+  upload-geography: /img/geography/
 
 
 

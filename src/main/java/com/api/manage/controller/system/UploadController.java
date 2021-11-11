@@ -382,4 +382,14 @@ public class UploadController {
         return uploadService.uploadHouseTypeDescriptionImg(file);
     }
 
+    /**
+     * 上传地理信息照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadGeographyImg")
+    public Map<String,Object> uploadGeographyImg(MultipartFile file){
+        return uploadService.uploadGeographyImg(file);
+    }
+
 }

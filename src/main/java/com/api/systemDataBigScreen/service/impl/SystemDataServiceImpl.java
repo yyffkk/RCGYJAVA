@@ -453,7 +453,7 @@ public class SystemDataServiceImpl implements SystemDataService {
             }else {
                 type = 2;//2.2.设备报警
             }
-            webSocketFirePushAlert.setType(type);//填入报警类型：1.火灾报警（消防），2.设备报警
+            webSocketFirePushAlert.setType(type);//填入报警类型：1.火灾报警（消防），2.设备报警，3.一键报警
 
 
             String content = JSON.toJSONString(webSocketFirePushAlert);
@@ -461,7 +461,7 @@ public class SystemDataServiceImpl implements SystemDataService {
             log.info("火灾报警："+content);
 //            System.out.printf(content);
 //             key:type value:1 火警
-                //不使用第三方极光推送，该用websocket来实现推送
+                //不使用第三方极光推送，改用websocket来实现推送
 //            JiguangUtil.sendPushAll(content,"1");
 //            JiguangUtil.sendButlerPushAll(content,"1");
             //web页面的websocket

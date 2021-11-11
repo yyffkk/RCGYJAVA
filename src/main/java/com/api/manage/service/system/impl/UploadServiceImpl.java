@@ -141,6 +141,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_MODEL_EXCEL;
     @Value("${prop.upload-house-type-description}")
     private String UPLOAD_HOUSE_TYPE_DESCRIPTION;
+    @Value("${prop.upload-geography}")
+    private String UPLOAD_GEOGRAPHY;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -584,6 +586,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadHouseTypeDescriptionImg(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_HOUSE_TYPE_DESCRIPTION);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadGeographyImg(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_GEOGRAPHY);
         return map;
     }
 

@@ -121,4 +121,6 @@ public interface UploadService {
     Map<String, Object> uploadModelExcel(MultipartFile file);
 
     Map<String, Object> uploadHouseTypeDescriptionImg(MultipartFile file);
+
+    Map<String, Object> uploadGeographyImg(MultipartFile file);
 }
