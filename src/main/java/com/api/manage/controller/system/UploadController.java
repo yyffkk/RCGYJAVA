@@ -392,4 +392,14 @@ public class UploadController {
         return uploadService.uploadGeographyImg(file);
     }
 
+    /**
+     * 上传周边企业信息照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadSurroundingEnterprisesImg")
+    public Map<String,Object> uploadSurroundingEnterprisesImg(MultipartFile file){
+        return uploadService.uploadSurroundingEnterprisesImg(file);
+    }
+
 }

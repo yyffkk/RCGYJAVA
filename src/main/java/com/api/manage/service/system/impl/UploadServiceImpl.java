@@ -143,6 +143,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_HOUSE_TYPE_DESCRIPTION;
     @Value("${prop.upload-geography}")
     private String UPLOAD_GEOGRAPHY;
+    @Value("${prop.upload-surrounding-enterprises}")
+    private String UPLOAD_SURROUNDING_ENTERPRISES;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -592,6 +594,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadGeographyImg(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_GEOGRAPHY);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadSurroundingEnterprisesImg(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_SURROUNDING_ENTERPRISES);
         return map;
     }
 

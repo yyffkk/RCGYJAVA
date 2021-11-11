@@ -86,6 +86,8 @@ prop:
   upload-house-type-description: /img/houseTypeDesctiption/
   #运营管理：地理信息照片上传路径
   upload-geography: /img/geography/
+  #运营管理：周边企业信息照片上传路径
+  upload-surrounding-enterprises: /img/surroundingEnterprises/
 
 
 

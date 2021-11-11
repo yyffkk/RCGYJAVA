@@ -201,6 +201,10 @@ public class SysGeographyServiceImpl implements SysGeographyService {
                 if (delete <= 0){
                     throw new RuntimeException("删除失败");
                 }
+
+                UploadUtil uploadUtil = new UploadUtil();
+                uploadUtil.delete("sysGeography",id,"geographyImg");
+
             }
         } catch (RuntimeException e) {
             //获取抛出的信息
