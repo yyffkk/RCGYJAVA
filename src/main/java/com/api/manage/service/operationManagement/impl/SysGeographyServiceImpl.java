@@ -1,8 +1,8 @@
 package com.api.manage.service.operationManagement.impl;
 
 import com.api.manage.service.operationManagement.SysGeographyService;
-import com.api.mapper.geography.SysGeographyMapper;
-import com.api.mapper.geography.SysUserMapper;
+import com.api.mapper.manage.SysGeographyMapper;
+import com.api.mapper.manage.SysUserMapper;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.entity.SysUserDo;
 import com.api.model.operationManagement.GeographyInsert;
@@ -12,7 +12,6 @@ import com.api.util.PropertyUtils;
 import com.api.util.UploadUtil;
 import com.api.vo.operationManagement.SysGeographyFBIVo;
 import com.api.vo.operationManagement.SysGeographyVo;
-import com.api.vo.operationManagement.VoGreenArea;
 import com.api.vo.resources.VoResourcesImg;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
