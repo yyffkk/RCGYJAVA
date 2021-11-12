@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
@@ -56,6 +57,7 @@ public class SysSurroundingEnterprisesServiceImpl implements SysSurroundingEnter
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(SurroundingEnterprisesInsert surroundingEnterprisesInsert) {
         map = new HashMap<>();
         try {
@@ -115,6 +117,7 @@ public class SysSurroundingEnterprisesServiceImpl implements SysSurroundingEnter
     }
 
     @Override
+    @Transactional
     public Map<String, Object> update(SurroundingEnterprisesInsert surroundingEnterprisesInsert) {
         map = new HashMap<>();
         try {
@@ -158,6 +161,7 @@ public class SysSurroundingEnterprisesServiceImpl implements SysSurroundingEnter
     }
 
     @Override
+    @Transactional
     public Map<String, Object> delete(int[] ids) {
         map = new HashMap<>();
         try {
@@ -200,6 +204,24 @@ public class SysSurroundingEnterprisesServiceImpl implements SysSurroundingEnter
             map.put("status",true);
         }else {
             map.put("message","发布失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> noRelease(Integer surroundingEnterprisesId) {
+        map = new HashMap<>();
+
+        SysSurroundingEnterprisesDo sysSurroundingEnterprisesDo = new SysSurroundingEnterprisesDo();
+        sysSurroundingEnterprisesDo.setId(surroundingEnterprisesId);
+        sysSurroundingEnterprisesDo.setReleaseStatus(2);//填入发布状态 2.未发布
+        int update = sysSurroundingEnterprisesMapper.updateById(sysSurroundingEnterprisesDo);
+        if (update > 0){
+            map.put("message","取消发布成功");
+            map.put("status",true);
+        }else {
+            map.put("message","取消发布失败");
             map.put("status",false);
         }
         return map;

@@ -49,4 +49,11 @@ public interface SysSurroundingEnterprisesService {
      * @return map
      */
     Map<String, Object> release(Integer surroundingEnterprisesId);
+
+    /**
+     * 取消发布消息
+     * @param surroundingEnterprisesId 周边企业主键id
+     * @return map
+     */
+    Map<String, Object> noRelease(Integer surroundingEnterprisesId);
 }
