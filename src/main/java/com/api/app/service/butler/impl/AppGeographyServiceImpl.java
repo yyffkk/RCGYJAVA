@@ -27,6 +27,12 @@ public class AppGeographyServiceImpl implements AppGeographyService {
         queryWrapper.eq("status",1);//1.启用
 
         SysGeographyDo sysGeographyDo = sysGeographyMapper.selectOne(queryWrapper);
+        if (sysGeographyDo == null){
+            map.put("message","请求成功");
+            map.put("status",false);
+            map.put("data","未启用地理模版");
+            return map;
+        }
         AppGeographyVo appGeographyVo = new AppGeographyVo();
         PropertyUtils.copyProperties(sysGeographyDo,appGeographyVo);
 
