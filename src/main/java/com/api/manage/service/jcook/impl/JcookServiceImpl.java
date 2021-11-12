@@ -4,6 +4,7 @@ import com.api.manage.service.jcook.JcookService;
 import com.api.mapper.jcook.*;
 import com.api.model.jcook.entity.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.example.api.JcookSDK;
 import org.example.api.model.*;
 import org.example.api.utils.result.Result;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class JcookServiceImpl implements JcookService {
     private static Map<String,Object> map = null;
     @Resource
@@ -54,7 +56,7 @@ public class JcookServiceImpl implements JcookService {
 
         boolean flag = true;
         while (flag){
-            System.out.println("当前页面是:-------  "+page+" -------");
+            log.info("当前页面是:-------  "+page+" -------");
             //获取商品列表
             SkuListRequest skuListRequest = new SkuListRequest();
             skuListRequest.setPage(page);
@@ -73,14 +75,14 @@ public class JcookServiceImpl implements JcookService {
             skuDetailRequest.setSkuIdSet(ids);
             Result<List<SkuDetailResponse>> skuDetailResponseList = jcookSDK.skuDetail(skuDetailRequest);
             List<SkuDetailResponse> data = skuDetailResponseList.getData();
-            System.out.println(skuDetailResponseList.getMsg());
+            log.info(skuDetailResponseList.getMsg());
             if (data != null && data.size()>0){
                 //取数据进数据库
                 for (SkuDetailResponse datum : data) {
                     try {
                         //获取skuBase 基础信息
                         SkuDetailBaseResponse skuDetailBase = datum.getSkuDetailBase();
-                        System.out.println("当前sku_id为：-------  "+ skuDetailBase.getSkuId()+" -------");
+                        log.info("当前sku_id为：-------  "+ skuDetailBase.getSkuId()+" -------");
                         //先判断数据库内是否有一级分类，如果没有就添加，有就略过
                         QueryWrapper<JcookCategory> queryWrapper1 = new QueryWrapper<>();
                         queryWrapper1.eq("name",skuDetailBase.getCategoryFirstName());
@@ -254,7 +256,7 @@ public class JcookServiceImpl implements JcookService {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        System.out.println("发生异常，跳过该商品");
+                        log.info("发生异常，跳过该商品");
                         continue;
                     }
 
