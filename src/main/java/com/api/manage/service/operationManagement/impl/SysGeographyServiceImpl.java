@@ -40,8 +40,8 @@ public class SysGeographyServiceImpl implements SysGeographyService {
         List<SysGeographyDo> sysGeographyDoList = sysGeographyMapper.selectList(queryWrapper);
         ArrayList<SysGeographyVo> sysGeographyVoList = new ArrayList<>();
         if (sysGeographyDoList != null && sysGeographyDoList.size()>0){
-            SysGeographyVo sysGeographyVo = new SysGeographyVo();
             for (SysGeographyDo sysGeographyDo : sysGeographyDoList) {
+                SysGeographyVo sysGeographyVo = new SysGeographyVo();
                 //DO 转 VO
                 PropertyUtils.copyProperties(sysGeographyDo,sysGeographyVo);
                 SysUserDo sysUserDo = sysUserMapper.selectById(sysGeographyDo.getCreateId());
