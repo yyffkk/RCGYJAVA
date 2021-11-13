@@ -47,4 +47,8 @@
         </where>
         order by sdq.create_date desc
     </select>
+    <select id="checkAppointment" resultType="java.lang.Integer">
+        select count(*) from user_visitors_new
+        where tel = #{tel} and visit_date_start = #{startTime} and visit_date_end = #{endTime}
+    </select>
 </mapper>

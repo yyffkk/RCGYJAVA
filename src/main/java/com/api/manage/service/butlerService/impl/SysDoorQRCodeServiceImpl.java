@@ -4,6 +4,7 @@ import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.butlerService.SysDoorQRCodeDao;
 import com.api.manage.service.butlerService.SysDoorQRCodeService;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerService.GetHtmlCode;
 import com.api.model.butlerService.SearchDoorQRCode;
 import com.api.model.butlerService.SysDoorQRCode;
 import com.api.util.LiLinSignGetHmac;
@@ -187,6 +188,17 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         map = new HashMap<>();
         String data = null;//返回二维码字符串
         try {
+            GetHtmlCode getHtmlCode = new GetHtmlCode();
+            getHtmlCode.setStartTime(startTime);
+            getHtmlCode.setEndTime(endTime);
+            getHtmlCode.setTel(tel);
+            //检查是否有预约信息
+            int check = sysDoorQRCodeDao.checkAppointment(getHtmlCode);
+            if (check <= 0){
+                throw new RuntimeException("未查询到相关预约");
+            }
+
+
             //连接立林对讲机系统-获取设备二维码
             data = connectLiLinGetQrCode(tel, startTime, endTime);
         } catch (Exception e) {

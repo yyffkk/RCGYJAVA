@@ -1,5 +1,6 @@
 package com.api.manage.dao.butlerService;
 
+import com.api.model.butlerService.GetHtmlCode;
 import com.api.model.butlerService.SearchDoorQRCode;
 import com.api.model.butlerService.SysDoorQRCode;
 import com.api.vo.butlerService.VoDoorQRCode;
@@ -34,4 +35,11 @@ public interface SysDoorQRCodeDao {
      * @return 设备二维码
      */
     List<VoDoorQRCode> list(SearchDoorQRCode searchDoorQRCode);
+
+    /**
+     * 检查是否有预约信息
+     * @param getHtmlCode 获取h5页面二维码model
+     * @return 预约信息数
+     */
+    int checkAppointment(GetHtmlCode getHtmlCode);
 }
