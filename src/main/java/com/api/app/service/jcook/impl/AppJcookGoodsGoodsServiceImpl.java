@@ -283,6 +283,18 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
             goodsDetailVo.setStockStatus(0);//0.无货
         }
 
+
+        //查询商品是否收藏
+        QueryWrapper<JcookCollection> queryWrapper3 = new QueryWrapper<>();
+        queryWrapper3.eq("jcook_goods_id",shopId);
+        queryWrapper3.eq("resident_id",id);
+        JcookCollection jcookCollection2 = jcookCollectionMapper.selectOne(queryWrapper3);
+        if (jcookCollection2 != null){
+            goodsDetailVo.setIsCollection(1);//1.收藏,是否收藏(0.不收藏,1.收藏)
+        }else {
+            goodsDetailVo.setIsCollection(0);//0.不收藏,是否收藏(0.不收藏,1.收藏)
+        }
+
         //TODO 售卖量需要计算出来
 
 

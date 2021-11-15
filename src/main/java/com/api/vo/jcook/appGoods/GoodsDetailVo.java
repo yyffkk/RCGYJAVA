@@ -57,5 +57,8 @@ public class GoodsDetailVo implements Serializable {
      * 参数（品牌、规格）
      */
     private List<GoodsDetailSpecificationVo> goodsDetailSpecificationVoList;
-
+    /**
+     * 是否收藏(0.不收藏,1.收藏)
+     */
+    private Integer isCollection;
 }
