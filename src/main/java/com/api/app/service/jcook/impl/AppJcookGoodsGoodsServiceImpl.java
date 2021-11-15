@@ -47,6 +47,8 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
     JcookAddressMapper jcookAddressMapper;
     @Resource
     JcookCityMapper jcookCityMapper;
+    @Resource
+    JcookCollectionMapper jcookCollectionMapper;
 
 
     @Value("${jcook.app_key}")
@@ -174,11 +176,24 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
             for (JcookGoods jcookGood : jcookGoods) {
                 RecommendGoodsListVo recommendGoodsListVo = new RecommendGoodsListVo();
                 PropertyUtils.copyProperties(jcookGood,recommendGoodsListVo);
+
+                //查询商品是否收藏
+                QueryWrapper<JcookCollection> queryWrapper2 = new QueryWrapper<>();
+                queryWrapper2.eq("jcook_goods_id",jcookGood.getId());
+                queryWrapper2.eq("resident_id",recommendGoodsSearch.getId());
+                JcookCollection jcookCollection2 = jcookCollectionMapper.selectOne(queryWrapper2);
+                if (jcookCollection2 != null){
+                    recommendGoodsListVo.setIsCollection(1);//1.收藏,是否收藏(0.不收藏,1.收藏)
+                }else {
+                    recommendGoodsListVo.setIsCollection(0);//0.不收藏,是否收藏(0.不收藏,1.收藏)
+                }
+
                 recommendGoodsListVoList.add(recommendGoodsListVo);
             }
         }
 
-        //TODO 是否收藏
+
+
 
         return recommendGoodsListVoList;
     }
