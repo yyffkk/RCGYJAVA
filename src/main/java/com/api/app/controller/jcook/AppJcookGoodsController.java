@@ -55,16 +55,16 @@ public class AppJcookGoodsController {
     }
 
     /**
-     * 查询首页所有显示的一级分类
+     * 根据商品分类父类主键id查询首页所有显示的商品分类
      * @param pageNum 当前页数
      * @param size 每页记录数
+     * @param parentId 商品分类父类主键id
      * @return map
      */
-    @GetMapping("/findAllOneCategory")
-    public Map<String,Object> findAllOneCategory(int pageNum,int size){
-
+    @GetMapping("/findAllCategoryByParentId")
+    public Map<String,Object> findAllCategoryByParentId(int pageNum,int size,Integer parentId){
         PageHelper.startPage(pageNum,size);
-        List<OneCategoryVo> oneCategoryVoList = appJcookGoodsService.findAllOneCategory();
+        List<OneCategoryVo> oneCategoryVoList = appJcookGoodsService.findAllCategoryByParentId(parentId);
         PageInfo<OneCategoryVo> pageInfo = new PageInfo<>(oneCategoryVoList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());

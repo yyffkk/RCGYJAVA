@@ -31,8 +31,9 @@ public interface AppJcookGoodsService {
     /**
      * 查询首页所有显示的一级分类
      * @return 一级分类数据回显
+     * @param parentId
      */
-    List<OneCategoryVo> findAllOneCategory();
+    List<OneCategoryVo> findAllCategoryByParentId(Integer parentId);
 
     /**
      * 查询最大人气值的几个
