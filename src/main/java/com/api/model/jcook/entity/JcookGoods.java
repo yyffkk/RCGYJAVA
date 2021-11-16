@@ -138,7 +138,7 @@ public class JcookGoods {
     /**
      * 重量（千克）
      */
-    private Integer weight;
+    private Double weight;
     /**
      * 浏览量
      */
