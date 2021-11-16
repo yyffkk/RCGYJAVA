@@ -1,11 +1,12 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookShoppingCartService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.api.model.jcook.dto.InsertShoppingCartDTO;
+import com.api.model.jcook.dto.UpdateShoppingCartNumDTO;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -26,6 +27,34 @@ public class AppJcookShoppingCartController {
     @GetMapping("/myShoppingCart")
     public Map<String,Object> myShoppingCart(Integer id){
         return appJcookShoppingCartService.myShoppingCart(id);
+    }
+
+    /**
+     * 加入购物车
+     * @param insertShoppingCartDTO 加入购物车model
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/insertShoppingCart")
+    public Map<String,Object> insertShoppingCart(@RequestBody InsertShoppingCartDTO insertShoppingCartDTO, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        insertShoppingCartDTO.setResidentId(id);//填入用户主键id
+        return appJcookShoppingCartService.insertShoppingCart(insertShoppingCartDTO);
+    }
+
+    /**
+     * 更改购物车商品数量
+     * @param updateShoppingCartNumDTO 修改购物车数量model
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/updateShoppingCartNum")
+    public Map<String,Object> updateShoppingCartNum(@RequestBody UpdateShoppingCartNumDTO updateShoppingCartNumDTO, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        updateShoppingCartNumDTO.setResidentId(id);//填入用户主键id
+        return appJcookShoppingCartService.updateShoppingCartNum(updateShoppingCartNumDTO);
     }
 
 }
