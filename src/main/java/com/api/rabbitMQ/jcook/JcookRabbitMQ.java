@@ -63,13 +63,11 @@ public class JcookRabbitMQ {
     @RabbitHandler
     @RabbitListener(queues = JcookQueuesConfig.skuChange)
     public void updateSkuInfo(Channel channel, String json, Message message, @Headers Map<String,Object> map){
-        log.info("接收到的消息体："+json);
+        log.info("接收到商品信息修改的消息体："+json);
 
 
         SkuChange skuChange = null;
         try {
-            //休眠0.1秒，降低cpu
-//            Thread.sleep(1000);
             skuChange = JSON.parseObject(json, SkuChange.class);
             log.info(skuChange.toString());
         } catch (Exception e) {
@@ -380,12 +378,10 @@ public class JcookRabbitMQ {
     @RabbitHandler
     @RabbitListener(queues = JcookQueuesConfig.skuPrice)
     public void updateSkuPrice(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
-        log.info("接收到的消息体：" + json);
+        log.info("接收到商品价格修改的消息体：" + json);
 
         SkuPrice skuPrice = null;
         try {
-            //休眠0.1秒，降低cpu
-            Thread.sleep(1000);
             skuPrice = JSON.parseObject(json, SkuPrice.class);
             log.info(skuPrice.toString());
         } catch (Exception e) {
@@ -413,7 +409,7 @@ public class JcookRabbitMQ {
             for (SkuDetailResponse datum : data) {
                 //获取skuBase 基础信息
                 SkuDetailBaseResponse skuDetailBase = datum.getSkuDetailBase();
-                System.out.println("当前修改的sku_id为：-------  " + skuDetailBase.getSkuId() + " -------");
+                System.out.println("当前修改价格的sku_id为：-------  " + skuDetailBase.getSkuId() + " -------");
 
                 //根据sku_id查询商品主键id
                 QueryWrapper<JcookGoods> queryWrapper4 = new QueryWrapper<>();
@@ -426,7 +422,7 @@ public class JcookRabbitMQ {
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
-                    log.info("未找到对应需要修改的商品，跳过该记录");
+                    log.info("未找到对应需要修改价格的商品，跳过该记录");
                     continue;
                 }
 
@@ -487,12 +483,10 @@ public class JcookRabbitMQ {
     @RabbitHandler
     @RabbitListener(queues = JcookQueuesConfig.orderCreate)
     public void orderCreate(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
-        log.info("接收到的消息体：" + json);
+        log.info("接收到商品订单创建的消息体：" + json);
 
         OrderCreate orderCreate = null;
         try {
-            //休眠0.1秒，降低cpu
-            Thread.sleep(1000);
             orderCreate = JSON.parseObject(json, OrderCreate.class);
             log.info(orderCreate.toString());
         } catch (Exception e) {

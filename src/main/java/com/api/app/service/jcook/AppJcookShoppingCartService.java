@@ -2,6 +2,7 @@ package com.api.app.service.jcook;
 
 import com.api.model.jcook.dto.DeleteShoppingCartDTO;
 import com.api.model.jcook.dto.InsertShoppingCartDTO;
+import com.api.model.jcook.dto.SettlementShoppingCartDTO;
 import com.api.model.jcook.dto.UpdateShoppingCartNumDTO;
 
 import java.util.Map;
@@ -34,4 +35,11 @@ public interface AppJcookShoppingCartService {
      * @return map
      */
     Map<String, Object> deleteShoppingCart(DeleteShoppingCartDTO deleteShoppingCartDTO);
+
+    /**
+     * 购物车结算
+     * @param settlementShoppingCartDTO 结算购物车model
+     * @return map
+     */
+    Map<String, Object> settlement(SettlementShoppingCartDTO settlementShoppingCartDTO);
 }
