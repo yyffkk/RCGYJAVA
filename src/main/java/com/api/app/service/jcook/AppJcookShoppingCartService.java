@@ -1,5 +1,6 @@
 package com.api.app.service.jcook;
 
+import com.api.model.jcook.dto.DeleteShoppingCartDTO;
 import com.api.model.jcook.dto.InsertShoppingCartDTO;
 import com.api.model.jcook.dto.UpdateShoppingCartNumDTO;
 
@@ -26,4 +27,11 @@ public interface AppJcookShoppingCartService {
      * @return map
      */
     Map<String, Object> updateShoppingCartNum(UpdateShoppingCartNumDTO updateShoppingCartNumDTO);
+
+    /**
+     * 删除购物车商品
+     * @param deleteShoppingCartDTO 删除购物车model
+     * @return map
+     */
+    Map<String, Object> deleteShoppingCart(DeleteShoppingCartDTO deleteShoppingCartDTO);
 }

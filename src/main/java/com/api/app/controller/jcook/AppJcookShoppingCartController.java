@@ -1,6 +1,7 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookShoppingCartService;
+import com.api.model.jcook.dto.DeleteShoppingCartDTO;
 import com.api.model.jcook.dto.InsertShoppingCartDTO;
 import com.api.model.jcook.dto.UpdateShoppingCartNumDTO;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +56,20 @@ public class AppJcookShoppingCartController {
         Integer id = Integer.valueOf(request.getParameter("id"));
         updateShoppingCartNumDTO.setResidentId(id);//填入用户主键id
         return appJcookShoppingCartService.updateShoppingCartNum(updateShoppingCartNumDTO);
+    }
+
+    /**
+     * 删除购物车商品
+     * @param deleteShoppingCartDTO 删除购物车model
+     * @param request app-admin-token获取的request用户信息
+     * @return map
+     */
+    @PostMapping("/deleteShoppingCart")
+    public Map<String,Object> deleteShoppingCart(@RequestBody DeleteShoppingCartDTO deleteShoppingCartDTO, HttpServletRequest request){
+        //从request获取用户id
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        deleteShoppingCartDTO.setResidentId(id);//填入用户主键id
+        return appJcookShoppingCartService.deleteShoppingCart(deleteShoppingCartDTO);
     }
 
 }

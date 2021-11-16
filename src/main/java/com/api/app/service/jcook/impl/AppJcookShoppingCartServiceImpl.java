@@ -3,6 +3,7 @@ package com.api.app.service.jcook.impl;
 import com.api.app.service.jcook.AppJcookShoppingCartService;
 import com.api.mapper.jcook.JcookGoodsMapper;
 import com.api.mapper.jcook.JcookShoppingCartMapper;
+import com.api.model.jcook.dto.DeleteShoppingCartDTO;
 import com.api.model.jcook.dto.InsertShoppingCartDTO;
 import com.api.model.jcook.dto.UpdateShoppingCartNumDTO;
 import com.api.model.jcook.entity.JcookGoods;
@@ -95,6 +96,24 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
             map.put("status",true);
         }else {
             map.put("message","修改失败");
+            map.put("status",false);
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> deleteShoppingCart(DeleteShoppingCartDTO deleteShoppingCartDTO) {
+        map = new HashMap<>();
+        QueryWrapper<JcookShoppingCart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_goods_id", deleteShoppingCartDTO.getJcookGoodsId());
+        queryWrapper.eq("resident_id",deleteShoppingCartDTO.getResidentId());
+        int delete = jcookShoppingCartMapper.delete(queryWrapper);
+        if (delete > 0){
+            map.put("message","删除成功");
+            map.put("status",true);
+        }else {
+            map.put("message","删除失败");
             map.put("status",false);
         }
 
