@@ -33,21 +33,9 @@ public class MyOrderListVo implements Serializable {
      */
     private String mainPhoto;
     /**
-     * jcook商品上架状态，0.下架，1.上架(当该状态下架，商品直接下架，不考虑小蜜蜂商品状态)
-     */
-    private Integer status;
-    /**
-     * 小蜜蜂商品上架状态，0.下架，1.上架（当jcook商品状态为上架才生效）
-     */
-    private Integer shopStatus;
-    /**
      * 售卖价
      */
     private BigDecimal sellPrice;
-    /**
-     * 划线价
-     */
-    private BigDecimal discountPrice;
     /**
      * 商品单位
      */
@@ -64,4 +52,8 @@ public class MyOrderListVo implements Serializable {
      * 购买数量
      */
     private Integer num;
+    /**
+     * 付款金额（售卖价*购买数量）
+     */
+    private BigDecimal payPrice;
 }

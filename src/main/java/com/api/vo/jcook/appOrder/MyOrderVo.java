@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public class MyOrderVo implements Serializable {
     /**
      * 付款方式（1.支付宝）
      */
-    private BigDecimal payType;
+    private Integer payType;
     /**
      * 付款金额(含运费)
      */
@@ -41,6 +42,26 @@ public class MyOrderVo implements Serializable {
      * 运费
      */
     private BigDecimal freightFee;
+    /**
+     * 收货人
+     */
+    private String receiverName;
+    /**
+     * 收货人手机号
+     */
+    private String receiverTel;
+    /**
+     * 所在地区名称
+     */
+    private String locationName;
+    /**
+     * 详细地址
+     */
+    private String addressDetail;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
     /**
      * 我的订单详情Vo List集合
      */

@@ -88,7 +88,7 @@ public class JcookOrder implements Serializable {
     /**
      * 通知时间
      */
-    private Date notifyDate;
+    private Date notifyTime;
     /**
      * 交易创建时间
      */
@@ -100,7 +100,7 @@ public class JcookOrder implements Serializable {
     /**
      * 交易退款时间
      */
-    private Date refund;
+    private Date gmtRefund;
     /**
      * 交易结束时间
      */
