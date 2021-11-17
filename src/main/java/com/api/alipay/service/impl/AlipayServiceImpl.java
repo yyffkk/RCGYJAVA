@@ -80,6 +80,8 @@ public class AlipayServiceImpl implements AlipayService {
     private String REPORT_REPAIR_NOTIFY_URL;
     @Value("${alipay.shoppingNotifyUrl}")
     private String SHOPPING_NOTIFY_URL;
+    @Value("${alipay.jcookOrderNotifyUrl}")
+    private String JCOOK_ORDER_NOTIFY_URL;
     @Value("${alipay.leaseNotifyUrl}")
     private String LEASE_NOTIFY_URL;
     @Value("${alipay.leaseRentOrderNotifyUrl}")
@@ -3034,7 +3036,7 @@ public class AlipayServiceImpl implements AlipayService {
             model.setProductCode("QUICK_MSECURITY_PAY");
             alipayRequest.setBizModel(model);
             // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(SHOPPING_NOTIFY_URL);
+            alipayRequest.setNotifyUrl(JCOOK_ORDER_NOTIFY_URL);
             //支付成功后支付宝同步通知的接收地址url（回跳地址）
 //            alipayRequest.setReturnUrl(RETURN_URL);
 
