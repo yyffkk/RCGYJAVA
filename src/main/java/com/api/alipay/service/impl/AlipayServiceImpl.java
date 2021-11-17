@@ -19,9 +19,12 @@ import com.api.app.dao.shoppingCenter.ShoppingDao;
 import com.api.common.GetOverdueFine;
 import com.api.manage.dao.basicArchives.AuditManagementDao;
 import com.api.manage.dao.basicArchives.UserResidentDao;
-import com.api.manage.dao.butlerService.LeaseContractDao;
 import com.api.manage.dao.butlerService.LeaseDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
+import com.api.mapper.jcook.JcookAddressMapper;
+import com.api.mapper.jcook.JcookCityMapper;
+import com.api.mapper.jcook.JcookGoodsMapper;
+import com.api.mapper.jcook.JcookOrderMapper;
 import com.api.model.alipay.*;
 import com.api.model.app.*;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
@@ -31,11 +34,19 @@ import com.api.model.butlerService.ProcessRecord;
 import com.api.model.butlerService.SysLease;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.model.chargeManagement.SysMeterReadingShareBillDetails;
+import com.api.model.jcook.dto.CreateOrderDTO;
+import com.api.model.jcook.dto.SettlementGoodsDTO;
+import com.api.model.jcook.entity.JcookAddress;
+import com.api.model.jcook.entity.JcookCity;
+import com.api.model.jcook.entity.JcookGoods;
+import com.api.model.jcook.entity.JcookOrder;
 import com.api.util.IdWorker;
 import com.api.vo.app.AppDailyPaymentDetailsVo;
 import com.api.vo.butlerService.VoFBILease;
-import com.api.vo.butlerService.VoLeaseContract;
 import lombok.extern.slf4j.Slf4j;
+import org.example.api.JcookSDK;
+import org.example.api.model.*;
+import org.example.api.utils.result.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,13 +55,12 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 @Slf4j
 public class AlipayServiceImpl implements AlipayService {
+    private static StringBuilder stringBuilder = null;
     // 获取配置文件中支付宝相关信息(可以使用自己的方式获取)
     @Value("${alipay.aliPayAppId}")
     private String ALIPAY_APP_ID;
@@ -108,7 +118,21 @@ public class AlipayServiceImpl implements AlipayService {
     AppHousekeepingServiceDao appHousekeepingServiceDao;
     @Resource
     AppMeterReadingShareDetailsDao appMeterReadingShareDetailsDao;
+    @Resource
+    JcookGoodsMapper jcookGoodsMapper;
+    @Resource
+    JcookAddressMapper jcookAddressMapper;
+    @Resource
+    JcookCityMapper jcookCityMapper;
+    @Resource
+    JcookOrderMapper jcookOrderMapper;
     private static Map<String,Object> map = null;
+    @Value("${jcook.app_key}")
+    private String JCOOK_APP_KEY;    //jcook appKey
+    @Value("${jcook.app_secret}")
+    private String JCOOK_APP_SECRET;    //jcook appSecret
+    @Value("${jcook.channel_id}")
+    private Integer JCOOK_CHANNEL_ID;    //jcook channelId
 
 //    /**
 //     * 获取支付宝加签后台的订单信息字符串
@@ -2850,6 +2874,188 @@ public class AlipayServiceImpl implements AlipayService {
         return map;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> createOrder(CreateOrderDTO createOrderDTO, Integer type, String ip2) {
+        map = new HashMap<>();
+        String body = "";
+        try {
+            if (type == 4){//4.游客
+                throw new RuntimeException("您的身份为游客，不可进行此操作");
+            }
+
+            //创建订单号
+            String code = UUID.randomUUID().toString().replace('-', ' ');
+
+            JcookOrder jcookOrder = new JcookOrder();
+            jcookOrder.setCode(code);//填入小蜜蜂的订单号
+            jcookOrder.setTradeStatus(0);//0.交易创建并等待买家付款
+            jcookOrder.setPayName(createOrderDTO.getPayName());//填入支付人姓名
+            jcookOrder.setPayTel(createOrderDTO.getPayTel());//填入支付人联系方式
+            jcookOrder.setPayType(createOrderDTO.getPayType());//填入付款方式（1.支付宝，2.微信）
+
+
+            //供货价总费用
+            BigDecimal supplyPrice = BigDecimal.ZERO;
+            //售卖价总费用
+            BigDecimal sellPrice = BigDecimal.ZERO;
+
+            JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+            //创建获取运费request
+            LogisticsFeeRequest logisticsFeeRequest = new LogisticsFeeRequest();
+            //创建运费request-skuInfoList
+            ArrayList<LogisticsFeeSkuInfoRequest> logisticsFeeSkuInfoRequestArrayList = new ArrayList<>();
+            //创建创建订单request
+            OrderSubmitRequest orderSubmitRequest = new OrderSubmitRequest();
+            //创建创建订单request-skuInfoList
+            ArrayList<OrderSubmitSkuListRequest> orderSubmitSkuListRequestList = new ArrayList<>();
+
+            //获取订单商品信息
+            List<SettlementGoodsDTO> settlementGoodsDTOList = createOrderDTO.getSettlementGoodsDTOList();
+            if (settlementGoodsDTOList != null && settlementGoodsDTOList.size()>0){
+                for (SettlementGoodsDTO settlementGoodsDTO : settlementGoodsDTOList) {
+                    JcookGoods jcookGoods = jcookGoodsMapper.selectById(settlementGoodsDTO.getJcookGoodsId());
+                    //创建获取运费request
+                    LogisticsFeeSkuInfoRequest logisticsFeeSkuInfoRequest = new LogisticsFeeSkuInfoRequest();
+                    logisticsFeeSkuInfoRequest.setQuantity(settlementGoodsDTO.getNum());//获取购买数量
+                    logisticsFeeSkuInfoRequest.setSkuId(jcookGoods.getSkuId());//填入sku编码
+                    logisticsFeeSkuInfoRequest.setSkuPrice(jcookGoods.getSupplyPrice());//填入供货价
+                    logisticsFeeSkuInfoRequestArrayList.add(logisticsFeeSkuInfoRequest);
+                    logisticsFeeRequest.setLogisticsFeeSkuInfoRequestList(logisticsFeeSkuInfoRequestArrayList);
+                    //创建创建订单request-skuList
+                    OrderSubmitSkuListRequest orderSubmitSkuListRequest = new OrderSubmitSkuListRequest();
+                    orderSubmitSkuListRequest.setSkuId(jcookGoods.getSkuId());//填入sku编码
+                    orderSubmitSkuListRequest.setSkuPrice(jcookGoods.getSupplyPrice());//填入供货价
+                    orderSubmitSkuListRequest.setQuantity(settlementGoodsDTO.getNum());//填入购买数量
+                    orderSubmitSkuListRequestList.add(orderSubmitSkuListRequest);
+
+                    //计算供货价费用,对供货价费用进行累加
+                    supplyPrice = supplyPrice.add(jcookGoods.getSupplyPrice().multiply(BigDecimal.valueOf(settlementGoodsDTO.getNum())));
+                    //计算售卖价费用,对供售卖费用进行累加
+                    sellPrice = sellPrice.add(jcookGoods.getSellPrice().multiply(BigDecimal.valueOf(settlementGoodsDTO.getNum())));
+                }
+            }else {
+                throw new RuntimeException("不存在结算商品");
+            }
+
+            JcookAddress jcookAddress = null;
+            if (createOrderDTO.getAddressId() == null){
+                //如果地址主键id为null
+                throw new RuntimeException("未选择收货地址");
+            }else {
+                //根据地址主键id获取选择地址
+                jcookAddress = jcookAddressMapper.selectById(createOrderDTO.getAddressId());
+            }
+
+
+            //获取运费
+            BigDecimal fee = BigDecimal.ZERO;
+            if (jcookAddress != null){
+                //查询所在地区名称
+                StringBuilder locationName = findCityAddressDetails(true, jcookAddress.getLocation());
+
+                //创建订单
+                orderSubmitRequest.setAddress(locationName.toString());//填入地址
+                orderSubmitRequest.setOrderFee(sellPrice);//填入订单费用
+
+                //计算运费
+                logisticsFeeRequest.setAddress(locationName.toString());//填入地址
+                logisticsFeeRequest.setOrderFee(supplyPrice);//填入订单费用
+                Result<LogisticsFeeResponse> result = jcookSDK.logisticsFee(logisticsFeeRequest);
+                if (result.getCode() != 200){
+                    //运费获取有误
+                    throw new RuntimeException(result.getMsg());
+                }
+                fee = fee.add(new BigDecimal(result.getData().getFee()));
+
+                jcookOrder.setReceiverName(jcookAddress.getName());//填入收货人
+                jcookOrder.setReceiverTel(jcookAddress.getTel());//填入收货人手机号
+                jcookOrder.setLocationName(locationName.toString());//填入所在地区名称
+                jcookOrder.setAddressDetail(jcookAddress.getAddressDetail());//填入详细地址
+            }else {
+                throw new RuntimeException("收货地址有误");
+            }
+            //计算支付金额（含运费）[售卖价总费用 + 运费]
+            BigDecimal payPrice = sellPrice.add(fee);
+
+            if (payPrice.compareTo(createOrderDTO.getPayPrice()) != 0){
+                throw new RuntimeException("支付金额有误");
+            }
+
+
+            jcookOrder.setPayPrice(payPrice);//填入付款金额（含运费）
+            jcookOrder.setFreightFee(fee);//填入运费
+            jcookOrder.setCreateId(createOrderDTO.getResidentId());//填入创建人
+            jcookOrder.setCreateDate(new Date());//填入创建时间
+
+            //创建jcook商品初始订单信息
+            jcookOrderMapper.insert(jcookOrder);
+
+            //jcook创建订单
+            orderSubmitRequest.setOrderSubmitSkuListRequestList(orderSubmitSkuListRequestList);
+            OrderSubmitReceiverRequest orderSubmitReceiverRequest = new OrderSubmitReceiverRequest();
+            orderSubmitReceiverRequest.setName(jcookOrder.getReceiverName());//填入收货人姓名
+            orderSubmitReceiverRequest.setMobile(jcookOrder.getReceiverTel());//填入收货人电话
+            orderSubmitRequest.setOrderSubmitReceiverRequest(orderSubmitReceiverRequest);
+            orderSubmitRequest.setOrderFee(fee);//填入运费
+            orderSubmitRequest.setUserIp(ip2);//填入用户ip
+            orderSubmitRequest.setChannelOrderId(jcookOrder.getCode());//填入小蜜蜂订单号
+            Result<OrderSubmitResponse> orderSubmitResult = jcookSDK.orderSubmit(orderSubmitRequest);
+            if (orderSubmitResult.getCode() != 200){
+                //创建订单有误
+                throw new RuntimeException(orderSubmitResult.getMsg());
+            }
+
+            //执行支付宝操作
+            // 开始使用支付宝SDK中提供的API
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            model.setBody("商城购物支付");
+            model.setSubject("商城购物");
+            // 唯一订单号 根据项目中实际需要获取相应的
+            model.setOutTradeNo(jcookOrder.getCode());
+            // 支付超时时间（根据项目需要填写）
+            model.setTimeoutExpress("30m");
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            model.setTotalAmount(String.valueOf(jcookOrder.getPayPrice()));
+            //app支付 固定值 填写QUICK_MSECURITY_PAY
+            model.setProductCode("QUICK_MSECURITY_PAY");
+            alipayRequest.setBizModel(model);
+            // 支付成功后支付宝异步通知的接收地址url
+            alipayRequest.setNotifyUrl(SHOPPING_NOTIFY_URL);
+            //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+            // 注意：每个请求的相应对象不同，与请求对象是对应。
+            AlipayTradeAppPayResponse alipayResponse = null;
+            try {
+                alipayResponse = alipayClient.sdkExecute(alipayRequest);
+            } catch (AlipayApiException e) {
+                e.printStackTrace();
+                log.info("获取签名失败");
+                throw new RuntimeException("获取签名失败");
+            }
+            // 返回支付相关信息(此处可以直接将getBody中的内容[就是orderString]直接返回，无需再做一些其他操作)
+            body = alipayResponse.getBody();
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        log.info("body:"+body);
+        map.put("message",body);
+        map.put("status",true);
+        return map;
+    }
+
     private BigDecimal getLateFee(SysMeterReadingShareBillDetails shareBillDetails) {
         //逾期天数初始值0
         int expectedDays = 0;
@@ -2960,5 +3166,25 @@ public class AlipayServiceImpl implements AlipayService {
             throw new RuntimeException("添加失败");
         }
         log.info("订单号："+appGoodsAppointment.getCode()+",创建成功!!!");
+    }
+
+    /**
+     * 查询城市地址
+     * @param isCreate 是否需要创建了StringBuild对象
+     * @param cityAddress 城市地址主键Id
+     * @return 城市地址StringBuild对象
+     */
+    private StringBuilder findCityAddressDetails(boolean isCreate,Integer cityAddress) {
+        if (isCreate){
+            //创建StringBuild对象
+            stringBuilder = new StringBuilder();
+        }
+        JcookCity jcookCity = jcookCityMapper.selectById(cityAddress);
+        if (jcookCity.getParentId() != 0){
+            findCityAddressDetails(false,jcookCity.getParentId());//后续循环不需要创建StringBuild对象
+            stringBuilder.append(jcookCity.getName()).append(" ");//拼接公司省县市地址
+        }
+
+        return stringBuilder;
     }
 }

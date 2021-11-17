@@ -13,6 +13,8 @@ import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppRepairOrder;
 import com.api.model.app.UserIdAndRepairId;
+import com.api.model.jcook.dto.CreateOrderDTO;
+import com.api.util.GetIpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -537,5 +539,27 @@ public class AlipayController {
     @GetMapping("/meterReadingShareDetailsOrderCheckAlipay")
     public Map<String,Object> meterReadingShareDetailsOrderCheckAlipay(String code){
         return alipayService.meterReadingShareDetailsOrderCheckAlipay(code);
+    }
+
+
+    /**
+     * jcook商品创建订单
+     * @param createOrderDTO 创建订单DTO
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping("/createOrder")
+    public Map<String,Object> createOrder(@RequestBody CreateOrderDTO createOrderDTO, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        Integer type = Integer.valueOf(request.getParameter("type"));//从request获取用户type
+        String ip2 = GetIpUtil.getIp2(request);//获取用户ip
+        createOrderDTO.setPayName(name);
+        createOrderDTO.setPayTel(tel);
+        createOrderDTO.setResidentId(id);
+        return alipayService.createOrder(createOrderDTO,type,ip2);
     }
 }
