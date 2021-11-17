@@ -23,10 +23,7 @@ import com.api.manage.dao.basicArchives.AuditManagementDao;
 import com.api.manage.dao.basicArchives.UserResidentDao;
 import com.api.manage.dao.butlerService.LeaseDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
-import com.api.mapper.jcook.JcookAddressMapper;
-import com.api.mapper.jcook.JcookCityMapper;
-import com.api.mapper.jcook.JcookGoodsMapper;
-import com.api.mapper.jcook.JcookOrderMapper;
+import com.api.mapper.jcook.*;
 import com.api.model.alipay.*;
 import com.api.model.app.*;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
@@ -38,10 +35,7 @@ import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.model.chargeManagement.SysMeterReadingShareBillDetails;
 import com.api.model.jcook.dto.CreateOrderDTO;
 import com.api.model.jcook.dto.SettlementGoodsDTO;
-import com.api.model.jcook.entity.JcookAddress;
-import com.api.model.jcook.entity.JcookCity;
-import com.api.model.jcook.entity.JcookGoods;
-import com.api.model.jcook.entity.JcookOrder;
+import com.api.model.jcook.entity.*;
 import com.api.util.IdWorker;
 import com.api.vo.app.AppDailyPaymentDetailsVo;
 import com.api.vo.butlerService.VoFBILease;
@@ -132,6 +126,8 @@ public class AlipayServiceImpl implements AlipayService {
     JcookCityMapper jcookCityMapper;
     @Resource
     JcookOrderMapper jcookOrderMapper;
+    @Resource
+    JcookOrderListMapper jcookOrderListMapper;
     private static Map<String,Object> map = null;
     @Value("${jcook.app_key}")
     private String JCOOK_APP_KEY;    //jcook appKey
@@ -3017,6 +3013,23 @@ public class AlipayServiceImpl implements AlipayService {
 
             //创建jcook商品初始订单信息
             jcookOrderMapper.insert(jcookOrder);
+            //添加jcook商品初始订单详情信息
+            for (SettlementGoodsDTO settlementGoodsDTO : settlementGoodsDTOList) {
+                JcookGoods jcookGoods = jcookGoodsMapper.selectById(settlementGoodsDTO.getJcookGoodsId());
+                JcookOrderList jcookOrderList = new JcookOrderList();
+                jcookOrderList.setJcookOrderId(jcookOrder.getId());//填入jcook订单主键id
+                jcookOrderList.setJcookGoodsId(jcookGoods.getId());//填入jcook商品主键id
+                jcookOrderList.setSkuId(jcookGoods.getSkuId());//填入sku编码
+                jcookOrderList.setSkuName(jcookGoods.getSkuName());//商品名称
+                jcookOrderList.setSellPrice(jcookGoods.getSellPrice());//填入售卖价
+                jcookOrderList.setKind(jcookGoods.getKind());//填入0=未知 1=自营 2=其 他,商品类别
+                jcookOrderList.setWeight(jcookGoods.getWeight());//填入重量（千克）
+                jcookOrderList.setUnit(jcookGoods.getUnit());//填入商品单位
+                jcookOrderList.setNum(settlementGoodsDTO.getNum());//填入购买数量
+                jcookOrderList.setPayPrice(jcookGoods.getSellPrice().multiply(new BigDecimal(settlementGoodsDTO.getNum())));//填入付款金额（售卖价*购买数量）
+                jcookOrderListMapper.insert(jcookOrderList);
+            }
+
 
             //执行支付宝操作
             // 开始使用支付宝SDK中提供的API

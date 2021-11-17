@@ -22,6 +22,10 @@ public class JcookOrderList implements Serializable {
      */
     private Integer id;
     /**
+     * jcook订单主键id
+     */
+    private Integer jcookOrderId;
+    /**
      * jcook商品主键id
      */
     private Integer jcookGoodsId;
@@ -34,7 +38,7 @@ public class JcookOrderList implements Serializable {
      */
     private String skuName;
     /**
-     * 售卖夹
+     * 售卖价
      */
     private BigDecimal sellPrice;
     /**
