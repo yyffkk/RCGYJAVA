@@ -3021,6 +3021,7 @@ public class AlipayServiceImpl implements AlipayService {
                 jcookOrderList.setJcookGoodsId(jcookGoods.getId());//填入jcook商品主键id
                 jcookOrderList.setSkuId(jcookGoods.getSkuId());//填入sku编码
                 jcookOrderList.setSkuName(jcookGoods.getSkuName());//商品名称
+                jcookOrderList.setMainPhoto(jcookGoods.getMainPhoto());//主图url
                 jcookOrderList.setSellPrice(jcookGoods.getSellPrice());//填入售卖价
                 jcookOrderList.setKind(jcookGoods.getKind());//填入0=未知 1=自营 2=其 他,商品类别
                 jcookOrderList.setWeight(jcookGoods.getWeight());//填入重量（千克）

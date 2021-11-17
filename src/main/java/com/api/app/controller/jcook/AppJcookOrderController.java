@@ -1,15 +1,12 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookOrderService;
-import com.api.model.jcook.dto.CreateOrderDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.api.model.jcook.dto.JcookOrderSearch;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -20,6 +17,17 @@ import java.util.Map;
 public class AppJcookOrderController {
     @Resource
     AppJcookOrderService appJcookOrderService;
+
+
+    /**
+     * 我的订单
+     * @param jcookOrderSearch 订单搜索条件
+     * @return map
+     */
+    @GetMapping("/myOrder")
+    public Map<String,Object> myOrder(JcookOrderSearch jcookOrderSearch){
+        return appJcookOrderService.myOrder(jcookOrderSearch);
+    }
 
 
 
