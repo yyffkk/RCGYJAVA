@@ -7,8 +7,10 @@ import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.api.alipay.dao.AlipayDao;
 import com.api.alipay.service.AlipayService;
 import com.api.app.dao.butler.AppDailyPaymentDao;
@@ -3137,11 +3139,37 @@ public class AlipayServiceImpl implements AlipayService {
                         orderPushRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));//填入jcook返回的订单
                         JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
                         Result<String> stringResult = jcookSDK.orderPush(orderPushRequest);
+
+                        //如果推送jcook失败，则取消订单并退款
                         if (stringResult.getCode() != 200){
-                            //如果推送jcook失败，则取消订单并退款
-
+                            //退款
+                            String out_request_no= String.valueOf(new IdWorker(1,1,1).nextId());//随机数  不是全额退款，部分退款必须使用该参数
+                            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+                            AlipayTradeRefundRequest request2 = new AlipayTradeRefundRequest();
+                            request2.setBizContent("{" +
+                                    "\"out_trade_no\":\"" + jcookOrder.getCode() + "\"," +
+                                    "\"trade_no\":" + null + "," +
+                                    "\"refund_amount\":\"" + jcookOrder.getPayPrice() + "\"," +
+                                    "\"out_request_no\":\"" + out_request_no+ "\"," +
+                                    "\"refund_reason\":\"正常退款\"" +
+                                    " }");
+                            AlipayTradeRefundResponse response2;
+                            try {
+                                response2 = alipayClient.execute(request2);
+                                if (response2.isSuccess()) {
+                                    //修改订单状态
+                                    jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                                    jcookOrderMapper.updateById(jcookOrder);
+                                    log.info("支付宝退款成功");
+                                } else {
+                                    log.info("------------------jcook推送失败->支付宝退款失败-----------start");
+                                    log.info("-------msg:"+response2.getSubMsg());//失败会返回错误信息
+                                    log.info("------------------jcook推送失败->支付宝退款失败-----------end");
+                                }
+                            } catch (AlipayApiException e) {
+                                e.printStackTrace();
+                            }
                         }
-
                         // 成功要返回success，不然支付宝会不断发送通知。
                         return "success";
                     }else{
