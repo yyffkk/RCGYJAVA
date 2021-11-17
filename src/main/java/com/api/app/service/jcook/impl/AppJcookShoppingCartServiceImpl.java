@@ -182,11 +182,19 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
         }
         settlementShoppingCartVo.setMyShoppingCartVoList(myShoppingCartVoList);
 
-        //获取默认地址
-        QueryWrapper<JcookAddress> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("resident_id",settlementShoppingCartDTO.getResidentId());//填入用户主键id
-        queryWrapper.eq("is_default",1);//1.是默认地址
-        JcookAddress jcookAddress = jcookAddressMapper.selectOne(queryWrapper);
+        JcookAddress jcookAddress = null;
+        if (settlementShoppingCartDTO.getAddressId() == null){
+            //如果地址主键id为null，则获取默认地址
+            //获取默认地址
+            QueryWrapper<JcookAddress> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("resident_id",settlementShoppingCartDTO.getResidentId());//填入用户主键id
+            queryWrapper.eq("is_default",1);//1.是默认地址
+            jcookAddress = jcookAddressMapper.selectOne(queryWrapper);
+        }else {
+            //根据地址主键id获取选择地址
+            jcookAddress = jcookAddressMapper.selectById(settlementShoppingCartDTO.getAddressId());
+        }
+
 
         //获取运费
         Double fee = 0.0;
