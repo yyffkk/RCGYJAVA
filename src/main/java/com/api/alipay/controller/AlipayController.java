@@ -579,4 +579,14 @@ public class AlipayController {
         Integer userId = Integer.valueOf(request.getParameter("id"));//从request获取用户id
         return alipayService.jcookOrderNotifyInfo(request,userName,userId);
     }
+
+    /**
+     * jcook商品 向支付宝发起订单查询请求
+     * @param code 商户订单号
+     * @return map
+     */
+    @GetMapping("/jcookOrderCheckAlipay")
+    public Map<String,Object> jcookOrderCheckAlipay(String code){
+        return alipayService.jcookOrderCheckAlipay(code);
+    }
 }
