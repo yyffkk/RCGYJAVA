@@ -74,7 +74,7 @@ public interface AlipayService {
 
     Map<String, Object> meterReadingShareDetailsOrderCheckAlipay(String code);
 
-    Map<String, Object> createOrder(CreateOrderDTO createOrderDTO, Integer type, String ip2);
+    Map<String, Object> jcookOrderCreateOrder(CreateOrderDTO createOrderDTO, Integer type, String ip2);
 
     String jcookOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId);
 

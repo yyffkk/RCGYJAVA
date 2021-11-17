@@ -18,7 +18,7 @@ public class CreateOrderDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 地址主键id（为null则为默认地址）
+     * 地址主键id
      */
     private Integer addressId;
     /**

@@ -2880,7 +2880,7 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     @Transactional
-    public Map<String, Object> createOrder(CreateOrderDTO createOrderDTO, Integer type, String ip2) {
+    public Map<String, Object> jcookOrderCreateOrder(CreateOrderDTO createOrderDTO, Integer type, String ip2) {
         map = new HashMap<>();
         String body = "";
         try {
