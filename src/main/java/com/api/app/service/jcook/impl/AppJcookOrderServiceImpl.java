@@ -31,7 +31,7 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
     public List<MyOrderVo> myOrder(JcookOrderSearch jcookOrderSearch) {
         QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("create_id",jcookOrderSearch.getId());
-        queryWrapper.eq( jcookOrderSearch.getTradeStatus() != null,"tradeStatus",jcookOrderSearch.getTradeStatus());
+        queryWrapper.eq( jcookOrderSearch.getTradeStatus() != null,"trade_status",jcookOrderSearch.getTradeStatus());
         queryWrapper.like(StringUtils.isNotBlank(jcookOrderSearch.getOrderCode()),"code",jcookOrderSearch.getOrderCode());
         List<JcookOrder> jcookOrderList = jcookOrderMapper.selectList(queryWrapper);
         ArrayList<MyOrderVo> myOrderVoList = new ArrayList<>();
