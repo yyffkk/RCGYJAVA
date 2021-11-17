@@ -43,6 +43,7 @@ import com.api.model.jcook.entity.JcookOrder;
 import com.api.util.IdWorker;
 import com.api.vo.app.AppDailyPaymentDetailsVo;
 import com.api.vo.butlerService.VoFBILease;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api.JcookSDK;
 import org.example.api.model.*;
@@ -55,6 +56,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 
 @Service
@@ -2885,7 +2887,7 @@ public class AlipayServiceImpl implements AlipayService {
             }
 
             //创建订单号
-            String code = UUID.randomUUID().toString().replace('-', ' ');
+            String code = UUID.randomUUID().toString().replace("-", "");
 
             JcookOrder jcookOrder = new JcookOrder();
             jcookOrder.setCode(code);//填入小蜜蜂的订单号
@@ -2988,8 +2990,7 @@ public class AlipayServiceImpl implements AlipayService {
             jcookOrder.setCreateId(createOrderDTO.getResidentId());//填入创建人
             jcookOrder.setCreateDate(new Date());//填入创建时间
 
-            //创建jcook商品初始订单信息
-            jcookOrderMapper.insert(jcookOrder);
+
 
             //jcook创建订单
             orderSubmitRequest.setOrderSubmitSkuListRequestList(orderSubmitSkuListRequestList);
@@ -2997,14 +2998,21 @@ public class AlipayServiceImpl implements AlipayService {
             orderSubmitReceiverRequest.setName(jcookOrder.getReceiverName());//填入收货人姓名
             orderSubmitReceiverRequest.setMobile(jcookOrder.getReceiverTel());//填入收货人电话
             orderSubmitRequest.setOrderSubmitReceiverRequest(orderSubmitReceiverRequest);
-            orderSubmitRequest.setOrderFee(fee);//填入运费
+            orderSubmitRequest.setOrderFee(supplyPrice);//填入商品费用 sum(sku_price*quantity)
+            orderSubmitRequest.setFreightFee(fee);//填入运费结果获取
             orderSubmitRequest.setUserIp(ip2);//填入用户ip
             orderSubmitRequest.setChannelOrderId(jcookOrder.getCode());//填入小蜜蜂订单号
             Result<OrderSubmitResponse> orderSubmitResult = jcookSDK.orderSubmit(orderSubmitRequest);
             if (orderSubmitResult.getCode() != 200){
                 //创建订单有误
                 throw new RuntimeException(orderSubmitResult.getMsg());
+            }else {
+                //填入jcook的订单号
+                jcookOrder.setJcookCode(String.valueOf(orderSubmitResult.getData().getOrderId()));
             }
+
+            //创建jcook商品初始订单信息
+            jcookOrderMapper.insert(jcookOrder);
 
             //执行支付宝操作
             // 开始使用支付宝SDK中提供的API
@@ -3054,6 +3062,107 @@ public class AlipayServiceImpl implements AlipayService {
         map.put("message",body);
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public String jcookOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId) {
+        //获取支付宝POST过来反馈信息
+        Map<String,String> params = new HashMap<>();
+        Map<String,String[]> requestParams = request.getParameterMap();
+        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+
+            // 官方demo中使用如下方式解决中文乱码，在此本人不推荐使用，可能会出现中文乱码解决无效的问题。
+            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
+
+            params.put(name, valueStr);
+        }
+        boolean signVerified = false;
+        try {
+            //调用SDK验证签名
+            signVerified = AlipaySignature.rsaCheckV1(params, RSA_ALIPAY_PUBLIC_KEY, ALIPAY_CHARSET, SIGN_TYPE);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            // 验签异常  笔者在这里是输出log，可以根据需要做一些其他操作
+            log.info("异步调用失败");
+            return "fail";
+        }
+        if(signVerified) {
+            //验签通过
+            //获取需要保存的数据
+            String appId=params.get("app_id");//支付宝分配给开发者的应用Id
+            String outTradeNo = params.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
+            String buyerPayAmount=params.get("buyer_pay_amount");//付款金额:用户在交易中支付的金额
+            String tradeStatus = params.get("trade_status");// 获取交易状态
+            // 验证通知后执行自己项目需要的业务操作
+            // 一般需要判断支付状态是否为TRADE_SUCCESS
+            // 更严谨一些还可以判断 1.appid 2.sellerId 3.out_trade_no 4.total_amount 等是否正确，正确之后再进行相关业务操作。
+            //根据out_trade_no【商户系统的唯一订单号】查询信息 total_amount【订单金额】
+            QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("code",outTradeNo);
+            JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
+            //判断1.out_trade_no,2.total_amount,3.APPID 是否正确一致
+            if(jcookOrder!=null && buyerPayAmount.equals(jcookOrder.getPayPrice().toString()) && ALIPAY_APP_ID.equals(appId)){
+                switch (tradeStatus) // 判断交易结果
+                {
+                    case "TRADE_FINISHED": // 交易结束并不可退款
+                        jcookOrder.setTradeStatus(3);
+                        break;
+                    case "TRADE_SUCCESS": // 交易支付成功
+                        jcookOrder.setTradeStatus(2);
+                        break;
+                    case "TRADE_CLOSED": // 未付款交易超时关闭或支付完成后全额退款
+                        jcookOrder.setTradeStatus(1);
+                        break;
+                    case "WAIT_BUYER_PAY": // 交易创建并等待买家付款
+                        jcookOrder.setTradeStatus(0);
+                        break;
+                    default:
+                        break;
+                }
+                //更新表的状态
+                int returnResult = jcookOrderMapper.updateById(jcookOrder);
+                if(tradeStatus.equals("TRADE_SUCCESS")) {    //只处理支付成功的订单: 修改交易表状态,支付成功
+                    if(returnResult>0){
+                        log.info("===========异步调用成功");
+
+                        //如果推送jcook成功，则返回success
+                        OrderPushRequest orderPushRequest = new OrderPushRequest();
+                        orderPushRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));//填入jcook返回的订单
+                        JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+                        Result<String> stringResult = jcookSDK.orderPush(orderPushRequest);
+                        if (stringResult.getCode() != 200){
+                            //如果推送jcook失败，则取消订单并退款
+
+                        }
+
+                        // 成功要返回success，不然支付宝会不断发送通知。
+                        return "success";
+                    }else{
+                        log.info("===========更新表的状态失败");
+                        return "fail";
+                    }
+                }else{
+                    log.info("===========不是支付成功的订单");
+                    return "fail";
+                }
+            }else{
+                log.info("==================支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
+                return"fail";
+            }
+        }else {
+            // 验签失败  笔者在这里是输出log，可以根据需要做一些其他操作
+            log.info("=========验签不通过！");
+
+            // 失败要返回fail，不然支付宝会不断发送通知。
+            return "fail";
+        }
     }
 
     private BigDecimal getLateFee(SysMeterReadingShareBillDetails shareBillDetails) {

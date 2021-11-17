@@ -562,4 +562,21 @@ public class AlipayController {
         createOrderDTO.setResidentId(id);
         return alipayService.createOrder(createOrderDTO,type,ip2);
     }
+
+    /**
+     * jcook商品 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
+     */
+    @PostMapping(value = "/jcookOrderNotifyInfo")
+    public String jcookOrderNotifyInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+        request.setCharacterEncoding("UTF-8");
+        String userName = request.getParameter("name"); //从request获取用户姓名
+        Integer userId = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        return alipayService.jcookOrderNotifyInfo(request,userName,userId);
+    }
 }
