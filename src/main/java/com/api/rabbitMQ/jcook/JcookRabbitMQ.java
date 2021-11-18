@@ -91,14 +91,14 @@ public class JcookRabbitMQ {
         Result<List<SkuDetailResponse>> skuDetailResponseList = jcookSDK.skuDetail(skuDetailRequest);
         List<SkuDetailResponse> data = skuDetailResponseList.getData();
         if (data != null && data.size()>0) {
-            System.out.println(skuChange.getSkuId()+"--------------"+ data.size());
+//            System.out.println(skuChange.getSkuId()+"--------------"+ data.size());
             //取数据进数据库
             for (SkuDetailResponse datum : data) {
-                System.out.println(skuChange.getSkuId()+"--------------i-start");
+//                System.out.println(skuChange.getSkuId()+"--------------i-start");
                 try {
                     //获取skuBase 基础信息
                     SkuDetailBaseResponse skuDetailBase = datum.getSkuDetailBase();
-                    System.out.println("当前修改的sku_id为：-------  " + skuDetailBase.getSkuId() + " -------");
+//                    System.out.println("当前修改的sku_id为：-------  " + skuDetailBase.getSkuId() + " -------");
 
                     //根据sku_id查询商品主键id
                     QueryWrapper<JcookGoods> queryWrapper4 = new QueryWrapper<>();
@@ -313,7 +313,7 @@ public class JcookRabbitMQ {
 //                        }
 //                    }
 
-                    System.out.println(skuChange.getSkuId()+"--------------i-end");
+//                    System.out.println(skuChange.getSkuId()+"--------------i-end");
                 } catch (Exception e) {
                     e.printStackTrace();
                     try {
@@ -409,7 +409,7 @@ public class JcookRabbitMQ {
             for (SkuDetailResponse datum : data) {
                 //获取skuBase 基础信息
                 SkuDetailBaseResponse skuDetailBase = datum.getSkuDetailBase();
-                System.out.println("当前修改价格的sku_id为：-------  " + skuDetailBase.getSkuId() + " -------");
+//                System.out.println("当前修改价格的sku_id为：-------  " + skuDetailBase.getSkuId() + " -------");
 
                 //根据sku_id查询商品主键id
                 QueryWrapper<JcookGoods> queryWrapper4 = new QueryWrapper<>();
