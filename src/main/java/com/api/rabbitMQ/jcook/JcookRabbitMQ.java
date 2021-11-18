@@ -1023,6 +1023,227 @@ public class JcookRabbitMQ {
         }
     }
 
+    //监听订单取消
+    @RabbitHandler
+    @RabbitListener(queues = JcookQueuesConfig.orderCancel)
+    public void orderCancel(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
+        log.info("-----------接收到商品订单取消的消息体：" + json);
+
+        OrderCancel orderCancel = null;
+        try {
+            orderCancel = JSON.parseObject(json, OrderCancel.class);
+            log.info(orderCancel.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("json解析错误");
+            log.info("msg:" + e.getMessage());
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+
+        //业务部分
+        //根据jcook订单号查询订单
+        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_code",orderCancel.getOrderId());
+        JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
+
+        if (jcookOrder == null){
+            //订单号异常,直接抛弃mq
+            log.info("订单号异常,未查询到对应的订单，order_id:"+orderCancel.getOrderId());
+            try {
+                //否认消息,使消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+        switch (orderCancel.getCancelStatus()){
+            case 1://1.取消订单成功
+                jcookOrder.setTradeStatus(9);//9.取消订单成功
+                break;
+            case 2://2.取消订单失败
+                jcookOrder.setTradeStatus(8);//8.取消订单失败
+                break;
+            case 3://3.申请取消
+                jcookOrder.setTradeStatus(6);//6.申请取消
+                break;
+            case 4://4.申请拒收
+                jcookOrder.setTradeStatus(7);//7.申请拒收
+                break;
+            default:
+                log.info("出现未知取消订单状态");
+                break;
+        }
+        //修改对应的订单取消状态
+        jcookOrderMapper.updateById(jcookOrder);
+
+
+        //<P>代码为在消费者中开启消息接收确认的手动ack</p>
+        //<H>配置完成</H>
+        //<P>可以开启全局配置</p>
+        if (map.get("error")!= null){
+            log.info("错误的消息");
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //手动ACK
+        //默认情况下如果一个消息被消费者所正确接收则会被从队列中移除
+        //如果一个队列没被任何消费者订阅，那么这个队列中的消息会被 Cache（缓存），
+        //当有消费者订阅时则会立即发送，当消息被消费者正确接收时，就会被从队列中移除
+        try {
+            //手动ack应答
+            //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了
+            // 否则消息服务器以为这条消息没处理掉 后续还会在发，true确认所有消费者获得的消息
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+            log.info("消息消费成功：id：{}",message.getMessageProperties().getDeliveryTag());
+        } catch (IOException e) {
+            e.printStackTrace();
+            //丢弃这条消息
+            try {
+                //最后一个参数是：是否重回队列
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
+                //拒绝消息
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //消息被丢失
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+                //消息被重新发送
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //多条消息被重新发送
+                //channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
+        }
+    }
+
+    //监听退款成功
+    @RabbitHandler
+    @RabbitListener(queues = JcookQueuesConfig.anyRefund)
+    public void anyRefund(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
+        log.info("-----------接收到商品退款成功的消息体：" + json);
+
+        AnyRefund anyRefund = null;
+        try {
+            anyRefund = JSON.parseObject(json, AnyRefund.class);
+            log.info(anyRefund.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("json解析错误");
+            log.info("msg:" + e.getMessage());
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+
+        //业务部分
+        //根据jcook订单号查询订单
+        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_code",anyRefund.getOrderId());
+        JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
+
+        if (jcookOrder == null){
+            //订单号异常,直接抛弃mq
+            log.info("订单号异常,未查询到对应的订单，order_id:"+anyRefund.getOrderId());
+            try {
+                //否认消息,使消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+        //进入支付宝退款流程
+        String out_request_no= String.valueOf(new IdWorker(1,1,1).nextId());//随机数  不是全额退款，部分退款必须使用该参数
+
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+        request.setBizContent("{" +
+                "\"out_trade_no\":\"" + jcookOrder.getCode() + "\"," +
+                "\"trade_no\":" + null + "," +
+                "\"refund_amount\":\"" + jcookOrder.getPayPrice() + "\"," +
+
+                "\"out_request_no\":\"" + out_request_no+ "\"," +
+                "\"refund_reason\":\"正常退款\"" +
+                " }");
+        AlipayTradeRefundResponse response;
+        try {
+            response = alipayClient.execute(request);
+            if (response.isSuccess()) {
+                log.info("支付宝退款成功");
+                //修改对应的订单取消状态
+                jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                jcookOrderMapper.updateById(jcookOrder);
+            } else {
+                log.info("支付宝退款失败");
+                log.info(response.getSubMsg());//失败会返回错误信息
+            }
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+
+        //<P>代码为在消费者中开启消息接收确认的手动ack</p>
+        //<H>配置完成</H>
+        //<P>可以开启全局配置</p>
+        if (map.get("error")!= null){
+            log.info("错误的消息");
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //手动ACK
+        //默认情况下如果一个消息被消费者所正确接收则会被从队列中移除
+        //如果一个队列没被任何消费者订阅，那么这个队列中的消息会被 Cache（缓存），
+        //当有消费者订阅时则会立即发送，当消息被消费者正确接收时，就会被从队列中移除
+        try {
+            //手动ack应答
+            //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了
+            // 否则消息服务器以为这条消息没处理掉 后续还会在发，true确认所有消费者获得的消息
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+            log.info("消息消费成功：id：{}",message.getMessageProperties().getDeliveryTag());
+        } catch (IOException e) {
+            e.printStackTrace();
+            //丢弃这条消息
+            try {
+                //最后一个参数是：是否重回队列
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
+                //拒绝消息
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //消息被丢失
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+                //消息被重新发送
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //多条消息被重新发送
+                //channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
+        }
+    }
 
 
 }
