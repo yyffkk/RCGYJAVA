@@ -3,10 +3,7 @@ package com.api.rabbitMQ.jcook;
 import com.alibaba.fastjson.JSON;
 import com.api.mapper.jcook.*;
 import com.api.model.jcook.entity.*;
-import com.api.model.jcook.mq.OrderCreate;
-import com.api.model.jcook.mq.OrderCreateSkuInfo;
-import com.api.model.jcook.mq.SkuChange;
-import com.api.model.jcook.mq.SkuPrice;
+import com.api.model.jcook.mq.*;
 import com.api.rabbitMQ.config.JcookQueuesConfig;
 import com.api.util.PropertyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -69,7 +66,7 @@ public class JcookRabbitMQ {
     @RabbitHandler
     @RabbitListener(queues = JcookQueuesConfig.skuChange)
     public void updateSkuInfo(Channel channel, String json, Message message, @Headers Map<String,Object> map){
-        log.info("接收到商品信息修改的消息体："+json);
+        log.info("-----------接收到商品信息修改的消息体："+json);
 
 
         SkuChange skuChange = null;
@@ -384,7 +381,7 @@ public class JcookRabbitMQ {
     @RabbitHandler
     @RabbitListener(queues = JcookQueuesConfig.skuPrice)
     public void updateSkuPrice(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
-        log.info("接收到商品价格修改的消息体：" + json);
+        log.info("-----------接收到商品价格修改的消息体：" + json);
 
         SkuPrice skuPrice = null;
         try {
@@ -489,7 +486,7 @@ public class JcookRabbitMQ {
     @RabbitHandler
     @RabbitListener(queues = JcookQueuesConfig.orderCreate)
     public void orderCreate(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
-        log.info("接收到商品订单创建的消息体：" + json);
+        log.info("-----------接收到商品订单创建的消息体：" + json);
 
         OrderCreate orderCreate = null;
         try {
@@ -577,6 +574,7 @@ public class JcookRabbitMQ {
             queryWrapper.eq("jcook_code",orderCreate.getParentOrderId());
             JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
             if (jcookOrder == null){
+                log.info("未查询到对应的父订单，使该拆单流程重回mq队列");
                 try {
                     //否认消息,使消息重回队列
                     channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
@@ -671,4 +669,265 @@ public class JcookRabbitMQ {
             log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
         }
     }
+
+    //监听订单支付成功
+    @RabbitHandler
+    @RabbitListener(queues = JcookQueuesConfig.orderPay)
+    public void orderPay(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
+        log.info("-----------接收到商品订单支付成功的消息体：" + json);
+
+        OrderPay orderPay = null;
+        try {
+            orderPay = JSON.parseObject(json, OrderPay.class);
+            log.info(orderPay.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("json解析错误");
+            log.info("msg:" + e.getMessage());
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+
+        //业务部分
+        //只要push成功，默认jcook订单100%支付成功
+        //只做打印日志处理，不做业务处理
+        log.info("----------订单支付成功----------start");
+        log.info("------order_id："+orderPay.getOrderId()+"-----");
+        log.info("------pay_time："+orderPay.getPayTime()+"-----");
+        log.info("------pay_fee："+orderPay.getPayFee()+"-----");
+        log.info("----------订单支付成功----------end");
+
+
+        //<P>代码为在消费者中开启消息接收确认的手动ack</p>
+        //<H>配置完成</H>
+        //<P>可以开启全局配置</p>
+        if (map.get("error")!= null){
+            log.info("错误的消息");
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //手动ACK
+        //默认情况下如果一个消息被消费者所正确接收则会被从队列中移除
+        //如果一个队列没被任何消费者订阅，那么这个队列中的消息会被 Cache（缓存），
+        //当有消费者订阅时则会立即发送，当消息被消费者正确接收时，就会被从队列中移除
+        try {
+            //手动ack应答
+            //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了
+            // 否则消息服务器以为这条消息没处理掉 后续还会在发，true确认所有消费者获得的消息
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+            log.info("消息消费成功：id：{}",message.getMessageProperties().getDeliveryTag());
+        } catch (IOException e) {
+            e.printStackTrace();
+            //丢弃这条消息
+            try {
+                //最后一个参数是：是否重回队列
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
+                //拒绝消息
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //消息被丢失
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+                //消息被重新发送
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //多条消息被重新发送
+                //channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
+        }
+    }
+
+    //监听订单出库
+    @RabbitHandler
+    @RabbitListener(queues = JcookQueuesConfig.orderStockOut)
+    public void orderStockOut(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
+        log.info("-----------接收到商品订单出库的消息体：" + json);
+
+        OrderStockOut orderStockOut = null;
+        try {
+            orderStockOut = JSON.parseObject(json, OrderStockOut.class);
+            log.info(orderStockOut.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("json解析错误");
+            log.info("msg:" + e.getMessage());
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+
+        //业务部分
+        //根据jcook订单号查询订单
+        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_code",orderStockOut.getOrderId());
+        JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
+
+        if (jcookOrder == null){
+            log.info("未查询到对应的订单，使该出库流程重回mq队列");
+            try {
+                //否认消息,使消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+        //修改对应的状态为4.出库（待收货）
+        jcookOrder.setTradeStatus(4);//4.出库（待收货）
+        jcookOrderMapper.updateById(jcookOrder);
+
+
+        //<P>代码为在消费者中开启消息接收确认的手动ack</p>
+        //<H>配置完成</H>
+        //<P>可以开启全局配置</p>
+        if (map.get("error")!= null){
+            log.info("错误的消息");
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //手动ACK
+        //默认情况下如果一个消息被消费者所正确接收则会被从队列中移除
+        //如果一个队列没被任何消费者订阅，那么这个队列中的消息会被 Cache（缓存），
+        //当有消费者订阅时则会立即发送，当消息被消费者正确接收时，就会被从队列中移除
+        try {
+            //手动ack应答
+            //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了
+            // 否则消息服务器以为这条消息没处理掉 后续还会在发，true确认所有消费者获得的消息
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+            log.info("消息消费成功：id：{}",message.getMessageProperties().getDeliveryTag());
+        } catch (IOException e) {
+            e.printStackTrace();
+            //丢弃这条消息
+            try {
+                //最后一个参数是：是否重回队列
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
+                //拒绝消息
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //消息被丢失
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+                //消息被重新发送
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //多条消息被重新发送
+                //channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
+        }
+    }
+
+    //监听订单完成
+    @RabbitHandler
+    @RabbitListener(queues = JcookQueuesConfig.orderFinished)
+    public void orderFinished(Channel channel, String json, Message message, @Headers Map<String,Object> map) {
+        log.info("-----------接收到商品订单完成的消息体：" + json);
+
+        OrderFinished orderFinished = null;
+        try {
+            orderFinished = JSON.parseObject(json, OrderFinished.class);
+            log.info(orderFinished.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("json解析错误");
+            log.info("msg:" + e.getMessage());
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+
+        //业务部分
+        //根据jcook订单号查询订单
+        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_code",orderFinished.getOrderId());
+        JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
+
+        if (jcookOrder == null){
+            log.info("未查询到对应的订单，使该订单完成流程重回mq队列");
+            try {
+                //否认消息,使消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+        //修改对应的状态为5.订单完成
+        jcookOrder.setTradeStatus(5);//5.订单完成
+        jcookOrderMapper.updateById(jcookOrder);
+
+
+        //<P>代码为在消费者中开启消息接收确认的手动ack</p>
+        //<H>配置完成</H>
+        //<P>可以开启全局配置</p>
+        if (map.get("error")!= null){
+            log.info("错误的消息");
+            try {
+                //否认消息,拒接该消息重回队列
+                channel.basicNack((Long)map.get(AmqpHeaders.DELIVERY_TAG),false,false);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //手动ACK
+        //默认情况下如果一个消息被消费者所正确接收则会被从队列中移除
+        //如果一个队列没被任何消费者订阅，那么这个队列中的消息会被 Cache（缓存），
+        //当有消费者订阅时则会立即发送，当消息被消费者正确接收时，就会被从队列中移除
+        try {
+            //手动ack应答
+            //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了
+            // 否则消息服务器以为这条消息没处理掉 后续还会在发，true确认所有消费者获得的消息
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+            log.info("消息消费成功：id：{}",message.getMessageProperties().getDeliveryTag());
+        } catch (IOException e) {
+            e.printStackTrace();
+            //丢弃这条消息
+            try {
+                //最后一个参数是：是否重回队列
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
+                //拒绝消息
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //消息被丢失
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+                //消息被重新发送
+                //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+                //多条消息被重新发送
+                //channel.basicNack(message.getMessageProperties().getDeliveryTag(), true, true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            log.info("消息消费失败：id：{}",message.getMessageProperties().getDeliveryTag());
+        }
+    }
+
+
+
 }
