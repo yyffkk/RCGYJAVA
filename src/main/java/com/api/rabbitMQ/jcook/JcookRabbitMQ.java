@@ -1,10 +1,16 @@
 package com.api.rabbitMQ.jcook;
 
 import com.alibaba.fastjson.JSON;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.api.mapper.jcook.*;
 import com.api.model.jcook.entity.*;
 import com.api.model.jcook.mq.*;
 import com.api.rabbitMQ.config.JcookQueuesConfig;
+import com.api.util.IdWorker;
 import com.api.util.PropertyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rabbitmq.client.Channel;
@@ -54,6 +60,21 @@ public class JcookRabbitMQ {
     JcookOrderMapper jcookOrderMapper;
     @Resource
     JcookOrderListMapper jcookOrderListMapper;
+    // 获取配置文件中支付宝相关信息(可以使用自己的方式获取)
+    @Value("${alipay.aliPayAppId}")
+    private String ALIPAY_APP_ID;
+    @Value("${alipay.rsaPrivatKey}")
+    private String RSA_PRIVAT_KEY;
+    @Value("${alipay.rsaAlipayPublicKey}")
+    private String RSA_ALIPAY_PUBLIC_KEY;
+    @Value("${alipay.aliPayGateway}")
+    private String ALIPAY_GATEWAY;
+    @Value("${alipay.signType}")
+    private String SIGN_TYPE;
+    @Value("${alipay.alipayFormat}")
+    private String ALIPAY_FORMAT;
+    @Value("${alipay.alipayCharset}")
+    private String ALIPAY_CHARSET;
 
     @Value("${jcook.app_key}")
     private String JCOOK_APP_KEY;    //jcook appKey
@@ -695,13 +716,85 @@ public class JcookRabbitMQ {
         }
 
         //业务部分
-        //只要push成功，默认jcook订单100%支付成功
-        //只做打印日志处理，不做业务处理
-        log.info("----------订单支付成功----------start");
-        log.info("------order_id："+orderPay.getOrderId()+"-----");
-        log.info("------pay_time："+orderPay.getPayTime()+"-----");
-        log.info("------pay_fee："+orderPay.getPayFee()+"-----");
-        log.info("----------订单支付成功----------end");
+        //查询用户支付宝是否支付成功
+        //查询是否有对应的parentOrderId，如果没有则跳过，
+        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_code",orderPay.getOrderId());
+        JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
+        if (jcookOrder == null){
+            //订单号异常,直接抛弃mq
+            log.info("订单号异常,未查询到对应的订单，order_id:"+orderPay.getOrderId());
+            try {
+                //否认消息,使消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }else if (jcookOrder.getTradeStatus() == 0){
+            //交易创建并等待买家付款，重回mq
+            log.info("该订单尚未支付成功，使该订单推送流程重回mq队列,order_id"+orderPay.getOrderId());
+            try {
+                //否认消息,使消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        } else if (jcookOrder.getTradeStatus() != 2){
+            //交易未支付成功，直接抛弃mq
+            log.info("交易未支付成功，order_id:"+orderPay.getOrderId());
+            try {
+                //否认消息,使消息重回队列
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
+                return;
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+                return;
+            }
+        }
+
+        log.info("------------------jcook推送-----------start");
+        //当用户支付成功则push订单到生产环境
+        OrderPushRequest orderPushRequest = new OrderPushRequest();
+        orderPushRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));//填入jcook返回的订单
+        JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+        Result<String> stringResult = jcookSDK.orderPush(orderPushRequest);
+
+        //如果推送jcook失败，则取消订单并退款
+        if (stringResult.getCode() != 200){
+            log.info(stringResult.getMsg());
+            //退款
+            log.info("------------------jcook推送失败->支付宝退款-----------start");
+            String out_request_no= String.valueOf(new IdWorker(1,1,1).nextId());//随机数  不是全额退款，部分退款必须使用该参数
+            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+            AlipayTradeRefundRequest request2 = new AlipayTradeRefundRequest();
+            request2.setBizContent("{" +
+                    "\"out_trade_no\":\"" + jcookOrder.getCode() + "\"," +
+                    "\"trade_no\":" + null + "," +
+                    "\"refund_amount\":\"" + jcookOrder.getPayPrice() + "\"," +
+                    "\"out_request_no\":\"" + out_request_no+ "\"," +
+                    "\"refund_reason\":\"正常退款\"" +
+                    " }");
+            AlipayTradeRefundResponse response2;
+            try {
+                response2 = alipayClient.execute(request2);
+                if (response2.isSuccess()) {
+                    //修改订单状态
+                    jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                    jcookOrderMapper.updateById(jcookOrder);
+                    log.info("-------支付宝退款成功-------");
+                } else {
+                    log.info("-------msg:"+response2.getSubMsg());//失败会返回错误信息
+                }
+            } catch (AlipayApiException e) {
+                e.printStackTrace();
+            }
+            log.info("------------------jcook推送失败->支付宝退款-----------end");
+        }
+        log.info("------------------jcook推送-----------end");
 
 
         //<P>代码为在消费者中开启消息接收确认的手动ack</p>
@@ -779,10 +872,11 @@ public class JcookRabbitMQ {
         JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
 
         if (jcookOrder == null){
-            log.info("未查询到对应的订单，使该出库流程重回mq队列");
+            //订单号异常,直接抛弃mq
+            log.info("订单号异常,未查询到对应的订单，order_id:"+orderStockOut.getOrderId());
             try {
                 //否认消息,使消息重回队列
-                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
                 return;
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -869,10 +963,11 @@ public class JcookRabbitMQ {
         JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
 
         if (jcookOrder == null){
-            log.info("未查询到对应的订单，使该订单完成流程重回mq队列");
+            //订单号异常,直接抛弃mq
+            log.info("订单号异常,未查询到对应的订单，order_id:"+orderFinished.getOrderId());
             try {
                 //否认消息,使消息重回队列
-                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
+                channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
                 return;
             } catch (IOException ioException) {
                 ioException.printStackTrace();
