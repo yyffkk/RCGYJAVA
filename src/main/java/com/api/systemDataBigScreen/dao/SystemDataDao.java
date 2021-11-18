@@ -128,25 +128,25 @@ public interface SystemDataDao {
      * 查询已缴物业费总户数
      * @return 已交物业费总户数
      */
-    int findPaidNum();
+    int findPaidNum(Date date);
 
     /**
      * 查询已缴物业费总金额
      * @return 已交物业费总金额
      */
-    BigDecimal findPaidPrice();
+    BigDecimal findPaidPrice(Date date);
 
     /**
      * 查询未缴物业费总户数
      * @return 未交物业费总户数
      */
-    int findUnPaidNum();
+    int findUnPaidNum(Date date);
 
     /**
      * 查询未缴物业费总金额
      * @return 未交物业费总金额
      */
-    BigDecimal findUnPaidPrice();
+    BigDecimal findUnPaidPrice(Date date);
 
     /**
      * 查询日常缴费未缴费住户数量（最近6个月，每月信息数量）

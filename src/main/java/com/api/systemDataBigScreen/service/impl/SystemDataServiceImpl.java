@@ -147,14 +147,14 @@ public class SystemDataServiceImpl implements SystemDataService {
         int thisYearPayableNum = systemDataDao.findThisYearPayableNum(date);
         //查询今年应缴物业费总金额
         BigDecimal thisYearPayablePrice = systemDataDao.findThisYearPayablePrice(date);
-        //查询已缴物业费总户数
-        int paidNum = systemDataDao.findPaidNum();
-        //查询已缴物业费总金额
-        BigDecimal paidPrice = systemDataDao.findPaidPrice();
-        //查询未缴物业费总户数
-        int unPaidNum = systemDataDao.findUnPaidNum();
-        //查询未缴物业费总金额
-        BigDecimal unPaidPrice = systemDataDao.findUnPaidPrice();
+        //查询已缴物业费总户数[今年]
+        int paidNum = systemDataDao.findPaidNum(date);
+        //查询已缴物业费总金额[今年]
+        BigDecimal paidPrice = systemDataDao.findPaidPrice(date);
+        //查询未缴物业费总户数[今年]
+        int unPaidNum = systemDataDao.findUnPaidNum(date);
+        //查询未缴物业费总金额[今年]
+        BigDecimal unPaidPrice = systemDataDao.findUnPaidPrice(date);
         //系统数据 日常缴费未缴费住户数量和年份和月份【查询日常缴费未缴费住户数量（最近6个月，每月信息数量）】
         List<SDCountAndDate> sixMonthUnPaidNum = systemDataDao.findSixMonthUnPaidNum();
 

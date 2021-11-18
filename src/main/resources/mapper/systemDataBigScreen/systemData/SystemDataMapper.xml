@@ -102,33 +102,33 @@
     </select>
 
     <select id="findThisYearPayablePrice" parameterType="java.util.Date" resultType="java.math.BigDecimal">
-        select sum(total_price)
+        select sum(sdp.total_price)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
         where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date}) and sctd.marker in (1,5) and sdp.is_delete = 1
     </select>
 
-    <select id="findPaidNum" resultType="java.lang.Integer">
+    <select id="findPaidNum" parameterType="java.util.Date" resultType="java.lang.Integer">
         select count(sdp.id)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id  and sctd.marker in (1,5) and sdp.status = 3 and sdp.is_delete = 1
+        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date})  and sctd.marker in (1,5) and sdp.status = 3 and sdp.is_delete = 1
     </select>
 
-    <select id="findPaidPrice" resultType="java.math.BigDecimal">
-        select sum(paid_price)
+    <select id="findPaidPrice" parameterType="java.util.Date" resultType="java.math.BigDecimal">
+        select sum(sdp.paid_price)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id  and sctd.marker in (1,5) and sdp.status = 3 and sdp.is_delete = 1
+        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date})  and sctd.marker in (1,5) and sdp.status in (2,3) and sdp.is_delete = 1
     </select>
 
-    <select id="findUnPaidNum" resultType="java.lang.Integer">
+    <select id="findUnPaidNum" parameterType="java.util.Date" resultType="java.lang.Integer">
         select count(sdp.id)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id  and sctd.marker in (1,5) and sdp.status in (1,2) and sdp.is_delete = 1
+        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date})  and sctd.marker in (1,5) and sdp.status in (1,2) and sdp.is_delete = 1
     </select>
 
-    <select id="findUnPaidPrice" resultType="java.math.BigDecimal">
-        select sum(payment_price)
+    <select id="findUnPaidPrice" parameterType="java.util.Date" resultType="java.math.BigDecimal">
+        select sum(sdp.payment_price)
         from sys_daily_payment as sdp,sys_charges_template_detail as sctd
-        where sdp.charges_template_detail_id = sctd.id  and sctd.marker in (1,5) and sdp.status in (1,2) and sdp.is_delete = 1
+        where sdp.charges_template_detail_id = sctd.id and YEAR(sdp.begin_date) = YEAR(#{date})  and sctd.marker in (1,5) and sdp.status in (1,2) and sdp.is_delete = 1
     </select>
 
 
