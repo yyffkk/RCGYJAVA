@@ -20,6 +20,7 @@ import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
 import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
+import com.api.mapper.jcook.JcookOrderMapper;
 import com.api.model.alipay.EstateIdAndAdvancePaymentPrice;
 import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.alipay.SysLeaseRentBillOrder;
@@ -32,6 +33,7 @@ import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.model.chargeManagement.DailyPaymentPlan;
 import com.api.model.chargeManagement.SysMeterReadingData;
+import com.api.model.jcook.entity.JcookOrder;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanException;
@@ -42,6 +44,7 @@ import com.api.util.IdWorker;
 import com.api.util.JiguangUtil;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
@@ -139,6 +142,8 @@ public class SysAutoRemind {
     SysAttendanceSchedulingPlanDao sysAttendanceSchedulingPlanDao;
     @Resource
     SysMeterReadingRecordService meterReadingRecordService;
+    @Resource
+    JcookOrderMapper jcookOrderMapper;
 
 
     /**
@@ -1299,6 +1304,35 @@ public class SysAutoRemind {
         }
 
         log.info("结束获取抄表水量记录");
+    }
+
+    /**
+     * 0/5 * * * * ?
+     * （每5秒执行一次）轮询定时任务，查询jcook商城未付款订单，是否超时或错误关闭
+     */
+    @Scheduled(cron = "0/5 * * * * ?")
+    public void autoCheckOutTimeJcookShopping(){
+//        log.info("查询并修改jcook商城未付款超时订单--------------------start");
+        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("trade_status",0);//0.交易创建并等待买家付款
+        //计算当前时间减6分钟的时间
+        Calendar nowTime = Calendar.getInstance();
+        nowTime.add(Calendar.MINUTE,-6);
+        Date time = nowTime.getTime();
+        queryWrapper.le("create_date",time);//超时时间为6分钟，创建时间小于等于当前时间减去6分钟时超时
+        List<JcookOrder> jcookOrderList = jcookOrderMapper.selectList(queryWrapper);
+        if (jcookOrderList != null && jcookOrderList.size()>0){
+            log.info("修改jcook商城未付款超时订单--------------------start");
+            for (JcookOrder jcookOrder : jcookOrderList) {
+                log.info("----------当前修改的订单号为: "+jcookOrder.getCode());
+                //修改超时订单的状态为1.未付款交易超时关闭或支付完成后全额退款
+                jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                jcookOrderMapper.updateById(jcookOrder);
+            }
+            log.info("修改jcook商城未付款超时订单--------------------start");
+        }
+
+//        log.info("查询并修改jcook商城未付款超时订单--------------------end");
     }
 
 
