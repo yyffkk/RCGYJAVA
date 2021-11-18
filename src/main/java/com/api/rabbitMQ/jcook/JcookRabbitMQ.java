@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.api.mapper.jcook.*;
 import com.api.model.jcook.entity.*;
 import com.api.model.jcook.mq.OrderCreate;
+import com.api.model.jcook.mq.OrderCreateSkuInfo;
 import com.api.model.jcook.mq.SkuChange;
 import com.api.model.jcook.mq.SkuPrice;
 import com.api.rabbitMQ.config.JcookQueuesConfig;
+import com.api.util.PropertyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +53,10 @@ public class JcookRabbitMQ {
     JcookShopMapper jcookShopMapper;
     @Resource
     JcookBrandMapper jcookBrandMapper;
+    @Resource
+    JcookOrderMapper jcookOrderMapper;
+    @Resource
+    JcookOrderListMapper jcookOrderListMapper;
 
     @Value("${jcook.app_key}")
     private String JCOOK_APP_KEY;    //jcook appKey
@@ -499,11 +505,127 @@ public class JcookRabbitMQ {
                 return;
             } catch (IOException ioException) {
                 ioException.printStackTrace();
+                return;
             }
         }
 
         //业务部分
+        //判断是否是售后换新
+        if (new BigDecimal(orderCreate.getTotalFee()).compareTo(BigDecimal.ZERO) == 0){
+            log.info("售后换新---------------start");
+            //售后换新流程
+            //查询是否有对应的parentOrderId，如果没有则跳过，
+            QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("jcook_code",orderCreate.getParentOrderId());
+            JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
+            if (jcookOrder == null){
+                try {
+                    //否认消息,使消息重回队列
+                    channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
+                    return;
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    return;
+                }
+            }
+            //创建新订单，并将父订单状态置为售后换新
+            //--将父订单状态置为售后换新
+            jcookOrder.setTradeStatus(11);//11.售后换新
+            jcookOrderMapper.updateById(jcookOrder);
+            //--创建新订单
+            JcookOrder jcookOrderNew = new JcookOrder();
+            PropertyUtils.copyProperties(jcookOrder,jcookOrderNew);
+            jcookOrderNew.setTradeStatus(2);//2.交易支付成功（待发货）
+            jcookOrderNew.setPayPrice(new BigDecimal(orderCreate.getTotalFee()));//填入包含运费的金额【指供货价】
+            jcookOrderNew.setFreightFee(new BigDecimal(orderCreate.getFreightFee()));//填入运费
+            jcookOrderMapper.insert(jcookOrderNew);
+            //售卖价总金额
+            BigDecimal sellPriceTotal = BigDecimal.ZERO;
+            //查询旧订单详情
+            List<OrderCreateSkuInfo> skuList = orderCreate.getSkuList();
+            if (skuList != null && skuList.size()>0){
+                for (OrderCreateSkuInfo orderCreateSkuInfo : skuList) {
+                    //根据sku编码和旧订单号，查询商品价格
+                    QueryWrapper<JcookOrderList> queryWrapper3 = new QueryWrapper<>();
+                    queryWrapper3.eq("sku_id",orderCreateSkuInfo.getSkuId());
+                    queryWrapper3.eq("jcook_order_id",orderCreate.getParentOrderId());
+                    JcookOrderList jcookOrderList = jcookOrderListMapper.selectOne(queryWrapper3);
+                    //添加新订单详情
+                    jcookOrderList.setJcookOrderId(jcookOrderNew.getId());//填入jcook订单主键id
+                    jcookOrderList.setNum(orderCreateSkuInfo.getQuantity());//填入购买数量
+                    jcookOrderList.setPayPrice(jcookOrderList.getSellPrice().multiply(new BigDecimal(jcookOrderList.getNum())));//填入付款金额
+                    jcookOrderList.setSkuName(orderCreateSkuInfo.getSkuName());//填入商品名称
+                    jcookOrderList.setMainPhoto(orderCreateSkuInfo.getUrl());//填入主图url
+                    jcookOrderListMapper.insert(jcookOrderList);
 
+                    sellPriceTotal = sellPriceTotal.add(jcookOrderList.getSellPrice().multiply(new BigDecimal(jcookOrderList.getNum())));//对售卖价总金额进行累加
+                }
+            }
+            //修改对应的包含运费的金额，使之变为售卖价
+            jcookOrderNew.setPayPrice(sellPriceTotal.add(new BigDecimal(orderCreate.getFreightFee())));//填入包含运费的售卖价金额【指售卖价】
+            jcookOrderMapper.updateById(jcookOrderNew);
+            log.info("售后换新---------------end");
+        }
+
+        //判断是否拆单
+        if (orderCreate.getParentOrderId().compareTo(BigInteger.ZERO) != 0){
+            log.info("发生拆单---------------start");
+            //发生拆单
+            //拆单流程
+            //查询是否有对应的parentOrderId，如果没有则跳过，
+            QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("jcook_code",orderCreate.getParentOrderId());
+            JcookOrder jcookOrder = jcookOrderMapper.selectOne(queryWrapper);
+            if (jcookOrder == null){
+                try {
+                    //否认消息,使消息重回队列
+                    channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
+                    return;
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    return;
+                }
+            }
+            //创建新订单，并将父订单状态置为发生拆单
+            //--将父订单状态置为发生拆单
+            jcookOrder.setTradeStatus(10);//10.发生拆单
+            jcookOrderMapper.updateById(jcookOrder);
+            //--创建新订单
+            JcookOrder jcookOrderNew = new JcookOrder();
+            PropertyUtils.copyProperties(jcookOrder,jcookOrderNew);
+            jcookOrderNew.setTradeStatus(2);//2.交易支付成功（待发货）
+            jcookOrderNew.setPayPrice(new BigDecimal(orderCreate.getTotalFee()));//填入包含运费的金额【指供货价】
+            jcookOrderNew.setFreightFee(new BigDecimal(orderCreate.getFreightFee()));//填入运费
+            jcookOrderMapper.insert(jcookOrderNew);
+            //售卖价总金额
+            BigDecimal sellPriceTotal = BigDecimal.ZERO;
+            //查询旧订单详情
+            List<OrderCreateSkuInfo> skuList = orderCreate.getSkuList();
+            if (skuList != null && skuList.size()>0){
+                for (OrderCreateSkuInfo orderCreateSkuInfo : skuList) {
+                    //根据sku编码和旧订单号，查询商品价格
+                    QueryWrapper<JcookOrderList> queryWrapper3 = new QueryWrapper<>();
+                    queryWrapper3.eq("sku_id",orderCreateSkuInfo.getSkuId());
+                    queryWrapper3.eq("jcook_order_id",orderCreate.getParentOrderId());
+                    JcookOrderList jcookOrderList = jcookOrderListMapper.selectOne(queryWrapper3);
+                    //添加新订单详情
+                    jcookOrderList.setJcookOrderId(jcookOrderNew.getId());//填入jcook订单主键id
+                    jcookOrderList.setNum(orderCreateSkuInfo.getQuantity());//填入购买数量
+                    jcookOrderList.setPayPrice(jcookOrderList.getSellPrice().multiply(new BigDecimal(jcookOrderList.getNum())));//填入付款金额
+                    jcookOrderList.setSkuName(orderCreateSkuInfo.getSkuName());//填入商品名称
+                    jcookOrderList.setMainPhoto(orderCreateSkuInfo.getUrl());//填入主图url
+                    jcookOrderListMapper.insert(jcookOrderList);
+
+                    sellPriceTotal = sellPriceTotal.add(jcookOrderList.getSellPrice().multiply(new BigDecimal(jcookOrderList.getNum())));//对售卖价总金额进行累加
+                }
+            }
+            //修改对应的包含运费的金额，使之变为售卖价
+            jcookOrderNew.setPayPrice(sellPriceTotal.add(new BigDecimal(orderCreate.getFreightFee())));//填入包含运费的售卖价金额【指售卖价】
+            jcookOrderMapper.updateById(jcookOrderNew);
+            log.info("发生拆单---------------end");
+        }
+
+        //parentOrderId等于0则未发生拆单,不做任何处理，直接消费
 
 
         //<P>代码为在消费者中开启消息接收确认的手动ack</p>
