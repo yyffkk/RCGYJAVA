@@ -48,7 +48,7 @@
         (
             select sdp.*
             from sys_charges_template_detail as sctd,sys_daily_payment as sdp
-            where sdp.charges_template_detail_id = sctd.id and sctd.marker = 1
+            where sdp.charges_template_detail_id = sctd.id and sctd.marker = 1 and sdp.is_delete = 1
         ) as s2 on YEAR(s.date) = YEAR(s2.begin_date) and MONTH(s.date) = MONTH(s2.begin_date)
         GROUP BY s.date
     </select>
