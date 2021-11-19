@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +33,14 @@ public class AppGambitVo implements Serializable {
      * 内容
      */
     private String content;
+    /**
+     * 开始时间
+     */
+    private Date beginDate;
+    /**
+     * 结束时间
+     */
+    private Date endDate;
     /**
      * 话题照片资源
      */

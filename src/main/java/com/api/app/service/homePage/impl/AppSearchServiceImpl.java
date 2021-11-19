@@ -1,6 +1,7 @@
 package com.api.app.service.homePage.impl;
 
 import com.api.app.dao.butler.AppActivityDao;
+import com.api.app.dao.community.AppGambitDao;
 import com.api.app.dao.homePage.AppSearchDao;
 import com.api.app.service.homePage.AppSearchService;
 import com.api.model.app.AppActivityRegistration;
@@ -20,6 +21,9 @@ public class AppSearchServiceImpl implements AppSearchService {
     AppSearchDao appSearchDao;
     @Resource
     AppActivityDao appActivityDao;
+    @Resource
+    AppGambitDao appGambitDao;
+
     private static Map<String,Object> map = null;
 
     @Override
@@ -89,6 +93,13 @@ public class AppSearchServiceImpl implements AppSearchService {
                 UploadUtil uploadUtil = new UploadUtil();
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysGambit", appGambitVo.getId(), "gambitImg");
                 appGambitVo.setImgUrl(imgByDate);
+
+                //查询动态主题数
+                int themeNum = appGambitDao.sumThemeNum(appGambitVo.getId());
+                appGambitVo.setThemeNum(themeNum);
+                //查询评论数
+                int sumCommentNum = appGambitDao.sumCommentNum(appGambitVo.getId());
+                appGambitVo.setSumCommentNum(sumCommentNum);
             }
         }
         //填入帖子活动搜索内容
