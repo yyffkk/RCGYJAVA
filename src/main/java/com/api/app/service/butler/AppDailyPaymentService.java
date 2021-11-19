@@ -20,4 +20,5 @@ public interface AppDailyPaymentService {
 
     Map<String, Object> findAdvancePaymentPriceByEstateId(Integer estateId);
 
+    Map<String, Object> findUnpaidAmount(Integer estateId);
 }
