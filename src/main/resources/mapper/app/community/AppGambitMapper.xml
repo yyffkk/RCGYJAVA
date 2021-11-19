@@ -38,6 +38,11 @@
         select SUM(likes) from sys_gambit_theme where gambit_id = #{id} and is_delete = 1 group by id
     </select>
 
+    <select id="sumThemeNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from sys_gambit_theme where gambit_id = #{id} and is_delete = 1
+    </select>
+
+
     <select id="sumCommentNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from sys_gambit_theme_comment where gambit_id = #{gambitId} and is_delete = 1
     </select>

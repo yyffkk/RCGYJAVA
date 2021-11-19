@@ -39,6 +39,13 @@ public interface AppGambitDao {
     int sumLikeNum(Integer id);
 
     /**
+     * 查询动态主题数
+     * @param id 话题主键id
+     * @return 总主题数
+     */
+    int sumThemeNum(Integer id);
+
+    /**
      * 查询评论数
      * @param gambitId 话题主键id
      * @return 总评论数
@@ -166,4 +173,5 @@ public interface AppGambitDao {
      * @return 模块功能开关状态
      */
     SysFunctionSwitch findSwitchById(Integer id);
+
 }

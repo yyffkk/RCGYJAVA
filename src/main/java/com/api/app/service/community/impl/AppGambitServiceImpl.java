@@ -84,8 +84,12 @@ public class AppGambitServiceImpl implements AppGambitService {
                 //查询热度（活跃度）【点赞数+评论数】
                 //查询点赞数
 //                int sumLikeNum = appGambitDao.sumLikeNum(appGambitVo.getId());
+                //查询动态主题数
+                int themeNum = appGambitDao.sumThemeNum(appGambitVo.getId());
+                appGambitVo.setThemeNum(themeNum);
                 //查询评论数
-//                int sumCommentNum = appGambitDao.sumCommentNum(appGambitVo.getId());
+                int sumCommentNum = appGambitDao.sumCommentNum(appGambitVo.getId());
+                appGambitVo.setSumCommentNum(sumCommentNum);
 //                appGambitVo.setActivityNum(sumLikeNum+sumCommentNum);
             }
         }
