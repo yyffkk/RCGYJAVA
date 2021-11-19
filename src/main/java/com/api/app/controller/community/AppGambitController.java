@@ -155,12 +155,13 @@ public class AppGambitController {
      * @param size 每页记录数
      * @param id 用户id
      * @param gambitId 话题主键id
+     * @param orderBy 排序方式：1.最新，2.最热
      * @return map
      */
     @GetMapping("/listByGambitId")
-    public Map<String,Object> listByGambitId(int pageNum,int size,Integer id,int gambitId){
+    public Map<String,Object> listByGambitId(int pageNum,int size,Integer id,int gambitId,int orderBy){
         PageHelper.startPage(pageNum,size);
-        List<AppGambitThemeVo> appGambitThemeVos =appGambitService.listByGambitId(id,gambitId);
+        List<AppGambitThemeVo> appGambitThemeVos =appGambitService.listByGambitId(id,gambitId,orderBy);
         PageInfo<AppGambitThemeVo> pageInfo = new PageInfo<>(appGambitThemeVos);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());

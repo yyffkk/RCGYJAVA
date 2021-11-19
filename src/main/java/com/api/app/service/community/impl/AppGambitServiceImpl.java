@@ -423,12 +423,24 @@ public class AppGambitServiceImpl implements AppGambitService {
     }
 
     @Override
-    public List<AppGambitThemeVo> listByGambitId(Integer id, int gambitId) {
+    public List<AppGambitThemeVo> listByGambitId(Integer id, int gambitId, int orderBy) {
         UserIdAndGambitId userIdAndGambitId = new UserIdAndGambitId();
         userIdAndGambitId.setGambitId(gambitId);
         userIdAndGambitId.setId(id);
-        //查询 话题 下的主题信息
-        List<AppGambitThemeVo> list = appGambitDao.listByGambitId(userIdAndGambitId);
+        List<AppGambitThemeVo> list = null;
+        if (orderBy == 1){
+            //最新
+            //查询 最新 话题 下的主题信息
+            list = appGambitDao.listByGambitIdByNews(userIdAndGambitId);
+        }else if (orderBy == 2){
+            //最热
+            //查询 最新 话题 下的主题信息
+            list = appGambitDao.listByGambitIdByHot(userIdAndGambitId);
+        }else {
+            //剩余默认展示
+            //查询话题 下的主题信息
+            list = appGambitDao.listByGambitId(userIdAndGambitId);
+        }
         if (list != null && list.size()>0){
             for (AppGambitThemeVo appGambitThemeVo : list) {
                 //查询该用户是否点赞

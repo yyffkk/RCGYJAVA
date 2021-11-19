@@ -145,6 +145,18 @@ public interface AppGambitDao {
      * @return app最新主题信息Vo list 回显
      */
     List<AppGambitThemeVo> listByGambitId(UserIdAndGambitId userIdAndGambitId);
+     /**
+     * 查询 最新 话题 下的主题信息
+     * @param userIdAndGambitId 用户id 与 话题id
+     * @return app最新主题信息Vo list 回显
+     */
+    List<AppGambitThemeVo> listByGambitIdByNews(UserIdAndGambitId userIdAndGambitId);
+    /**
+     * 查询 最热 话题 下的主题信息
+     * @param userIdAndGambitId 用户id 与 话题id
+     * @return app最新主题信息Vo list 回显
+     */
+    List<AppGambitThemeVo> listByGambitIdByHot(UserIdAndGambitId userIdAndGambitId);
 
     /**
      * 查询活跃话题（取前4个）

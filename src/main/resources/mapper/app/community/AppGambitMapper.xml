@@ -160,6 +160,34 @@
         ) as a where a.is_public = 1 or a.create_id = #{id}
     </select>
 
+    <select id="listByGambitIdByNews" parameterType="com.api.model.app.UserIdAndGambitId" resultType="com.api.vo.app.AppGambitThemeVo">
+        select a.* from (
+            select sgt.id,sgt.gambit_id,sgt.content,sgt.likes,sgt.is_comment,sgt.is_public,
+                   sgt.create_id,sgt.create_date,sgt.modify_id,sgt.modify_date,sgt.is_delete,
+                   IFNULL(sgt.views,0) as views,sg.summary as gambit_title,ur.nick_name as create_name
+            from user_resident as ur,sys_gambit_theme as sgt
+                                         LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
+            where ur.id = sgt.create_id and sgt.is_delete = 1 and sgt.gambit_id = #{gambitId}
+            order by sgt.create_date DESC
+        ) as a where a.is_public = 1 or a.create_id = #{id}
+        order by a.create_date desc
+    </select>
+
+    <select id="listByGambitIdByHot" parameterType="com.api.model.app.UserIdAndGambitId" resultType="com.api.vo.app.AppGambitThemeVo">
+        select a.* from (
+                            select sgt.id,sgt.gambit_id,sgt.content,sgt.likes,sgt.is_comment,sgt.is_public,
+                                   sgt.create_id,sgt.create_date,sgt.modify_id,sgt.modify_date,sgt.is_delete,
+                                   IFNULL(sgt.views,0) as views,sg.summary as gambit_title,ur.nick_name as create_name
+                            from user_resident as ur,sys_gambit_theme as sgt
+                                                         LEFT JOIN sys_gambit as sg on sgt.gambit_id = sg.id and sg.is_delete = 1
+                            where ur.id = sgt.create_id and sgt.is_delete = 1 and sgt.gambit_id = #{gambitId}
+                            order by sgt.create_date DESC
+                        ) as a where a.is_public = 1 or a.create_id = #{id}
+        order by a.views desc
+    </select>
+
+
+
     <select id="findActivityGambit" resultType="com.api.vo.app.IdAndName">
         select c.id,sg2.summary as name from (
             select a.id,(a.sum2+b.count2) as activity_num from (
