@@ -15,4 +15,7 @@ public interface AppNewsService {
 
     Map<String, Object> findNewsRotation();
 
+    List<AppNewsVo> findHotNews();
+
+    Map<String, Object> addViews(Integer newsId);
 }

@@ -34,4 +34,17 @@ public interface AppNewsDao {
      * @return
      */
     List<AppNewsRotationVo> findNewsRotation();
+
+    /**
+     * 查询热门资讯
+     * @return 热门资讯
+     */
+    List<AppNewsVo> findHotNews();
+
+    /**
+     * 增加浏览量
+     * @param newsId 资讯主键id
+     * @return 影响行数
+     */
+    int addViews(Integer newsId);
 }

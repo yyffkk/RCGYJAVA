@@ -9,7 +9,7 @@
     </select>
 
     <select id="newsList" parameterType="com.api.model.app.SearchAppNews" resultType="com.api.vo.app.AppNewsVo">
-        select id,title,create_date from sys_news
+        select id,title,create_date,IFNULL(views,0) as views from sys_news
         <where>
             <if test="newsCategoryId != null">
                 news_category_id = #{newsCategoryId}
@@ -27,5 +27,15 @@
     <select id="findNewsRotation" resultType="com.api.vo.app.AppNewsRotationVo">
         select id as news_id,title as title from sys_news where is_rotation = 1 order by rotation_weight desc
     </select>
+    <select id="findHotNews" resultType="com.api.vo.app.AppNewsVo">
+        select id,title,create_date,IFNULL(views,0) as views from sys_news
+        order by views desc
+    </select>
+    <update id="addViews" parameterType="java.lang.Integer">
+        update sys_news
+        set views =  IFNULL(views,0)  + 1
+        where id = #{newsId}
+    </update>
+
 
 </mapper>
