@@ -61,10 +61,12 @@ public class AppGambitServiceImpl implements AppGambitService {
                 //根据主题主键id查询点赞人信息
                 List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
                 appGambitThemeVo.setLikeNames(idAndNames);
+                appGambitThemeVo.setLikeNamesNum(idAndNames.size());
 
                 //根据主题主键id查询主题评论信息
                 List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());
                 appGambitThemeVo.setGambitThemeCommentVoList(gambitThemeCommentVos);
+                appGambitThemeVo.setGambitThemeCommentNum(gambitThemeCommentVos.size());
             }
         }
         return list;
@@ -134,10 +136,12 @@ public class AppGambitServiceImpl implements AppGambitService {
         //根据主题主键id查询点赞人信息
         List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
         appGambitThemeVo.setLikeNames(idAndNames);
+        appGambitThemeVo.setLikeNamesNum(idAndNames.size());
 
         //根据主题主键id查询主题评论信息
         List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());
         appGambitThemeVo.setGambitThemeCommentVoList(gambitThemeCommentVos);
+        appGambitThemeVo.setGambitThemeCommentNum(gambitThemeCommentVos.size());
 
         map.put("message","请求成功");
         map.put("data",appGambitThemeVo);
@@ -449,10 +453,12 @@ public class AppGambitServiceImpl implements AppGambitService {
                 //根据主题主键id查询点赞人信息
                 List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
                 appGambitThemeVo.setLikeNames(idAndNames);
+                appGambitThemeVo.setLikeNamesNum(idAndNames.size());
 
                 //根据主题主键id查询主题评论信息
                 List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());
                 appGambitThemeVo.setGambitThemeCommentVoList(gambitThemeCommentVos);
+                appGambitThemeVo.setGambitThemeCommentNum(gambitThemeCommentVos.size());
             }
         }
         return list;
