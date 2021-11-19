@@ -16,6 +16,10 @@ public class MaxPopularityVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 主键id
+     */
+    private Integer id;
+    /**
      * 商品名称
      */
     private String skuName;
