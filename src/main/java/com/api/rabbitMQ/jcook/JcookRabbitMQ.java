@@ -222,7 +222,7 @@ public class JcookRabbitMQ {
                     } else {
                         jcookGoods.setStatus(0);//0.下架-jcook商品状态
                     }
-                    jcookGoods.setShopStatus(0);//0.下架-小蜜蜂商品状态
+//                    jcookGoods.setShopStatus(0);//0.下架-小蜜蜂商品状态
                     jcookGoods.setSupplyPrice(new BigDecimal(skuDetailBase.getSupplyPrice()));//填入供货价
                     jcookGoods.setGuidePrice(new BigDecimal(skuDetailBase.getGuidePrice()));//填入指导价
                     jcookGoods.setModel(skuDetailBase.getModel());//填入型号
