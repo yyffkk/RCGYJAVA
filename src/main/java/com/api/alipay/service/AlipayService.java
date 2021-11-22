@@ -4,7 +4,7 @@ import com.api.model.alipay.*;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppRepairOrder;
-import com.api.model.jcook.dto.CreateOrderDTO;
+import com.api.model.jcook.appDto.CreateOrderDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

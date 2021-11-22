@@ -2,8 +2,8 @@ package com.api.app.service.jcook.impl;
 
 import com.api.app.service.jcook.AppJcookGoodsService;
 import com.api.mapper.jcook.*;
-import com.api.model.jcook.dto.BrandSearch;
-import com.api.model.jcook.dto.RecommendGoodsSearch;
+import com.api.model.jcook.appDto.BrandSearch;
+import com.api.model.jcook.appDto.RecommendGoodsSearch;
 import com.api.model.jcook.entity.*;
 import com.api.util.PropertyUtils;
 import com.api.vo.jcook.appBrand.GoodsBrandVo;

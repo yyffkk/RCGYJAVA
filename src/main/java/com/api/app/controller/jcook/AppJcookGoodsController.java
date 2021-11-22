@@ -1,8 +1,8 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookGoodsService;
-import com.api.model.jcook.dto.BrandSearch;
-import com.api.model.jcook.dto.RecommendGoodsSearch;
+import com.api.model.jcook.appDto.BrandSearch;
+import com.api.model.jcook.appDto.RecommendGoodsSearch;
 import com.api.vo.jcook.appBrand.GoodsBrandVo;
 import com.api.vo.jcook.appGoods.OneCategoryVo;
 import com.api.vo.jcook.appGoods.RecommendGoodsListVo;

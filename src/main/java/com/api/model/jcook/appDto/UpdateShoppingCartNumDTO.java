@@ -1,4 +1,4 @@
-package com.api.model.jcook.dto;
+package com.api.model.jcook.appDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,20 +7,24 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 结算商品model
+ * 修改购物车数量model
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SettlementGoodsDTO implements Serializable {
+public class UpdateShoppingCartNumDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * jcook商品主键id
+     * 商品主键id
      */
     private Integer jcookGoodsId;
     /**
-     * 商品数量
+     * 用户主键id
+     */
+    private Integer residentId;
+    /**
+     * 购买商品数量
      */
     private Integer num;
 }

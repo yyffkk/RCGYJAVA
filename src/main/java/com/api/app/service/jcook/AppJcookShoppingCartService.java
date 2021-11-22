@@ -1,9 +1,9 @@
 package com.api.app.service.jcook;
 
-import com.api.model.jcook.dto.DeleteShoppingCartDTO;
-import com.api.model.jcook.dto.InsertShoppingCartDTO;
-import com.api.model.jcook.dto.SettlementShoppingCartDTO;
-import com.api.model.jcook.dto.UpdateShoppingCartNumDTO;
+import com.api.model.jcook.appDto.DeleteShoppingCartDTO;
+import com.api.model.jcook.appDto.InsertShoppingCartDTO;
+import com.api.model.jcook.appDto.SettlementShoppingCartDTO;
+import com.api.model.jcook.appDto.UpdateShoppingCartNumDTO;
 
 import java.util.Map;
 

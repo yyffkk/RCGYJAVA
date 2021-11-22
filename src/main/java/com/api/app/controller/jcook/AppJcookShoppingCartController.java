@@ -1,10 +1,10 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookShoppingCartService;
-import com.api.model.jcook.dto.DeleteShoppingCartDTO;
-import com.api.model.jcook.dto.InsertShoppingCartDTO;
-import com.api.model.jcook.dto.SettlementShoppingCartDTO;
-import com.api.model.jcook.dto.UpdateShoppingCartNumDTO;
+import com.api.model.jcook.appDto.DeleteShoppingCartDTO;
+import com.api.model.jcook.appDto.InsertShoppingCartDTO;
+import com.api.model.jcook.appDto.SettlementShoppingCartDTO;
+import com.api.model.jcook.appDto.UpdateShoppingCartNumDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

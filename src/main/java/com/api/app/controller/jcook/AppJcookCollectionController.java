@@ -1,7 +1,7 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookCollectionService;
-import com.api.model.jcook.dto.CollectionDTO;
+import com.api.model.jcook.appDto.CollectionDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

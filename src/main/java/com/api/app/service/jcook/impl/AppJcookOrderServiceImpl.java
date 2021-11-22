@@ -3,7 +3,7 @@ package com.api.app.service.jcook.impl;
 import com.api.app.service.jcook.AppJcookOrderService;
 import com.api.mapper.jcook.JcookOrderListMapper;
 import com.api.mapper.jcook.JcookOrderMapper;
-import com.api.model.jcook.dto.JcookOrderSearch;
+import com.api.model.jcook.appDto.JcookOrderSearch;
 import com.api.model.jcook.entity.JcookOrder;
 import com.api.model.jcook.entity.JcookOrderList;
 import com.api.util.PropertyUtils;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

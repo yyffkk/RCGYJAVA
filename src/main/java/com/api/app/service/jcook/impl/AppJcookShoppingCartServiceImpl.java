@@ -5,7 +5,7 @@ import com.api.mapper.jcook.JcookAddressMapper;
 import com.api.mapper.jcook.JcookCityMapper;
 import com.api.mapper.jcook.JcookGoodsMapper;
 import com.api.mapper.jcook.JcookShoppingCartMapper;
-import com.api.model.jcook.dto.*;
+import com.api.model.jcook.appDto.*;
 import com.api.model.jcook.entity.JcookAddress;
 import com.api.model.jcook.entity.JcookCity;
 import com.api.model.jcook.entity.JcookGoods;

@@ -1,14 +1,13 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookAddressService;
-import com.api.model.jcook.dto.DelAddressDTO;
-import com.api.model.jcook.dto.JcookAddressDTO;
-import com.api.model.jcook.dto.SettingDefaultAddressDTO;
+import com.api.model.jcook.appDto.DelAddressDTO;
+import com.api.model.jcook.appDto.JcookAddressDTO;
+import com.api.model.jcook.appDto.SettingDefaultAddressDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 /**

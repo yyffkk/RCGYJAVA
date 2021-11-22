@@ -1,4 +1,4 @@
-package com.api.model.jcook.dto;
+package com.api.model.jcook.appDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

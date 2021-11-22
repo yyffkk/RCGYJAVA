@@ -1,6 +1,6 @@
 package com.api.app.service.jcook;
 
-import com.api.model.jcook.dto.CollectionDTO;
+import com.api.model.jcook.appDto.CollectionDTO;
 
 import java.util.Map;
 

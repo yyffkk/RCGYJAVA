@@ -1,8 +1,7 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookOrderService;
-import com.api.model.jcook.dto.JcookOrderSearch;
-import com.api.vo.app.AppGambitThemeVo;
+import com.api.model.jcook.appDto.JcookOrderSearch;
 import com.api.vo.jcook.appOrder.MyOrderVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
