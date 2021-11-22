@@ -4,6 +4,7 @@ import com.api.model.jcook.manageDto.ManageJcookGoodsSearch;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface JcookGoodsService {
     /**
@@ -12,4 +13,18 @@ public interface JcookGoodsService {
      * @return map
      */
     List<ManageJcookGoodsVo> list(ManageJcookGoodsSearch manageJcookGoodsSearch);
+
+    /**
+     * 一键上架
+     * @param ids 商品主键id
+     * @return map
+     */
+    Map<String, Object> onShelf(int[] ids);
+
+    /**
+     * 一键下架
+     * @param ids 商品主键id
+     * @return map
+     */
+    Map<String, Object> offShelf(int[] ids);
 }

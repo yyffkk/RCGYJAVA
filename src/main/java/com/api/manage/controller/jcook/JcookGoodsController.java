@@ -2,13 +2,12 @@ package com.api.manage.controller.jcook;
 
 import com.api.manage.service.jcook.JcookGoodsService;
 import com.api.model.jcook.manageDto.ManageJcookGoodsSearch;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoBorrow;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -39,5 +38,25 @@ public class JcookGoodsController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 一键上架
+     * @param ids 商品主键id数组
+     * @return map
+     */
+    @PostMapping("/onShelf")
+    public Map<String,Object> onShelf(@RequestBody VoIds ids){
+        return jcookGoodsService.onShelf(ids.getIds());
+    }
+
+    /**
+     * 一键下架
+     * @param ids 商品主键id数组
+     * @return map
+     */
+    @PostMapping("/offShelf")
+    public Map<String,Object> offShelf(@RequestBody VoIds ids){
+        return jcookGoodsService.offShelf(ids.getIds());
     }
 }

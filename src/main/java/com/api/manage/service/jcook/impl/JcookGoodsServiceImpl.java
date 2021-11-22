@@ -15,13 +15,18 @@ import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class JcookGoodsServiceImpl implements JcookGoodsService {
+    private static Map<String,Object> map = new HashMap<>();
     @Resource
     JcookGoodsMapper jcookGoodsMapper;
     @Resource
@@ -66,5 +71,65 @@ public class JcookGoodsServiceImpl implements JcookGoodsService {
             }
         }
         return manageJcookGoodsVoList;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> onShelf(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                JcookGoods jcookGoods = new JcookGoods();
+                jcookGoods.setId(id);//商品主键id
+                jcookGoods.setShopStatus(1);//小蜜蜂商品上架状态，0.下架，1.上架（当jcook商品状态为上架才生效）
+                int update = jcookGoodsMapper.updateById(jcookGoods);
+                if (update <= 0){
+                    throw new RuntimeException("一键上架失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","一键上架成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> offShelf(int[] ids) {
+        map = new HashMap<>();
+        try {
+            for (int id : ids) {
+                JcookGoods jcookGoods = new JcookGoods();
+                jcookGoods.setId(id);//商品主键id
+                jcookGoods.setShopStatus(0);//小蜜蜂商品上架状态，0.下架，1.上架（当jcook商品状态为上架才生效）
+                int update = jcookGoodsMapper.updateById(jcookGoods);
+                if (update <= 0){
+                    throw new RuntimeException("一键下架失败");
+                }
+            }
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","一键下架成功");
+        map.put("status",true);
+        return map;
     }
 }
