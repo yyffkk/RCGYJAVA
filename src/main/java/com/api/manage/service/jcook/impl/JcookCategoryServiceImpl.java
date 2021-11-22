@@ -47,6 +47,40 @@ public class JcookCategoryServiceImpl implements JcookCategoryService {
         return manageJcookCategoryVoList;
     }
 
+    @Override
+    public Map<String, Object> show(Integer jcookCategoryId) {
+        map = new HashMap<>();
+        JcookCategory jcookCategory = new JcookCategory();
+        jcookCategory.setId(jcookCategoryId);//填入分类主键id
+        jcookCategory.setIsShow(1);//填入是否显示，0.隐藏，1.显示，隐藏上级会使下级分类一起隐藏
+        int update = jcookCategoryMapper.updateById(jcookCategory);
+        if (update >0){
+            map.put("message","显示成功");
+            map.put("status",true);
+        }else {
+            map.put("message","显示失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> hide(Integer jcookCategoryId) {
+        map = new HashMap<>();
+        JcookCategory jcookCategory = new JcookCategory();
+        jcookCategory.setId(jcookCategoryId);//填入分类主键id
+        jcookCategory.setIsShow(0);//填入是否显示，0.隐藏，1.显示，隐藏上级会使下级分类一起隐藏
+        int update = jcookCategoryMapper.updateById(jcookCategory);
+        if (update >0){
+            map.put("message","隐藏成功");
+            map.put("status",true);
+        }else {
+            map.put("message","隐藏失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
     /**
      * 递归查询全部的商品分类信息
      * @param parentId 商品分类父类主键id

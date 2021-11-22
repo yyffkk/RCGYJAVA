@@ -5,6 +5,7 @@ import com.api.vo.jcook.manageCategory.ManageJcookCategoryVo;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface JcookCategoryService {
     /**
@@ -18,4 +19,17 @@ public interface JcookCategoryService {
      * @return 分类信息
      */
     List<ManageJcookCategoryVo> listAll();
+    /**
+     * 显示当前分类
+     * @param jcookCategoryId 分类主键id
+     * @return map
+     */
+    Map<String, Object> show(Integer jcookCategoryId);
+    /**
+     * 隐藏当前分类
+     * @param jcookCategoryId 分类主键id
+     * @return map
+     */
+    Map<String, Object> hide(Integer jcookCategoryId);
+
 }

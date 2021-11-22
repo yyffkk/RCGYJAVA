@@ -59,5 +59,23 @@ public class JcookCategoryController {
         return map;
     }
 
+    /**
+     * 显示当前分类
+     * @param jcookCategoryId 分类主键id
+     * @return map
+     */
+    @GetMapping("/show")
+    public Map<String,Object> show(Integer jcookCategoryId){
+        return jcookCategoryService.show(jcookCategoryId);
+    }
 
+    /**
+     * 隐藏当前分类
+     * @param jcookCategoryId 分类主键id
+     * @return map
+     */
+    @GetMapping("/hide")
+    public Map<String,Object> hide(Integer jcookCategoryId){
+        return jcookCategoryService.hide(jcookCategoryId);
+    }
 }
