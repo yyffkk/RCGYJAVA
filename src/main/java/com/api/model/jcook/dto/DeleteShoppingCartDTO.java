@@ -22,5 +22,5 @@ public class DeleteShoppingCartDTO implements Serializable {
     /**
      * jcook商品主键id
      */
-    private Integer jcookGoodsId;
+    private int[] jcookGoodsIds;
 }

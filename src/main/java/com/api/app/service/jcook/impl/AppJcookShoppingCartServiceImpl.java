@@ -22,6 +22,8 @@ import org.example.api.model.LogisticsFeeSkuInfoRequest;
 import org.example.api.utils.result.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -124,20 +126,33 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
     }
 
     @Override
+    @Transactional
     public Map<String, Object> deleteShoppingCart(DeleteShoppingCartDTO deleteShoppingCartDTO) {
         map = new HashMap<>();
-        QueryWrapper<JcookShoppingCart> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("jcook_goods_id", deleteShoppingCartDTO.getJcookGoodsId());
-        queryWrapper.eq("resident_id",deleteShoppingCartDTO.getResidentId());
-        int delete = jcookShoppingCartMapper.delete(queryWrapper);
-        if (delete > 0){
-            map.put("message","删除成功");
-            map.put("status",true);
-        }else {
-            map.put("message","删除失败");
+        try {
+            int[] jcookGoodsIds = deleteShoppingCartDTO.getJcookGoodsIds();
+            for (int jcookGoodsId : jcookGoodsIds) {
+                QueryWrapper<JcookShoppingCart> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("jcook_goods_id",jcookGoodsId);
+                queryWrapper.eq("resident_id",deleteShoppingCartDTO.getResidentId());
+                int delete = jcookShoppingCartMapper.delete(queryWrapper);
+                if (delete <= 0){
+                    throw new RuntimeException("删除失败");
+                }
+            }
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
-
+        map.put("message","删除成功");
+        map.put("status",true);
         return map;
     }
 
