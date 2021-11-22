@@ -98,6 +98,14 @@ public class AppJcookAddressController {
         return appJcookAddressService.findByParentId(parentId);
     }
 
+    /**
+     * 查询所有的城市信息
+     * @return map
+     */
+    @GetMapping("/findAllCityInfo")
+    public Map<String,Object> findAllCityInfo(){
+        return appJcookAddressService.findAllCityInfo();
+    }
 
 
 }

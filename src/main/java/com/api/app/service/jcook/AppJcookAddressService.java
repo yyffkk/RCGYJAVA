@@ -48,4 +48,11 @@ public interface AppJcookAddressService {
      * @return 城市信息
      */
     Map<String, Object> findByParentId(Integer parentId);
+
+    /**
+     * 查询所有的城市信息
+     * @return map
+     */
+    Map<String, Object> findAllCityInfo();
+
 }

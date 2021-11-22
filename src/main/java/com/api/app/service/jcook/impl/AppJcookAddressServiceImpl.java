@@ -8,6 +8,7 @@ import com.api.model.jcook.dto.JcookAddressDTO;
 import com.api.model.jcook.dto.SettingDefaultAddressDTO;
 import com.api.model.jcook.entity.JcookAddress;
 import com.api.model.jcook.entity.JcookCity;
+import com.api.model.jcook.entity.JcookCityAll;
 import com.api.util.PropertyUtils;
 import com.api.vo.jcook.appAddress.CityVo;
 import com.api.vo.jcook.appAddress.MyAddressVo;
@@ -155,6 +156,37 @@ public class AppJcookAddressServiceImpl implements AppJcookAddressService {
         map.put("data",cityVoList);
         map.put("status",true);
         return map;
+    }
+
+    @Override
+    public Map<String, Object> findAllCityInfo() {
+        map = new HashMap<>();
+
+
+        List<JcookCityAll> jcookCityAlls = findAllCityRe(1);
+
+        map.put("message","请求成功");
+        map.put("data",jcookCityAlls);
+        map.put("status",true);
+        return map;
+    }
+
+    private List<JcookCityAll> findAllCityRe(int parentId) {
+        ArrayList<JcookCityAll> jcookCityAlls = new ArrayList<>();
+        QueryWrapper<JcookCity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("parent_id",parentId);
+        List<JcookCity> jcookCityList = jcookCityMapper.selectList(queryWrapper);
+        if (jcookCityList != null && jcookCityList.size()>0){
+            for (JcookCity jcookCity : jcookCityList) {
+                JcookCityAll jcookCityAll = new JcookCityAll();
+                jcookCityAll.setId(jcookCity.getId());//填入主键id
+                jcookCityAll.setName(jcookCity.getName());//填入名称
+                List<JcookCityAll> allCityRe = findAllCityRe(jcookCityAll.getId());
+                jcookCityAll.setCityList(allCityRe);//填入子城市集合
+                jcookCityAlls.add(jcookCityAll);
+            }
+        }
+        return jcookCityAlls;
     }
 
     /**
