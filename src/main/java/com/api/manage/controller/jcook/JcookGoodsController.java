@@ -69,4 +69,14 @@ public class JcookGoodsController {
     public Map<String,Object> findDetailById(Integer jcookGoodsId){
         return jcookGoodsService.findDetailById(jcookGoodsId);
     }
+
+    /**
+     * 查询商品详情 bigInfo大图信息【加载太慢了所以异步查询该接口】
+     * @param jcookGoodsId 商品主键id
+     * @return map
+     */
+    @GetMapping("/findGoodsDetailBigInfo")
+    public Map<String,Object> findGoodsDetailBigInfo(Integer jcookGoodsId){
+        return jcookGoodsService.findGoodsDetailBigInfo(jcookGoodsId);
+    }
 }

@@ -1,14 +1,8 @@
 package com.api.manage.service.jcook.impl;
 
 import com.api.manage.service.jcook.JcookGoodsService;
-import com.api.mapper.jcook.JcookBrandMapper;
-import com.api.mapper.jcook.JcookCategoryMapper;
-import com.api.mapper.jcook.JcookGoodsMapper;
-import com.api.mapper.jcook.JcookShopMapper;
-import com.api.model.jcook.entity.JcookBrand;
-import com.api.model.jcook.entity.JcookCategory;
-import com.api.model.jcook.entity.JcookGoods;
-import com.api.model.jcook.entity.JcookShop;
+import com.api.mapper.jcook.*;
+import com.api.model.jcook.entity.*;
 import com.api.model.jcook.manageDto.ManageJcookGoodsSearch;
 import com.api.util.PropertyUtils;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
@@ -35,6 +29,8 @@ public class JcookGoodsServiceImpl implements JcookGoodsService {
     JcookBrandMapper jcookBrandMapper;
     @Resource
     JcookCategoryMapper jcookCategoryMapper;
+    @Resource
+    JcookBigInfoMapper jcookBigInfoMapper;
 
     @Override
     public List<ManageJcookGoodsVo> list(ManageJcookGoodsSearch manageJcookGoodsSearch) {
@@ -160,6 +156,20 @@ public class JcookGoodsServiceImpl implements JcookGoodsService {
 
         map.put("message","请求成功");
         map.put("data",manageJcookGoodsVo);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findGoodsDetailBigInfo(Integer jcookGoodsId) {
+        //查询pc 端商品介绍[bigInfo 大图信息](使用该 字段)
+        QueryWrapper<JcookBigInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("jcook_goods_id",jcookGoodsId);
+        JcookBigInfo jcookBigInfo = jcookBigInfoMapper.selectOne(queryWrapper);
+
+
+        map.put("message","请求成功");
+        map.put("data",jcookBigInfo.getPcWdis());
         map.put("status",true);
         return map;
     }

@@ -34,4 +34,11 @@ public interface JcookGoodsService {
      * @return map
      */
     Map<String, Object> findDetailById(Integer jcookGoodsId);
+
+    /**
+     * 查询商品详情 bigInfo大图信息【加载太慢了所以异步查询该接口】
+     * @param jcookGoodsId 商品主键id
+     * @return map
+     */
+    Map<String, Object> findGoodsDetailBigInfo(Integer jcookGoodsId);
 }
