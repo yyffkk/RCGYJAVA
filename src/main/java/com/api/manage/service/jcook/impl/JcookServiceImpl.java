@@ -93,7 +93,7 @@ public class JcookServiceImpl implements JcookService {
                             jcookCategory = new JcookCategory();
                             jcookCategory.setName(skuDetailBase.getCategoryFirstName());
                             jcookCategory.setParentId(0);//默认为0顶层
-                            jcookCategory.setIsShow(1);//默认1.显示
+                            jcookCategory.setIsShow(0);//默认0.隐藏
                             jcookCategoryMapper.insert(jcookCategory);
                         }
 
@@ -107,7 +107,7 @@ public class JcookServiceImpl implements JcookService {
                             jcookCategory2 = new JcookCategory();
                             jcookCategory2.setName(skuDetailBase.getCategorySecondName());
                             jcookCategory2.setParentId(jcookCategory.getId());//默认为0顶层
-                            jcookCategory2.setIsShow(1);//默认1.显示
+                            jcookCategory2.setIsShow(0);//默认0.隐藏
                             jcookCategoryMapper.insert(jcookCategory2);
                         }
 
@@ -121,7 +121,7 @@ public class JcookServiceImpl implements JcookService {
                             jcookCategory3 = new JcookCategory();
                             jcookCategory3.setName(skuDetailBase.getCategoryThirdName());
                             jcookCategory3.setParentId(jcookCategory2.getId());//默认为0顶层
-                            jcookCategory3.setIsShow(1);//默认1.显示
+                            jcookCategory3.setIsShow(0);//默认0.隐藏
                             jcookCategoryMapper.insert(jcookCategory3);
                         }
 
