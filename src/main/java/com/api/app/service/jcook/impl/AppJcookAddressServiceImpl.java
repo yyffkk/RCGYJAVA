@@ -8,7 +8,7 @@ import com.api.model.jcook.appDto.JcookAddressDTO;
 import com.api.model.jcook.appDto.SettingDefaultAddressDTO;
 import com.api.model.jcook.entity.JcookAddress;
 import com.api.model.jcook.entity.JcookCity;
-import com.api.model.jcook.entity.JcookCityAll;
+import com.api.model.jcook.appDto.JcookCityAll;
 import com.api.util.PropertyUtils;
 import com.api.vo.jcook.appAddress.CityVo;
 import com.api.vo.jcook.appAddress.MyAddressVo;
