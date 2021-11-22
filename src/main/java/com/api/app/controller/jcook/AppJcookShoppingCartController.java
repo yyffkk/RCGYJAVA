@@ -60,7 +60,7 @@ public class AppJcookShoppingCartController {
     }
 
     /**
-     * 批量删除购物车商品
+     * 删除购物车商品
      * @param deleteShoppingCartDTO 删除购物车model
      * @param request app-admin-token获取的request用户信息
      * @return map
