@@ -74,6 +74,15 @@ public class AppJcookGoodsController {
     }
 
     /**
+     * 查询所有的可显示的分类信息
+     * @return map
+     */
+    @GetMapping("/findAllCategoryInfo")
+    public Map<String,Object> findAllCategoryInfo(){
+        return appJcookGoodsService.findAllCategoryInfo();
+    }
+
+    /**
      * 查询最大人气值的几个(热搜及爆品推荐【爆品推荐后期用购买量来判断】)
      * @param num 取前几个
      * @return map

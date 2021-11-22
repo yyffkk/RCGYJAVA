@@ -70,4 +70,11 @@ public interface AppJcookGoodsService {
      * @return 所有的品牌
      */
     List<GoodsBrandVo> findAllBrand(BrandSearch brandSearch);
+
+    /**
+     * 查询所有的可显示的分类信息
+     * @return map
+     */
+    Map<String, Object> findAllCategoryInfo();
+
 }

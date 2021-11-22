@@ -171,6 +171,11 @@ public class AppJcookAddressServiceImpl implements AppJcookAddressService {
         return map;
     }
 
+    /**
+     * 递归查询全部的城市信息
+     * @param parentId 城市信息父类主键id
+     * @return 城市信息
+     */
     private List<JcookCityAll> findAllCityRe(int parentId) {
         ArrayList<JcookCityAll> jcookCityAlls = new ArrayList<>();
         QueryWrapper<JcookCity> queryWrapper = new QueryWrapper<>();

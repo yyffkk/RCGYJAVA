@@ -334,6 +334,41 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
         return goodsBrandVoList;
     }
 
+    @Override
+    public Map<String, Object> findAllCategoryInfo() {
+        map = new HashMap<>();
+        List<JcookCategoryAllShow> jcookCategoryAllShows = findAllCategoryRe(0);
+
+        map.put("message","请求成功");
+        map.put("data",jcookCategoryAllShows);
+        map.put("status",true);
+        return map;
+    }
+
+    /**
+     * 递归查询全部的可显示的商品分类信息
+     * @param parentId 商品分类父类主键id
+     * @return 城市信息
+     */
+    private List<JcookCategoryAllShow> findAllCategoryRe(int parentId) {
+        ArrayList<JcookCategoryAllShow> jcookCategoryAllShows = new ArrayList<>();
+        QueryWrapper<JcookCategory> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("parent_id",parentId);//填入父类主键id
+        queryWrapper.eq("is_show",1);//填入是否显示，0.隐藏，1.显示，隐藏上级会使下级分类一起隐藏
+        List<JcookCategory> jcookCategoryList = jcookCategoryMapper.selectList(queryWrapper);
+        if (jcookCategoryList != null && jcookCategoryList.size()>0){
+            for (JcookCategory jcookCategory : jcookCategoryList) {
+                JcookCategoryAllShow jcookCategoryAllShow = new JcookCategoryAllShow();
+                jcookCategoryAllShow.setId(jcookCategory.getId());//填入主键id
+                jcookCategoryAllShow.setName(jcookCategory.getName());//填入名称
+                List<JcookCategoryAllShow> allCategoryRe = findAllCategoryRe(jcookCategoryAllShow.getId());
+                jcookCategoryAllShow.setCategoryList(allCategoryRe);//填入子城市集合
+                jcookCategoryAllShows.add(jcookCategoryAllShow);
+            }
+        }
+        return jcookCategoryAllShows;
+    }
+
     /**
      * 查询城市地址
      * @param isCreate 是否需要创建了StringBuild对象
