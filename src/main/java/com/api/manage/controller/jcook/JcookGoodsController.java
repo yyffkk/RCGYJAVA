@@ -59,4 +59,14 @@ public class JcookGoodsController {
     public Map<String,Object> offShelf(@RequestBody VoIds ids){
         return jcookGoodsService.offShelf(ids.getIds());
     }
+
+    /**
+     * 根据商品主键id查询商品详情
+     * @param jcookGoodsId 商品主键id
+     * @return map
+     */
+    @GetMapping("/findDetailById")
+    public Map<String,Object> findDetailById(Integer jcookGoodsId){
+        return jcookGoodsService.findDetailById(jcookGoodsId);
+    }
 }

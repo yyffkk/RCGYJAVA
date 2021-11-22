@@ -27,4 +27,11 @@ public interface JcookGoodsService {
      * @return map
      */
     Map<String, Object> offShelf(int[] ids);
+
+    /**
+     * 根据商品主键id查询商品详情
+     * @param jcookGoodsId 商品主键id
+     * @return map
+     */
+    Map<String, Object> findDetailById(Integer jcookGoodsId);
 }

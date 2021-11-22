@@ -132,4 +132,35 @@ public class JcookGoodsServiceImpl implements JcookGoodsService {
         map.put("status",true);
         return map;
     }
+
+    @Override
+    public Map<String, Object> findDetailById(Integer jcookGoodsId) {
+        map = new HashMap<>();
+
+        JcookGoods jcookGood = jcookGoodsMapper.selectById(jcookGoodsId);
+        ManageJcookGoodsVo manageJcookGoodsVo = new ManageJcookGoodsVo();
+        PropertyUtils.copyProperties(jcookGood,manageJcookGoodsVo);
+
+        JcookBrand jcookBrand = jcookBrandMapper.selectById(jcookGood.getBrandId());
+        manageJcookGoodsVo.setBrandName(jcookBrand.getBrandName());//填入品牌名称
+
+        JcookShop jcookShop = jcookShopMapper.selectById(jcookGood.getShopId());
+        manageJcookGoodsVo.setShopName(jcookShop.getShopName());//填入商铺名称
+
+        JcookCategory jcookCategoryFirst = jcookCategoryMapper.selectById(jcookGood.getCategoryFirstId());
+        manageJcookGoodsVo.setCategoryFirstName(jcookCategoryFirst.getName());//填入一级分类名称
+
+        JcookCategory jcookCategorySecond = jcookCategoryMapper.selectById(jcookGood.getCategorySecondId());
+        manageJcookGoodsVo.setCategorySecondName(jcookCategorySecond.getName());//填入二级分类名称
+
+        JcookCategory jcookCategoryThird = jcookCategoryMapper.selectById(jcookGood.getCategoryThirdId());
+        manageJcookGoodsVo.setCategoryThirdName(jcookCategoryThird.getName());//填入三级分类名称
+
+
+
+        map.put("message","请求成功");
+        map.put("data",manageJcookGoodsVo);
+        map.put("status",true);
+        return map;
+    }
 }
