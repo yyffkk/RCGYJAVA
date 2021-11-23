@@ -59,5 +59,5 @@ public class OrderCancel implements Serializable {
     /**
      * 1=取消成功 2=取消失败 3=申请取消 4=申请拒收
      */
-    private Integer cancelStatus;
+    private Integer status;
 }

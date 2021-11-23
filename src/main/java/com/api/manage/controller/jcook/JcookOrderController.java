@@ -1,6 +1,7 @@
 package com.api.manage.controller.jcook;
 
 import com.api.manage.service.jcook.JcookOrderService;
+import com.api.model.jcook.manageDto.ManageJcookCancelOrderDTO;
 import com.api.model.jcook.manageDto.ManageJcookOrderSearch;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
 import com.api.vo.jcook.manageOrder.ManageJcookOrderVo;
@@ -40,6 +41,16 @@ public class JcookOrderController {
         map.put("rowCount",pageInfo.getTotal());
         map.put("pageCount",pageInfo.getPages());
         return map;
+    }
+
+    /**
+     * 取消订单
+     * @param manageJcookCancelOrderDTO 取消订单 DTO
+     * @return map
+     */
+    @GetMapping("/cancel")
+    public Map<String,Object> cancel(ManageJcookCancelOrderDTO manageJcookCancelOrderDTO){
+        return jcookOrderService.cancel(manageJcookCancelOrderDTO);
     }
 
 }

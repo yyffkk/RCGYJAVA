@@ -1,9 +1,11 @@
 package com.api.manage.service.jcook;
 
+import com.api.model.jcook.manageDto.ManageJcookCancelOrderDTO;
 import com.api.model.jcook.manageDto.ManageJcookOrderSearch;
 import com.api.vo.jcook.manageOrder.ManageJcookOrderVo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface JcookOrderService {
     /**
@@ -12,4 +14,11 @@ public interface JcookOrderService {
      * @return 商品订单信息
      */
     List<ManageJcookOrderVo> list(ManageJcookOrderSearch manageJcookOrderSearch);
+
+    /**
+     * 取消订单
+     * @param manageJcookCancelOrderDTO 取消订单 DTO
+     * @return map
+     */
+    Map<String, Object> cancel(ManageJcookCancelOrderDTO manageJcookCancelOrderDTO);
 }

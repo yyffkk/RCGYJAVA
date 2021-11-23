@@ -1065,7 +1065,7 @@ public class JcookRabbitMQ {
                 return;
             }
         }
-        switch (orderCancel.getCancelStatus()){
+        switch (orderCancel.getStatus()){
             case 1://1.取消订单成功
                 jcookOrder.setTradeStatus(9);//9.取消订单成功
                 break;
