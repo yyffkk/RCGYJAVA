@@ -30,10 +30,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -570,6 +567,8 @@ public class JcookRabbitMQ {
             //--创建新订单
             JcookOrder jcookOrderNew = new JcookOrder();
             PropertyUtils.copyProperties(jcookOrder,jcookOrderNew);
+            jcookOrderNew.setCode(UUID.randomUUID().toString().replace("-", ""));//填入新小蜜蜂订单号
+            jcookOrderNew.setJcookCode(String.valueOf(orderCreate.getOrderId()));//填入拆单后的jcook订单号
             jcookOrderNew.setTradeStatus(2);//2.交易支付成功（待发货）
             jcookOrderNew.setPayPrice(new BigDecimal(orderCreate.getTotalFee()));//填入包含运费的金额【指供货价】
             jcookOrderNew.setFreightFee(new BigDecimal(orderCreate.getFreightFee()));//填入运费
@@ -582,13 +581,13 @@ public class JcookRabbitMQ {
                 for (OrderCreateSkuInfo orderCreateSkuInfo : skuList) {
                     //根据sku编码和旧订单号，查询商品价格
                     QueryWrapper<JcookOrderList> queryWrapper3 = new QueryWrapper<>();
-                    queryWrapper3.eq("sku_id",orderCreateSkuInfo.getSkuId());
-                    queryWrapper3.eq("jcook_order_id",orderCreate.getParentOrderId());
+                    queryWrapper3.eq("sku_id",orderCreateSkuInfo.getSkuId());//填入商品sku_id
+                    queryWrapper3.eq("jcook_order_id",jcookOrder.getId());//填入小蜜蜂旧订单主键id
                     JcookOrderList jcookOrderList = jcookOrderListMapper.selectOne(queryWrapper3);
                     //添加新订单详情
                     jcookOrderList.setJcookOrderId(jcookOrderNew.getId());//填入jcook订单主键id
                     jcookOrderList.setNum(orderCreateSkuInfo.getQuantity());//填入购买数量
-                    jcookOrderList.setPayPrice(jcookOrderList.getSellPrice().multiply(new BigDecimal(jcookOrderList.getNum())));//填入付款金额
+                    jcookOrderList.setPayPrice(jcookOrderList.getSellPrice().multiply(new BigDecimal(orderCreateSkuInfo.getQuantity())));//填入付款金额
                     jcookOrderList.setSkuName(orderCreateSkuInfo.getSkuName());//填入商品名称
                     jcookOrderList.setMainPhoto(orderCreateSkuInfo.getUrl());//填入主图url
                     jcookOrderListMapper.insert(jcookOrderList);
@@ -629,6 +628,8 @@ public class JcookRabbitMQ {
             //--创建新订单
             JcookOrder jcookOrderNew = new JcookOrder();
             PropertyUtils.copyProperties(jcookOrder,jcookOrderNew);
+            jcookOrderNew.setCode(UUID.randomUUID().toString().replace("-", ""));//填入新小蜜蜂订单号
+            jcookOrderNew.setJcookCode(String.valueOf(orderCreate.getOrderId()));//填入拆单后的jcook订单号
             jcookOrderNew.setTradeStatus(2);//2.交易支付成功（待发货）
             jcookOrderNew.setPayPrice(new BigDecimal(orderCreate.getTotalFee()));//填入包含运费的金额【指供货价】
             jcookOrderNew.setFreightFee(new BigDecimal(orderCreate.getFreightFee()));//填入运费
@@ -641,13 +642,13 @@ public class JcookRabbitMQ {
                 for (OrderCreateSkuInfo orderCreateSkuInfo : skuList) {
                     //根据sku编码和旧订单号，查询商品价格
                     QueryWrapper<JcookOrderList> queryWrapper3 = new QueryWrapper<>();
-                    queryWrapper3.eq("sku_id",orderCreateSkuInfo.getSkuId());
-                    queryWrapper3.eq("jcook_order_id",orderCreate.getParentOrderId());
+                    queryWrapper3.eq("sku_id",orderCreateSkuInfo.getSkuId());//填入商品sku_id
+                    queryWrapper3.eq("jcook_order_id",jcookOrder.getId());//填入小蜜蜂旧订单主键id
                     JcookOrderList jcookOrderList = jcookOrderListMapper.selectOne(queryWrapper3);
                     //添加新订单详情
                     jcookOrderList.setJcookOrderId(jcookOrderNew.getId());//填入jcook订单主键id
                     jcookOrderList.setNum(orderCreateSkuInfo.getQuantity());//填入购买数量
-                    jcookOrderList.setPayPrice(jcookOrderList.getSellPrice().multiply(new BigDecimal(jcookOrderList.getNum())));//填入付款金额
+                    jcookOrderList.setPayPrice(jcookOrderList.getSellPrice().multiply(new BigDecimal(orderCreateSkuInfo.getQuantity())));//填入付款金额
                     jcookOrderList.setSkuName(orderCreateSkuInfo.getSkuName());//填入商品名称
                     jcookOrderList.setMainPhoto(orderCreateSkuInfo.getUrl());//填入主图url
                     jcookOrderListMapper.insert(jcookOrderList);
@@ -754,6 +755,11 @@ public class JcookRabbitMQ {
             //交易创建并等待买家付款，重回mq
             log.info("该订单尚未支付成功，使该订单推送流程重回mq队列,order_id"+orderPay.getOrderId());
             try {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 //否认消息,使消息重回队列
                 channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, true);
                 return;
@@ -765,12 +771,7 @@ public class JcookRabbitMQ {
             //交易未支付成功，直接抛弃mq
             log.info("交易未支付成功，order_id:"+orderPay.getOrderId());
             try {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //否认消息,使消息重回队列
+                //否认消息,拒绝消息重回队列
                 channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
                 return;
             } catch (IOException ioException) {

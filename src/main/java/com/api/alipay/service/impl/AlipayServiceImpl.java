@@ -2952,9 +2952,10 @@ public class AlipayServiceImpl implements AlipayService {
             if (jcookAddress != null){
                 //查询所在地区名称
                 StringBuilder locationName = findCityAddressDetails(true, jcookAddress.getLocation());
+                StringBuilder addressDetail = locationName.append(jcookAddress.getAddressDetail());//加上地址详情
 
                 //创建订单
-                orderSubmitRequest.setAddress(locationName.toString());//填入地址
+                orderSubmitRequest.setAddress(addressDetail.toString());//填入所在地区名称+详细地址
                 orderSubmitRequest.setOrderFee(sellPrice);//填入订单费用
 
                 //计算运费
