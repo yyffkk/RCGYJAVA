@@ -1339,6 +1339,7 @@ public class SysAutoRemind {
                 //修改超时订单的状态为1.未付款交易超时关闭或支付完成后全额退款
                 jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
                 jcookOrderMapper.updateById(jcookOrder);
+                //进行jcook的取消订单操作
                 JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
                 OrderCancelRequest orderCancelRequest = new OrderCancelRequest();
                 orderCancelRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));
