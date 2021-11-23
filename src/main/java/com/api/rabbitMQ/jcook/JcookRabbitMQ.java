@@ -743,7 +743,7 @@ public class JcookRabbitMQ {
             //订单号异常,直接抛弃mq
             log.info("-----------订单号异常,未查询到对应的订单，order_id:"+orderPay.getOrderId());
             try {
-                //否认消息,使消息重回队列
+                //否认消息,拒绝消息重回队列
                 channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
                 return;
             } catch (IOException ioException) {
@@ -765,6 +765,11 @@ public class JcookRabbitMQ {
             //交易未支付成功，直接抛弃mq
             log.info("交易未支付成功，order_id:"+orderPay.getOrderId());
             try {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 //否认消息,使消息重回队列
                 channel.basicNack((Long) map.get(AmqpHeaders.DELIVERY_TAG), false, false);
                 return;
