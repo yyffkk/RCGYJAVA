@@ -47,10 +47,15 @@ import com.api.vo.chargeManagement.VoFindAllDailyPayment;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.example.api.JcookSDK;
+import org.example.api.model.OrderCancelRequest;
+import org.example.api.model.OrderCancelResponse;
+import org.example.api.utils.result.Result;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -60,6 +65,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -144,7 +150,12 @@ public class SysAutoRemind {
     SysMeterReadingRecordService meterReadingRecordService;
     @Resource
     JcookOrderMapper jcookOrderMapper;
-
+    @Value("${jcook.app_key}")
+    private String JCOOK_APP_KEY;    //jcook appKey
+    @Value("${jcook.app_secret}")
+    private String JCOOK_APP_SECRET;    //jcook appSecret
+    @Value("${jcook.channel_id}")
+    private Integer JCOOK_CHANNEL_ID;    //jcook channelId
 
     /**
      * 后台系统借还提醒，每隔一天进行校对数据库，如果出借时长超过7天则系统自动发出提醒
@@ -1328,8 +1339,16 @@ public class SysAutoRemind {
                 //修改超时订单的状态为1.未付款交易超时关闭或支付完成后全额退款
                 jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
                 jcookOrderMapper.updateById(jcookOrder);
+                JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+                OrderCancelRequest orderCancelRequest = new OrderCancelRequest();
+                orderCancelRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));
+                orderCancelRequest.setCancelReasonCode(100);//取消原因：100。其他【订单支付超时】
+                Result<OrderCancelResponse> result = jcookSDK.orderCancel(orderCancelRequest);
+                if (result.getCode() != 200){
+                    log.info("-------jcook取消订单异常，异常原因："+result.getMsg()+"，订单号为："+jcookOrder.getJcookCode());
+                }
             }
-            log.info("修改jcook商城未付款超时订单--------------------start");
+            log.info("修改jcook商城未付款超时订单--------------------end");
         }
 
 //        log.info("查询并修改jcook商城未付款超时订单--------------------end");
