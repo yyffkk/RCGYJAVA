@@ -82,7 +82,7 @@ public class JcookOrderServiceImpl implements JcookOrderService {
             return map;
         }
 
-        map.put("message","请求成功");
+        map.put("message","取消成功");
         map.put("status",true);
         return map;
     }
