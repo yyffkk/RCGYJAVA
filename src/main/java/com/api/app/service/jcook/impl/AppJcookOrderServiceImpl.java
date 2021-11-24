@@ -3,6 +3,7 @@ package com.api.app.service.jcook.impl;
 import com.api.app.service.jcook.AppJcookOrderService;
 import com.api.mapper.jcook.JcookOrderListMapper;
 import com.api.mapper.jcook.JcookOrderMapper;
+import com.api.model.jcook.appDto.AppJcookCancelOrderDTO;
 import com.api.model.jcook.appDto.JcookOrderSearch;
 import com.api.model.jcook.entity.JcookOrder;
 import com.api.model.jcook.entity.JcookOrderList;
@@ -11,10 +12,17 @@ import com.api.vo.jcook.appOrder.MyOrderListVo;
 import com.api.vo.jcook.appOrder.MyOrderVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
+import org.example.api.JcookSDK;
+import org.example.api.model.OrderCancelRequest;
+import org.example.api.model.OrderCancelResponse;
+import org.example.api.utils.result.Result;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +33,12 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
     JcookOrderMapper jcookOrderMapper;
     @Resource
     JcookOrderListMapper jcookOrderListMapper;
+    @Value("${jcook.app_key}")
+    private String JCOOK_APP_KEY;    //jcook appKey
+    @Value("${jcook.app_secret}")
+    private String JCOOK_APP_SECRET;    //jcook appSecret
+    @Value("${jcook.channel_id}")
+    private Integer JCOOK_CHANNEL_ID;    //jcook channelId
 
     @Override
     public List<MyOrderVo> myOrder(JcookOrderSearch jcookOrderSearch) {
@@ -60,5 +74,31 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
         }
 
         return myOrderVoList;
+    }
+
+    @Override
+    public Map<String, Object> cancel(AppJcookCancelOrderDTO appJcookCancelOrderDTO) {
+        map = new HashMap<>();
+        JcookOrder jcookOrder = jcookOrderMapper.selectById(appJcookCancelOrderDTO.getOrderId());
+        if (jcookOrder != null){
+            JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+            OrderCancelRequest orderCancelRequest = new OrderCancelRequest();
+            orderCancelRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));
+            orderCancelRequest.setCancelReasonCode(appJcookCancelOrderDTO.getCancelReasonCode());//取消原因
+            Result<OrderCancelResponse> result = jcookSDK.orderCancel(orderCancelRequest);
+            if (result.getCode() != 200){
+                map.put("message",result.getMsg());
+                map.put("status",false);
+                return map;
+            }
+        }else {
+            map.put("message","订单不存在");
+            map.put("status",false);
+            return map;
+        }
+
+        map.put("message","取消成功");
+        map.put("status",true);
+        return map;
     }
 }
