@@ -74,6 +74,18 @@ public class AppJcookAddressServiceImpl implements AppJcookAddressService {
     @Override
     public Map<String, Object> update(JcookAddressDTO jcookAddressDTO) {
         map = new HashMap<>();
+
+        if (jcookAddressDTO.getIsDefault() != null && jcookAddressDTO.getIsDefault() == 1){
+            //当更新时设置默认地址为是
+            //先全部置于否
+            JcookAddress jcookAddress2 = new JcookAddress();
+            jcookAddress2.setIsDefault(0);//0.否
+            QueryWrapper<JcookAddress> queryWrapper2 = new QueryWrapper<>();
+            queryWrapper2.eq("resident_id",jcookAddressDTO.getResidentId());//填入用户主键id
+            jcookAddressMapper.update(jcookAddress2, queryWrapper2);
+        }
+
+        //再更新对应的信息
         JcookAddress jcookAddress = new JcookAddress();
         //DTO 转 DO
         PropertyUtils.copyProperties(jcookAddressDTO,jcookAddress);
