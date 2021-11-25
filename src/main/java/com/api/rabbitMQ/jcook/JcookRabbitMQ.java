@@ -246,7 +246,7 @@ public class JcookRabbitMQ {
                         jcookGoods.setYn(0);//填入0.无效
                     }
                     jcookGoods.setUnit(skuDetailBase.getUnit());//填入商品单位
-                    jcookGoods.setUpdatedAt(skuDetailBase.getUpdatedAt());//填入更新时间
+                    jcookGoods.setUpdatedAt(new Date());//填入更新时间
                     jcookGoods.setColor(skuDetailBase.getColor());//填入颜色
                     jcookGoods.setWarranty(skuDetailBase.getWarranty());//填入质保
                     jcookGoods.setShelfLife(skuDetailBase.getShelfLife());//填入质保天数
@@ -468,6 +468,7 @@ public class JcookRabbitMQ {
                 jcookGoods.setId(jcookGoodsFBI.getId());//填入商品主键id
                 jcookGoods.setSupplyPrice(new BigDecimal(skuDetailBase.getSupplyPrice()));//填写供货价
                 jcookGoods.setGuidePrice(new BigDecimal(skuDetailBase.getGuidePrice()));//添加指导价
+                jcookGoods.setUpdatedAt(new Date());//填入更新时间
                 jcookGoodsMapper.updateById(jcookGoods);
             }
         }
