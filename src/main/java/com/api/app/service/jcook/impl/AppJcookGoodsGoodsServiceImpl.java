@@ -90,7 +90,6 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
     @Override
     public Map<String, Object> newProductsTodayNum() {
         map = new HashMap<>();
-        Date date = new Date();
         //获取当天起始时间和结束时间
         LocalDateTime today_start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);//当天零点
         LocalDateTime today_end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);//当天零点
@@ -307,6 +306,7 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
 
     @Override
     public Map<String, Object> findGoodsDetailBigInfo(Integer shopId) {
+        map = new HashMap<>();
         //查询pc 端商品介绍[bigInfo 大图信息](使用该 字段)
         QueryWrapper<JcookBigInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("jcook_goods_id",shopId);
