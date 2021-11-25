@@ -14,10 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class JcookGoodsServiceImpl implements JcookGoodsService {
@@ -168,9 +167,12 @@ public class JcookGoodsServiceImpl implements JcookGoodsService {
         queryWrapper.eq("jcook_goods_id",jcookGoodsId);
         JcookBigInfo jcookBigInfo = jcookBigInfoMapper.selectOne(queryWrapper);
 
+        Set<String> imgStr = getImgStr(jcookBigInfo.getPcWdis());
+
 
         map.put("message","请求成功");
-        map.put("data",jcookBigInfo.getPcWdis());
+//        map.put("data",jcookBigInfo.getPcWdis());
+        map.put("data",imgStr);
         map.put("status",true);
         return map;
     }
@@ -190,5 +192,44 @@ public class JcookGoodsServiceImpl implements JcookGoodsService {
             map.put("status",false);
         }
         return map;
+    }
+
+    /** 获取图片字符串中所有链接 */
+    public Set<String> getImgStr(String htmlStr) {
+        Set<String> pics = new HashSet<>();
+        String img = "";
+        Pattern p_image;
+        Matcher m_image;
+        //     String regEx_img = "<img.*src=(.*?)[^>]*?>"; //图片链接地址
+        String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+
+        p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(htmlStr);
+        while (m_image.find()) {
+            // 得到<img />数据
+            img = m_image.group();
+            // 匹配<img>中的src数据
+            Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+            while (m.find()) {
+                pics.add(m.group(1));
+            }
+        }
+
+        Pattern p_image2;
+        Matcher m_image2;
+        String regEx_img2 = "background-image:url\\((?s:(.*?))\\)|src=\"(?s:(.*?))\"";
+        p_image2 = Pattern.compile(regEx_img2, Pattern.CASE_INSENSITIVE);
+        m_image2 = p_image2.matcher(htmlStr);
+        while (m_image2.find()) {
+            // 得到<img />数据
+            img = m_image2.group();
+            // 匹配<img>中的src数据
+            Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+            while (m.find()) {
+                pics.add(m.group(1));
+            }
+        }
+
+        return pics;
     }
 }
