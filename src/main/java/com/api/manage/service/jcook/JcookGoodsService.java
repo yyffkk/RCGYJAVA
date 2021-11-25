@@ -1,6 +1,7 @@
 package com.api.manage.service.jcook;
 
 import com.api.model.jcook.manageDto.ManageJcookGoodsSearch;
+import com.api.model.jcook.manageDto.ManageJcookUpdatePriceDTO;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
 
 import java.util.List;
@@ -41,4 +42,11 @@ public interface JcookGoodsService {
      * @return map
      */
     Map<String, Object> findGoodsDetailBigInfo(Integer jcookGoodsId);
+
+    /**
+     * 修改商品价格
+     * @param manageJcookUpdatePriceDTO 修改商品价格 DTO
+     * @return map
+     */
+    Map<String, Object> updatePrice(ManageJcookUpdatePriceDTO manageJcookUpdatePriceDTO);
 }

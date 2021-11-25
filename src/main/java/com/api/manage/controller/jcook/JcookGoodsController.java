@@ -2,6 +2,7 @@ package com.api.manage.controller.jcook;
 
 import com.api.manage.service.jcook.JcookGoodsService;
 import com.api.model.jcook.manageDto.ManageJcookGoodsSearch;
+import com.api.model.jcook.manageDto.ManageJcookUpdatePriceDTO;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoBorrow;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
@@ -78,5 +79,15 @@ public class JcookGoodsController {
     @GetMapping("/findGoodsDetailBigInfo")
     public Map<String,Object> findGoodsDetailBigInfo(Integer jcookGoodsId){
         return jcookGoodsService.findGoodsDetailBigInfo(jcookGoodsId);
+    }
+
+
+    /**
+     * 修改商品价格
+     * @return map
+     */
+    @PostMapping("/updatePrice")
+    public Map<String,Object> updatePrice(@RequestBody ManageJcookUpdatePriceDTO manageJcookUpdatePriceDTO){
+        return jcookGoodsService.updatePrice(manageJcookUpdatePriceDTO);
     }
 }

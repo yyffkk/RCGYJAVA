@@ -76,7 +76,7 @@ public class JcookGoods {
      */
     private BigDecimal sellPrice;
     /**
-     * 折扣量
+     * 折扣价（划线价）
      */
     private BigDecimal discountPrice;
     /**

@@ -4,6 +4,7 @@ import com.api.manage.service.jcook.JcookGoodsService;
 import com.api.mapper.jcook.*;
 import com.api.model.jcook.entity.*;
 import com.api.model.jcook.manageDto.ManageJcookGoodsSearch;
+import com.api.model.jcook.manageDto.ManageJcookUpdatePriceDTO;
 import com.api.util.PropertyUtils;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -171,6 +172,23 @@ public class JcookGoodsServiceImpl implements JcookGoodsService {
         map.put("message","请求成功");
         map.put("data",jcookBigInfo.getPcWdis());
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updatePrice(ManageJcookUpdatePriceDTO manageJcookUpdatePriceDTO) {
+        map = new HashMap<>();
+
+        JcookGoods jcookGoods = new JcookGoods();
+        PropertyUtils.copyProperties(manageJcookUpdatePriceDTO,jcookGoods);
+        int update = jcookGoodsMapper.updateById(jcookGoods);
+        if (update >0){
+            map.put("message","修改成功");
+            map.put("status",true);
+        }else {
+            map.put("message","修改失败");
+            map.put("status",false);
+        }
         return map;
     }
 }

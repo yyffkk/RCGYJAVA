@@ -18,6 +18,10 @@ public class GoodsDetailVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 主键id
+     */
+    private Integer id;
+    /**
      * image列表
      */
     private List<GoodsDetailImageVo> goodsDetailImageVos;
