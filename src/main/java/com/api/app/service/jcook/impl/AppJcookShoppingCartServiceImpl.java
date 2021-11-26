@@ -84,6 +84,11 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
         JcookShoppingCart jcookShoppingCart = jcookShoppingCartMapper.selectOne(queryWrapper);
         int operation = 0;
         if (jcookShoppingCart != null){
+            if (jcookShoppingCart.getNum() >= 10){
+                map.put("message","当前商品数量已超过10件，加入购物车失败");
+                map.put("status",false);
+                return map;
+            }
             //对已有商品进行 购买数量加一 操作
             jcookShoppingCart.setNum(jcookShoppingCart.getNum()+1);//进行购买数量加一
             operation = jcookShoppingCartMapper.updateById(jcookShoppingCart);
