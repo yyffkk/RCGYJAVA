@@ -1,4 +1,4 @@
-package com.api.model.jcook.entity;
+package com.api.vo.jcook.manageOrder;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,14 +7,15 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
- * jcook订单model
+ * manage jcook商品订单详情管理Vo回显
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class JcookOrder implements Serializable {
+public class ManageJcookOrderDetailVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -80,29 +81,13 @@ public class JcookOrder implements Serializable {
     /**
      * 创建人
      */
-    private Integer createId;
+    private String createName;
     /**
      * 创建时间
      */
     private Date createDate;
     /**
-     * 通知时间
+     * 订单详情商品list
      */
-    private Date notifyTime;
-    /**
-     * 交易创建时间
-     */
-    private Date gmtCreate;
-    /**
-     * 交易付款时间
-     */
-    private Date gmtPayment;
-    /**
-     * 交易退款时间
-     */
-    private Date gmtRefund;
-    /**
-     * 交易结束时间
-     */
-    private Date gmtClose;
+    private List<ManageJcookOrderDetailSkuListVo> skuList;
 }

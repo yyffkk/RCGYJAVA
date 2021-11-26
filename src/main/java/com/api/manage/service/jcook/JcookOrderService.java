@@ -21,4 +21,11 @@ public interface JcookOrderService {
      * @return map
      */
     Map<String, Object> cancel(ManageJcookCancelOrderDTO manageJcookCancelOrderDTO);
+
+    /**
+     * 查询订单详情
+     * @param orderId 订单主键id
+     * @return
+     */
+    Map<String, Object> findDetail(Integer orderId);
 }

@@ -2,12 +2,16 @@ package com.api.manage.service.jcook.impl;
 
 import com.api.manage.dao.basicArchives.UserResidentDao;
 import com.api.manage.service.jcook.JcookOrderService;
+import com.api.mapper.jcook.JcookOrderListMapper;
 import com.api.mapper.jcook.JcookOrderMapper;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.jcook.entity.JcookOrder;
+import com.api.model.jcook.entity.JcookOrderList;
 import com.api.model.jcook.manageDto.ManageJcookCancelOrderDTO;
 import com.api.model.jcook.manageDto.ManageJcookOrderSearch;
 import com.api.util.PropertyUtils;
+import com.api.vo.jcook.manageOrder.ManageJcookOrderDetailSkuListVo;
+import com.api.vo.jcook.manageOrder.ManageJcookOrderDetailVo;
 import com.api.vo.jcook.manageOrder.ManageJcookOrderVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +36,8 @@ public class JcookOrderServiceImpl implements JcookOrderService {
     JcookOrderMapper jcookOrderMapper;
     @Resource
     UserResidentDao userResidentDao;
+    @Resource
+    JcookOrderListMapper jcookOrderListMapper;
     @Value("${jcook.app_key}")
     private String JCOOK_APP_KEY;    //jcook appKey
     @Value("${jcook.app_secret}")
@@ -84,6 +90,43 @@ public class JcookOrderServiceImpl implements JcookOrderService {
 
         map.put("message","取消成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findDetail(Integer orderId) {
+        map = new HashMap<>();
+
+        //查询订单详情
+        JcookOrder jcookOrder = jcookOrderMapper.selectById(orderId);
+        if (jcookOrder != null){
+            ManageJcookOrderDetailVo manageJcookOrderDetailVo = new ManageJcookOrderDetailVo();
+            PropertyUtils.copyProperties(jcookOrder,manageJcookOrderDetailVo);
+            UserResident byId = userResidentDao.findById(jcookOrder.getCreateId());
+            manageJcookOrderDetailVo.setCreateName(byId.getName());//填入创建人
+
+            QueryWrapper<JcookOrderList> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("jcook_order_id",jcookOrder.getId());
+            //查询订单详情-skuList
+            List<JcookOrderList> jcookOrderListList = jcookOrderListMapper.selectList(queryWrapper);
+            ArrayList<ManageJcookOrderDetailSkuListVo> manageJcookOrderDetailSkuListVoList = new ArrayList<>();
+            if (jcookOrderListList != null && jcookOrderListList.size()>0){
+                for (JcookOrderList jcookOrderList : jcookOrderListList) {
+                    ManageJcookOrderDetailSkuListVo manageJcookOrderDetailSkuListVo = new ManageJcookOrderDetailSkuListVo();
+                    PropertyUtils.copyProperties(jcookOrderList,manageJcookOrderDetailSkuListVo);
+                    manageJcookOrderDetailSkuListVoList.add(manageJcookOrderDetailSkuListVo);
+                }
+            }
+            manageJcookOrderDetailVo.setSkuList(manageJcookOrderDetailSkuListVoList);
+            map.put("message","请求成功");
+            map.put("data",manageJcookOrderDetailVo);
+            map.put("status",true);
+        }else {
+            map.put("message","订单不存在");
+            map.put("data",null);
+            map.put("status",false);
+        }
+
         return map;
     }
 }

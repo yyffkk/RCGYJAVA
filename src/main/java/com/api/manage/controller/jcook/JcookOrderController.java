@@ -53,4 +53,13 @@ public class JcookOrderController {
         return jcookOrderService.cancel(manageJcookCancelOrderDTO);
     }
 
+    /**
+     * 查询订单详情
+     * @param orderId 订单主键id
+     * @return
+     */
+    @GetMapping("/findDetail")
+    public Map<String,Object> findDetail(Integer orderId){
+        return jcookOrderService.findDetail(orderId);
+    }
 }
