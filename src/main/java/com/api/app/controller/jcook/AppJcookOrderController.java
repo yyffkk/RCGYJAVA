@@ -64,6 +64,16 @@ public class AppJcookOrderController {
         return appJcookOrderService.appDelete(appDelete);
     }
 
+    /**
+     * 查询订单物流
+     * @param orderId 订单主键id
+     * @return map
+     */
+    @GetMapping("/findLogistics")
+    public Map<String,Object> findLogistics(Integer orderId){
+        return appJcookOrderService.findLogistics(orderId);
+    }
+
 
 
 }

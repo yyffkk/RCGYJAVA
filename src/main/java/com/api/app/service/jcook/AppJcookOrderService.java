@@ -24,4 +24,11 @@ public interface AppJcookOrderService {
      * @return map
      */
     Map<String, Object> appDelete(AppDeleteDTO appDelete);
+
+    /**
+     * 查询订单物流
+     * @param orderId 订单主键id
+     * @return map
+     */
+    Map<String, Object> findLogistics(Integer orderId);
 }

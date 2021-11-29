@@ -14,6 +14,8 @@ import com.api.vo.jcook.appOrder.MyOrderVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.example.api.JcookSDK;
+import org.example.api.model.LogisticsTraceRequest;
+import org.example.api.model.LogisticsTraceResponse;
 import org.example.api.model.OrderCancelRequest;
 import org.example.api.model.OrderCancelResponse;
 import org.example.api.utils.result.Result;
@@ -126,6 +128,34 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
             }
         }else {
             map.put("message","订单不存在");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findLogistics(Integer orderId) {
+        map = new HashMap<>();
+
+        JcookOrder jcookOrder = jcookOrderMapper.selectById(orderId);
+
+        if (jcookOrder != null){
+            JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+            LogisticsTraceRequest logisticsTraceRequest = new LogisticsTraceRequest();
+            logisticsTraceRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));//填入jcook的订单号
+            Result<LogisticsTraceResponse> result = jcookSDK.logisticsTrace(logisticsTraceRequest);
+            if (result.getCode() != 200){
+                map.put("message",result.getMsg());
+                map.put("data",null);
+                map.put("status",false);
+            }else {
+                map.put("message","请求成功");
+                map.put("data",result.getData());
+                map.put("status",true);
+            }
+        }else {
+            map.put("message","订单不存在");
+            map.put("data",null);
             map.put("status",false);
         }
         return map;
