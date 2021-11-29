@@ -46,6 +46,10 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
         queryWrapper.eq("create_id",jcookOrderSearch.getId());
         queryWrapper.eq( jcookOrderSearch.getTradeStatus() != null,"trade_status",jcookOrderSearch.getTradeStatus());
         queryWrapper.like(StringUtils.isNotBlank(jcookOrderSearch.getOrderCode()),"code",jcookOrderSearch.getOrderCode());
+        queryWrapper.orderByDesc("create_date");
+        queryWrapper.eq("app_delete",1);//只查询出没有删除的订单
+        queryWrapper.ne("trade_status",10);//10.发生拆单
+        queryWrapper.ne("trade_status",11);//11.售后换新
         List<JcookOrder> jcookOrderList = jcookOrderMapper.selectList(queryWrapper);
         ArrayList<MyOrderVo> myOrderVoList = new ArrayList<>();
         //查询订单信息

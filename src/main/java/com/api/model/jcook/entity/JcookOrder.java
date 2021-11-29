@@ -105,4 +105,8 @@ public class JcookOrder implements Serializable {
      * 交易结束时间
      */
     private Date gmtClose;
+    /**
+     * 客户端删除，1非删，0删除
+     */
+    private Integer appDelete;
 }
