@@ -38,6 +38,14 @@ public class GoodsDetailVo implements Serializable {
      */
     private String skuName;
     /**
+     * jcook上架状态，1.上架，0.下架
+     */
+    private Integer status;
+    /**
+     * 小蜜蜂商品上架状态，1.上架，0.下架
+     */
+    private Integer shopStatus;
+    /**
      * 售卖量
      */
     private Integer sellNum;
@@ -65,4 +73,12 @@ public class GoodsDetailVo implements Serializable {
      * 是否收藏(0.不收藏,1.收藏)
      */
     private Integer isCollection;
+    /**
+     * 商品单位
+     */
+    private String unit;
+    /**
+     * 重量（千克）
+     */
+    private Double weight;
 }
