@@ -2,6 +2,7 @@ package com.api.app.service.jcook;
 
 import com.api.model.jcook.appDto.AppDeleteDTO;
 import com.api.model.jcook.appDto.AppJcookCancelOrderDTO;
+import com.api.model.jcook.appDto.AppJcookConfirmDTO;
 import com.api.model.jcook.appDto.JcookOrderSearch;
 import com.api.vo.jcook.appOrder.MyOrderVo;
 
@@ -31,4 +32,11 @@ public interface AppJcookOrderService {
      * @return map
      */
     Map<String, Object> findLogistics(Integer orderId);
+
+    /**
+     * app确认收货
+     * @param appJcookConfirmDTO app确认收货DTO
+     * @return map
+     */
+    Map<String, Object> confirm(AppJcookConfirmDTO appJcookConfirmDTO);
 }

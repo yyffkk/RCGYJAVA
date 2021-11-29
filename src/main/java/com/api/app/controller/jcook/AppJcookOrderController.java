@@ -3,6 +3,7 @@ package com.api.app.controller.jcook;
 import com.api.app.service.jcook.AppJcookOrderService;
 import com.api.model.jcook.appDto.AppDeleteDTO;
 import com.api.model.jcook.appDto.AppJcookCancelOrderDTO;
+import com.api.model.jcook.appDto.AppJcookConfirmDTO;
 import com.api.model.jcook.appDto.JcookOrderSearch;
 import com.api.model.jcook.manageDto.ManageJcookCancelOrderDTO;
 import com.api.vo.jcook.appOrder.MyOrderVo;
@@ -74,6 +75,15 @@ public class AppJcookOrderController {
         return appJcookOrderService.findLogistics(orderId);
     }
 
+    /**
+     * 确认收货
+     * @param appJcookConfirmDTO app确认收货DTO
+     * @return map
+     */
+    @GetMapping("/confirm")
+    public Map<String,Object> confirm(AppJcookConfirmDTO appJcookConfirmDTO){
+        return appJcookOrderService.confirm(appJcookConfirmDTO);
+    }
 
 
 }

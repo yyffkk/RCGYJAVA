@@ -5,6 +5,7 @@ import com.api.mapper.jcook.JcookOrderListMapper;
 import com.api.mapper.jcook.JcookOrderMapper;
 import com.api.model.jcook.appDto.AppDeleteDTO;
 import com.api.model.jcook.appDto.AppJcookCancelOrderDTO;
+import com.api.model.jcook.appDto.AppJcookConfirmDTO;
 import com.api.model.jcook.appDto.JcookOrderSearch;
 import com.api.model.jcook.entity.JcookOrder;
 import com.api.model.jcook.entity.JcookOrderList;
@@ -14,10 +15,7 @@ import com.api.vo.jcook.appOrder.MyOrderVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.example.api.JcookSDK;
-import org.example.api.model.LogisticsTraceRequest;
-import org.example.api.model.LogisticsTraceResponse;
-import org.example.api.model.OrderCancelRequest;
-import org.example.api.model.OrderCancelResponse;
+import org.example.api.model.*;
 import org.example.api.utils.result.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -158,6 +156,35 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
             map.put("data",null);
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> confirm(AppJcookConfirmDTO appJcookConfirmDTO) {
+        map = new HashMap<>();
+        JcookOrder jcookOrder = jcookOrderMapper.selectById(appJcookConfirmDTO.getOrderId());
+
+        if (jcookOrder != null && jcookOrder.getCreateId() == appJcookConfirmDTO.getId()){
+            //确认收货
+            JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+            OrderConfirmRequest orderConfirmRequest = new OrderConfirmRequest();
+            orderConfirmRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));
+            orderConfirmRequest.setClientIp("127.0.0.1");
+            orderConfirmRequest.setClientPort("3306");
+            Result<String> result = jcookSDK.orderConfirm(orderConfirmRequest);
+            if (result.getCode() != 200){
+                map.put("message",result.getMsg());
+                map.put("status",false);
+                return map;
+            }
+        }else {
+            map.put("message","订单不存在");
+            map.put("status",false);
+            return map;
+        }
+
+        map.put("message","确认收货成功");
+        map.put("status",true);
         return map;
     }
 }
