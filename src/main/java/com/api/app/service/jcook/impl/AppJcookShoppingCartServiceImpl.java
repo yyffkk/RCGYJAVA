@@ -16,9 +16,7 @@ import com.api.vo.jcook.appShoppingCart.MyShoppingCartVo;
 import com.api.vo.jcook.appShoppingCart.SettlementShoppingCartVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.example.api.JcookSDK;
-import org.example.api.model.LogisticsFeeRequest;
-import org.example.api.model.LogisticsFeeResponse;
-import org.example.api.model.LogisticsFeeSkuInfoRequest;
+import org.example.api.model.*;
 import org.example.api.utils.result.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -164,6 +162,7 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
     @Override
     public Map<String, Object> settlement(SettlementShoppingCartDTO settlementShoppingCartDTO) {
         map = new HashMap<>();
+        JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
         SettlementShoppingCartVo settlementShoppingCartVo = new SettlementShoppingCartVo();
 
         //创建获取运费request
@@ -172,6 +171,20 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
         ArrayList<LogisticsFeeSkuInfoRequest> logisticsFeeSkuInfoRequestArrayList = new ArrayList<>();
         //订单费用
         BigDecimal orderFee = BigDecimal.ZERO;
+
+        //获取地址信息
+        JcookAddress jcookAddress = null;
+        if (settlementShoppingCartDTO.getAddressId() == null){
+            //如果地址主键id为null，则获取默认地址
+            //获取默认地址
+            QueryWrapper<JcookAddress> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("resident_id",settlementShoppingCartDTO.getResidentId());//填入用户主键id
+            queryWrapper.eq("is_default",1);//1.是默认地址
+            jcookAddress = jcookAddressMapper.selectOne(queryWrapper);
+        }else {
+            //根据地址主键id获取选择地址
+            jcookAddress = jcookAddressMapper.selectById(settlementShoppingCartDTO.getAddressId());
+        }
 
         //获取订单商品信息
          ArrayList<MyShoppingCartVo> myShoppingCartVoList = new ArrayList<>();
@@ -193,6 +206,28 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
                 logisticsFeeRequest.setLogisticsFeeSkuInfoRequestList(logisticsFeeSkuInfoRequestArrayList);
                 //计算订单费用,对订单费用进行累加
                 orderFee = orderFee.add(jcookGoods.getSupplyPrice().multiply(BigDecimal.valueOf(settlementGoodsDTO.getNum())));
+
+                //判断是否有库存
+                if (jcookAddress != null){//判断是否有地址信息
+                    StringBuilder location = findCityAddressDetails(true, jcookAddress.getLocation());
+
+                    //如果存在默认地址 查询库存状态(1.有货，0.无货)
+                    StockDetailSkuQuantityRequest stockDetailSkuQuantityRequest = new StockDetailSkuQuantityRequest();
+                    stockDetailSkuQuantityRequest.setSkuId(jcookGoods.getSkuId());//填入商品编码
+                    stockDetailSkuQuantityRequest.setQuantity(settlementGoodsDTO.getNum());//填入商品数量
+                    ArrayList<StockDetailSkuQuantityRequest> stockDetailSkuQuantityRequestList = new ArrayList<>();
+                    stockDetailSkuQuantityRequestList.add(stockDetailSkuQuantityRequest);
+
+                    StockDetailRequest stockDetailRequest = new StockDetailRequest();
+                    stockDetailRequest.setAddress(location.toString()+" "+jcookAddress.getAddressDetail());//填入地址
+                    stockDetailRequest.setSkuList(stockDetailSkuQuantityRequestList);//填入list内容
+                    Result<List<StockDetailResponse>> stockDetail = jcookSDK.stockDetail(stockDetailRequest);
+                    Integer stockState = stockDetail.getData().get(0).getStockState();
+                    myShoppingCartVo.setStockStatus(stockState);//填入库存状态,0.无货，1.有货
+                }else {
+                    //如果没有地址信息,则为无货
+                    myShoppingCartVo.setStockStatus(0);//0.无货
+                }
             }
         }else {
             map.put("message","未选中结算商品");
@@ -201,20 +236,6 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
             return map;
         }
         settlementShoppingCartVo.setMyShoppingCartVoList(myShoppingCartVoList);
-
-        JcookAddress jcookAddress = null;
-        if (settlementShoppingCartDTO.getAddressId() == null){
-            //如果地址主键id为null，则获取默认地址
-            //获取默认地址
-            QueryWrapper<JcookAddress> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("resident_id",settlementShoppingCartDTO.getResidentId());//填入用户主键id
-            queryWrapper.eq("is_default",1);//1.是默认地址
-            jcookAddress = jcookAddressMapper.selectOne(queryWrapper);
-        }else {
-            //根据地址主键id获取选择地址
-            jcookAddress = jcookAddressMapper.selectById(settlementShoppingCartDTO.getAddressId());
-        }
-
 
         //获取运费
         Double fee = 0.0;
@@ -230,7 +251,6 @@ public class AppJcookShoppingCartServiceImpl implements AppJcookShoppingCartServ
             //计算运费
             logisticsFeeRequest.setAddress(locationName.toString());//填入地址
             logisticsFeeRequest.setOrderFee(orderFee);//填入订单费用
-            JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
             Result<LogisticsFeeResponse> result = jcookSDK.logisticsFee(logisticsFeeRequest);
             if (result.getCode() != 200){
                 map.put("message",result.getMsg());

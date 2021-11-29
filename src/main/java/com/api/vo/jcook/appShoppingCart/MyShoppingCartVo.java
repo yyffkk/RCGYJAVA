@@ -45,6 +45,10 @@ public class MyShoppingCartVo implements Serializable {
      */
     private BigDecimal discountPrice;
     /**
+     * 库存状态(1.有货，0.无货)
+     */
+    private Integer stockStatus;
+    /**
      * 商品单位
      */
     private String unit;

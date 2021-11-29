@@ -271,7 +271,7 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
                 stockDetailSkuQuantityRequestList.add(stockDetailSkuQuantityRequest);
 
                 StockDetailRequest stockDetailRequest = new StockDetailRequest();
-                stockDetailRequest.setAddress(location.toString());//填入地址
+                stockDetailRequest.setAddress(location.toString()+" "+jcookAddress.getAddressDetail());//填入地址
                 stockDetailRequest.setSkuList(stockDetailSkuQuantityRequestList);//填入list内容
                 Result<List<StockDetailResponse>> stockDetail = jcookSDK.stockDetail(stockDetailRequest);
                 Integer stockState = stockDetail.getData().get(0).getStockState();
