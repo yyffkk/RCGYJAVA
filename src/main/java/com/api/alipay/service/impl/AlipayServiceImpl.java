@@ -125,6 +125,8 @@ public class AlipayServiceImpl implements AlipayService {
     JcookOrderMapper jcookOrderMapper;
     @Resource
     JcookOrderListMapper jcookOrderListMapper;
+    @Resource
+    JcookShoppingCartMapper jcookShoppingCartMapper;
     private static Map<String,Object> map = null;
     @Value("${jcook.app_key}")
     private String JCOOK_APP_KEY;    //jcook appKey
@@ -3013,6 +3015,7 @@ public class AlipayServiceImpl implements AlipayService {
             jcookOrderMapper.insert(jcookOrder);
             //添加jcook商品初始订单详情信息
             for (SettlementGoodsDTO settlementGoodsDTO : settlementGoodsDTOList) {
+                //创建jcook商品初始订单详情信息
                 JcookGoods jcookGoods = jcookGoodsMapper.selectById(settlementGoodsDTO.getJcookGoodsId());
                 JcookOrderList jcookOrderList = new JcookOrderList();
                 jcookOrderList.setJcookOrderId(jcookOrder.getId());//填入jcook订单主键id
@@ -3027,6 +3030,11 @@ public class AlipayServiceImpl implements AlipayService {
                 jcookOrderList.setNum(settlementGoodsDTO.getNum());//填入购买数量
                 jcookOrderList.setPayPrice(jcookGoods.getSellPrice().multiply(new BigDecimal(settlementGoodsDTO.getNum())));//填入付款金额（售卖价*购买数量）
                 jcookOrderListMapper.insert(jcookOrderList);
+                //删除购物车对应的商品信息
+                QueryWrapper<JcookShoppingCart> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("jcook_goods_id",settlementGoodsDTO.getJcookGoodsId());//填入商品主键id
+                queryWrapper.eq("resident_id",createOrderDTO.getResidentId());//填入用户主键id
+                jcookShoppingCartMapper.delete(queryWrapper);
             }
 
 
