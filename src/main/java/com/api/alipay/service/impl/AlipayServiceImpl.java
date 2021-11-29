@@ -2970,6 +2970,7 @@ public class AlipayServiceImpl implements AlipayService {
                 }
                 fee = fee.add(new BigDecimal(result.getData().getFee()));
 
+                jcookOrder.setJcookAddressId(jcookAddress.getId());//填入收货地址主键id
                 jcookOrder.setReceiverName(jcookAddress.getName());//填入收货人
                 jcookOrder.setReceiverTel(jcookAddress.getTel());//填入收货人手机号
                 jcookOrder.setLocationName(locationName.toString());//填入所在地区名称

@@ -58,6 +58,10 @@ public class JcookOrder implements Serializable {
      */
     private BigDecimal freightFee;
     /**
+     * jcook地址主键id
+     */
+    private Integer jcookAddressId;
+    /**
      * 收货人
      */
     private String receiverName;
