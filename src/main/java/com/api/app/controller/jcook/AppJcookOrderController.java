@@ -1,6 +1,7 @@
 package com.api.app.controller.jcook;
 
 import com.api.app.service.jcook.AppJcookOrderService;
+import com.api.model.jcook.appDto.AppDeleteDTO;
 import com.api.model.jcook.appDto.AppJcookCancelOrderDTO;
 import com.api.model.jcook.appDto.JcookOrderSearch;
 import com.api.model.jcook.manageDto.ManageJcookCancelOrderDTO;
@@ -52,6 +53,17 @@ public class AppJcookOrderController {
     public Map<String,Object> cancel(AppJcookCancelOrderDTO appJcookCancelOrderDTO){
         return appJcookOrderService.cancel(appJcookCancelOrderDTO);
     }
+
+    /**
+     * app删除订单
+     * @param appDelete app删除DTO
+     * @return map
+     */
+    @GetMapping("/appDelete")
+    public Map<String,Object> appDelete(AppDeleteDTO appDelete){
+        return appJcookOrderService.appDelete(appDelete);
+    }
+
 
 
 }

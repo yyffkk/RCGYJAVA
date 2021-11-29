@@ -3,6 +3,7 @@ package com.api.app.service.jcook.impl;
 import com.api.app.service.jcook.AppJcookOrderService;
 import com.api.mapper.jcook.JcookOrderListMapper;
 import com.api.mapper.jcook.JcookOrderMapper;
+import com.api.model.jcook.appDto.AppDeleteDTO;
 import com.api.model.jcook.appDto.AppJcookCancelOrderDTO;
 import com.api.model.jcook.appDto.JcookOrderSearch;
 import com.api.model.jcook.entity.JcookOrder;
@@ -103,6 +104,30 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
 
         map.put("message","取消成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> appDelete(AppDeleteDTO appDelete) {
+        map = new HashMap<>();
+
+        JcookOrder jcookOrder = jcookOrderMapper.selectById(appDelete.getOrderId());
+
+        if (jcookOrder != null && jcookOrder.getCreateId() == appDelete.getId()){
+            jcookOrder.setAppDelete(0);//0.客户端删除
+            //如果存在则客户端删除
+            int update = jcookOrderMapper.updateById(jcookOrder);
+            if (update >0){
+                map.put("message","删除成功");
+                map.put("status",true);
+            }else {
+                map.put("message","删除失败");
+                map.put("status",false);
+            }
+        }else {
+            map.put("message","订单不存在");
+            map.put("status",false);
+        }
         return map;
     }
 }
