@@ -143,7 +143,7 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
             JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
             LogisticsTraceRequest logisticsTraceRequest = new LogisticsTraceRequest();
             logisticsTraceRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));//填入jcook的订单号
-            Result<LogisticsTraceResponse> result = jcookSDK.logisticsTrace(logisticsTraceRequest);
+            Result<List<LogisticsTraceResponse>> result = jcookSDK.logisticsTrace(logisticsTraceRequest);
             if (result.getCode() != 200){
                 map.put("message",result.getMsg());
                 map.put("data",null);
