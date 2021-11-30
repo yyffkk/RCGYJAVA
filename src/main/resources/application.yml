@@ -31,7 +31,7 @@ spring:
 #        include: pro
     #mq基本配置
     rabbitmq:
-        addresses: 120.55.167.78
+        addresses: jcook.com.cn
         port: 5672
         username: jcook40362136173633536
         password: d3tTyh
