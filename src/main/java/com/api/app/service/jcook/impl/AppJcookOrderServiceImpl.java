@@ -86,6 +86,21 @@ public class AppJcookOrderServiceImpl implements AppJcookOrderService {
         map = new HashMap<>();
         JcookOrder jcookOrder = jcookOrderMapper.selectById(appJcookCancelOrderDTO.getOrderId());
         if (jcookOrder != null){
+            //判断是否为等待付款状态，
+            if (jcookOrder.getTradeStatus() == 0){//0.交易创建并等待买家付款（待付款）
+                //如果是，则直接取消订单，
+                jcookOrder.setTradeStatus(9);//取消订单成功
+                int update = jcookOrderMapper.updateById(jcookOrder);
+                if (update >0){
+                    map.put("message","取消成功");
+                    map.put("status",true);
+                }else {
+                    map.put("message","取消失败");
+                    map.put("status",false);
+                }
+                return map;
+            }
+            //如果不是，则调用jcook取消订单流程
             JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
             OrderCancelRequest orderCancelRequest = new OrderCancelRequest();
             orderCancelRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));
