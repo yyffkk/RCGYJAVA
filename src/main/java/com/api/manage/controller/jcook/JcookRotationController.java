@@ -37,4 +37,13 @@ public class JcookRotationController {
     public Map<String,Object> update(@RequestBody ManageJcookRotationUpdateDTO manageJcookRotationUpdateDTO){
         return jcookRotationService.update(manageJcookRotationUpdateDTO);
     }
+
+    /**
+     * 删除轮播图
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(Integer rotationId){
+        return jcookRotationService.delete(rotationId);
+    }
 }

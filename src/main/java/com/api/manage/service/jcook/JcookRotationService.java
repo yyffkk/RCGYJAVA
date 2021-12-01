@@ -17,4 +17,10 @@ public interface JcookRotationService {
      * @return map
      */
     Map<String, Object> update(ManageJcookRotationUpdateDTO manageJcookRotationUpdateDTO);
+
+    /**
+     * 删除轮播图
+     * @return map
+     */
+    Map<String, Object> delete(Integer rotationId);
 }

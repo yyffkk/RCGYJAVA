@@ -31,7 +31,7 @@ import java.util.Map;
 
 @Service
 public class JcookOrderServiceImpl implements JcookOrderService {
-    private static Map<String,Object> map = new HashMap<>();
+    private static Map<String,Object> map = null;
     @Resource
     JcookOrderMapper jcookOrderMapper;
     @Resource
