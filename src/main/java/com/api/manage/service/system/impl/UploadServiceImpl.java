@@ -147,6 +147,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_SURROUNDING_ENTERPRISES;
     @Value("${prop.upload-jcook-category}")
     private String UPLOAD_JCOOK_CATEGORY;
+    @Value("${prop.upload-jcook-rotation}")
+    private String UPLOAD_JCOOK_ROTATION;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -608,6 +610,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadJcookCategory(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_JCOOK_CATEGORY);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadJcookRotation(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_JCOOK_ROTATION);
         return map;
     }
 

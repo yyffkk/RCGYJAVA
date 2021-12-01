@@ -412,4 +412,14 @@ public class UploadController {
         return uploadService.uploadJcookCategory(file);
     }
 
+    /**
+     * 上传jcook轮播图照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadJcookRotation")
+    public Map<String,Object> uploadJcookRotation(MultipartFile file){
+        return uploadService.uploadJcookRotation(file);
+    }
+
 }

@@ -146,6 +146,9 @@ prop:
 
   #jcook商城-商品分类照片：修改商品分类照片
   upload-jcook-category: /img/jcook/category/
+  #jcook商城-轮播图照片：上传轮播图照片
+  upload-jcook-rotation: /img/jcook/rotation/
+
 
 
 
