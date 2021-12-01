@@ -3,12 +3,15 @@ package com.api.manage.service.jcook.impl;
 import com.api.manage.service.jcook.JcookCategoryService;
 import com.api.mapper.jcook.JcookCategoryMapper;
 import com.api.model.jcook.appDto.JcookCityAll;
+import com.api.model.jcook.appDto.UpdateCategoryImgDTO;
 import com.api.model.jcook.entity.JcookCategory;
 import com.api.model.jcook.entity.JcookCity;
 import com.api.model.jcook.manageDto.ManageJcookCategorySearch;
 import com.api.util.PropertyUtils;
+import com.api.util.UploadUtil;
 import com.api.vo.jcook.manageCategory.ManageJcookCategoryVo;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
+import com.api.vo.resources.VoResourcesImg;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +34,15 @@ public class JcookCategoryServiceImpl implements JcookCategoryService {
         List<JcookCategory> jcookCategoryList = jcookCategoryMapper.selectList(queryWrapper);
         ArrayList<ManageJcookCategoryVo> manageJcookCategoryVoList = new ArrayList<>();
         if (jcookCategoryList != null && jcookCategoryList.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
             for (JcookCategory jcookCategory : jcookCategoryList) {
                 ManageJcookCategoryVo manageJcookCategoryVo = new ManageJcookCategoryVo();
                 //DO 转 VO
                 PropertyUtils.copyProperties(jcookCategory,manageJcookCategoryVo);
+                //获取照片信息
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("jcookCategory", manageJcookCategoryVo.getId(), "jcookCategoryImg");
+                manageJcookCategoryVo.setImgUrls(imgByDate);
+
                 manageJcookCategoryVoList.add(manageJcookCategoryVo);
             }
         }
@@ -81,6 +89,24 @@ public class JcookCategoryServiceImpl implements JcookCategoryService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> updateCategoryImg(UpdateCategoryImgDTO updateCategoryImgDTO) {
+        map = new HashMap<>();
+
+        try {
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(updateCategoryImgDTO.getImgList(),"jcookCategory",updateCategoryImgDTO.getCategoryId(),"jcookCategoryImg","600",30,20);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("message",e.getMessage());
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
+    }
+
     /**
      * 递归查询全部的商品分类信息
      * @param parentId 商品分类父类主键id
@@ -92,6 +118,7 @@ public class JcookCategoryServiceImpl implements JcookCategoryService {
         queryWrapper.eq("parent_id",parentId);
         List<JcookCategory> jcookCategoryList = jcookCategoryMapper.selectList(queryWrapper);
         if (jcookCategoryList != null && jcookCategoryList.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
             for (JcookCategory jcookCategory : jcookCategoryList) {
                 ManageJcookCategoryVo manageJcookCategoryVo = new ManageJcookCategoryVo();
                 manageJcookCategoryVo.setId(jcookCategory.getId());//填入主键id
@@ -99,6 +126,10 @@ public class JcookCategoryServiceImpl implements JcookCategoryService {
                 manageJcookCategoryVo.setIsShow(jcookCategory.getIsShow());//填入是否显示，1.显示，2.隐藏，隐藏上级会使下级分类一起隐藏
                 List<ManageJcookCategoryVo> allCategoryRe = findAllCategoryRe(manageJcookCategoryVo.getId());
                 manageJcookCategoryVo.setManageJcookCategoryVoList(allCategoryRe);//填入子商城分类集合
+                //获取照片信息
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("jcookCategory", manageJcookCategoryVo.getId(), "jcookCategoryImg");
+                manageJcookCategoryVo.setImgUrls(imgByDate);
+
                 manageJcookCategoryVoList.add(manageJcookCategoryVo);
             }
         }

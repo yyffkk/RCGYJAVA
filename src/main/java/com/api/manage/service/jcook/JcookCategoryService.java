@@ -1,5 +1,6 @@
 package com.api.manage.service.jcook;
 
+import com.api.model.jcook.appDto.UpdateCategoryImgDTO;
 import com.api.model.jcook.manageDto.ManageJcookCategorySearch;
 import com.api.vo.jcook.manageCategory.ManageJcookCategoryVo;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
@@ -32,4 +33,10 @@ public interface JcookCategoryService {
      */
     Map<String, Object> hide(Integer jcookCategoryId);
 
+    /**
+     * 修改商品分类照片
+     * @param updateCategoryImgDTO 修改商品分类照片DTO
+     * @return map
+     */
+    Map<String, Object> updateCategoryImg(UpdateCategoryImgDTO updateCategoryImgDTO);
 }

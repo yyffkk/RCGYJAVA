@@ -1,5 +1,6 @@
 package com.api.model.jcook.appDto;
 
+import com.api.vo.resources.VoResourcesImg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,10 @@ public class JcookCategoryAllShow implements Serializable {
      * 分类名称
      */
     private String name;
+    /**
+     * 分类照片集合
+     */
+    private List<VoResourcesImg> imgUrls;
     /**
      * jcook可显示的子分类集合
      */

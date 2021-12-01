@@ -1,5 +1,6 @@
 package com.api.vo.jcook.manageCategory;
 
+import com.api.vo.resources.VoResourcesImg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,10 @@ public class ManageJcookCategoryVo implements Serializable {
      * 是否显示，1.显示，2.隐藏，隐藏上级会使下级分类一起隐藏
      */
     private Integer isShow;
+    /**
+     * 分类照片集合
+     */
+    private List<VoResourcesImg> imgUrls;
     /**
      * manage jcook商品子分类信息集合
      */

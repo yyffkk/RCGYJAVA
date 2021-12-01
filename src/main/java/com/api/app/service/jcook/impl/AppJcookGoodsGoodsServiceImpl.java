@@ -7,8 +7,10 @@ import com.api.model.jcook.appDto.JcookCategoryAllShow;
 import com.api.model.jcook.appDto.RecommendGoodsSearch;
 import com.api.model.jcook.entity.*;
 import com.api.util.PropertyUtils;
+import com.api.util.UploadUtil;
 import com.api.vo.jcook.appBrand.GoodsBrandVo;
 import com.api.vo.jcook.appGoods.*;
+import com.api.vo.resources.VoResourcesImg;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.example.api.JcookSDK;
@@ -118,9 +120,14 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
         List<JcookCategory> jcookCategories = jcookCategoryMapper.selectByMap(map1);
         ArrayList<OneCategoryVo> oneCategoryVoList = new ArrayList<>();
         if (jcookCategories != null && jcookCategories.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
             for (JcookCategory jcookCategory : jcookCategories) {
                 OneCategoryVo oneCategoryVo = new OneCategoryVo();
                 PropertyUtils.copyProperties(jcookCategory,oneCategoryVo);
+                //获取照片信息
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("jcookCategory", oneCategoryVo.getId(), "jcookCategoryImg");
+                oneCategoryVo.setImgUrls(imgByDate);
+
                 oneCategoryVoList.add(oneCategoryVo);
             }
         }
@@ -364,12 +371,17 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
         queryWrapper.eq("is_show",1);//填入是否显示，0.隐藏，1.显示，隐藏上级会使下级分类一起隐藏
         List<JcookCategory> jcookCategoryList = jcookCategoryMapper.selectList(queryWrapper);
         if (jcookCategoryList != null && jcookCategoryList.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
             for (JcookCategory jcookCategory : jcookCategoryList) {
                 JcookCategoryAllShow jcookCategoryAllShow = new JcookCategoryAllShow();
                 jcookCategoryAllShow.setId(jcookCategory.getId());//填入主键id
                 jcookCategoryAllShow.setName(jcookCategory.getName());//填入名称
                 List<JcookCategoryAllShow> allCategoryRe = findAllCategoryRe(jcookCategoryAllShow.getId());
                 jcookCategoryAllShow.setCategoryList(allCategoryRe);//填入子城市集合
+                //获取照片信息
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("jcookCategory", jcookCategoryAllShow.getId(), "jcookCategoryImg");
+                jcookCategoryAllShow.setImgUrls(imgByDate);
+
                 jcookCategoryAllShows.add(jcookCategoryAllShow);
             }
         }
