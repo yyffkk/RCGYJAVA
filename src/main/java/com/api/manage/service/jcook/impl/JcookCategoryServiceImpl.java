@@ -95,6 +95,9 @@ public class JcookCategoryServiceImpl implements JcookCategoryService {
 
         try {
             UploadUtil uploadUtil = new UploadUtil();
+            //先删除照片信息
+            uploadUtil.delete("jcookCategory",updateCategoryImgDTO.getCategoryId(),"jcookCategoryImg");
+            //再添加照片信息
             uploadUtil.saveUrlToDB(updateCategoryImgDTO.getImgList(),"jcookCategory",updateCategoryImgDTO.getCategoryId(),"jcookCategoryImg","600",30,20);
         } catch (Exception e) {
             e.printStackTrace();
