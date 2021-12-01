@@ -29,6 +29,12 @@ public interface AppJcookGoodsService {
     Map<String, Object> newProductsTodayNum();
 
     /**
+     * 查询轮播图信息集合
+     * @return map
+     */
+    Map<String, Object> findRotationList();
+
+    /**
      * 查询首页所有显示的一级分类
      * @return 一级分类数据回显
      * @param parentId

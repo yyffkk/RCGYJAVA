@@ -54,6 +54,8 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
     JcookCityMapper jcookCityMapper;
     @Resource
     JcookCollectionMapper jcookCollectionMapper;
+    @Resource
+    JcookRotationMapper jcookRotationMapper;
 
 
     @Value("${jcook.app_key}")
@@ -109,6 +111,40 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
         map.put("message","请求成功");
         map.put("data",newProductsTodayNum);
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findRotationList() {
+        map = new HashMap<>();
+        QueryWrapper<JcookRotation> queryWrapper = new QueryWrapper<>();
+        List<JcookRotation> jcookRotations = jcookRotationMapper.selectList(queryWrapper);
+        ArrayList<JcookRotationInfoVo> jcookRotationInfoVoList = new ArrayList<>();
+        if (jcookRotations != null && jcookRotations.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (JcookRotation jcookRotation : jcookRotations) {
+                JcookRotationInfoVo jcookRotationInfoVo = new JcookRotationInfoVo();
+                PropertyUtils.copyProperties(jcookRotation,jcookRotationInfoVo);
+
+                //查询商品主键id
+                QueryWrapper<JcookGoods> queryWrapper2 = new QueryWrapper<>();
+                queryWrapper2.eq("sku_id",jcookRotationInfoVo.getSkuId());
+                JcookGoods jcookGoods = jcookGoodsMapper.selectOne(queryWrapper2);
+                if (jcookGoods != null){
+                    jcookRotationInfoVo.setJcookGoodsId(jcookGoods.getId());
+                }
+
+                //查询轮播图照片信息
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("jcookRotation", jcookRotationInfoVo.getId(), "jcookRotationImg");
+                jcookRotationInfoVo.setImgList(imgByDate);
+
+                jcookRotationInfoVoList.add(jcookRotationInfoVo);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",jcookRotationInfoVoList);
         return map;
     }
 

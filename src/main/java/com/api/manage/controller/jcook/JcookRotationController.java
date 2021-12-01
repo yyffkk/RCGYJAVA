@@ -2,10 +2,7 @@ package com.api.manage.controller.jcook;
 
 import com.api.manage.service.jcook.JcookRotationService;
 import com.api.model.jcook.manageDto.ManageJcookRotationUpdateDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -42,7 +39,7 @@ public class JcookRotationController {
      * 删除轮播图
      * @return map
      */
-    @PostMapping("/delete")
+    @GetMapping("/delete")
     public Map<String,Object> delete(Integer rotationId){
         return jcookRotationService.delete(rotationId);
     }

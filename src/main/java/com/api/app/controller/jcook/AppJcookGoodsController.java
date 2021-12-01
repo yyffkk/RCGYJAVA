@@ -55,6 +55,15 @@ public class AppJcookGoodsController {
     }
 
     /**
+     * 查询轮播图信息集合
+     * @return map
+     */
+    @GetMapping("/findRotationList")
+    public Map<String,Object> findRotationList(){
+        return appJcookGoodsService.findRotationList();
+    }
+
+    /**
      * 根据商品分类父类主键id查询首页所有显示的商品分类
      * @param pageNum 当前页数
      * @param size 每页记录数
