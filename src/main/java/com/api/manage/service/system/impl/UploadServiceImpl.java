@@ -145,6 +145,8 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_GEOGRAPHY;
     @Value("${prop.upload-surrounding-enterprises}")
     private String UPLOAD_SURROUNDING_ENTERPRISES;
+    @Value("${prop.upload-jcook-category}")
+    private String UPLOAD_JCOOK_CATEGORY;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -600,6 +602,12 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadSurroundingEnterprisesImg(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_SURROUNDING_ENTERPRISES);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadJcookCategory(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_JCOOK_CATEGORY);
         return map;
     }
 

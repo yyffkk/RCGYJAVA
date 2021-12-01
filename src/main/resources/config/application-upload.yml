@@ -144,7 +144,8 @@ prop:
   #Excel报表模版：上传Excel模版路径
   upload-model-excel: /excel-model/
 
-
+  #jcook商城-商品分类照片：修改商品分类照片
+  upload-jcook-category: /img/jcook/category/
 
 
 

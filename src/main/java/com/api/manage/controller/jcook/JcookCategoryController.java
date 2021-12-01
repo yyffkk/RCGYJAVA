@@ -1,14 +1,13 @@
 package com.api.manage.controller.jcook;
 
 import com.api.manage.service.jcook.JcookCategoryService;
+import com.api.model.jcook.appDto.UpdateCategoryImgDTO;
 import com.api.model.jcook.manageDto.ManageJcookCategorySearch;
 import com.api.vo.jcook.manageCategory.ManageJcookCategoryVo;
 import com.api.vo.jcook.manageGoods.ManageJcookGoodsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -77,5 +76,16 @@ public class JcookCategoryController {
     @GetMapping("/hide")
     public Map<String,Object> hide(Integer jcookCategoryId){
         return jcookCategoryService.hide(jcookCategoryId);
+    }
+
+
+    /**
+     * 修改商品分类照片
+     * @param updateCategoryImgDTO 修改商品分类照片DTO
+     * @return map
+     */
+    @PostMapping("/updateCategoryImg")
+    public Map<String,Object> updateCategoryImg(@RequestBody UpdateCategoryImgDTO updateCategoryImgDTO){
+        return jcookCategoryService.updateCategoryImg(updateCategoryImgDTO);
     }
 }

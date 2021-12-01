@@ -125,4 +125,6 @@ public interface UploadService {
     Map<String, Object> uploadGeographyImg(MultipartFile file);
 
     Map<String, Object> uploadSurroundingEnterprisesImg(MultipartFile file);
+
+    Map<String, Object> uploadJcookCategory(MultipartFile file);
 }

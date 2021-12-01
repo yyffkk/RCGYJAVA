@@ -402,4 +402,14 @@ public class UploadController {
         return uploadService.uploadSurroundingEnterprisesImg(file);
     }
 
+    /**
+     * 上传jcook分类信息照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadJcookCategory")
+    public Map<String,Object> uploadJcookCategory(MultipartFile file){
+        return uploadService.uploadJcookCategory(file);
+    }
+
 }
