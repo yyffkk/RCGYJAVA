@@ -167,6 +167,8 @@ public class AppJcookGoodsGoodsServiceImpl implements AppJcookGoodsService {
         }
         //品牌主键id
         queryWrapper.eq(recommendGoodsSearch.getBrandId() != null,"brand_id",recommendGoodsSearch.getBrandId());
+        //三级分类主键id
+        queryWrapper.eq(recommendGoodsSearch.getCategoryThirdId() != null,"category_third_id",recommendGoodsSearch.getCategoryThirdId());
         //最小价格～最大价格，闭区间
         queryWrapper.ge(recommendGoodsSearch.getMaxPrice() != null,"sell_price",recommendGoodsSearch.getMinPrice());
         queryWrapper.le(recommendGoodsSearch.getMinPrice() != null,"sell_price",recommendGoodsSearch.getMaxPrice());

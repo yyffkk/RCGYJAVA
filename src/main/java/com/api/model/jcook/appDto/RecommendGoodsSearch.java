@@ -45,6 +45,10 @@ public class RecommendGoodsSearch implements Serializable {
      */
     private Integer brandId;
     /**
+     * 三级分类主键id
+     */
+    private Integer categoryThirdId;
+    /**
      * 最小价格
      */
     private BigDecimal minPrice;
