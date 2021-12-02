@@ -5,6 +5,7 @@ import com.api.mapper.jcook.JcookGoodsMapper;
 import com.api.mapper.jcook.JcookRotationMapper;
 import com.api.model.jcook.entity.JcookGoods;
 import com.api.model.jcook.entity.JcookRotation;
+import com.api.model.jcook.manageDto.ManageJcookRotationInsertDTO;
 import com.api.model.jcook.manageDto.ManageJcookRotationUpdateDTO;
 import com.api.util.PropertyUtils;
 import com.api.util.UploadUtil;
@@ -30,10 +31,20 @@ public class JcookRotationServiceImpl implements JcookRotationService {
     JcookGoodsMapper jcookGoodsMapper;
 
     @Override
-    public Map<String, Object> insert() {
+    public Map<String, Object> insert(ManageJcookRotationInsertDTO manageJcookRotationInsertDTO) {
         map = new HashMap<>();
+        //根据skuId查询是否有该商品
+        QueryWrapper<JcookGoods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sku_id",manageJcookRotationInsertDTO.getSkuId());
+        JcookGoods jcookGoods = jcookGoodsMapper.selectOne(queryWrapper);
+        if (jcookGoods == null){
+            map.put("message","该商品不存在");
+            map.put("status",false);
+            return map;
+        }
+
         JcookRotation jcookRotation = new JcookRotation();
-        jcookRotation.setSkuId(new BigInteger("0"));//初始sku编码为0
+        jcookRotation.setSkuId(manageJcookRotationInsertDTO.getSkuId());//填入初始sku编码
 
         int insert = jcookRotationMapper.insert(jcookRotation);
         if (insert >0){
@@ -43,6 +54,11 @@ public class JcookRotationServiceImpl implements JcookRotationService {
             map.put("message","添加失败");
             map.put("status",false);
         }
+
+        //添加轮播图照片
+        UploadUtil uploadUtil = new UploadUtil();
+        uploadUtil.saveUrlToDB(manageJcookRotationInsertDTO.getImgUrls(),"jcookRotation",jcookRotation.getId(),"jcookRotationImg","600",30,20);
+
         return map;
     }
 

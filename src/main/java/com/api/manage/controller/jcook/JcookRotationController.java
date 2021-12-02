@@ -1,6 +1,7 @@
 package com.api.manage.controller.jcook;
 
 import com.api.manage.service.jcook.JcookRotationService;
+import com.api.model.jcook.manageDto.ManageJcookRotationInsertDTO;
 import com.api.model.jcook.manageDto.ManageJcookRotationUpdateDTO;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,8 @@ public class JcookRotationController {
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(){
-        return jcookRotationService.insert();
+    public Map<String,Object> insert(@RequestBody ManageJcookRotationInsertDTO manageJcookRotationInsertDTO){
+        return jcookRotationService.insert(manageJcookRotationInsertDTO);
     }
 
     /**
