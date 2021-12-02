@@ -23,4 +23,11 @@ public interface JcookRotationService {
      * @return map
      */
     Map<String, Object> delete(Integer rotationId);
+
+    /**
+     * 查询轮播图信息集合
+     * @return map
+     */
+    Map<String, Object> findRotationList();
+
 }

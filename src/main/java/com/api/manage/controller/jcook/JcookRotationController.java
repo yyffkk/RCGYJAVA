@@ -43,4 +43,13 @@ public class JcookRotationController {
     public Map<String,Object> delete(Integer rotationId){
         return jcookRotationService.delete(rotationId);
     }
+
+    /**
+     * 查询轮播图信息集合
+     * @return map
+     */
+    @GetMapping("/findRotationList")
+    public Map<String,Object> findRotationList(){
+        return jcookRotationService.findRotationList();
+    }
 }

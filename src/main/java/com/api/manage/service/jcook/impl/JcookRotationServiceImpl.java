@@ -1,16 +1,24 @@
 package com.api.manage.service.jcook.impl;
 
 import com.api.manage.service.jcook.JcookRotationService;
+import com.api.mapper.jcook.JcookGoodsMapper;
 import com.api.mapper.jcook.JcookRotationMapper;
+import com.api.model.jcook.entity.JcookGoods;
 import com.api.model.jcook.entity.JcookRotation;
 import com.api.model.jcook.manageDto.ManageJcookRotationUpdateDTO;
+import com.api.util.PropertyUtils;
 import com.api.util.UploadUtil;
+import com.api.vo.jcook.appGoods.JcookRotationInfoVo;
+import com.api.vo.resources.VoResourcesImg;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -18,6 +26,8 @@ public class JcookRotationServiceImpl implements JcookRotationService {
     private static Map<String,Object> map = null;
     @Resource
     JcookRotationMapper jcookRotationMapper;
+    @Resource
+    JcookGoodsMapper jcookGoodsMapper;
 
     @Override
     public Map<String, Object> insert() {
@@ -88,6 +98,40 @@ public class JcookRotationServiceImpl implements JcookRotationService {
         UploadUtil uploadUtil = new UploadUtil();
         uploadUtil.delete("jcookRotation",rotationId,"jcookRotationImg");
 
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findRotationList() {
+        map = new HashMap<>();
+        QueryWrapper<JcookRotation> queryWrapper = new QueryWrapper<>();
+        List<JcookRotation> jcookRotations = jcookRotationMapper.selectList(queryWrapper);
+        ArrayList<JcookRotationInfoVo> jcookRotationInfoVoList = new ArrayList<>();
+        if (jcookRotations != null && jcookRotations.size()>0){
+            UploadUtil uploadUtil = new UploadUtil();
+            for (JcookRotation jcookRotation : jcookRotations) {
+                JcookRotationInfoVo jcookRotationInfoVo = new JcookRotationInfoVo();
+                PropertyUtils.copyProperties(jcookRotation,jcookRotationInfoVo);
+
+                //查询商品主键id
+                QueryWrapper<JcookGoods> queryWrapper2 = new QueryWrapper<>();
+                queryWrapper2.eq("sku_id",jcookRotationInfoVo.getSkuId());
+                JcookGoods jcookGoods = jcookGoodsMapper.selectOne(queryWrapper2);
+                if (jcookGoods != null){
+                    jcookRotationInfoVo.setJcookGoodsId(jcookGoods.getId());
+                }
+
+                //查询轮播图照片信息
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("jcookRotation", jcookRotationInfoVo.getId(), "jcookRotationImg");
+                jcookRotationInfoVo.setImgList(imgByDate);
+
+                jcookRotationInfoVoList.add(jcookRotationInfoVo);
+            }
+        }
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",jcookRotationInfoVoList);
         return map;
     }
 }
