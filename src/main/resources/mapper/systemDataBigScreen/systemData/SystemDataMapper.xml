@@ -458,14 +458,16 @@
             device_name,
             plan_content,
             alarm_content,
-            create_date
+            create_date,
+            status
         )values (
             #{alarmOccurrenceTime},
             #{pushTime},
             #{deviceName},
             #{planContent},
             #{alarmContent},
-            now()
+            now(),
+            1
         )
     </insert>
 
