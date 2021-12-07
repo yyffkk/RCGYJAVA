@@ -36,4 +36,8 @@ public class VoPlanAlarm implements Serializable {
      * 报警发生时间
      */
     private Date alarmOccurrenceTime;
+    /**
+     * 状态：1.未处理，2.已处理
+     */
+    private Integer status;
 }
