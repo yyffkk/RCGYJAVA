@@ -1,10 +1,7 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysAlarmService;
-import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
-import com.api.vo.operationManagement.VoFireAlarm;
-import com.api.vo.operationManagement.VoGreenArea;
-import com.api.vo.operationManagement.VoOneButtonAlarm;
+import com.api.vo.operationManagement.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
@@ -78,6 +75,26 @@ public class SysAlarmController {
         PageHelper.startPage(pageNum,size);
         List<VoButlerOneButtonAlarm> voButlerOneButtonAlarmList = sysAlarmService.butlerOneButtonAlarmList();
         PageInfo<VoButlerOneButtonAlarm> pageInfo = new PageInfo<>(voButlerOneButtonAlarmList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
+    /**
+     * 查询预案的报警记录
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/planAlarmList")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
+    public Map<String,Object> planAlarmList(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<VoPlanAlarm> voPlanAlarmList = sysAlarmService.planAlarmList();
+        PageInfo<VoPlanAlarm> pageInfo = new PageInfo<>(voPlanAlarmList);
         Map<String,Object> map = new HashMap<>();
         map.put("tableList",pageInfo.getList());
         map.put("rowCount",pageInfo.getTotal());

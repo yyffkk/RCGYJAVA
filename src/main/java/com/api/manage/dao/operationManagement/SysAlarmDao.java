@@ -3,6 +3,7 @@ package com.api.manage.dao.operationManagement;
 import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
 import com.api.vo.operationManagement.VoFireAlarm;
 import com.api.vo.operationManagement.VoOneButtonAlarm;
+import com.api.vo.operationManagement.VoPlanAlarm;
 
 import java.util.List;
 
@@ -25,4 +26,9 @@ public interface SysAlarmDao {
      */
     List<VoButlerOneButtonAlarm> butlerOneButtonAlarmList();
 
+    /**
+     * 查询预案的报警记录
+     * @return map
+     */
+    List<VoPlanAlarm> planAlarmList();
 }

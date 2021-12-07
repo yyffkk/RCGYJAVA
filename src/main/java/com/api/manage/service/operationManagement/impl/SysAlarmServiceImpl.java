@@ -5,6 +5,7 @@ import com.api.manage.service.operationManagement.SysAlarmService;
 import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
 import com.api.vo.operationManagement.VoFireAlarm;
 import com.api.vo.operationManagement.VoOneButtonAlarm;
+import com.api.vo.operationManagement.VoPlanAlarm;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,5 +29,10 @@ public class SysAlarmServiceImpl implements SysAlarmService {
     @Override
     public List<VoButlerOneButtonAlarm> butlerOneButtonAlarmList() {
         return sysAlarmDao.butlerOneButtonAlarmList();
+    }
+
+    @Override
+    public List<VoPlanAlarm> planAlarmList() {
+        return sysAlarmDao.planAlarmList();
     }
 }
