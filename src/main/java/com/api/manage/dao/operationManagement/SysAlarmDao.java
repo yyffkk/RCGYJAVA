@@ -31,4 +31,11 @@ public interface SysAlarmDao {
      * @return map
      */
     List<VoPlanAlarm> planAlarmList();
+
+    /**
+     * 根据预案主键id修改预案状态
+     * @param planAlertId 预案主键id
+     * @return 影响行数
+     */
+    int updatePlanAlarmStatusById(Integer planAlertId);
 }

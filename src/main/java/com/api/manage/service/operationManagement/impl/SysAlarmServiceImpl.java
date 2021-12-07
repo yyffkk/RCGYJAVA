@@ -3,9 +3,7 @@ package com.api.manage.service.operationManagement.impl;
 import com.alibaba.fastjson.JSON;
 import com.api.manage.dao.operationManagement.SysAlarmDao;
 import com.api.manage.service.operationManagement.SysAlarmService;
-import com.api.util.webSocket.WebSocketService;
 import com.api.util.webSocket.WebSocketServiceApp;
-import com.api.util.webSocket.WebSocketServiceButlerApp;
 import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
 import com.api.vo.operationManagement.VoFireAlarm;
 import com.api.vo.operationManagement.VoOneButtonAlarm;
@@ -49,9 +47,17 @@ public class SysAlarmServiceImpl implements SysAlarmService {
     }
 
     @Override
-    public Map<String, Object> pushRelieveAlert() {
+    public Map<String, Object> pushRelieveAlert(Integer planAlertId) {
         map = new HashMap<>();
         try {
+            int update = sysAlarmDao.updatePlanAlarmStatusById(planAlertId);
+            if (update <= 0){
+                map.put("message","推送失败");
+                map.put("status",false);
+                return map;
+            }
+
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String format = sdf.format(new Date());
 

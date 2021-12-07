@@ -104,12 +104,13 @@ public class SysAlarmController {
 
     /**
      * 推送灾情解除通知
+     * @param planAlertId 预案主键id
      * @return map
      */
     @GetMapping("/pushRelieveAlert")
     @RequiresPermissions(value = {"0101"},logical = Logical.AND)
-    public Map<String,Object> pushRelieveAlert(){
-        return sysAlarmService.pushRelieveAlert();
+    public Map<String,Object> pushRelieveAlert(Integer planAlertId){
+        return sysAlarmService.pushRelieveAlert(planAlertId);
     }
 
 }

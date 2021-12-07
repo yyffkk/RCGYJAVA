@@ -18,6 +18,6 @@ public interface SysAlarmService {
 
     List<VoPlanAlarm> planAlarmList();
 
-    Map<String, Object> pushRelieveAlert();
+    Map<String, Object> pushRelieveAlert(Integer planAlertId);
 
 }
