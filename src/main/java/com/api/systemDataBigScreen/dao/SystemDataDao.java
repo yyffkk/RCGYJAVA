@@ -1,9 +1,6 @@
 package com.api.systemDataBigScreen.dao;
 
-import com.api.model.systemDataBigScreen.DailyActivitySearch;
-import com.api.model.systemDataBigScreen.DispatchListSearch;
-import com.api.model.systemDataBigScreen.FirePushAlert;
-import com.api.model.systemDataBigScreen.SearchTouchScreenSearch;
+import com.api.model.systemDataBigScreen.*;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 
@@ -382,6 +379,13 @@ public interface SystemDataDao {
     int insertPushAlert(FirePushAlert firePushAlert);
 
     /**
+     * 添加预案推送通知
+     * @param planPushAlert 预案推送通知内容
+     * @return 影响行数
+     */
+    int insertPlanAlarm(PlanPushAlert planPushAlert);
+
+    /**
      * 查询工单超量的用户(报事报修)
      * @param threshold 阀值
      * @return 用户名称集合
@@ -544,4 +548,5 @@ public interface SystemDataDao {
      * @return 返回内容
      */
     List<SDTSNewVo> searchNews(SearchTouchScreenSearch searchTouchScreenSearch);
+
 }

@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.api.manage.dao.operationManagement.SysNewsCategoryManagementDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.model.operationManagement.SysNewsManagement;
-import com.api.model.systemDataBigScreen.DailyActivitySearch;
-import com.api.model.systemDataBigScreen.DispatchListSearch;
-import com.api.model.systemDataBigScreen.FirePushAlert;
-import com.api.model.systemDataBigScreen.SearchTouchScreenSearch;
+import com.api.model.systemDataBigScreen.*;
 import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.util.IdWorker;
@@ -472,6 +469,60 @@ public class SystemDataServiceImpl implements SystemDataService {
                 WebSocketServiceApp wsApp = new WebSocketServiceApp();
                 wsApp.broadcast(content);
             }
+            //管家app的websocket
+            WebSocketServiceButlerApp wsButlerApp = new WebSocketServiceButlerApp();
+            wsButlerApp.broadcast(content);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("message","推送失败");
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","推送成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> PlanPushAlert(PlanPushAlert planPushAlert) {
+        map = new HashMap<>();
+        try {
+            //添加预案记录进数据库
+            int insert = systemDataDao.insertPlanAlarm(planPushAlert);
+            if (insert <=0){
+                throw new RuntimeException("添加记录失败");
+            }
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String format = sdf.format(planPushAlert.getAlarmOccurrenceTime());
+//            String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
+
+            WebSocketFirePushAlert webSocketFirePushAlert = new WebSocketFirePushAlert();
+            webSocketFirePushAlert.setDeviceName(planPushAlert.getDeviceName());//填入设备名称
+            webSocketFirePushAlert.setTime(format);//填入报警发生时间
+            webSocketFirePushAlert.setPlanContent(planPushAlert.getPlanContent());//填入预案内容
+            webSocketFirePushAlert.setAlarmContent(planPushAlert.getAlarmContent());//填入报警内容
+            webSocketFirePushAlert.setType(4);//填入报警类型：1.火灾报警（消防），2.设备报警，3.一键报警,4.预案报警
+
+
+            String content = JSON.toJSONString(webSocketFirePushAlert);
+
+            log.info("火灾报警："+content);
+//            System.out.printf(content);
+//             key:type value:1 火警
+            //不使用第三方极光推送，改用websocket来实现推送
+//            JiguangUtil.sendPushAll(content,"1");
+//            JiguangUtil.sendButlerPushAll(content,"1");
+            //web页面的websocket
+            WebSocketService ws = new WebSocketService();
+            ws.broadcast(content);
+
+            //业主app的websocket
+            WebSocketServiceApp wsApp = new WebSocketServiceApp();
+            wsApp.broadcast(content);
+
             //管家app的websocket
             WebSocketServiceButlerApp wsButlerApp = new WebSocketServiceButlerApp();
             wsButlerApp.broadcast(content);

@@ -3,10 +3,7 @@ package com.api.systemDataBigScreen.controller;
 import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
 import com.api.model.operationManagement.SysNewsManagement;
-import com.api.model.systemDataBigScreen.DailyActivitySearch;
-import com.api.model.systemDataBigScreen.DispatchListSearch;
-import com.api.model.systemDataBigScreen.FirePushAlert;
-import com.api.model.systemDataBigScreen.SearchTouchScreenSearch;
+import com.api.model.systemDataBigScreen.*;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
 import com.api.vo.operationManagement.VoGreenTask;
@@ -359,6 +356,17 @@ public class SystemDataController {
     public Map<String,Object> firePushAlert(@RequestBody FirePushAlert firePushAlert){
         return systemDataService.pushAlert(firePushAlert);
     }
+
+    /**
+     * 预案推送通知
+     * @param planPushAlert 预案推送通知内容
+     * @return map
+     */
+    @PostMapping("/PlanPushAlert")
+    public Map<String,Object> PlanPushAlert(@RequestBody PlanPushAlert planPushAlert){
+        return systemDataService.PlanPushAlert(planPushAlert);
+    }
+
 
 
     /**

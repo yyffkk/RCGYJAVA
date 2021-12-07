@@ -451,6 +451,23 @@
             now()
         )
     </insert>
+    <insert id="insertPlanAlarm" parameterType="com.api.model.systemDataBigScreen.PlanPushAlert">
+        insert into sys_plan_alarm(
+            alarm_occurrence_time,
+            push_time,
+            device_name,
+            plan_content,
+            alarm_content,
+            create_date
+        )values (
+            #{alarmOccurrenceTime},
+            #{pushTime},
+            #{deviceName},
+            #{planContent},
+            #{alarmContent},
+            now()
+        )
+    </insert>
 
     <select id="userVisitorsNew" resultType="com.api.vo.systemDataBigScreen.SDUserVisitorsNewVo">
         select * from user_visitors_new

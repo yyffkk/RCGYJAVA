@@ -41,4 +41,12 @@ public class WebSocketFirePushAlert implements Serializable {
      * 报警类型：1.火灾报警（消防），2.设备报警
      */
     private Integer type;
+    /**
+     * 预案内容
+     */
+    private String planContent;
+    /**
+     * 报警内容
+     */
+    private String alarmContent;
 }
