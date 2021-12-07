@@ -3,6 +3,7 @@ package com.api.butlerApp.controller.butler;
 import com.api.butlerApp.service.butler.ButlerAlarmService;
 import com.api.manage.service.operationManagement.SysAlarmService;
 import com.api.model.butlerApp.ButlerAppAlarm;
+import com.api.model.operationManagement.PushRelieveAlert;
 import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
 import com.api.vo.operationManagement.VoFireAlarm;
 import com.api.vo.operationManagement.VoOneButtonAlarm;
@@ -124,11 +125,11 @@ public class ButlerAlarmController {
 
     /**
      * 推送灾情解除通知
-     * @param planAlertId 预案主键id
+     * @param pushRelieveAlert 推送灾情解除通知model
      * @return map
      */
-    @GetMapping("/pushRelieveAlert")
-    public Map<String,Object> pushRelieveAlert(Integer planAlertId){
-        return sysAlarmService.pushRelieveAlert(planAlertId);
+    @PostMapping("/pushRelieveAlert")
+    public Map<String,Object> pushRelieveAlert(@RequestBody PushRelieveAlert pushRelieveAlert){
+        return sysAlarmService.pushRelieveAlert(pushRelieveAlert);
     }
 }

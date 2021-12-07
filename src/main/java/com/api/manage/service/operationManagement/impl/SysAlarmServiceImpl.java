@@ -3,6 +3,7 @@ package com.api.manage.service.operationManagement.impl;
 import com.alibaba.fastjson.JSON;
 import com.api.manage.dao.operationManagement.SysAlarmDao;
 import com.api.manage.service.operationManagement.SysAlarmService;
+import com.api.model.operationManagement.PushRelieveAlert;
 import com.api.util.webSocket.WebSocketServiceApp;
 import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
 import com.api.vo.operationManagement.VoFireAlarm;
@@ -47,10 +48,10 @@ public class SysAlarmServiceImpl implements SysAlarmService {
     }
 
     @Override
-    public Map<String, Object> pushRelieveAlert(Integer planAlertId) {
+    public Map<String, Object> pushRelieveAlert(PushRelieveAlert pushRelieveAlert) {
         map = new HashMap<>();
         try {
-            int update = sysAlarmDao.updatePlanAlarmStatusById(planAlertId);
+            int update = sysAlarmDao.updatePlanAlarmStatusById(pushRelieveAlert);
             if (update <= 0){
                 map.put("message","推送失败");
                 map.put("status",false);
@@ -63,7 +64,7 @@ public class SysAlarmServiceImpl implements SysAlarmService {
 
             WebSocketFirePushAlert webSocketFirePushAlert = new WebSocketFirePushAlert();
             webSocketFirePushAlert.setTime(format);//填入解除时间
-            webSocketFirePushAlert.setPlanContent("当前小区内发生的火灾险情已消除，请大家注意安全，有序返回小区。");//填入预案内容
+            webSocketFirePushAlert.setPlanContent(pushRelieveAlert.getContentDescription());//填入内容说明
             webSocketFirePushAlert.setType(5);//填入报警类型：1.火灾报警（消防），2.设备报警，3.一键报警,4.预案报警,5.解除报警
 
 

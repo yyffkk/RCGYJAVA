@@ -1,5 +1,6 @@
 package com.api.manage.dao.operationManagement;
 
+import com.api.model.operationManagement.PushRelieveAlert;
 import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
 import com.api.vo.operationManagement.VoFireAlarm;
 import com.api.vo.operationManagement.VoOneButtonAlarm;
@@ -34,8 +35,8 @@ public interface SysAlarmDao {
 
     /**
      * 根据预案主键id修改预案状态
-     * @param planAlertId 预案主键id
+     * @param pushRelieveAlert 推送灾情解除通知model
      * @return 影响行数
      */
-    int updatePlanAlarmStatusById(Integer planAlertId);
+    int updatePlanAlarmStatusById(PushRelieveAlert pushRelieveAlert);
 }

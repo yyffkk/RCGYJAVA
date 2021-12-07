@@ -1,14 +1,13 @@
 package com.api.manage.controller.operationManagement;
 
 import com.api.manage.service.operationManagement.SysAlarmService;
+import com.api.model.operationManagement.PushRelieveAlert;
 import com.api.vo.operationManagement.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -104,13 +103,13 @@ public class SysAlarmController {
 
     /**
      * 推送灾情解除通知
-     * @param planAlertId 预案主键id
+     * @param pushRelieveAlert 推送灾情解除通知model
      * @return map
      */
-    @GetMapping("/pushRelieveAlert")
+    @PostMapping("/pushRelieveAlert")
     @RequiresPermissions(value = {"0101"},logical = Logical.AND)
-    public Map<String,Object> pushRelieveAlert(Integer planAlertId){
-        return sysAlarmService.pushRelieveAlert(planAlertId);
+    public Map<String,Object> pushRelieveAlert(@RequestBody PushRelieveAlert pushRelieveAlert){
+        return sysAlarmService.pushRelieveAlert(pushRelieveAlert);
     }
 
 }

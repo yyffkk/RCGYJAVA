@@ -1,5 +1,6 @@
 package com.api.manage.service.operationManagement;
 
+import com.api.model.operationManagement.PushRelieveAlert;
 import com.api.vo.operationManagement.VoButlerOneButtonAlarm;
 import com.api.vo.operationManagement.VoFireAlarm;
 import com.api.vo.operationManagement.VoOneButtonAlarm;
@@ -18,6 +19,6 @@ public interface SysAlarmService {
 
     List<VoPlanAlarm> planAlarmList();
 
-    Map<String, Object> pushRelieveAlert(Integer planAlertId);
+    Map<String, Object> pushRelieveAlert(PushRelieveAlert pushRelieveAlert);
 
 }
