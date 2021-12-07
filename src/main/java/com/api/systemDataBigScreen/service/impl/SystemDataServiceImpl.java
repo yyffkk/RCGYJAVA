@@ -509,7 +509,7 @@ public class SystemDataServiceImpl implements SystemDataService {
 
             String content = JSON.toJSONString(webSocketFirePushAlert);
 
-            log.info("火灾报警："+content);
+            log.info("预案报警："+content);
 //            System.out.printf(content);
 //             key:type value:1 火警
             //不使用第三方极光推送，改用websocket来实现推送

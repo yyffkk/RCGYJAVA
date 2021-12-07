@@ -6,6 +6,7 @@ import com.api.vo.operationManagement.VoOneButtonAlarm;
 import com.api.vo.operationManagement.VoPlanAlarm;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysAlarmService {
     List<VoFireAlarm> fireAlarmList();
@@ -16,4 +17,7 @@ public interface SysAlarmService {
     List<VoButlerOneButtonAlarm> butlerOneButtonAlarmList();
 
     List<VoPlanAlarm> planAlarmList();
+
+    Map<String, Object> pushRelieveAlert();
+
 }

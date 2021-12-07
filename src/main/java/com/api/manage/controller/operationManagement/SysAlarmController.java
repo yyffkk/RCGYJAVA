@@ -102,4 +102,14 @@ public class SysAlarmController {
         return map;
     }
 
+    /**
+     * 推送灾情解除通知
+     * @return map
+     */
+    @GetMapping("/pushRelieveAlert")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
+    public Map<String,Object> pushRelieveAlert(){
+        return sysAlarmService.pushRelieveAlert();
+    }
+
 }
