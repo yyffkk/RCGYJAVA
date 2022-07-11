@@ -341,4 +341,85 @@ public class UploadController {
     public Map<String,Object> uploadAppIdCardBack(MultipartFile file){
         return uploadService.uploadAppIdCardBack(file);
     }
+
+    /**
+     * 上传安全管理照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadSecurityManagementImg")
+    public Map<String,Object> uploadSecurityManagementImg(MultipartFile file){
+        return uploadService.uploadSecurityManagementImg(file);
+    }
+
+    /**
+     * 上传员工简历pdf
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadBusinessSysUserResume")
+    public Map<String,Object> uploadBusinessSysUserResume(MultipartFile file){
+        return uploadService.uploadBusinessSysUserResume(file);
+    }
+
+    /**
+     * 上传模版excel
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadModelExcel")
+    public Map<String,Object> uploadModelExcel(MultipartFile file){
+        return uploadService.uploadModelExcel(file);
+    }
+
+    /**
+     * 上传户型说明照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadHouseTypeDescriptionImg")
+    public Map<String,Object> uploadHouseTypeDescriptionImg(MultipartFile file){
+        return uploadService.uploadHouseTypeDescriptionImg(file);
+    }
+
+    /**
+     * 上传地理信息照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadGeographyImg")
+    public Map<String,Object> uploadGeographyImg(MultipartFile file){
+        return uploadService.uploadGeographyImg(file);
+    }
+
+    /**
+     * 上传周边企业信息照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadSurroundingEnterprisesImg")
+    public Map<String,Object> uploadSurroundingEnterprisesImg(MultipartFile file){
+        return uploadService.uploadSurroundingEnterprisesImg(file);
+    }
+
+    /**
+     * 上传jcook分类信息照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadJcookCategory")
+    public Map<String,Object> uploadJcookCategory(MultipartFile file){
+        return uploadService.uploadJcookCategory(file);
+    }
+
+    /**
+     * 上传jcook轮播图照片
+     * @param file 上传文件
+     * @return map
+     */
+    @PostMapping("/uploadJcookRotation")
+    public Map<String,Object> uploadJcookRotation(MultipartFile file){
+        return uploadService.uploadJcookRotation(file);
+    }
+
 }

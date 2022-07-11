@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.businessManagement.SysRPRecordsDao">
+    <insert id="insert" parameterType="com.api.model.businessManagement.SysRPRecords">
+        insert into sys_rp_records(
+            user_id,
+            happen_date,
+            type,
+            content,
+            create_id,
+            create_date
+        )value (
+            #{userId},
+            #{happenDate},
+            #{type},
+            #{content},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_rp_records where id = #{id}
+    </delete>
+
+    <select id="list" parameterType="com.api.model.businessManagement.SearchRPRecords" resultType="com.api.model.businessManagement.SysRPRecords">
+        select * from sys_rp_records where user_id = #{userId}
+    </select>
+</mapper>

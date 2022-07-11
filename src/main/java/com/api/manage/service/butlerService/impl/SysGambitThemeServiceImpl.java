@@ -6,6 +6,7 @@ import com.api.manage.service.butlerService.SysGambitThemeService;
 import com.api.model.system.SysFunctionSwitch;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoGambitTheme;
+import com.api.vo.butlerService.VoGambitThemeComment;
 import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -160,6 +161,35 @@ public class SysGambitThemeServiceImpl implements SysGambitThemeService {
             map.put("message",msg+"失败");
             map.put("status",false);
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findCommentByThemeId(Integer themeId) {
+        map = new HashMap<>();
+
+        List<VoGambitThemeComment> gambitThemeCommentList = sysGambitThemeDao.findCommentByThemeId(themeId);
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",gambitThemeCommentList);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> deleteCommentByCommentId(Integer commentId) {
+        map = new HashMap<>();
+
+        int update = sysGambitThemeDao.deleteCommentByCommentId(commentId);
+        if (update >0){
+            map.put("message","删除成功");
+            map.put("status",true);
+        }else {
+            map.put("message","删除失败");
+            map.put("status",false);
+        }
+
         return map;
     }
 }

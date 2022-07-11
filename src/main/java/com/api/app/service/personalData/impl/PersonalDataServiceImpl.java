@@ -1,5 +1,6 @@
 package com.api.app.service.personalData.impl;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.api.app.dao.login.AppLoginDao;
 import com.api.app.dao.personalData.PersonalDataDao;
 import com.api.app.service.personalData.PersonalDataService;
@@ -7,6 +8,7 @@ import com.api.model.app.PersonalData;
 import com.api.model.app.UpdateTel;
 import com.api.model.app.UserCode;
 import com.api.model.basicArchives.UserResident;
+import com.api.util.SmsSendUtil;
 import com.api.util.UploadUtil;
 import com.api.vo.app.PersonalDataVo;
 import com.api.vo.resources.VoResourcesImg;
@@ -91,7 +93,7 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         final String MOBILE = updateTel.getNewTel();
 
         //验证手机号格式
-        Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p=Pattern.compile("^1[3456789]\\d{9}$");
         Matcher m=p.matcher(MOBILE);
         boolean matches = m.matches();
         if (!matches){
@@ -126,7 +128,14 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         }
 
         // 发送短信工具类
-//        SmsSendUtil.send(CAPTCHA, MOBILE);
+        try {
+            SmsSendUtil.sendSms(CAPTCHA, MOBILE);
+        } catch (ClientException e) {
+//            e.printStackTrace();
+            map.put("message","验证码发送失败");
+            map.put("status",false);
+            return map;
+        }
         map.put("code",CAPTCHA);
         map.put("message","验证码发送成功");
         map.put("status",true);
@@ -149,7 +158,7 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         personalDataDao.deleteUserTelUpdateByTel(updateTel.getNewTel());
 
         //验证手机号格式
-        Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p=Pattern.compile("^1[3456789]\\d{9}$");
         Matcher m=p.matcher(updateTel.getNewTel());
         boolean matches = m.matches();
         if (!matches){

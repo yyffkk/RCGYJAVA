@@ -1,9 +1,7 @@
 package com.api.systemDataBigScreen.service;
 
 import com.api.model.operationManagement.SysNewsManagement;
-import com.api.model.systemDataBigScreen.DailyActivitySearch;
-import com.api.model.systemDataBigScreen.DispatchListSearch;
-import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.model.systemDataBigScreen.*;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 
@@ -63,6 +61,8 @@ public interface SystemDataService {
 
     Map<String, Object> pushAlert(FirePushAlert firePushAlert);
 
+    Map<String, Object> PlanPushAlert(PlanPushAlert planPushAlert);
+
     Map<String, Object> findRegCount();
 
     List<VoGreenTask> findGreenTaskList();
@@ -102,5 +102,23 @@ public interface SystemDataService {
     Map<String, Object> sysInspectionRoute();
 
     Map<String, Object> userVisitorsNew();
+
+    Map<String, Object> sysMeterReadingRecord();
+
+    Map<String, Object> sysMeterReadingShare();
+
+    Map<String, Object> sysMeterReadingShareDetails();
+
+    List<SDTSActivityVo> findActivityTouchScreen();
+
+    List<SDTSAnnouncementVo> sysAnnouncementTouchScreen();
+
+    Map<String, Object> sysNewCategoryTouchScreen();
+
+    List<SDTSNewVo> sysNewTouchScreen(Integer newCategoryId);
+
+    Map<String, Object> sysNewLatestReleaseTouchScreen(Integer num);
+
+    Map<String, Object> searchTouchScreen(SearchTouchScreenSearch searchTouchScreenSearch);
 
 }

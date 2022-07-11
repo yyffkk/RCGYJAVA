@@ -79,7 +79,7 @@ public class GetOverdueFine {
      * @param voDailyPayment 日常缴费Vo list 回显
      * @return app 日常缴费Vo list 回显
      */
-    public static VoDailyPayment getManagelistOverdueFine(VoDailyPayment voDailyPayment){
+    public static VoDailyPayment getManageListOverdueFine(VoDailyPayment voDailyPayment){
         //计算出滞纳金
         if (voDailyPayment.getStatus() != 3){//3.全部缴纳
             //当不为全部缴纳时，滞纳金需要计算，否则取数据库的滞纳金

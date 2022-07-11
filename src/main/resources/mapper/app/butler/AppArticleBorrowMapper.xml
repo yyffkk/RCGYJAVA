@@ -13,7 +13,7 @@
     <select id="findBorrowNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) as num
         from sys_article_borrow as sab,sys_article_detail as sad
-        where sab.article_detail_id = sad.id and borrow_status = 1 and sad.article_id = #{id}
+        where sab.article_detail_id = sad.id and borrow_status in (1,3) and sad.article_id = #{id}
     </select>
 
     <select id="myList" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppMyArticleBorrowVo">
@@ -65,11 +65,11 @@
 
     <select id="findBorrowByUserId" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppArticleBorrowReturnVo">
         select sab.id,sad.name,sad.code,sab.begin_date from sys_article_borrow as sab,sys_article_detail as sad
-        where sab.article_detail_id = sad.id and sab.borrow_status = 1 and sab.create_id = #{id}
+        where sab.article_detail_id = sad.id and sab.borrow_status in (1,4) and sab.create_id = #{id}
     </select>
 
     <select id="findBorrowArticleIdByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select id from sys_article_borrow where borrow_status = 1 and create_id = #{userId}
+        select id from sys_article_borrow where borrow_status in (1,4) and create_id = #{userId}
     </select>
 
     <update id="articleReturn" parameterType="com.api.model.app.AppArticleBorrow">

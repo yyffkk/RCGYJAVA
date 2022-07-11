@@ -1,7 +1,7 @@
 package com.api.model.system;
 
 /**
- * 身份
+ * 身份（职业,岗位）
  */
 public class SysIdentity {
     /**
@@ -21,9 +21,9 @@ public class SysIdentity {
      */
     private Integer parentId;
     /**
-     * 组织ID
+     * 备注
      */
-    private Integer organization;
+    private String remakes;
 
     @Override
     public String toString() {
@@ -32,7 +32,7 @@ public class SysIdentity {
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
                 ", parentId=" + parentId +
-                ", organization=" + organization +
+                ", remakes='" + remakes + '\'' +
                 '}';
     }
 
@@ -68,22 +68,22 @@ public class SysIdentity {
         this.parentId = parentId;
     }
 
-    public Integer getOrganization() {
-        return organization;
+    public String getRemakes() {
+        return remakes;
     }
 
-    public void setOrganization(Integer organization) {
-        this.organization = organization;
+    public void setRemakes(String remakes) {
+        this.remakes = remakes;
     }
 
     public SysIdentity() {
     }
 
-    public SysIdentity(Integer id, String name, String code, Integer parentId, Integer organization) {
+    public SysIdentity(Integer id, String name, String code, Integer parentId, String remakes) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.parentId = parentId;
-        this.organization = organization;
+        this.remakes = remakes;
     }
 }

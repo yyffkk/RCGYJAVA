@@ -15,7 +15,7 @@
     </select>
 
     <select id="countNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from sys_user where organization_id_path like concat('%',#{id},':','%')
+        select count(*) from sys_user where organization_id_path like concat('%:',#{id},':%')
     </select>
 
     <insert id="insert" parameterType="com.api.model.businessManagement.SysOrganization">
@@ -92,7 +92,7 @@
         select id,name from sys_organization where parent_id = #{parentId}
     </select>
     <select id="findAllDepartment" resultType="com.api.vo.app.IdAndName">
-        select id,name from sys_organization where category_id = 2
+        select id,name from sys_organization where category_id in (2,3,4,5)
     </select>
 
 </mapper>

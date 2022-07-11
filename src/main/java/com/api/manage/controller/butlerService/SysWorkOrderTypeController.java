@@ -26,7 +26,7 @@ public class SysWorkOrderTypeController   {
      * @return 工单大类信息集合
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public List<VoWorkOrderType> list(){
         return sysWorkOrderTypeService.list();
     }
@@ -37,7 +37,7 @@ public class SysWorkOrderTypeController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysWorkOrderType sysWorkOrderType){
         return sysWorkOrderTypeService.insert(sysWorkOrderType);
     }
@@ -48,7 +48,7 @@ public class SysWorkOrderTypeController   {
      * @return 工单大类信息
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoWorkOrderType findById(Integer id){
         return sysWorkOrderTypeService.findById(id);
     }
@@ -59,7 +59,7 @@ public class SysWorkOrderTypeController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysWorkOrderType sysWorkOrderType){
         return sysWorkOrderTypeService.update(sysWorkOrderType);
     }
@@ -70,7 +70,7 @@ public class SysWorkOrderTypeController   {
      * @return map
      */
     @GetMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(Integer id){
         return sysWorkOrderTypeService.delete(id);
     }

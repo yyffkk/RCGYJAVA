@@ -26,7 +26,7 @@ public interface AppGambitService {
 
     Map<String, Object> writePost(AppGambitTheme appGambitTheme);
 
-    List<AppGambitThemeVo> listByGambitId(Integer id, int gambitId);
+    List<AppGambitThemeVo> listByGambitId(Integer id, int gambitId, int orderBy);
 
     Map<String, Object> findActivityGambit();
 }

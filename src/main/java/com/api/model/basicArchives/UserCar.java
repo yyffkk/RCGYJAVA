@@ -43,6 +43,22 @@ public class UserCar {
      */
     private Integer parkingSpaceId;
     /**
+     * 车辆类型（1.私家车，2.货车，3.大巴，4.牵引汽车，5.其他）
+     */
+    private Integer type;
+    /**
+     * 车辆品牌
+     */
+    private String brand;
+    /**
+     * 车辆型号
+     */
+    private String model;
+    /**
+     * 车辆颜色(1.红，2.橙，3.黄，4.绿，5.青，6.蓝，7紫，8.黑，9.白，10.灰，11.金，12.磨砂，13.其他)
+     */
+    private Integer color;
+    /**
      * 创建人
      */
     private Integer createId;
@@ -79,6 +95,10 @@ public class UserCar {
                 ", idNumber='" + idNumber + '\'' +
                 ", tel='" + tel + '\'' +
                 ", parkingSpaceId=" + parkingSpaceId +
+                ", type=" + type +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", color=" + color +
                 ", createId=" + createId +
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
@@ -160,6 +180,38 @@ public class UserCar {
         this.parkingSpaceId = parkingSpaceId;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public Integer getColor() {
+        return color;
+    }
+
+    public void setColor(Integer color) {
+        this.color = color;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -211,7 +263,7 @@ public class UserCar {
     public UserCar() {
     }
 
-    public UserCar(Integer id, Integer buildingUnitEstateId, String code, Integer status, String owner, Integer idType, String idNumber, String tel, Integer parkingSpaceId, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date effectiveTimeStart, Date effectiveTimeEnd) {
+    public UserCar(Integer id, Integer buildingUnitEstateId, String code, Integer status, String owner, Integer idType, String idNumber, String tel, Integer parkingSpaceId, Integer type, String brand, String model, Integer color, Integer createId, Date createDate, Integer modifyId, Date modifyDate, Date effectiveTimeStart, Date effectiveTimeEnd) {
         this.id = id;
         this.buildingUnitEstateId = buildingUnitEstateId;
         this.code = code;
@@ -221,6 +273,10 @@ public class UserCar {
         this.idNumber = idNumber;
         this.tel = tel;
         this.parkingSpaceId = parkingSpaceId;
+        this.type = type;
+        this.brand = brand;
+        this.model = model;
+        this.color = color;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;

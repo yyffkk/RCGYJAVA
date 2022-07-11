@@ -4,10 +4,13 @@ import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
 
 import com.api.model.butlerService.FacilitiesAppointment;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
 import com.api.vo.butlerService.VoFacilitiesCategory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +33,7 @@ public class SysFacilitiesAppointmentController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchFacilitiesAppointment searchFacilitiesAppointment){
         PageHelper.startPage(searchFacilitiesAppointment.getPageNum(),searchFacilitiesAppointment.getSize());
         List<VoFacilitiesAppointment> voFacilitiesAppointmentList = facilitiesAppointmentService.list(searchFacilitiesAppointment);
@@ -69,5 +73,26 @@ public class SysFacilitiesAppointmentController   {
     public Map<String,Object> countAppointmentNow(){
         return facilitiesAppointmentService.countAppointmentNow();
     }
+
+    /**
+     * 修改设施预约信息
+     * @param facilitiesAppointment 设施预约管理model
+     * @return map
+     */
+    @PostMapping("/update")
+    public Map<String,Object> update(@RequestBody FacilitiesAppointment facilitiesAppointment){
+        return facilitiesAppointmentService.update(facilitiesAppointment);
+    }
+
+    /**
+     * 批量删除设施预约信息
+     * @param ids 设施预约信息主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return facilitiesAppointmentService.delete(ids.getIds());
+    }
+
 
 }

@@ -34,7 +34,7 @@ public class CpmBuildingUnitController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0201"},logical = Logical.AND)
     public Map<String,Object> list(VoCpmBuildingUnit voCpmBuildingUnit, int pageNum, int size){
         PageHelper.startPage(pageNum,size);
         List<VoCpmBuildingUnit> voCpmBuildingUnitList =cpmBuildingUnitService.list(voCpmBuildingUnit);
@@ -52,7 +52,7 @@ public class CpmBuildingUnitController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0203"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody CpmBuildingUnit cpmBuildingUnit){
         return cpmBuildingUnitService.insert(cpmBuildingUnit);
     }
@@ -63,7 +63,7 @@ public class CpmBuildingUnitController   {
      * @return 楼栋单元信息
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public CpmBuildingUnit findById(Integer id){
         return cpmBuildingUnitService.findById(id);
     }
@@ -74,7 +74,7 @@ public class CpmBuildingUnitController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0205"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody CpmBuildingUnit cpmBuildingUnit){
         return cpmBuildingUnitService.update(cpmBuildingUnit);
     }
@@ -85,7 +85,7 @@ public class CpmBuildingUnitController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0204"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return cpmBuildingUnitService.delete(ids.getIds());
     }

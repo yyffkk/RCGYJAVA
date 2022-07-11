@@ -13,6 +13,10 @@ public class AppReportRepairVo {
      */
     private Integer id;
     /**
+     * 绑定房屋
+     */
+    private String roomName;
+    /**
      * 服务类型（1.公区维修（户外报修），2.家庭维修）
      */
     private Integer type;
@@ -33,6 +37,7 @@ public class AppReportRepairVo {
     public String toString() {
         return "AppReportRepairVo{" +
                 "id=" + id +
+                ", roomName='" + roomName + '\'' +
                 ", type=" + type +
                 ", status=" + status +
                 ", reportDetail='" + reportDetail + '\'' +
@@ -46,6 +51,14 @@ public class AppReportRepairVo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public Integer getType() {
@@ -83,8 +96,9 @@ public class AppReportRepairVo {
     public AppReportRepairVo() {
     }
 
-    public AppReportRepairVo(Integer id, Integer type, Integer status, String reportDetail, List<VoResourcesImg> imgUrls) {
+    public AppReportRepairVo(Integer id, String roomName, Integer type, Integer status, String reportDetail, List<VoResourcesImg> imgUrls) {
         this.id = id;
+        this.roomName = roomName;
         this.type = type;
         this.status = status;
         this.reportDetail = reportDetail;

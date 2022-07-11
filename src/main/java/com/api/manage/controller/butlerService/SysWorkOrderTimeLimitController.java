@@ -32,7 +32,7 @@ public class SysWorkOrderTimeLimitController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(int pageNum,int size){
         PageHelper.startPage(pageNum,size);
         List<VoWorkOrderTimeLimit> voWorkOrderTimeLimitList = sysWorkOrderTimeLimitService.list();
@@ -50,7 +50,7 @@ public class SysWorkOrderTimeLimitController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysWorkOrderTimeLimit sysWorkOrderTimeLimit){
         return sysWorkOrderTimeLimitService.insert(sysWorkOrderTimeLimit);
     }
@@ -61,7 +61,7 @@ public class SysWorkOrderTimeLimitController   {
      * @return 工单时限信息
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoWorkOrderTimeLimit findById(Integer id){
         return sysWorkOrderTimeLimitService.findById(id);
     }
@@ -72,7 +72,7 @@ public class SysWorkOrderTimeLimitController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysWorkOrderTimeLimit sysWorkOrderTimeLimit){
         return sysWorkOrderTimeLimitService.update(sysWorkOrderTimeLimit);
     }
@@ -83,7 +83,7 @@ public class SysWorkOrderTimeLimitController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysWorkOrderTimeLimitService.delete(ids.getIds());
     }

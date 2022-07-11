@@ -7,6 +7,8 @@ import com.api.vo.butlerService.VoUserVisitors;
 import com.api.vo.butlerService.VoVisitorsNew;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,7 @@ public class UserVisitorsNewController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchVisitorsNew searchVisitorsNew){
         PageHelper.startPage(searchVisitorsNew.getPageNum(),searchVisitorsNew.getSize());
         List<VoVisitorsNew> voVisitorsNewList =userVisitorsNewService.list(searchVisitorsNew);

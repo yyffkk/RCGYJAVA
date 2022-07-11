@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppHouseTypeDescriptionDao">
+
+    <select id="list" resultType="com.api.vo.app.AppHouseTypeDescriptionVo">
+        select * from sys_house_type_description where status = 2
+    </select>
+</mapper>

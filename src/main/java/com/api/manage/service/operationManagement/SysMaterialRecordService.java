@@ -13,4 +13,6 @@ public interface SysMaterialRecordService {
     Map<String, Object> insert(SysMaterialRecord sysMaterialRecord);
 
     Map<String, Object> findById(Integer id);
+
+    Map<String, Object> delete(int[] ids);
 }

@@ -5,7 +5,10 @@ import com.api.manage.dao.operationManagement.SysAttendanceTeamDao;
 import com.api.manage.service.operationManagement.SysAttendanceSchedulingPlanService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.*;
+import com.api.vo.operationManagement.SysAttendanceSchedulingPlanDetailVo;
+import com.api.vo.operationManagement.SysAttendanceSchedulingPlanExceptionVo;
 import com.api.vo.operationManagement.VoAttendanceSchedulingPlan;
+import com.api.vo.operationManagement.VoFBIAttendanceSchedulingPlan;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -98,20 +101,22 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
         try {
             for (int id : ids) {
                 //根据考勤排班计划主键id查询考勤排班计划
-                SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan = sysAttendanceSchedulingPlanDao.findById(id);
+                VoFBIAttendanceSchedulingPlan sysAttendanceSchedulingPlan = sysAttendanceSchedulingPlanDao.findById(id);
                 if (sysAttendanceSchedulingPlan.getStatus() == 1){
                     throw new RuntimeException("该计划已启用，请先停用");
                 }
                 //根据考勤排班计划主键id删除考勤排班计划例外情况
                 int delete = sysAttendanceSchedulingPlanDao.deleteException(id);
-                if (delete <= 0){
-                    throw new RuntimeException("删除例外情况失败");
-                }
+                //因为有可能会出现没有例外情况，所以注释掉
+//                if (delete <= 0){
+//                    throw new RuntimeException("删除例外情况失败");
+//                }
                 //根据考勤排班计划主键id删除考勤排班计划详情
                 int delete2 = sysAttendanceSchedulingPlanDao.deleteDetail(id);
-                if (delete2 <= 0){
-                    throw new RuntimeException("删除详情失败");
-                }
+                //因为有可能会出现没有详情，所以注释掉
+//                if (delete2 <= 0){
+//                    throw new RuntimeException("删除详情失败");
+//                }
                 //根据考勤排班计划主键id删除考勤排班计划
                 int delete3 = sysAttendanceSchedulingPlanDao.delete(id);
                 if (delete3 <= 0){
@@ -141,7 +146,7 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
 
         try {
             //根据考勤排班计划主键id查询考勤排班计划
-            SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan2 = sysAttendanceSchedulingPlanDao.findById(sysAttendanceSchedulingPlan.getId());
+            VoFBIAttendanceSchedulingPlan sysAttendanceSchedulingPlan2 = sysAttendanceSchedulingPlanDao.findById(sysAttendanceSchedulingPlan.getId());
             if (sysAttendanceSchedulingPlan2.getStatus() == 1){
                 throw new RuntimeException("该计划已启用，请先停用");
             }
@@ -220,11 +225,13 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
         map = new HashMap<>();
         String msg = "";
         try {
-            SysAttendanceSchedulingPlan byId = sysAttendanceSchedulingPlanDao.findById(id);
+            VoFBIAttendanceSchedulingPlan byId = sysAttendanceSchedulingPlanDao.findById(id);
             if (byId.getStatus() == 1){//1.启用
                 msg = "停用";
-                byId.setStatus(2);//填入状态：2.停用
-                int update = sysAttendanceSchedulingPlanDao.updateStatusById(byId);
+                SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan = new SysAttendanceSchedulingPlan();
+                sysAttendanceSchedulingPlan.setId(byId.getId());
+                sysAttendanceSchedulingPlan.setStatus(2);//填入状态：2.停用
+                int update = sysAttendanceSchedulingPlanDao.updateStatusById(sysAttendanceSchedulingPlan);
                 if (update <= 0){
                     throw new RuntimeException(msg+"失败");
                 }
@@ -244,8 +251,10 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
                 }
 
                 msg = "启用";
-                byId.setStatus(1);//填入状态：1.启用
-                int update = sysAttendanceSchedulingPlanDao.updateStatusById(byId);
+                SysAttendanceSchedulingPlan sysAttendanceSchedulingPlan = new SysAttendanceSchedulingPlan();
+                sysAttendanceSchedulingPlan.setId(byId.getId());
+                sysAttendanceSchedulingPlan.setStatus(1);//填入状态：1.启用
+                int update = sysAttendanceSchedulingPlanDao.updateStatusById(sysAttendanceSchedulingPlan);
                 if (update <= 0){
                     throw new RuntimeException(msg+"失败");
                 }
@@ -265,6 +274,29 @@ public class SysAttendanceSchedulingPlanServiceImpl implements SysAttendanceSche
         }
         map.put("message",msg+"成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        map = new HashMap<>();
+
+        VoFBIAttendanceSchedulingPlan voFBIAttendanceSchedulingPlan = sysAttendanceSchedulingPlanDao.findById(id);
+        List<SysAttendanceSchedulingPlanDetailVo> detailVoList = sysAttendanceSchedulingPlanDao.findDetailByPlanId(id);
+        if (detailVoList != null && detailVoList.size()>0){
+            voFBIAttendanceSchedulingPlan.setSysAttendanceSchedulingPlanDetailVoList(detailVoList);
+        }
+
+        List<SysAttendanceSchedulingPlanExceptionVo> exceptionVoList = sysAttendanceSchedulingPlanDao.findExceptionByPlanId(id);
+        if (exceptionVoList != null && exceptionVoList.size() >0){
+            voFBIAttendanceSchedulingPlan.setSysAttendanceSchedulingPlanExceptionVOList(exceptionVoList);
+        }
+
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",voFBIAttendanceSchedulingPlan);
+
         return map;
     }
 }

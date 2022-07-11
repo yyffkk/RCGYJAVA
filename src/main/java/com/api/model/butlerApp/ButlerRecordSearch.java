@@ -13,7 +13,7 @@ public class ButlerRecordSearch {
      */
     private int size;
     /**
-     * 审核状态：1.待审核，2.审核通过，3.审核驳回，4.已归还
+     * 审核状态：1.待审核，2.审核通过，3.审核驳回，4.归还待审核，5.归还审核驳回，6.已归还（归还审核通过）
      */
     private Integer recordStatus;
     /**

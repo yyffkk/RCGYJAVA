@@ -24,10 +24,10 @@
                 and a.charges_template_detail_id = #{chargesTemplateDetailId}
             </if>
             <if test="beginDate != null">
-                and a.begin_date <![CDATA[ > ]]> #{beginDate}
+                and a.begin_date <![CDATA[ >= ]]> #{beginDate}
             </if>
             <if test="endDate != null">
-                and a.end_date <![CDATA[ < ]]> #{endDate}
+                and a.end_date <![CDATA[ <= ]]> #{endDate}
             </if>
             <if test="payName != null and payName != ''">
                 and sdpo.name like concat('%',#{payName},'%')
@@ -172,6 +172,12 @@
     <select id="findEnableTempleDetail" resultType="com.api.vo.chargeManagement.VoEnableTemplateDetail">
         select sctd.id,sctd.name,sctd.unit_price,sctd.type from sys_charges_template as sct,sys_charges_template_detail as sctd where sct.id = sctd.charges_template_id and sct.status = 1 and sctd.status = 1 and sctd.marker in (1,5)
     </select>
+
+    <update id="delete" parameterType="java.lang.Integer">
+        update sys_daily_payment
+        set is_delete = 0
+        where id = #{id}
+    </update>
 
 
 </mapper>

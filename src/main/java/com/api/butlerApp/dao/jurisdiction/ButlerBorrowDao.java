@@ -158,4 +158,11 @@ public interface ButlerBorrowDao {
      * @return 正常物品数量
      */
     int findNormalNum(Integer id);
+
+    /**
+     * 根据主键id修改状态和驳回原因
+     * @param butlerBorrowLendingApproval 管家端出借审核model
+     * @return 影响行数
+     */
+    int updateSARById(ButlerBorrowLendingApproval butlerBorrowLendingApproval);
 }

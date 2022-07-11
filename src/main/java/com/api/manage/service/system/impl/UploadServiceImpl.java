@@ -7,6 +7,7 @@ import com.api.model.butlerService.UserDecorationDoc;
 import com.api.util.BASE64DecodedMultipartFile;
 import com.api.util.Base64StrToImage;
 import com.api.util.UploadUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class UploadServiceImpl implements UploadService {
     private static Map<String,Object> map = null;
     @Value("${prop.upload-advice}")
@@ -131,6 +133,22 @@ public class UploadServiceImpl implements UploadService {
     private String UPLOAD_BUTLER_APP_COMPLETE_MAINTENANCE;
     @Value("${prop.upload-butler-app-acceptance}")
     private String UPLOAD_BUTLER_APP_ACCEPTANCE;
+    @Value("${prop.upload-security-management-file-img}")
+    private String UPLOAD_SECURITY_MANAGEMENT_FILE_IMG;
+    @Value("${prop.upload-business-sys-user-resume}")
+    private String UPLOAD_BUSINESS_SYS_USER_RESUME;
+    @Value("${prop.upload-model-excel}")
+    private String UPLOAD_MODEL_EXCEL;
+    @Value("${prop.upload-house-type-description}")
+    private String UPLOAD_HOUSE_TYPE_DESCRIPTION;
+    @Value("${prop.upload-geography}")
+    private String UPLOAD_GEOGRAPHY;
+    @Value("${prop.upload-surrounding-enterprises}")
+    private String UPLOAD_SURROUNDING_ENTERPRISES;
+    @Value("${prop.upload-jcook-category}")
+    private String UPLOAD_JCOOK_CATEGORY;
+    @Value("${prop.upload-jcook-rotation}")
+    private String UPLOAD_JCOOK_ROTATION;
 
     @Resource
     UserDecorationDao userDecorationDao;
@@ -533,6 +551,71 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public Map<String, Object> uploadButlerAppAcceptance(MultipartFile file) {
         Map<String, Object> map = upload(file,UPLOAD_BUTLER_APP_ACCEPTANCE);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadSecurityManagementImg(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_SECURITY_MANAGEMENT_FILE_IMG);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadBusinessSysUserResume(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_BUSINESS_SYS_USER_RESUME);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadModelExcel(MultipartFile file) {
+        map = new HashMap<>();
+        String url = null;
+        try {
+            UploadUtil uploadUtil = new UploadUtil();
+            String name = file.getOriginalFilename();
+            url = uploadUtil.uploadExcelFile(file, UPLOAD_MODEL_EXCEL,name);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            map.put("message",message);
+            map.put("url","");
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","上传成功");
+        map.put("url",url);
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadHouseTypeDescriptionImg(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_HOUSE_TYPE_DESCRIPTION);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadGeographyImg(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_GEOGRAPHY);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadSurroundingEnterprisesImg(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_SURROUNDING_ENTERPRISES);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadJcookCategory(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_JCOOK_CATEGORY);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> uploadJcookRotation(MultipartFile file) {
+        Map<String, Object> map = upload(file,UPLOAD_JCOOK_ROTATION);
         return map;
     }
 

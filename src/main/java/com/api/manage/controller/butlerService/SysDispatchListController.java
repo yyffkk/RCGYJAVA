@@ -34,7 +34,7 @@ public class SysDispatchListController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchDispatchList searchDispatchList){
         PageHelper.startPage(searchDispatchList.getPageNum(),searchDispatchList.getSize());
         List<VoDispatchList> voDispatchListList = sysDispatchListService.list(searchDispatchList);
@@ -52,7 +52,7 @@ public class SysDispatchListController   {
      * @return map
      */
     @PostMapping("/falseDelete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysDispatchListService.falseDelete(ids.getIds());
     }
@@ -63,7 +63,7 @@ public class SysDispatchListController   {
      * @return map
      */
     @PostMapping("/cancel")
-    @RequiresPermissions(value = {"0308","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0308"},logical = Logical.AND)
     public Map<String,Object> cancel(@RequestBody CancelWorkOrder cancelWorkOrder){
         return sysDispatchListService.cancel(cancelWorkOrder);
     }
@@ -75,7 +75,7 @@ public class SysDispatchListController   {
      * @return map
      */
     @PostMapping("/revisit")
-    @RequiresPermissions(value = {"0309","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0309"},logical = Logical.AND)
     public Map<String,Object> revisit(@RequestBody RevisitWorkOrder revisitWorkOrder){
         return sysDispatchListService.revisit(revisitWorkOrder);
     }
@@ -86,7 +86,7 @@ public class SysDispatchListController   {
      * @return map
      */
     @GetMapping("/rollback")
-    @RequiresPermissions(value = {"0310","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0310"},logical = Logical.AND)
     public Map<String,Object> rollback(Integer id){
         return sysDispatchListService.rollback(id);
     }
@@ -98,7 +98,7 @@ public class SysDispatchListController   {
      * @return map
      */
     @PostMapping("/dispatch")
-    @RequiresPermissions(value = {"0311","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0311"},logical = Logical.AND)
     public Map<String,Object> dispatch(@RequestBody SysDispatchListDetail sysDispatchListDetail){
         return sysDispatchListService.dispatch(sysDispatchListDetail);
     }
@@ -109,7 +109,7 @@ public class SysDispatchListController   {
      * @return map
      */
     @GetMapping("/findSysUserLikeActualName")
-    @RequiresPermissions(value = {"0311","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0311"},logical = Logical.AND)
     public Map<String,Object> findSysUserLikeActualName(String actualName){
         return sysDispatchListService.findSysUserLikeActualName(actualName);
     }
@@ -121,7 +121,7 @@ public class SysDispatchListController   {
      * @return map
      */
     @GetMapping("/repairWorkOrderDetail")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> repairWorkOrderDetail(Integer id){
         return sysDispatchListService.repairWorkOrderDetail(id);
     }

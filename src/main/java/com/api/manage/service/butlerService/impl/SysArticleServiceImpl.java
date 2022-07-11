@@ -192,8 +192,10 @@ public class SysArticleServiceImpl implements SysArticleService {
             List<ArticleDetail> articleDetailList = article.getArticleDetailList();
             if (articleDetailList != null && articleDetailList.size()>0){
                 for (ArticleDetail articleDetail : articleDetailList) {
-                    //先删除照片信息
-                    uploadUtil.delete("sysArticleDetail",articleDetail.getId(),"sysArticleDetail");
+                    if (articleDetail.getId() != null){
+                        //先删除照片信息
+                        uploadUtil.delete("sysArticleDetail",articleDetail.getId(),"sysArticleDetail");
+                    }
 
                     //如果物品明细名称没填，则系统自动填，与物品总类名称相同
                     if (articleDetail.getName() == null){

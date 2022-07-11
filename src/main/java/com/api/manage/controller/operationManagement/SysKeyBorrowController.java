@@ -7,6 +7,8 @@ import com.api.vo.operationManagement.VoKeyBorrow;
 import com.api.vo.operationManagement.VoKeyManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,6 +31,7 @@ public class SysKeyBorrowController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchKeyBorrow searchKeyBorrow){
         PageHelper.startPage(searchKeyBorrow.getPageNum(),searchKeyBorrow.getSize());
         List<VoKeyBorrow> voKeyBorrowList = sysKeyBorrowService.list(searchKeyBorrow);
@@ -49,5 +52,15 @@ public class SysKeyBorrowController {
     @PostMapping("/examine")
     public Map<String,Object> examine(@RequestBody KeyBorrow keyBorrow){
         return sysKeyBorrowService.examine(keyBorrow);
+    }
+
+    /**
+     * 归还审核
+     * @param keyBorrow 钥匙借还/钥匙审核model管理
+     * @return map
+     */
+    @PostMapping("/returnExamine")
+    public Map<String,Object> returnExamine(@RequestBody KeyBorrow keyBorrow){
+        return sysKeyBorrowService.returnExamine(keyBorrow);
     }
 }

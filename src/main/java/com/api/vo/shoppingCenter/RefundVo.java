@@ -49,6 +49,10 @@ public class RefundVo {
      * 退货申请时间
      */
     private Date backDate;
+    /**
+     * 退货货理由
+     */
+    private String backReason;
 
     @Override
     public String toString() {
@@ -63,6 +67,7 @@ public class RefundVo {
                 ", backType=" + backType +
                 ", status=" + status +
                 ", backDate=" + backDate +
+                ", backReason='" + backReason + '\'' +
                 '}';
     }
 
@@ -146,10 +151,18 @@ public class RefundVo {
         this.backDate = backDate;
     }
 
+    public String getBackReason() {
+        return backReason;
+    }
+
+    public void setBackReason(String backReason) {
+        this.backReason = backReason;
+    }
+
     public RefundVo() {
     }
 
-    public RefundVo(Integer id, String code, Integer goodsId, String goodsName, List<VoResourcesImg> goodsImgList, String userName, String userTel, Integer backType, Integer status, Date backDate) {
+    public RefundVo(Integer id, String code, Integer goodsId, String goodsName, List<VoResourcesImg> goodsImgList, String userName, String userTel, Integer backType, Integer status, Date backDate, String backReason) {
         this.id = id;
         this.code = code;
         this.goodsId = goodsId;
@@ -160,5 +173,6 @@ public class RefundVo {
         this.backType = backType;
         this.status = status;
         this.backDate = backDate;
+        this.backReason = backReason;
     }
 }

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.chargeManagement.SysMeterReadingRecordDao">
+
+    <select id="findNewData" parameterType="java.lang.Integer" resultType="com.api.model.chargeManagement.SysMeterReadingRecord">
+        select * from sys_meter_reading_record
+        where type = #{type} and data_status = 1
+        order by create_date desc limit 1
+    </select>
+    <select id="list" parameterType="com.api.model.chargeManagement.SearchMeterReadingRecord" resultType="com.api.vo.chargeManagement.VoMeterReadingRecord">
+        select *,DATE_FORMAT(start_date,'%Y%m') as months from sys_meter_reading_record
+    </select>
+
+    <insert id="insertMeterReadingRecord" parameterType="com.api.model.chargeManagement.SysMeterReadingRecord">
+        insert into sys_meter_reading_record(
+            consumption,
+            type,
+            unit,
+            recording_quantity,
+            start_date,
+            end_date,
+            data_status,
+            bill_status,
+            create_date
+        )value (
+            #{consumption},
+            #{type},
+            #{unit},
+            #{recordingQuantity},
+            #{startDate},
+            #{endDate},
+            #{dataStatus},
+            #{billStatus},
+            #{createDate}
+        )
+    </insert>
+
+    <update id="updateRemakes" parameterType="com.api.model.chargeManagement.SysMeterReadingRecord">
+        update sys_meter_reading_record
+        set remakes = #{remakes}
+        where id = #{id}
+    </update>
+    <update id="updateMeterReadingData" parameterType="com.api.model.chargeManagement.SysMeterReadingData">
+        update sys_meter_reading_data
+        set quantity = #{quantity},
+        update_date = #{updateDate}
+        where type = #{type} and #{quantity} <![CDATA[ > ]]> quantity
+    </update>
+
+    <select id="findMeterReadingDataByType" parameterType="java.lang.Integer" resultType="com.api.model.chargeManagement.SysMeterReadingData">
+        select * from sys_meter_reading_data where type = #{type}
+    </select>
+    <select id="findAllCheckInEstateId" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select DISTINCT building_unit_estate_id as id from cpm_resident_estate
+        where effective_time_start <![CDATA[ <= ]]> #{date}
+        and effective_time_end <![CDATA[ >= ]]> #{date}
+    </select>
+    <select id="countCheckInEstateAllArea" parameterType="java.util.List" resultType="java.math.BigDecimal">
+        select sum(indoor_area) as area_totals
+        from cpm_building_unit_estate
+        where
+        id in <foreach item="item" index="index" collection="list"
+                             open="(" separator="," close=")">
+                #{item}
+              </foreach>
+    </select>
+    <select id="findMeterReadingRecordById" parameterType="java.lang.Integer" resultType="com.api.vo.chargeManagement.VoMeterReadingRecord">
+        select *,DATE_FORMAT(start_date,'%Y%m') as months from sys_meter_reading_record
+        where id = #{meterReadingRecordId}
+    </select>
+
+    <insert id="insertMeterReadingShareBill" parameterType="com.api.model.chargeManagement.SysMeterReadingShareBill">
+        insert into sys_meter_reading_share(
+            meter_reading_record_id,
+            months,
+            totals,
+            unit,
+            unit_price,
+            type,
+            cost,
+            household_consumption,
+            household_area,
+            household_cost,
+            share_unit_price,
+            charge_unit,
+            household_share_cost,
+            additional_costs,
+            rate,
+            effective_time_start,
+            effective_time_end,
+            remakes,
+            create_id,
+            create_date
+        )value (
+            #{meterReadingRecordId},
+            #{months},
+            #{totals},
+            #{unit},
+            #{unitPrice},
+            #{type},
+            #{cost},
+            #{householdConsumption},
+            #{householdArea},
+            #{householdCost},
+            #{shareUnitPrice},
+            #{chargeUnit},
+            #{householdShareCost},
+            #{additionalCosts},
+            #{rate},
+            #{effectiveTimeStart},
+            #{effectiveTimeEnd},
+            #{remakes},
+            #{createId},
+            #{createDate}
+        )
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="updateMeterReadingRecordBillStatus" parameterType="com.api.model.chargeManagement.SysMeterReadingRecord">
+        update sys_meter_reading_record
+        set bill_status = #{billStatus}
+        where id = #{id}
+    </update>
+
+    <insert id="insertMeterReadingShareBillDetails" parameterType="com.api.model.chargeManagement.SysMeterReadingShareBillDetails">
+        insert into sys_meter_reading_share_details(
+            share_bill_id,
+            estate_id,
+            house_area,
+            amount_payable,
+            paid_amount,
+            remaining_unpaid_amount,
+            status,
+            rate,
+            payment_period,
+            create_id,
+            create_date
+        )value (
+            #{shareBillId},
+            #{estateId},
+            #{houseArea},
+            #{amountPayable},
+            #{paidAmount},
+            #{remainingUnpaidAmount},
+            #{status},
+            #{rate},
+            #{paymentPeriod},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+
+
+    <select id="findShareBillDetailsListByShareId" parameterType="com.api.model.chargeManagement.SearchShareBillDetails"
+            resultType="com.api.vo.chargeManagement.VoMeterReadingShareBillDetails">
+        select smrsd.*,CONCAT(cb.no,'-',cbu.no,'-',cbue.room_number) as room_name,GROUP_CONCAT(ur.name) as residents
+        from sys_meter_reading_share_details as smrsd,cpm_building_unit as cbu,
+             cpm_building as cb,cpm_building_unit_estate as cbue
+                                    LEFT JOIN cpm_resident_estate as cre on cbue.id = cre.building_unit_estate_id
+                                    LEFT JOIN user_resident as ur on cre.resident_id = ur.id
+        where smrsd.estate_id = cbue.id and cbue.building_unit_id = cbu.id
+          and cbu.building_id = cb.id and smrsd.share_bill_id = #{shareBillId}
+        GROUP BY smrsd.id
+    </select>
+    <select id="shareBillList" parameterType="com.api.model.chargeManagement.SearchShareBill" resultType="com.api.vo.chargeManagement.VoMeterReadingShareBill">
+        select * from sys_meter_reading_share
+    </select>
+    <select id="sumShareDetailsPaidAmount" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select sum(paid_amount) from sys_meter_reading_share_details where share_bill_id = #{id}
+    </select>
+    <select id="sumShareDetailsRemainingUnpaidAmount" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+        select sum(remaining_unpaid_amount) from sys_meter_reading_share_details where share_bill_id = #{id}
+    </select>
+    <select id="countShareDetailsStatus" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count((case status = 3 when true then 0 else 1 end)) from sys_meter_reading_share_details where share_bill_id = #{id}
+    </select>
+    <select id="findResidentByShareBillId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select cre.resident_id
+        from sys_meter_reading_share_details as smrsd,cpm_resident_estate as cre
+        where smrsd.estate_id = cre.building_unit_estate_id and smrsd.share_bill_id = #{shareBillId}
+    </select>
+    <select id="findResidentByShareBillDetailsId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select cre.resident_id
+        from sys_meter_reading_share_details as smrsd,cpm_resident_estate as cre
+        where smrsd.estate_id = cre.building_unit_estate_id and smrsd.id = #{shareBillDetailsId}
+    </select>
+
+</mapper>

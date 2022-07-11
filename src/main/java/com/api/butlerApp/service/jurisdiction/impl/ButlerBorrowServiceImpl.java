@@ -32,13 +32,18 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         List<ButlerBorrowVo> list = butlerBorrowDao.list(butlerBorrowSearch);
         if (list != null && list.size()>0){
             for (ButlerBorrowVo butlerBorrowVo : list) {
-                if (butlerBorrowVo.getBorrowStatus() == 1){
-                    //1.出借中 当前时间-借出时间
+                //判断借取状态（-1.出借审核中，0.出借审核失败，1.出借中，2.已还，3.待检查,4.归还审核驳回）
+                if (butlerBorrowVo.getBorrowStatus() == 1 || butlerBorrowVo.getBorrowStatus() == 4){
+                    //1.出借中，4.归还审核驳回 当前时间-借出时间
                     long hour = (new Date().getTime() - butlerBorrowVo.getBeginDate().getTime())/(60*60*1000);
                     butlerBorrowVo.setBorrowTime(hour);
                 }else if (butlerBorrowVo.getBorrowStatus() == 2 || butlerBorrowVo.getBorrowStatus() == 3){
                     //2.已还 ，3.待检查 归还时间-借出时间
                     long hour = (butlerBorrowVo.getEndDate().getTime() - butlerBorrowVo.getBeginDate().getTime())/(60*60*1000);
+                    butlerBorrowVo.setBorrowTime(hour);
+                }else {
+                    //-1.出借审核中，0.出借审核失败 出借时长默认为0
+                    long hour = 0;
                     butlerBorrowVo.setBorrowTime(hour);
                 }
                 //查询物品照片
@@ -84,6 +89,12 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
     public Map<String, Object> submitCheck(ButlerSubmitCheck butlerSubmitCheck, String roleId) {
         map = new HashMap<>();
         try {
+            if (butlerSubmitCheck.getBorrowStatus() != 2 && butlerSubmitCheck.getBorrowStatus() != 4){
+                map.put("message","状态传输有误");
+                map.put("status",false);
+                return map;
+            }
+
             int type = findJurisdictionByUserId(roleId);
             if (type != 1){
                 throw new RuntimeException("当前用户没有该权限");
@@ -99,10 +110,8 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
             //填入物品明细主键id
             butlerSubmitCheck.setArticleDetailId(butlerBorrowVo.getArticleDetailId());
 
-            //根据借还管理主键id修改借还管理物品状态，借取状态和归还时间
+            //根据借还管理主键id修改借还管理物品状态，借取状态，归还时间和归还驳回原因
             butlerSubmitCheck.setEndDate(new Date());
-            //2.已还
-            butlerSubmitCheck.setBorrowStatus(2);
             int update = butlerBorrowDao.updateSAEByBorrowId(butlerSubmitCheck);
             if (update <= 0){
                 throw new RuntimeException("修改借还信息状态失败");
@@ -433,6 +442,27 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
         }
         map.put("message","删除成功");
         map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> lendingApproval(ButlerBorrowLendingApproval butlerBorrowLendingApproval) {
+        map = new HashMap<>();
+        if (butlerBorrowLendingApproval.getStatus() != 0 && butlerBorrowLendingApproval.getStatus() != 1){
+            map.put("message","状态传输有误");
+            map.put("status",false);
+            return map;
+        }
+
+        //根据主键id修改状态和驳回原因
+        int update = butlerBorrowDao.updateSARById(butlerBorrowLendingApproval);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
         return map;
     }
 

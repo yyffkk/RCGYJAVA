@@ -4,8 +4,7 @@
 <mapper namespace="com.api.manage.dao.butlerService.SysFacilitiesManageDao">
 
     <select id="list" parameterType="com.api.model.butlerService.SearchFacilitiesManage" resultType="com.api.vo.butlerService.VoFacilitiesManage">
-        select sfm.id,sfm.code,sfc.name as facilities_category_name,sfm.name,su.actual_name as create_name,sfm.status,
-        sfm.create_date,sfm.file_doc_url,sfm.file_doc_name,sfm.remakes
+        select sfm.*,sfc.name as facilities_category_name,su.actual_name as create_name
         from sys_facilities_manage as sfm,sys_facilities_category as sfc,sys_user as su
         <where>
             sfm.facilities_category_id = sfc.id
@@ -43,6 +42,30 @@
             address,
             facilities_category_id,
             status,
+            <if test="brand != null and brand != ''">
+                brand,
+            </if>
+            <if test="procurementCosts != null">
+                procurement_costs,
+            </if>
+            <if test="purchasingManufacturer != null and purchasingManufacturer != ''">
+                purchasing_manufacturer,
+            </if>
+            <if test="manufacturerPhone != null and manufacturerPhone != ''">
+                manufacturer_phone,
+            </if>
+            <if test="warrantyPeriodYears != null">
+                warranty_period_years,
+            </if>
+            <if test="warrantyPeriodMonths != null">
+                warranty_period_months,
+            </if>
+            <if test="validityStart != null">
+                validity_start,
+            </if>
+            <if test="validityEnd != null">
+                validity_end,
+            </if>
             <if test="fileDocUrl != null and fileDocUrl != ''">
                 file_doc_url,
             </if>
@@ -61,6 +84,30 @@
             #{address},
             #{facilitiesCategoryId},
             #{status},
+            <if test="brand != null and brand != ''">
+                #{brand},
+            </if>
+            <if test="procurementCosts != null">
+                #{procurementCosts},
+            </if>
+            <if test="purchasingManufacturer != null and purchasingManufacturer != ''">
+                #{purchasingManufacturer},
+            </if>
+            <if test="manufacturerPhone != null and manufacturerPhone != ''">
+                #{manufacturerPhone},
+            </if>
+            <if test="warrantyPeriodYears != null">
+                #{warrantyPeriodYears},
+            </if>
+            <if test="warrantyPeriodMonths != null">
+                #{warrantyPeriodMonths},
+            </if>
+            <if test="validityStart != null">
+                #{validityStart},
+            </if>
+            <if test="validityEnd != null">
+                #{validityEnd},
+            </if>
             <if test="fileDocUrl != null and fileDocUrl != ''">
                 #{fileDocUrl},
             </if>
@@ -82,6 +129,30 @@
         name = #{name},
         address = #{address},
         facilities_category_id = #{facilitiesCategoryId},
+        <if test="brand != null and brand != ''">
+            brand = #{brand},
+        </if>
+        <if test="procurementCosts != null">
+            procurement_costs = #{procurementCosts},
+        </if>
+        <if test="purchasingManufacturer != null and purchasingManufacturer != ''">
+            purchasing_manufacturer = #{purchasingManufacturer},
+        </if>
+        <if test="manufacturerPhone != null and manufacturerPhone != ''">
+            manufacturer_phone = #{manufacturerPhone},
+        </if>
+        <if test="warrantyPeriodYears != null">
+            warranty_period_years = #{warrantyPeriodYears},
+        </if>
+        <if test="warrantyPeriodMonths != null">
+            warranty_period_months = #{warrantyPeriodMonths},
+        </if>
+        <if test="validityStart != null">
+            validity_start = #{validityStart},
+        </if>
+        <if test="validityEnd != null">
+            validity_end = #{validityEnd},
+        </if>
         <if test="fileDocUrl != null and fileDocUrl != ''">
             file_doc_url = #{fileDocUrl},
         </if>
@@ -97,8 +168,7 @@
     </update>
 
     <select id="findDetailById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFacilitiesManageDetail">
-        select sfm.id,sfm.code,sfm.facilities_category_id,sfc.name as facilities_category_name,sfm.name,su.actual_name as create_name,sfm.status,
-        sfm.file_doc_url,sfm.file_doc_name,sfm.remakes,sfm.create_date,sfm.address,su.tel
+        select sfm.*,sfc.name as facilities_category_name,su.actual_name as create_name,su.tel
         from sys_facilities_manage as sfm,sys_facilities_category as sfc,sys_user as su
         where sfm.facilities_category_id = sfc.id and sfm.create_id = su.id and sfm.id = #{id} and sfm.is_delete = 1
     </select>

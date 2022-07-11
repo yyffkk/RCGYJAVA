@@ -9,6 +9,8 @@ import com.api.vo.operationManagement.VoPackageCollection;
 import com.api.vo.operationManagement.VoRegulationManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +34,7 @@ public class SysRegulationManagementController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchRegulationManagement searchRegulationManagement){
         PageHelper.startPage(searchRegulationManagement.getPageNum(),searchRegulationManagement.getSize());
         List<VoRegulationManagement> voRegulationManagementList = sysRegulationManagementService.list(searchRegulationManagement);

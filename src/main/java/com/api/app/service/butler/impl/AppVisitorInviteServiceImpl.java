@@ -215,7 +215,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
 
                 //连接立林对讲机系统（人脸识别）
-                connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+//                connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
 
                 //连接立林对讲机系统-添加设备二维码
                 connectLiLinAddQrCode(deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
@@ -274,7 +274,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
                 String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
 
                 //连接立林对讲机系统（人脸识别）
-                connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+//                connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
                 //连接立林对讲机系统-添加设备二维码
                 connectLiLinAddQrCode(deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
@@ -516,8 +516,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
 //            OkHttpClient client = new OkHttpClient();
             OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                    .readTimeout(10000, TimeUnit.MILLISECONDS)
+                    .connectTimeout(30000, TimeUnit.MILLISECONDS)
+                    .readTimeout(30000, TimeUnit.MILLISECONDS)
                     .build();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = FormBody.create(mediaType, json);
@@ -588,8 +588,8 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
 //            OkHttpClient client = new OkHttpClient();
             OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(10000, TimeUnit.MILLISECONDS)
-                    .readTimeout(10000, TimeUnit.MILLISECONDS)
+                    .connectTimeout(30000, TimeUnit.MILLISECONDS)
+                    .readTimeout(30000, TimeUnit.MILLISECONDS)
                     .build();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
             RequestBody requestBody = FormBody.create(mediaType, json);

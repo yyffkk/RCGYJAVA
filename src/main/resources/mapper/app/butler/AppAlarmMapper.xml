@@ -23,4 +23,7 @@
     <select id="findNameByResidentId" parameterType="java.lang.Integer" resultType="java.lang.String">
         select name from user_resident where id = #{createId}
     </select>
+    <select id="findTelByResidentId" resultType="java.lang.String">
+        select tel from user_resident where id = #{createId}
+    </select>
 </mapper>

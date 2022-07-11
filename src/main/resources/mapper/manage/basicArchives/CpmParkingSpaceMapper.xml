@@ -4,9 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.basicArchives.CpmParkingSpaceDao">
     <select id="list" parameterType="com.api.model.basicArchives.SearchCpmParkingSpace" resultType="com.api.vo.basicArchives.VoParkingSpace">
-        SELECT cps.id,cps.code,cps.status,cps.type,ur.name as resident_name,ur2.name as user_name,ur2.tel
-        from cpm_parking_space as cps left join user_resident as ur on cps.resident_id = ur.id  left join user_resident as ur2
-        on cps.user_id = ur2.id
+        SELECT cps.id,cps.code,cps.status,cps.type,ur.name as resident_name,ur2.name as user_name,ur.tel
+        from cpm_parking_space as cps
+        left join user_resident as ur on cps.resident_id = ur.id
+        left join user_resident as ur2 on cps.user_id = ur2.id
         <where>
             <if test="code != null and code != ''">
                 and cps.code like concat('%',#{code},'%')

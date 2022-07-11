@@ -9,6 +9,8 @@ import com.api.vo.operationManagement.VoCommunityIntroduction;
 import com.api.vo.operationManagement.VoGreenArea;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +33,7 @@ public class SysCommunityIntroductionController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchCommunityIntroduction searchCommunityIntroduction){
         PageHelper.startPage(searchCommunityIntroduction.getPageNum(),searchCommunityIntroduction.getSize());
         List<VoCommunityIntroduction> voCommunityIntroductionList = sysCommunityIntroductionService.list(searchCommunityIntroduction);

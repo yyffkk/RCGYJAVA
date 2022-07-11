@@ -8,6 +8,8 @@ import com.api.vo.operationManagement.VoInterview;
 import com.api.vo.operationManagement.VoKeyBorrow;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class SysInterviewController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchInterview searchInterview){
         PageHelper.startPage(searchInterview.getPageNum(),searchInterview.getSize());
         List<VoInterview> voInterviewList = sysInterviewService.list(searchInterview);

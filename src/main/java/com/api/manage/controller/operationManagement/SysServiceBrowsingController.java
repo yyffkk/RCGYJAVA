@@ -9,6 +9,8 @@ import com.api.vo.operationManagement.VoKeyManagement;
 import com.api.vo.operationManagement.VoServiceBrowsing;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +33,7 @@ public class SysServiceBrowsingController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchServiceBrowsing searchServiceBrowsing){
         PageHelper.startPage(searchServiceBrowsing.getPageNum(),searchServiceBrowsing.getSize());
         List<VoServiceBrowsing> voServiceBrowsingList = sysServiceBrowsingService.list(searchServiceBrowsing);

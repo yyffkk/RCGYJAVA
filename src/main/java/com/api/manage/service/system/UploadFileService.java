@@ -17,4 +17,5 @@ public interface UploadFileService {
 
     Map<String, Object> UploadGreenAreaFile(MultipartFile file);
 
+    Map<String, Object> UploadDailyPaymentFile(MultipartFile file);
 }

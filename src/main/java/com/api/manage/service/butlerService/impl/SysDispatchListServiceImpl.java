@@ -1,13 +1,17 @@
 package com.api.manage.service.butlerService.impl;
 
+import com.api.butlerApp.dao.jurisdiction.ButlerRepairDao;
+import com.api.butlerApp.dao.message.ButlerAppMessageDao;
 import com.api.manage.dao.butlerService.SysDispatchListDao;
 import com.api.manage.dao.butlerService.SysProcessRecordDao;
 import com.api.manage.dao.butlerService.SysReportRepairDao;
 import com.api.manage.dao.chargeManagement.SysHandleCompleteDetailDao;
 import com.api.manage.dao.system.SysLoginDao;
+import com.api.model.butlerApp.ButlerAppSysMessage;
 import com.api.model.butlerService.*;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysDispatchListService;
+import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.*;
 import com.api.vo.chargeManagement.VoHandleCompleteDetail;
@@ -36,6 +40,10 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
     SysLoginDao sysLoginDao;
     @Resource
     SysHandleCompleteDetailDao sysHandleCompleteDetailDao;
+    @Resource
+    ButlerRepairDao butlerRepairDao;
+    @Resource
+    ButlerAppMessageDao butlerAppMessageDao;
 
     @Override
     public List<VoDispatchList> list(SearchDispatchList searchDispatchList) {
@@ -301,6 +309,21 @@ public class SysDispatchListServiceImpl implements SysDispatchListService {
             if (insert2 <= 0){
                 throw new RuntimeException("添加处理进程记录失败");
             }
+
+            //根据派工单主键id 查询报事报修主键id
+            int repairId = butlerRepairDao.findRepairIdByDispatchListId(sysDispatchListDetail.getDispatchListId());
+            ButlerAppSysMessage butlerAppSysMessage = new ButlerAppSysMessage();
+            butlerAppSysMessage.setType(1);
+            butlerAppSysMessage.setRelationId(repairId);
+            butlerAppSysMessage.setReceiverAccount(sysDispatchListDetail.getOperator());
+            butlerAppSysMessage.setSendStatus(1);
+            butlerAppSysMessage.setSendDate(new Date());
+            //添加系统消息
+            int insert3 = butlerAppMessageDao.insertSysMessage(butlerAppSysMessage);
+            if (insert3 <= 0){
+                throw new RuntimeException("添加系统消息失败");
+            }
+            JiguangUtil.butlerPush(String.valueOf(sysDispatchListDetail.getOperator()), "你有一条新的报事报修，请立即查看");
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();

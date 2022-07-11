@@ -35,7 +35,7 @@ public class FunctionAuthorityController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> list(SearchFunctionAuthority searchFunctionAuthority){
         PageHelper.startPage(searchFunctionAuthority.getPageNum(),searchFunctionAuthority.getSize());
         List<VoFunctionAuthority> voFunctionAuthorityList = functionAuthorityService.list(searchFunctionAuthority);
@@ -53,7 +53,7 @@ public class FunctionAuthorityController   {
      * @return 员工角色配置
      */
     @GetMapping("/findRoleNameByUserId")
-    @RequiresPermissions(value = {"0102","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0102"},logical = Logical.AND)
     public List<Integer> findRoleNameByUserId(Integer id){
         return functionAuthorityService.findRoleNameByUserId(id);
     }
@@ -64,7 +64,7 @@ public class FunctionAuthorityController   {
      * @return map
      */
     @PostMapping("/updateRole")
-    @RequiresPermissions(value = {"0105","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0105"},logical = Logical.AND)
     public Map<String,Object> updateRole(@RequestBody UserIdAndRoleId userIdAndRoleId){
         return functionAuthorityService.updateRole(userIdAndRoleId);
     }
@@ -75,7 +75,7 @@ public class FunctionAuthorityController   {
      * @return map
      */
     @GetMapping("/listJurisdiction")
-    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public List<VoListJurisdiction> listJurisdiction(RoleIdAndParentId roleIdAndParentId){
         List<VoListJurisdiction> voListJurisdictionList = functionAuthorityService.listJurisdiction(roleIdAndParentId);
         return voListJurisdictionList;
@@ -87,7 +87,7 @@ public class FunctionAuthorityController   {
      * @return map
      */
     @PostMapping("/updateJurisdiction")
-    @RequiresPermissions(value = {"0105","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0105"},logical = Logical.AND)
     public Map<String,Object> updateJurisdiction(@RequestBody RoleIdAndJurisdictionIdList roleIdAndJurisdictionIdList){
         return functionAuthorityService.updateJurisdiction(roleIdAndJurisdictionIdList);
     }
@@ -98,7 +98,7 @@ public class FunctionAuthorityController   {
      * @return map
      */
     @PostMapping("/updateOneJurisdiction")
-    @RequiresPermissions(value = {"0105","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0105"},logical = Logical.AND)
     public Map<String,Object> updateOneJurisdiction(@RequestBody RoleIdAndJurisdictionId roleIdAndJurisdictionId){
         return functionAuthorityService.updateOneJurisdiction(roleIdAndJurisdictionId);
     }

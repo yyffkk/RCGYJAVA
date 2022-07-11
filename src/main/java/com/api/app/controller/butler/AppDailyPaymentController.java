@@ -102,5 +102,15 @@ public class AppDailyPaymentController {
     }
 
 
+    /**
+     * 查询未缴金额（日常缴费+公摊费）
+     * @param estateId 房产id
+     * @return map
+     */
+    @GetMapping("/findUnpaidAmount")
+    public Map<String,Object> findUnpaidAmount(Integer estateId){
+        return appDailyPaymentService.findUnpaidAmount(estateId);
+    }
+
 
 }

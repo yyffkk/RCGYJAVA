@@ -40,7 +40,7 @@ public interface ButlerKeyDao {
     int apply(ButlerKeyBorrow butlerKeyBorrow);
 
     /**
-     * 归还钥匙
+     * 申请归还钥匙
      * @param butlerKeyBorrow 管家app 钥匙借取model信息
      * @return 影响行数
      */
@@ -52,4 +52,12 @@ public interface ButlerKeyDao {
      * @return 申请记录
      */
     List<ButlerRecordVo> record(ButlerRecordSearch butlerRecordSearch);
+
+
+    /**
+     * 根据钥匙主键id查询钥匙数量
+     * @param keyId 钥匙主键id
+     * @return 钥匙数量
+     */
+    Integer findNumById(Integer keyId);
 }

@@ -8,6 +8,8 @@ import com.api.vo.system.VoDataDictionary;
 import com.api.vo.system.VoDataDictionaryList;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class SysDataDictionaryController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> list(SysDataDictionarySearch sysDataDictionarySearch){
         PageHelper.startPage(sysDataDictionarySearch.getPageNum(),sysDataDictionarySearch.getSize());
         List<VoDataDictionaryList> voDataDictionaryLists = sysDataDictionaryService.list(sysDataDictionarySearch);

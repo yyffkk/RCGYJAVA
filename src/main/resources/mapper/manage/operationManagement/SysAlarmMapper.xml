@@ -22,4 +22,11 @@
         where sobab.create_id = su.id and su.organization_id = so.id
         order by sobab.create_date desc
     </select>
+    <select id="planAlarmList" resultType="com.api.vo.operationManagement.VoPlanAlarm">
+        select * from sys_plan_alarm order by create_date desc
+    </select>
+    <update id="updatePlanAlarmStatusById" parameterType="com.api.model.operationManagement.PushRelieveAlert">
+        update sys_plan_alarm set status = 2,content_description = #{contentDescription}  where id = #{planAlertId}
+    </update>
+
 </mapper>

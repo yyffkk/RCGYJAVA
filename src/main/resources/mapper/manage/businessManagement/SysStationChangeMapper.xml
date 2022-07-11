@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.manage.dao.businessManagement.SysStationChangeDao">
+    <insert id="insert" parameterType="com.api.manage.dao.businessManagement.SysStationChangeDao">
+        insert into sys_station_change(
+            user_id,
+            old_station,
+            new_station,
+            <if test="changeReason != null and changeReason != ''">
+                change_reason,
+            </if>
+            change_date,
+            create_id,
+            create_date
+        )value (
+            #{userId},
+            #{oldStation},
+            #{newStation},
+            <if test="changeReason != null and changeReason != ''">
+                #{changeReason},
+            </if>
+            #{changeDate},
+            #{createId},
+            #{createDate}
+        )
+    </insert>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_station_change where id = #{id}
+    </delete>
+
+    <select id="list" parameterType="com.api.model.businessManagement.SysStationChange" resultType="com.api.model.businessManagement.SysStationChange">
+        select * from sys_station_change where user_id = #{userId}
+    </select>
+</mapper>

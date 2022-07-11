@@ -32,7 +32,7 @@ public class UserResidentController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0201"},logical = Logical.AND)
     public Map<String,Object> list(UserResident userResident,Integer pageNum,Integer size){
         PageHelper.startPage(pageNum,size);
         List<VoUserResident> voUserResidentList = userResidentService.list(userResident);
@@ -43,13 +43,34 @@ public class UserResidentController   {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 查询住户信息（包含搜索条件）
+     * @param userResident 搜索条件
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/listAll")
+    @RequiresPermissions(value = {"0201"},logical = Logical.AND)
+    public Map<String,Object> listAll(UserResident userResident,Integer pageNum,Integer size){
+        PageHelper.startPage(pageNum,size);
+        List<VoUserResident> voUserResidentList = userResidentService.listAll(userResident);
+        PageInfo<VoUserResident> pageInfo = new PageInfo<>(voUserResidentList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
     /**
      * 添加业主信息
      * @param residentInsert 业主的添加信息
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0203"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody ResidentInsert residentInsert){
         return userResidentService.insert(residentInsert.getUserResident(),residentInsert.getVoRelativesList(),residentInsert.getCpmParkingSpaceIds(),residentInsert.getBuildingUnitEstateIds());
     }
@@ -60,7 +81,7 @@ public class UserResidentController   {
      * @return map
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         return userResidentService.findById(id);
     }
@@ -71,7 +92,7 @@ public class UserResidentController   {
      * @return map
      */
     @GetMapping("/findByIdOne")
-    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> findByIdOne(Integer id){
         return userResidentService.findByIdOne(id);
     }
@@ -81,7 +102,7 @@ public class UserResidentController   {
      * @return map
      */
     @GetMapping("/findRelativesById")
-    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> findRelativesById(Integer id){
         return userResidentService.findRelativesById(id);
     }
@@ -91,7 +112,7 @@ public class UserResidentController   {
      * @return map
      */
     @GetMapping("/findEstateById")
-    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> findEstateById(Integer id){
         return userResidentService.findEstateById(id);
     }
@@ -101,7 +122,7 @@ public class UserResidentController   {
      * @return map
      */
     @GetMapping("/findParkingSpaceById")
-    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> findParkingSpaceById(Integer id){
         return userResidentService.findParkingSpaceById(id);
     }
@@ -114,7 +135,7 @@ public class UserResidentController   {
      * @return map
      */
     @PostMapping("/updateRelatives")
-    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0205"},logical = Logical.AND)
     public Map<String,Object> updateRelatives(@RequestBody ResidentAndRelativesList residentAndRelatives){
         return userResidentService.updateRelatives(residentAndRelatives);
     }
@@ -125,7 +146,7 @@ public class UserResidentController   {
      * @return map
      */
     @PostMapping("/updateEstate")
-    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0205"},logical = Logical.AND)
     public Map<String,Object> updateEstate(@RequestBody ResidentAndEstateIds residentAndEstateList){
         return userResidentService.updateEstate(residentAndEstateList);
     }
@@ -136,7 +157,7 @@ public class UserResidentController   {
      * @return map
      */
     @PostMapping("/updateParkingSpace")
-    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0205"},logical = Logical.AND)
     public Map<String,Object> updateParkingSpace(@RequestBody ResidentAndParkingSpaceIds residentAndParkingSpaceList){
         return userResidentService.updateParkingSpace(residentAndParkingSpaceList);
     }
@@ -149,7 +170,7 @@ public class UserResidentController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0204"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return userResidentService.delete(ids.getIds());
     }

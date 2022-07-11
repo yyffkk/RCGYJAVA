@@ -8,6 +8,8 @@ import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoDailyPaymentPlan;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class SysDailyPaymentPlanController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0401"},logical = Logical.AND)
     public Map<String,Object> list(SearchDailyPaymentPlan searchDailyPaymentPlan){
         PageHelper.startPage(searchDailyPaymentPlan.getPageNum(),searchDailyPaymentPlan.getSize());
         List<VoDailyPaymentPlan> voDailyPaymentPlanList = sysDailyPaymentPlanService.list(searchDailyPaymentPlan);

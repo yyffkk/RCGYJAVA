@@ -8,6 +8,8 @@ import com.api.vo.basicArchives.VoCpmBuildingUnitEstate;
 import com.api.vo.basicArchives.VoIds;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class AuditManagementController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0201"},logical = Logical.AND)
     public Map<String,Object> list(AuditManagementSearch auditManagementSearch){
         PageHelper.startPage(auditManagementSearch.getPageNum(),auditManagementSearch.getSize());
         List<VoAuditManagement> voAuditManagementList =auditManagementService.list(auditManagementSearch);
@@ -47,6 +50,7 @@ public class AuditManagementController {
      * @return map
      */
     @GetMapping("/findById")
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> findById(Integer estateExamineId){
         return auditManagementService.findById(estateExamineId);
     }
@@ -67,6 +71,7 @@ public class AuditManagementController {
      * @return map
      */
     @PostMapping("/delete")
+    @RequiresPermissions(value = {"0204"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds voIds){
         return auditManagementService.delete(voIds.getIds());
     }
@@ -77,6 +82,7 @@ public class AuditManagementController {
      * @return map
      */
     @GetMapping("/checkById")
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> checkById(Integer estateExamineId){
         return auditManagementService.checkById(estateExamineId);
     }

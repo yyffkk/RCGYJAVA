@@ -6,7 +6,7 @@
 
     <select id="list" parameterType="com.api.model.operationManagement.SearchKeyBorrow" resultType="com.api.vo.operationManagement.VoKeyBorrow">
         select skb.id,sk.id as key_id,skb.code,su.actual_name as reviewer_name,si.name as identity,
-        su.tel,sk.facility_name,skb.status,skb.audit_date,skb.create_date,sk.num as loanable_num
+        su.tel,sk.facility_name,skb.status,skb.audit_date,skb.reason,skb.return_audit_date,skb.return_reason,skb.create_date,sk.num as loanable_num
         from sys_key_borrow as skb,sys_key as sk,sys_user as su
         LEFT JOIN sys_identity as si on su.position_id = si.id
         <where>
@@ -40,7 +40,7 @@
         order by skb.create_date desc
     </select>
     <select id="countLoanableKeyNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select count(*) from sys_key_borrow where key_id = #{keyId} and status = 2
+        select count(*) from sys_key_borrow where key_id = #{keyId} and status in (2,4,5)
     </select>
     <select id="findStatusById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select status from sys_key_borrow where id = #{id}
@@ -54,6 +54,18 @@
             status = #{status},
             <if test="reason != null and reason != ''">
                 reason = #{reason},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="returnExamine">
+        update sys_key_borrow
+        <set>
+            return_reviewer = #{reviewer},
+            return_audit_date = #{auditDate},
+            status = #{status},
+            <if test="returnReason != null and returnReason != ''">
+                return_reason = #{reason},
             </if>
         </set>
         where id = #{id}

@@ -31,7 +31,7 @@ public class SysGambitThemeController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchGambitTheme searchGambitTheme){
         PageHelper.startPage(searchGambitTheme.getPageNum(),searchGambitTheme.getSize());
         List<VoGambitTheme> voGambitThemeList = sysGambitThemeService.list(searchGambitTheme);
@@ -49,7 +49,7 @@ public class SysGambitThemeController   {
      * @return map
      */
     @PostMapping("/falseDelete")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysGambitThemeService.falseDelete(ids.getIds());
     }
@@ -60,7 +60,7 @@ public class SysGambitThemeController   {
      * @return map
      */
     @PostMapping("/recovery")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> recovery(@RequestBody VoIds ids){
         return sysGambitThemeService.recovery(ids.getIds());
     }
@@ -82,5 +82,25 @@ public class SysGambitThemeController   {
     @GetMapping("/enableComment")
     public Map<String,Object> enableComment(){
         return sysGambitThemeService.enableComment();
+    }
+
+    /**
+     * 根据主题明细主键id查询评论列表
+     * @param themeId 主题明细主键id
+     * @return map
+     */
+    @GetMapping("/findCommentByThemeId")
+    public Map<String,Object> findCommentByThemeId(Integer themeId){
+        return sysGambitThemeService.findCommentByThemeId(themeId);
+    }
+
+    /**
+     * 根据主题评论主键id删除主题评论
+     * @param commentId 主题评论主键id
+     * @return map
+     */
+    @GetMapping("/deleteCommentByCommentId")
+    public Map<String,Object> deleteCommentByCommentId(Integer commentId){
+        return sysGambitThemeService.deleteCommentByCommentId(commentId);
     }
 }

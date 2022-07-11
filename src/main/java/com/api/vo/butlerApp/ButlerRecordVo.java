@@ -15,7 +15,7 @@ public class ButlerRecordVo {
      */
     private String code;
     /**
-     * 审核状态：1.待审核，2.审核通过，3.审核驳回，4.已归还
+     * 审核状态：审核状态：1.待审核，2.审核通过，3.审核驳回，4.归还待审核，5.归还审核驳回，6.已归还（归还审核通过）
      */
     private Integer status;
     /**
@@ -38,6 +38,14 @@ public class ButlerRecordVo {
      * 驳回原因
      */
     private String reason;
+    /**
+     * 归还审核时间
+     */
+    private Date returnAuditDate;
+    /**
+     * 归还驳回原因
+     */
+    private String returnReason;
 
     @Override
     public String toString() {
@@ -50,6 +58,8 @@ public class ButlerRecordVo {
                 ", storageLocation='" + storageLocation + '\'' +
                 ", auditDate=" + auditDate +
                 ", reason='" + reason + '\'' +
+                ", returnAuditDate=" + returnAuditDate +
+                ", returnReason='" + returnReason + '\'' +
                 '}';
     }
 
@@ -117,10 +127,26 @@ public class ButlerRecordVo {
         this.reason = reason;
     }
 
+    public Date getReturnAuditDate() {
+        return returnAuditDate;
+    }
+
+    public void setReturnAuditDate(Date returnAuditDate) {
+        this.returnAuditDate = returnAuditDate;
+    }
+
+    public String getReturnReason() {
+        return returnReason;
+    }
+
+    public void setReturnReason(String returnReason) {
+        this.returnReason = returnReason;
+    }
+
     public ButlerRecordVo() {
     }
 
-    public ButlerRecordVo(Integer id, String code, Integer status, String facilityName, String correspondingPosition, String storageLocation, Date auditDate, String reason) {
+    public ButlerRecordVo(Integer id, String code, Integer status, String facilityName, String correspondingPosition, String storageLocation, Date auditDate, String reason, Date returnAuditDate, String returnReason) {
         this.id = id;
         this.code = code;
         this.status = status;
@@ -129,5 +155,7 @@ public class ButlerRecordVo {
         this.storageLocation = storageLocation;
         this.auditDate = auditDate;
         this.reason = reason;
+        this.returnAuditDate = returnAuditDate;
+        this.returnReason = returnReason;
     }
 }

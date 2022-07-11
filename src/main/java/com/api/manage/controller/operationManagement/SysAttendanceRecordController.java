@@ -11,6 +11,8 @@ import com.api.vo.operationManagement.VoAttendanceLeaveRecord;
 import com.api.vo.operationManagement.VoAttendanceRecord;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,6 +35,7 @@ public class SysAttendanceRecordController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> list(SearchAttendanceRecord searchAttendanceRecord){
         PageHelper.startPage(searchAttendanceRecord.getPageNum(),searchAttendanceRecord.getSize());
         List<VoAttendanceRecord> voAttendanceRecordList = sysAttendanceRecordService.list(searchAttendanceRecord);
@@ -60,6 +63,7 @@ public class SysAttendanceRecordController {
      * @return map
      */
     @GetMapping("/leaveList")
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public Map<String,Object> leaveList(SearchAttendanceLeaveRecord searchAttendanceLeaveRecord){
         PageHelper.startPage(searchAttendanceLeaveRecord.getPageNum(),searchAttendanceLeaveRecord.getSize());
         List<VoAttendanceLeaveRecord> voAttendanceLeaveRecordList = sysAttendanceRecordService.leaveList(searchAttendanceLeaveRecord);

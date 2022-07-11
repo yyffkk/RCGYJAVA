@@ -15,7 +15,7 @@ public class ButlerSubmitCheck {
      */
     private Integer articleDetailId;
     /**
-     * 借取状态
+     * 借取状态（2.已还，4.归还审核驳回）
      */
     private Integer borrowStatus;
     /**
@@ -26,6 +26,10 @@ public class ButlerSubmitCheck {
      * 归还时间
      */
     private Date endDate;
+    /**
+     * 归还驳回原因
+     */
+    private String returnRejectReasons;
 
     @Override
     public String toString() {
@@ -35,6 +39,7 @@ public class ButlerSubmitCheck {
                 ", borrowStatus=" + borrowStatus +
                 ", articleStatus=" + articleStatus +
                 ", endDate=" + endDate +
+                ", returnRejectReasons='" + returnRejectReasons + '\'' +
                 '}';
     }
 
@@ -78,14 +83,23 @@ public class ButlerSubmitCheck {
         this.endDate = endDate;
     }
 
+    public String getReturnRejectReasons() {
+        return returnRejectReasons;
+    }
+
+    public void setReturnRejectReasons(String returnRejectReasons) {
+        this.returnRejectReasons = returnRejectReasons;
+    }
+
     public ButlerSubmitCheck() {
     }
 
-    public ButlerSubmitCheck(Integer articleBorrowId, Integer articleDetailId, Integer borrowStatus, Integer articleStatus, Date endDate) {
+    public ButlerSubmitCheck(Integer articleBorrowId, Integer articleDetailId, Integer borrowStatus, Integer articleStatus, Date endDate, String returnRejectReasons) {
         this.articleBorrowId = articleBorrowId;
         this.articleDetailId = articleDetailId;
         this.borrowStatus = borrowStatus;
         this.articleStatus = articleStatus;
         this.endDate = endDate;
+        this.returnRejectReasons = returnRejectReasons;
     }
 }

@@ -32,7 +32,7 @@ public class SysFacilitiesCategoryController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchFacilitiesCategory facilitiesCategory){
         PageHelper.startPage(facilitiesCategory.getPageNum(),facilitiesCategory.getSize());
         List<VoFacilitiesCategory> voFacilitiesCategoryList = facilitiesCategoryService.list(facilitiesCategory);
@@ -50,7 +50,7 @@ public class SysFacilitiesCategoryController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody FacilitiesCategory facilitiesCategory){
         return facilitiesCategoryService.insert(facilitiesCategory);
     }
@@ -61,7 +61,7 @@ public class SysFacilitiesCategoryController   {
      * @return map
      */
     @GetMapping("/findDetailById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public Map<String,Object> findDetailById(Integer id){
         return facilitiesCategoryService.findDetailById(id);
     }
@@ -72,7 +72,7 @@ public class SysFacilitiesCategoryController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody FacilitiesCategory facilitiesCategory){
         return facilitiesCategoryService.update(facilitiesCategory);
     }
@@ -83,7 +83,7 @@ public class SysFacilitiesCategoryController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return facilitiesCategoryService.delete(ids.getIds());
     }

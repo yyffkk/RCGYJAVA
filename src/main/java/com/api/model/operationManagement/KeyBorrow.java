@@ -35,13 +35,17 @@ public class KeyBorrow {
      */
     private Date auditDate;
     /**
-     * 审核状态：1.待审核，2.审核通过，3.审核驳回，4.已归还
+     * 审核状态：1.待审核，2.审核通过，3.审核驳回，4.归还待审核，5.归还审核驳回，6.已归还（归还审核通过）
      */
     private Integer status;
     /**
      * 驳回原因
      */
     private String reason;
+    /**
+     * 归还驳回原因
+     */
+    private String returnReason;
     /**
      * 创建时间
      */
@@ -59,6 +63,7 @@ public class KeyBorrow {
                 ", auditDate=" + auditDate +
                 ", status=" + status +
                 ", reason='" + reason + '\'' +
+                ", returnReason='" + returnReason + '\'' +
                 ", createDate=" + createDate +
                 '}';
     }
@@ -135,6 +140,14 @@ public class KeyBorrow {
         this.reason = reason;
     }
 
+    public String getReturnReason() {
+        return returnReason;
+    }
+
+    public void setReturnReason(String returnReason) {
+        this.returnReason = returnReason;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -146,7 +159,7 @@ public class KeyBorrow {
     public KeyBorrow() {
     }
 
-    public KeyBorrow(Integer id, String code, Integer keyId, Integer borrower, Date returnDate, Integer reviewer, Date auditDate, Integer status, String reason, Date createDate) {
+    public KeyBorrow(Integer id, String code, Integer keyId, Integer borrower, Date returnDate, Integer reviewer, Date auditDate, Integer status, String reason, String returnReason, Date createDate) {
         this.id = id;
         this.code = code;
         this.keyId = keyId;
@@ -156,6 +169,7 @@ public class KeyBorrow {
         this.auditDate = auditDate;
         this.status = status;
         this.reason = reason;
+        this.returnReason = returnReason;
         this.createDate = createDate;
     }
 }

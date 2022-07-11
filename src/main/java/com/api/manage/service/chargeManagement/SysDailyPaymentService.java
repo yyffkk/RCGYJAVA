@@ -23,4 +23,5 @@ public interface SysDailyPaymentService {
 
     Map<String, Object> findEnableTempleDetail();
 
+    Map<String, Object> delete(int[] ids);
 }

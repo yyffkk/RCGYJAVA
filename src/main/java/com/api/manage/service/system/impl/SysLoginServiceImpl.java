@@ -4,6 +4,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.api.manage.dao.system.SysLoginDao;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.system.SysLoginService;
+import com.api.util.PBKDF2Util;
 import com.api.util.SmsSendUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +51,15 @@ public class SysLoginServiceImpl implements SysLoginService {
         //判断注册参数是否可用
         boolean registerParam = isRegisterParam(sysUser);
         if (registerParam){
+            try {
+                //对密码进行PBKDF2Util加密处理
+                sysUser.setPwd(PBKDF2Util.getEncryptedPassword(sysUser.getPwd(),sysUser.getPwd()));
+            } catch (Exception e) {
+                map.put("message","加密处理失败");
+                map.put("status",false);
+                return map;
+            }
+
             int integer = sysLoginDao.registerSysUser(sysUser);
             if (integer >0){
                 map.put("message","注册成功");
@@ -71,6 +83,15 @@ public class SysLoginServiceImpl implements SysLoginService {
     @Override
     public Map<String,Object> loginSysUser(SysUser sysUser){
         Map<String,Object> map = new HashMap<>();
+        try {
+            //对密码进行PBKDF2Util加密处理
+            sysUser.setPwd(PBKDF2Util.getEncryptedPassword(sysUser.getPwd(),sysUser.getPwd()));
+        } catch (Exception e) {
+            map.put("message","加密处理失败");
+            map.put("status",false);
+            return map;
+        }
+
         //根据用户名和密码查询物业用户信息
         SysUser sysUser1 = sysLoginDao.findByUserNameAndPwd(sysUser);
         if (sysUser1 == null){
@@ -191,7 +212,7 @@ public class SysLoginServiceImpl implements SysLoginService {
         final String MOBILE = sysUser.getTel();
 
         //验证手机号格式
-        Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p=Pattern.compile("^1[3456789]\\d{9}$");
         Matcher m=p.matcher(MOBILE);
         boolean matches = m.matches();
         if (!matches){

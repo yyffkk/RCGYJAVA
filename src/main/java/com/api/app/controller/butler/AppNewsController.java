@@ -60,4 +60,43 @@ public class AppNewsController {
     public Map<String,Object> findNewsByNewsId(Integer newsId){
         return appNewsService.findNewsByNewsId(newsId);
     }
+
+
+    /**
+     * 查询热门资讯
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/findHotNews")
+    public Map<String,Object> findHotNews(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<AppNewsVo> appNewsVoList = appNewsService.findHotNews();
+        PageInfo<AppNewsVo> pageInfo = new PageInfo<>(appNewsVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 增加浏览量
+     * @param newsId 资讯主键id
+     * @return map
+     */
+    @GetMapping("/addViews")
+    public Map<String,Object> addViews(Integer newsId){
+        return appNewsService.addViews(newsId);
+    }
+
+
+    /**
+     * 查询资讯轮播图
+     * @return
+     */
+    @GetMapping("/findNewsRotation")
+    public Map<String,Object> findNewsRotation(){
+        return appNewsService.findNewsRotation();
+    }
 }

@@ -33,7 +33,7 @@ public class SysGambitController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchGambit searchGambit){
         PageHelper.startPage(searchGambit.getPageNum(),searchGambit.getSize());
         List<VoGambit> voGambitList = sysGambitService.list(searchGambit);
@@ -51,7 +51,7 @@ public class SysGambitController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0303","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysGambit sysGambit){
         return sysGambitService.insert(sysGambit);
     }
@@ -62,7 +62,7 @@ public class SysGambitController   {
      * @return map
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0302","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0302"},logical = Logical.AND)
     public VoFindByIdGambit findById(Integer id){
         return sysGambitService.findById(id);
     }
@@ -74,7 +74,7 @@ public class SysGambitController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0305","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0305"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysGambit sysGambit){
         return sysGambitService.update(sysGambit);
     }
@@ -85,7 +85,7 @@ public class SysGambitController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> falseDelete(@RequestBody VoIds ids){
         return sysGambitService.falseDelete(ids.getIds());
     }
@@ -96,7 +96,7 @@ public class SysGambitController   {
      * @return map
      */
     @GetMapping("/enableGambit")
-    @RequiresPermissions(value = {"0312","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0312"},logical = Logical.AND)
     public Map<String,Object> enableGambit(Integer id){
         return sysGambitService.enableGambit(id);
     }
@@ -107,7 +107,7 @@ public class SysGambitController   {
      * @return map
      */
     @GetMapping("/disableGambit")
-    @RequiresPermissions(value = {"0312","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0312"},logical = Logical.AND)
     public Map<String,Object> disableGambit(Integer id){
         return sysGambitService.disableGambit(id);
     }

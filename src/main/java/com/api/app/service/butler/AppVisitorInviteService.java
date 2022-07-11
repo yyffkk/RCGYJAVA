@@ -5,6 +5,7 @@ import com.api.model.app.AppUserVisitorsInvite;
 import com.api.model.app.AppUserVisitorsInviteSubmit;
 import com.api.model.app.SearchAppVisitorInvite;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,5 +21,4 @@ public interface AppVisitorInviteService {
     Map<String, Object> submit(AppUserVisitorsInviteSubmit visitorsInviteSubmit);
 
     Map<String, Object> QRSubmit(AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit);
-
 }

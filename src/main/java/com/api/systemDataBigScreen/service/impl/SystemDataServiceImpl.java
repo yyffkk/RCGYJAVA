@@ -1,16 +1,13 @@
 package com.api.systemDataBigScreen.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.api.manage.dao.operationManagement.SysNewsCategoryManagementDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
-import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SysNewsManagement;
-import com.api.model.systemDataBigScreen.DailyActivitySearch;
-import com.api.model.systemDataBigScreen.DispatchListSearch;
-import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.model.systemDataBigScreen.*;
 import com.api.systemDataBigScreen.dao.SystemDataDao;
 import com.api.systemDataBigScreen.service.SystemDataService;
 import com.api.util.IdWorker;
-import com.api.util.JiguangUtil;
 import com.api.util.UploadUtil;
 import com.api.util.webSocket.WebSocketService;
 import com.api.util.webSocket.WebSocketServiceApp;
@@ -19,8 +16,6 @@ import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.resources.VoResourcesImg;
 import com.api.vo.systemDataBigScreen.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -149,14 +144,14 @@ public class SystemDataServiceImpl implements SystemDataService {
         int thisYearPayableNum = systemDataDao.findThisYearPayableNum(date);
         //查询今年应缴物业费总金额
         BigDecimal thisYearPayablePrice = systemDataDao.findThisYearPayablePrice(date);
-        //查询已缴物业费总户数
-        int paidNum = systemDataDao.findPaidNum();
-        //查询已缴物业费总金额
-        BigDecimal paidPrice = systemDataDao.findPaidPrice();
-        //查询未缴物业费总户数
-        int unPaidNum = systemDataDao.findUnPaidNum();
-        //查询未缴物业费总金额
-        BigDecimal unPaidPrice = systemDataDao.findUnPaidPrice();
+        //查询已缴物业费总户数[今年]
+        int paidNum = systemDataDao.findPaidNum(date);
+        //查询已缴物业费总金额[今年]
+        BigDecimal paidPrice = systemDataDao.findPaidPrice(date);
+        //查询未缴物业费总户数[今年]
+        int unPaidNum = systemDataDao.findUnPaidNum(date);
+        //查询未缴物业费总金额[今年]
+        BigDecimal unPaidPrice = systemDataDao.findUnPaidPrice(date);
         //系统数据 日常缴费未缴费住户数量和年份和月份【查询日常缴费未缴费住户数量（最近6个月，每月信息数量）】
         List<SDCountAndDate> sixMonthUnPaidNum = systemDataDao.findSixMonthUnPaidNum();
 
@@ -440,19 +435,94 @@ public class SystemDataServiceImpl implements SystemDataService {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String format = sdf.format(firePushAlert.getTime());
-            String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
-            log.info(content);
+//            String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
+
+            WebSocketFirePushAlert webSocketFirePushAlert = new WebSocketFirePushAlert();
+            webSocketFirePushAlert.setDeviceNo(firePushAlert.getDeviceNo());//填入设备号
+            webSocketFirePushAlert.setAlarmNo(firePushAlert.getAlarmNo());//填入报警号
+            webSocketFirePushAlert.setAlarmType(firePushAlert.getAlarmType());//填入数值报警，还是状态报警(C:数值报警，X:状态报警)
+            webSocketFirePushAlert.setDeviceName(firePushAlert.getDeviceName());//填入设备名称
+            webSocketFirePushAlert.setTime(format);//填入报警时间
+            int deviceNo = Integer.parseInt(firePushAlert.getDeviceNo());
+            int type = 0;
+            if (deviceNo >= 3020 && deviceNo <= 3027){
+                type = 1;//1.火灾报警（消防）
+            }else {
+                type = 2;//2.2.设备报警
+            }
+            webSocketFirePushAlert.setType(type);//填入报警类型：1.火灾报警（消防），2.设备报警，3.一键报警
+
+
+            String content = JSON.toJSONString(webSocketFirePushAlert);
+
+            log.info("火灾报警："+content);
 //            System.out.printf(content);
 //             key:type value:1 火警
-                //不使用第三方极光推送，该用websocket来实现推送
+                //不使用第三方极光推送，改用websocket来实现推送
 //            JiguangUtil.sendPushAll(content,"1");
 //            JiguangUtil.sendButlerPushAll(content,"1");
             //web页面的websocket
             WebSocketService ws = new WebSocketService();
             ws.broadcast(content);
+            if (type == 1){ //业主端只能看到火灾报警的消息，设备报警看不到
+                //业主app的websocket
+                WebSocketServiceApp wsApp = new WebSocketServiceApp();
+                wsApp.broadcast(content);
+            }
+            //管家app的websocket
+            WebSocketServiceButlerApp wsButlerApp = new WebSocketServiceButlerApp();
+            wsButlerApp.broadcast(content);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("message","推送失败");
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","推送成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> PlanPushAlert(PlanPushAlert planPushAlert) {
+        map = new HashMap<>();
+        try {
+            //添加预案记录进数据库
+            int insert = systemDataDao.insertPlanAlarm(planPushAlert);
+            if (insert <=0){
+                throw new RuntimeException("添加记录失败");
+            }
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String format = sdf.format(planPushAlert.getAlarmOccurrenceTime());
+//            String content = "于"+format+",小区内"+firePushAlert.getDeviceName()+"附近出现了火灾报警，请各位业主、租户保持镇静，不要慌乱，有序开始撤离！";
+
+            WebSocketFirePushAlert webSocketFirePushAlert = new WebSocketFirePushAlert();
+            webSocketFirePushAlert.setDeviceName(planPushAlert.getDeviceName());//填入设备名称
+            webSocketFirePushAlert.setTime(format);//填入报警发生时间
+            webSocketFirePushAlert.setPlanContent(planPushAlert.getPlanContent());//填入预案内容
+            webSocketFirePushAlert.setAlarmContent(planPushAlert.getAlarmContent());//填入报警内容
+            webSocketFirePushAlert.setType(4);//填入报警类型：1.火灾报警（消防），2.设备报警，3.一键报警,4.预案报警
+
+
+            String content = JSON.toJSONString(webSocketFirePushAlert);
+
+            log.info("预案报警："+content);
+//            System.out.printf(content);
+//             key:type value:1 火警
+            //不使用第三方极光推送，改用websocket来实现推送
+//            JiguangUtil.sendPushAll(content,"1");
+//            JiguangUtil.sendButlerPushAll(content,"1");
+            //web页面的websocket
+            WebSocketService ws = new WebSocketService();
+            ws.broadcast(content);
+
             //业主app的websocket
             WebSocketServiceApp wsApp = new WebSocketServiceApp();
             wsApp.broadcast(content);
+
             //管家app的websocket
             WebSocketServiceButlerApp wsButlerApp = new WebSocketServiceButlerApp();
             wsButlerApp.broadcast(content);
@@ -732,6 +802,148 @@ public class SystemDataServiceImpl implements SystemDataService {
         map.put("message","请求成功");
         map.put("status",true);
         map.put("data",sdUserVisitorsNewVos);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysMeterReadingRecord() {
+        map = new HashMap<>();
+        List<SDSysMeterReadingRecordVo> sdSysMeterReadingRecordVoList = systemDataDao.sysMeterReadingRecord();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysMeterReadingRecordVoList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysMeterReadingShare() {
+        map = new HashMap<>();
+        List<SDSysMeterReadingShareVo> sdSysMeterReadingShareVoList = systemDataDao.sysMeterReadingShare();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysMeterReadingShareVoList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> sysMeterReadingShareDetails() {
+        map = new HashMap<>();
+        List<SDSysMeterReadingShareDetailsVo> sdSysMeterReadingShareDetailsVoList = systemDataDao.sysMeterReadingShareDetails();
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdSysMeterReadingShareDetailsVoList);
+        return map;
+    }
+
+    @Override
+    public List<SDTSActivityVo> findActivityTouchScreen() {
+        List<SDTSActivityVo> activityTouchScreen = systemDataDao.findActivityTouchScreen();
+        if (activityTouchScreen != null && activityTouchScreen.size()>0){
+            for (SDTSActivityVo sdtsActivityVo : activityTouchScreen) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysActivityManagement", sdtsActivityVo.getId(), "activityImg");
+                sdtsActivityVo.setImgUrls(imgByDate);
+            }
+        }
+        return activityTouchScreen;
+    }
+
+    @Override
+    public List<SDTSAnnouncementVo> sysAnnouncementTouchScreen() {
+        List<SDTSAnnouncementVo> sdtsAnnouncementVos = systemDataDao.sysAnnouncementTouchScreen();
+        if (sdtsAnnouncementVos != null && sdtsAnnouncementVos.size()>0){
+            for (SDTSAnnouncementVo sdtsAnnouncementVo : sdtsAnnouncementVos) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysAnnouncementManagement", sdtsAnnouncementVo.getId(), "announcementImg");
+                sdtsAnnouncementVo.setImgUrls(imgByDate);
+            }
+        }
+        return sdtsAnnouncementVos;
+    }
+
+    @Override
+    public Map<String, Object> sysNewCategoryTouchScreen() {
+        map = new HashMap<>();
+        List<SDTSNewsCategoryVo> SDTSNewsCategoryVoList = systemDataDao.sysNewCategoryTouchScreen();
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",SDTSNewsCategoryVoList);
+        return map;
+    }
+
+    @Override
+    public List<SDTSNewVo> sysNewTouchScreen(Integer newCategoryId) {
+        List<SDTSNewVo> sdtsNewVoList = systemDataDao.sysNewTouchScreen(newCategoryId);
+        if (sdtsNewVoList != null && sdtsNewVoList.size()>0){
+            for (SDTSNewVo sdtsNewVo : sdtsNewVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysNews", sdtsNewVo.getId(), "newsImg");
+                sdtsNewVo.setImgUrls(imgByDate);
+            }
+        }
+        return sdtsNewVoList;
+    }
+
+    @Override
+    public Map<String, Object> sysNewLatestReleaseTouchScreen(Integer num) {
+        map = new HashMap<>();
+        List<SDTSNewVo> sdtsNewVoList = systemDataDao.sysNewLatestReleaseTouchScreen(num);
+        if (sdtsNewVoList != null && sdtsNewVoList.size()>0){
+            for (SDTSNewVo sdtsNewVo : sdtsNewVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysNews", sdtsNewVo.getId(), "newsImg");
+                sdtsNewVo.setImgUrls(imgByDate);
+            }
+        }
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdtsNewVoList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> searchTouchScreen(SearchTouchScreenSearch searchTouchScreenSearch) {
+        map = new HashMap<>();
+        SDTSSearchVo sdtsSearchVo = new SDTSSearchVo();
+        //活动信息搜索
+        List<SDTSActivityVo> sdtsActivityVoList = systemDataDao.searchActivity(searchTouchScreenSearch);
+        if (sdtsActivityVoList != null && sdtsActivityVoList.size()>0){
+            for (SDTSActivityVo sdtsActivityVo : sdtsActivityVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysActivityManagement", sdtsActivityVo.getId(), "activityImg");
+                sdtsActivityVo.setImgUrls(imgByDate);
+            }
+        }
+        sdtsSearchVo.setSdtsActivityVoList(sdtsActivityVoList);
+
+        //公告信息搜索
+        List<SDTSAnnouncementVo> sdtsAnnouncementVoList = systemDataDao.searchAnnouncement(searchTouchScreenSearch);
+        if (sdtsAnnouncementVoList != null && sdtsAnnouncementVoList.size()>0){
+            for (SDTSAnnouncementVo sdtsAnnouncementVo : sdtsAnnouncementVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysAnnouncementManagement", sdtsAnnouncementVo.getId(), "announcementImg");
+                sdtsAnnouncementVo.setImgUrls(imgByDate);
+            }
+        }
+        sdtsSearchVo.setSdtsAnnouncementVoList(sdtsAnnouncementVoList);
+
+        //资讯信息搜索
+        List<SDTSNewVo> sdtsNewVoList = systemDataDao.searchNews(searchTouchScreenSearch);
+        if (sdtsNewVoList != null && sdtsNewVoList.size()>0){
+            for (SDTSNewVo sdtsNewVo : sdtsNewVoList) {
+                UploadUtil uploadUtil = new UploadUtil();
+                List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysNews", sdtsNewVo.getId(), "newsImg");
+                sdtsNewVo.setImgUrls(imgByDate);
+            }
+        }
+        sdtsSearchVo.setSdtsNewVoList(sdtsNewVoList);
+
+        map.put("message","请求成功");
+        map.put("status",true);
+        map.put("data",sdtsSearchVo);
         return map;
     }
 

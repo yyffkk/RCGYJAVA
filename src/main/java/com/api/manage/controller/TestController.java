@@ -5,8 +5,10 @@ import com.api.util.Base64Util;
 import com.api.util.EmojiUtils;
 import com.api.util.IdWorker;
 import com.api.util.LiLinSignGetHmac;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 
+import org.json.JSONObject;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @RestController
+@Slf4j
 @RequestMapping("manage/test")
 public class TestController   {
 //    @RequiresPermissions(value = {"0201"})
@@ -35,39 +39,50 @@ public class TestController   {
 //        InputStream inputStream = new FileInputStream(file);
 //        MultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
 //
-        String result = "";
         try {
-            OkHttpClient httpClient = new OkHttpClient();
-//            MultipartBody multipartBody = new MultipartBody.Builder()
-//                    .setType(MultipartBody.FORM)
-//                    .addFormDataPart("jpeg", multipartFile.getOriginalFilename(),
-//                            RequestBody.create(MediaType.parse("multipart/form-data;charset=utf-8"),
-//                                    multipartFile.getBytes()))
-//                    .addFormDataPart("code","单元码")
-//                            .addFormDataPart("ts", String.valueOf(new Date()))
-//                            .addFormDataPart("te", String.valueOf(new Date()))
-//                    .build();
+                //getkey 获取密钥
+                String json = "{\"username\":\"nnrcgy\",\"userpwd\":\"rcgy.123\",\"code\" :\"BBA57BFB-53AC-4C39-B736-735EA11D2E51\"}";
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(30000, TimeUnit.MILLISECONDS)
+                        .readTimeout(30000, TimeUnit.MILLISECONDS)
+                        .build();
+                MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+                RequestBody requestBody = FormBody.create(mediaType, json);
+                Request request = new Request.Builder()
+                        .url("http://42p4v31138.zicp.vip/api/server/getkey")
+                        .post(requestBody)
+                        .build();
+                Response execute = client.newCall(request).execute();
+                if (execute.isSuccessful()) {
+                    ResponseBody body = execute.body();
+                    if (body != null) {
+                        //获取返回值
+                        String result = body.string();
+                        log.info("返回值:"+result);
+                        JSONObject jsonObject = new JSONObject(result);
+                        JSONObject httpData = (JSONObject) jsonObject.get("HttpData");
+                        String code = String.valueOf(httpData.get("code"));
 
-            Request request = new Request.Builder()
-                    .url("http://122.112.234.240:9007/monitor/devices/real/26454579/all/0")
-//                    .post(multipartBody)
-                    .build();
-
-            Response response = httpClient.newCall(request).execute();
-            if (response.isSuccessful()) {
-                ResponseBody body = response.body();
-                if (body != null) {
-                    result = body.string();
-                    if ("false".equals(result)){
-                        System.out.println("发送失败");
-                    }
-                    System.out.println(result);
+                        //=====判断返回是否成功
+                        if ("200".equals(code)){
+                            JSONObject data = (JSONObject) httpData.get("data");
+                            String appKey = String.valueOf(data.get("appkey"));
+                            String infoKey = String.valueOf(data.get("infokey"));
+                            String authorization = appKey + "-" + infoKey; //拼接密钥 【authorization = appKey-infoKey】
+                            log.info("获取key成功密钥，密钥为："+authorization);
+                            return "true";
+                        }else {
+                            log.info("返回失败");
+                            throw new RuntimeException(String.valueOf(httpData.get("message")));
+                        }
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                log.info(e.getMessage());
+                throw new RuntimeException(e.getMessage());
             }
-        return null;
+        return "false";
 //        return s;
     }
 }

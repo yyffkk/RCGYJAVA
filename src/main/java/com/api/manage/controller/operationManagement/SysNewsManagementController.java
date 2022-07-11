@@ -3,12 +3,15 @@ package com.api.manage.controller.operationManagement;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
 
 import com.api.model.operationManagement.SearchNewsManagement;
+import com.api.model.operationManagement.SettingNewsRotation;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.vo.basicArchives.VoIds;
 import com.api.vo.operationManagement.VoNewsCategoryManagement;
 import com.api.vo.operationManagement.VoNewsManagement;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +35,7 @@ public class SysNewsManagementController   {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0501"},logical = Logical.AND)
     public Map<String,Object> list(SearchNewsManagement searchNewsManagement){
         PageHelper.startPage(searchNewsManagement.getPageNum(),searchNewsManagement.getSize());
         List<VoNewsManagement> voNewsManagementList = sysNewsManagementService.list(searchNewsManagement);
@@ -103,5 +107,15 @@ public class SysNewsManagementController   {
         map.put("status",true);
         map.put("num",num);//更新条数
         return map;
+    }
+
+    /**
+     * 设置轮播信息
+     * @param settingNewsRotation 设置轮播信息model
+     * @return map
+     */
+    @PostMapping("/settingRotation")
+    public Map<String,Object> settingRotation(@RequestBody SettingNewsRotation settingNewsRotation){
+        return sysNewsManagementService.settingRotation(settingNewsRotation);
     }
 }

@@ -1,29 +1,19 @@
 package com.api.alipay.controller;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.domain.AlipayTradeAppPayModel;
-import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.AlipayTradeAppPayRequest;
-import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.api.alipay.service.AlipayService;
 import com.api.model.alipay.*;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppRepairOrder;
-import com.api.model.app.UserIdAndRepairId;
+import com.api.model.jcook.appDto.CreateOrderDTO;
+import com.api.util.GetIpUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -490,5 +480,101 @@ public class AlipayController {
     @GetMapping("/housekeepingServiceOrderCheckAlipay")
     public Map<String,Object> housekeepingServiceOrderCheckAlipay(String code){
         return alipayService.housekeepingServiceOrderCheckAlipay(code);
+    }
+
+    /**
+     * app 抄表记录管理-抄表分摊详情费用支付 完成订单支付宝支付(生成 APP 支付订单信息)
+     * @param shareDetailsOrder app 抄表记录管理-抄表分摊详情费用支付订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/meterReadingShareDetailsOrderAlipay")
+    public Map<String,Object> meterReadingShareDetailsOrderAlipay(@RequestBody SysMeterReadingShareDetailsOrder shareDetailsOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        shareDetailsOrder.setName(name); //填写付款人姓名
+        shareDetailsOrder.setTel(tel); //填写付款人手机号
+        return alipayService.meterReadingShareDetailsOrderAlipay(shareDetailsOrder,id);
+    }
+
+
+    /**
+     * 抄表记录管理-抄表分摊详情费用支付 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
+     */
+    @PostMapping(value = "/meterReadingShareDetailsOrderNotifyInfo")
+    public String meterReadingShareDetailsOrderNotifyInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+        request.setCharacterEncoding("UTF-8");
+        String userName = request.getParameter("name"); //从request获取用户姓名
+        Integer userId = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        return alipayService.meterReadingShareDetailsOrderNotifyInfo(request,userName,userId);
+    }
+
+
+    /**
+     * 抄表记录管理-抄表分摊详情费用支付 向支付宝发起订单查询请求
+     * @param code 商户订单号
+     * @return map
+     */
+    @GetMapping("/meterReadingShareDetailsOrderCheckAlipay")
+    public Map<String,Object> meterReadingShareDetailsOrderCheckAlipay(String code){
+        return alipayService.meterReadingShareDetailsOrderCheckAlipay(code);
+    }
+
+
+    /**
+     * jcook商品创建订单
+     * @param createOrderDTO 创建订单DTO
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping("/jcookOrderCreateOrder")
+    public Map<String,Object> jcookOrderCreateOrder(@RequestBody CreateOrderDTO createOrderDTO, HttpServletResponse response, HttpServletRequest request){
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        Integer type = Integer.valueOf(request.getParameter("type"));//从request获取用户type
+        String ip2 = GetIpUtil.getIp2(request);//获取用户ip
+        createOrderDTO.setPayName(name);
+        createOrderDTO.setPayTel(tel);
+        createOrderDTO.setResidentId(id);
+        return alipayService.jcookOrderCreateOrder(createOrderDTO,type,ip2);
+    }
+
+    /**
+     * jcook商品 接收支付宝异步通知消息（支付宝支付成功后.异步请求该接口,一直请求，直到返回success）
+     * @param request request
+     * @param response response
+     * @return map
+     * @throws UnsupportedEncodingException 异常
+     */
+    @PostMapping(value = "/jcookOrderNotifyInfo")
+    public String jcookOrderNotifyInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // 解决POST请求中文乱码问题（推荐使用此种方式解决中文乱码，因为是支付宝发送异步通知使用的是POST请求）
+        request.setCharacterEncoding("UTF-8");
+        String userName = request.getParameter("name"); //从request获取用户姓名
+        Integer userId = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        return alipayService.jcookOrderNotifyInfo(request,userName,userId);
+    }
+
+    /**
+     * jcook商品 向支付宝发起订单查询请求
+     * @param code 商户订单号
+     * @return map
+     */
+    @GetMapping("/jcookOrderCheckAlipay")
+    public Map<String,Object> jcookOrderCheckAlipay(String code){
+        return alipayService.jcookOrderCheckAlipay(code);
     }
 }

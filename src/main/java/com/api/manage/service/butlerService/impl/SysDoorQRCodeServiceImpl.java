@@ -4,6 +4,7 @@ import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
 import com.api.manage.dao.butlerService.SysDoorQRCodeDao;
 import com.api.manage.service.butlerService.SysDoorQRCodeService;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.butlerService.GetHtmlCode;
 import com.api.model.butlerService.SearchDoorQRCode;
 import com.api.model.butlerService.SysDoorQRCode;
 import com.api.util.LiLinSignGetHmac;
@@ -161,6 +162,45 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         try {
             //连接立林对讲机系统-获取设备二维码
             data = connectLiLinGetQrCode(visitorsTel, startTime, endTime);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            map.put("data",null);
+            return map;
+        }
+        map.put("message","查询成功");
+        map.put("status",true);
+        map.put("data",data);
+        return map;
+    }
+
+
+
+    @Override
+    @Transactional
+    public Map<String, Object> getHtmlCode(Date startTime, Date endTime, String tel) {
+        map = new HashMap<>();
+        String data = null;//返回二维码字符串
+        try {
+            GetHtmlCode getHtmlCode = new GetHtmlCode();
+            getHtmlCode.setStartTime(startTime);
+            getHtmlCode.setEndTime(endTime);
+            getHtmlCode.setTel(tel);
+            //检查是否有预约信息
+            int check = sysDoorQRCodeDao.checkAppointment(getHtmlCode);
+            if (check <= 0){
+                throw new RuntimeException("未查询到相关预约");
+            }
+
+
+            //连接立林对讲机系统-获取设备二维码
+            data = connectLiLinGetQrCode(tel, startTime, endTime);
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

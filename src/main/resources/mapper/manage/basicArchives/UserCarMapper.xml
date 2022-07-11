@@ -44,6 +44,18 @@
             <if test="parkingSpaceId != null">
                 parking_space_id,
             </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="brand != null and brand != ''">
+                brand,
+            </if>
+            <if test="model != null and model != ''">
+                model,
+            </if>
+            <if test="color != null">
+                color,
+            </if>
             create_id,
             create_date,
             <if test="effectiveTimeStart != null">
@@ -72,6 +84,18 @@
             <if test="parkingSpaceId != null">
                 #{parkingSpaceId},
             </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="brand != null and brand != ''">
+                #{brand},
+            </if>
+            <if test="model != null and model != ''">
+                #{model},
+            </if>
+            <if test="color != null">
+                #{color},
+            </if>
             #{createId},
             #{createDate},
             <if test="effectiveTimeStart != null">
@@ -85,8 +109,10 @@
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.basicArchives.VoUserCarFindById">
         select uc.*,cps.code as parking_space_code
-        from user_car as uc,cpm_parking_space as cps
-        where uc.parking_space_id = cps.id and uc.id = #{id}
+        from user_car as uc
+        left join cpm_parking_space as cps
+        on uc.parking_space_id = cps.id
+        where uc.id = #{id}
     </select>
 
     <update id="update" parameterType="com.api.model.basicArchives.UserCar">
@@ -112,6 +138,18 @@
             </if>
             <if test="tel != null and tel != ''">
                 tel = #{tel},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="brand != null and brand != ''">
+                brand = #{brand},
+            </if>
+            <if test="model != null and model != ''">
+                model = #{model},
+            </if>
+            <if test="color != null">
+                color = #{color},
             </if>
                 modify_id = #{modifyId},
                 modify_date = #{modifyDate},

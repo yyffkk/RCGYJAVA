@@ -10,9 +10,12 @@
         order by srr.create_date DESC
     </select>
     <select id="findRepairByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppReportRepairVo">
-        select srr.*,sdl.status
-        from sys_report_repair as srr,sys_dispatch_list as sdl
-        where srr.dispatch_list_id = sdl.id and sdl.sys_delete = 1 and sdl.user_delete = 1 and srr.repairman = #{id} and srr.id = #{repairId}
+        select srr.*,sdl.status,CONCAT(cb.no,'栋',cbu.no,'单元',cbue.room_number) as room_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb,sys_report_repair as srr,sys_dispatch_list as sdl
+        where srr.building_unit_estate_id = cbue.id
+          and cbue.building_unit_id = cbu.id
+          and cbu.building_id = cb.id
+          and srr.dispatch_list_id = sdl.id and sdl.sys_delete = 1 and sdl.user_delete = 1 and srr.repairman = #{id} and srr.id = #{repairId}
     </select>
 
     <select id="findDispatchListByIds" parameterType="com.api.model.app.UserIdAndRepairId" resultType="com.api.vo.app.AppDispatchListVo">

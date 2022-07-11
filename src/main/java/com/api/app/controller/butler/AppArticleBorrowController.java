@@ -74,7 +74,7 @@ public class AppArticleBorrowController {
     }
 
     /**
-     * 借取物品
+     * 申请借取物品
      * @param ids 物品明细主键id数组
      * @param request app-admin-token获取的request用户信息
      * @return map

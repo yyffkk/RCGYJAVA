@@ -8,6 +8,7 @@ import com.api.model.butlerService.UpdateDispatchStatus;
 import com.api.vo.app.IdAndName;
 import com.api.vo.butlerApp.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ButlerRepairDao {
@@ -17,6 +18,13 @@ public interface ButlerRepairDao {
      * @return 权限id集合
      */
     List<Integer> findJIdsByRoleId(Integer roleId);
+
+    /**
+     * 根据角色id数组查询权限id集合
+     * @param split 角色id数组
+     * @return 权限id集合
+     */
+    List<Integer> findJIdsByRoleIds(List<Integer> split);
 
     /**
      * 派单人：查询所有的报事报修信息(包含条件搜索)

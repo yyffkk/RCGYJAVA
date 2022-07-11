@@ -13,4 +13,6 @@ public interface SysDataBaseService {
     Map<String, Object> insert(SysDataBase sysDataBase);
 
     Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> update(SysDataBase sysDataBase);
 }

@@ -32,6 +32,25 @@
         )
     </insert>
 
+    <update id="update" parameterType="com.api.model.businessManagement.SysDataBase">
+        update sys_data_base
+        <set>
+            <if test="functionType != null">
+                function_type = #{functionType},
+            </if>
+            <if test="functionName != null and functionName != ''">
+                function_name = #{functionName},
+            </if>
+            <if test="fieldName != null and fieldName != ''">
+                field_name = #{fieldName},
+            </if>
+            modify_id = #{modifyId},
+            modify_date = #{modifyDate}
+        </set>
+        where id = #{id}
+    </update>
+
+
     <delete id="delete" parameterType="java.lang.Integer">
         delete from sys_data_base where id = #{id}
     </delete>

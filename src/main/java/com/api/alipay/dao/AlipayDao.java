@@ -1,9 +1,6 @@
 package com.api.alipay.dao;
 
-import com.api.model.alipay.AliPaymentOrder;
-import com.api.model.alipay.EstateIdAndAdvancePaymentPrice;
-import com.api.model.alipay.SysAdvancePaymentOrder;
-import com.api.model.alipay.SysHousekeepingServiceOrder;
+import com.api.model.alipay.*;
 
 import java.math.BigDecimal;
 
@@ -84,4 +81,25 @@ public interface AlipayDao {
      * @return 影响行数
      */
     int updateHousekeepingServiceOrderStatusByCode(SysHousekeepingServiceOrder sysHousekeepingServiceOrder);
+
+    /**
+     * 添加抄表记录管理-抄表分摊详情费用支付订单信息
+     * @param shareDetailsOrder 抄表分摊详情订单
+     * @return 影响行数
+     */
+    int insertShareDetailsOrder(SysMeterReadingShareDetailsOrder shareDetailsOrder);
+
+    /**
+     * 根据out_trade_no【商户系统的唯一订单号】查询信息 pay_price【订单金额】
+     * @param outTradeNo 商户系统的唯一订单号
+     * @return app 抄表记录管理-抄表分摊详情费用支付订单model
+     */
+    SysMeterReadingShareDetailsOrder findShareDetailsOrderOrderByCode(String outTradeNo);
+
+    /**
+     * 根据抄表记录管理-抄表分摊详情费用支付单号更新表的状态
+     * @param shareDetailsOrder app 抄表分摊详情订单model
+     * @return 影响行数
+     */
+    int updateShareDetailsOrderStatusByCode(SysMeterReadingShareDetailsOrder shareDetailsOrder);
 }

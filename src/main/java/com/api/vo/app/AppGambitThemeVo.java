@@ -1,14 +1,22 @@
 package com.api.vo.app;
 
 import com.api.vo.resources.VoResourcesImg;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * app最新主题信息Vo list 回显
  */
-public class AppGambitThemeVo {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AppGambitThemeVo implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 主题id
      */
@@ -42,6 +50,10 @@ public class AppGambitThemeVo {
      */
     private Date createDate;
     /**
+     * 点赞数量
+     */
+    private Integer likeNamesNum;
+    /**
      * 点赞人信息
      */
     private List<IdAndName> likeNames;
@@ -54,139 +66,17 @@ public class AppGambitThemeVo {
      */
     private List<VoResourcesImg> headSculptureImgUrl;
     /**
+     * 评论数量
+     */
+    private Integer gambitThemeCommentNum;
+    /**
      * 主题评论信息集合
      */
     private List<AppGambitThemeCommentVo> gambitThemeCommentVoList;
+    /**
+     * 浏览量
+     */
+    private Integer views;
 
-    @Override
-    public String toString() {
-        return "AppGambitThemeVo{" +
-                "id=" + id +
-                ", createId=" + createId +
-                ", isComment=" + isComment +
-                ", isLike=" + isLike +
-                ", createName='" + createName + '\'' +
-                ", content='" + content + '\'' +
-                ", gambitTitle='" + gambitTitle + '\'' +
-                ", createDate=" + createDate +
-                ", likeNames=" + likeNames +
-                ", imgUrls=" + imgUrls +
-                ", headSculptureImgUrl=" + headSculptureImgUrl +
-                ", gambitThemeCommentVoList=" + gambitThemeCommentVoList +
-                '}';
-    }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getCreateId() {
-        return createId;
-    }
-
-    public void setCreateId(Integer createId) {
-        this.createId = createId;
-    }
-
-    public Integer getIsComment() {
-        return isComment;
-    }
-
-    public void setIsComment(Integer isComment) {
-        this.isComment = isComment;
-    }
-
-    public Integer getIsLike() {
-        return isLike;
-    }
-
-    public void setIsLike(Integer isLike) {
-        this.isLike = isLike;
-    }
-
-    public String getCreateName() {
-        return createName;
-    }
-
-    public void setCreateName(String createName) {
-        this.createName = createName;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getGambitTitle() {
-        return gambitTitle;
-    }
-
-    public void setGambitTitle(String gambitTitle) {
-        this.gambitTitle = gambitTitle;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public List<IdAndName> getLikeNames() {
-        return likeNames;
-    }
-
-    public void setLikeNames(List<IdAndName> likeNames) {
-        this.likeNames = likeNames;
-    }
-
-    public List<VoResourcesImg> getImgUrls() {
-        return imgUrls;
-    }
-
-    public void setImgUrls(List<VoResourcesImg> imgUrls) {
-        this.imgUrls = imgUrls;
-    }
-
-    public List<VoResourcesImg> getHeadSculptureImgUrl() {
-        return headSculptureImgUrl;
-    }
-
-    public void setHeadSculptureImgUrl(List<VoResourcesImg> headSculptureImgUrl) {
-        this.headSculptureImgUrl = headSculptureImgUrl;
-    }
-
-    public List<AppGambitThemeCommentVo> getGambitThemeCommentVoList() {
-        return gambitThemeCommentVoList;
-    }
-
-    public void setGambitThemeCommentVoList(List<AppGambitThemeCommentVo> gambitThemeCommentVoList) {
-        this.gambitThemeCommentVoList = gambitThemeCommentVoList;
-    }
-
-    public AppGambitThemeVo() {
-    }
-
-    public AppGambitThemeVo(Integer id, Integer createId, Integer isComment, Integer isLike, String createName, String content, String gambitTitle, Date createDate, List<IdAndName> likeNames, List<VoResourcesImg> imgUrls, List<VoResourcesImg> headSculptureImgUrl, List<AppGambitThemeCommentVo> gambitThemeCommentVoList) {
-        this.id = id;
-        this.createId = createId;
-        this.isComment = isComment;
-        this.isLike = isLike;
-        this.createName = createName;
-        this.content = content;
-        this.gambitTitle = gambitTitle;
-        this.createDate = createDate;
-        this.likeNames = likeNames;
-        this.imgUrls = imgUrls;
-        this.headSculptureImgUrl = headSculptureImgUrl;
-        this.gambitThemeCommentVoList = gambitThemeCommentVoList;
-    }
 }

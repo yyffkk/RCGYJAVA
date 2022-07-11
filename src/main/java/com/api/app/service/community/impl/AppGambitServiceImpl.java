@@ -61,10 +61,12 @@ public class AppGambitServiceImpl implements AppGambitService {
                 //根据主题主键id查询点赞人信息
                 List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
                 appGambitThemeVo.setLikeNames(idAndNames);
+                appGambitThemeVo.setLikeNamesNum(idAndNames.size());
 
                 //根据主题主键id查询主题评论信息
                 List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());
                 appGambitThemeVo.setGambitThemeCommentVoList(gambitThemeCommentVos);
+                appGambitThemeVo.setGambitThemeCommentNum(gambitThemeCommentVos.size());
             }
         }
         return list;
@@ -82,8 +84,12 @@ public class AppGambitServiceImpl implements AppGambitService {
                 //查询热度（活跃度）【点赞数+评论数】
                 //查询点赞数
 //                int sumLikeNum = appGambitDao.sumLikeNum(appGambitVo.getId());
+                //查询动态主题数
+                int themeNum = appGambitDao.sumThemeNum(appGambitVo.getId());
+                appGambitVo.setThemeNum(themeNum);
                 //查询评论数
-//                int sumCommentNum = appGambitDao.sumCommentNum(appGambitVo.getId());
+                int sumCommentNum = appGambitDao.sumCommentNum(appGambitVo.getId());
+                appGambitVo.setSumCommentNum(sumCommentNum);
 //                appGambitVo.setActivityNum(sumLikeNum+sumCommentNum);
             }
         }
@@ -134,10 +140,12 @@ public class AppGambitServiceImpl implements AppGambitService {
         //根据主题主键id查询点赞人信息
         List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
         appGambitThemeVo.setLikeNames(idAndNames);
+        appGambitThemeVo.setLikeNamesNum(idAndNames.size());
 
         //根据主题主键id查询主题评论信息
         List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());
         appGambitThemeVo.setGambitThemeCommentVoList(gambitThemeCommentVos);
+        appGambitThemeVo.setGambitThemeCommentNum(gambitThemeCommentVos.size());
 
         map.put("message","请求成功");
         map.put("data",appGambitThemeVo);
@@ -415,12 +423,24 @@ public class AppGambitServiceImpl implements AppGambitService {
     }
 
     @Override
-    public List<AppGambitThemeVo> listByGambitId(Integer id, int gambitId) {
+    public List<AppGambitThemeVo> listByGambitId(Integer id, int gambitId, int orderBy) {
         UserIdAndGambitId userIdAndGambitId = new UserIdAndGambitId();
         userIdAndGambitId.setGambitId(gambitId);
         userIdAndGambitId.setId(id);
-        //查询 话题 下的主题信息
-        List<AppGambitThemeVo> list = appGambitDao.listByGambitId(userIdAndGambitId);
+        List<AppGambitThemeVo> list = null;
+        if (orderBy == 1){
+            //最新
+            //查询 最新 话题 下的主题信息
+            list = appGambitDao.listByGambitIdByNews(userIdAndGambitId);
+        }else if (orderBy == 2){
+            //最热
+            //查询 最新 话题 下的主题信息
+            list = appGambitDao.listByGambitIdByHot(userIdAndGambitId);
+        }else {
+            //剩余默认展示
+            //查询话题 下的主题信息
+            list = appGambitDao.listByGambitId(userIdAndGambitId);
+        }
         if (list != null && list.size()>0){
             for (AppGambitThemeVo appGambitThemeVo : list) {
                 //查询该用户是否点赞
@@ -449,10 +469,12 @@ public class AppGambitServiceImpl implements AppGambitService {
                 //根据主题主键id查询点赞人信息
                 List<IdAndName> idAndNames = appGambitDao.findLikeNames(appGambitThemeVo.getId());
                 appGambitThemeVo.setLikeNames(idAndNames);
+                appGambitThemeVo.setLikeNamesNum(idAndNames.size());
 
                 //根据主题主键id查询主题评论信息
                 List<AppGambitThemeCommentVo> gambitThemeCommentVos = appGambitDao.findCommentByThemeId(appGambitThemeVo.getId());
                 appGambitThemeVo.setGambitThemeCommentVoList(gambitThemeCommentVos);
+                appGambitThemeVo.setGambitThemeCommentNum(gambitThemeCommentVos.size());
             }
         }
         return list;

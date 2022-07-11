@@ -35,6 +35,13 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
         if (list != null && list.size()>0){
             UploadUtil uploadUtil = new UploadUtil();
             for (ButlerFacilitiesCheckVo butlerFacilitiesCheckVo : list) {
+                //计算出3.未完成(当状态为1.待完成，并且当前时间大于检查计划结束时间)
+                if (butlerFacilitiesCheckVo.getStatus() == 1 && new Date().getTime() > butlerFacilitiesCheckVo.getEndDate().getTime()){
+                    butlerFacilitiesCheckVo.setStatus(3);
+                }
+
+
+                //传入照片
                 List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysFacilitiesExecute", butlerFacilitiesCheckVo.getId(), "checkImg");
                 butlerFacilitiesCheckVo.setImgList(imgByDate);
             }
@@ -73,8 +80,8 @@ public class ButlerFacilitiesCheckServiceImpl implements ButlerFacilitiesCheckSe
             }
 
 
-            //根据设施设备检查记录主键id查询设施/设备管理计划信息
-            FacilitiesPlan facilitiesPlan = butlerFacilitiesCheckDao.findPlanById(facilitiesExecute.getId());
+            //根据设施设备巡检计划主键id查询设施/设备管理计划信息
+            FacilitiesPlan facilitiesPlan = butlerFacilitiesCheckDao.findPlanById(facilitiesExecute2.getFacilitiesPlanId());
 
             //根据组织id查询组织信息
             SysOrganization sysOrganization = manageSysMessageDao.findOrganizationByOrganizationId(organizationId);

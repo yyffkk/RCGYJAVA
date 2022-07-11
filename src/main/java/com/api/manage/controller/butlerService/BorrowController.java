@@ -31,7 +31,7 @@ public class BorrowController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchBorrow searchBorrow){
         PageHelper.startPage(searchBorrow.getPageNum(),searchBorrow.getSize());
         List<VoBorrow> voBorrowList = borrowService.list(searchBorrow);
@@ -49,7 +49,7 @@ public class BorrowController   {
      * @return map
      */
     @PostMapping("/remind")
-    @RequiresPermissions(value = {"0306","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0306"},logical = Logical.AND)
     public Map<String,Object> remind(@RequestBody BorrowRemind borrowRemind){
         return borrowService.remind(borrowRemind);
     }

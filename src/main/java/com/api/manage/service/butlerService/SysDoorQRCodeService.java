@@ -18,4 +18,6 @@ public interface SysDoorQRCodeService {
     List<VoDoorQRCode> list(SearchDoorQRCode searchDoorQRCode);
 
     Map<String, Object> getVisitorsQrCode(Date startTime, Date endTime, String visitorsTel);
+
+    Map<String, Object> getHtmlCode(Date startTime, Date endTime, String tel);
 }

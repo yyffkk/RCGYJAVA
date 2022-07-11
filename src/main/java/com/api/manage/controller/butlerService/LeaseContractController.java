@@ -8,6 +8,8 @@ import com.api.vo.butlerService.VoLeaseContract;
 import com.api.vo.butlerService.VoUserAdvice;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ public class LeaseContractController {
      * @return map
      */
     @GetMapping("/list")
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String,Object> list(SearchLeaseContract searchLeaseContract){
         PageHelper.startPage(searchLeaseContract.getPageNum(),searchLeaseContract.getSize());
         List<VoLeaseContract> voLeaseContractList = leaseContractService.list(searchLeaseContract);
@@ -47,6 +50,7 @@ public class LeaseContractController {
      * @return map
      */
     @PostMapping("/insert")
+    @RequiresPermissions(value = {"0303"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysLeaseContract sysLeaseContract){
         return leaseContractService.insert(sysLeaseContract);
     }

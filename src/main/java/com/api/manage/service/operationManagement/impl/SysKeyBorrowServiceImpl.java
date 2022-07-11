@@ -32,7 +32,7 @@ public class SysKeyBorrowServiceImpl implements SysKeyBorrowService {
         List<VoKeyBorrow> list = sysKeyBorrowDao.list(searchKeyBorrow);
         if (list != null && list.size()>0){
             for (VoKeyBorrow voKeyBorrow : list) {
-                //查询当前已借出的钥匙数量(当状态为2时，视为已借出)
+                //查询当前已借出的钥匙数量(当状态为2，4，5时，视为已借出)
                 int loanableNum = sysKeyBorrowDao.countLoanableKeyNum(voKeyBorrow.getKeyId());
                 voKeyBorrow.setLoanableNum(voKeyBorrow.getLoanableNum() - loanableNum);
             }
@@ -80,6 +80,41 @@ public class SysKeyBorrowServiceImpl implements SysKeyBorrowService {
         keyBorrow.setAuditDate(new Date());
 
         int update = sysKeyBorrowDao.examine(keyBorrow);
+        if (update >0){
+            map.put("message","操作成功");
+            map.put("status",true);
+        }else {
+            map.put("message","操作失败");
+            map.put("status",false);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> returnExamine(KeyBorrow keyBorrow) {
+        map = new HashMap<>();
+        if (keyBorrow.getStatus() != 5 && keyBorrow.getStatus() != 6){
+            map.put("message","状态传输有误");
+            map.put("status",false);
+            return map;
+        }
+
+        //根据审核主键id 查询审核状态
+        int status = sysKeyBorrowDao.findStatusById(keyBorrow.getId());
+        if (status != 4){
+            map.put("message","该记录已审核");
+            map.put("status",false);
+            return map;
+        }
+
+        //获取登录用户信息
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+
+        keyBorrow.setReviewer(sysUser.getId());
+        keyBorrow.setAuditDate(new Date());
+
+        int update = sysKeyBorrowDao.returnExamine(keyBorrow);
         if (update >0){
             map.put("message","操作成功");
             map.put("status",true);

@@ -1,6 +1,7 @@
 package com.api.app.dao.butler;
 
 import com.api.model.app.SearchAppNews;
+import com.api.vo.app.AppNewsRotationVo;
 import com.api.vo.app.AppNewsVo;
 import com.api.vo.app.AppNewsVoFBI;
 import com.api.vo.app.IdAndName;
@@ -27,4 +28,23 @@ public interface AppNewsDao {
      * @return 资讯信息详情
      */
     AppNewsVoFBI findNewsByNewsId(Integer newsId);
+
+    /**
+     * 查询资讯轮播图信息
+     * @return
+     */
+    List<AppNewsRotationVo> findNewsRotation();
+
+    /**
+     * 查询热门资讯
+     * @return 热门资讯
+     */
+    List<AppNewsVo> findHotNews();
+
+    /**
+     * 增加浏览量
+     * @param newsId 资讯主键id
+     * @return 影响行数
+     */
+    int addViews(Integer newsId);
 }

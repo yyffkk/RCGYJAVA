@@ -87,8 +87,9 @@
     <update id="updateDetail" parameterType="com.api.model.butlerService.ArticleDetail">
         update sys_article_detail
         <set>
-            name = #{name},
-            status = #{status},
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
             modify_id = #{modifyId},
             modify_date = #{modifyDate}
         </set>

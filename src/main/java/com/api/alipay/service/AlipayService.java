@@ -4,6 +4,7 @@ import com.api.model.alipay.*;
 import com.api.model.app.AppDailyPaymentOrder;
 import com.api.model.app.AppGoodsAppointment;
 import com.api.model.app.AppRepairOrder;
+import com.api.model.jcook.appDto.CreateOrderDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -66,4 +67,16 @@ public interface AlipayService {
     String housekeepingServiceOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId);
 
     Map<String, Object> housekeepingServiceOrderCheckAlipay(String code);
+
+    Map<String, Object> meterReadingShareDetailsOrderAlipay(SysMeterReadingShareDetailsOrder shareDetailsOrder, Integer id);
+
+    String meterReadingShareDetailsOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId);
+
+    Map<String, Object> meterReadingShareDetailsOrderCheckAlipay(String code);
+
+    Map<String, Object> jcookOrderCreateOrder(CreateOrderDTO createOrderDTO, Integer type, String ip2);
+
+    String jcookOrderNotifyInfo(HttpServletRequest request, String userName, Integer userId);
+
+    Map<String, Object> jcookOrderCheckAlipay(String code);
 }

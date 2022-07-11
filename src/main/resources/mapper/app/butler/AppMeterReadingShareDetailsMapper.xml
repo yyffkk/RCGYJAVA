@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.butler.AppMeterReadingShareDetailsDao">
+    <update id="updateStatusById" parameterType="com.api.model.chargeManagement.SysMeterReadingShareBillDetails">
+        update sys_meter_reading_share_details
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="findShareDetailsById" parameterType="java.lang.Integer"
+            resultType="com.api.model.chargeManagement.SysMeterReadingShareBillDetails">
+        select * from sys_meter_reading_share_details where share_bill_id = #{shareDetailsId}
+    </select>
+
+    <select id="findAllUnPayList" parameterType="java.lang.Integer" resultType="com.api.vo.app.AppMeterShareVo">
+        select smrs.id,smrs.months,smrs.type,count(smrs.id) as num,sum(remaining_unpaid_amount) as total
+        from sys_meter_reading_share_details as smrsd,sys_meter_reading_share as smrs
+        where smrsd.share_bill_id = smrs.id and smrsd.estate_id = #{estateId} and smrsd.status in (1,2)
+        GROUP BY smrsd.share_bill_id
+    </select>
+
+    <select id="findUnPayShareDetailsById" parameterType="com.api.model.app.EstateIdAndShareBillId" resultType="com.api.vo.app.AppMeterShareDetailsVo">
+        select * from sys_meter_reading_share_details where share_bill_id = #{shareBillId} and estate_id = #{estateId} and status in (1,2)
+    </select>
+
+    <select id="findAllMeterShareOrderByTel" parameterType="java.lang.String" resultType="com.api.vo.app.AppMeterShareOrderVo">
+        select smrsdo.pay_price,smrsd.payment_time,smrsdo.pay_type,smrsdo.code,smrs.months,smrs.effective_time_start,smrs.effective_time_end,smrs.share_unit_price,cbue.indoor_area
+        from sys_meter_reading_share_details_order as smrsdo,sys_meter_reading_share_details_order_list as smrsdol,sys_meter_reading_share_details as smrsd,sys_meter_reading_share as smrs,cpm_building_unit_estate as cbue
+        where smrsdo.id = smrsdol.meter_share_order_id and smrsd.id = smrsdol.meter_share_details_id and smrsd.share_bill_id = smrs.id and smrsd.estate_id = cbue.id and smrsdo.tel = #{tel}
+    </select>
+    <select id="findShareBillDetailsByOrderCode" parameterType="java.lang.String"
+            resultType="com.api.model.chargeManagement.SysMeterReadingShareBillDetails">
+        select smrsd.*
+        from sys_meter_reading_share_details_order as smrsdo,sys_meter_reading_share_details as smrsd,sys_meter_reading_share_details_order_list as smrsdol
+        where smrsdo.id = smrsdol.meter_share_order_id and smrsd.id = smrsdol.meter_share_details_id and smrsdo.code = #{outTradeNo}
+    </select>
+    <select id="findShareDetailsByIds" parameterType="com.api.model.alipay.SysMeterReadingShareDetailsOrder"
+            resultType="com.api.model.chargeManagement.SysMeterReadingShareBillDetails">
+        select * from sys_meter_reading_share_details where id in
+        <foreach collection="shareDetailsIds" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertOrderList" parameterType="com.api.model.alipay.SysMeterReadingShareDetailsOrder">
+        insert into sys_meter_reading_share_details_order_list(
+            meter_share_order_id,
+            meter_share_details_id,
+            pay_price
+        )value (
+            #{meterShareOrderId},
+            #{meterShareDetailsId},
+            #{payPrice}
+        )
+    </insert>
+
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.api.butlerApp.service.personalData.impl;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.api.butlerApp.dao.login.ButlerLoginDao;
 import com.api.butlerApp.dao.personalData.ButlerPersonalDataDao;
 import com.api.butlerApp.service.personalData.ButlerPersonalDataService;
@@ -7,6 +8,7 @@ import com.api.model.app.UpdateTel;
 import com.api.model.basicArchives.UserResident;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerApp.ButlerUpdateTel;
+import com.api.util.SmsSendUtil;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerApp.ButlerPersonalDataVo;
 import com.api.vo.resources.VoResourcesImg;
@@ -89,7 +91,7 @@ public class ButlerPersonalDataServiceImpl implements ButlerPersonalDataService 
         final String MOBILE = butlerUpdateTel.getNewTel();
 
         //验证手机号格式
-        Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p=Pattern.compile("^1[3456789]\\d{9}$");
         Matcher m=p.matcher(MOBILE);
         boolean matches = m.matches();
         if (!matches){
@@ -124,7 +126,14 @@ public class ButlerPersonalDataServiceImpl implements ButlerPersonalDataService 
         }
 
         // 发送短信工具类
-//        SmsSendUtil.send(CAPTCHA, MOBILE);
+        try {
+            SmsSendUtil.sendSms(CAPTCHA, MOBILE);
+        } catch (ClientException e) {
+//            e.printStackTrace();
+            map.put("message","验证码发送失败");
+            map.put("status",false);
+            return map;
+        }
         map.put("code",CAPTCHA);
         map.put("message","验证码发送成功");
         map.put("status",true);
@@ -147,7 +156,7 @@ public class ButlerPersonalDataServiceImpl implements ButlerPersonalDataService 
         butlerPersonalDataDao.deleteUserTelUpdateByTel(butlerUpdateTel.getNewTel());
 
         //验证手机号格式
-        Pattern p=Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Pattern p=Pattern.compile("^1[3456789]\\d{9}$");
         Matcher m=p.matcher(butlerUpdateTel.getNewTel());
         boolean matches = m.matches();
         if (!matches){

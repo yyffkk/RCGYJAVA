@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao">
     <select id="list" parameterType="com.api.model.basicArchives.SearchCpmBuildingUnitEstate" resultType="com.api.vo.basicArchives.VoCpmBuildingUnitEstate">
-        select a.id,a.building_name,a.building_no,a.building_unit_no,a.room_number,a.status,a.type,a.construction_area,a.indoor_area,group_concat(b.name) as user_resident_name,group_concat(b.tel) as user_resident_tel
+        select a.id,a.building_id,a.building_name,a.building_no,a.building_unit_id,a.building_unit_no,a.room_number,a.status,a.type,a.construction_area,a.indoor_area,group_concat(b.name) as user_resident_name,group_concat(b.tel) as user_resident_tel
         from (
-        select cbue.*, cbu.id as cbu_id, cbu.no as building_unit_no, cb.name as building_name,cb.no as building_no
+        select cbue.*,cbu.no as building_unit_no,cb.id as building_id, cb.name as building_name,cb.no as building_no
         from cpm_building_unit_estate cbue,cpm_building cb,cpm_building_unit cbu
         where cbue.building_unit_id = cbu.id and cbu.building_id = cb.id
         ) as a LEFT JOIN (
@@ -76,8 +76,10 @@
     </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.model.basicArchives.CpmBuildingUnitEstate">
-        select * from cpm_building_unit_estate
-        where is_delete = 1 and id =#{id}
+        select cbue.*,cbu.no as building_unit_no,cb.name as building_name
+        from cpm_building_unit_estate as cbue,cpm_building_unit as cbu,cpm_building as cb
+        where cbue.is_delete = 1 and cbue.id = #{id} and cbue.building_unit_id = cbu.id
+        and cbu.building_id = cb.id
     </select>
 
     <update id="update" parameterType="com.api.model.basicArchives.CpmBuildingUnitEstate">

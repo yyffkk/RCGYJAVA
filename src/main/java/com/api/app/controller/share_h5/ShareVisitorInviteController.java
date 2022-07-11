@@ -4,6 +4,7 @@ import com.api.app.service.butler.AppVisitorInviteService;
 import com.api.manage.service.basicArchives.CpmBuildingService;
 import com.api.manage.service.basicArchives.CpmBuildingUnitEstateService;
 import com.api.manage.service.basicArchives.CpmBuildingUnitService;
+import com.api.manage.service.butlerService.SysDoorQRCodeService;
 import com.api.manage.service.system.UploadService;
 import com.api.model.app.AppUserQRVisitorsInviteSubmit;
 import com.api.model.app.AppUserVisitorsInvite;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +37,8 @@ public class ShareVisitorInviteController {
     CpmBuildingUnitService cpmBuildingUnitService;
     @Resource
     CpmBuildingUnitEstateService cpmBuildingUnitEstateService;
+    @Resource
+    SysDoorQRCodeService sysDoorQRCodeService;
 
     /**
      * 根据分享连接编号查询访客信息（H5页面接口）
@@ -121,6 +125,16 @@ public class ShareVisitorInviteController {
         return cpmBuildingUnitEstateService.findByBuildingUnitId(id);
     }
 
-
+    /**
+     * 获取设备二维码（H5页面）
+     * @param startTime 生效时间戳
+     * @param endTime 失效时间戳
+     * @param tel 访客手机号
+     * @return map
+     */
+    @GetMapping("/getHtmlCode")
+    public Map<String,Object> getHtmlCode(Date startTime, Date endTime, String tel){
+        return sysDoorQRCodeService.getHtmlCode(startTime,endTime, tel);
+    }
 
 }

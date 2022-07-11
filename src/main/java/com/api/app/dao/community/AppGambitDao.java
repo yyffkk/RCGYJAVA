@@ -39,6 +39,13 @@ public interface AppGambitDao {
     int sumLikeNum(Integer id);
 
     /**
+     * 查询动态主题数
+     * @param id 话题主键id
+     * @return 总主题数
+     */
+    int sumThemeNum(Integer id);
+
+    /**
      * 查询评论数
      * @param gambitId 话题主键id
      * @return 总评论数
@@ -138,6 +145,18 @@ public interface AppGambitDao {
      * @return app最新主题信息Vo list 回显
      */
     List<AppGambitThemeVo> listByGambitId(UserIdAndGambitId userIdAndGambitId);
+     /**
+     * 查询 最新 话题 下的主题信息
+     * @param userIdAndGambitId 用户id 与 话题id
+     * @return app最新主题信息Vo list 回显
+     */
+    List<AppGambitThemeVo> listByGambitIdByNews(UserIdAndGambitId userIdAndGambitId);
+    /**
+     * 查询 最热 话题 下的主题信息
+     * @param userIdAndGambitId 用户id 与 话题id
+     * @return app最新主题信息Vo list 回显
+     */
+    List<AppGambitThemeVo> listByGambitIdByHot(UserIdAndGambitId userIdAndGambitId);
 
     /**
      * 查询活跃话题（取前4个）
@@ -166,4 +185,5 @@ public interface AppGambitDao {
      * @return 模块功能开关状态
      */
     SysFunctionSwitch findSwitchById(Integer id);
+
 }

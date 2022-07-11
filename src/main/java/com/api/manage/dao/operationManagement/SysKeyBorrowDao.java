@@ -15,7 +15,7 @@ public interface SysKeyBorrowDao {
     List<VoKeyBorrow> list(SearchKeyBorrow searchKeyBorrow);
 
     /**
-     * 查询当前已借出的钥匙数量(当状态为2时，视为已借出)
+     * 查询当前已借出的钥匙数量(当状态为2，4，5时，视为已借出)
      * @param keyId 钥匙主键id
      * @return 已借出的钥匙数量
      */
@@ -27,6 +27,13 @@ public interface SysKeyBorrowDao {
      * @return 影响行数
      */
     int examine(KeyBorrow keyBorrow);
+
+    /**
+     * 归还审核
+     * @param keyBorrow 钥匙借还/钥匙审核model管理
+     * @return 影响行数
+     */
+    int returnExamine(KeyBorrow keyBorrow);
 
     /**
      * 根据审核主键id 查询审核状态

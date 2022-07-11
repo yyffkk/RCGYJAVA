@@ -3,6 +3,7 @@ package com.api.manage.controller.chargeManagement;
 
 import com.api.model.chargeManagement.*;
 import com.api.manage.service.chargeManagement.SysDailyPaymentService;
+import com.api.vo.basicArchives.VoIds;
 import com.api.vo.chargeManagement.VoDailyPayment;
 import com.api.vo.chargeManagement.VoFindByIdDailyPayment;
 import com.api.vo.chargeManagement.VoPayResident;
@@ -119,6 +120,16 @@ public class SysDailyPaymentController   {
     @GetMapping("/findEnableTempleDetail")
     public Map<String,Object> findEnableTempleDetail(){
         return sysDailyPaymentService.findEnableTempleDetail();
+    }
+
+    /**
+     * 批量删除日常缴费信息
+     * @param ids 日常缴费主键id数组
+     * @return map
+     */
+    @PostMapping("/delete")
+    public Map<String,Object> delete(@RequestBody VoIds ids){
+        return sysDailyPaymentService.delete(ids.getIds());
     }
 
 

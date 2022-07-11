@@ -21,4 +21,7 @@
     <select id="findNameByUserId" parameterType="java.lang.Integer" resultType="java.lang.String">
         select actual_name from sys_user where id = #{createId}
     </select>
+    <select id="findTelByUserId" resultType="java.lang.String">
+        select tel from sys_user where id = #{createId}
+    </select>
 </mapper>

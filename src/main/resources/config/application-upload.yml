@@ -2,6 +2,8 @@
 prop:
   #文件上传前置路径 src/main/resources/static 有文件服务器用这个，没有则注释
   #    upload: classpath:/static
+  #综合平台-员工管理：上传员工个人简历
+  upload-business-sys-user-resume: /pdf/business/sysUser/resume/
 
   #基础档案-房屋审核管理：审核信息相关照片
   upload-estate-examine: /img/estateExamine/
@@ -54,6 +56,8 @@ prop:
   upload-lease-contract-valid-pdf: /pdf/leaseContractValid/
   #管家服务-新版家政服务管理：处理完成照片上传路径
   upload-housekeeping-service-handler-phone: /img/housekeepingService/handlerPhone/
+  #管家服务-安全管理：安全管理文件上传路径
+  upload-security-management-file-img: /img/securityManagement/
 
 
   #运营管理-公告管理：新增公告信息照片上传路径
@@ -78,6 +82,12 @@ prop:
   upload-green-task-check-situation: /img/greenTaskCheckSituation/
   #运营管理：卫生任务检查照片上传路径
   upload-hygiene-task-check-situation: /img/hygieneTaskCheckSituation/
+  #运营管理：户型说明照片上传路径
+  upload-house-type-description: /img/houseTypeDesctiption/
+  #运营管理：地理信息照片上传路径
+  upload-geography: /img/geography/
+  #运营管理：周边企业信息照片上传路径
+  upload-surrounding-enterprises: /img/surroundingEnterprises/
 
 
 
@@ -131,6 +141,13 @@ prop:
   #ButlerApp-报事报修工程维修管理：验收照片图片信息
   upload-butler-app-acceptance: /img/acceptance/
 
+  #Excel报表模版：上传Excel模版路径
+  upload-model-excel: /excel-model/
+
+  #jcook商城-商品分类照片：修改商品分类照片
+  upload-jcook-category: /img/jcook/category/
+  #jcook商城-轮播图照片：上传轮播图照片
+  upload-jcook-rotation: /img/jcook/rotation/
 
 
 

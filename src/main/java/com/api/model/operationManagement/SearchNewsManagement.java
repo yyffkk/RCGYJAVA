@@ -1,11 +1,20 @@
 package com.api.model.operationManagement;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 资讯管理搜索条件
  */
-public class SearchNewsManagement {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SearchNewsManagement implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 当前页数
      */
@@ -38,96 +47,10 @@ public class SearchNewsManagement {
      * 发布结束时间
      */
     private Date createDateEnd;
+    /**
+     * 是否为轮播
+     */
+    private Integer isRotation;
 
-    @Override
-    public String toString() {
-        return "SearchNewsManagement{" +
-                "pageNum=" + pageNum +
-                ", size=" + size +
-                ", code='" + code + '\'' +
-                ", title='" + title + '\'' +
-                ", newsCategoryId=" + newsCategoryId +
-                ", createName='" + createName + '\'' +
-                ", createDateStart=" + createDateStart +
-                ", createDateEnd=" + createDateEnd +
-                '}';
-    }
 
-    public int getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(int pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getNewsCategoryId() {
-        return newsCategoryId;
-    }
-
-    public void setNewsCategoryId(Integer newsCategoryId) {
-        this.newsCategoryId = newsCategoryId;
-    }
-
-    public String getCreateName() {
-        return createName;
-    }
-
-    public void setCreateName(String createName) {
-        this.createName = createName;
-    }
-
-    public Date getCreateDateStart() {
-        return createDateStart;
-    }
-
-    public void setCreateDateStart(Date createDateStart) {
-        this.createDateStart = createDateStart;
-    }
-
-    public Date getCreateDateEnd() {
-        return createDateEnd;
-    }
-
-    public void setCreateDateEnd(Date createDateEnd) {
-        this.createDateEnd = createDateEnd;
-    }
-
-    public SearchNewsManagement() {
-    }
-
-    public SearchNewsManagement(int pageNum, int size, String code, String title, Integer newsCategoryId, String createName, Date createDateStart, Date createDateEnd) {
-        this.pageNum = pageNum;
-        this.size = size;
-        this.code = code;
-        this.title = title;
-        this.newsCategoryId = newsCategoryId;
-        this.createName = createName;
-        this.createDateStart = createDateStart;
-        this.createDateEnd = createDateEnd;
-    }
 }

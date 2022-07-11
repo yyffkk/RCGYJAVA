@@ -113,4 +113,20 @@ public interface UploadService {
     Map<String, Object> uploadButlerAppCompleteMaintenance(MultipartFile file);
 
     Map<String, Object> uploadButlerAppAcceptance(MultipartFile file);
+
+    Map<String, Object> uploadSecurityManagementImg(MultipartFile file);
+
+    Map<String, Object> uploadBusinessSysUserResume(MultipartFile file);
+
+    Map<String, Object> uploadModelExcel(MultipartFile file);
+
+    Map<String, Object> uploadHouseTypeDescriptionImg(MultipartFile file);
+
+    Map<String, Object> uploadGeographyImg(MultipartFile file);
+
+    Map<String, Object> uploadSurroundingEnterprisesImg(MultipartFile file);
+
+    Map<String, Object> uploadJcookCategory(MultipartFile file);
+
+    Map<String, Object> uploadJcookRotation(MultipartFile file);
 }

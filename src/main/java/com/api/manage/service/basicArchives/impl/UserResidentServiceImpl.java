@@ -35,6 +35,11 @@ public class UserResidentServiceImpl implements UserResidentService {
         return userResidentDao.list(userResident);
     }
 
+    @Override
+    public List<VoUserResident> listAll(UserResident userResident) {
+        return userResidentDao.listAll(userResident);
+    }
+
     @Transactional
     @Override
     public Map<String, Object> insert(UserResident userResident, List<VoRelatives>  voRelativesList, int[] cpmParkingSpaceIds, int[] buildingUnitEstateIds) {

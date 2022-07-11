@@ -1,8 +1,6 @@
 package com.api.systemDataBigScreen.dao;
 
-import com.api.model.systemDataBigScreen.DailyActivitySearch;
-import com.api.model.systemDataBigScreen.DispatchListSearch;
-import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.model.systemDataBigScreen.*;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
 
@@ -127,25 +125,25 @@ public interface SystemDataDao {
      * 查询已缴物业费总户数
      * @return 已交物业费总户数
      */
-    int findPaidNum();
+    int findPaidNum(Date date);
 
     /**
      * 查询已缴物业费总金额
      * @return 已交物业费总金额
      */
-    BigDecimal findPaidPrice();
+    BigDecimal findPaidPrice(Date date);
 
     /**
      * 查询未缴物业费总户数
      * @return 未交物业费总户数
      */
-    int findUnPaidNum();
+    int findUnPaidNum(Date date);
 
     /**
      * 查询未缴物业费总金额
      * @return 未交物业费总金额
      */
-    BigDecimal findUnPaidPrice();
+    BigDecimal findUnPaidPrice(Date date);
 
     /**
      * 查询日常缴费未缴费住户数量（最近6个月，每月信息数量）
@@ -381,6 +379,13 @@ public interface SystemDataDao {
     int insertPushAlert(FirePushAlert firePushAlert);
 
     /**
+     * 添加预案推送通知
+     * @param planPushAlert 预案推送通知内容
+     * @return 影响行数
+     */
+    int insertPlanAlarm(PlanPushAlert planPushAlert);
+
+    /**
      * 查询工单超量的用户(报事报修)
      * @param threshold 阀值
      * @return 用户名称集合
@@ -472,4 +477,76 @@ public interface SystemDataDao {
      * @return 新版访客管理集合
      */
     List<SDUserVisitorsNewVo> userVisitorsNew();
+
+    /**
+     * 抄表记录表
+     * @return 抄表记录表集合
+     */
+    List<SDSysMeterReadingRecordVo> sysMeterReadingRecord();
+
+    /**
+     * 抄表公摊表
+     * @return 抄表公摊表集合
+     */
+    List<SDSysMeterReadingShareVo> sysMeterReadingShare();
+
+    /**
+     * 抄表公摊详情表
+     * @return 抄表公摊详情表集合
+     */
+    List<SDSysMeterReadingShareDetailsVo> sysMeterReadingShareDetails();
+
+    /**
+     * 查询社区活动信息（触摸屏）
+     * @return 社区活动信息
+     */
+    List<SDTSActivityVo> findActivityTouchScreen();
+
+    /**
+     * 查询公告信息集合（发布时间、标题、内容）（触摸屏）
+     * @return 公告信息集合
+     */
+    List<SDTSAnnouncementVo> sysAnnouncementTouchScreen();
+
+    /**
+     * 查询资讯分类（触摸屏）
+     * @return 资讯分类
+     */
+    List<SDTSNewsCategoryVo> sysNewCategoryTouchScreen();
+
+    /**
+     * 查询资讯信息（触摸屏）
+     * @param newCategoryId 资讯分类主键id
+     * @return 资讯信息
+     */
+    List<SDTSNewVo> sysNewTouchScreen(Integer newCategoryId);
+
+    /**
+     * 查询最近发布的资讯信息
+     * @param num 资讯数量
+     * @return 资讯信息
+     */
+    List<SDTSNewVo> sysNewLatestReleaseTouchScreen(Integer num);
+
+    /**
+     * 活动信息搜索（触摸屏）
+     * @param searchTouchScreenSearch 触摸屏信息搜索 搜索条件
+     * @return 返回内容
+     */
+    List<SDTSActivityVo> searchActivity(SearchTouchScreenSearch searchTouchScreenSearch);
+
+    /**
+     * 公告信息搜索
+     * @param searchTouchScreenSearch 触摸屏信息搜索 搜索条件
+     * @return 返回内容
+     */
+    List<SDTSAnnouncementVo> searchAnnouncement(SearchTouchScreenSearch searchTouchScreenSearch);
+
+    /**
+     * 资讯信息搜索
+     * @param searchTouchScreenSearch 触摸屏信息搜索 搜索条件
+     * @return 返回内容
+     */
+    List<SDTSNewVo> searchNews(SearchTouchScreenSearch searchTouchScreenSearch);
+
 }

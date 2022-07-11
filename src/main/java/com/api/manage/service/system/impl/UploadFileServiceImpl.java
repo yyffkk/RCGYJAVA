@@ -6,6 +6,7 @@ import com.api.model.basicArchives.CpmBuilding;
 import com.api.model.basicArchives.CpmBuildingUnit;
 import com.api.model.basicArchives.CpmBuildingUnitEstate;
 import com.api.model.businessManagement.SysUser;
+import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.operationManagement.SysGreenArea;
 import com.api.model.operationManagement.SysKeyManagement;
 import com.api.model.operationManagement.SysServiceBrowsing;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -364,6 +367,88 @@ public class UploadFileServiceImpl implements UploadFileService {
 
                 //添加绿化区域信息
                 int ret = uploadFileDao.insertGreenArea(sysGreenArea);
+                if(ret == 0){
+                    throw new RuntimeException("插入数据库失败");
+                }
+            }
+
+
+        } catch (RuntimeException e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
+            map.put("status",false);
+            return map;
+        }
+        map.put("message","导入成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> UploadDailyPaymentFile(MultipartFile file) {
+        map = new HashMap<>();
+
+        try {
+            //创建处理EXCEL的类
+            ExcelReadUtils readExcel = new ExcelReadUtils();
+            //解析excel，获取上传的事件单
+            List<Map<String, Object>> userList = readExcel.getExcelInfo(file);
+
+            if(userList == null || userList.isEmpty()){
+                throw new RuntimeException("导入失败");
+            }
+
+            //至此已经将excel中的数据转换到list里面了,接下来就可以操作list,可以进行保存到数据库,或者其他操作,
+            for(Map<String, Object> user:userList){
+                DailyPayment dailyPayment = new DailyPayment();
+
+                dailyPayment.setBuildingUnitEstateId(Integer.valueOf(user.get("楼宇单元房产导入编号").toString()));
+                dailyPayment.setChargesTemplateDetailId(Integer.valueOf(user.get("费用名称类型导入编号").toString()));
+
+                //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    //使用SimpleDateFormat的parse()方法生成Date
+                    Date beginDate = sf.parse(user.get("计费开始时间（yyyy-MM-dd）").toString());
+                    dailyPayment.setBeginDate(beginDate);
+                    Date endDate = sf.parse(user.get("计费开始时间（yyyy-MM-dd）").toString());
+                    dailyPayment.setEndDate(endDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("时间格式有误，请遵循yyyy-MM-dd格式，例如：'2016-12-31'");
+                }
+
+                dailyPayment.setUnitPrice(new BigDecimal(user.get("计费单价").toString()));
+                dailyPayment.setType(Integer.valueOf(user.get("计费单位（1.元/月 平方米，2.元/ 立方米，3.元/ 次）").toString()));
+                dailyPayment.setNum(Integer.valueOf(user.get("面积/用量/数量").toString()));
+                //填入已缴金额
+                dailyPayment.setPaidPrice(BigDecimal.ZERO);
+                //填入费用金额(单价*用量)
+                dailyPayment.setCostPrice(dailyPayment.getUnitPrice().multiply(BigDecimal.valueOf(dailyPayment.getNum())));
+                //填入应收总计(费用金额)
+                dailyPayment.setTotalPrice(dailyPayment.getCostPrice());
+                //填入待缴金额
+                dailyPayment.setPaymentPrice(dailyPayment.getCostPrice());
+                //填入状态(1.未缴纳)
+                dailyPayment.setStatus(1);
+                //填入是否删除，0.删除 1.非删
+                dailyPayment.setIsDelete(1);
+
+                //获取登录用户信息
+                Subject subject = SecurityUtils.getSubject();
+                SysUser sysUser = (SysUser) subject.getPrincipal();
+
+                dailyPayment.setCreateId(sysUser.getId());
+                dailyPayment.setCreateDate(new Date());
+
+                //添加日常缴费信息
+                int ret = uploadFileDao.insertDailyPayment(dailyPayment);
                 if(ret == 0){
                     throw new RuntimeException("插入数据库失败");
                 }

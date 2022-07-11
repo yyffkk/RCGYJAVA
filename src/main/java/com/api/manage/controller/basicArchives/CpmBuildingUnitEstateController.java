@@ -41,7 +41,7 @@ public class CpmBuildingUnitEstateController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0201","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0201"},logical = Logical.AND)
     public Map<String,Object> list(SearchCpmBuildingUnitEstate searchCpmBuildingUnitEstate){
         PageHelper.startPage(searchCpmBuildingUnitEstate.getPageNum(),searchCpmBuildingUnitEstate.getSize());
         List<VoCpmBuildingUnitEstate> voCpmBuildingUnitEstateList =cpmBuildingUnitEstateService.list(searchCpmBuildingUnitEstate);
@@ -59,7 +59,7 @@ public class CpmBuildingUnitEstateController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0203","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0203"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody EstateAndResidentList estateAndResidentList){
         //判断是否有业主需要关联
         if (estateAndResidentList.getEstate().getStatus() == ESTATE_STATUS){
@@ -86,7 +86,7 @@ public class CpmBuildingUnitEstateController   {
      * @return map
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0202","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String,Object> findById(Integer id){
         Map<String,Object> map = new HashMap<>();
         //根据楼栋单元房产Id查询楼栋单元房产信息
@@ -108,7 +108,7 @@ public class CpmBuildingUnitEstateController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0205","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0205"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody EstateAndResidentList estateAndResident){
         Map<String,Object> map = new HashMap<>();
         if (estateAndResident.getEstate().getId() == null){
@@ -125,7 +125,7 @@ public class CpmBuildingUnitEstateController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0204","02"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0204"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return cpmBuildingUnitEstateService.delete(ids.getIds());
     }

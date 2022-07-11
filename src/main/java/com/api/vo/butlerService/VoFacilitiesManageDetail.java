@@ -1,5 +1,6 @@
 package com.api.vo.butlerService;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -30,6 +31,38 @@ public class VoFacilitiesManageDetail {
      * 设施分类
      */
     private Integer facilitiesCategoryId;
+    /**
+     * 设施品牌
+     */
+    private String brand;
+    /**
+     * 采购费用
+     */
+    private BigDecimal procurementCosts;
+    /**
+     * 采购厂家
+     */
+    private String purchasingManufacturer;
+    /**
+     * 厂家电话
+     */
+    private String manufacturerPhone;
+    /**
+     * 质保期限-年
+     */
+    private Integer warrantyPeriodYears;
+    /**
+     * 质保期限-月
+     */
+    private Integer warrantyPeriodMonths;
+    /**
+     * 设施有效期开始
+     */
+    private Date validityStart;
+    /**
+     * 设施有效期结束
+     */
+    private Date validityEnd;
     /**
      * 上传doc文件路径
      */
@@ -68,6 +101,14 @@ public class VoFacilitiesManageDetail {
                 ", status=" + status +
                 ", facilitiesCategoryName='" + facilitiesCategoryName + '\'' +
                 ", facilitiesCategoryId=" + facilitiesCategoryId +
+                ", brand='" + brand + '\'' +
+                ", procurementCosts=" + procurementCosts +
+                ", purchasingManufacturer='" + purchasingManufacturer + '\'' +
+                ", manufacturerPhone='" + manufacturerPhone + '\'' +
+                ", warrantyPeriodYears=" + warrantyPeriodYears +
+                ", warrantyPeriodMonths=" + warrantyPeriodMonths +
+                ", validityStart=" + validityStart +
+                ", validityEnd=" + validityEnd +
                 ", fileDocUrl='" + fileDocUrl + '\'' +
                 ", fileDocName='" + fileDocName + '\'' +
                 ", remakes='" + remakes + '\'' +
@@ -124,6 +165,70 @@ public class VoFacilitiesManageDetail {
 
     public void setFacilitiesCategoryId(Integer facilitiesCategoryId) {
         this.facilitiesCategoryId = facilitiesCategoryId;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public BigDecimal getProcurementCosts() {
+        return procurementCosts;
+    }
+
+    public void setProcurementCosts(BigDecimal procurementCosts) {
+        this.procurementCosts = procurementCosts;
+    }
+
+    public String getPurchasingManufacturer() {
+        return purchasingManufacturer;
+    }
+
+    public void setPurchasingManufacturer(String purchasingManufacturer) {
+        this.purchasingManufacturer = purchasingManufacturer;
+    }
+
+    public String getManufacturerPhone() {
+        return manufacturerPhone;
+    }
+
+    public void setManufacturerPhone(String manufacturerPhone) {
+        this.manufacturerPhone = manufacturerPhone;
+    }
+
+    public Integer getWarrantyPeriodYears() {
+        return warrantyPeriodYears;
+    }
+
+    public void setWarrantyPeriodYears(Integer warrantyPeriodYears) {
+        this.warrantyPeriodYears = warrantyPeriodYears;
+    }
+
+    public Integer getWarrantyPeriodMonths() {
+        return warrantyPeriodMonths;
+    }
+
+    public void setWarrantyPeriodMonths(Integer warrantyPeriodMonths) {
+        this.warrantyPeriodMonths = warrantyPeriodMonths;
+    }
+
+    public Date getValidityStart() {
+        return validityStart;
+    }
+
+    public void setValidityStart(Date validityStart) {
+        this.validityStart = validityStart;
+    }
+
+    public Date getValidityEnd() {
+        return validityEnd;
+    }
+
+    public void setValidityEnd(Date validityEnd) {
+        this.validityEnd = validityEnd;
     }
 
     public String getFileDocUrl() {
@@ -185,13 +290,21 @@ public class VoFacilitiesManageDetail {
     public VoFacilitiesManageDetail() {
     }
 
-    public VoFacilitiesManageDetail(Integer id, String name, String code, Integer status, String facilitiesCategoryName, Integer facilitiesCategoryId, String fileDocUrl, String fileDocName, String remakes, String createName, String tel, String address, Date createDate) {
+    public VoFacilitiesManageDetail(Integer id, String name, String code, Integer status, String facilitiesCategoryName, Integer facilitiesCategoryId, String brand, BigDecimal procurementCosts, String purchasingManufacturer, String manufacturerPhone, Integer warrantyPeriodYears, Integer warrantyPeriodMonths, Date validityStart, Date validityEnd, String fileDocUrl, String fileDocName, String remakes, String createName, String tel, String address, Date createDate) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.status = status;
         this.facilitiesCategoryName = facilitiesCategoryName;
         this.facilitiesCategoryId = facilitiesCategoryId;
+        this.brand = brand;
+        this.procurementCosts = procurementCosts;
+        this.purchasingManufacturer = purchasingManufacturer;
+        this.manufacturerPhone = manufacturerPhone;
+        this.warrantyPeriodYears = warrantyPeriodYears;
+        this.warrantyPeriodMonths = warrantyPeriodMonths;
+        this.validityStart = validityStart;
+        this.validityEnd = validityEnd;
         this.fileDocUrl = fileDocUrl;
         this.fileDocName = fileDocName;
         this.remakes = remakes;

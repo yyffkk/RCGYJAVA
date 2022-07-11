@@ -1,16 +1,10 @@
 package com.api.systemDataBigScreen.controller;
 
-import com.api.butlerApp.service.jurisdiction.ButlerInspectionService;
 import com.api.manage.service.butlerService.SysFacilitiesAppointmentService;
 import com.api.model.butlerService.SearchFacilitiesAppointment;
 import com.api.model.operationManagement.SysNewsManagement;
-import com.api.model.systemDataBigScreen.DailyActivitySearch;
-import com.api.model.systemDataBigScreen.DispatchListSearch;
-import com.api.model.systemDataBigScreen.FirePushAlert;
+import com.api.model.systemDataBigScreen.*;
 import com.api.systemDataBigScreen.service.SystemDataService;
-import com.api.vo.app.AppActivityVo;
-import com.api.vo.butlerApp.ButlerBorrowVo;
-import com.api.vo.butlerApp.ButlerTypeAndBorrowListVo;
 import com.api.vo.butlerService.VoFacilitiesAppointment;
 import com.api.vo.operationManagement.VoGreenTask;
 import com.api.vo.systemDataBigScreen.*;
@@ -363,6 +357,17 @@ public class SystemDataController {
         return systemDataService.pushAlert(firePushAlert);
     }
 
+    /**
+     * 预案推送通知
+     * @param planPushAlert 预案推送通知内容
+     * @return map
+     */
+    @PostMapping("/PlanPushAlert")
+    public Map<String,Object> PlanPushAlert(@RequestBody PlanPushAlert planPushAlert){
+        return systemDataService.PlanPushAlert(planPushAlert);
+    }
+
+
 
     /**
      * 查询所有的绿化管理情况
@@ -557,4 +562,114 @@ public class SystemDataController {
         return systemDataService.userVisitorsNew();
     }
 
+    /**
+     * 抄表记录表
+     * @return map
+     */
+    @GetMapping("/sysMeterReadingRecord")
+    public Map<String,Object> sysMeterReadingRecord(){
+        return systemDataService.sysMeterReadingRecord();
+    }
+
+    /**
+     * 抄表公摊表
+     * @return map
+     */
+    @GetMapping("/sysMeterReadingShare")
+    public Map<String,Object> sysMeterReadingShare(){
+        return systemDataService.sysMeterReadingShare();
+    }
+
+    /**
+     * 抄表公摊详情表
+     * @return map
+     */
+    @GetMapping("/sysMeterReadingShareDetails")
+    public Map<String,Object> sysMeterReadingShareDetails(){
+        return systemDataService.sysMeterReadingShareDetails();
+    }
+
+
+    /**
+     * 查询社区活动信息（触摸屏）
+     * @return map
+     */
+    @GetMapping("/findActivityTouchScreen")
+    public Map<String,Object> findActivityTouchScreen(Integer pageNum,Integer size){
+        PageHelper.startPage(pageNum,size);
+        List<SDTSActivityVo> activityTouchScreen = systemDataService.findActivityTouchScreen();
+        PageInfo<SDTSActivityVo> pageInfo = new PageInfo<>(activityTouchScreen);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 查询公告信息集合（发布时间、标题、内容）（触摸屏）
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return map
+     */
+    @GetMapping("/sysAnnouncementTouchScreen")
+    public Map<String,Object> sysAnnouncementTouchScreen(int pageNum,int size){
+        PageHelper.startPage(pageNum,size);
+        List<SDTSAnnouncementVo> SDTSAnnouncementVoList = systemDataService.sysAnnouncementTouchScreen();
+        PageInfo<SDTSAnnouncementVo> pageInfo = new PageInfo<>(SDTSAnnouncementVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+
+    /**
+     * 查询资讯分类（触摸屏）
+     * @return 资讯分类
+     */
+    @GetMapping("/sysNewCategoryTouchScreen")
+    public Map<String,Object> sysNewCategoryTouchScreen(){
+        return systemDataService.sysNewCategoryTouchScreen();
+    }
+
+    /**
+     * 查询资讯信息（触摸屏）
+     * @param newCategoryId 资讯分类主键id
+     * @param pageNum 当前页数
+     * @param size 每页记录数
+     * @return 资讯信息
+     */
+    @GetMapping("/sysNewTouchScreen")
+    public Map<String,Object> sysNewTouchScreen(Integer newCategoryId,Integer pageNum,Integer size){
+        PageHelper.startPage(pageNum,size);
+        List<SDTSNewVo> SDTSNewVoList = systemDataService.sysNewTouchScreen(newCategoryId);
+        PageInfo<SDTSNewVo> pageInfo = new PageInfo<>(SDTSNewVoList);
+        Map<String,Object> map = new HashMap<>();
+        map.put("tableList",pageInfo.getList());
+        map.put("rowCount",pageInfo.getTotal());
+        map.put("pageCount",pageInfo.getPages());
+        return map;
+    }
+
+    /**
+     * 最近发布的资讯信息(触摸屏)
+     * @param num 资讯数量
+     * @return map
+     */
+    @GetMapping("/sysNewLatestReleaseTouchScreen")
+    public Map<String,Object> sysNewLatestReleaseTouchScreen(Integer num){
+        return systemDataService.sysNewLatestReleaseTouchScreen(num);
+    }
+
+    /**
+     * 信息搜索（触摸屏）
+     * @param searchTouchScreenSearch 触摸屏信息搜索 搜索条件
+     * @return 返回内容
+     */
+    @GetMapping("/searchTouchScreen")
+    public Map<String,Object> searchTouchScreen(SearchTouchScreenSearch searchTouchScreenSearch){
+        return systemDataService.searchTouchScreen(searchTouchScreenSearch);
+    }
 }

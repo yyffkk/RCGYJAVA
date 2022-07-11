@@ -17,6 +17,10 @@ public class ButlerRepairFindByIdVo {
      */
     private Integer dispatchId;
     /**
+     * 绑定房屋
+     */
+    private String roomName;
+    /**
      * 报修人名称
      */
     private String name;
@@ -42,6 +46,7 @@ public class ButlerRepairFindByIdVo {
         return "ButlerRepairFindByIdVo{" +
                 "id=" + id +
                 ", dispatchId=" + dispatchId +
+                ", roomName='" + roomName + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
                 ", type=" + type +
@@ -64,6 +69,14 @@ public class ButlerRepairFindByIdVo {
 
     public void setDispatchId(Integer dispatchId) {
         this.dispatchId = dispatchId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public String getName() {
@@ -109,9 +122,10 @@ public class ButlerRepairFindByIdVo {
     public ButlerRepairFindByIdVo() {
     }
 
-    public ButlerRepairFindByIdVo(Integer id, Integer dispatchId, String name, String tel, Integer type, Integer status, List<VoResourcesImg> imgUrls) {
+    public ButlerRepairFindByIdVo(Integer id, Integer dispatchId, String roomName, String name, String tel, Integer type, Integer status, List<VoResourcesImg> imgUrls) {
         this.id = id;
         this.dispatchId = dispatchId;
+        this.roomName = roomName;
         this.name = name;
         this.tel = tel;
         this.type = type;

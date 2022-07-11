@@ -27,7 +27,7 @@ public class SysOrganizationController   {
      * @return 组织架构Vo 回显 list
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0101","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0101"},logical = Logical.AND)
     public List<VoOrganization> list(){
         return sysOrganizationService.list();
     }
@@ -39,7 +39,7 @@ public class SysOrganizationController   {
      * @return map
      */
     @PostMapping("/insert")
-    @RequiresPermissions(value = {"0104","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0104"},logical = Logical.AND)
     public Map<String,Object> insert(@RequestBody SysOrganization sysOrganization){
         return sysOrganizationService.insert(sysOrganization);
     }
@@ -50,7 +50,7 @@ public class SysOrganizationController   {
      * @return 组织架构Vo findById 回显
      */
     @GetMapping("/findById")
-    @RequiresPermissions(value = {"0102","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0102"},logical = Logical.AND)
     public VoFindByIdOrganization findById(Integer id){
         return sysOrganizationService.findById(id);
     }
@@ -61,7 +61,7 @@ public class SysOrganizationController   {
      * @return map
      */
     @PostMapping("/update")
-    @RequiresPermissions(value = {"0105","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0105"},logical = Logical.AND)
     public Map<String,Object> update(@RequestBody SysOrganization sysOrganization){
         return sysOrganizationService.update(sysOrganization);
     }
@@ -72,7 +72,7 @@ public class SysOrganizationController   {
      * @return map
      */
     @GetMapping("/delete")
-    @RequiresPermissions(value = {"0110","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0110"},logical = Logical.AND)
     public Map<String,Object> delete(Integer id){
         return sysOrganizationService.delete(id);
     }
@@ -83,7 +83,7 @@ public class SysOrganizationController   {
      * @return map
      */
     @GetMapping("/stop")
-    @RequiresPermissions(value = {"0103","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0103"},logical = Logical.AND)
     public Map<String,Object> stop(Integer id){
         return sysOrganizationService.stop(id);
     }
@@ -94,13 +94,13 @@ public class SysOrganizationController   {
      * @return map
      */
     @GetMapping("/recovery")
-    @RequiresPermissions(value = {"0107","01"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0107"},logical = Logical.AND)
     public Map<String,Object> recovery(Integer id){
         return sysOrganizationService.recovery(id);
     }
 
     /**
-     * 查询所有的部门id 和 name（类别为部门的）
+     * 查询所有的部门id 和 name（类别为部门、工作组、单位、维修公司的）
      * @return map
      */
     @GetMapping("/findAllDepartment")

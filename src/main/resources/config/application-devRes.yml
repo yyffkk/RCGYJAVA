@@ -9,7 +9,7 @@ res:
   #信息服务系统照片存放地址
   communityLocation: http://39.103.177.88:8804/static
   #保存工单号下一次订单的编号的dat文件
-  dispatchCodeDatUrl: /Users/AKU001/pdf/EveryDaySerialDispatchNumber.dat
+  dispatchCodeDatUrl: /Users/AKU007/pdf/EveryDaySerialDispatchNumber.dat
 #  #第三方对外接口token值（无法引入代码）
 #  systemDataToken: 9627a35847e640cb92a7067557f09bda
 
@@ -37,6 +37,25 @@ lilin:
     getQrCodeMethod: getQrCode
     #删除设备二维码
     removeQrCodeMethod: removeQrCode
+
+#抄表系统（第三方对接）
+meterReading:
+  #抄表系统服务器地址
+  serviceLocation: http://42p4v31138.zicp.vip
+  #设备号（水电量）
+  equipNo: 23
+  #电量测点号（equip_ycp_state获取当前设备模拟量测点的状态）
+  ycpNoE: 24
+  #水量测点号（equip_ycp_state获取当前设备模拟量测点的状态）
+  ycpNoW: 25
+
+#京库克（第三方对接）
+jcook:
+  app_key: b7964889cedfdf429bfc7fae0001ff46
+  app_secret: 7b8ef75532ca0d664c7f9fe3c174eed9
+  channel_id: 1010256
+  mq_user: jcook40362136173633536
+  mq_password: d3tTyh
 
 #redis缓存
 spring:

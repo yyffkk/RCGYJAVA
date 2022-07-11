@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,13 +48,22 @@ public class ButlerPersonalDataController {
         butlerUserDetailVo.setRoleId(sysUser.getRoleId());
 
         String[] split = sysUser.getRoleId().split(",");
+        List<Integer> jurisdictionIds = new ArrayList<>();
         if (split.length >0){
             for (String s : split) {
-                int roleId = Integer.parseInt(s);
-                //根据角色id查询权限id集合
-                List<Integer> jurisdictionIds = butlerRepairDao.findJIdsByRoleId(roleId);
-                butlerUserDetailVo.setJurisdiction(jurisdictionIds);
+                Integer id = Integer.valueOf(s);
+                //根据角色id数组查询权限id集合
+                List<Integer> jurisdictionIds2 = butlerRepairDao.findJIdsByRoleId(id);
+                if (jurisdictionIds2 != null){
+                    for (Integer integer : jurisdictionIds2) {
+                        if (!jurisdictionIds.contains(integer)){
+                            //如果不存在该权限，则存入，否则不存入
+                            jurisdictionIds.add(integer);
+                        }
+                    }
+                }
             }
+            butlerUserDetailVo.setJurisdiction(jurisdictionIds);
         }
 
         map.put("status", true);

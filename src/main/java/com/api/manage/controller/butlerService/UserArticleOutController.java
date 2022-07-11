@@ -35,7 +35,7 @@ public class UserArticleOutController   {
      * @return map
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"0301","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0301"},logical = Logical.AND)
     public Map<String, Object> list(SearchUserArticleOut searchUserArticleOut){
         PageHelper.startPage(searchUserArticleOut.getPageNum(),searchUserArticleOut.getSize());
         List<VoUserArticleOut> voUserArticleOutList =userArticleOutService.list(searchUserArticleOut);
@@ -54,7 +54,7 @@ public class UserArticleOutController   {
      * @return map
      */
     @PostMapping("/delete")
-    @RequiresPermissions(value = {"0304","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0304"},logical = Logical.AND)
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return userArticleOutService.delete(ids.getIds());
     }
@@ -65,7 +65,7 @@ public class UserArticleOutController   {
      * @return map
      */
     @GetMapping("/applicationRejection")
-    @RequiresPermissions(value = {"0314","03"},logical = Logical.AND)
+    @RequiresPermissions(value = {"0314"},logical = Logical.AND)
     public Map<String,Object> applicationRejection(Integer id){
         return userArticleOutService.applicationRejection(id);
     }

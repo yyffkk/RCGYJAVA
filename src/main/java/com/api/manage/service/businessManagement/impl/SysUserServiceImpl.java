@@ -8,13 +8,18 @@ import com.api.manage.service.businessManagement.SysUserService;
 import com.api.model.businessManagement.SearchUser;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.AttendanceRecord;
+import com.api.util.PBKDF2Util;
+import com.api.util.UploadUtil;
 import com.api.vo.businessManagement.VoFindByIdUser;
 import com.api.vo.businessManagement.VoFunctionAuthority;
 import com.api.vo.businessManagement.VoUser;
+import com.api.vo.resources.VoResourcesImg;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -61,128 +66,162 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> insert(SysUser sysUser) {
         map = new HashMap<>();
 
-        //查询电话是否已存在
-        SysUser byTel = sysUserDao.findByTel(sysUser.getTel());
-        if (byTel != null){
-            map.put("message","手机号已存在");
+        try {
+            //查询电话是否已存在
+            SysUser byTel = sysUserDao.findByTel(sysUser.getTel());
+            if (byTel != null){
+                throw new RuntimeException("手机号已存在");
+            }
+
+            //查询身份证是否已存在
+            SysUser byIdCard = sysUserDao.findByIdCard(sysUser.getTel());
+            if (byIdCard != null){
+                throw new RuntimeException("身份证号已存在");
+            }
+
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser2 = (SysUser) subject.getPrincipal();
+
+            //填入创建人
+            sysUser.setCreateId(sysUser2.getId());
+            //填入创建时间
+            sysUser.setCreateDate(new Date());
+            //填入用户状态，初始为1.正常
+            sysUser.setStatus(1);
+            //填入是否删除,初始为1.非删
+            sysUser.setIsDelete(1);
+            //填入组织ID 全路径
+            String idPath = findOrganizationIdPath(sysUser.getOrganizationId());
+            sysUser.setOrganizationIdPath(idPath);
+            //填入用户名（与手机号一致）
+            sysUser.setUserName(sysUser.getTel());
+
+            if (sysUser.getPwd() != null){
+                try {
+                    //对密码进行PBKDF2Util加密处理
+                    sysUser.setPwd(PBKDF2Util.getEncryptedPassword(sysUser.getPwd(),sysUser.getPwd()));
+                } catch (Exception e) {
+                    throw new RuntimeException("加密处理失败");
+                }
+            }
+
+            //添加员工信息
+            int insert = sysUserDao.insert(sysUser);
+            if (insert <= 0){
+                log.info("新建用户：添加员工失败,用户手机号:"+sysUser.getTel());
+                throw new RuntimeException("新建员工失败");
+            }
+
+            //添加考勤任务记录
+//            AttendanceRecord attendanceRecord = new AttendanceRecord();
+//            attendanceRecord.setCreateDate(new Date());
+//            attendanceRecord.setClockId(sysUser.getId());
+//            int insert2 = butlerAttendanceDao.autoAttendanceRecord(attendanceRecord);
+//            if (insert2 <=0){
+//                log.info("新建用户：添加用户考勤任务失败,用户手机号:"+sysUser.getTel());
+//                throw new RuntimeException("生成考勤失败");
+//            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            uploadUtil.saveUrlToDB(sysUser.getImgUrls(),"sysUser",sysUser.getId(),"resumeImg","600",30,20);
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
             return map;
         }
-
-        //查询身份证是否已存在
-        SysUser byIdCard = sysUserDao.findByIdCard(sysUser.getTel());
-        if (byIdCard != null){
-            map.put("message","身份证号已存在");
-            map.put("status",false);
-            return map;
-        }
-
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser2 = (SysUser) subject.getPrincipal();
-
-        //填入创建人
-        sysUser.setCreateId(sysUser2.getId());
-        //填入创建时间
-        sysUser.setCreateDate(new Date());
-        //填入用户状态，初始为1.正常
-        sysUser.setStatus(1);
-        //填入是否删除,初始为1.非删
-        sysUser.setIsDelete(1);
-        //填入组织ID 全路径
-        String idPath = findOrganizationIdPath(sysUser.getOrganizationId());
-        sysUser.setOrganizationIdPath(idPath);
-        //填入用户名（与手机号一致）
-        sysUser.setUserName(sysUser.getTel());
-
-        //添加员工信息
-        int insert = sysUserDao.insert(sysUser);
-        if (insert >0 ){
-            map.put("message","新建员工成功");
-            map.put("status",true);
-        }else {
-            map.put("message","新建员工失败");
-            map.put("status",false);
-            log.info("新建用户：添加员工失败,用户手机号:"+sysUser.getTel());
-            return map;
-        }
-
-        //添加考勤任务记录
-        AttendanceRecord attendanceRecord = new AttendanceRecord();
-        attendanceRecord.setCreateDate(new Date());
-        attendanceRecord.setClockId(sysUser.getId());
-        int insert2 = butlerAttendanceDao.autoAttendanceRecord(attendanceRecord);
-        if (insert2 <=0){
-            map.put("message","新建员工成功,生成考勤失败");
-            map.put("status",true);
-            log.info("新建用户：添加用户考勤任务失败,用户手机号:"+sysUser.getTel());
-        }
-
+        map.put("message","新建员工成功");
+        map.put("status",true);
         return map;
     }
 
     @Override
     public VoFindByIdUser findById(Integer id) {
-        return sysUserDao.findById(id);
+        VoFindByIdUser byId = sysUserDao.findById(id);
+        if (byId != null){
+            UploadUtil uploadUtil = new UploadUtil();
+            List<VoResourcesImg> imgByDate = uploadUtil.findImgByDate("sysUser", byId.getId(), "resumeImg");
+            byId.setImgList(imgByDate);
+        }
+        return byId;
     }
 
     @Override
+    @Transactional
     public Map<String, Object> update(SysUser sysUser) {
         map = new HashMap<>();
 
-        //根据主键id查询员工信息
-        VoFindByIdUser byId = sysUserDao.findById(sysUser.getId());
+        try {
+            //根据主键id查询员工信息
+            VoFindByIdUser byId = sysUserDao.findById(sysUser.getId());
 
-        //判断手机号是否有修改
-        if (!byId.getTel().equals(sysUser.getTel())){
-            //查询电话是否已存在
-            SysUser byTel = sysUserDao.findByTel(sysUser.getTel());
-            if (byTel != null){
-                map.put("message","手机号已存在");
-                map.put("status",false);
-                return map;
+            //判断手机号是否有修改
+            if (!byId.getTel().equals(sysUser.getTel())){
+                //查询电话是否已存在
+                SysUser byTel = sysUserDao.findByTel(sysUser.getTel());
+                if (byTel != null){
+                    throw new RuntimeException("手机号已存在");
+                }
             }
-        }
 
-        //判断身份证是否有修改
-        if (!byId.getIdCard().equals(sysUser.getIdCard())){
-            //查询身份证是否已存在
-            SysUser byIdCard = sysUserDao.findByIdCard(sysUser.getTel());
-            if (byIdCard != null){
-                map.put("message","身份证号已存在");
-                map.put("status",false);
-                return map;
+            //判断身份证是否有修改
+            if (!byId.getIdCard().equals(sysUser.getIdCard())){
+                //查询身份证是否已存在
+                SysUser byIdCard = sysUserDao.findByIdCard(sysUser.getTel());
+                if (byIdCard != null){
+                    throw new RuntimeException("身份证号已存在");
+                }
             }
-        }
 
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser2 = (SysUser) subject.getPrincipal();
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser2 = (SysUser) subject.getPrincipal();
 
-        //填入修改人
-        sysUser.setModifyId(sysUser2.getId());
-        //填入修改时间
-        sysUser.setModifyDate(new Date());
-        //填入组织ID 全路径
-        String idPath = findOrganizationIdPath(sysUser.getOrganizationId());
-        sysUser.setOrganizationIdPath(idPath);
-        //填入用户名（与手机号一致）
-        sysUser.setUserName(sysUser.getTel());
+            //填入修改人
+            sysUser.setModifyId(sysUser2.getId());
+            //填入修改时间
+            sysUser.setModifyDate(new Date());
+            //填入组织ID 全路径
+            String idPath = findOrganizationIdPath(sysUser.getOrganizationId());
+            sysUser.setOrganizationIdPath(idPath);
+            //填入用户名（与手机号一致）
+            sysUser.setUserName(sysUser.getTel());
 
-        //修改员工信息
-        int update = sysUserDao.update(sysUser);
-        if (update >0 ){
-            map.put("message","修改员工成功");
-            map.put("status",true);
-        }else {
-            map.put("message","修改员工失败");
+            //修改员工信息
+            int update = sysUserDao.update(sysUser);
+            if (update <= 0 ){
+                throw new RuntimeException("修改员工失败");
+            }
+
+            UploadUtil uploadUtil = new UploadUtil();
+            //先删除简历照片信息
+            uploadUtil.delete("sysUser", sysUser.getId(), "resumeImg");
+            //在添加简历照片信息
+            uploadUtil.saveUrlToDB(sysUser.getImgUrls(),"sysUser",sysUser.getId(),"resumeImg","600",30,20);
+
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            //设置手动回滚
+            TransactionAspectSupport.currentTransactionStatus()
+                    .setRollbackOnly();
+            map.put("message",message);
             map.put("status",false);
+            return map;
         }
-
-
+        map.put("message","修改员工成功");
+        map.put("status",true);
         return map;
     }
 
@@ -304,6 +343,16 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setModifyId(sysUser2.getId());
         //填入修改时间
         sysUser.setModifyDate(new Date());
+
+        try {
+            //对密码进行PBKDF2Util加密处理
+            sysUser.setPwd(PBKDF2Util.getEncryptedPassword(sysUser.getPwd(),sysUser.getPwd()));
+        } catch (Exception e) {
+            map.put("message","加密处理失败");
+            map.put("status",false);
+            return map;
+        }
+
         int update = sysUserDao.resetPWD(sysUser);
         if (update > 0){
             map.put("message","重置密码成功");

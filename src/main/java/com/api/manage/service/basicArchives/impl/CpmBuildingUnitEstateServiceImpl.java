@@ -158,7 +158,12 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         for (UserResident userResident : estateAndResidentList.getResidentList()) {
-            userResident.setType(1);
+            //判定手机号是否为null
+            if (userResident.getTel() == null){
+                throw new RuntimeException("手机号不能为空");
+            }
+
+//            userResident.setType(1);
             //添加业主房产关联数据
             CpmResidentEstate cpmResidentEstate = new CpmResidentEstate();
             cpmResidentEstate.setBuildingUnitEstateId(estateAndResidentList.getEstate().getId());

@@ -144,7 +144,7 @@ public class AppMessageServiceImpl implements AppMessageService {
             map.put("message","操作成功");
             map.put("status",true);
         }else {
-            map.put("message","操作失败");
+            map.put("message","没有评论消息");
             map.put("status",false);
         }
         return map;

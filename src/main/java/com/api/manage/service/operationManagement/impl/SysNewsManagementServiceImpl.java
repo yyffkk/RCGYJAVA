@@ -6,6 +6,7 @@ import com.api.manage.service.operationManagement.SysNewsCategoryManagementServi
 import com.api.manage.service.operationManagement.SysNewsManagementService;
 import com.api.model.businessManagement.SysUser;
 import com.api.model.operationManagement.SearchNewsManagement;
+import com.api.model.operationManagement.SettingNewsRotation;
 import com.api.model.operationManagement.SysNewsManagement;
 import com.api.util.IdWorker;
 import com.api.util.UploadUtil;
@@ -56,6 +57,7 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
             sysNewsManagement.setCode(String.valueOf(new IdWorker(1,1,1).nextId()));
             sysNewsManagement.setCreateId(sysUser.getId());
             sysNewsManagement.setCreateDate(new Date());
+            sysNewsManagement.setIsRotation(0);//默认不轮播
 
             int insert = sysNewsManagementDao.insert(sysNewsManagement);
             if (insert <=0){
@@ -230,8 +232,16 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
                 sysNewsManagement.setCreateId(-1);//-1:外部发布
                 sysNewsManagement.setCreateDate(new Date());
 
+                //对资讯分类的资讯数量进行累加
+                int update = sysNewsCategoryManagementDao.incNum(sysNewsManagement.getNewsCategoryId());
+                if (update <= 0){
+                    log.info("累加失败");
+                    continue;
+                }
                 //保存数据到数据库
                 sysNewsManagementDao.insert(sysNewsManagement);
+
+                log.info("资讯分类的资讯数量累加成功");
                 log.info("数据已保存到数据库，标题为："+mapKey);
                 num = num + 1;//累加更新条数
             }
@@ -294,8 +304,16 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
                 sysNewsManagement.setCreateId(-1);//-1:外部发布
                 sysNewsManagement.setCreateDate(new Date());
 
+                //对资讯分类的资讯数量进行累加
+                int update = sysNewsCategoryManagementDao.incNum(sysNewsManagement.getNewsCategoryId());
+                if (update <= 0){
+                    log.info("累加失败");
+                    continue;
+                }
                 //保存数据到数据库
                 sysNewsManagementDao.insert(sysNewsManagement);
+
+                log.info("资讯分类的资讯数量累加成功");
                 log.info("数据已保存到数据库，标题为："+mapKey);
                 num = num + 1;//累加更新条数
             }
@@ -305,5 +323,30 @@ public class SysNewsManagementServiceImpl implements SysNewsManagementService {
             log.info("网站请求异常");
         }
         return num;
+    }
+
+    @Override
+    public Map<String, Object> settingRotation(SettingNewsRotation settingNewsRotation) {
+        map = new HashMap<>();
+
+        if (settingNewsRotation.getIsRotation() == 1){
+            //查询已经设置的轮播的数量
+            int num = sysNewsManagementDao.findSettingRotation();
+            if (num >= 4){
+                map.put("message","设置数量已达到最大值");
+                map.put("status",false);
+                return map;
+            }
+        }
+
+        int update = sysNewsManagementDao.settingRotation(settingNewsRotation);
+        if (update >0 ){
+            map.put("message","设置成功");
+            map.put("status",true);
+        }else {
+            map.put("message","设置失败");
+            map.put("status",false);
+        }
+        return map;
     }
 }

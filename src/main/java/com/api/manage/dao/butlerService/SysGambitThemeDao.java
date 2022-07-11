@@ -3,6 +3,7 @@ package com.api.manage.dao.butlerService;
 import com.api.model.butlerService.SearchGambitTheme;
 import com.api.model.system.SysFunctionSwitch;
 import com.api.vo.butlerService.VoGambitTheme;
+import com.api.vo.butlerService.VoGambitThemeComment;
 
 import java.util.List;
 
@@ -55,4 +56,18 @@ public interface SysGambitThemeDao {
      * @return 影响行数
      */
     int updateSwitchById(SysFunctionSwitch sysFunctionSwitch);
+
+    /**
+     * 根据主题明细主键id查询评论列表
+     * @param themeId 主题明细主键id
+     * @return 评论列表
+     */
+    List<VoGambitThemeComment> findCommentByThemeId(Integer themeId);
+
+    /**
+     * 根据主题评论主键id删除主题评论
+     * @param commentId 主题评论主键id
+     * @return 影响行数
+     */
+    int deleteCommentByCommentId(Integer commentId);
 }

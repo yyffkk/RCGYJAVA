@@ -18,7 +18,9 @@ import com.api.manage.dao.operationManagement.SysAttendanceSchedulingPlanDao;
 import com.api.manage.dao.operationManagement.SysNewsManagementDao;
 import com.api.manage.dao.remind.RemindDao;
 import com.api.manage.dao.shoppingCenter.OrderDao;
+import com.api.manage.service.chargeManagement.SysMeterReadingRecordService;
 import com.api.manage.service.operationManagement.SysNewsManagementService;
+import com.api.mapper.jcook.JcookOrderMapper;
 import com.api.model.alipay.EstateIdAndAdvancePaymentPrice;
 import com.api.model.alipay.SysLeaseOrder;
 import com.api.model.alipay.SysLeaseRentBillOrder;
@@ -30,6 +32,8 @@ import com.api.model.butlerService.*;
 import com.api.model.chargeManagement.DailyPayment;
 import com.api.model.chargeManagement.DailyPaymentOrderList;
 import com.api.model.chargeManagement.DailyPaymentPlan;
+import com.api.model.chargeManagement.SysMeterReadingData;
+import com.api.model.jcook.entity.JcookOrder;
 import com.api.model.operationManagement.AttendanceRecord;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanDetail;
 import com.api.model.operationManagement.SysAttendanceSchedulingPlanException;
@@ -40,12 +44,18 @@ import com.api.util.IdWorker;
 import com.api.util.JiguangUtil;
 import com.api.vo.butlerService.VoLease;
 import com.api.vo.chargeManagement.VoFindAllDailyPayment;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.example.api.JcookSDK;
+import org.example.api.model.OrderCancelRequest;
+import org.example.api.model.OrderCancelResponse;
+import org.example.api.utils.result.Result;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -55,6 +65,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -135,7 +146,16 @@ public class SysAutoRemind {
     AlipayDao alipayDao;
     @Resource
     SysAttendanceSchedulingPlanDao sysAttendanceSchedulingPlanDao;
-
+    @Resource
+    SysMeterReadingRecordService meterReadingRecordService;
+    @Resource
+    JcookOrderMapper jcookOrderMapper;
+    @Value("${jcook.app_key}")
+    private String JCOOK_APP_KEY;    //jcook appKey
+    @Value("${jcook.app_secret}")
+    private String JCOOK_APP_SECRET;    //jcook appSecret
+    @Value("${jcook.channel_id}")
+    private Integer JCOOK_CHANNEL_ID;    //jcook channelId
 
     /**
      * 后台系统借还提醒，每隔一天进行校对数据库，如果出借时长超过7天则系统自动发出提醒
@@ -1180,6 +1200,161 @@ public class SysAutoRemind {
             log.info("暂无任何三天后到达缴费期限的缴费记录");
         }
     }
+
+    /**
+     * 0 0 0/1 * * ?
+     * （每小时 获取一次抄表数据）获取抄表数据（主要更新水量和电量）
+     */
+    @Scheduled(cron = "0 0 0/1 * * ?")
+    public void autoGetMeterReadingData(){
+        log.info("开始获取抄表数据记录");
+
+        //获取密钥
+        Map<String,Object> keyMap = meterReadingRecordService.getKey();
+        if ((boolean)keyMap.get("status")){
+            String authorization = null;
+            try {
+                //取得密钥
+                authorization = String.valueOf(keyMap.get("data"));
+            } catch (Exception e) {
+                log.info("请求异常，任务中止，message:"+e.getMessage());
+                return;
+            }
+
+            try {
+                //获取电量记录
+                log.info("开始获取电量数据");
+                Map<String,Object> electricMap = meterReadingRecordService.getElectricQuantity(authorization);
+                if ((boolean)electricMap.get("status")){
+                    log.info("获取电量数据成功");
+                    //取得电量值
+                    String electricQuantity = String.valueOf(electricMap.get("data"));
+                    //向数据库更新电量数据
+                    Map<String,Object> map = meterReadingRecordService.updateElectricData(electricQuantity);
+                    if ((boolean)map.get("status")){
+                        log.info("更新电量数据成功");
+                    }else {
+                        log.info("更新电量数据失败");
+                    }
+                }else {
+                    throw new RuntimeException("获取电量数据失败");
+                }
+                log.info("结束获取电量数据");
+            } catch (Exception e) {
+                log.info("获取电量数据异常，message:"+e.getMessage());
+            }
+
+            try {
+                //获取水量记录
+                log.info("开始获取水量数据");
+                Map<String,Object> waterMap = meterReadingRecordService.getWaterQuantity(authorization);
+                if ((boolean)waterMap.get("status")){
+                    log.info("获取水量成数据功");
+                    //取得水量值
+                    String waterQuantity = String.valueOf(waterMap.get("data"));
+                    //向数据库添加电量记录
+                    Map<String,Object> map = meterReadingRecordService.updateWaterData(waterQuantity);
+                    if ((boolean)map.get("status")){
+                        log.info("更新水量数据成功");
+                    }else {
+                        log.info("更新水量数据失败");
+                    }
+                }else {
+                    throw new RuntimeException("获取水量数据失败");
+                }
+                log.info("结束获取水量数据");
+            } catch (Exception e) {
+                log.info("获取电量数据异常，message:"+e.getMessage());
+            }
+
+        }else {
+            log.info("获取抄表密钥失败");
+        }
+        log.info("结束获取抄表电量记录");
+    }
+
+    /**
+     * 0 0 0 1 * ?
+     * （每月1号 获取抄表电量）获取抄表记录（主要记录电量）
+     */
+    @Scheduled(cron = "0 0 0 1 * ?")
+    public void autoGetElectricQuantity(){
+        log.info("开始获取抄表电量记录");
+
+
+        //根据抄表类型获取抄表数据
+        SysMeterReadingData sysMeterReadingData = meterReadingRecordService.findMeterReadingDataByType(2);//type 2.电量
+
+        //向数据库添加电量记录
+        Boolean insert = meterReadingRecordService.insertElectricQuantity(sysMeterReadingData.getQuantity());
+        if (insert){
+            log.info("添加电量记录成功");
+        }else {
+            log.info("添加电量记录失败");
+        }
+
+        log.info("结束获取抄表电量记录");
+    }
+
+    /**
+     * 0 0 0 10 * ?
+     * （每月10号 获取抄表水量）获取抄表记录（主要记录水量）
+     */
+    @Scheduled(cron = "0 0 0 10 * ?")
+    public void autoGetWaterQuantity(){
+        log.info("开始获取抄表水量记录");
+        //根据抄表类型获取抄表数据
+        SysMeterReadingData sysMeterReadingData = meterReadingRecordService.findMeterReadingDataByType(1);//type 1.水量
+
+        //向数据库添加水量记录
+        Boolean insert = meterReadingRecordService.insertWaterQuantity(sysMeterReadingData.getQuantity());
+        if (insert){
+            log.info("添加水量记录成功");
+        }else {
+            log.info("添加水量记录失败");
+        }
+
+        log.info("结束获取抄表水量记录");
+    }
+
+    /**
+     * 0/5 * * * * ?
+     * （每5秒执行一次）轮询定时任务，查询jcook商城未付款订单，是否超时或错误关闭
+     */
+    @Scheduled(cron = "0/5 * * * * ?")
+    public void autoCheckOutTimeJcookShopping(){
+//        log.info("查询并修改jcook商城未付款超时订单--------------------start");
+        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("trade_status",0);//0.交易创建并等待买家付款
+        //计算当前时间减6分钟的时间
+        Calendar nowTime = Calendar.getInstance();
+        nowTime.add(Calendar.MINUTE,-6);
+        Date time = nowTime.getTime();
+        queryWrapper.le("create_date",time);//超时时间为6分钟，创建时间小于等于当前时间减去6分钟时超时
+        List<JcookOrder> jcookOrderList = jcookOrderMapper.selectList(queryWrapper);
+        if (jcookOrderList != null && jcookOrderList.size()>0){
+            log.info("修改jcook商城未付款超时订单--------------------start");
+            for (JcookOrder jcookOrder : jcookOrderList) {
+                log.info("----------当前修改的订单号为: "+jcookOrder.getCode());
+                //修改超时订单的状态为1.未付款交易超时关闭或支付完成后全额退款
+                jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+                jcookOrderMapper.updateById(jcookOrder);
+                //进行jcook的取消订单操作
+                JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+                OrderCancelRequest orderCancelRequest = new OrderCancelRequest();
+                orderCancelRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));
+                orderCancelRequest.setCancelReasonCode(100);//取消原因：100。其他【订单支付超时】
+                Result<OrderCancelResponse> result = jcookSDK.orderCancel(orderCancelRequest);
+                if (result.getCode() != 200){
+                    log.info("-------jcook取消订单异常，异常原因："+result.getMsg()+"，订单号为："+jcookOrder.getJcookCode());
+                }
+            }
+            log.info("修改jcook商城未付款超时订单--------------------end");
+        }
+
+//        log.info("查询并修改jcook商城未付款超时订单--------------------end");
+    }
+
 
     /**
      * 比较第一个值date和第二个值time
