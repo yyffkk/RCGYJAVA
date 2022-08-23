@@ -2,6 +2,7 @@ package com.api.manage.dao.butlerService;
 
 import com.api.model.butlerService.SearchOwnersCommittee;
 import com.api.model.butlerService.SysOwnersCommittee;
+import com.api.model.butlerService.SysSetting;
 import com.api.vo.butlerService.VoFindByIdOwnersCommittee;
 import com.api.vo.butlerService.VoOwnersCommittee;
 
@@ -42,4 +43,27 @@ public interface SysOwnersCommitteeDao {
      * @return 影响行数
      */
     int delete(int id);
+
+    /**
+     * 根据功能标识查询系统设置
+     * @param action 功能表识
+     * @return 系统设置
+     */
+    SysSetting findSettingByAction(String action);
+
+    /**
+     * 根据id修改系统设置
+     * @param owners 系统设置表
+     * @return 影响行数
+     */
+    int updateSettingById(SysSetting owners);
+
+    /**
+     * 添加系统设置
+     * @param sysSetting 系统设置表
+     * @return 影响行数
+     */
+    int insertSetting(SysSetting sysSetting);
+
+    String findOwnersTel(String owners);
 }

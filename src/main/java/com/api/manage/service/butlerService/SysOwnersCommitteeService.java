@@ -18,4 +18,8 @@ public interface SysOwnersCommitteeService {
     Map<String, Object> update(SysOwnersCommittee sysOwnersCommittee);
 
     Map<String, Object> delete(int[] ids);
+
+    Map<String, Object> updateOwnersTel(String tel);
+
+    Map<String, Object> findOwnersTel();
 }

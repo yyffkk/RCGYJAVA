@@ -62,6 +62,9 @@
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+    <insert id="insertSetting" parameterType="com.api.model.butlerService.SysSetting">
+        insert into sys_setting(action,tel) value(#{action},#{tel})
+    </insert>
 
     <select id="findById" parameterType="java.lang.Integer" resultType="com.api.vo.butlerService.VoFindByIdOwnersCommittee">
         select soc.*, ur.name,cbue.id as estate_id,cbu.id as unit_id,cbu.building_id
@@ -72,6 +75,12 @@
             and cbue.building_unit_id = cbu.id
             and soc.id = #{id}
         </where>
+    </select>
+    <select id="findSettingByAction" parameterType="java.lang.String" resultType="com.api.model.butlerService.SysSetting">
+        select * from sys_setting where action = #{action}
+    </select>
+    <select id="findOwnersTel" parameterType="java.lang.String" resultType="java.lang.String">
+        select tel from sys_setting where action = #{action}
     </select>
 
     <update id="update" parameterType="com.api.model.butlerService.SysOwnersCommittee">
@@ -96,6 +105,15 @@
             modify_date = #{modifyDate}
         </set>
         where id = #{id}
+    </update>
+    <update id="updateSettingById">
+        update sys_setting
+        <set>
+            <if test="tel != null">
+                tel = #{tel}
+            </if>
+        </set>
+        where id = #{id} and action = #{action}
     </update>
 
     <delete id="delete" parameterType="java.lang.Integer">

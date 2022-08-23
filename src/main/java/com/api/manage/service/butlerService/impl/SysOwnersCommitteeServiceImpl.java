@@ -5,6 +5,7 @@ import com.api.model.butlerService.SearchOwnersCommittee;
 import com.api.model.butlerService.SysOwnersCommittee;
 import com.api.model.businessManagement.SysUser;
 import com.api.manage.service.butlerService.SysOwnersCommitteeService;
+import com.api.model.butlerService.SysSetting;
 import com.api.util.UploadUtil;
 import com.api.vo.butlerService.VoFindByIdOwnersCommittee;
 import com.api.vo.butlerService.VoOwnersCommittee;
@@ -175,6 +176,43 @@ public class SysOwnersCommitteeServiceImpl implements SysOwnersCommitteeService 
             return map;
         }
         map.put("message","删除业委会信息成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updateOwnersTel(String tel) {
+        String OWNERS = "OWNERS";
+        map = new HashMap<>();
+        SysSetting owners = sysOwnersCommitteeDao.findSettingByAction(OWNERS);
+        if (owners != null){
+            owners.setTel(tel);
+            //修改
+            sysOwnersCommitteeDao.updateSettingById(owners);
+
+        }else {
+            SysSetting sysSetting = new SysSetting();
+            sysSetting.setTel(tel);
+            sysSetting.setAction("OWNERS");
+            //新增
+            sysOwnersCommitteeDao.insertSetting(sysSetting);
+        }
+
+
+        map.put("message","更新业委会手机号成功");
+        map.put("status",true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> findOwnersTel() {
+        String OWNERS = "OWNERS";
+        map = new HashMap<>();
+        String ownersTel = sysOwnersCommitteeDao.findOwnersTel(OWNERS);
+
+
+        map.put("data",ownersTel);
+        map.put("message","请求成功");
         map.put("status",true);
         return map;
     }

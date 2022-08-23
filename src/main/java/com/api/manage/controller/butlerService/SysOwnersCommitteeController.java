@@ -89,4 +89,23 @@ public class SysOwnersCommitteeController   {
     public Map<String,Object> delete(@RequestBody VoIds ids){
         return sysOwnersCommitteeService.delete(ids.getIds());
     }
+
+    /**
+     * 更新业委会手机号
+     * @param tel 业委会手机号
+     * @return map
+     */
+    @GetMapping("/updateOwnersTel")
+    public Map<String,Object> updateOwnersTel(String tel){
+        return sysOwnersCommitteeService.updateOwnersTel(tel);
+    }
+
+    /**
+     * 查询业委会手机号
+     * @return map 业委会手机号
+     */
+    @GetMapping("/findOwnersTel")
+    public Map<String,Object> findOwnersTel(){
+        return sysOwnersCommitteeService.findOwnersTel();
+    }
 }

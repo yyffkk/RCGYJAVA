@@ -40,4 +40,13 @@ public class AppOwnersCommitteeController {
         map.put("pageCount",pageInfo.getPages());
         return map;
     }
+
+    /**
+     * 查询业委会手机号
+     * @return map 业委会手机号
+     */
+    @GetMapping("/findOwnersTel")
+    public Map<String,Object> findOwnersTel(){
+        return appOwnersCommitteeService.findOwnersTel();
+    }
 }

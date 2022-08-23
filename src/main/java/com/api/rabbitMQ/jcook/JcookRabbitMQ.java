@@ -32,7 +32,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
-@Component
+//@Component
 @Slf4j
 public class JcookRabbitMQ {
     @Resource

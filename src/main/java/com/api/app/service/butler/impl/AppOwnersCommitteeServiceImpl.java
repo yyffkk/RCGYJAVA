@@ -8,10 +8,13 @@ import com.api.vo.resources.VoResourcesImg;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AppOwnersCommitteeServiceImpl implements AppOwnersCommitteeService {
+    private static Map<String,Object> map = null;
     @Resource
     AppOwnersCommitteeDao appOwnersCommitteeDao;
 
@@ -27,5 +30,18 @@ public class AppOwnersCommitteeServiceImpl implements AppOwnersCommitteeService 
             }
         }
         return all;
+    }
+
+    @Override
+    public Map<String, Object> findOwnersTel() {
+        String OWNERS = "OWNERS";
+        map = new HashMap<>();
+        String ownersTel = appOwnersCommitteeDao.findOwnersTel(OWNERS);
+
+
+        map.put("data",ownersTel);
+        map.put("message","请求成功");
+        map.put("status",true);
+        return map;
     }
 }
