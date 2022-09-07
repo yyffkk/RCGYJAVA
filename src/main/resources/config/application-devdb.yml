@@ -4,7 +4,7 @@ spring:
     #本地数据库连接
     url: jdbc:mysql://localhost:3306/IntelligentCommunity?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
-    password: jlw15906763698
+    password: 111111
     #测试数据库连接
     #        url: jdbc:mysql://localhost:3306/smart_community?characterEncoding=utf8&useSSL=false
     #        username: smart_community
