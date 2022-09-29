@@ -42,6 +42,7 @@ public class AppFacilitiesAppointmentServiceImpl implements AppFacilitiesAppoint
 
         //先查询是否处于预约时段
         int beIn = sysFacilitiesAppointmentDao.findIsBeInAppointmentDate(facilitiesAppointment);
+
         if (beIn >0){
             map.put("message","该时段已被预约");
             map.put("status",false);
@@ -114,11 +115,11 @@ public class AppFacilitiesAppointmentServiceImpl implements AppFacilitiesAppoint
         map = new HashMap<>();
         int update = facilitiesAppointmentDao.cancel(appointmentStopUseFactor);
         if (update <= 0){
-            map.put("message","取消成功");
-            map.put("status",true);
-        }else {
             map.put("message","取消失败");
             map.put("status",false);
+        }else {
+            map.put("message","取消成功");
+            map.put("status",true);
         }
         return map;
     }

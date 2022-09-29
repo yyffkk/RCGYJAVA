@@ -21,7 +21,7 @@
                     and sfc.id = #{facilitiesCategoryId}
                 </if>
                 <if test="appointmentName != null and appointmentName != ''">
-                    and su.actual_name like concat('%',#{appointmentName},'%')
+                    and ur.name like concat('%',#{appointmentName},'%')
                 </if>
                 <if test="status != null">
                     and sfa.status = #{status}
@@ -103,7 +103,7 @@
             where facilities_manage_id = #{facilitiesManageId}
         ) as T
         where #{appointmentStartDate} between T.appointment_start_date and T.appointment_end_date
-        or #{appointmentStartDate} between T.appointment_start_date and T.appointment_end_date
+        and #{appointmentEndDate} between T.appointment_start_date and T.appointment_end_date and (T.status=1 or T.status=2)
     </select>
     <delete id="delete" parameterType="java.lang.Integer">
         delete from sys_facilities_appointment where id = #{id}

@@ -21,6 +21,24 @@
             </if>
         </where>
     </select>
+    <select id="lists" resultType="com.api.vo.basicArchives.VoUserTenant"
+            parameterType="com.api.model.basicArchives.UserResident">
+        SELECT a.*, uc.code as car_code from
+          (select sys_lease.id,sys_lease.name,sys_lease.tel,sys_lease.id_card,sys_lease.lease_date_start as effectiveTimeStart,
+          sys_lease.lease_date_end as effectiveTimeEnd,cpm_building_unit_estate.room_number as roomName
+          from sys_lease  left join cpm_building_unit_estate on sys_lease.estate_id =cpm_building_unit_estate.id
+          where (sys_lease.status=5 or sys_lease.status=6))as  a LEFT JOIN user_car as uc
+        on a.id = uc.owner
+        <where>
+
+            <if test="name != null and name != ''">
+                and a.name = #{name}
+            </if>
+            <if test="tel != null and tel != ''">
+                and a.tel = #{tel}
+            </if>
+        </where>
+    </select>
 
     <!--添加租户房产关联-->
     <insert id="insertResidentEstate" parameterType="com.api.model.basicArchives.CpmResidentEstate">

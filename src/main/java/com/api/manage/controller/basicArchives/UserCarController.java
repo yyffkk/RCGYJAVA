@@ -63,7 +63,7 @@ public class UserCarController   {
      */
     @GetMapping("/findById")
     @RequiresPermissions(value = {"0202"},logical = Logical.AND)
-    public VoUserCarFindById findById(Integer id){
+    public Map<String, Object> findById(Integer id){
         return userCarService.findById(id);
     }
 

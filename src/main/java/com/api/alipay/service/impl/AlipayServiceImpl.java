@@ -1,5 +1,6 @@
 package com.api.alipay.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -16,6 +17,7 @@ import com.api.app.dao.butler.AppHousekeepingServiceDao;
 import com.api.app.dao.butler.AppMeterReadingShareDetailsDao;
 import com.api.app.dao.butler.AppReportRepairDao;
 import com.api.app.dao.shoppingCenter.ShoppingDao;
+import com.api.app.service.wx.WxPayServiceImpl;
 import com.api.common.GetOverdueFine;
 import com.api.manage.dao.basicArchives.AuditManagementDao;
 import com.api.manage.dao.basicArchives.UserResidentDao;
@@ -37,6 +39,9 @@ import com.api.model.jcook.entity.*;
 import com.api.util.IdWorker;
 import com.api.vo.app.AppDailyPaymentDetailsVo;
 import com.api.vo.butlerService.VoFBILease;
+import com.api.wx.WxPayServiceCopy;
+import com.api.wx2.WXPayNewService;
+import com.api.wx3.PaidService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.example.api.JcookSDK;
@@ -50,7 +55,11 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.security.PrivateKey;
 import java.util.*;
+
+import static com.api.app.controller.wx.VxPayController.getPrivateKey;
 
 @Service
 @Slf4j
@@ -127,6 +136,14 @@ public class AlipayServiceImpl implements AlipayService {
     JcookOrderListMapper jcookOrderListMapper;
     @Resource
     JcookShoppingCartMapper jcookShoppingCartMapper;
+    @Resource
+    WxPayServiceImpl wxPayService;
+    @Resource
+    WxPayServiceCopy wxPayServiceCopy;
+    @Resource
+    WXPayNewService wxPayNewService;
+    @Resource
+    PaidService paidService;
     private static Map<String,Object> map = null;
     @Value("${jcook.app_key}")
     private String JCOOK_APP_KEY;    //jcook appKey
@@ -522,6 +539,7 @@ public class AlipayServiceImpl implements AlipayService {
         String body = "";
         // 获取项目中实际的订单的信息
         // 此处是相关业务代码
+
         try {
             if (appDailyPaymentOrder.getIds() == null || appDailyPaymentOrder.getIds().length <= 0){
                 throw new RuntimeException("未选择支付项");
@@ -582,40 +600,9 @@ public class AlipayServiceImpl implements AlipayService {
                     throw new RuntimeException("添加缴费订单清单信息失败");
                 }
             }
-
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("日常缴费app支付");
-            model.setSubject("日常缴费");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(appDailyPaymentOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(appDailyPaymentOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(DAILY_PAYMENT_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
-            }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
-
+           if(appDailyPaymentOrder.getPayType()==1) {
+               body = aliDailyPay(appDailyPaymentOrder);
+           }
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -627,9 +614,15 @@ public class AlipayServiceImpl implements AlipayService {
             map.put("status",false);
             return map;
         }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
+        if(appDailyPaymentOrder.getPayType()==1){
+            log.info("body:"+body);
+            map.put("message",body);
+            map.put("status",true);
+        }else{
+            JSONObject vxpay = vxDailyPay(appDailyPaymentOrder);
+            map.put("data",vxpay);
+            map.put("status", true);
+        }
         return map;
     }
 
@@ -804,43 +797,14 @@ public class AlipayServiceImpl implements AlipayService {
     public Map<String, Object> reportRepairAlipay(AppRepairOrder appRepairOrder) {
         map = new HashMap<>();
         String body = "";
+
         try {
             //创建报事报修初始订单信息
             createRepairOrder(appRepairOrder);
-
-            //执行支付宝操作
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("报事报修支付");
-            model.setSubject("报事报修");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(appRepairOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(appRepairOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(REPORT_REPAIR_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
+            if(appRepairOrder.getPayType()==1){
+                body=aliReportRepairPay(appRepairOrder);
             }
-            // 返回支付相关信息(此处可以直接将getBody中的内容[就是orderString]直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -852,9 +816,15 @@ public class AlipayServiceImpl implements AlipayService {
             map.put("status",false);
             return map;
         }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
+        if(appRepairOrder.getPayType()==1) {
+            log.info("body:" + body);
+            map.put("message", body);
+            map.put("status", true);
+        }else{
+            JSONObject vxpay = vxReportRepairPay(appRepairOrder);
+            map.put("data",vxpay);
+            map.put("status", true);
+        }
         return map;
     }
 
@@ -1041,6 +1011,7 @@ public class AlipayServiceImpl implements AlipayService {
     public Map<String, Object> shoppingAlipay(AppGoodsAppointment appGoodsAppointment, Integer type, Integer id) {
         map = new HashMap<>();
         String body = "";
+
         try {
             if (type == 4){//4.游客
                 throw new RuntimeException("您的身份为游客，不可进行此操作");
@@ -1057,39 +1028,11 @@ public class AlipayServiceImpl implements AlipayService {
             //创建报事报修初始订单信息
             createShoppingOrder(appGoodsAppointment,id);
 
-            //执行支付宝操作
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("商城购物支付");
-            model.setSubject("商城购物");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(appGoodsAppointment.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(appGoodsAppointment.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(SHOPPING_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
+            if(appGoodsAppointment.getPayType()==1){
+                 body = aliShoppingPay(appGoodsAppointment);
             }
-            // 返回支付相关信息(此处可以直接将getBody中的内容[就是orderString]直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
+
+
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -1101,9 +1044,15 @@ public class AlipayServiceImpl implements AlipayService {
             map.put("status",false);
             return map;
         }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
+        if(appGoodsAppointment.getPayType()==1) {
+            log.info("body:" + body);
+            map.put("message", body);
+            map.put("status", true);
+        }else{
+            JSONObject vxpay = vxShoppingPay(appGoodsAppointment);
+            map.put("data",vxpay);
+            map.put("status", true);
+        }
         return map;
     }
 
@@ -1270,10 +1219,16 @@ public class AlipayServiceImpl implements AlipayService {
     @Override
     @Transactional
     public Map<String, Object> leaseAlipay(SysLeaseOrder sysLeaseOrder, Integer id) {
+        try {
         log.info("开始生成支付宝订单");
         map = new HashMap<>();
         String body = "";
-
+        String appId=null;
+        String partnerId=null;
+        String prepayId=null;
+        String nonceStr=null;
+        String timeStamp=null;
+        String sign=null;
         // 获取项目中实际的订单的信息
         // 此处是相关业务代码
         try {
@@ -1303,40 +1258,18 @@ public class AlipayServiceImpl implements AlipayService {
             if (i<=0){
                 throw new RuntimeException("添加缴费订单信息失败");
             }
-            log.info("开始调用支付宝接口");
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("房屋租赁app支付");
-            model.setSubject("房屋租赁");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(sysLeaseOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(sysLeaseOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(LEASE_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
 
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
+            if(sysLeaseOrder.getPayType()==1){
+                body = alipay(sysLeaseOrder);
+            }else{
+//                appId = vxpay(sysLeaseOrder).getString("appid");
+//                partnerId = vxpay(sysLeaseOrder).getString("partnerid");
+//                prepayId=vxpay(sysLeaseOrder).getString("prepayid");
+//                nonceStr=vxpay(sysLeaseOrder).getString("nonceStr");
+//                timeStamp=vxpay(sysLeaseOrder).getString("timeStamp");
+//                sign=vxpay(sysLeaseOrder).getString("sign");
+
             }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
-
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -1347,11 +1280,34 @@ public class AlipayServiceImpl implements AlipayService {
             map.put("message",message);
             map.put("status",false);
             return map;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
+        if(sysLeaseOrder.getPayType()==1) {
+            log.info("body:" + body);
+            map.put("message", body);
+            map.put("status", true);
+        }else{
+//            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+//            jsonObject.put("appId",appId);
+//            jsonObject.put("partnerId",partnerId);
+//            jsonObject.put("prepayId",prepayId);
+//            jsonObject.put("package",vxpay(sysLeaseOrder).getString("package"));
+//            jsonObject.put("nonceStr",nonceStr);
+//            jsonObject.put("timeStamp",timeStamp);
+//            jsonObject.put("sign",sign);
+            JSONObject vxpay = vxpay(sysLeaseOrder);
+            map.put("data",vxpay);
+            map.put("status", true);
+        }
         return map;
+        } catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            map.put("message",message);
+            return map;
+        }
     }
 
     @Override
@@ -1628,40 +1584,9 @@ public class AlipayServiceImpl implements AlipayService {
             if (i<=0){
                 throw new RuntimeException("添加缴费订单信息失败");
             }
-            log.info("开始调用支付宝接口");
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("房屋租赁剩余需结清租金app支付");
-            model.setSubject("房屋剩余需结清租金");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(sysLeaseRentOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(sysLeaseRentOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(LEASE_RENT_ORDER_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
+            if(sysLeaseRentOrder.getPayType()==1) {
+                body = aliLeaseRentOrderPay(sysLeaseRentOrder);
             }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
-
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -1673,9 +1598,15 @@ public class AlipayServiceImpl implements AlipayService {
             map.put("status",false);
             return map;
         }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
+        if(sysLeaseRentOrder.getPayType()==1) {
+            log.info("body:" + body);
+            map.put("message", body);
+            map.put("status", true);
+        }else{
+            JSONObject vxpay = vxLeaseRentOrderPay(sysLeaseRentOrder);
+            map.put("data",vxpay);
+            map.put("status", true);
+        }
         return map;
     }
 
@@ -1851,6 +1782,7 @@ public class AlipayServiceImpl implements AlipayService {
         map = new HashMap<>();
         String body = "";
 
+
         // 获取项目中实际的订单的信息
         // 此处是相关业务代码
         try {
@@ -1880,39 +1812,9 @@ public class AlipayServiceImpl implements AlipayService {
             if (i<=0){
                 throw new RuntimeException("添加租赁租金账单订单信息失败");
             }
-            log.info("开始调用支付宝接口");
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("房屋租赁租金账单app支付");
-            model.setSubject("房屋租赁租金账单");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(sysLeaseRentBillOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(sysLeaseRentBillOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(LEASE_RENT_BILL_ORDER_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
+            if(sysLeaseRentBillOrder.getPayType()==1){
+                body=aliLeaseRentBillOrderPay(sysLeaseRentBillOrder);
             }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
 
         } catch (RuntimeException e) {
             //获取抛出的信息
@@ -1925,9 +1827,15 @@ public class AlipayServiceImpl implements AlipayService {
             map.put("status",false);
             return map;
         }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
+        if(sysLeaseRentBillOrder.getPayType()==1) {
+            log.info("body:" + body);
+            map.put("message", body);
+            map.put("status", true);
+        }else{
+            JSONObject vxpay = vxLeaseRentBillOrderPay(sysLeaseRentBillOrder);
+            map.put("data",vxpay);
+            map.put("status", true);
+        }
         return map;
     }
 
@@ -2119,39 +2027,9 @@ public class AlipayServiceImpl implements AlipayService {
             if (i<=0){
                 throw new RuntimeException("添加生活缴费-预充值支付订单信息失败");
             }
-            log.info("开始调用支付宝接口");
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("生活缴费-预充值支付");
-            model.setSubject("生活缴费-预充值账单");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(sysAdvancePaymentOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(sysAdvancePaymentOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(ADVANCE_PAYMENT_ORDER_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
-            }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
+           if(sysAdvancePaymentOrder.getPayType()==1){
+              body=aliAdvancePaymentOrderPay(sysAdvancePaymentOrder);
+           }
 
         } catch (RuntimeException e) {
             //获取抛出的信息
@@ -2164,9 +2042,15 @@ public class AlipayServiceImpl implements AlipayService {
             map.put("status",false);
             return map;
         }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
+        if(sysAdvancePaymentOrder.getPayType()==1) {
+            log.info("body:" + body);
+            map.put("message", body);
+            map.put("status", true);
+        }else{
+            JSONObject vxpay = vxAdvancePaymentOrderPay(sysAdvancePaymentOrder);
+            map.put("data",vxpay);
+            map.put("status", true);
+        }
         return map;
     }
 
@@ -2377,40 +2261,9 @@ public class AlipayServiceImpl implements AlipayService {
             if (i<=0){
                 throw new RuntimeException("添加家政服务-服务费用支付订单信息失败");
             }
-            log.info("开始调用支付宝接口");
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("家政服务-服务费用支付");
-            model.setSubject("家政服务-服务费用账单");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(sysHousekeepingServiceOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(sysHousekeepingServiceOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(HOUSEKEEPING_SERVICE_ORDER_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
-            }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
-
+           if(sysHousekeepingServiceOrder.getPayType()==1){
+               aliHousekeepingServiceOrderPay(sysHousekeepingServiceOrder);
+           }
         } catch (RuntimeException e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -2422,9 +2275,15 @@ public class AlipayServiceImpl implements AlipayService {
             map.put("status",false);
             return map;
         }
-        log.info("body:"+body);
-        map.put("message",body);
-        map.put("status",true);
+        if(sysHousekeepingServiceOrder.getPayType()==1) {
+            log.info("body:" + body);
+            map.put("message", body);
+            map.put("status", true);
+        }else{
+            JSONObject vxpay = vxHousekeepingServiceOrderPay(sysHousekeepingServiceOrder);
+            map.put("data",vxpay);
+            map.put("status", true);
+        }
         return map;
     }
 
@@ -2655,41 +2514,9 @@ public class AlipayServiceImpl implements AlipayService {
                     throw new RuntimeException("添加抄表分摊订单清单信息失败");
                 }
             }
-
-
-            log.info("开始调用支付宝接口");
-            // 开始使用支付宝SDK中提供的API
-            AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
-            // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
-            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("抄表记录管理-抄表分摊详情费用支付");
-            model.setSubject("抄表记录管理-抄表分摊详情费用账单");
-            // 唯一订单号 根据项目中实际需要获取相应的
-            model.setOutTradeNo(shareDetailsOrder.getCode());
-            // 支付超时时间（根据项目需要填写）
-            model.setTimeoutExpress("30m");
-            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
-            model.setTotalAmount(String.valueOf(shareDetailsOrder.getPayPrice()));
-            //app支付 固定值 填写QUICK_MSECURITY_PAY
-            model.setProductCode("QUICK_MSECURITY_PAY");
-            alipayRequest.setBizModel(model);
-            // 支付成功后支付宝异步通知的接收地址url
-            alipayRequest.setNotifyUrl(METER_READING_SHARE_DETAILS_ORDER_NOTIFY_URL);
-            //支付成功后支付宝同步通知的接收地址url（回跳地址）
-//            alipayRequest.setReturnUrl(RETURN_URL);
-
-            // 注意：每个请求的相应对象不同，与请求对象是对应。
-            AlipayTradeAppPayResponse alipayResponse = null;
-            try {
-                alipayResponse = alipayClient.sdkExecute(alipayRequest);
-            } catch (AlipayApiException e) {
-                e.printStackTrace();
-                log.info("获取签名失败");
-                throw new RuntimeException("获取签名失败");
+            if(shareDetailsOrder.getPayType()==1) {
+                body = aliMeterReadingShareDetailsOrderPay(shareDetailsOrder);
             }
-            // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
-            body = alipayResponse.getBody();
 
         } catch (RuntimeException e) {
             //获取抛出的信息
@@ -2698,8 +2525,14 @@ public class AlipayServiceImpl implements AlipayService {
             //设置手动回滚
             TransactionAspectSupport.currentTransactionStatus()
                     .setRollbackOnly();
-            map.put("message",message);
-            map.put("status",false);
+            if(shareDetailsOrder.getPayType()==1) {
+                map.put("message", message);
+                map.put("status", false);
+            }else{
+                JSONObject vxpay = vxMeterReadingShareDetailsOrderPay(shareDetailsOrder);
+                map.put("data",vxpay);
+                map.put("status", true);
+            }
             return map;
         }
         log.info("body:"+body);
@@ -3369,5 +3202,709 @@ public class AlipayServiceImpl implements AlipayService {
         }
 
         return stringBuilder;
+    }
+
+
+
+
+    private String alipay(SysLeaseOrder sysLeaseOrder){
+        String body=null;
+        log.info("开始调用支付宝接口");
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("房屋租赁app支付");
+        model.setSubject("房屋租赁");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(sysLeaseOrder.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(sysLeaseOrder.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(LEASE_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+        body = alipayResponse.getBody();
+        return body;
+    }
+
+
+
+//    private JSONObject vxpay(SysLeaseOrder sysLeaseOrder)  {
+//
+//        log.info("开始调用微信接口");
+//
+//        try {
+//        // 唯一订单号 根据项目中实际需要获取相应的
+//        String outTradeNo=sysLeaseOrder.getCode();
+//        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+//        String amount=String.valueOf(sysLeaseOrder.getPayPrice());
+//        //账单描述
+//       String description="商品";
+//        URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+//
+//        String s = resource.toString();
+//        String substring = s.substring(5);
+////        String substring = s.substring(6);
+//        PrivateKey privateKey= null;
+//        privateKey = getPrivateKey(substring);
+////        int totalAmount = Double.valueOf(amount).intValue();
+//        Double aDouble = convertStringToDouble(amount);
+//        double v = aDouble * 100;
+//        int totalAmount = (int) v;
+//        String prepayId = null;
+//        prepayId = wxPayService.placeAnOrder(outTradeNo, totalAmount, description, privateKey);
+//        JSONObject jsonObjectOfPay = null;
+//        jsonObjectOfPay = wxPayService.wxMpUp(prepayId, privateKey);
+////        String vxpay = jsonObjectOfPay.toString();
+////        return vxpay;
+//            return jsonObjectOfPay;
+//        } catch (Exception e) {
+//            String message=e.getMessage();
+//            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+//            jsonObject.put("message", message);
+//            e.printStackTrace();
+//            return jsonObject;
+//        }
+//    }
+
+
+    private JSONObject vxpay(SysLeaseOrder sysLeaseOrder)  {
+
+        log.info("开始调用微信接口");
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=sysLeaseOrder.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(sysLeaseOrder.getPayPrice());
+            //账单描述
+            String description="商品";
+//            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+//
+//            String s = resource.toString();
+//            String substring = s.substring(5);
+////        String substring = s.substring(6);
+//            PrivateKey privateKey= null;
+//            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+
+            JSONObject jsonObject = paidService.requestwxChatPay(outTradeNo, totalAmount, description);
+
+
+//        String vxpay = jsonObjectOfPay.toString();
+//        return vxpay;
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+
+
+
+    private String aliDailyPay(AppDailyPaymentOrder appDailyPaymentOrder){
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("日常缴费app支付");
+        model.setSubject("日常缴费");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(appDailyPaymentOrder.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(appDailyPaymentOrder.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(DAILY_PAYMENT_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+        String body = alipayResponse.getBody();
+        return body;
+    }
+
+
+    private JSONObject vxDailyPay(AppDailyPaymentOrder appDailyPaymentOrder)  {
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=appDailyPaymentOrder.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(appDailyPaymentOrder.getPayPrice());
+            //账单描述
+            String description="商品";
+            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+            String s = resource.toString();
+            String substring = s.substring(5);
+//        String substring = s.substring(6);
+            PrivateKey privateKey= null;
+            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+            JSONObject jsonObject = paidService.requestDailyPayment(outTradeNo, totalAmount, description);
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+
+
+    private String aliShoppingPay(AppGoodsAppointment appGoodsAppointment) {
+        //执行支付宝操作
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("商城购物支付");
+        model.setSubject("商城购物");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(appGoodsAppointment.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(appGoodsAppointment.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(SHOPPING_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容[就是orderString]直接返回，无需再做一些其他操作)
+        String body = alipayResponse.getBody();
+        return body;
+    }
+
+
+
+    private JSONObject vxShoppingPay(AppGoodsAppointment appGoodsAppointment)  {
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=appGoodsAppointment.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(appGoodsAppointment.getPayPrice());
+            //账单描述
+            String description="商品";
+            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+            String s = resource.toString();
+            String substring = s.substring(5);
+//        String substring = s.substring(6);
+            PrivateKey privateKey= null;
+            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+            JSONObject jsonObject = paidService.requestShopping(outTradeNo, totalAmount, description);
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+
+
+    private String aliReportRepairPay(AppRepairOrder appRepairOrder) {
+        //执行支付宝操作
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("报事报修支付");
+        model.setSubject("报事报修");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(appRepairOrder.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(appRepairOrder.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(REPORT_REPAIR_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容[就是orderString]直接返回，无需再做一些其他操作)
+        String body = alipayResponse.getBody();
+        return body;
+    }
+
+    private JSONObject vxReportRepairPay(AppRepairOrder appRepairOrder)  {
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=appRepairOrder.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(appRepairOrder.getPayPrice());
+            //账单描述
+            String description="商品";
+            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+            String s = resource.toString();
+            String substring = s.substring(5);
+//        String substring = s.substring(6);
+            PrivateKey privateKey= null;
+            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+            JSONObject jsonObject = paidService.requestReportRepair(outTradeNo, totalAmount, description);
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+
+    private String aliLeaseRentOrderPay(SysLeaseRentOrder sysLeaseRentOrder){
+        log.info("开始调用支付宝接口");
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("房屋租赁剩余需结清租金app支付");
+        model.setSubject("房屋剩余需结清租金");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(sysLeaseRentOrder.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(sysLeaseRentOrder.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(LEASE_RENT_ORDER_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+        String body = alipayResponse.getBody();
+        return body;
+    }
+
+
+    private JSONObject vxLeaseRentOrderPay(SysLeaseRentOrder sysLeaseRentOrder)  {
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=sysLeaseRentOrder.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(sysLeaseRentOrder.getPayPrice());
+            //账单描述
+            String description="商品";
+            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+            String s = resource.toString();
+            String substring = s.substring(5);
+//        String substring = s.substring(6);
+            PrivateKey privateKey= null;
+            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+            JSONObject jsonObject = paidService.requestwxChatPay(outTradeNo, totalAmount, description);
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+
+    private String aliLeaseRentBillOrderPay(SysLeaseRentBillOrder sysLeaseRentBillOrder){
+        log.info("开始调用支付宝接口");
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("房屋租赁租金账单app支付");
+        model.setSubject("房屋租赁租金账单");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(sysLeaseRentBillOrder.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(sysLeaseRentBillOrder.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(LEASE_RENT_BILL_ORDER_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+        String body = alipayResponse.getBody();
+        return body;
+    }
+
+
+
+    private JSONObject vxLeaseRentBillOrderPay(SysLeaseRentBillOrder sysLeaseRentBillOrder)  {
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=sysLeaseRentBillOrder.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(sysLeaseRentBillOrder.getPayPrice());
+            //账单描述
+            String description="商品";
+            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+            String s = resource.toString();
+            String substring = s.substring(5);
+//        String substring = s.substring(6);
+            PrivateKey privateKey= null;
+            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+            JSONObject jsonObject = paidService.requestLeaseRentBillOrder(outTradeNo, totalAmount, description);
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+    private String aliAdvancePaymentOrderPay(SysAdvancePaymentOrder sysAdvancePaymentOrder) {
+        log.info("开始调用支付宝接口");
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("生活缴费-预充值支付");
+        model.setSubject("生活缴费-预充值账单");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(sysAdvancePaymentOrder.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(sysAdvancePaymentOrder.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(ADVANCE_PAYMENT_ORDER_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+        String body = alipayResponse.getBody();
+        return body;
+    }
+
+
+
+    private JSONObject vxAdvancePaymentOrderPay(SysAdvancePaymentOrder sysAdvancePaymentOrder)  {
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=sysAdvancePaymentOrder.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(sysAdvancePaymentOrder.getPayPrice());
+            //账单描述
+            String description="商品";
+            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+            String s = resource.toString();
+            String substring = s.substring(5);
+//        String substring = s.substring(6);
+            PrivateKey privateKey= null;
+            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+            JSONObject jsonObject = paidService.requestAdvancePaymentOrder(outTradeNo, totalAmount, description);
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+
+
+
+    private String aliHousekeepingServiceOrderPay(SysHousekeepingServiceOrder sysHousekeepingServiceOrder) {
+        log.info("开始调用支付宝接口");
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("家政服务-服务费用支付");
+        model.setSubject("家政服务-服务费用账单");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(sysHousekeepingServiceOrder.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(sysHousekeepingServiceOrder.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(HOUSEKEEPING_SERVICE_ORDER_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+        String body = alipayResponse.getBody();
+        return body;
+    }
+
+
+
+
+    private JSONObject vxHousekeepingServiceOrderPay(SysHousekeepingServiceOrder sysHousekeepingServiceOrder)  {
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=sysHousekeepingServiceOrder.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(sysHousekeepingServiceOrder.getPayPrice());
+            //账单描述
+            String description="商品";
+            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+            String s = resource.toString();
+            String substring = s.substring(5);
+//        String substring = s.substring(6);
+            PrivateKey privateKey= null;
+            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+            JSONObject jsonObject = paidService.requestHousekeepingServiceOrder(outTradeNo, totalAmount, description);
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+
+
+
+    private String aliMeterReadingShareDetailsOrderPay(SysMeterReadingShareDetailsOrder shareDetailsOrder) {
+        log.info("开始调用支付宝接口");
+        // 开始使用支付宝SDK中提供的API
+        AlipayClient alipayClient = new DefaultAlipayClient(ALIPAY_GATEWAY, ALIPAY_APP_ID, RSA_PRIVAT_KEY, ALIPAY_FORMAT, ALIPAY_CHARSET, RSA_ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+        // 注意：不同接口这里的请求对象是不同的，这个可以查看蚂蚁金服开放平台的API文档查看
+        AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        model.setBody("抄表记录管理-抄表分摊详情费用支付");
+        model.setSubject("抄表记录管理-抄表分摊详情费用账单");
+        // 唯一订单号 根据项目中实际需要获取相应的
+        model.setOutTradeNo(shareDetailsOrder.getCode());
+        // 支付超时时间（根据项目需要填写）
+        model.setTimeoutExpress("30m");
+        // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+        model.setTotalAmount(String.valueOf(shareDetailsOrder.getPayPrice()));
+        //app支付 固定值 填写QUICK_MSECURITY_PAY
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        alipayRequest.setBizModel(model);
+        // 支付成功后支付宝异步通知的接收地址url
+        alipayRequest.setNotifyUrl(METER_READING_SHARE_DETAILS_ORDER_NOTIFY_URL);
+        //支付成功后支付宝同步通知的接收地址url（回跳地址）
+//            alipayRequest.setReturnUrl(RETURN_URL);
+
+        // 注意：每个请求的相应对象不同，与请求对象是对应。
+        AlipayTradeAppPayResponse alipayResponse = null;
+        try {
+            alipayResponse = alipayClient.sdkExecute(alipayRequest);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.info("获取签名失败");
+            throw new RuntimeException("获取签名失败");
+        }
+        // 返回支付相关信息(此处可以直接将getBody中的内容直接返回，无需再做一些其他操作)
+        String body = alipayResponse.getBody();
+        return body;
+    }
+
+
+    private JSONObject vxMeterReadingShareDetailsOrderPay(SysMeterReadingShareDetailsOrder shareDetailsOrder)  {
+
+        try {
+            // 唯一订单号 根据项目中实际需要获取相应的
+            String outTradeNo=shareDetailsOrder.getCode();
+            // 支付金额（项目中实际订单的需要支付的金额，金额的获取与操作请放在服务端完成，相对安全）
+            String amount=String.valueOf(shareDetailsOrder.getPayPrice());
+            //账单描述
+            String description="商品";
+            URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+            String s = resource.toString();
+            String substring = s.substring(5);
+//        String substring = s.substring(6);
+            PrivateKey privateKey= null;
+            privateKey = getPrivateKey(substring);
+//        int totalAmount = Double.valueOf(amount).intValue();
+            Double aDouble = convertStringToDouble(amount);
+            double v = aDouble * 100;
+            int totalAmount = (int) v;
+            JSONObject jsonObject = paidService.requestMeterReadingShareDetailsOrder(outTradeNo, totalAmount, description);
+            return jsonObject;
+        } catch (Exception e) {
+            String message=e.getMessage();
+            JSONObject jsonObject = new JSONObject(new LinkedHashMap<>());
+            jsonObject.put("message", message);
+            e.printStackTrace();
+            return jsonObject;
+        }
+    }
+
+
+
+
+
+
+    public Double convertStringToDouble(String value){
+
+        Double doubleValue = new Double("0.00");
+        if(value != null && !"".equals(value))
+            doubleValue = new Double(value.replaceAll(",",""));
+
+        return doubleValue;
     }
 }

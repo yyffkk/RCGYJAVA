@@ -31,6 +31,24 @@ public class SysGreenArea {
      */
     private Date modifyDate;
 
+
+    /**
+     * 工作内容
+     */
+    private String content;
+    /**
+     * 部门
+     */
+    private String department;
+    /**
+     * 负责人员
+     */
+    private String charge;
+    /**
+     * 截止时间
+     */
+    private String endDate;
+
     @Override
     public String toString() {
         return "SysGreenArea{" +
@@ -40,6 +58,10 @@ public class SysGreenArea {
                 ", createDate=" + createDate +
                 ", modifyId=" + modifyId +
                 ", modifyDate=" + modifyDate +
+                ", content=" + content +
+                ", department=" + department +
+                ", charge=" + charge +
+                ", endDate=" + endDate +
                 '}';
     }
 
@@ -91,15 +113,52 @@ public class SysGreenArea {
         this.modifyDate = modifyDate;
     }
 
+    public String getContent(){
+       return content;
+    }
+
+    public void setContent(String content){
+        this.content = content;
+    }
+
+    public String getDepartment(){
+        return department;
+    }
+
+    public void setDepartment(String department){
+        this.department = department;
+    }
+
+    public String getCharge(){
+        return charge;
+    }
+
+    public void setCharge(String charge){
+        this.charge = charge;
+    }
+
+    public String getEndDate(){
+        return endDate;
+    }
+
+    public void setEndDate(String endDate){
+        this.endDate = endDate;
+    }
+
     public SysGreenArea() {
     }
 
-    public SysGreenArea(Integer id, String name, Integer createId, Date createDate, Integer modifyId, Date modifyDate) {
+    public SysGreenArea(Integer id, String name, Integer createId, Date createDate, Integer modifyId, Date modifyDate ,String content ,String department, String charge ,String endDate) {
         this.id = id;
         this.name = name;
         this.createId = createId;
         this.createDate = createDate;
         this.modifyId = modifyId;
         this.modifyDate = modifyDate;
+
+        this.content = content;
+        this.department = department;
+        this.charge = charge;
+        this.endDate = endDate;
     }
 }

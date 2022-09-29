@@ -172,7 +172,51 @@ public class UploadFileServiceImpl implements UploadFileService {
             for(Map<String, Object> user:userList){
                 CpmBuildingUnitEstate cpmBuildingUnitEstate = new CpmBuildingUnitEstate();
 
-                cpmBuildingUnitEstate.setBuildingUnitId(Integer.valueOf(user.get("楼宇单元导入编号").toString()));
+//                cpmBuildingUnitEstate.setBuildingUnitId(Integer.valueOf(user.get("楼宇单元导入编号").toString()));
+//                cpmBuildingUnitEstate.setBuildingId(Integer.valueOf(user.get("楼栋号").toString()));
+//                cpmBuildingUnitEstate.setBuildingUnitId(Integer.valueOf(user.get("单元号").toString()));
+
+               if(Integer.parseInt(user.get("楼栋号").toString())==1 && Integer.parseInt(user.get("单元号").toString())==1){
+                   cpmBuildingUnitEstate.setBuildingUnitId(24);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==1 && Integer.parseInt(user.get("单元号").toString())==2){
+                   cpmBuildingUnitEstate.setBuildingUnitId(25);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==2 && Integer.parseInt(user.get("单元号").toString())==1) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(26);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==3 && Integer.parseInt(user.get("单元号").toString())==1) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(27);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==3 && Integer.parseInt(user.get("单元号").toString())==2) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(28);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==5 && Integer.parseInt(user.get("单元号").toString())==1) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(29);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==5 && Integer.parseInt(user.get("单元号").toString())==2) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(30);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==6 && Integer.parseInt(user.get("单元号").toString())==1) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(31);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==6 && Integer.parseInt(user.get("单元号").toString())==2) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(32);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==7 && Integer.parseInt(user.get("单元号").toString())==1) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(33);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==7 && Integer.parseInt(user.get("单元号").toString())==2) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(34);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==8 && Integer.parseInt(user.get("单元号").toString())==1) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(35);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==8 && Integer.parseInt(user.get("单元号").toString())==2) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(36);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==9 && Integer.parseInt(user.get("单元号").toString())==1) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(37);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==9 && Integer.parseInt(user.get("单元号").toString())==2) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(38);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==10 && Integer.parseInt(user.get("单元号").toString())==1) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(39);
+               }else if(Integer.parseInt(user.get("楼栋号").toString())==10 && Integer.parseInt(user.get("单元号").toString())==2) {
+                   cpmBuildingUnitEstate.setBuildingUnitId(40);
+               }
+
+
+
+
+
+
                 cpmBuildingUnitEstate.setRoomNumber(user.get("房间号").toString());
                 cpmBuildingUnitEstate.setStatus(Integer.valueOf(user.get("房间状态").toString()));
                 cpmBuildingUnitEstate.setType(Integer.valueOf(user.get("房间类型").toString()));
@@ -354,8 +398,11 @@ public class UploadFileServiceImpl implements UploadFileService {
             for(Map<String, Object> user:userList){
                 SysGreenArea sysGreenArea = new SysGreenArea();
 
-                sysGreenArea.setName(user.get("区域名称").toString());
-
+                sysGreenArea.setName(user.get("绿化区域").toString());
+                sysGreenArea.setContent(user.get("工作内容").toString());
+                sysGreenArea.setDepartment(user.get("部门").toString());
+                sysGreenArea.setCharge(user.get("负责人员").toString());
+                sysGreenArea.setEndDate(user.get("截止时间").toString());
                 //获取登录用户信息
                 Subject subject = SecurityUtils.getSubject();
                 SysUser sysUser = (SysUser) subject.getPrincipal();
@@ -417,7 +464,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                     //使用SimpleDateFormat的parse()方法生成Date
                     Date beginDate = sf.parse(user.get("计费开始时间（yyyy-MM-dd）").toString());
                     dailyPayment.setBeginDate(beginDate);
-                    Date endDate = sf.parse(user.get("计费开始时间（yyyy-MM-dd）").toString());
+                    Date endDate = sf.parse(user.get("计费结束时间（yyyy-MM-dd）").toString());
                     dailyPayment.setEndDate(endDate);
                 } catch (ParseException e) {
                     e.printStackTrace();

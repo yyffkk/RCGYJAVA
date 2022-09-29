@@ -10,7 +10,7 @@
         <where>
             slc.create_id = su.id
             <if test="name != null and name != ''">
-                and su.actual_name like concat('%',#{name},'%')
+                and slc.name like concat('%',#{name},'%')
             </if>
             <if test="status != null">
                 and slc.status = #{status}

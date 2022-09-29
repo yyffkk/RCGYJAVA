@@ -111,7 +111,24 @@ public class UserCarServiceImpl implements UserCarService {
     }
 
     @Override
-    public VoUserCarFindById findById(Integer id) {
+//    public VoUserCarFindById findById(Integer id) {
+//        VoUserCarFindById voUserCarFindById = userCarDao.findById(id);
+//        //根据房产主键id查询房产信息
+//        CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(voUserCarFindById.getBuildingUnitEstateId());
+//        //根据单元主键id查询对应的单元号
+//        CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
+//        //根据楼栋主键id查询对应的楼栋号
+//        CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
+//        //设置 楼栋id，单元id，房产id
+//        voUserCarFindById.setRoomName(cpmBuildingUnitEstate.getRoomNumber());
+//        voUserCarFindById.setBuildingUnitId(cpmBuildingUnit.getId());
+//        voUserCarFindById.setBuildingUnitNo(cpmBuildingUnit.getNo());
+//        voUserCarFindById.setBuildingId(cpmBuilding.getId());
+//        voUserCarFindById.setBuildingNo(cpmBuilding.getNo());
+//        return voUserCarFindById;
+//    }
+
+    public Map<String, Object> findById(Integer id) {
         VoUserCarFindById voUserCarFindById = userCarDao.findById(id);
         //根据房产主键id查询房产信息
         CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(voUserCarFindById.getBuildingUnitEstateId());
@@ -125,8 +142,36 @@ public class UserCarServiceImpl implements UserCarService {
         voUserCarFindById.setBuildingUnitNo(cpmBuildingUnit.getNo());
         voUserCarFindById.setBuildingId(cpmBuilding.getId());
         voUserCarFindById.setBuildingNo(cpmBuilding.getNo());
-        return voUserCarFindById;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("code",voUserCarFindById.getCode());
+        map.put("parkingSpaceId",voUserCarFindById.getParkingSpaceId());
+        map.put("parkingSpaceCode",voUserCarFindById.getParkingSpaceCode());
+        map.put("owner",voUserCarFindById.getOwner());
+        map.put("tel",voUserCarFindById.getTel());
+        map.put("idType",voUserCarFindById.getIdType());
+        map.put("idNumber",voUserCarFindById.getIdNumber());
+        map.put("buildingNo",voUserCarFindById.getBuildingNo());
+        map.put("buildingUnitNo",voUserCarFindById.getBuildingUnitNo());
+        map.put("roomName",voUserCarFindById.getRoomName());
+        if(voUserCarFindById.getType()!=null){
+            map.put("type",voUserCarFindById.getType());
+        }
+        if(voUserCarFindById.getBrand()!=null){
+            map.put("brand",voUserCarFindById.getBrand());
+        }
+        if(voUserCarFindById.getModel()!=null){
+            map.put("model",voUserCarFindById.getModel());
+        }
+        if(voUserCarFindById.getColor()!=null){
+            map.put("color",voUserCarFindById.getColor());
+        }
+        return map;
     }
+
+
+
+
 
     @Override
     public Map<String, Object> update(UserCar userCar) {

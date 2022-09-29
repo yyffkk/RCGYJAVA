@@ -36,7 +36,8 @@ public class UserTenantServiceImpl implements UserTenantService {
 
     @Override
     public List<VoUserTenant> list(UserResident userTenant) {
-        List<VoUserTenant> voUserTenantList = userTenantDao.list(userTenant);
+//        List<VoUserTenant> voUserTenantList = userTenantDao.list(userTenant);
+        List<VoUserTenant> voUserTenantList = userTenantDao.lists(userTenant);
         for (VoUserTenant userTenantList : voUserTenantList) {
             if (userTenantList.getEffectiveTimeEnd() != null){
                 //根据终止时间来判断在租状态

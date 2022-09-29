@@ -307,7 +307,8 @@ public class CpmBuildingUnitEstateServiceImpl implements CpmBuildingUnitEstateSe
                     for (UserResident userResident : byBuildingUnitEstateId) {
                         //先删除所有该房产的业主关联信息
                         int delete = userResidentDao.deleteByResidentIdAndEstateId(new ResidentIdAndEstateId(userResident.getId(), estateAndResident.getEstate().getId()));
-                        if (delete<=0){
+                        int delete2 = userResidentDao.deleteUserResident(userResident);
+                        if (delete<=0 && delete2<=0){
                             throw new RuntimeException("存在业主房产关联信息删除失败");
                         }
                     }

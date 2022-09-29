@@ -171,7 +171,8 @@ public class AuditManagementServiceImpl implements AuditManagementService {
             //设置手动回滚
             TransactionAspectSupport.currentTransactionStatus()
                     .setRollbackOnly();
-            map.put("message",message);
+//            map.put("message",message);
+            map.put("message","审核状态未填写");
             map.put("status",false);
             return map;
         }

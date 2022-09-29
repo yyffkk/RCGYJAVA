@@ -22,4 +22,11 @@ public interface UserTenantDao {
      * @return 影响行数
      */
     int insertResidentEstate(CpmResidentEstate cpmResidentEstate);
+
+    /**
+     * 查询所有租户信息（包含条件搜索）【住户表-租户，房产表，住户房产关联表，车辆表】
+     * @param userTenant 搜索条件（租户名称，租户手机号）
+     * @return 租户信息
+     */
+    List<VoUserTenant> lists(UserResident userTenant);
 }

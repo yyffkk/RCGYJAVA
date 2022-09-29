@@ -56,7 +56,7 @@ public class SysMaterialInventoryServiceImpl implements SysMaterialInventoryServ
                 throw new RuntimeException("添加失败");
             }
             List<SysMaterialInventoryDetail> inventoryDetailList = sysMaterialInventory.getMaterialInventoryDetailList();
-            if (inventoryDetailList != null && inventoryDetailList.size()>0){
+            if (inventoryDetailList != null && inventoryDetailList.size()>0 && inventoryDetailList.get(0).getId() != null){
                 for (SysMaterialInventoryDetail sysMaterialInventoryDetail : inventoryDetailList) {
                     sysMaterialInventoryDetail.setMaterialInventoryId(sysMaterialInventory.getId());
                     //添加物资盘点详情信息

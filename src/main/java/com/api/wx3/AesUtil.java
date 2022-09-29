@@ -1,4 +1,4 @@
-package com.api.app.filter.wx;
+package com.api.wx3;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.GCMParameterSpec;

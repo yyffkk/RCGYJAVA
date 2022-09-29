@@ -13,7 +13,7 @@ public interface UserCarService {
 
     Map<String, Object> insert(UserCar userCar);
 
-    VoUserCarFindById findById(Integer id);
+    Map<String, Object> findById(Integer id);
 
     Map<String, Object> update(UserCar userCar);
 

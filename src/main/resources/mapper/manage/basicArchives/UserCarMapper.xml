@@ -32,6 +32,7 @@
             code,
             status,
             owner,
+
             <if test="idType != null">
                 id_type,
             </if>
@@ -123,6 +124,9 @@
             </if>
             <if test="code != null and code != ''">
                 code = #{code},
+            </if>
+            <if test="parkingSpaceId != null">
+                parking_space_id = #{parkingSpaceId},
             </if>
             <if test="status != null">
                 status = #{status},

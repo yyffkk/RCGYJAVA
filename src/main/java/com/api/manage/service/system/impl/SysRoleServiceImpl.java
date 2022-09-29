@@ -88,6 +88,9 @@ public class SysRoleServiceImpl implements SysRoleService {
         sysRole.setCreateId(sysUser.getId());
         sysRole.setCreateDate(new Date());
 
+//        if(sysRole.getName() == null){
+//            return null;
+//        }
         int insert = sysRoleDao.insertRole(sysRole);
         if (insert >0){
             map.put("message","添加成功");

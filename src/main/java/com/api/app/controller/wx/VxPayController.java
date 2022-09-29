@@ -3,14 +3,20 @@ package com.api.app.controller.wx;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.api.alipay.service.AlipayService;
 import com.api.app.filter.wx.*;
 
 import com.api.app.service.wx.WxPayServiceImpl;
 
 
-
+import com.api.model.alipay.*;
+import com.api.model.app.AppDailyPaymentOrder;
+import com.api.model.app.AppGoodsAppointment;
+import com.api.model.app.AppRepairOrder;
+import com.api.wx.WxPayServiceCopy;
 import com.wechat.pay.contrib.apache.httpclient.exception.ParseException;
 import com.wechat.pay.contrib.apache.httpclient.exception.ValidationException;
+import okhttp3.HttpUrl;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -31,7 +37,10 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.math.BigDecimal;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -51,12 +60,15 @@ import java.util.stream.Stream;
 
 
 @RestController
-@RequestMapping("/vx")
+@RequestMapping("app/user/vx")
 
 public class VxPayController {
     @Resource
     WxPayServiceImpl wxPayService;
-
+    @Resource
+    AlipayService alipayService;
+    @Resource
+    WxPayServiceCopy wxPayServiceCopy;
     /**
      * 微信支付
      * @param request
@@ -68,15 +80,220 @@ public class VxPayController {
         String url="v3/pay/transactions/app";
         String mchId= ConfigManager.getInstance().getConfigItem("MCH_ID");
         String serialNo="1629188361_20220727_cert";
-        PrivateKey privateKey=getPrivateKey("E:\\智慧社区\\盛邦滨江府\\甲方资料\\apiclient_key.pem");
+
+//        URL resource = this.getClass().getClassLoader().getResource("apiclient_key.pem");
+
+//        String b = ""
+//        String s = resource.toString();
+//        String substring = s.substring(5);
+//        String substring = s.substring(6);
+        PrivateKey privateKey=getPrivateKey("");
+//        PrivateKey privateKey=getPrivateKey("E:\\智慧社区\\盛邦滨江府\\甲方资料\\apiclient_key.pem");
         JSONObject json= JSONUtil.getRequestJsonObject(request);
         String outTradeNo = json.getString("out_trade_no");
         String description = json.getString("description");
         Integer totalAmount = json.getJSONObject("amount").getInteger("total");
+
         String prepayId = wxPayService.placeAnOrder(outTradeNo, totalAmount, description, privateKey);
         JSONObject jsonObjectOfPay = wxPayService.wxMpUp(prepayId, privateKey);
+//        String s1 = jsonObjectOfPay.toString();
         return Result.success(jsonObjectOfPay,"成功");
+
+//        JSONObject jsonObject=new JSONObject();
+//        jsonObject.put("data",1);
+//        jsonObject.put("resource",resource);
+//        return Result.success(jsonObject,"成功");
     }
+
+
+
+
+
+    /**
+     * app-保证金支付 房屋租赁完成订单微信支付(生成 APP 支付订单信息)
+     * @param sysLeaseOrder app 房屋租赁保证金订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping("/leaseVxPay")
+    public Map<String,Object> leaseAlipay(@RequestBody SysLeaseOrder sysLeaseOrder, HttpServletResponse response, HttpServletRequest request) {
+        Map map = new HashMap<>();
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            String name = request.getParameter("name"); //从request获取用户姓名
+            String tel = request.getParameter("tel"); //从request获取用户联系电话
+            Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+//            String name = "黄鑫"; //从request获取用户姓名
+//            String tel = "15994582647"; //从request获取用户联系电话
+//            Integer id = 0;//从request获取用户id
+            sysLeaseOrder.setName(name); //填写付款人姓名
+            sysLeaseOrder.setTel(tel); //填写付款人手机号
+            return alipayService.leaseAlipay(sysLeaseOrder, id);
+        }catch (Exception e) {
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            map.put("message",message);
+            return map;
+        }
+    }
+
+    /**
+     * app 日常缴费微信支付(生成 APP 支付订单信息)
+     * @param appDailyPaymentOrder app生活缴纳 支付订单信息
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping( "/dailyPaymentVxPay")
+    public Map<String,Object> dailyPaymentAlipay(@RequestBody AppDailyPaymentOrder appDailyPaymentOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        appDailyPaymentOrder.setName(name); //填写付款人姓名
+        appDailyPaymentOrder.setTel(tel); //填写付款人手机号
+        return alipayService.dailyPaymentAlipay(appDailyPaymentOrder);
+    }
+
+
+    /**
+     * app 商城购物完成订单微信支付(生成 APP 支付订单信息)
+     * @param appGoodsAppointment app 商品预约信息
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping( "/shoppingVxPay")
+    public Map<String,Object> shoppingAlipay(@RequestBody AppGoodsAppointment appGoodsAppointment, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        Integer type = Integer.valueOf(request.getParameter("type"));//从request获取用户type
+        appGoodsAppointment.setUserName(name); //填写付款人姓名
+        appGoodsAppointment.setUserTel(tel); //填写付款人手机号
+        return alipayService.shoppingAlipay(appGoodsAppointment,type,id);
+    }
+
+
+    /**
+     * app 报事报修完成订单微信支付(生成 APP 支付订单信息)
+     * @param appRepairOrder app 报事报修订单
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping( "/reportRepairVxPay")
+    public Map<String,Object> reportRepairAlipay(@RequestBody AppRepairOrder appRepairOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        appRepairOrder.setName(name); //填写付款人姓名
+        appRepairOrder.setTel(tel); //填写付款人手机号
+        return alipayService.reportRepairAlipay(appRepairOrder);
+    }
+
+    /**
+     * app 房屋租赁-剩余需结清租金支付 完成订单微信支付(生成 APP 支付订单信息)
+     * @param sysLeaseRentOrder app 房屋租赁剩余需结清租金订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping("/leaseRentOrderVxPay")
+    public Map<String,Object> leaseRentOrderAlipay(@RequestBody SysLeaseRentOrder sysLeaseRentOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        sysLeaseRentOrder.setName(name); //填写付款人姓名
+        sysLeaseRentOrder.setTel(tel); //填写付款人手机号
+        return alipayService.leaseRentOrderAlipay(sysLeaseRentOrder,id);
+    }
+
+
+    /**
+     * app 房屋租赁-租金账单支付 完成订单微信支付(生成 APP 支付订单信息)
+     * @param sysLeaseRentBillOrder app 房屋租赁租金账单订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping("/leaseRentBillOrderVxPay")
+    public Map<String,Object> leaseRentBillOrderAlipay(@RequestBody SysLeaseRentBillOrder sysLeaseRentBillOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        sysLeaseRentBillOrder.setName(name); //填写付款人姓名
+        sysLeaseRentBillOrder.setTel(tel); //填写付款人手机号
+        return alipayService.leaseRentBillOrderAlipay(sysLeaseRentBillOrder,id);
+    }
+
+
+
+    /**
+     * app 生活缴费-预充值支付 完成订单微信支付(生成 APP 支付订单信息)
+     * @param sysAdvancePaymentOrder app 生活缴费-预充值支付订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/advancePaymentOrderVxPay")
+    public Map<String,Object> advancePaymentOrderAlipay(@RequestBody SysAdvancePaymentOrder sysAdvancePaymentOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        sysAdvancePaymentOrder.setName(name); //填写付款人姓名
+        sysAdvancePaymentOrder.setTel(tel); //填写付款人手机号
+        return alipayService.advancePaymentOrderAlipay(sysAdvancePaymentOrder,id);
+    }
+
+    /**
+     * app 家政服务-服务费用支付 完成订单微信支付(生成 APP 支付订单信息)
+     * @param sysHousekeepingServiceOrder app 家政服务-服务费用支付订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/housekeepingServiceOrderVxPay")
+    public Map<String,Object> housekeepingServiceOrderAlipay(@RequestBody SysHousekeepingServiceOrder sysHousekeepingServiceOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        sysHousekeepingServiceOrder.setName(name); //填写付款人姓名
+        sysHousekeepingServiceOrder.setTel(tel); //填写付款人手机号
+        return alipayService.housekeepingServiceOrderAlipay(sysHousekeepingServiceOrder,id);
+    }
+
+
+    /**
+     * app 抄表记录管理-抄表分摊详情费用支付 完成订单微信支付(生成 APP 支付订单信息)
+     * @param shareDetailsOrder app 抄表记录管理-抄表分摊详情费用支付订单model
+     * @param response response
+     * @param request request
+     * @return map
+     */
+    @PostMapping(value = "/meterReadingShareDetailsOrderVxPay")
+    public Map<String,Object> meterReadingShareDetailsOrderAlipay(@RequestBody SysMeterReadingShareDetailsOrder shareDetailsOrder, HttpServletResponse response, HttpServletRequest request) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String name = request.getParameter("name"); //从request获取用户姓名
+        String tel = request.getParameter("tel"); //从request获取用户联系电话
+        Integer id = Integer.valueOf(request.getParameter("id"));//从request获取用户id
+        shareDetailsOrder.setName(name); //填写付款人姓名
+        shareDetailsOrder.setTel(tel); //填写付款人手机号
+        return alipayService.meterReadingShareDetailsOrderAlipay(shareDetailsOrder,id);
+    }
+
+
+
+
+
+
+
 
 
     @GetMapping("/find")
@@ -105,11 +322,9 @@ public class VxPayController {
 
     public static PrivateKey getPrivateKey(String filename) throws IOException {
 
-        String content = new String(Files.readAllBytes(Paths.get(filename)), "utf-8");
+//        String content = new String(Files.readAllBytes(Paths.get(filename)), "utf-8");
         try {
-            String privateKey = content.replace("-----BEGIN PRIVATE KEY-----", "")
-                    .replace("-----END PRIVATE KEY-----", "")
-                    .replaceAll("\\s+", "");
+            String privateKey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDGEmFAMMKqT4EBpAxU/XYqx7YN7zkZDWWAKa63uhD/wn45OoYzyhQI06jRfUKo7vsuwX7uzUKVp9K2+T0D4B0pR/cVQi1wzJOpufHCgFW2HLDWE4HwM1fXwGlsN8t/kemtddmHIrQ1uO4Q+PgeAjpFFC5aMwr1KiLaW8SRZF0L62dk25bndhsWKjvPOFMiqHmNtx1h9iUHDUdjremFb3by65QQeF2GPGS4O+/q4PcIgvvolgTSTdnfpiWmkNDJ4ibUfB9h8Plg8vfJKfn+9wWK8qjwpfS1lxNPQFa0jAY0EKewAiywz6retWw12H9RY29SU2oJtPuRiWK0LGMoMtf9AgMBAAECggEBALCGoPW8f0GaKbd0pSj52960rqQsmA6jydo3S+eihJPsmuIWLpTpfIGBYeuSX15/3o0FFkNt2/HU6A76gk555oNsB+GCYU0uhku11KksBzeOymuAZ0XT/G3kphA0icDgIgreBUhSvZlDf6jQuxDDm3sFSWpKI3HsY7OIJeAOOn7rcsUscdOpzHL6Sf0ytVPFZ5GSFQMNFA3o80PA/5CK/vz7fjiDwH+/0pJOmz0l2rsv2dLX2tJQvhSwnxpt7BVMdnQpihkVivHGsU1D5Y9l8BTCXVgK1y6DXF4mmXw0Lg/yzbXJHOwaakGnLsiKXIXiA7mnZ5yMAC9G80Ea3COVywECgYEA94jBCDJeFjMaotp2c56oXBDJcO5LwEoPy60anr2SRgS//c/4DchuMHzIMdcpflddjJA/EDdZfG3tZc3XoSlY+Lf+5viE7L9slODKztO2r92MBS70d6a/Ps09vdgPoyr/3QnP7/0ZohiDl/PM54dqm3uLQ8o58ZpuVoJW3/aeY+UCgYEAzNiQ1OeI2oJTY45rvuDEWh4b5M/NxtVWZk3AVZvQFFGHpm8OoWyqrKGxUzi0PwH0635pVs8mFWZL7h4Fs5e7g9/UOJNcHN5RdjXf8fczkuMAqk2Pwrk90VhyWMCn0iJXvFcz8YCpRz1npmVZcnro5srYsaTVe4WtrEKaTU6+kjkCgYAbYiOIlpnV9t1Rer1z2O9jD/BY7+OtaAQLUiEJwor19/yNRX55d9zIvGUhLl5Gvb95l1OCpbzeiQKkKntaNsrC6Qfn4UJDNoH6jkuhScaB+g5NXH5q5iVt+yKDZ+2C7XTUrQs1z1gQmImmO7BFRLPEc4xaeXqjgaQHKfAWYp/vCQKBgBS2tXaB7ynBUfNYPHbxvYkrUEDD7pfzjKgNpqxBdDoJwIDI7B7QoTWRqB+1NSzF4uFJSBeaHMy/KmBqssLlTfXY1VnfNMpKhMxCSGHsUE/DGpcd/rJ/DswzeGSXHqE2Dc8itkLucq+cevWte+0Clrh3vI/CDkBOVTB9D6NPmh+pAoGBANUIm2zsu8Zd7H/3+68u5yujzW/66X3HYLFo/WQhCwTT8wTVL1jSQL6MsixNpvUhA+4Te/LQqMtAHuf7MRH73N4qrMSvtQSk70BeIdWmelNuShwAa2umJBsmMacZvUfyn3vBfCYB3t/HzQHECWDmzVe6vv9JkHMs4BmbniiLkdrL";
 
             KeyFactory kf = KeyFactory.getInstance("RSA");
             return kf.generatePrivate(
@@ -127,208 +342,91 @@ public class VxPayController {
 
 
 
-
-
-    @PostMapping("/notify")
-
-    public Result<JSONObject> notify(HttpServletRequest request) throws IOException, JDOMException, GeneralSecurityException, ValidationException, ParseException {
-        String serialNo = request.getHeader("Wechatpay-Serial");// 商户序列号
-
-        String nonceStr = request.getHeader("Wechatpay-Nonce");// 随机字符串
-
-        String timestamp = request.getHeader("Wechatpay-Timestamp"); // 时间戳
-
-        long anotherTimestamp = Long.parseLong(timestamp);
-
-        String wechatpaySignature = request.getHeader("Wechatpay-Signature"); // 签名
-
-        String xjlMchId= ConfigManager.getInstance().getConfigItem("MCH_ID");
-
-        String xjlSerialNo="2085562750E921915C3FCAA59B10B0F2BCA2E6F6";
-
-//        String v3keyPath=null;
-//
-//        String xjlV3keyPath=null;
-
-        String requestBody = getRequestBody(request);
-
-        String body="";
-
-        PrivateKey privateKey=getPrivateKey("E:\\智慧社区\\盛邦滨江府\\甲方资料\\apiclient_key.pem");
-
-        String v3Key="kaidalai135246xiaomifengzhihuish";
-        //拿到签名
-        String sign = sign("GET", "/v3/certificates",anotherTimestamp,nonceStr ,body, privateKey);
-        String token = token(xjlMchId, nonceStr, anotherTimestamp, xjlSerialNo, sign);
-        HttpGet httpPost = new HttpGet("https://api.mch.weixin.qq.com/v3/certificates");
-        //设置头
-        httpPost.setHeader("Authorization", "WECHATPAY2-SHA256-RSA2048" + " " + token);
-        httpPost.setHeader("Accept", "*/*");
-        httpPost.setHeader("User-Agent", "*/*");
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        //完成签名并执行请求
-        CloseableHttpResponse resp = httpClient.execute(httpPost);
-        JSONObject map = JSON.parseObject(EntityUtils.toString(resp.getEntity()));
-        JSONArray data = map.getJSONArray("data");
-        String serial_no = data.getJSONObject(0).getString("serial_no");
-        JSONObject encrypt_certificate = data.getJSONObject(0).getJSONObject("encrypt_certificate");
-        String associatedData = encrypt_certificate.getString("associated_data");
-        String nonce = encrypt_certificate.getString("nonce");
-        String ciphertext = encrypt_certificate.getString("ciphertext");
-        //拿到请求头里的resource部分
-//        JSONObject resources = JSONObject.parseObject(requestBody).getJSONObject("resource");
-//        String associatedData = resources.getString("associated_data");
-//        String nonce = resources.getString("nonce");
-//        String ciphertext = resources.getString("ciphertext");
-        String publicKey = decryptResponseBody(v3Key, associatedData, nonce, ciphertext);
-        final CertificateFactory cf = CertificateFactory.getInstance("X509");
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(publicKey.getBytes(StandardCharsets.UTF_8));
-        Map  CERTIFICATE_MAP=new HashMap();
-        Certificate certificate = null;
-        try {
-            certificate =  cf.generateCertificate(inputStream);
-
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        }
-        CERTIFICATE_MAP.put(serialNo, certificate);
-
-        boolean flag =responseSignVerify(wechatpaySignature, timestamp, nonceStr, requestBody, serialNo,CERTIFICATE_MAP);
-        //验签成功
-        if (flag) {
-
-
-            JSONObject resources = JSONObject.parseObject(requestBody).getJSONObject("resource");
-            //用32位的v3密钥做个构造
-            AesUtil aesUtil = new AesUtil(v3Key.getBytes(StandardCharsets.UTF_8));
-            //取出resource下 associated_data nonce参数，再；配上v3key 用作解密ciphertext
-            byte[] associatedDataByte =resources.getString("associated_data").getBytes(StandardCharsets.UTF_8);
-            byte[] nonceByte =resources.getString("nonce").getBytes(StandardCharsets.UTF_8);
-            String ciphertextSecond = resources.getString("ciphertext");
-            //解密
-            String res = aesUtil.decryptToString(associatedDataByte, nonceByte, ciphertextSecond);
-            JSONObject jsonObject = JSONObject.parseObject(res);
-//            System.err.println("回调结果:" + jsonObject);
-            return Result.success(jsonObject,"成功");
-        }
-       return null;
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-    String sign(String method, String canonicalUrl, long timestamp, String nonceStr, String body, PrivateKey privateKey) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException {
-        String signatureStr = Stream.of(method, canonicalUrl, String.valueOf(timestamp), nonceStr, body)
-                .collect(Collectors.joining("\n", "", "\n"));
-        Signature sign = Signature.getInstance("SHA256withRSA");
-        sign.initSign(privateKey);
-        sign.update(signatureStr.getBytes(StandardCharsets.UTF_8));
-        return Base64Utils.encodeToString(sign.sign());
-    }
-
-    String token(String mchId, String nonceStr, long timestamp, String serialNo, String signature) {
-        final String TOKEN_PATTERN = "mchid=\"%s\",nonce_str=\"%s\",timestamp=\"%d\",serial_no=\"%s\",signature=\"%s\"";
-        // 生成token
-        return String.format(TOKEN_PATTERN, mchId, nonceStr, timestamp, serialNo, signature);
-    }
-
-
-
     /**
-     * 获取微信请求头
-     *
+     * 微信支付
      * @param request
      * @return
-     * @throws IOException
+     * @throws Exception
      */
-    public  String getRequestBody(HttpServletRequest request) throws IOException {
-        ServletInputStream stream = null;
-        BufferedReader reader = null;
-        StringBuffer sb = new StringBuffer();
-        try {
-            stream = request.getInputStream();
-            // 获取响应
-            reader = new BufferedReader(new InputStreamReader(stream));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-            }
-        } catch (IOException e) {
-            throw new IOException("读取返回支付接口数据流出现异常！");
-        } finally {
-            reader.close();
-        }
-        return sb.toString();
+    @PostMapping("/pays")
+    public Result<Map<String, Object>> pays(HttpServletRequest request) throws Exception {
+
+        JSONObject json= JSONUtil.getRequestJsonObject(request);
+        String outTradeNo = json.getString("out_trade_no");
+        String description = json.getString("description");
+        Integer totalAmount = json.getJSONObject("amount").getInteger("total");
+
+        Map<String, Object> stringObjectMap = wxPayServiceCopy.appPays(outTradeNo, totalAmount);
+        return Result.success(stringObjectMap,"成功");
+
+//        JSONObject jsonObject=new JSONObject();
+//        jsonObject.put("data",1);
+//        jsonObject.put("resource",resource);
+//        return Result.success(jsonObject,"成功");
     }
 
-    public  String decryptResponseBody(String apiV3Key, String associatedData, String nonce, String ciphertext) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-            SecretKeySpec key = new SecretKeySpec(apiV3Key.getBytes(StandardCharsets.UTF_8), "AES");
-            GCMParameterSpec spec = new GCMParameterSpec(128, nonce.getBytes(StandardCharsets.UTF_8));
-            cipher.init(Cipher.DECRYPT_MODE, key, spec);
-            cipher.updateAAD(associatedData.getBytes(StandardCharsets.UTF_8));
-            byte[] bytes;
-            try {
-                bytes = cipher.doFinal(Base64Utils.decodeFromString(ciphertext));
 
-            } catch (GeneralSecurityException e) {
-                throw new IllegalArgumentException(e);
-            }
-            return new String(bytes, StandardCharsets.UTF_8);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new IllegalStateException(e);
-        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
-            throw new IllegalArgumentException(e);
-        }
+
+
+
+
+
+
+
+
+
+
+//    String sign(byte[] message,PrivateKey privateKey) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+//        Signature sign = Signature.getInstance("SHA256withRSA");
+//        sign.initSign(privateKey);
+//        sign.update(message);
+//
+//        return Base64.getEncoder().encodeToString(sign.sign());
+//    }
+
+
+//
+//    String token(String mchId, String nonceStr, long timestamp, String serialNo, String signature) {
+//        return "mchid=\"" + mchId + "\","
+//                + "nonce_str=\"" + nonceStr + "\","
+//                + "timestamp=\"" + timestamp + "\","
+//                + "serial_no=\"" + serialNo + "\","
+//                + "signature=\"" + signature + "\"";
+//    }
+
+
+
+
+
+
+
+
+
+
+
+    String buildMessageData(String method, String url, long timestamp, String nonceStr, String body) {
+
+        return method + "\n"
+                + url + "\n"
+                + timestamp + "\n"
+                + nonceStr + "\n"
+                + body + "\n";
     }
 
-    public static boolean  responseSignVerify( String wechatpaySignature, String wechatpayTimestamp, String wechatpayNonce, String body,String serialNo,Map CERTIFICATE_MAP) {
-        FileInputStream fileInputStream = null;
-        try {
-            //获取签名
-            String signatureStr = buildMessage(wechatpayTimestamp, wechatpayNonce, body);
-            Signature signer = Signature.getInstance("SHA256withRSA");
-//            if (CERTIFICATE_MAP.isEmpty() || !CERTIFICATE_MAP.containsKey(serialNo)) {
-//                //获取证书
-//                certificates(xjlMchId,xjlSerialNo,v3keyPath,v3Key);
-//            }
-            signer.initVerify((Certificate) CERTIFICATE_MAP.get(serialNo));
-            signer.update(signatureStr.getBytes(StandardCharsets.UTF_8));
-            boolean verify = signer.verify(Base64.getDecoder().decode(wechatpaySignature));
-            return signer.verify(java.util.Base64.getDecoder().decode(wechatpaySignature));
-        } catch (Exception e ) {
-            e.printStackTrace();
-        } finally {
-            if (fileInputStream != null) {
-                try {
-                    fileInputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return false;
-    }
 
-    /**
-     * 回调验签-构建签名数据
-     * @param
-     * @return
-     */
-    public static String buildMessage(String wechatpayTimestamp, String wechatpayNonce, String body) {
-        return Stream.of(wechatpayTimestamp, wechatpayNonce, body)
-                .collect(Collectors.joining("\n", "", "\n"));
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -24,9 +24,9 @@ spring:
             size: 30
     profiles:
         #开发环境（本地开发）
-        include: dev
+#        include: dev
         #测试环境（云上测试服务器）
-#        include: test
+        include: test
         #生产环境(南宁本地)
 #        include: pro
     #mq基本配置
@@ -68,3 +68,15 @@ mybatis-plus:
         # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
         call-setters-on-nulls: true
 
+app:
+    pay:
+        wx:
+            notify_url: https://148j82s509.51mypc.cn/app/vx/notify
+            redirect_url: http://xxxx/wechat/auth
+            app_id: wxd7bdef0d4849ddb8
+            app_secret: 201cb946db5a390be107fdb030a403d4
+            mch_id: 1629188361
+            api_key: kaidalai135246xiaomifengzhihuish
+            cert_path: apiclient_cert.p12
+            create_order_url: https://api.mch.wx.qq.com/pay/unifiedorder              # 统一下单url
+            refund_url: https://api.mch.wx.qq.com/secapi/pay/refund          # 申请退款url

@@ -178,4 +178,7 @@ public interface UserResidentDao {
      */
     List<VoFindResidentInfo> findResidentInfoBySearch(SearchFindName searchFindName);
 
+
+    int deleteUserResident(UserResident userResident);
+
 }

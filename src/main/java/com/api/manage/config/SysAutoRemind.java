@@ -1317,43 +1317,43 @@ public class SysAutoRemind {
         log.info("结束获取抄表水量记录");
     }
 
-    /**
-     * 0/5 * * * * ?
-     * （每5秒执行一次）轮询定时任务，查询jcook商城未付款订单，是否超时或错误关闭
-     */
-    @Scheduled(cron = "0/5 * * * * ?")
-    public void autoCheckOutTimeJcookShopping(){
-//        log.info("查询并修改jcook商城未付款超时订单--------------------start");
-        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("trade_status",0);//0.交易创建并等待买家付款
-        //计算当前时间减6分钟的时间
-        Calendar nowTime = Calendar.getInstance();
-        nowTime.add(Calendar.MINUTE,-6);
-        Date time = nowTime.getTime();
-        queryWrapper.le("create_date",time);//超时时间为6分钟，创建时间小于等于当前时间减去6分钟时超时
-        List<JcookOrder> jcookOrderList = jcookOrderMapper.selectList(queryWrapper);
-        if (jcookOrderList != null && jcookOrderList.size()>0){
-            log.info("修改jcook商城未付款超时订单--------------------start");
-            for (JcookOrder jcookOrder : jcookOrderList) {
-                log.info("----------当前修改的订单号为: "+jcookOrder.getCode());
-                //修改超时订单的状态为1.未付款交易超时关闭或支付完成后全额退款
-                jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
-                jcookOrderMapper.updateById(jcookOrder);
-                //进行jcook的取消订单操作
-                JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
-                OrderCancelRequest orderCancelRequest = new OrderCancelRequest();
-                orderCancelRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));
-                orderCancelRequest.setCancelReasonCode(100);//取消原因：100。其他【订单支付超时】
-                Result<OrderCancelResponse> result = jcookSDK.orderCancel(orderCancelRequest);
-                if (result.getCode() != 200){
-                    log.info("-------jcook取消订单异常，异常原因："+result.getMsg()+"，订单号为："+jcookOrder.getJcookCode());
-                }
-            }
-            log.info("修改jcook商城未付款超时订单--------------------end");
-        }
-
-//        log.info("查询并修改jcook商城未付款超时订单--------------------end");
-    }
+//    /**
+//     * 0/5 * * * * ?
+//     * （每5秒执行一次）轮询定时任务，查询jcook商城未付款订单，是否超时或错误关闭
+//     */
+//    @Scheduled(cron = "0/5 * * * * ?")
+//    public void autoCheckOutTimeJcookShopping(){
+////        log.info("查询并修改jcook商城未付款超时订单--------------------start");
+//        QueryWrapper<JcookOrder> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("trade_status",0);//0.交易创建并等待买家付款
+//        //计算当前时间减6分钟的时间
+//        Calendar nowTime = Calendar.getInstance();
+//        nowTime.add(Calendar.MINUTE,-6);
+//        Date time = nowTime.getTime();
+//        queryWrapper.le("create_date",time);//超时时间为6分钟，创建时间小于等于当前时间减去6分钟时超时
+//        List<JcookOrder> jcookOrderList = jcookOrderMapper.selectList(queryWrapper);
+//        if (jcookOrderList != null && jcookOrderList.size()>0){
+//            log.info("修改jcook商城未付款超时订单--------------------start");
+//            for (JcookOrder jcookOrder : jcookOrderList) {
+//                log.info("----------当前修改的订单号为: "+jcookOrder.getCode());
+//                //修改超时订单的状态为1.未付款交易超时关闭或支付完成后全额退款
+//                jcookOrder.setTradeStatus(1);//1.未付款交易超时关闭或支付完成后全额退款
+//                jcookOrderMapper.updateById(jcookOrder);
+//                //进行jcook的取消订单操作
+//                JcookSDK jcookSDK = new JcookSDK(JCOOK_APP_KEY, JCOOK_APP_SECRET, JCOOK_CHANNEL_ID);
+//                OrderCancelRequest orderCancelRequest = new OrderCancelRequest();
+//                orderCancelRequest.setOrderId(new BigInteger(jcookOrder.getJcookCode()));
+//                orderCancelRequest.setCancelReasonCode(100);//取消原因：100。其他【订单支付超时】
+//                Result<OrderCancelResponse> result = jcookSDK.orderCancel(orderCancelRequest);
+//                if (result.getCode() != 200){
+//                    log.info("-------jcook取消订单异常，异常原因："+result.getMsg()+"，订单号为："+jcookOrder.getJcookCode());
+//                }
+//            }
+//            log.info("修改jcook商城未付款超时订单--------------------end");
+//        }
+//
+////        log.info("查询并修改jcook商城未付款超时订单--------------------end");
+//    }
 
 
     /**

@@ -23,10 +23,12 @@ import java.util.*;
 
 
 
+
 @Service
 public class WxPayServiceImpl {
-    private static  String wxnotify = "http://star.kaidalai.cn/api/vx/notifyWeiXinPay";
+    private static  String wxnotify = "https://star.kaidalai.cn/app/vx/notify";
 
+//    private static  String wxnotify = "https://148j82s509.51mypc.cn/api/app/user/vx/notify";
 
     /**
      * app下单
@@ -44,7 +46,7 @@ public class WxPayServiceImpl {
         //parameterMap.put("device_info", "WEB");
         json.put("description",description);
         json.put("out_trade_no",outTradeNo);
-        json.put("notify_url",wxnotify);
+        json.put("notify_url","https://148j82s509.51mypc.cn/app/vx/payNotify");
         JSONObject jsonOfAmount = new JSONObject();
         jsonOfAmount.put("total",totalAmount);
         json.put("amount",jsonOfAmount);
@@ -180,6 +182,7 @@ public class WxPayServiceImpl {
         sign.update(message);
         return Base64.getEncoder().encodeToString(sign.sign());
     }
+
 
 
 

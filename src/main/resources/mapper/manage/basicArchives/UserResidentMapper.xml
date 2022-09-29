@@ -238,6 +238,10 @@
         delete from user_resident_relatives
         where resident_id = #{ResidentId} and relatives_id = #{RelativesId}
     </delete>
+    <delete id="deleteUserResident" parameterType="com.api.model.basicArchives.UserResident">
+        delete from user_resident
+        where name=#{name} and tel=#{tel} and id_number=#{idNumber}
+    </delete>
 
     <!--  查询所有的业主信息  -->
     <select id="findResidentAll" resultType="com.api.vo.basicArchives.VoFindAll">

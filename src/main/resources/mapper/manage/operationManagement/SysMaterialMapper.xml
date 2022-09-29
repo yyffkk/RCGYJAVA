@@ -41,8 +41,8 @@
 
     <update id="update" parameterType="com.api.model.operationManagement.SysMaterial">
         update sys_material
-        set name = #{name},
-        unit = #{unit}
+        set name = #{name}
+
         where id = #{id}
     </update>
 

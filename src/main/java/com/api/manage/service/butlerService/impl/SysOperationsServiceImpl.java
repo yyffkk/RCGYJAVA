@@ -42,6 +42,7 @@ public class SysOperationsServiceImpl implements SysOperationsService {
         sysOperations.setCreateDate(new Date());//填入创建时间
         sysOperations.setCode(String.valueOf(new IdWorker(1, 1, 1).nextId()));//填入记录编号
 
+
         int insert = sysOperationsDao.insert(sysOperations);
         if (insert > 0){
             map.put("message","添加成功");
