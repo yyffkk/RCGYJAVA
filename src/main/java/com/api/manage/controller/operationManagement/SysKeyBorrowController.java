@@ -51,7 +51,12 @@ public class SysKeyBorrowController {
      */
     @PostMapping("/examine")
     public Map<String,Object> examine(@RequestBody KeyBorrow keyBorrow){
-        return sysKeyBorrowService.examine(keyBorrow);
+
+        if(keyBorrow.getStatus()==1||keyBorrow.getStatus()==2||keyBorrow.getStatus()==3) {
+            return sysKeyBorrowService.examine(keyBorrow);
+        }else{
+            return sysKeyBorrowService.returnExamine(keyBorrow);
+        }
     }
 
     /**

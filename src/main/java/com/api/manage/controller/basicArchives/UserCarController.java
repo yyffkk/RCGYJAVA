@@ -11,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -64,7 +65,8 @@ public class UserCarController   {
     @GetMapping("/findById")
     @RequiresPermissions(value = {"0202"},logical = Logical.AND)
     public Map<String, Object> findById(Integer id){
-        return userCarService.findById(id);
+
+            return userCarService.findById(id);
     }
 
     /**

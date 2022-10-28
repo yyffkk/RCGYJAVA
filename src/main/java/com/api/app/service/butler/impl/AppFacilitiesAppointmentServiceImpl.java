@@ -40,6 +40,14 @@ public class AppFacilitiesAppointmentServiceImpl implements AppFacilitiesAppoint
     public Map<String, Object> insert(FacilitiesAppointment facilitiesAppointment) {
         map = new HashMap<>();
 
+
+        int judgeTime=sysFacilitiesAppointmentDao.judgeTime(facilitiesAppointment);
+
+        if (judgeTime <=0){
+            map.put("message","不在活动时间内");
+            map.put("status",false);
+            return map;
+        }
         //先查询是否处于预约时段
         int beIn = sysFacilitiesAppointmentDao.findIsBeInAppointmentDate(facilitiesAppointment);
 

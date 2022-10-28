@@ -466,6 +466,9 @@ public class UploadFileServiceImpl implements UploadFileService {
                     dailyPayment.setBeginDate(beginDate);
                     Date endDate = sf.parse(user.get("计费结束时间（yyyy-MM-dd）").toString());
                     dailyPayment.setEndDate(endDate);
+                    //填入缴费期限
+                    Date paymentTerm = sf.parse(user.get("缴费期限").toString());
+                    dailyPayment.setPaymentTerm(paymentTerm);
                 } catch (ParseException e) {
                     e.printStackTrace();
                     throw new RuntimeException("时间格式有误，请遵循yyyy-MM-dd格式，例如：'2016-12-31'");
@@ -474,6 +477,8 @@ public class UploadFileServiceImpl implements UploadFileService {
                 dailyPayment.setUnitPrice(new BigDecimal(user.get("计费单价").toString()));
                 dailyPayment.setType(Integer.valueOf(user.get("计费单位（1.元/月 平方米，2.元/ 立方米，3.元/ 次）").toString()));
                 dailyPayment.setNum(Integer.valueOf(user.get("面积/用量/数量").toString()));
+                //填入费率（先默认为0），将excel费率
+                dailyPayment.setRate(Integer.valueOf(user.get("费率").toString()));
                 //填入已缴金额
                 dailyPayment.setPaidPrice(BigDecimal.ZERO);
                 //填入费用金额(单价*用量)

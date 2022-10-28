@@ -133,7 +133,7 @@ public class ShareVisitorInviteController {
      * @return map
      */
     @GetMapping("/getHtmlCode")
-    public Map<String,Object> getHtmlCode(Date startTime, Date endTime, String tel){
+    public Map<String,Object> getHtmlCode( Date startTime, Date endTime, String tel){
         return sysDoorQRCodeService.getHtmlCode(startTime,endTime, tel);
     }
 

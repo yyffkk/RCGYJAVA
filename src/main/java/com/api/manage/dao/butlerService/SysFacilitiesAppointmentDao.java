@@ -56,4 +56,8 @@ public interface SysFacilitiesAppointmentDao {
      * @return 影响行数
      */
     int delete(int id);
+
+
+
+    int judgeTime(FacilitiesAppointment facilitiesAppointment);
 }

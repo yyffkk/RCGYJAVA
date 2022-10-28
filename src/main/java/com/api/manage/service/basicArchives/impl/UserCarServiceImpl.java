@@ -129,44 +129,47 @@ public class UserCarServiceImpl implements UserCarService {
 //    }
 
     public Map<String, Object> findById(Integer id) {
-        VoUserCarFindById voUserCarFindById = userCarDao.findById(id);
-        //根据房产主键id查询房产信息
-        CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(voUserCarFindById.getBuildingUnitEstateId());
-        //根据单元主键id查询对应的单元号
-        CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
-        //根据楼栋主键id查询对应的楼栋号
-        CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
-        //设置 楼栋id，单元id，房产id
-        voUserCarFindById.setRoomName(cpmBuildingUnitEstate.getRoomNumber());
-        voUserCarFindById.setBuildingUnitId(cpmBuildingUnit.getId());
-        voUserCarFindById.setBuildingUnitNo(cpmBuildingUnit.getNo());
-        voUserCarFindById.setBuildingId(cpmBuilding.getId());
-        voUserCarFindById.setBuildingNo(cpmBuilding.getNo());
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("code",voUserCarFindById.getCode());
-        map.put("parkingSpaceId",voUserCarFindById.getParkingSpaceId());
-        map.put("parkingSpaceCode",voUserCarFindById.getParkingSpaceCode());
-        map.put("owner",voUserCarFindById.getOwner());
-        map.put("tel",voUserCarFindById.getTel());
-        map.put("idType",voUserCarFindById.getIdType());
-        map.put("idNumber",voUserCarFindById.getIdNumber());
-        map.put("buildingNo",voUserCarFindById.getBuildingNo());
-        map.put("buildingUnitNo",voUserCarFindById.getBuildingUnitNo());
-        map.put("roomName",voUserCarFindById.getRoomName());
-        if(voUserCarFindById.getType()!=null){
-            map.put("type",voUserCarFindById.getType());
-        }
-        if(voUserCarFindById.getBrand()!=null){
-            map.put("brand",voUserCarFindById.getBrand());
-        }
-        if(voUserCarFindById.getModel()!=null){
-            map.put("model",voUserCarFindById.getModel());
-        }
-        if(voUserCarFindById.getColor()!=null){
-            map.put("color",voUserCarFindById.getColor());
-        }
-        return map;
+              VoUserCarFindById voUserCarFindById = userCarDao.findById(id);
+              //根据房产主键id查询房产信息
+              CpmBuildingUnitEstate cpmBuildingUnitEstate = cpmBuildingUnitEstateDao.findById(voUserCarFindById.getBuildingUnitEstateId());
+              //根据单元主键id查询对应的单元号
+              CpmBuildingUnit cpmBuildingUnit = cpmBuildingUnitDao.findById(cpmBuildingUnitEstate.getBuildingUnitId());
+              //根据楼栋主键id查询对应的楼栋号
+              CpmBuilding cpmBuilding = cpmBuildingDao.findById(cpmBuildingUnit.getBuildingId());
+              //设置 楼栋id，单元id，房产id
+              voUserCarFindById.setRoomName(cpmBuildingUnitEstate.getRoomNumber());
+              voUserCarFindById.setBuildingUnitId(cpmBuildingUnit.getId());
+              voUserCarFindById.setBuildingUnitNo(cpmBuildingUnit.getNo());
+              voUserCarFindById.setBuildingId(cpmBuilding.getId());
+              voUserCarFindById.setBuildingNo(cpmBuilding.getNo());
+
+              Map<String, Object> map = new HashMap<>();
+              map.put("code", voUserCarFindById.getCode());
+              map.put("parkingSpaceId", voUserCarFindById.getParkingSpaceId());
+              map.put("parkingSpaceCode", voUserCarFindById.getParkingSpaceCode());
+              map.put("owner", voUserCarFindById.getOwner());
+              map.put("tel", voUserCarFindById.getTel());
+              map.put("idType", voUserCarFindById.getIdType());
+              map.put("idNumber", voUserCarFindById.getIdNumber());
+              map.put("buildingId", voUserCarFindById.getBuildingId());
+              map.put("buildingUnitId", voUserCarFindById.getBuildingUnitId());
+              map.put("buildingUnitEstateId", voUserCarFindById.getBuildingUnitEstateId());
+              map.put("carStatus", voUserCarFindById.getStatus());
+              if (voUserCarFindById.getType() != null) {
+                  map.put("type", voUserCarFindById.getType());
+              }
+              if (voUserCarFindById.getBrand() != null) {
+                  map.put("brand", voUserCarFindById.getBrand());
+              }
+              if (voUserCarFindById.getModel() != null) {
+                  map.put("model", voUserCarFindById.getModel());
+              }
+              if (voUserCarFindById.getColor() != null) {
+                  map.put("color", voUserCarFindById.getColor());
+              }
+              return map;
+
     }
 
 
@@ -186,9 +189,9 @@ public class UserCarServiceImpl implements UserCarService {
             VoUserCarFindById byId = userCarDao.findById(userCar.getId());
             Calendar calendar = new GregorianCalendar();
             //如果原先没有包月，包年，设置当前时间为开始时间
-            if (byId.getStatus() == 1 || byId.getStatus() == 4){
+//            if (byId.getStatus() == 1 || byId.getStatus() == 4){
                 byId.setEffectiveTimeStart(new Date());
-            }
+//            }
 
             calendar.setTime(byId.getEffectiveTimeStart());
             calendar.add(Calendar.YEAR, 1); //把日期往后增加一年，负数减一年
@@ -199,9 +202,9 @@ public class UserCarServiceImpl implements UserCarService {
             VoUserCarFindById byId = userCarDao.findById(userCar.getId());
             Calendar calendar = new GregorianCalendar();
             //如果原先没有包月，包年，设置当前时间为开始时间
-            if (byId.getStatus() == 1 || byId.getStatus() == 4){
+//            if (byId.getStatus() == 1 || byId.getStatus() == 4){
                 byId.setEffectiveTimeStart(new Date());
-            }
+//            }
 
             calendar.setTime(byId.getEffectiveTimeStart());
             calendar.add(Calendar.MONTH, 1); //把日期往后增加一月，负数减一月

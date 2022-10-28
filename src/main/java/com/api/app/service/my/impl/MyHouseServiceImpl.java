@@ -91,9 +91,9 @@ public class MyHouseServiceImpl implements MyHouseService {
         try {
             // TODO 去除该判断，使得用户可以同时拥有两种身份
             //当既不是游客，用户类型又不相等时，抛出错误；是游客继续执行，类型相等继续执行
-            if (type != 4 && myHouse.getType() != type){
-                throw new RuntimeException("身份信息不对，请联系管理员");
-            }
+//            if (type != 4 && myHouse.getType() != type){
+//                throw new RuntimeException("身份信息不对，请联系管理员");
+//            }
 
             //判断该用户是否已有审核中记录存在
             int count = myHouseDao.countNotReviewed(myHouse.getResidentId());

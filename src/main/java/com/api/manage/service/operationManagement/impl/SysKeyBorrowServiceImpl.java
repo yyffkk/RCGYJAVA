@@ -51,7 +51,7 @@ public class SysKeyBorrowServiceImpl implements SysKeyBorrowService {
 
         //根据审核主键id 查询审核状态
         int status = sysKeyBorrowDao.findStatusById(keyBorrow.getId());
-        if (status != 1){
+        if (status != 1 ){
             map.put("message","该记录已审核");
             map.put("status",false);
             return map;

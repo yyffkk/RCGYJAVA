@@ -130,8 +130,9 @@ public class UploadUtil {
                     throw new RuntimeException("添加照片数据失败");
                 }
                 //剪切文件
-                shear(urls[i]);
-
+                if(urls[i]!="") {
+                    shear(urls[i]);
+                }
             }
         }
     }

@@ -272,6 +272,7 @@ public class UserResidentServiceImpl implements UserResidentService {
         UserResident userResident = userResidentDao.findById(id);
         //查询业主所有的车位，判断是否有车位
         List<CpmParkingSpace> cpmParkingSpaceList = cpmParkingSpaceDao.findByResidentId(id);
+
         ArrayList<ParkingSpaceAssociation> cpmParkingSpaceIdList = new ArrayList<>();
         //遍历查询所有的车位id
         for (CpmParkingSpace cpmParkingSpace : cpmParkingSpaceList) {
@@ -280,6 +281,14 @@ public class UserResidentServiceImpl implements UserResidentService {
             parkingSpaceAssociation.setParkingSpaceCode(cpmParkingSpace.getCode());
             parkingSpaceAssociation.setEffectiveTimeStart(cpmParkingSpace.getEffectiveTimeStart());
             parkingSpaceAssociation.setEffectiveTimeEnd(cpmParkingSpace.getEffectiveTimeEnd());
+            cpmParkingSpaceIdList.add(parkingSpaceAssociation);
+        }
+        if(cpmParkingSpaceList==null || cpmParkingSpaceList.size()==0){
+            ParkingSpaceAssociation parkingSpaceAssociation = new ParkingSpaceAssociation();
+            parkingSpaceAssociation.setParkingSpaceId(null);
+            parkingSpaceAssociation.setParkingSpaceCode(null);
+            parkingSpaceAssociation.setEffectiveTimeStart(null);
+            parkingSpaceAssociation.setEffectiveTimeEnd(null);
             cpmParkingSpaceIdList.add(parkingSpaceAssociation);
         }
         map.put("cpmParkingSpaceIdList",cpmParkingSpaceIdList);
@@ -516,6 +525,9 @@ public class UserResidentServiceImpl implements UserResidentService {
             if (residentAndParkingSpaceIds.getCpmParkingSpaceIds() != null){
                 for (Integer cpmParkingSpaceId : residentAndParkingSpaceIds.getCpmParkingSpaceIds()) {
                     CpmParkingSpace cpmParkingSpace = cpmParkingSpaceDao.findById(cpmParkingSpaceId);
+                    if(cpmParkingSpace==null){
+                        break;
+                    }
                     cpmParkingSpace.setModifyDate(new Date());
                     cpmParkingSpace.setModifyId(sysUser.getId());
                     cpmParkingSpace.setResidentId(residentAndParkingSpaceIds.getUserResident().getId());

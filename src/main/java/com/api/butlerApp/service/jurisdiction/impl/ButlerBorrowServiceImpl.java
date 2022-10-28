@@ -89,6 +89,7 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
     public Map<String, Object> submitCheck(ButlerSubmitCheck butlerSubmitCheck, String roleId) {
         map = new HashMap<>();
         try {
+            butlerSubmitCheck.setBorrowStatus(2);
             if (butlerSubmitCheck.getBorrowStatus() != 2 && butlerSubmitCheck.getBorrowStatus() != 4){
                 map.put("message","状态传输有误");
                 map.put("status",false);
@@ -112,6 +113,8 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
 
             //根据借还管理主键id修改借还管理物品状态，借取状态，归还时间和归还驳回原因
             butlerSubmitCheck.setEndDate(new Date());
+
+
             int update = butlerBorrowDao.updateSAEByBorrowId(butlerSubmitCheck);
             if (update <= 0){
                 throw new RuntimeException("修改借还信息状态失败");
@@ -130,6 +133,15 @@ public class ButlerBorrowServiceImpl implements ButlerBorrowService {
                     .setRollbackOnly();
             map.put("message",message);
             map.put("status",false);
+
+            map.put("articleDetailId",butlerSubmitCheck.getArticleDetailId());
+            map.put("endDate",butlerSubmitCheck.getEndDate());
+            map.put("type",findJurisdictionByUserId(roleId));
+            map.put("articleDetailId2",butlerBorrowDao.findStatusByBorrowId(butlerSubmitCheck.getArticleBorrowId()).getArticleDetailId());
+            map.put("endDate2",new Date());
+            map.put("status2",butlerSubmitCheck.getBorrowStatus());
+
+
             return map;
         }
         map.put("message","提交成功");

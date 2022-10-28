@@ -41,7 +41,7 @@ public class ButlerAppMessageServiceImpl implements ButlerAppMessageService {
         map.put("sysCount",count);
         map.put("sysType",type);
         map.put("sysDate",sysDate);
-
+        map.put("id",id);
         map.put("commentCount",commentCount);
         map.put("commentDate",commentDate);
         return map;

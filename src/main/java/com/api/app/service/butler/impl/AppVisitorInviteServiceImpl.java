@@ -3,7 +3,10 @@ package com.api.app.service.butler.impl;
 import com.api.app.dao.butler.AppVisitorInviteDao;
 import com.api.app.service.butler.AppVisitorInviteService;
 import com.api.manage.dao.basicArchives.CpmBuildingUnitEstateDao;
+import com.api.manage.dao.butlerService.SysDoorQRCodeDao;
 import com.api.model.app.*;
+import com.api.qrCode.QRCodeServiceImpl;
+import com.api.qrCode.ResidentInformation;
 import com.api.util.IdWorker;
 import com.api.util.LiLinSignGetHmac;
 import com.api.util.UploadUtil;
@@ -25,7 +28,11 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     @Resource
     AppVisitorInviteDao appVisitorInviteDao;
     @Resource
+    SysDoorQRCodeDao sysDoorQRCodeDao;
+    @Resource
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
+    @Resource
+    QRCodeServiceImpl qrCodeService;
     @Value("${res.visitShareTime}")
     private Integer VISIT_SHARE_TIME;    //访客邀请分享有效时长
     @Value("${res.visitorsUrl}")
@@ -172,6 +179,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     @Transactional
     public Map<String, Object> submit(AppUserVisitorsInviteSubmit visitorsInviteSubmit) {
         map = new HashMap<>();
+        String data = null;//返回二维码字符串
         try {
             //根据分享连接编号查询新版访客邀请主键id
             Integer visitId = appVisitorInviteDao.findVisitIdByCode(visitorsInviteSubmit.getCode());
@@ -211,14 +219,24 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
 
 
             try {
-                //根据拜访房产id查询设备号
-                String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
-
-                //连接立林对讲机系统（人脸识别）
-//                connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
-
-                //连接立林对讲机系统-添加设备二维码
-                connectLiLinAddQrCode(deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+//                //根据拜访房产id查询设备号
+//                String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(visitorsInviteSubmit.getEstateId());
+//
+//                //连接立林对讲机系统（人脸识别）
+////                connectLiLinFace(visitorsInviteSubmit.getImgList(), deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+//
+//                //连接立林对讲机系统-添加设备二维码
+////                connectLiLinAddQrCode(deviceNumber, visitorsInviteSubmit.getTel(),visitorsInviteSubmit.getVisitDateStart(),visitorsInviteSubmit.getVisitDateEnd());
+                String roomNumber = sysDoorQRCodeDao.findRoomNumber(visitorsInviteSubmit.getEstateId());
+                int length = roomNumber.length();
+                String substring = roomNumber.substring(0, 1);
+                String s = "0" + roomNumber.substring(4,5);
+                String substring1 = roomNumber.substring(9);
+                ResidentInformation residentInformation=new ResidentInformation();
+                residentInformation.setBuildingNo(substring);
+                residentInformation.setBuildingUnitNo(s);
+                residentInformation.setRoomNo(substring1);
+                data = qrCodeService.findRemark2(residentInformation);
             } catch (Exception e) {
                 //获取抛出的信息
                 String message = e.getMessage();
@@ -240,6 +258,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
         }
         map.put("message","提交成功");
         map.put("status",true);
+        map.put("data",data);
         return map;
     }
 
@@ -247,6 +266,7 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
     @Transactional
     public Map<String, Object> QRSubmit(AppUserQRVisitorsInviteSubmit qrVisitorsInviteSubmit) {
         map = new HashMap<>();
+        String data = null;//返回二维码字符串
         try {
             if (new Date().getTime() - 24*60*60*1000 > qrVisitorsInviteSubmit.getVisitDateStart().getTime()){//如果当前时间大于到访时间开始，则提示预计到访时间不可小于当前时间
                 throw new RuntimeException("预计到访时间不可小于当前时间");
@@ -270,14 +290,26 @@ public class AppVisitorInviteServiceImpl implements AppVisitorInviteService {
             uploadUtil.saveUrlToDB(qrVisitorsInviteSubmit.getIdCardBackImgList(),"userVisitorsNew",qrVisitorsInviteSubmit.getId(),"idCardBackImg","600",30,20);
 
             try {
-                //根据拜访房产id查询设备号
-                String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
+//                //根据拜访房产id查询设备号
+//                String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(qrVisitorsInviteSubmit.getEstateId());
+//
+//                //连接立林对讲机系统（人脸识别）
+////                connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+//
+//                //连接立林对讲机系统-添加设备二维码
+//                connectLiLinAddQrCode(deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
-                //连接立林对讲机系统（人脸识别）
-//                connectLiLinFace(qrVisitorsInviteSubmit.getImgList(), deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
 
-                //连接立林对讲机系统-添加设备二维码
-                connectLiLinAddQrCode(deviceNumber, qrVisitorsInviteSubmit.getTel(),qrVisitorsInviteSubmit.getVisitDateStart(),qrVisitorsInviteSubmit.getVisitDateEnd());
+                String roomNumber = sysDoorQRCodeDao.findRoomNumber(qrVisitorsInviteSubmit.getEstateId());
+                int length = roomNumber.length();
+                String substring = roomNumber.substring(0, 1);
+                String s = "0" + roomNumber.substring(4,5);
+                String substring1 = roomNumber.substring(9);
+                ResidentInformation residentInformation=new ResidentInformation();
+                residentInformation.setBuildingNo(substring);
+                residentInformation.setBuildingUnitNo(s);
+                residentInformation.setRoomNo(substring1);
+                data = qrCodeService.findRemark2(residentInformation);
             } catch (Exception e) {
                 //获取抛出的信息
                 String message = e.getMessage();

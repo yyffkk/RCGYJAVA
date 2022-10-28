@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.app.dao.qrCode.QRCodeDao">
+    <update id="updateRemark2">
+         update device_data_list set remark2=#{dataToDes} where model_type="门禁系统" and device_id=#{deviceId}
+    </update>
+    <select id="selectDevice" resultType="com.api.qrCode.DeviceDataList">
+        select * from device_data_list where model_type="门禁系统";
+    </select>
+    <select id="findRemark2" resultType="java.lang.String" parameterType="java.lang.String">
+        select remark2 from device_data_list where device_id=#{deviceId};
+    </select>
+
+
+</mapper>

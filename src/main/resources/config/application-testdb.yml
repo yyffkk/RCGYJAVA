@@ -13,7 +13,7 @@ spring:
 #    driver-class-name: com.mysql.jdbc.Driver
 
 
-    #    测试数据库连接
+#    #    测试数据库连接
     url: jdbc:mysql://localhost:3306/star_community?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: star_community
     password: GhNWYYynXcTC28Ce

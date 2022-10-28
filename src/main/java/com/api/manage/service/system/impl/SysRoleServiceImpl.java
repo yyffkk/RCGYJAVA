@@ -79,27 +79,40 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public Map<String, Object> insertRole(SysRole sysRole) {
         map = new HashMap<>();
+        try {
+            //获取登录用户信息
+            Subject subject = SecurityUtils.getSubject();
+            SysUser sysUser = (SysUser) subject.getPrincipal();
 
-        //获取登录用户信息
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-
-        sysRole.setActionId((int) new IdWorker(1,1,1).nextId());
-        sysRole.setCreateId(sysUser.getId());
-        sysRole.setCreateDate(new Date());
+            sysRole.setActionId((int) new IdWorker(1, 1, 1).nextId());
+            sysRole.setCreateId(sysUser.getId());
+            sysRole.setCreateDate(new Date());
 
 //        if(sysRole.getName() == null){
 //            return null;
 //        }
-        int insert = sysRoleDao.insertRole(sysRole);
-        if (insert >0){
-            map.put("message","添加成功");
-            map.put("status",true);
-        }else {
-            map.put("message","添加失败");
+            int insert = sysRoleDao.insertRole(sysRole);
+            if (insert > 0) {
+                map.put("message", "添加成功");
+                map.put("status", true);
+            } else {
+                map.put("message", "添加失败");
+                map.put("status", false);
+            }
+            return map;
+        }catch (Exception e){
+            //获取抛出的信息
+            String message = e.getMessage();
+            e.printStackTrace();
+            map.put("message","请填写完整信息");
             map.put("status",false);
+            //设置手动回滚
+            return map;
+//            TransactionAspectSupport.currentTransactionStatus()
+//                    .setRollbackOnly();
+
+
         }
-        return map;
     }
 
     @Override

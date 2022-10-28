@@ -454,6 +454,7 @@ public class SystemDataServiceImpl implements SystemDataService {
 
 
             String content = JSON.toJSONString(webSocketFirePushAlert);
+//            String content ="在"+webSocketFirePushAlert.getTime()+",设备号为"+webSocketFirePushAlert.getDeviceNo()+",设备名为"+webSocketFirePushAlert.getDeviceName()+"发送报警请求，报警号为：" +webSocketFirePushAlert.getAlarmNo();
 
             log.info("火灾报警："+content);
 //            System.out.printf(content);
@@ -508,6 +509,9 @@ public class SystemDataServiceImpl implements SystemDataService {
 
 
             String content = JSON.toJSONString(webSocketFirePushAlert);
+
+//            String content ="在"+webSocketFirePushAlert.getTime()+",设备号为"+webSocketFirePushAlert.getDeviceNo()+",设备名为"+webSocketFirePushAlert.getDeviceName()+"发送报警请求，报警号为：" +webSocketFirePushAlert.getAlarmNo();
+
 
             log.info("预案报警："+content);
 //            System.out.printf(content);

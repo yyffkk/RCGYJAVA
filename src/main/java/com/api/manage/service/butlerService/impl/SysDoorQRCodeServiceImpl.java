@@ -7,6 +7,8 @@ import com.api.model.businessManagement.SysUser;
 import com.api.model.butlerService.GetHtmlCode;
 import com.api.model.butlerService.SearchDoorQRCode;
 import com.api.model.butlerService.SysDoorQRCode;
+import com.api.qrCode.QRCodeServiceImpl;
+import com.api.qrCode.ResidentInformation;
 import com.api.util.LiLinSignGetHmac;
 import com.api.vo.butlerService.VoDoorQRCode;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,8 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
     CpmBuildingUnitEstateDao cpmBuildingUnitEstateDao;
     @Resource
     SysDoorQRCodeDao sysDoorQRCodeDao;
+    @Resource
+    QRCodeServiceImpl qrCodeService;
     @Value("${lilin.version}")
     private String VERSION;    //第三方密钥
     @Value("${lilin.signatureVersion}")
@@ -73,8 +77,8 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
             //根据拜访房产id查询设备号
             String deviceNumber = cpmBuildingUnitEstateDao.findDeviceNumberByEstateId(sysDoorQRCode.getEstateId());
 
-            //连接立林对讲机系统-添加设备二维码
-            connectLiLinAddQrCode(deviceNumber, sysDoorQRCode.getTel(),sysDoorQRCode.getStartTime(),sysDoorQRCode.getEndTime());
+//            //连接立林对讲机系统-添加设备二维码
+//            connectLiLinAddQrCode(deviceNumber, sysDoorQRCode.getTel(),sysDoorQRCode.getStartTime(),sysDoorQRCode.getEndTime());
 
             //添加设备二维码进数据库
             sysDoorQRCodeDao.addQrCode(sysDoorQRCode);
@@ -101,7 +105,7 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
         String data = null;//返回二维码字符串
         try {
             //连接立林对讲机系统-获取设备二维码
-            data = connectLiLinGetQrCode(tel, startTime, endTime);
+            data = "qgEkVcd2+ZLg7YpxSdiGjmDMawx1g5Pmbn8PyhRspadb7oGn";
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();
@@ -184,7 +188,7 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
 
     @Override
     @Transactional
-    public Map<String, Object> getHtmlCode(Date startTime, Date endTime, String tel) {
+    public Map<String, Object> getHtmlCode( Date startTime, Date endTime, String tel) {
         map = new HashMap<>();
         String data = null;//返回二维码字符串
         try {
@@ -197,10 +201,25 @@ public class SysDoorQRCodeServiceImpl implements SysDoorQRCodeService {
             if (check <= 0){
                 throw new RuntimeException("未查询到相关预约");
             }
+            int estateId = sysDoorQRCodeDao.findEstateId(getHtmlCode);
+            String roomNumber = sysDoorQRCodeDao.findRoomNumber(estateId);
+            int length = roomNumber.length();
+            String substring = roomNumber.substring(0, 1);
+            String s = "0" + roomNumber.substring(4,5);
+            String substring1 = roomNumber.substring(9);
+            ResidentInformation residentInformation=new ResidentInformation();
+            residentInformation.setBuildingNo(substring);
+            residentInformation.setBuildingUnitNo(s);
+            residentInformation.setRoomNo(substring1);
+
+
 
 
             //连接立林对讲机系统-获取设备二维码
-            data = connectLiLinGetQrCode(tel, startTime, endTime);
+//            data = "qgEkVcd2+ZLg7YpxSdiGjmDMawx1g5Pmbn8PyhRspadb7oGn";
+           data = qrCodeService.findRemark2(residentInformation);
+//            data= "iot:X1C0iEKQxdV8M82THlhnOw==";
+//            data ="iot:Oj8U5sSn51T3Sf0OlFyAAVWDJgqybYwLFb5iJfC3Y8FxqvsC9/9AaykYE6PapHGuJD0LQTWhjP8sFAIyaFqcv9ildRf5JjJ/";
         } catch (Exception e) {
             //获取抛出的信息
             String message = e.getMessage();

@@ -51,4 +51,11 @@
         select count(*) from user_visitors_new
         where tel = #{tel} and visit_date_start = #{startTime} and visit_date_end = #{endTime}
     </select>
+    <select id="findEstateId" resultType="java.lang.Integer"
+            parameterType="com.api.model.butlerService.GetHtmlCode">
+        select estate_id from user_visitors_new where tel=#{tel} ORDER BY create_date desc limit 1
+    </select>
+    <select id="findRoomNumber" resultType="java.lang.String" parameterType="java.lang.Integer">
+        select room_number from cpm_building_unit_estate where id=#{estateId}
+    </select>
 </mapper>

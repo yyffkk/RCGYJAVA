@@ -22,6 +22,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
@@ -226,6 +227,8 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
     @Override
     public List<VoInspectionExecute> executeList(SearchInspectionExecute searchInspectionExecute) {
         List<VoInspectionExecute> list = sysInspectionPlanDao.executeList(searchInspectionExecute);
+        List<SDInspectionExecutePointVo> executePointVoTotalList = systemDataDao.findExecutePointAll();
+
         if (list != null && list.size()>0){
             for (VoInspectionExecute inspectionExecuteVo : list) {
                 //判断实际开始时间是否为null
@@ -249,8 +252,8 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
                 List<SDInspectionExecutePointVo> executePointVos =null;
                 //如果实际开始实际为null，查询执行计划的巡检点，反之，查询计划的巡检点
                 if (inspectionExecuteVo.getActualBeginDate() != null){
-                    //根据巡检执行计划主键id查询执行计划的巡检点（开始巡检后的巡检点信息）
-                    executePointVos = systemDataDao.findExecutePointByExecuteId(inspectionExecuteVo.getId());
+                    //根据巡检执行计划主键id查询执行计划的巡检点（开始巡检后的巡检点信息）//TODO List.stream()
+                    executePointVos = executePointVoTotalList.stream().filter(o -> o.getId().equals(inspectionExecuteVo.getId())).collect(Collectors.toList());
                 }else {
                     //根据巡检执行计划主键id查询计划的巡检点（开始巡检前的巡检点信息）
                     executePointVos = systemDataDao.findPlanPointByExecuteId(inspectionExecuteVo.getId());
@@ -262,6 +265,7 @@ public class SysInspectionPlanServiceImpl implements SysInspectionPlanService {
                 inspectionExecuteVo.setExecuteMapVos(executeMapVoList);
             }
         }
+        System.out.println(list);
         return list;
     }
 }

@@ -186,6 +186,12 @@ public interface SystemDataDao {
     List<SDInspectionExecutePointVo> findExecutePointByExecuteId(Integer executeId);
 
     /**
+     * 查询all执行计划的巡检点（开始巡检后的巡检点信息）
+     * @return 开始巡检后的巡检点信息
+     */
+    List<SDInspectionExecutePointVo> findExecutePointAll();
+
+    /**
      * 根据巡检执行计划主键id查询计划的巡检点（开始巡检前的巡检点信息）
      * @param executeId 巡检执行计划主键id
      * @return 开始巡检前的巡检点信息
@@ -548,5 +554,4 @@ public interface SystemDataDao {
      * @return 返回内容
      */
     List<SDTSNewVo> searchNews(SearchTouchScreenSearch searchTouchScreenSearch);
-
 }

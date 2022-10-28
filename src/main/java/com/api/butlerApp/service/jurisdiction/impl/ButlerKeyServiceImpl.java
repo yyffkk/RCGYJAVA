@@ -137,6 +137,7 @@ public class ButlerKeyServiceImpl implements ButlerKeyService {
         if (update >0){
             map.put("message","申请成功");
             map.put("status",true);
+            map.put("isReturn",butlerKeyBorrow.getStatus());
         }else {
             map.put("message","申请失败");
             map.put("status",false);

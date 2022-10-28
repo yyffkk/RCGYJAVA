@@ -46,7 +46,7 @@ public class AppMessageServiceImpl implements AppMessageService {
             }
         }
 
-
+        map.put("id",id);
         map.put("sysCount",sysCount);
         map.put("sysTitle",sysTitle);
 

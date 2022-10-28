@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class AppFacilitiesAppointmentController {
      * @return map
      */
     @PostMapping("/insert")
-    public Map<String,Object> insert(@RequestBody FacilitiesAppointment facilitiesAppointment, HttpServletRequest request){
+    public Map<String,Object> insert(@RequestBody FacilitiesAppointment facilitiesAppointment, HttpServletRequest request) throws ParseException {
         //从request获取用户id
         Integer id = Integer.valueOf(request.getParameter("id"));
         //填入预约人id

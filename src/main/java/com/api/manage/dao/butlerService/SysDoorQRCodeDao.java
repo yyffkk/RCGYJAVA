@@ -42,4 +42,8 @@ public interface SysDoorQRCodeDao {
      * @return 预约信息数
      */
     int checkAppointment(GetHtmlCode getHtmlCode);
+
+    int findEstateId(GetHtmlCode getHtmlCode);
+
+    String findRoomNumber(Integer estateId);
 }

@@ -105,6 +105,16 @@
         where #{appointmentStartDate} between T.appointment_start_date and T.appointment_end_date
         and #{appointmentEndDate} between T.appointment_start_date and T.appointment_end_date and (T.status=1 or T.status=2)
     </select>
+    <select id="judgeTime" resultType="java.lang.Integer"
+            parameterType="com.api.model.butlerService.FacilitiesAppointment">
+         select count(*) from
+        (select sys_facilities_manage.id ,sys_facilities_category.open_start_date,sys_facilities_category.open_end_date from sys_facilities_category left join sys_facilities_manage on sys_facilities_manage.facilities_category_id=sys_facilities_category.id)
+        as T
+        where T.id=#{facilitiesManageId}
+        and SUBSTR(#{appointmentStartDate},12) between T.open_start_date and T.open_end_date and SUBSTR(#{appointmentEndDate},12) between T.open_start_date and T.open_end_date
+    </select>
+
+
     <delete id="delete" parameterType="java.lang.Integer">
         delete from sys_facilities_appointment where id = #{id}
     </delete>
